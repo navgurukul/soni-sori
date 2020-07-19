@@ -6,4 +6,5 @@ Soni Sori (born c. 1975) is an Adivasi school teacher and grassroots leader from
 
 She was awarded Front Line Defenders award in 2018.
 
-Android Application to learn Programming
+# Saral App
+This application is meant to help users to learn Programming from wherever they are in vernacular languages with a group of learners that we identify and group them with.
