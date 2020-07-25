@@ -1,4 +1,4 @@
-package org.navgurukul.playground
+package org.navgurukul.playground.ui.playground
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,27 +7,25 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.navgurukul.playground.R
 
 class PlaygroundFragment : Fragment() {
 
-    private lateinit var playgroundViewModel: PlaygroundViewModel
+    private val viewModel: PlaygroundViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        playgroundViewModel =
-            ViewModelProviders.of(this).get(PlaygroundViewModel::class.java)
-
       return inflater.inflate(R.layout.fragment_playground, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView: TextView = view.findViewById(R.id.text)
-        playgroundViewModel.text.observe(viewLifecycleOwner, Observer {
+        viewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
     }

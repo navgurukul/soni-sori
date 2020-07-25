@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="org.navgurukul.chat.ChatFragment"
+        android:name="org.navgurukul.chat.ui.chat.ChatFragment"
         android:label="@string/title_chat"
         tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/navigation_learn"
-        android:name="org.navgurukul.learn.LearnFragment"
+        android:name="org.navgurukul.learn.ui.learn.LearnFragment"
         android:label="@string/title_learn"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_learn" />
 
     <fragment
         android:id="@+id/navigation_playground"
-        android:name="org.navgurukul.playground.PlaygroundFragment"
+        android:name="org.navgurukul.playground.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_playground" />
 
     <fragment
         android:id="@+id/navigation_more"
         android:name="org.navgurukul.saral.ui.more.MoreFragment"
         android:label="@string/title_more"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_more" />
 </navigation>

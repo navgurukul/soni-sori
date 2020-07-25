@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.navgurukul.learn.LearnFragment" >
+    tools:context="org.navgurukul.learn.ui.learn.LearnFragment" >
 
     <TextView
         android:id="@+id/text"
