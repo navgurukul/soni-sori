@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_playground">Playground</string>
+    <string name="title_py_playground">Python Playground</string>
+    <string name="toast_exit_console">If you want to exit the playground, first exit()
+        the console or click on the home up button!</string>
 </resources>
