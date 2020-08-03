@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#455a64</color>
+    <color name="primaryLightColor">#718792</color>
+    <color name="primaryDarkColor">#1c313a</color>
+    <color name="secondaryColor">#5c6bc0</color>
+    <color name="secondaryLightColor">#8e99f3</color>
+    <color name="secondaryDarkColor">#26418f</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+    <color name="backgroundColor">#ffffff</color>
+    <color name="textColor">#000000</color>
+    <color name="errorColor">#B00020</color>
+
+    <!-- Notification (do not depends on theme) -->
+    <color name="notification_accent_color">#368BD6</color>
+</resources>

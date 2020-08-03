@@ -1,0 +1,22 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorError">@color/errorColor</item>
+        <item name="backgroundColor">@color/backgroundColor</item>
+
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
+        <item name="colorSurface">@color/design_default_color_surface</item>
+        <item name="colorPrimarySurface">?attr/colorPrimary</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="colorOnBackground">@color/textColor</item>
+        <item name="colorOnError">@color/primaryTextColor</item>
+        <item name="colorOnSurface">@color/textColor</item>
+        <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
+    </style>
+
+</resources>
