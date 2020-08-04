@@ -3,6 +3,10 @@
 
     <string name="top">Top</string>
     <string name="bottom">Bottom</string>
+    <string name="tab">Tab</string>
+    <string name="undo_tab">Undo Tab</string>
+    <string name="enter">Enter</string>
+    <string name="tab_unicode" translatable="false">\u0009\u0009\u0009\u0009</string>
 
     <color name="console_error">#b53f3f</color>
     <color name="console_meta">#304ffe</color>

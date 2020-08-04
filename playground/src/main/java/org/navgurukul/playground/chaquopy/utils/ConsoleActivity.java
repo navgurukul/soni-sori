@@ -279,7 +279,7 @@ public abstract class ConsoleActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = getMenuInflater();
-        mi.inflate(resId("menu", "top_bottom"), menu);
+        mi.inflate(resId("menu", "menu_console"), menu);
         return true;
     }
 
@@ -290,6 +290,18 @@ public abstract class ConsoleActivity extends AppCompatActivity
             scrollTo(Scroll.TOP);
         } else if (id == resId("id", "menu_bottom")) {
             scrollTo(Scroll.BOTTOM);
+        } else if (id == resId("id", "menu_tab")) {
+            etInput.requestFocus();
+            etInput.append(getString(resId("string", "tab_unicode")));
+        } else if (id == resId("id", "menu_undo_tab")) {
+            if (etInput.getText().toString().endsWith(getString(resId("string", "tab_unicode")))) {
+                etInput.setText(etInput.getText().subSequence(
+                        0, etInput.getText().length() - getString(resId("string", "tab_unicode")).length()));
+            }
+            etInput.requestFocus();
+            etInput.setSelection(etInput.getText().length());
+        } else if (id == resId("id", "menu_enter")) {
+            etInput.onEditorAction(EditorInfo.IME_ACTION_DONE);
         } else {
             return false;
         }

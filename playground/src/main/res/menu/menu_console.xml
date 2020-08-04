@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_tab"
+        android:icon="@drawable/ic_tab"
+        android:title="@string/tab"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_undo_tab"
+        android:icon="@drawable/ic_undo_tab"
+        android:title="@string/undo_tab"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_top"
+        android:icon="@drawable/ic_vertical_align_top"
+        android:title="@string/top"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_bottom"
+        android:icon="@drawable/ic_vertical_align_bottom"
+        android:title="@string/bottom"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_enter"
+        android:icon="@drawable/ic_enter"
+        android:title="@string/enter"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="always" />
+
+</menu>
