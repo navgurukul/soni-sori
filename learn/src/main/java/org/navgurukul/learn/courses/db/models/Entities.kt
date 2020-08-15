@@ -1,12 +1,8 @@
 package org.navgurukul.learn.courses.db.models
 
-/**
- * @version 1
- * @author: Banty
- * @date: 08/15/2020
- */
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 // This class all model classes which represent our DB entities.
@@ -34,11 +30,26 @@ data class Course(
     val sequence: String
 )
 
-@Entity(tableName = "course_content")
+
+// Since one course can have multiple exercises. Course id will be a foreign key for exercise
+@Entity(
+    tableName = "course_exercise",
+    foreignKeys = [
+        ForeignKey(
+            entity = Course::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("course_id"),
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Exercise(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: String,
+
+    @ColumnInfo(name = "course_id")
+    val courseId: String,
 
     @ColumnInfo(name = "parent_exercise_id")
     val parentExerciseId: Int,

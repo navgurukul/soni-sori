@@ -22,7 +22,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.core:core-ktx:$core_ktx_verision"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$contraint_layout_version"
@@ -35,6 +34,21 @@ dependencies {
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
+    // Lifecycle and Viewmodels
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_extensions_verision"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_extensions_verision"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.0-alpha06"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutines"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation "com.google.code.gson:gson:$version_gson"
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit_gson_adapter"
 
     //test
     testImplementation 'junit:junit:4.13'
