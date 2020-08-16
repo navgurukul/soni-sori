@@ -1,13 +1,27 @@
 package org.navgurukul.learn.ui.learn
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import org.navgurukul.learn.datasource.LearnRepo
 
-class LearnViewModel : ViewModel() {
+class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Learn Fragment"
+    private var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    var showLoadingIndicator: LiveData<Boolean> = Transformations.map(isLoading) { isLoading.value }
+
+
+    val coursesData = learnRepo.courses
+
+    init {
+        fetchCourseData()
     }
-    val text: LiveData<String> = _text
+
+    private fun fetchCourseData() {
+        viewModelScope.launch {
+            isLoading.postValue(true)
+            learnRepo.getCourses()
+            isLoading.postValue(false)
+        }
+    }
+
 }

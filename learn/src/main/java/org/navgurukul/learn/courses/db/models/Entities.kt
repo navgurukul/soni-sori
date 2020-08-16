@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 // This class all model classes which represent our DB entities.
 
@@ -12,22 +13,28 @@ import androidx.room.PrimaryKey
 data class Course(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
+    @SerializedName("id")
     val id: String,
 
     @ColumnInfo(name = "name")
+    @SerializedName("name")
     val name: String,
 
     @ColumnInfo(name = "type")
-    val type: String,
+    @SerializedName("type")
+    val type: String?,
 
-    @ColumnInfo(name = "logo_url")
-    val logoUrl: String,
+    @ColumnInfo(name = "logo")
+    @SerializedName("logo")
+    val logoUrl: String?,
 
-    @ColumnInfo(name = "description")
-    val description: String,
+    @ColumnInfo(name = "short_description")
+    @SerializedName("short_description")
+    val description: String?,
 
     @ColumnInfo(name = "sequence_number")
-    val sequence: String
+    @SerializedName("sequence_num")
+    val sequence: String?
 )
 
 
@@ -70,8 +77,8 @@ data class Exercise(
     val githubLink: String,
 
     @ColumnInfo(name = "submission_type")
-    val submissionType: String, // todo Banty:  confirm on the type of this field
+    val submissionType: String // todo Banty:  confirm on the type of this field
 
-    @ColumnInfo(name = "child_exercises")
-    val childExercises: List<Exercise>
+   /* @ColumnInfo(name = "child_exercises")
+    val childExercises: List<Exercise>*/
 )

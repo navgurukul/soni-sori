@@ -1,6 +1,5 @@
 package org.navgurukul.learn.courses.db
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.navgurukul.learn.courses.db.models.Course
@@ -25,8 +24,8 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertExercise(course: List<Exercise>)
 
-    @Query("select * from course_exercise where course_id = :courseId")
-    fun getAllExercisesForCourse(courseId: String): LiveData<List<Course>>
+   /* @Query("select * from course_exercise where course_id = :courseId")
+    fun getAllExercisesForCourse(courseId: String): LiveData<List<Course>>*/
 }
 
 
@@ -37,24 +36,4 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
 
-    // Singleton for returning Room DB Instance
-    companion object {
-        @Volatile
-        private var INSTANCE: CoursesDatabase? = null
-
-        fun getDatabase(context: Context): CoursesDatabase {
-            return synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        CoursesDatabase::class.java,
-                        "course.db"
-                    ).build()
-                }
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
 }

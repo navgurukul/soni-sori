@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="course_item_card_view">
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:elevation">@dimen/card_elevation</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_5_dp</item>
+        <item name="cornerRadius">@dimen/dimen_5_dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen_10_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_10_dp</item>
+        <item name="cardBackgroundColor">@color/colorWhite</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="text_view_course_title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:padding">@dimen/dimen_5_dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
+    </style>
+
+    <style name="text_view_course_description">
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">@dimen/dimen_5_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
+    </style>
+
+    <style name="text_view_course_status">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginStart">@dimen/dimen_5_dp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="spinner_course_category">
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+</resources>

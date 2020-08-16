@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/rlCourseHeader"
+        android:layout_width="wrap_content"
+        android:background="@color/colorWhite"
+        android:layout_height="@dimen/course_header_height">
+
+        <TextView
+            android:id="@+id/spinnerSubject"
+            style="@style/spinner_course_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ivProfilePic"
+            android:text="@string/category"/>
+
+        <ImageView
+            android:id="@+id/ivProfilePic"
+            android:layout_width="@dimen/course_profile_pic"
+            android:layout_height="@dimen/course_profile_pic"
+            android:padding="@dimen/dimen_10_dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/avatar"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
+</layout>
