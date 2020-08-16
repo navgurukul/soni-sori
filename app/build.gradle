@@ -40,6 +40,7 @@ dependencies {
     implementation project(":playground")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     implementation "androidx.core:core-ktx:$core_ktx_verision"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
@@ -59,6 +60,7 @@ dependencies {
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation project(path: ':commonUI')
 
     //test
     testImplementation 'junit:junit:4.13'

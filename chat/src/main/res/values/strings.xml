@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_chat">Bol</string>
+    <string name="reject">Reject</string>
+    <string name="join">Join</string>
+    <string name="action_quick_reply">Quick Reply</string>
+    <string name="action_mark_room_read">Mark as read</string>
+    <string name="notification_new_messages">New Messages</string>
+    <string name="downloaded_file">File %1$s has been downloaded!</string>
+    <string name="call">Call</string>
+    <string name="notification_listening_for_events">Listening for events</string>
+    <string name="notification_silent_notifications">Silent notifications</string>
+    <string name="notification_noisy_notifications">Noisy notifications</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="error_no_external_application_found">Sorry, no external application has been found to complete this action.</string>
+    <string name="notification_initial_sync">Initial Sync…</string>
+    <plurals name="room_new_messages_notification">
+        <item quantity="one">1 new message</item>
+        <item quantity="other">%d new messages</item>
+    </plurals>
 </resources>
