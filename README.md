@@ -8,3 +8,10 @@ She was awarded Front Line Defenders award in 2018.
 
 # Saral App
 This application is meant to help users to learn Programming from wherever they are in vernacular languages with a group of learners that we identify and group them with.
+
+## Chaquopy Setup
+Add the following parameters in the local.properties file
+``` 
+chaquopy.license=[LICENSE_KEY_HERE]
+chaquopy.applicationId=org.navgurukul.saral
+```
