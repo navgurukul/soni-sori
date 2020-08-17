@@ -1,33 +1,26 @@
 package org.navgurukul.learn.ui.learn
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.navgurukul.learn.courses.repository.CoursesRepositoryImpl
+import org.navgurukul.learn.datasource.LearnRepo
 
-class LearnViewModel(private val repository: CoursesRepositoryImpl) : ViewModel() {
+class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
 
-    val courses = repository.allCourses
+    private var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    var showLoadingIndicator: LiveData<Boolean> = Transformations.map(isLoading) { isLoading.value }
 
-    fun fetchCourses() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.fetchCoursesFromApi()
-            }
-        }
+
+    val coursesData = learnRepo.courses
+
+    init {
+        fetchCourseData()
     }
 
-    class Factory(private val repository: CoursesRepositoryImpl) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LearnViewModel::class.java)) {
-                return LearnViewModel(repository) as T
-            }
-
-            throw IllegalArgumentException("LearnViewModel cannot be created")
+    private fun fetchCourseData() {
+        viewModelScope.launch {
+            isLoading.postValue(true)
+            learnRepo.getCourses()
+            isLoading.postValue(false)
         }
     }
 

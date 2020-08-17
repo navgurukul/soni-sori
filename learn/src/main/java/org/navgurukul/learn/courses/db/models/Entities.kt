@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.db.models
 
 import androidx.room.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import com.google.gson.annotations.SerializedName
 
 // This class all model classes which represent our DB entities.
 
@@ -10,22 +11,28 @@ import org.navgurukul.learn.courses.db.typeadapters.Converters
 data class Course(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
+    @SerializedName("id")
     val id: String,
 
     @ColumnInfo(name = "name")
+    @SerializedName("name")
     val name: String,
 
     @ColumnInfo(name = "type")
-    val type: String,
+    @SerializedName("type")
+    val type: String?,
 
-    @ColumnInfo(name = "logo_url")
-    val logoUrl: String,
+    @ColumnInfo(name = "logo")
+    @SerializedName("logo")
+    val logoUrl: String?,
 
-    @ColumnInfo(name = "description")
-    val description: String,
+    @ColumnInfo(name = "short_description")
+    @SerializedName("short_description")
+    val description: String?,
 
     @ColumnInfo(name = "sequence_number")
-    val sequence: String
+    @SerializedName("sequence_num")
+    val sequence: String?
 )
 
 

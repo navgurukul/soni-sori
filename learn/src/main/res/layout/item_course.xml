@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="course"
+            type="org.navgurukul.learn.courses.db.models.Course" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        style="@style/course_item_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/componentStatus"
+                layout="@layout/component_course_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true" />
+
+            <ImageView
+                android:id="@+id/ivSequence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_learn"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvCourseTitle"
+                style="@style/text_view_course_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/componentStatus"
+                android:layout_toStartOf="@+id/ivArrow"
+                android:layout_toEndOf="@+id/ivSequence"
+                android:text="@{course.name}"
+                tools:text="Introduction To Python" />
+
+            <TextView
+                android:id="@+id/tvCourseDescription"
+                style="@style/text_view_course_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvCourseTitle"
+                android:layout_toStartOf="@+id/ivArrow"
+                android:layout_toEndOf="@+id/ivSequence"
+                android:text="@{course.description}"
+                tools:text="Study all the basics of python" />
+
+            <ImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

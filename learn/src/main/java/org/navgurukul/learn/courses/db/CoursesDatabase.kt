@@ -38,25 +38,4 @@ abstract class CoursesDatabase : RoomDatabase() {
     // DAOs for course and exercise
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
-
-    // Singleton for returning Room DB Instance
-    companion object {
-        @Volatile
-        private var INSTANCE: CoursesDatabase? = null
-
-        fun getDatabase(context: Context): CoursesDatabase {
-            return synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        CoursesDatabase::class.java,
-                        "course.db"
-                    ).build()
-                }
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
 }
