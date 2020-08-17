@@ -1,8 +1,10 @@
-package org.navgurukul.learn.courses.network
+package org.navgurukul.learn.courses.network.retrofit
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
+import org.navgurukul.learn.courses.network.CoursesResponseContainer
+import org.navgurukul.learn.courses.network.ExerciseResponseContainer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -29,5 +31,6 @@ object RetrofitClient {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    val client = retrofit.create(SaralCoursesApi::class.java)
+    val client = retrofit.create(
+        SaralCoursesApi::class.java)
 }
