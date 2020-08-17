@@ -8,7 +8,7 @@ class RoomDataProvider(private val coursesDatabase: CoursesDatabase) : LocalData
     private val courseDao = coursesDatabase.courseDao()
 
     override suspend fun fetchAvailableCourses(): List<Course> {
-        
+        TODO("Not yet implemented")
     }
 
     override suspend fun saveAvailableCourses(courses: List<Course>) {
