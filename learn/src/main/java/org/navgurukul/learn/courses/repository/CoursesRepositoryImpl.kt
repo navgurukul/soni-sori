@@ -2,9 +2,8 @@ package org.navgurukul.learn.courses.repository
 
 import androidx.lifecycle.LiveData
 import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.network.NetworkDataProvider
-
 
 
 class CoursesRepositoryImpl(
@@ -16,7 +15,7 @@ class CoursesRepositoryImpl(
 
     val allCourses = coursesDao.getAllCourses()
 
-    fun getExerciseForCourse(courseId: String): LiveData<List<Course>> {
+    fun getExerciseForCourse(courseId: String): LiveData<List<Exercise>> {
         return exerciseDao.getAllExercisesForCourse(courseId)
     }
 

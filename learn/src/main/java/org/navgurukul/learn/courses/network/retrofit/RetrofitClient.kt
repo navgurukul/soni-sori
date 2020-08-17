@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-const val BASE_URL = "https://saral.navgurukul.org/"
+const val BASE_URL = "http://saral.navgurukul.org/"
 
 interface SaralCoursesApi {
     @GET("/api/courses")
@@ -31,6 +31,5 @@ object RetrofitClient {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    val client = retrofit.create(
-        SaralCoursesApi::class.java)
+    val client = retrofit.create(SaralCoursesApi::class.java)
 }

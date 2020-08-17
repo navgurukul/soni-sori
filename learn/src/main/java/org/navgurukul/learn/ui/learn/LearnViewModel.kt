@@ -29,7 +29,6 @@ class LearnViewModel(private val repository: CoursesRepositoryImpl) : ViewModel(
 
             throw IllegalArgumentException("LearnViewModel cannot be created")
         }
-
     }
 
 }

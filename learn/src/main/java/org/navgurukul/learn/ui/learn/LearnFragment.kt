@@ -2,10 +2,12 @@ package org.navgurukul.learn.ui.learn
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -26,7 +28,15 @@ class LearnFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_learn, container, false)
+        val view = inflater.inflate(R.layout.fragment_learn, container, false)
+        attachObservers()
+        return view
+    }
+
+    private fun attachObservers() {
+        learnViewModel.courses.observe(
+            viewLifecycleOwner,
+            Observer { courses -> Log.d("Tag##", "${courses.size}") })
     }
 
     override fun onAttach(context: Context) {
@@ -41,5 +51,6 @@ class LearnFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        learnViewModel.fetchCourses()
     }
 }

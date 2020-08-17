@@ -1,9 +1,7 @@
 package org.navgurukul.learn.courses.db.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import org.navgurukul.learn.courses.db.typeadapters.Converters
 
 // This class all model classes which represent our DB entities.
 
@@ -72,6 +70,7 @@ data class Exercise(
     @ColumnInfo(name = "submission_type")
     val submissionType: String, // todo Banty:  confirm on the type of this field
 
+    @TypeConverters(Converters::class)
     @ColumnInfo(name = "child_exercises")
     val childExercises: List<Exercise>
 )
