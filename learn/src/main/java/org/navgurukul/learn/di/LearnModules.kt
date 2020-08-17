@@ -2,7 +2,6 @@ package org.navgurukul.learn.di
 
 import android.app.Application
 import androidx.room.Room
-import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -14,7 +13,7 @@ import org.navgurukul.learn.courses.db.CourseDao
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.ExerciseDao
 import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.datasource.LearnRepo
+import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -89,7 +88,11 @@ val repositoryModule = module {
         courseDao: CourseDao,
         exerciseDao: ExerciseDao
     ): LearnRepo {
-        return LearnRepo(api, courseDao, exerciseDao)
+        return LearnRepo(
+            api,
+            courseDao,
+            exerciseDao
+        )
     }
 
     single { provideLearnRepository(get(), get(), get()) }

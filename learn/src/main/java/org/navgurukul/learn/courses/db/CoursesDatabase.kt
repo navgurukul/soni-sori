@@ -1,6 +1,5 @@
 package org.navgurukul.learn.courses.db
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.navgurukul.learn.courses.db.models.Course
@@ -14,11 +13,11 @@ interface CourseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(course: List<Course>)
 
-    @Query("select * from saral_courses")
-    fun getAllCourses(): LiveData<List<Course>>
-
     @Query("select * from saral_courses where id= :id")
     fun course(id: String): LiveData<Course>
+
+    @Query("select * from saral_courses")
+    fun getAllCoursesDirect(): List<Course>?
 }
 
 @Dao
