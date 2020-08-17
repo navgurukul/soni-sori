@@ -1,18 +1,26 @@
 package org.navgurukul.learn.courses.network.retrofit
 
-import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.repository.CoursesDataCallback
-import org.navgurukul.learn.courses.repository.DataRepository
+import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.network.NetworkDataRepository
 
-class NetworkDataProvider: DataRepository<Course> {
-    private val retrofit: RetrofitClient by inject()
-
-    override fun fetchData(callback: CoursesDataCallback<Course>) {
-
+class RetrofitDataProvider : NetworkDataRepository {
+    override suspend fun fetchAvailableCourses(): List<Course> {
+        val courses = RetrofitClient.client.getCourses().await()
+        return courses.availableCourses
     }
 
-    override fun saveCourses(courses: List<Course>) {
-        // NO OP: Not saving anything into remote directory
+    override suspend fun saveAvailableCourses(courses: List<Course>) {
+        // NO OP
     }
+
+    override suspend fun getExerciseForCourse(courseId: String): List<Exercise> {
+        val exercises = RetrofitClient.client.getExercises(courseId).await()
+        return exercises.data
+    }
+
+    override suspend fun saveExercise(exercises: List<Exercise>) {
+        // NO OP
+    }
+
 }

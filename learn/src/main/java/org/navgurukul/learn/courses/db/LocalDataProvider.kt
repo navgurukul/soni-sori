@@ -1,4 +1,5 @@
 package org.navgurukul.learn.courses.db
 
-interface LocalDataProvider {
-}
+import org.navgurukul.learn.courses.repository.DataRepository
+
+interface LocalDataProvider: DataRepository

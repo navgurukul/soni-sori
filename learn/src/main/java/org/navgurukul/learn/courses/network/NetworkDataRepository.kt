@@ -1,4 +1,5 @@
 package org.navgurukul.learn.courses.network
 
-interface NetworkDataRepository {
-}
+import org.navgurukul.learn.courses.repository.DataRepository
+
+interface NetworkDataRepository : DataRepository

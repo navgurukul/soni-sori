@@ -17,7 +17,7 @@ interface SaralCoursesApi {
     fun getCourses(): Deferred<CoursesResponseContainer>
 
     @GET("/api/courses/{course_id}/exercises")
-    fun getExercises(@Path("course_id") course_id: String): Deferred<List<ExerciseResponseContainer>>
+    fun getExercises(@Path("course_id") course_id: String): Deferred<ExerciseResponseContainer>
 }
 
 // we can add interceptors here for logging etc
