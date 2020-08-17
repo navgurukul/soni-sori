@@ -1,13 +1,35 @@
 package org.navgurukul.learn.ui.learn
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.navgurukul.learn.courses.repository.CoursesRepositoryImpl
 
-class LearnViewModel : ViewModel() {
+class LearnViewModel(private val repository: CoursesRepositoryImpl) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Learn Fragment"
+    val courses = repository.allCourses
+
+    fun fetchCourses() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.fetchCoursesFromApi()
+            }
+        }
     }
-    val text: LiveData<String> = _text
+
+    class Factory(private val repository: CoursesRepositoryImpl) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(LearnViewModel::class.java)) {
+                return LearnViewModel(repository) as T
+            }
+
+            throw IllegalArgumentException("LearnViewModel cannot be created")
+        }
+
+    }
+
 }

@@ -2,25 +2,17 @@ package org.navgurukul.learn.courses.network.retrofit
 
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.network.NetworkDataRepository
+import org.navgurukul.learn.courses.network.NetworkDataProvider
 
-class RetrofitDataProvider : NetworkDataRepository {
-    override suspend fun fetchAvailableCourses(): List<Course> {
-        val courses = RetrofitClient.client.getCourses().await()
+class RetrofitDataProvider(private val apiClient: SaralCoursesApi) : NetworkDataProvider {
+
+    override suspend fun fetchCourses(): List<Course> {
+        val courses = apiClient.getCourses().await()
         return courses.availableCourses
     }
 
-    override suspend fun saveAvailableCourses(courses: List<Course>) {
-        // NO OP
-    }
-
-    override suspend fun getExerciseForCourse(courseId: String): List<Exercise> {
-        val exercises = RetrofitClient.client.getExercises(courseId).await()
+    override suspend fun fetchExerciseForCourse(courseId: String): List<Exercise> {
+        val exercises = apiClient.getExercises(courseId).await()
         return exercises.data
     }
-
-    override suspend fun saveExercise(exercises: List<Exercise>) {
-        // NO OP
-    }
-
 }
