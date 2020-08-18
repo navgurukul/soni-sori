@@ -4,26 +4,28 @@
 
     <RelativeLayout
         android:id="@+id/rlCourseHeader"
-        android:layout_width="wrap_content"
-        android:background="@color/colorWhite"
-        android:layout_height="@dimen/course_header_height">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_header_height"
+        android:background="@color/colorWhite">
 
         <TextView
-            android:id="@+id/spinnerSubject"
-            style="@style/spinner_course_category"
+            android:id="@+id/tvCategory"
+            style="@style/text_view_course_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:text="@string/category"
             android:layout_toStartOf="@+id/ivProfilePic"
-            android:text="@string/category"/>
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+             />
 
         <ImageView
             android:id="@+id/ivProfilePic"
             android:layout_width="@dimen/course_profile_pic"
             android:layout_height="@dimen/course_profile_pic"
-            android:padding="@dimen/dimen_10_dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_10_dp"
             android:src="@drawable/avatar"
             tools:ignore="ContentDescription" />
     </RelativeLayout>

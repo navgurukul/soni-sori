@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rlCourseDetailHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@color/colorGrey">
+
+        <TextView
+            android:id="@+id/tvCategory"
+            style="@style/text_view_course_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/progressBarCourseCompletion"
+            android:text="@{title}"
+            android:visibility="gone"
+            tools:text="Introduction to Python" />
+
+        <ProgressBar
+            android:id="@+id/progressBarCourseCompletion"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/width_course_progress"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/dimen_10_dp"
+            android:padding="@dimen/dimen_5_dp"
+            android:progress="55" />
+
+    </RelativeLayout>
+</layout>

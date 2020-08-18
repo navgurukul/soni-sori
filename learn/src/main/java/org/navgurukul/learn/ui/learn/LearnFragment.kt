@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.FragmentLearnBinding
-import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 
 class LearnFragment : Fragment() {
@@ -32,14 +31,15 @@ class LearnFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         viewModel.fetchCourseData().observe(viewLifecycleOwner, Observer {
-            if (null!=it && it.isNotEmpty())
+            if (null != it && it.isNotEmpty())
                 mCourseAdapter.submitList(it)
         })
     }
 
     private fun initRecyclerView() {
         mCourseAdapter = CourseAdapter {
-            toast("----" + it.first + "----")
+            CourseDetailActivity.start(requireContext(), it.first.id,
+                it.first.name)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
