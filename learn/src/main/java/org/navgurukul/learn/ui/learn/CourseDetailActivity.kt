@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
-import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.common.toolbarColor
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 
@@ -33,8 +34,7 @@ class CourseDetailActivity : AppCompatActivity() {
     private lateinit var courseId: String
     private lateinit var courseName: String
     private lateinit var mBinding: ActivityCourseDetailBinding
-    private var isShow = true
-    private var scrollRange = -1
+    private var contentVisible = false
     private lateinit var mAdapter: CourseExerciseAdapter
     private val viewModel: LearnViewModel by viewModel()
 
@@ -70,7 +70,8 @@ class CourseDetailActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         mAdapter = CourseExerciseAdapter {
-            toast("Hello...." + it.first)
+            if (!it.first.slug.isNullOrBlank())
+                fetchMarkDownContent(it.first)
         }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -78,8 +79,10 @@ class CourseDetailActivity : AppCompatActivity() {
         mBinding.contentCourseDetail.recyclerviewCourseDetail.adapter = mAdapter
     }
 
+
     private fun fetchData() {
         viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
+            mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
                 mBinding.contentCourseDetail.progressBar.visibility = View.GONE
                 mAdapter.submitList(it)
@@ -87,9 +90,44 @@ class CourseDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun fetchMarkDownContent(first: Exercise) {
+        viewModel.fetchExerciseSlug(courseId, first.slug!!).observe(this, Observer {
+            mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
+            if (null != it && it.isNotEmpty() && null != it.first().content) {
+                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+                showMarkDownContent(it.first().content!!)
+            }
+        })
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)
-            finish()
+            finishTheActivity()
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onBackPressed() {
+        finishTheActivity()
+    }
+
+    private fun showMarkDownContent(first: String) {
+        contentVisible = true
+        mBinding.contentCourseDetail.rlRecyclerView.visibility = View.GONE
+        mBinding.contentCourseDetail.markDownContent.visibility = View.VISIBLE
+        mBinding.contentCourseDetail.markDownContent.apply {
+            this.addStyleSheet(Github())
+            this.loadMarkdown(first)
+        }
+    }
+
+    private fun finishTheActivity() {
+        if (contentVisible) {
+            contentVisible = false
+            mBinding.contentCourseDetail.rlRecyclerView.visibility = View.VISIBLE
+            mBinding.contentCourseDetail.markDownContent.visibility = View.GONE
+        } else
+            finish()
+    }
+
+
 }

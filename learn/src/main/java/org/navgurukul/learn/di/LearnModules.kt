@@ -12,6 +12,7 @@ import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.CourseDao
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.ExerciseDao
+import org.navgurukul.learn.courses.db.ExerciseSlugDao
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
@@ -77,26 +78,37 @@ val databaseModule = module {
         return database.exerciseDao()
     }
 
+    fun provideExerciseSlugDao(database: CoursesDatabase): ExerciseSlugDao {
+        return database.exerciseSlugDao()
+    }
+
     single { provideDatabase(androidApplication()) }
     single { provideCourseDao(get()) }
     single { provideExerciseDao(get()) }
+    single { provideExerciseSlugDao(get()) }
 }
 
 val repositoryModule = module {
     fun provideLearnRepository(
         api: SaralCoursesApi,
+        application: Application,
         courseDao: CourseDao,
-        exerciseDao: ExerciseDao
+        exerciseDao: ExerciseDao,
+        exerciseSlugDao: ExerciseSlugDao
     ): LearnRepo {
         return LearnRepo(
             api,
+            application,
             courseDao,
-            exerciseDao
+            exerciseDao,
+            exerciseSlugDao
         )
     }
 
-    single { provideLearnRepository(get(), get(), get()) }
+    single { provideLearnRepository(get(), androidApplication(), get(), get(), get()) }
 }
 
-val learnModules = arrayListOf(viewModelModule, apiModule, netModule, databaseModule,
-    repositoryModule)
+val learnModules = arrayListOf(
+    viewModelModule, apiModule, netModule, databaseModule,
+    repositoryModule
+)

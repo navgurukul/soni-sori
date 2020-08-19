@@ -28,24 +28,39 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/course_content_header"
-                android:text="@string/course_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerviewCourseDetail"
+            <RelativeLayout
+                android:id="@+id/rlRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5_dp"
-                android:layout_marginBottom="@dimen/navigation_bar_height"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_course_exercise" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/course_content_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewCourseDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5_dp"
+                    android:layout_marginBottom="@dimen/navigation_bar_height"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_course_exercise" />
+            </RelativeLayout>
+
+            <br.tiagohm.markdownview.MarkdownView
+                android:layout_margin="@dimen/dimen_10_dp"
+                android:padding="@dimen/dimen_10_dp"
+                android:visibility="gone"
+                android:id="@+id/markDownContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:escapeHtml="false" />
 
             <include
-                layout="@layout/component_progress_bar"
                 android:id="@+id/progressBar"
+                layout="@layout/component_progress_bar"
                 android:visibility="@{viewmodel.showLoadingIndicator ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

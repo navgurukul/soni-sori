@@ -18,7 +18,10 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
     }
 
     fun fetchCourseExerciseData(courseId: String) = liveData {
-        isLoading.postValue(true)
         emitSource(learnRepo.getCoursesExerciseData(courseId))
+    }
+
+    fun fetchExerciseSlug(courseId: String,slug:String) = liveData {
+        emitSource(learnRepo.getExerciseSlugData(courseId,slug))
     }
 }

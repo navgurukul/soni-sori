@@ -37,6 +37,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
+    //markDown lib
+    implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+    implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
+
     // Lifecycle and Viewmodels
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_extensions_verision"

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.ExerciseSlug
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
 const val DB_VERSION = 1
@@ -32,12 +33,22 @@ interface ExerciseDao {
     fun getAllExercisesForCourseDirect(courseId: String): List<Exercise>
 }
 
+@Dao
+interface ExerciseSlugDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertExerciseSlug(course: ExerciseSlug)
 
-@Database(entities = [Course::class, Exercise::class], version = DB_VERSION, exportSchema = false)
+    @Query("select * from exercise_slug where slug = :slug")
+    fun getSlugForExercisesDirect(slug: String): List<ExerciseSlug>
+}
+
+
+@Database(entities = [Course::class, Exercise::class,ExerciseSlug::class], version = DB_VERSION, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class CoursesDatabase : RoomDatabase() {
 
     // DAOs for course and exercise
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
+    abstract fun exerciseSlugDao(): ExerciseSlugDao
 }
