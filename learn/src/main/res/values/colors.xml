@@ -3,6 +3,7 @@
     <color name="yellow">#F7CA18</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorRed">#D63447</color>
     <color name="colorGrey">#E5E5E5</color>
 
 </resources>

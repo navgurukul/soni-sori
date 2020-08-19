@@ -31,8 +31,10 @@ class LearnFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         viewModel.fetchCourseData().observe(viewLifecycleOwner, Observer {
-            if (null != it && it.isNotEmpty())
+            if (null != it && it.isNotEmpty()) {
+                viewModel.hideLoader()
                 mCourseAdapter.submitList(it)
+            }
         })
     }
 

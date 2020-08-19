@@ -4,12 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.appbar.AppBarLayout
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
+import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.common.toolbarColor
+import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 
 class CourseDetailActivity : AppCompatActivity() {
 
@@ -30,6 +35,8 @@ class CourseDetailActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityCourseDetailBinding
     private var isShow = true
     private var scrollRange = -1
+    private lateinit var mAdapter: CourseExerciseAdapter
+    private val viewModel: LearnViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +44,15 @@ class CourseDetailActivity : AppCompatActivity() {
         parseIntentData()
         initToolBar()
         initExpandableToolBar()
+        initRecyclerView()
+        fetchData()
     }
+
 
     private fun parseIntentData() {
         if (intent.hasExtra(ARG_KEY_COURSE_ID) && intent.hasExtra(ARG_KEY_COURSE_NAME)) {
             courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
             courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
-            mBinding.courseDetailHeader.title = courseName
         }
     }
 
@@ -51,27 +60,32 @@ class CourseDetailActivity : AppCompatActivity() {
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
     }
 
     private fun initExpandableToolBar() {
         mBinding.toolbarLayout.setExpandedTitleColor(toolbarColor())
         mBinding.toolbarLayout.setCollapsedTitleTextColor(toolbarColor())
         mBinding.toolbarLayout.title = courseName
-
-      /*  mBinding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-            if (scrollRange == -1)
-                scrollRange = appBarLayout?.totalScrollRange!!
-            if (scrollRange + verticalOffset == 0) {
-                mBinding.toolbarLayout.title = courseName
-                isShow = true
-            } else if (isShow) {
-                mBinding.toolbarLayout.title = " "
-                isShow = false
-            }
-        })*/
     }
 
+    private fun initRecyclerView() {
+        mAdapter = CourseExerciseAdapter {
+            toast("Hello...." + it.first)
+        }
+        val layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mBinding.contentCourseDetail.recyclerviewCourseDetail.layoutManager = layoutManager
+        mBinding.contentCourseDetail.recyclerviewCourseDetail.adapter = mAdapter
+    }
+
+    private fun fetchData() {
+        viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
+            if (null != it && it.isNotEmpty()) {
+                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+                mAdapter.submitList(it)
+            }
+        })
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)

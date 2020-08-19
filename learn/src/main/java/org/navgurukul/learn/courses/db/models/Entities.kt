@@ -54,30 +54,37 @@ data class Exercise(
     val id: String,
 
     @ColumnInfo(name = "course_id")
-    val courseId: String,
+    var courseId: String?,
 
     @ColumnInfo(name = "parent_exercise_id")
-    val parentExerciseId: Int,
+    @SerializedName("parent_exercise_id")
+    val parentExerciseId: Int?,
 
     @ColumnInfo(name = "name")
+    @SerializedName("name")
     val name: String,
 
     @ColumnInfo(name = "slug")
-    val slug: String,
+    @SerializedName("slug")
+    val slug: String?,
 
     @ColumnInfo(name = "sequence_num")
-    val sequenceNumber: Int,
+    @SerializedName("sequence_num")
+    val sequenceNumber: Int?,
 
     @ColumnInfo(name = "review_type")
-    val reviewType: String,
+    @SerializedName("review_type")
+    val reviewType: String?,
 
     @ColumnInfo(name = "github_link")
-    val githubLink: String,
+    @SerializedName("github_link")
+    val githubLink: String?,
 
     @ColumnInfo(name = "submission_type")
-    val submissionType: String, // todo Banty:  confirm on the type of this field
+    @SerializedName("submission_type")
+    val submissionType: String?, // todo Banty:  confirm on the type of this field
 
     @TypeConverters(Converters::class)
     @ColumnInfo(name = "child_exercises")
-    val childExercises: List<Exercise>
+    val childExercises: List<Exercise>?
 )

@@ -31,20 +31,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@string/large_text" />
+                style="@style/course_content_header"
+                android:text="@string/course_content" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerviewCourse"
-                android:layout_width="wrap_content"
+                android:id="@+id/recyclerviewCourseDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5_dp"
                 android:layout_marginBottom="@dimen/navigation_bar_height"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_course_excercise" />
+                tools:listitem="@layout/item_course_exercise" />
 
             <include
                 layout="@layout/component_progress_bar"
+                android:id="@+id/progressBar"
                 android:visibility="@{viewmodel.showLoadingIndicator ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

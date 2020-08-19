@@ -13,8 +13,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
-            android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
@@ -23,7 +22,6 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-
                 app:toolbarId="@+id/toolbar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -32,16 +30,14 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-                <include
-                    android:id="@+id/courseDetailHeader"
-                    layout="@layout/component_course_detail_header" />
-
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:titleTextAppearance="@style/TextAppearance.AppCompat.Small" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_course_detail" />
+        <include
+            android:id="@+id/contentCourseDetail"
+            layout="@layout/content_course_detail" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

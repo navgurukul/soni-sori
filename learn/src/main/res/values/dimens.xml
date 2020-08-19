@@ -11,4 +11,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="width_course_progress">200dp</dimen>
     <dimen name="navigation_bar_height">50dp</dimen>
+    <dimen name="dimen_height_progress">30dp</dimen>
 </resources>

@@ -27,6 +27,9 @@ interface ExerciseDao {
 
     @Query("select * from course_exercise where course_id = :courseId")
     fun getAllExercisesForCourse(courseId: String): LiveData<List<Exercise>>
+
+    @Query("select * from course_exercise where course_id = :courseId")
+    fun getAllExercisesForCourseDirect(courseId: String): List<Exercise>
 }
 
 
