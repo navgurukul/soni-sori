@@ -22,6 +22,7 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:maxLines="3"
                 app:toolbarId="@+id/toolbar">
 
                 <androidx.appcompat.widget.Toolbar
