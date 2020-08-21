@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
 import org.navgurukul.learn.ui.common.toolbarColor
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+
 
 class CourseDetailActivity : AppCompatActivity() {
 
@@ -33,6 +35,7 @@ class CourseDetailActivity : AppCompatActivity() {
 
     private lateinit var courseId: String
     private lateinit var courseName: String
+    private var menuItem: MenuItem? = null
     private lateinit var mBinding: ActivityCourseDetailBinding
     private var contentVisible = false
     private lateinit var mAdapter: CourseExerciseAdapter
@@ -66,6 +69,13 @@ class CourseDetailActivity : AppCompatActivity() {
         mBinding.toolbarLayout.setExpandedTitleColor(toolbarColor())
         mBinding.toolbarLayout.setCollapsedTitleTextColor(toolbarColor())
         mBinding.toolbarLayout.title = courseName
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_course_detail, menu)
+        menuItem = menu?.getItem(0)
+        return true
     }
 
     private fun initRecyclerView() {

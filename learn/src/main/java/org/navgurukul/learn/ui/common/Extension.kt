@@ -1,14 +1,12 @@
 package org.navgurukul.learn.ui.common
 
 import android.app.Activity
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import com.amulyakhare.textdrawable.TextDrawable
 import org.navgurukul.learn.R
 
 
@@ -27,4 +25,18 @@ fun Activity.toolbarColor(): Int {
     )
 }
 
-
+@BindingAdapter("imageUrl")
+fun setImageUrl(imageView: ImageView, url: Int?) {
+    if (url == null) {
+        imageView.setImageDrawable(ContextCompat.getDrawable(imageView.context,R.drawable.ic_learn))
+    } else {
+        val drawable = TextDrawable.builder()
+            .beginConfig()
+            .fontSize(14).toUpperCase().textColor(ContextCompat.getColor(imageView.context,R.color.colorNumber))
+            .width(30)
+            .height(30)
+            .endConfig()
+            .buildRound(url.toString(),ContextCompat.getColor(imageView.context,R.color.colorNumberBackground))
+        imageView.setImageDrawable(drawable)
+    }
+}

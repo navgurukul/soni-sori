@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tvCourseDetail"
                     style="@style/course_content_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
                     android:id="@+id/recyclerviewCourseDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCourseDetail"
                     android:layout_marginTop="@dimen/dimen_5_dp"
                     android:layout_marginBottom="@dimen/navigation_bar_height"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -50,12 +52,12 @@
             </RelativeLayout>
 
             <br.tiagohm.markdownview.MarkdownView
-                android:layout_margin="@dimen/dimen_10_dp"
-                android:padding="@dimen/dimen_10_dp"
-                android:visibility="gone"
                 android:id="@+id/markDownContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_10_dp"
+                android:padding="@dimen/dimen_10_dp"
+                android:visibility="gone"
                 app:escapeHtml="false" />
 
             <include

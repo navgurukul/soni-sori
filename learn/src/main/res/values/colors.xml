@@ -5,5 +5,8 @@
     <color name="colorBlack">#000000</color>
     <color name="colorRed">#D63447</color>
     <color name="colorGrey">#E5E5E5</color>
+    <color name="colorStatus">#fcf4c4</color>
+    <color name="colorNumberBackground">#FFF3F3</color>
+    <color name="colorNumber">#D63447</color>
 
 </resources>

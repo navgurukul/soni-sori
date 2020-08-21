@@ -11,13 +11,14 @@
         <TextView
             android:id="@+id/tvCategory"
             style="@style/text_view_course_category"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/category"
-            android:layout_toStartOf="@+id/ivProfilePic"
-            android:drawableEnd="@drawable/ic_arrow_drop_down"
-             />
+            android:drawableEnd="@drawable/ic_down"
+            android:drawablePadding="@dimen/dimen_20_dp"
+            android:text="@string/category" />
+
 
         <ImageView
             android:id="@+id/ivProfilePic"

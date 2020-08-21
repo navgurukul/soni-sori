@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -27,10 +28,12 @@
 
             <ImageView
                 android:id="@+id/ivSequence"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen_30_dp"
+                android:layout_height="@dimen/dimen_30_dp"
+                android:padding="@dimen/dimen_5_dp"
+                android:layout_margin="@dimen/dimen_5_dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_learn"
+                app:imageUrl="@{course.number}"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -57,11 +60,12 @@
 
             <ImageView
                 android:id="@+id/ivArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen_20_dp"
+                android:layout_height="@dimen/dimen_20_dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_arrow_right"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:src="@drawable/ic_right"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

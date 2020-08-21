@@ -39,7 +39,11 @@ class LearnRepo(
             }
 
             override suspend fun loadFromDb(): List<Course>? {
-                return courseDao.getAllCoursesDirect()
+                val data =  courseDao.getAllCoursesDirect()
+                data?.forEachIndexed { index, course ->
+                    course.number = index+1
+                }
+                return  data
             }
         }.asLiveData()
     }

@@ -32,7 +32,9 @@ data class Course(
 
     @ColumnInfo(name = "sequence_number")
     @SerializedName("sequence_num")
-    val sequence: String?
+    val sequence: String?,
+
+    var number: Int? = 0
 )
 
 
