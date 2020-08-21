@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
 import org.navgurukul.learn.ui.common.toolbarColor
@@ -73,7 +74,12 @@ class CourseDetailActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank())
-                CourseSlugDetailActivity.start(this, courseId, it.first.slug!!, it.first.name)
+                CourseSlugDetailActivity.start(
+                    this,
+                    CurrentStudy(
+                        courseId, courseName, it.first.slug!!, it.first.name, it.first.id
+                    )
+                )
         }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

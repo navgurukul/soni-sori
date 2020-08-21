@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 
@@ -40,12 +41,26 @@ class LearnFragment : Fragment() {
 
     private fun initRecyclerView() {
         mCourseAdapter = CourseAdapter {
-            CourseDetailActivity.start(requireContext(), it.first.id,
-                it.first.name)
+            startDesiredActivity(it.first)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerviewCourse.layoutManager = layoutManager
         mBinding.recyclerviewCourse.adapter = mCourseAdapter
+    }
+
+    private fun startDesiredActivity(it: Course) {
+        viewModel.fetchCurrentStudyForCourse(it.id) { itt ->
+            if (itt.isNotEmpty()) {
+                val currentStudy = itt.first()
+                CourseSlugDetailActivity.start(
+                    requireContext(),
+                    currentStudy
+                )
+            } else {
+                CourseDetailActivity.start(requireContext(), it.id, it.name)
+            }
+        }
+
     }
 }

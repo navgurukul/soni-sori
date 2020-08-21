@@ -9,10 +9,7 @@ import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.navgurukul.learn.courses.db.CourseDao
-import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.ExerciseDao
-import org.navgurukul.learn.courses.db.ExerciseSlugDao
+import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
@@ -82,10 +79,15 @@ val databaseModule = module {
         return database.exerciseSlugDao()
     }
 
+    fun provideCurrentStudyDao(database: CoursesDatabase): CurrentStudyDao {
+        return database.currentStudyDao()
+    }
+
     single { provideDatabase(androidApplication()) }
     single { provideCourseDao(get()) }
     single { provideExerciseDao(get()) }
     single { provideExerciseSlugDao(get()) }
+    single { provideCurrentStudyDao(get()) }
 }
 
 val repositoryModule = module {
@@ -94,18 +96,20 @@ val repositoryModule = module {
         application: Application,
         courseDao: CourseDao,
         exerciseDao: ExerciseDao,
-        exerciseSlugDao: ExerciseSlugDao
+        exerciseSlugDao: ExerciseSlugDao,
+        currentStudyDao: CurrentStudyDao
     ): LearnRepo {
         return LearnRepo(
             api,
             application,
             courseDao,
             exerciseDao,
-            exerciseSlugDao
+            exerciseSlugDao,
+            currentStudyDao
         )
     }
 
-    single { provideLearnRepository(get(), androidApplication(), get(), get(), get()) }
+    single { provideLearnRepository(get(), androidApplication(), get(), get(), get(),get()) }
 }
 
 val learnModules = arrayListOf(

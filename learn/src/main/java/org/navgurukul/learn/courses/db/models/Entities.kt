@@ -3,6 +3,7 @@ package org.navgurukul.learn.courses.db.models
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import java.io.Serializable
 
 // This class all model classes which represent our DB entities.
 
@@ -120,3 +121,13 @@ data class ExerciseSlug(
     @SerializedName("submission_type")
     var submissionType: String? = null // null
 )
+
+@Entity(tableName = "user_current_study")
+data class CurrentStudy(
+    @PrimaryKey(autoGenerate = false)
+    var courseId: String,
+    var courseName: String,
+    var exerciseSlugName: String,
+    var exerciseName: String,
+    var exerciseId: String
+) : Serializable

@@ -3,6 +3,7 @@ package org.navgurukul.learn.courses.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.ExerciseSlug
 import org.navgurukul.learn.courses.db.typeadapters.Converters
@@ -42,8 +43,21 @@ interface ExerciseSlugDao {
     fun getSlugForExercisesDirect(slug: String): List<ExerciseSlug>
 }
 
+@Dao
+interface CurrentStudyDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveCourseExerciseCurrent(course: CurrentStudy)
 
-@Database(entities = [Course::class, Exercise::class,ExerciseSlug::class], version = DB_VERSION, exportSchema = false)
+    @Query("select * from user_current_study where courseId = :courseId")
+    fun getCurrentStudyForCourse(courseId: String): List<CurrentStudy>
+}
+
+
+@Database(
+    entities = [Course::class, Exercise::class, ExerciseSlug::class, CurrentStudy::class],
+    version = DB_VERSION,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class CoursesDatabase : RoomDatabase() {
 
@@ -51,4 +65,5 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun exerciseSlugDao(): ExerciseSlugDao
+    abstract fun currentStudyDao(): CurrentStudyDao
 }

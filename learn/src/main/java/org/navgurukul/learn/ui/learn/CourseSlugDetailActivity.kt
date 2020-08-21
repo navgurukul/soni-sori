@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 
@@ -18,22 +19,18 @@ import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 class CourseSlugDetailActivity : AppCompatActivity() {
 
     companion object {
-        private const val ARG_KEY_COURSE_ID = "arg_course_id"
-        private const val ARG_KEY_SLUG_NAME = "arg_slug_name"
-        private const val ARG_KEY_EXERCISE_NAME = "arg_exercise_name"
-
-        fun start(context: Context, courseId: String, slugName: String, exerciseName: String) {
+        private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
+        fun start(
+            context: Context,
+            currentStudy: CurrentStudy
+        ) {
             val intent = Intent(context, CourseSlugDetailActivity::class.java)
-            intent.putExtra(ARG_KEY_COURSE_ID, courseId)
-            intent.putExtra(ARG_KEY_SLUG_NAME, slugName)
-            intent.putExtra(ARG_KEY_EXERCISE_NAME, exerciseName)
+            intent.putExtra(ARG_KEY_CURRENT_STUDY, currentStudy)
             context.startActivity(intent)
         }
     }
 
-    private lateinit var courseId: String
-    private lateinit var slugName: String
-    private lateinit var exerciseName: String
+    private lateinit var currentStudy: CurrentStudy
     private lateinit var mBinding: ActivityCourseSlugDetailBinding
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
@@ -43,10 +40,11 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
         parseIntentData()
-        mBinding.header.title = exerciseName
+        mBinding.header.title = currentStudy.exerciseName
         fetchMarkDownContent()
         initUIElement()
         initRecyclerView()
+        saveCourseExercise()
     }
 
 
@@ -84,31 +82,39 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
 
     private fun parseIntentData() {
-        if (intent.hasExtra(ARG_KEY_COURSE_ID) && intent.hasExtra(ARG_KEY_SLUG_NAME)) {
-            courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
-            slugName = intent.getStringExtra(ARG_KEY_SLUG_NAME)!!
-            exerciseName = intent.getStringExtra(ARG_KEY_EXERCISE_NAME)!!
+        if (intent.hasExtra(ARG_KEY_CURRENT_STUDY)) {
+            currentStudy = intent.getSerializableExtra(ARG_KEY_CURRENT_STUDY) as CurrentStudy
         }
     }
 
 
     private fun fetchMarkDownContent() {
-        viewModel.fetchExerciseSlug(courseId, slugName).observe(this, Observer {
-            mBinding.progressBar.visibility = View.VISIBLE
-            if (null != it && it.isNotEmpty() && null != it.first().content) {
-                mBinding.progressBar.visibility = View.GONE
-                mBinding.markDownContent.apply {
-                    this.addStyleSheet(Github())
-                    this.loadMarkdown(it.first().content)
+        viewModel.fetchExerciseSlug(currentStudy.courseId, currentStudy.exerciseSlugName)
+            .observe(this, Observer {
+                mBinding.progressBar.visibility = View.VISIBLE
+                if (null != it && it.isNotEmpty() && null != it.first().content) {
+                    mBinding.progressBar.visibility = View.GONE
+                    mBinding.markDownContent.apply {
+                        this.addStyleSheet(Github())
+                        this.loadMarkdown(it.first().content)
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun initRecyclerView() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank()) {
-                start(this, courseId, it.first.slug!!, it.first.name)
+                start(
+                    this,
+                    CurrentStudy(
+                        courseId = currentStudy.courseId,
+                        courseName = currentStudy.courseName,
+                        exerciseSlugName = it.first.slug!!,
+                        exerciseName = it.first.name,
+                        exerciseId = it.first.id
+                    )
+                )
                 finish()
             }
         }
@@ -116,8 +122,30 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
         mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
-        mAdapter.submitList(CourseDetailActivity.masterData)
+        if (CourseDetailActivity.masterData.isEmpty()) {
+            fetchAndSetMasterData()
+        } else
+            mAdapter.submitList(CourseDetailActivity.masterData)
+    }
+
+    private fun fetchAndSetMasterData() {
+        viewModel.fetchCourseExerciseData(currentStudy.courseId).observe(this, Observer {
+            mBinding.progressBar.visibility = View.VISIBLE
+            if (null != it && it.isNotEmpty()) {
+                mBinding.progressBar.visibility = View.GONE
+                CourseDetailActivity.masterData = it
+                mAdapter.submitList(CourseDetailActivity.masterData)
+            }
+        })
+    }
+
+    private fun saveCourseExercise() {
+        viewModel.saveCourseExerciseCurrent(currentStudy)
     }
 
 
+    override fun onBackPressed() {
+        CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
+        finish()
+    }
 }

@@ -1,12 +1,16 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Deferred
 import org.navgurukul.learn.courses.db.CourseDao
+import org.navgurukul.learn.courses.db.CurrentStudyDao
 import org.navgurukul.learn.courses.db.ExerciseDao
 import org.navgurukul.learn.courses.db.ExerciseSlugDao
 import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.ExerciseSlug
 import org.navgurukul.learn.courses.network.CoursesResponseContainer
@@ -20,7 +24,8 @@ class LearnRepo(
     private val application: Application,
     private val courseDao: CourseDao,
     private val exerciseDao: ExerciseDao,
-    private val exerciseSlugDao: ExerciseSlugDao
+    private val exerciseSlugDao: ExerciseSlugDao,
+    private val currentStudyDao: CurrentStudyDao
 ) {
 
     fun getCoursesData(): LiveData<List<Course>?> {
@@ -103,5 +108,33 @@ class LearnRepo(
                 return exerciseSlugDao.getSlugForExercisesDirect(slug)
             }
         }.asLiveData()
+    }
+
+    fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
+        Thread(Runnable {
+            currentStudyDao.saveCourseExerciseCurrent(currentStudy)
+        }).start()
+
+    }
+
+    fun fetchCurrentStudyForCourse(
+        courseId: String,
+        callback: (List<CurrentStudy>) -> Unit
+    ) {
+        Thread(Runnable {
+            val data = currentStudyDao.getCurrentStudyForCourse(courseId)
+            invokeOnMainThread(data, callback)
+
+        }).start()
+    }
+
+    private fun invokeOnMainThread(
+        data: List<CurrentStudy>,
+        callback: (List<CurrentStudy>) -> Unit
+    ) {
+        val handler = Handler(Looper.getMainLooper())
+        handler.post {
+            callback.invoke(data)
+        }
     }
 }
