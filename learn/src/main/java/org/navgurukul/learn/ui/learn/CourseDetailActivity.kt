@@ -3,14 +3,12 @@ package org.navgurukul.learn.ui.learn
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -31,13 +29,13 @@ class CourseDetailActivity : AppCompatActivity() {
             intent.putExtra(ARG_KEY_COURSE_NAME, courseName)
             context.startActivity(intent)
         }
+
+        var masterData: List<Exercise> = mutableListOf()
     }
 
     private lateinit var courseId: String
     private lateinit var courseName: String
-    private var menuItem: MenuItem? = null
     private lateinit var mBinding: ActivityCourseDetailBinding
-    private var contentVisible = false
     private lateinit var mAdapter: CourseExerciseAdapter
     private val viewModel: LearnViewModel by viewModel()
 
@@ -71,17 +69,11 @@ class CourseDetailActivity : AppCompatActivity() {
         mBinding.toolbarLayout.title = courseName
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_course_detail, menu)
-        menuItem = menu?.getItem(0)
-        return true
-    }
 
     private fun initRecyclerView() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank())
-                fetchMarkDownContent(it.first)
+                CourseSlugDetailActivity.start(this, courseId, it.first.slug!!, it.first.name)
         }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -95,49 +87,20 @@ class CourseDetailActivity : AppCompatActivity() {
             mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
                 mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+                masterData = it
                 mAdapter.submitList(it)
-            }
-        })
-    }
-
-    private fun fetchMarkDownContent(first: Exercise) {
-        viewModel.fetchExerciseSlug(courseId, first.slug!!).observe(this, Observer {
-            mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
-            if (null != it && it.isNotEmpty() && null != it.first().content) {
-                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
-                showMarkDownContent(it.first().content!!)
             }
         })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)
-            finishTheActivity()
+            finish()
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        finishTheActivity()
+    override fun onDestroy() {
+        super.onDestroy()
+        masterData = mutableListOf()
     }
-
-    private fun showMarkDownContent(first: String) {
-        contentVisible = true
-        mBinding.contentCourseDetail.rlRecyclerView.visibility = View.GONE
-        mBinding.contentCourseDetail.markDownContent.visibility = View.VISIBLE
-        mBinding.contentCourseDetail.markDownContent.apply {
-            this.addStyleSheet(Github())
-            this.loadMarkdown(first)
-        }
-    }
-
-    private fun finishTheActivity() {
-        if (contentVisible) {
-            contentVisible = false
-            mBinding.contentCourseDetail.rlRecyclerView.visibility = View.VISIBLE
-            mBinding.contentCourseDetail.markDownContent.visibility = View.GONE
-        } else
-            finish()
-    }
-
-
 }

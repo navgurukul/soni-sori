@@ -34,7 +34,7 @@ data class Course(
     @SerializedName("sequence_num")
     val sequence: String?,
 
-    var number: Int? = 0
+    var number: String? = "0"
 )
 
 
@@ -88,7 +88,9 @@ data class Exercise(
 
     @TypeConverters(Converters::class)
     @ColumnInfo(name = "child_exercises")
-    val childExercises: List<Exercise>?
+    val childExercises: List<Exercise>?,
+
+    var number: String? = "00"
 )
 
 @Entity(

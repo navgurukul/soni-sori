@@ -9,9 +9,6 @@
             name="viewmodel"
             type="org.navgurukul.learn.ui.learn.LearnViewModel" />
 
-        <variable
-            name="itemOnClick"
-            type="android.view.View.OnClickListener" />
 
         <import type="android.view.View" />
     </data>
@@ -26,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect"
             android:orientation="vertical">
 
             <RelativeLayout

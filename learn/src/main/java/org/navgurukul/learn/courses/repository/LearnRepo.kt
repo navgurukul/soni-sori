@@ -39,11 +39,11 @@ class LearnRepo(
             }
 
             override suspend fun loadFromDb(): List<Course>? {
-                val data =  courseDao.getAllCoursesDirect()
+                val data = courseDao.getAllCoursesDirect()
                 data?.forEachIndexed { index, course ->
-                    course.number = index+1
+                    course.number = (index + 1).toString()
                 }
-                return  data
+                return data
             }
         }.asLiveData()
     }
@@ -67,9 +67,21 @@ class LearnRepo(
             }
 
             override suspend fun loadFromDb(): List<Exercise>? {
-                return exerciseDao.getAllExercisesForCourseDirect(courseId)
+                val data = exerciseDao.getAllExercisesForCourseDirect(courseId)
+                parseData(data)
+                return data
             }
         }.asLiveData()
+    }
+
+    private fun parseData(data: List<Exercise>) {
+        data.forEachIndexed { index, exercise ->
+            var sequence = (index + 1).toString()
+            if (index + 1 < 10) {
+                sequence = "0" + (index + 1)
+            }
+            exercise.number = sequence
+        }
     }
 
     fun getExerciseSlugData(courseId: String, slug: String): LiveData<List<ExerciseSlug>?> {

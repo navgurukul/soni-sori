@@ -7,6 +7,7 @@
     <color name="colorGrey">#E5E5E5</color>
     <color name="colorStatus">#fcf4c4</color>
     <color name="colorNumberBackground">#FFF3F3</color>
+    <color name="exerciseBackground">#FFDCDC</color>
     <color name="colorNumber">#D63447</color>
 
 </resources>

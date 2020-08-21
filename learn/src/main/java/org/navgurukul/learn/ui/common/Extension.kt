@@ -26,7 +26,7 @@ fun Activity.toolbarColor(): Int {
 }
 
 @BindingAdapter("imageUrl")
-fun setImageUrl(imageView: ImageView, url: Int?) {
+fun setImageUrl(imageView: ImageView, url: String?) {
     if (url == null) {
         imageView.setImageDrawable(ContextCompat.getDrawable(imageView.context,R.drawable.ic_learn))
     } else {

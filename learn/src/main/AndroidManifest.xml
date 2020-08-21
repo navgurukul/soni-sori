@@ -19,6 +19,10 @@
         <activity
             android:name=".ui.learn.CourseDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity
+            android:name=".ui.learn.CourseSlugDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>
