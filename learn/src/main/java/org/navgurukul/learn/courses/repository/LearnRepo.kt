@@ -31,7 +31,7 @@ class LearnRepo(
 
             override fun shouldFetch(data: List<Course>?): Boolean {
                 //if network avail && shared pref
-                return Util.isConnected(application) && (data == null || data.isEmpty())
+                return Util.isOnline(application) && (data == null || data.isEmpty())
             }
 
             override suspend fun makeApiCallAsync(): Deferred<CoursesResponseContainer> {
@@ -60,7 +60,7 @@ class LearnRepo(
 
             override fun shouldFetch(data: List<Exercise>?): Boolean {
                 //if network avail && shared pref
-                return Util.isConnected(application) && (data == null || data.isEmpty())
+                return Util.isOnline(application) && (data == null || data.isEmpty())
             }
 
             override suspend fun makeApiCallAsync(): Deferred<ExerciseResponseContainer> {
@@ -94,7 +94,7 @@ class LearnRepo(
 
             override fun shouldFetch(data: List<ExerciseSlug>?): Boolean {
                 //if network avail && shared pref
-                return Util.isConnected(application) && (data == null || data.isEmpty())
+                return Util.isOnline(application) && (data == null || data.isEmpty())
             }
 
             override suspend fun makeApiCallAsync(): Deferred<ExerciseSlug> {
