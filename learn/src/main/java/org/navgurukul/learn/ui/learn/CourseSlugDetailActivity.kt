@@ -12,6 +12,7 @@ import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
+import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 
@@ -35,6 +36,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
+    private var isFromPreviousActivity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initUIElement() {
         mBinding.header.backButton.setOnClickListener {
-            finish()
+            moveToPreviousPage()
         }
         mBinding.header.ivOption.setOnClickListener {
             initOptionClickListener()
@@ -123,6 +125,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
         mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
         if (CourseDetailActivity.masterData.isEmpty()) {
+            isFromPreviousActivity = false
             fetchAndSetMasterData()
         } else
             mAdapter.submitList(CourseDetailActivity.masterData)
@@ -133,7 +136,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             mBinding.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
                 mBinding.progressBar.visibility = View.GONE
-                CourseDetailActivity.masterData = it
+                CourseDetailActivity.masterData = it as MutableList<Exercise>
                 mAdapter.submitList(CourseDetailActivity.masterData)
             }
         })
@@ -145,7 +148,12 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
+        moveToPreviousPage()
+    }
+
+    private fun moveToPreviousPage() {
+        if (!isFromPreviousActivity)
+            CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
         finish()
     }
 }

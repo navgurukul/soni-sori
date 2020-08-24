@@ -50,17 +50,11 @@ class LearnFragment : Fragment() {
     }
 
     private fun startDesiredActivity(it: Course) {
-        viewModel.fetchCurrentStudyForCourse(it.id) { itt ->
-            if (itt.isNotEmpty()) {
-                val currentStudy = itt.first()
-                CourseSlugDetailActivity.start(
-                    requireContext(),
-                    currentStudy
-                )
-            } else {
+        viewModel.startDesiredActivity(it.id).observe(viewLifecycleOwner, Observer { itt ->
+            if (itt.isNotEmpty())
+                CourseSlugDetailActivity.start(requireContext(), itt.first())
+            else
                 CourseDetailActivity.start(requireContext(), it.id, it.name)
-            }
-        }
-
+        })
     }
 }

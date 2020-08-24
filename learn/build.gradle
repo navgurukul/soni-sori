@@ -35,6 +35,7 @@ dependencies {
 
     // Room DB
     implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
     //markDown lib
@@ -49,7 +50,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_extensions_verision"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_extensions_verision"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_extensions_verision"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.0-alpha06"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutines"

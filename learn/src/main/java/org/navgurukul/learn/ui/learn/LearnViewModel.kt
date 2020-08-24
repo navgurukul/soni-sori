@@ -1,6 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
+import android.content.Context
 import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
 
@@ -29,11 +31,13 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
     fun saveCourseExerciseCurrent(
         currentStudy: CurrentStudy
     ) {
-        learnRepo.saveCourseExerciseCurrent(currentStudy)
+        viewModelScope.launch {
+            learnRepo.saveCourseExerciseCurrent(currentStudy)
+        }
     }
 
-    fun fetchCurrentStudyForCourse(courseId: String, callback: (List<CurrentStudy>) -> Unit) {
-        learnRepo.fetchCurrentStudyForCourse(courseId, callback)
+    fun startDesiredActivity(courseId: String)= liveData {
+        emit(learnRepo.fetchCurrentStudyForCourse(courseId))
     }
 
 }

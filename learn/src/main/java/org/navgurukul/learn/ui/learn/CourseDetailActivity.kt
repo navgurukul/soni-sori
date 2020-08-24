@@ -31,7 +31,7 @@ class CourseDetailActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        var masterData: List<Exercise> = mutableListOf()
+        var masterData: MutableList<Exercise> = mutableListOf()
     }
 
     private lateinit var courseId: String
@@ -93,7 +93,7 @@ class CourseDetailActivity : AppCompatActivity() {
             mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
                 mBinding.contentCourseDetail.progressBar.visibility = View.GONE
-                masterData = it
+                masterData = it as MutableList<Exercise>
                 mAdapter.submitList(it)
             }
         })
@@ -107,6 +107,6 @@ class CourseDetailActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        masterData = mutableListOf()
+        masterData.clear()
     }
 }

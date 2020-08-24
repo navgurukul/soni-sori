@@ -5,10 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Deferred
-import org.navgurukul.learn.courses.db.CourseDao
-import org.navgurukul.learn.courses.db.CurrentStudyDao
-import org.navgurukul.learn.courses.db.ExerciseDao
-import org.navgurukul.learn.courses.db.ExerciseSlugDao
+import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -22,13 +19,11 @@ import org.navgurukul.learn.ui.common.Util
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
     private val application: Application,
-    private val courseDao: CourseDao,
-    private val exerciseDao: ExerciseDao,
-    private val exerciseSlugDao: ExerciseSlugDao,
-    private val currentStudyDao: CurrentStudyDao
+    private val database: CoursesDatabase
 ) {
 
     fun getCoursesData(): LiveData<List<Course>?> {
+        val courseDao = database.courseDao()
         return object : NetworkBoundResource<List<Course>, CoursesResponseContainer>() {
             override suspend fun saveCallResult(data: CoursesResponseContainer) {
                 courseDao.insertCourses(data.availableCourses)
@@ -54,6 +49,7 @@ class LearnRepo(
     }
 
     fun getCoursesExerciseData(courseId: String): LiveData<List<Exercise>?> {
+        val exerciseDao = database.exerciseDao()
         return object : NetworkBoundResource<List<Exercise>, ExerciseResponseContainer>() {
             override suspend fun saveCallResult(data: ExerciseResponseContainer) {
                 val mappedData = data.data.map {
@@ -90,6 +86,7 @@ class LearnRepo(
     }
 
     fun getExerciseSlugData(courseId: String, slug: String): LiveData<List<ExerciseSlug>?> {
+        val exerciseSlugDao = database.exerciseSlugDao()
         return object : NetworkBoundResource<List<ExerciseSlug>, ExerciseSlug>() {
             override suspend fun saveCallResult(data: ExerciseSlug) {
                 exerciseSlugDao.insertExerciseSlug(data)
@@ -110,31 +107,13 @@ class LearnRepo(
         }.asLiveData()
     }
 
-    fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
-        Thread(Runnable {
-            currentStudyDao.saveCourseExerciseCurrent(currentStudy)
-        }).start()
-
+    suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
+        val currentStudyDao = database.currentStudyDao()
+        currentStudyDao.saveCourseExerciseCurrent(currentStudy)
     }
 
-    fun fetchCurrentStudyForCourse(
-        courseId: String,
-        callback: (List<CurrentStudy>) -> Unit
-    ) {
-        Thread(Runnable {
-            val data = currentStudyDao.getCurrentStudyForCourse(courseId)
-            invokeOnMainThread(data, callback)
-
-        }).start()
-    }
-
-    private fun invokeOnMainThread(
-        data: List<CurrentStudy>,
-        callback: (List<CurrentStudy>) -> Unit
-    ) {
-        val handler = Handler(Looper.getMainLooper())
-        handler.post {
-            callback.invoke(data)
-        }
+    suspend fun fetchCurrentStudyForCourse(courseId: String): List<CurrentStudy> {
+        val currentStudyDao = database.currentStudyDao()
+        return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 }

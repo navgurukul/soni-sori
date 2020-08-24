@@ -67,49 +67,23 @@ val databaseModule = module {
         ).build()
     }
 
-    fun provideCourseDao(database: CoursesDatabase): CourseDao {
-        return database.courseDao()
-    }
-
-    fun provideExerciseDao(database: CoursesDatabase): ExerciseDao {
-        return database.exerciseDao()
-    }
-
-    fun provideExerciseSlugDao(database: CoursesDatabase): ExerciseSlugDao {
-        return database.exerciseSlugDao()
-    }
-
-    fun provideCurrentStudyDao(database: CoursesDatabase): CurrentStudyDao {
-        return database.currentStudyDao()
-    }
-
     single { provideDatabase(androidApplication()) }
-    single { provideCourseDao(get()) }
-    single { provideExerciseDao(get()) }
-    single { provideExerciseSlugDao(get()) }
-    single { provideCurrentStudyDao(get()) }
 }
 
 val repositoryModule = module {
     fun provideLearnRepository(
         api: SaralCoursesApi,
         application: Application,
-        courseDao: CourseDao,
-        exerciseDao: ExerciseDao,
-        exerciseSlugDao: ExerciseSlugDao,
-        currentStudyDao: CurrentStudyDao
+        database: CoursesDatabase
     ): LearnRepo {
         return LearnRepo(
             api,
             application,
-            courseDao,
-            exerciseDao,
-            exerciseSlugDao,
-            currentStudyDao
+            database
         )
     }
 
-    single { provideLearnRepository(get(), androidApplication(), get(), get(), get(),get()) }
+    single { provideLearnRepository(get(), androidApplication(), get()) }
 }
 
 val learnModules = arrayListOf(

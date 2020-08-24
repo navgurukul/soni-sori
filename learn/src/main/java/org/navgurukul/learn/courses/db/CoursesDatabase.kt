@@ -46,10 +46,10 @@ interface ExerciseSlugDao {
 @Dao
 interface CurrentStudyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveCourseExerciseCurrent(course: CurrentStudy)
+    suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
-    fun getCurrentStudyForCourse(courseId: String): List<CurrentStudy>
+    suspend fun getCurrentStudyForCourse(courseId: String): List<CurrentStudy>
 }
 
 
