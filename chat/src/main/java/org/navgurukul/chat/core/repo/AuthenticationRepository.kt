@@ -6,20 +6,23 @@ import im.vector.matrix.android.api.auth.AuthenticationService
 import im.vector.matrix.android.api.auth.data.HomeServerConnectionConfig
 import im.vector.matrix.android.api.auth.data.LoginFlowResult
 import im.vector.matrix.android.api.session.Session
+import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.configureAndStart
+import org.navgurukul.chat.core.resources.StringProvider
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class AuthenticationRepository(
     private val authService: AuthenticationService,
     private val activeSessionHolder: ActiveSessionHolder,
+    private val stringProvider: StringProvider,
     private val appContext: Context
 ) {
 
     suspend fun getLoginFlow(): LoginFlowResult? = suspendCoroutine {
         authService.getLoginFlow(
             HomeServerConnectionConfig.Builder()
-                .withHomeServerUri(HOME_SERVER_URL)
+                .withHomeServerUri(stringProvider.getString(R.string.home_server_url))
                 .build(),
             object : MatrixCallback<LoginFlowResult> {
                 override fun onSuccess(data: LoginFlowResult) {
