@@ -36,7 +36,7 @@ val factoryModule = module {
     }
     single { ActiveSessionHolder(get()) }
     single { AvatarRenderer(get()) }
-    single { AuthenticationRepository(get(), get(), get()) }
+    single { AuthenticationRepository(get(), get(), get(), get()) }
     single { AppStateHandler(get(), get(), get(), get()) }
     single { ActiveSessionDataSource() }
     single { HomeRoomListDataSource() }
