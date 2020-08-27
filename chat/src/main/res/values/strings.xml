@@ -18,4 +18,30 @@
         <item quantity="one">1 new message</item>
         <item quantity="other">%d new messages</item>
     </plurals>
+
+    <string name="event_redacted_by_user_reason_with_reason">Event deleted by user, reason: %1$s</string>
+    <string name="event_redacted_by_admin_reason_with_reason">Event moderated by room admin, reason: %1$s</string>
+
+    <string name="event_redacted_by_user_reason">Event deleted by user</string>
+    <string name="event_redacted_by_admin_reason">Event moderated by room admin</string>
+
+    <string name="room_join_rules_public">%1$s made the room public to whoever knows the link.</string>
+    <string name="room_join_rules_public_by_you">You made the room public to whoever knows the link.</string>
+    <string name="room_join_rules_invite">%1$s made the room invite only.</string>
+    <string name="room_join_rules_invite_by_you">You made the room invite only.</string>
+
+    <string name="notice_member_no_changes">"%1$s made no changes"</string>
+    <string name="notice_member_no_changes_by_you">"You made no changes"</string>
+
+    <string name="sent_a_video">Video.</string>
+    <string name="sent_an_image">Image.</string>
+    <string name="sent_an_audio_file">Audio</string>
+    <string name="sent_a_file">File</string>
+    <string name="send_a_sticker">Sticker</string>
+
+    <string name="verification_request">Verification Request</string>
+
+    <string name="room_one_user_is_typing">%s is typing…</string>
+    <string name="room_two_users_are_typing">%1$s &#038; %2$s are typing…</string>
+    <string name="room_many_users_are_typing">%1$s &#038; %2$s &#038; others are typing…</string>
 </resources>

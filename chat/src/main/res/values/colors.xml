@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="saral_username_1">#368bd6</color>
+    <color name="saral_username_2">#ac3ba8</color>
+    <color name="saral_username_3">#03B381</color>
+    <color name="saral_username_4">#e64f7a</color>
+    <color name="saral_username_5">#ff812d</color>
+    <color name="saral_username_6">#2dc2c5</color>
+    <color name="saral_username_7">#5c56f5</color>
+    <color name="saral_username_8">#74d12c</color>
+
+    <color name="saral_avatar_fill_2">#FF368bd6</color>
+    <color name="saral_avatar_fill_3">#FFac3ba8</color>
+    <color name="saral_avatar_fill_1">#FF03B381</color>
+</resources>

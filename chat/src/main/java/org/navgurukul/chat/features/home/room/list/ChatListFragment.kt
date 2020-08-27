@@ -1,4 +1,4 @@
-package org.navgurukul.chat.features.chat
+package org.navgurukul.chat.features.home.room.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_chat.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.chat.R
 
-class ChatFragment : androidx.fragment.app.Fragment() {
 
-    private val viewModel: ChatViewModel by viewModel()
+class ChatListFragment : androidx.fragment.app.Fragment() {
+
+    private val viewModel: ChaListtViewModel by viewModel()
+    private val adapter: ChatListAdapter by lazy { ChatListAdapter(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,9 +27,10 @@ class ChatFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textView: TextView = view.findViewById(R.id.text)
-        viewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.adapter = adapter
+        viewModel.rooms.observe(viewLifecycleOwner, Observer {
+            adapter.update(it)
         })
 
 
