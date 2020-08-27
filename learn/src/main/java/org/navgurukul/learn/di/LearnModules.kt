@@ -2,7 +2,6 @@ package org.navgurukul.learn.di
 
 import android.app.Application
 import androidx.room.Room
-import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -10,11 +9,9 @@ import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.navgurukul.learn.courses.db.CourseDao
-import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.ExerciseDao
+import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.datasource.LearnRepo
+import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -70,30 +67,26 @@ val databaseModule = module {
         ).build()
     }
 
-    fun provideCourseDao(database: CoursesDatabase): CourseDao {
-        return database.courseDao()
-    }
-
-    fun provideExerciseDao(database: CoursesDatabase): ExerciseDao {
-        return database.exerciseDao()
-    }
-
     single { provideDatabase(androidApplication()) }
-    single { provideCourseDao(get()) }
-    single { provideExerciseDao(get()) }
 }
 
 val repositoryModule = module {
     fun provideLearnRepository(
         api: SaralCoursesApi,
-        courseDao: CourseDao,
-        exerciseDao: ExerciseDao
+        application: Application,
+        database: CoursesDatabase
     ): LearnRepo {
-        return LearnRepo(api, courseDao, exerciseDao)
+        return LearnRepo(
+            api,
+            application,
+            database
+        )
     }
 
-    single { provideLearnRepository(get(), get(), get()) }
+    single { provideLearnRepository(get(), androidApplication(), get()) }
 }
 
-val learnModules = arrayListOf(viewModelModule, apiModule, netModule, databaseModule,
-    repositoryModule)
+val learnModules = arrayListOf(
+    viewModelModule, apiModule, netModule, databaseModule,
+    repositoryModule
+)

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="exercise"
+            type="org.navgurukul.learn.courses.db.models.Exercise" />
+    </data>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_5_dp">
+
+            <ImageView
+                android:id="@+id/ivSequence"
+                android:layout_width="@dimen/dimen_30_dp"
+                android:layout_height="@dimen/dimen_30_dp"
+                android:padding="@dimen/dimen_2_dp"
+                android:layout_margin="@dimen/dimen_5_dp"
+                android:layout_centerVertical="true"
+                app:imageUrl="@{exercise.number}"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvExerciseTitle"
+                style="@style/text_view_exercise_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ivSequence"
+                android:text="@{exercise.name}"
+                tools:text="What do Computers do" />
+        </RelativeLayout>
+</layout>

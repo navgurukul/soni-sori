@@ -8,6 +8,9 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
         maven { url "https://chaquo.com/maven" }
+        maven {
+            url 'http://dl.bintray.com/amulyakhare/maven'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:3.6.3"
@@ -26,6 +29,9 @@ allprojects {
         // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
         maven {
             url 'https://jitpack.io'
+        }
+        maven {
+            url 'http://dl.bintray.com/amulyakhare/maven'
         }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         google()

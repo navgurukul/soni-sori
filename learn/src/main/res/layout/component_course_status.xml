@@ -5,15 +5,19 @@
     <RelativeLayout
         android:id="@+id/rlStatusComponent"
         android:layout_width="wrap_content"
+        android:background="@color/colorStatus"
+        android:layout_marginEnd="@dimen/dimen_5_dp"
+        android:layout_marginStart="@dimen/dimen_5_dp"
+        android:layout_marginTop="@dimen/dimen_2_dp"
         android:layout_height="wrap_content"
-        android:background="@color/yellow">
+        >
 
         <ImageView
             android:id="@+id/ivCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_20_dp"
+            android:layout_height="@dimen/dimen_20_dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_check_circle"
+            android:src="@drawable/ic_tick"
             tools:ignore="ContentDescription" />
 
         <TextView
