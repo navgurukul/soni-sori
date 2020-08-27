@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="org.navgurukul.chat.features.chat.ChatFragment"
+        android:name="org.navgurukul.chat.features.home.room.list.ChatListFragment"
         android:label="@string/title_chat"
         tools:layout="@layout/fragment_chat" />
 

@@ -17,6 +17,10 @@
         <item name="colorOnError">@color/primaryTextColor</item>
         <item name="colorOnSurface">@color/textColor</item>
         <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
+
+        <item name="textAppearanceEmphasized">@style/TextAppearance.AppCompat.Emphasized</item>
+        <item name="textPrimary">@color/textColor</item>
+        <item name="textSecondary">@color/textColorAlt</item>
     </style>
 
 </resources>

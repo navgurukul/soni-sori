@@ -1,13 +1,12 @@
 package org.navgurukul.chat.core.repo
 
 import arrow.core.Option
-import im.vector.matrix.android.api.auth.AuthenticationService
 import im.vector.matrix.android.api.session.Session
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicReference
 
-class ActiveSessionHolder(private val authenticationService: AuthenticationService,
-                                              private val sessionObservableStore: ActiveSessionDataSource
+class ActiveSessionHolder(
+    private val sessionObservableStore: ActiveSessionDataSource
 ) {
 
     private var activeSession: AtomicReference<Session?> = AtomicReference()
@@ -15,7 +14,7 @@ class ActiveSessionHolder(private val authenticationService: AuthenticationServi
     fun setActiveSession(session: Session) {
         Timber.w("setActiveSession of ${session.myUserId}")
         activeSession.set(session)
-
+        sessionObservableStore.post(Option.just(session))
     }
 
     fun clearActiveSession() {
