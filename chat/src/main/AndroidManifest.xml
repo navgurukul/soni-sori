@@ -7,12 +7,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name=".features.home.room.detail.RoomDetailActivity"></activity>
+        <activity android:name=".features.home.room.detail.RoomDetailActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
             tools:node="remove" />
+
+        <service
+        android:name=".core.services.SaralSyncService"
+        android:exported="false" />
     </application>
 
 </manifest>
