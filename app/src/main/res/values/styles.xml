@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="text_view_title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:fontFamily">@font/n_bold</item>
+        <item name="android:layout_marginTop">@dimen/dimen_20_dp</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_10_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
+        <item name="android:layout_marginStart">28dp</item>
+    </style>
+
+    <style name="text_view_description">
+        <item name="android:textSize">22sp</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
+        <item name="android:fontFamily">@font/n_regular</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:layout_marginStart">28dp</item>
+    </style>
+
+    <style name="text_view_powered_by">
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:layout_margin">@dimen/dimen_10_dp</item>
+        <item name="android:fontFamily">@font/n_regular</item>
+        <item name="android:layout_marginTop">@dimen/dimen_10_dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="text_view_get_started">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:layout_margin">@dimen/dimen_5_dp</item>
+        <item name="android:fontFamily">@font/n_regular</item>
+        <item name="android:layout_marginTop">@dimen/dimen_10_dp</item>
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:layout_marginEnd">60dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+</resources>

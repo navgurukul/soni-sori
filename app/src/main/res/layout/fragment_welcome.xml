@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/tvHello"
+            style="@style/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvDetail"
+            android:background="@drawable/background_rectangle"
+            android:text="@string/hello" />
+
+        <TextView
+            android:id="@+id/tvDetail"
+            style="@style/text_view_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ivMeraki"
+            android:background="@drawable/background_rectangle"
+            android:text="@string/description" />
+
+        <ImageView
+            android:id="@+id/ivMeraki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_meraki"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvStarted"
+            style="@style/text_view_get_started"
+            android:layout_width="@dimen/dimen_width_get_started"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivMeraki"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_button"
+            android:drawablePadding="@dimen/dimen_10_dp"
+            android:text="@string/get_started"
+            android:textAlignment="center"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
+
+        <TextView
+            android:id="@+id/tvAlready"
+            style="@style/text_view_powered_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvStarted"
+            android:layout_centerHorizontal="true"
+            android:text="@string/already_account" />
+
+        <TextView
+            android:id="@+id/tvPoweredBy"
+            style="@style/text_view_powered_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/powered_by" />
+
+    </RelativeLayout>
+</layout>

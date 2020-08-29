@@ -5,16 +5,20 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://saral.navgurukul.org/"
 
@@ -34,6 +38,10 @@ val netModule = module {
 
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
+        okHttpClientBuilder.addInterceptor(provideLogInterceptor())
+        okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
+        okHttpClientBuilder.readTimeout(5, TimeUnit.MINUTES)
+
         return okHttpClientBuilder.build()
     }
 
@@ -55,6 +63,15 @@ val netModule = module {
     single { provideGson() }
     single { provideRetrofit(get(), get()) }
 
+}
+
+fun provideLogInterceptor(): Interceptor {
+    val logging = HttpLoggingInterceptor()
+    logging.level = if (BuildConfig.DEBUG)
+        HttpLoggingInterceptor.Level.BODY
+    else
+        HttpLoggingInterceptor.Level.NONE
+    return logging
 }
 
 val databaseModule = module {
