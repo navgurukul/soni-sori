@@ -63,8 +63,20 @@ dependencies {
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_extensions_verision"
     implementation project(path: ':commonUI')
 
+    //google auth
+    implementation "com.google.android.gms:play-services-auth:$google_auth"
+
+    implementation 'androidx.preference:preference:1.1.1'
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation "com.google.code.gson:gson:$version_gson"
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit_gson_adapter"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_retrofit_log"
     //test
     testImplementation 'junit:junit:4.13'
 
