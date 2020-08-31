@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="editor_background_dark">#000000</color>
+    <color name="editor_text_on_dark">#FFFFFF</color>
+    <color name="editor_line_number">#FFFF00</color>
+    <color name="console_error">#b53f3f</color>
+    <color name="console_meta">#304ffe</color>
+    <color name="output_background">#FFFFFF</color>
+    <color name="error_background">#737373</color>
+    <color name="error_text">#FE0D0D</color>
+    <color name="stroke_peek">#EEEEEE</color>
+    <color name="run_background">#D63447</color>
+    <color name="run_text">#FFFFFF</color>
+</resources>
