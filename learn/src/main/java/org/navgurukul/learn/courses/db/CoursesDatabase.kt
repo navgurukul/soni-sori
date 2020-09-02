@@ -53,6 +53,7 @@ interface CurrentStudyDao {
 }
 
 
+// When ever we do any change in local db need to write migration script here.
 @Database(
     entities = [Course::class, Exercise::class, ExerciseSlug::class, CurrentStudy::class],
     version = DB_VERSION,
@@ -61,7 +62,7 @@ interface CurrentStudyDao {
 @TypeConverters(Converters::class)
 abstract class CoursesDatabase : RoomDatabase() {
 
-    // DAOs for course and exercise
+    // DAOs for course, exercises and its sub exercise
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun exerciseSlugDao(): ExerciseSlugDao

@@ -32,6 +32,7 @@ class LearnRepo(
             override fun shouldFetch(data: List<Course>?): Boolean {
                 //if network avail && shared pref
                 return Util.isOnline(application) && (data == null || data.isEmpty())
+//                TODO: inform user to please connect to interest and try again
             }
 
             override suspend fun makeApiCallAsync(): Deferred<CoursesResponseContainer> {
@@ -79,7 +80,7 @@ class LearnRepo(
         data.forEachIndexed { index, exercise ->
             var sequence = (index + 1).toString()
             if (index + 1 < 10) {
-                sequence = "0" + (index + 1)
+                sequence =  ((index + 1).toString())
             }
             exercise.number = sequence
         }

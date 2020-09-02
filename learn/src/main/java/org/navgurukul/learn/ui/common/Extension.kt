@@ -34,6 +34,7 @@ fun setImageUrl(imageView: ImageView, url: String?) {
             .beginConfig()
             .fontSize(14).toUpperCase().textColor(ContextCompat.getColor(imageView.context,R.color.colorNumber))
             .width(30)
+            .bold()
             .height(30)
             .endConfig()
             .buildRound(url.toString(),ContextCompat.getColor(imageView.context,R.color.colorNumberBackground))

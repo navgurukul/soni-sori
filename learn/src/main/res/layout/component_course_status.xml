@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/ivCheck"
-            android:text="Ongoing"
+            android:text="@string/ongoing"
             tools:text="Ongoing" />
     </RelativeLayout>
 </layout>

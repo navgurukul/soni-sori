@@ -34,6 +34,43 @@
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:titleTextAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <TextView
+                    android:id="@+id/tvCourseDetail"
+                    style="@style/course_content_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_40_dp"
+                    android:layout_marginTop="@dimen/dimen_5_dp"
+                    android:scaleType="centerCrop"
+                    android:text="@string/course_content"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="visible"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" />
+
+                <ImageView
+                    android:id="@+id/ivSmallCloud"
+                    android:layout_width="50.72dp"
+                    android:layout_height="27.44dp"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7"                    android:visibility="visible"
+                    android:layout_marginTop="@dimen/dimen_100_dp"
+                    android:layout_marginStart="@dimen/dimen_100_dp"
+                    android:src="@drawable/ic_baseline_cloud_24"/>
+
+                <ImageView
+                    android:id="@+id/ivBigCloud"
+                    android:layout_width="96.22dp"
+                    android:layout_height="54.62dp"
+                    android:visibility="visible"
+                    android:layout_gravity="end|bottom"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_cloud_course_content"/>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

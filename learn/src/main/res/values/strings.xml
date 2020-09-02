@@ -94,4 +94,6 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="course_content">Course Content</string>
+    <string name="search_here">Search Here</string>
+    <string name="ongoing">Ongoing</string>
 </resources>

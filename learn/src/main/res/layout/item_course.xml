@@ -10,21 +10,23 @@
             type="org.navgurukul.learn.courses.db.models.Course" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        style="@style/course_item_card_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+
+
+        <androidx.cardview.widget.CardView
+        android:id="@+id/course_item_card_view"
+        style="@style/course_item_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/componentStatus"
-                layout="@layout/component_course_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
 
             <ImageView
                 android:id="@+id/ivSequence"
@@ -41,10 +43,11 @@
                 style="@style/text_view_course_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/componentStatus"
                 android:layout_toStartOf="@+id/ivArrow"
                 android:layout_toEndOf="@+id/ivSequence"
                 android:text="@{course.name}"
+                android:maxLines="2"
+                android:ellipsize="end"
                 tools:text="Introduction To Python" />
 
             <TextView
@@ -56,6 +59,8 @@
                 android:layout_toStartOf="@+id/ivArrow"
                 android:layout_toEndOf="@+id/ivSequence"
                 android:text="@{course.description}"
+                android:maxLines="3"
+                android:ellipsize="end"
                 tools:text="Study all the basics of python" />
 
             <ImageView
@@ -69,4 +74,16 @@
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+        <include
+            android:visibility="gone"
+            android:id="@+id/componentStatus"
+            layout="@layout/component_course_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="18dp"
+            android:layout_alignParentEnd="true"
+            android:elevation="@dimen/dimen_5_dp" />
+<!--        This is code for progress status which is not required for but it may be require in further release so for now I have hidden it.-->
+    </RelativeLayout>
 </layout>
