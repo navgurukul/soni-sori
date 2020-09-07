@@ -4,4 +4,18 @@
     <string name="title_py_playground">Python</string>
     <string name="toast_exit_console">If you want to exit the playground, first exit()
         the console or click on the home up button!</string>
+    <string name="output">Output</string>
+    <string name="enter_input_here">Enter input here:</string>
+    <string name="tab">TAB</string>
+    <string name="run">RUN</string>
+
+<!--    Control Strings, Don't Change-->
+    <string name="bracket_open" translatable="false">(</string>
+    <string name="bracket_close" translatable="false">)</string>
+    <string name="control_double_quotes" translatable="false">\"</string>
+    <string name="control_single_quotes" translatable="false">\'</string>
+    <string name="curly_brace_open" translatable="false">{</string>
+    <string name="curly_brace_close" translatable="false">}</string>
+
+
 </resources>
