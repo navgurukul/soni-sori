@@ -55,7 +55,8 @@
                     android:layout_height="27.44dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.7"                    android:visibility="visible"
+                    app:layout_collapseParallaxMultiplier="0.7"
+                    android:visibility="visible"
                     android:layout_marginTop="@dimen/dimen_100_dp"
                     android:layout_marginStart="@dimen/dimen_100_dp"
                     android:src="@drawable/ic_baseline_cloud_24"/>
