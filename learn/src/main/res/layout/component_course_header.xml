@@ -28,6 +28,7 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/dimen_10_dp"
             android:src="@drawable/avatar"
+            android:background="@drawable/ic_avatar_border"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 </layout>

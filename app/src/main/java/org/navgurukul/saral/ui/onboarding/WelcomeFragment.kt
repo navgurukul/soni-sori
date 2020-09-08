@@ -1,11 +1,13 @@
 package org.navgurukul.saral.ui.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import org.navgurukul.saral.MainActivity
 import org.navgurukul.saral.R
 import org.navgurukul.saral.databinding.FragmentWelcomeBinding
 import org.navgurukul.saral.util.AppUtils
@@ -38,6 +40,11 @@ class WelcomeFragment : Fragment() {
                 true,
                 LoginFragment.TAG
             )
+        }
+
+        mBinding.tvStarted.setOnClickListener{
+            val intent = Intent(this.context, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
