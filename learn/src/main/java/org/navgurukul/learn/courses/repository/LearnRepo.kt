@@ -79,9 +79,6 @@ class LearnRepo(
     private fun parseData(data: List<Exercise>) {
         data.forEachIndexed { index, exercise ->
             var sequence = (index + 1).toString()
-            if (index + 1 < 10) {
-                sequence =  ((index + 1).toString())
-            }
             exercise.number = sequence
         }
     }
