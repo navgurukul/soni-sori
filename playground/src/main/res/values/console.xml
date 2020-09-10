@@ -3,13 +3,9 @@
 
     <string name="top">Top</string>
     <string name="bottom">Bottom</string>
-    <string name="tab">Tab</string>
-    <string name="undo_tab">Undo Tab</string>
     <string name="enter">Enter</string>
     <string name="tab_unicode" translatable="false">\u0009\u0009\u0009\u0009</string>
 
-    <color name="console_error">#b53f3f</color>
-    <color name="console_meta">#304ffe</color>
 
     <style name="Code">
         <item name="android:textSize">14sp</item>
@@ -17,17 +13,10 @@
     </style>
 
     <style name="ConsoleOutput" parent="Code">
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:textIsSelectable">true</item>
         <item name="android:freezesText">true</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
-        <item name="android:textColorPrimary">?colorOnPrimary</item>
-        <!-- Applies to views in their normal state. -->
-        <item name="colorControlNormal">?colorOnPrimary</item>
-    </style>
 
 </resources>

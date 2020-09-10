@@ -17,9 +17,9 @@
         android:label="@string/title_learn"
         tools:layout="@layout/fragment_learn" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_playground"
-        android:name="org.navgurukul.playground.ui.playground.PlaygroundFragment"
+        android:name="org.navgurukul.playground.ui.PlaygroundActivity"
         android:label="@string/title_playground"
         tools:layout="@layout/fragment_playground" />
 
