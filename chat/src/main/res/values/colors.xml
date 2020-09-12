@@ -8,6 +8,16 @@
     <color name="saral_username_6">#2dc2c5</color>
     <color name="saral_username_7">#5c56f5</color>
     <color name="saral_username_8">#74d12c</color>
+    <color name="yellow">#F7CA18</color>
+    <color name="color_colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorRed">#D63447</color>
+    <color name="colorGrey">#E5E5E5</color>
+    <color name="colorStatus">#fcf4c4</color>
+
+    <color name="colorNumber">#D63447</color>
+    <color name="colorNumberBackground">#FFF3F3</color>
+
 
     <color name="saral_avatar_fill_2">#FF368bd6</color>
     <color name="saral_avatar_fill_3">#FFac3ba8</color>

@@ -46,4 +46,6 @@
     <string name="room_many_users_are_typing">%1$s &#038; %2$s &#038; others are typing…</string>
 
     <string name="home_server_url" translatable="false">https://m.navgurukul.org</string>
+    <string name="chat">Chat</string>
+    <string name="type_answer_here">Type Answer Here...</string>
 </resources>
