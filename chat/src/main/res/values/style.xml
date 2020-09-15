@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="course_content_header">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_10_dp</item>
+    </style>
+
+    <style name="text_view_course_category">
+        <item name="android:layout_marginLeft">@dimen/dimen_20_dp</item>
+        <item name="android:padding">@dimen/dimen_10_dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">@dimen/dimen_15_dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginStart">@dimen/dimen_20_dp</item>
+        <item name="android:textColor">#1F1C1C</item>
+        <item name="android:fontFamily">@font/n_bold</item>
+    </style>
+</resources>

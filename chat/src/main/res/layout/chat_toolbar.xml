@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/rlExerciseDetail"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/colorNumberBackground"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="#ffff">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="4dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:layout_centerVertical="true" />
+
+
+
+
+        <ImageView
+            android:id="@+id/groupIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toEndOf="@+id/backButton"
+
+        android:layout_margin="@dimen/dimen_5_dp"
+            android:src="@drawable/ic_account_circle_24"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvGroupName"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:text="group_name" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/tvGroupName"
+        android:text="team members name"
+
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+        </RelativeLayout>
+
+
+
+
+
+    </LinearLayout>
+</layout>
