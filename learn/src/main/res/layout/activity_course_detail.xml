@@ -68,7 +68,6 @@
                     android:visibility="visible"
                     android:layout_gravity="end|bottom"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.7"
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_cloud_course_content"/>
 

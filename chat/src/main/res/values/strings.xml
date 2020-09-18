@@ -46,4 +46,10 @@
     <string name="room_many_users_are_typing">%1$s &#038; %2$s &#038; others are typing…</string>
 
     <string name="home_server_url" translatable="false">https://m.navgurukul.org</string>
+    <string name="chat">Chat</string>
+    <string name="type_answer_here">Type Answer Here...</string>
+    <string name="demo_mgs_reply">I am fine thanks. What about you Annu? How your work is going?</string>
+    <string name="name_of_reciver">Abhisek Gupta</string>
+    <string name="sender_mgs">How are you? what are you doing? hjhjfk jkfkjjfj mkmkjfnrkj kmfjnfjnfjrfn mflkmlkmrklkdmkflmmflnr</string>
+    <string name="sender_name">Annu Bharti</string>
 </resources>
