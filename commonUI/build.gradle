@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -35,5 +39,15 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "com.google.android.material:material:$material_version"
+
+    // Koin for Kotlin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // RXBinding
+    implementation "com.jakewharton.rxbinding3:rxbinding:$rxBinding_version"
 
 }

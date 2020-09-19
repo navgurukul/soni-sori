@@ -9,7 +9,7 @@ import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.setTextOrHide
 import org.navgurukul.chat.features.home.AvatarRenderer
-import org.navgurukul.commonui.BaseViewHolder
+import org.navgurukul.commonui.platform.BaseViewHolder
 
 class ChatListItemViewHolder(view: View) : BaseViewHolder<RoomSummaryItem>(view) {
 
