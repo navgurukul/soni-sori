@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".EnrollActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height_class"
+            android:background="@color/colorNumberBackground"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:maxLines="2"
+                app:toolbarId="@+id/toolbar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:titleTextAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <TextView
+                    android:id="@+id/tvCourseDetail"
+                    style="@style/course_content_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_40_dp"
+                    android:layout_marginTop="@dimen/dimen_5_dp"
+                    android:scaleType="centerCrop"
+                    android:text="@string/upcoming_class"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="visible"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" />
+
+                <ImageView
+                    android:id="@+id/ivSmallCloud"
+                    android:layout_width="50.72dp"
+                    android:layout_height="27.44dp"
+                    android:layout_marginStart="@dimen/dimen_100_dp"
+                    android:layout_marginTop="@dimen/dimen_100_dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_cloud_24"
+                    android:visibility="visible"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" />
+
+                <ImageView
+                    android:id="@+id/ivBigCloud"
+                    android:layout_width="96.22dp"
+                    android:layout_height="54.62dp"
+                    android:layout_gravity="end|bottom"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_cloud_course_content"
+                    android:visibility="visible"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include
+            android:id="@+id/class_detail"
+            layout="@layout/content_class_detail" />
+        <ProgressBar
+            android:id="@+id/progress_bar_button"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="@dimen/dimen_progress_bar"
+            android:layout_height="@dimen/dimen_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:elevation="2dp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/enroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/dimen_20_dp"
+            android:background="@color/colorRed"
+            android:padding="@dimen/dimen_10_dp"
+            android:text="@string/enroll_to_class"
+            android:textColor="@color/colorWhite" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/rlDiscoverHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_header_height"
+        android:background="@color/colorWhite">
+
+        <ImageView
+            android:id="@+id/ivBackButton"
+            android:layout_width="@dimen/dimen_50_dp"
+            android:layout_height="@dimen/dimen_50_dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_10_dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/searchText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/ivBackButton"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ivSearchButton"
+            android:hint="@string/search_classes"
+            android:padding="@dimen/dimen_10_dp" />
+
+
+        <ImageView
+            android:id="@+id/ivSearchButton"
+            android:layout_width="@dimen/dimen_50_dp"
+            android:layout_height="@dimen/dimen_50_dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_10_dp"
+            android:src="@drawable/ic_baseline_search_24"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+</layout>

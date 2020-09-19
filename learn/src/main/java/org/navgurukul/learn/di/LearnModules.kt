@@ -20,7 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "https://saral.navgurukul.org/"
+const val BASE_URL = "https://dev-api.merakilearn.org/apiDocs/"
 
 val viewModelModule = module {
     viewModel { LearnViewModel(get()) }

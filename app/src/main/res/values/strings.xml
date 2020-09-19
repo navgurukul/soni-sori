@@ -1,5 +1,5 @@
 <resources>
-    <string name="server_client_id" translatable="false">34917283366-tvria4h9kk6bnhjen4qgdkgl6m7u3g89.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">34917283366-b806koktimo2pod1cjas8kn2lcpn7bse.apps.googleusercontent.com</string>
     <string name="title_more">More</string>
     <string name="hello">Hello!</string>
     <string name="description">I am <font fgcolor='#D63447'>Meraki.</font>\nI am here to help you learn</string>
@@ -9,4 +9,24 @@
     <string name="login_with_email">Login with Email</string>
     <string name="new_to_meraki">New to Meraki? <u>SignUp here</u></string>
     <string name="unable_to_sign">Unable to Sign in ! Please try again</string>
+    <string name="where_you_left">Continue where you left off…</string>
+    <string name="upcoming_class">Upcoming Classes</string>
+    <string name="view_all">View All</string>
+    <string name="other_class">Other Courses</string>
+    <string name="try_other_courses">Try any new courses for first 2 weeks</string>
+    <string name="discover_class">Discover all upcoming classes</string>
+    <string name="stay_updated">Stay updated and don\'t miss out</string>
+    <string name="title_home">Home</string>
+    <string name="meraki">Meraki</string>
+    <string name="search_classes">Search for Classes</string>
+    <string name="no_class_scheduled">No Class Scheduled</string>
+    <string name="about">About</string>
+    <string name="class_detail">Class Detail</string>
+    <string name="special_instructions">Special Instructions</string>
+    <string name="enroll_to_class">Enroll To Class</string>
+    <string name="unable_to_enroll">Unable to enroll you currently</string>
+    <string name="enrolled">You have been enrolled to class successfully</string>
+    <string name="log_out_class">You have been dropped out of class successfully</string>
+    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="drop_out">I want to drop out</string>
 </resources>
