@@ -69,11 +69,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchDataForRV() {
-        viewModel.fetchWhereYouLeftData().observe(viewLifecycleOwner, Observer {
+       /* viewModel.fetchWhereYouLeftData().observe(viewLifecycleOwner, Observer {
             if (null != it && it.isNotEmpty()) {
                 mWhereYouLeftAdapter.submitList(it)
             }
-        })
+        })*/
 
         viewModel.fetchMyClasses().observe(viewLifecycleOwner, Observer {
             toggleProgressBarVisibility(View.VISIBLE)
@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        initWhereYouLeftRV()
+      //  initWhereYouLeftRV()
         initUpComingClassesRV()
         initOtherCourseRV()
     }
@@ -115,7 +115,7 @@ class HomeFragment : Fragment() {
 
     private fun initOtherCourseRV() {
         mOtherCourseAdapter = OtherCourseAdapter {
-            toast(it.first.toString())
+            EnrollActivity.start(requireContext(), it, false)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
 
     private fun initUpComingClassesRV() {
         mMyUpcomingClassAdapter = MyUpcomingClassAdapter {
-            EnrollActivity.start(requireContext(),it.classes.first(),true)
+            EnrollActivity.start(requireContext(), it.classes.first(), true)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

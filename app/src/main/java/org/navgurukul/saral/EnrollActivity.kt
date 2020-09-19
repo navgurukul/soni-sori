@@ -53,28 +53,30 @@ class EnrollActivity : AppCompatActivity() {
     private fun initUI() {
         mBinding.classDetail.tvClassDetail.text = AppUtils.getClassSchedule(classes)
         mBinding.classDetail.tvAbout.text = AppUtils.getAboutClass(classes)
-        mBinding.classDetail.tvSpecialInstruction.apply {
-            this.addStyleSheet(Github())
-            this.loadMarkdown("Some Special Instruction")
+        if (!classes.rules?.en.isNullOrBlank()) {
+            mBinding.classDetail.tvSpecialInstruction.apply {
+                this.addStyleSheet(Github())
+                this.loadMarkdown(classes.rules?.en)
+            }
         }
     }
 
     private fun initButtonClick() {
-        if(isEnrolled){
+        if (isEnrolled) {
             mBinding.enroll.setText(getString(R.string.drop_out))
         }
         mBinding.enroll.setOnClickListener {
             mBinding.progressBarButton.visibility = View.VISIBLE
             viewModel.enrollToClass(classes.id!!, isEnrolled).observe(this, Observer {
                 mBinding.progressBarButton.visibility = View.GONE
-                if(isEnrolled){
+                if (isEnrolled) {
                     if (it) {
                         toast(getString(R.string.log_out_class))
                         finish()
                     } else {
                         toast(getString(R.string.unable_to_drop))
                     }
-                }else {
+                } else {
                     if (it) {
                         toast(getString(R.string.enrolled))
                         finish()

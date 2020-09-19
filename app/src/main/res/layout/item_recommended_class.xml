@@ -7,7 +7,7 @@
 
         <variable
             name="course"
-            type="org.navgurukul.saral.datasource.network.model.RecommendedClass" />
+            type="org.navgurukul.saral.datasource.network.model.ClassesContainer.Classes" />
     </data>
 
     <RelativeLayout

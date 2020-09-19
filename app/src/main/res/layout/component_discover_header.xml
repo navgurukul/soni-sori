@@ -5,7 +5,7 @@
     <RelativeLayout
         android:id="@+id/rlDiscoverHeader"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/course_header_height"
+        android:layout_height="@dimen/course_discover_height"
         android:background="@color/colorWhite">
 
         <ImageView
@@ -18,26 +18,26 @@
             android:src="@drawable/ic_back"
             tools:ignore="ContentDescription" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/searchText"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/tvSearchTitle"
+            style="@style/text_view_home_title"
+            android:gravity="center_vertical"
             android:layout_toEndOf="@+id/ivBackButton"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/ivSearchButton"
-            android:hint="@string/search_classes"
-            android:padding="@dimen/dimen_10_dp" />
-
-
-        <ImageView
-            android:id="@+id/ivSearchButton"
-            android:layout_width="@dimen/dimen_50_dp"
-            android:layout_height="@dimen/dimen_50_dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dimen_10_dp"
-            android:src="@drawable/ic_baseline_search_24"
-            tools:ignore="ContentDescription" />
+            android:text="@string/upcoming_class"/>
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/ivBackButton"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:animateLayoutChanges="true"
+            android:queryHint="@string/search_classes"
+            android:iconifiedByDefault="true"
+            android:layoutDirection="rtl"
+            android:searchIcon="@drawable/ic_baseline_search_24"
+            android:layout_alignParentTop="true"/>
 
     </RelativeLayout>
 </layout>

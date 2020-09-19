@@ -14,7 +14,6 @@ import org.navgurukul.saral.datasource.network.SaralApi
 import org.navgurukul.saral.datasource.network.model.ClassesContainer
 import org.navgurukul.saral.datasource.network.model.LoginRequest
 import org.navgurukul.saral.datasource.network.model.MyClassContainer
-import org.navgurukul.saral.datasource.network.model.RecommendedClass
 import org.navgurukul.saral.util.AppUtils
 
 class ApplicationRepo(
@@ -60,7 +59,7 @@ class ApplicationRepo(
         }.asLiveData()
     }
 
-    suspend fun fetchOtherCourseData(): List<RecommendedClass>? {
+    suspend fun fetchOtherCourseData(): List<ClassesContainer.Classes>? {
         return try {
             val req = applicationApi.getRecommendedClassAsync(AppUtils.getAuthToken(application))
             val response = req.await()

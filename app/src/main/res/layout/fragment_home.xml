@@ -21,12 +21,14 @@
             android:layout_below="@+id/idHeader"
             android:ellipsize="end"
             android:maxLines="2"
+            android:visibility="gone"
             android:text="@string/where_you_left" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewCourseContinue"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/height_rv_continue_study"
+            android:visibility="gone"
             android:layout_below="@+id/tvWhereYouLeft"
             android:layout_marginTop="@dimen/dimen_5_dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

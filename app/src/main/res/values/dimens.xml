@@ -5,8 +5,9 @@
     <dimen name="dimen_width_get_started">300dp</dimen>
     <dimen name="height_rv_continue_study">120dp</dimen>
     <dimen name="height_rv_other_class">200dp</dimen>
-    <dimen name="height_rv_upcoming_class">120dp</dimen>
+    <dimen name="height_rv_upcoming_class">150dp</dimen>
     <dimen name="dimen_height_card_class">100dp</dimen>
     <dimen name="app_bar_height_class">200dp</dimen>
     <dimen name="dimen_width_upcoming">200dp</dimen>
+    <dimen name="course_discover_height">70dp</dimen>
 </resources>

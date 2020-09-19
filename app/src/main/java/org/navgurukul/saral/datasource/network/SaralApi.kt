@@ -18,7 +18,7 @@ interface SaralApi {
     fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer>
 
     @GET("classes/recommended")
-    fun getRecommendedClassAsync(@Header(value = "Authorization") token: String?): Deferred<List<RecommendedClass>>
+    fun getRecommendedClassAsync(@Header(value = "Authorization") token: String?): Deferred<List<ClassesContainer.Classes>>
 
     @GET("classes")
     fun getMyClassesAsync(@Header(value = "Authorization") token: String?): Deferred<MyClassContainer>

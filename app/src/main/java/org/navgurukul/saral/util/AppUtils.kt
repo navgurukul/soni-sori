@@ -71,8 +71,7 @@ object AppUtils {
     }
 
     fun getClassSchedule(classes: ClassesContainer.Classes): String {
-        //todo
-        val teacher = "Anjali"
+        val teacher = classes.facilitator?.name
         val date = DateTimeUtil.stringToDate(classes.startTime)
         val startTime = DateTimeUtil.stringToTime(classes.startTime)
         val endTime = DateTimeUtil.stringToTime(classes.endTime)

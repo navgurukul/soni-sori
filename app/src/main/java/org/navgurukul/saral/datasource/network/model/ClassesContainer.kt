@@ -32,6 +32,21 @@ data class ClassesContainer(
         @SerializedName("title")
         var title: String?,
         @SerializedName("video_id")
-        var videoId: String?
-    ) : Serializable
+        var videoId: String?,
+        @SerializedName("facilitator")
+        val facilitator: Facilitator?,
+        @SerializedName("rules")
+        val rules: Rules?,
+        var number:Int? = 0
+    ) : Serializable {
+        data class Facilitator(
+            @SerializedName("name")
+            var name: String?
+        ) : Serializable
+
+        data class Rules(
+            @SerializedName("en")
+            var en: String?
+        ) : Serializable
+    }
 }

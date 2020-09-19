@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 import org.navgurukul.saral.R
 import org.navgurukul.saral.databinding.ItemRecommendedClassBinding
-import org.navgurukul.saral.datasource.network.model.RecommendedClass
+import org.navgurukul.saral.datasource.network.model.ClassesContainer
 
 
-class OtherCourseAdapter(callback: (Pair<RecommendedClass, ItemRecommendedClassBinding>) -> Unit) :
+class OtherCourseAdapter(callback: (ClassesContainer.Classes) -> Unit) :
 
-    DataBoundListAdapter<RecommendedClass, ItemRecommendedClassBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<RecommendedClass>() {
-            override fun areItemsTheSame(oldItem: RecommendedClass, newItem: RecommendedClass): Boolean {
+    DataBoundListAdapter<ClassesContainer.Classes, ItemRecommendedClassBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<ClassesContainer.Classes>() {
+            override fun areItemsTheSame(oldItem: ClassesContainer.Classes, newItem: ClassesContainer.Classes): Boolean {
                 return false
             }
 
-            override fun areContentsTheSame(oldItem: RecommendedClass, newItem: RecommendedClass): Boolean {
+            override fun areContentsTheSame(oldItem: ClassesContainer.Classes, newItem: ClassesContainer.Classes): Boolean {
                 return false
             }
         }
@@ -31,10 +31,10 @@ class OtherCourseAdapter(callback: (Pair<RecommendedClass, ItemRecommendedClassB
         )
     }
 
-    override fun bind(binding: ItemRecommendedClassBinding, item: RecommendedClass) {
+    override fun bind(binding: ItemRecommendedClassBinding, item: ClassesContainer.Classes) {
         binding.course = item
         binding.root.setOnClickListener {
-            mCallback.invoke(Pair(item, binding))
+            mCallback.invoke(item)
         }
     }
 
