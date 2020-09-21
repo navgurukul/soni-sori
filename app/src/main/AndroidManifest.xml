@@ -15,6 +15,9 @@
             android:name=".MainActivity"
             android:label="@string/app_name" />
         <activity
+            android:name=".EnrollActivity"
+            android:label="@string/app_name" />
+        <activity
             android:name=".OnBoardingActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

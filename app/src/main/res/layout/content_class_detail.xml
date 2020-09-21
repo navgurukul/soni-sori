@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="course"
+            type="org.navgurukul.saral.datasource.network.model.ClassesContainer.Classes" />
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".EnrollActivity"
+        tools:showIn="@layout/activity_discover_enroll">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_rect"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/text_view_home_title_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/about" />
+
+            <TextView
+                android:id="@+id/tvAbout"
+                style="@style/text_view_home_description_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="This class is for students who are new to meraki and wants to learn programming. You will taught basics " />
+
+            <TextView
+                style="@style/text_view_home_title_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/class_detail" />
+
+            <TextView
+                android:id="@+id/tvClassDetail"
+                style="@style/text_view_home_description_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="Teacher: Anjali\nDateTime: 3rd September,5:00PM-5:45PM\nThursday" />
+
+            <TextView
+                style="@style/text_view_home_title_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/special_instructions" />
+
+            <br.tiagohm.markdownview.MarkdownView
+                android:id="@+id/tvSpecialInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10_dp"
+                app:escapeHtml="false" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>

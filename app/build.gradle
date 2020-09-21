@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -66,10 +67,20 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_extensions_verision"
     implementation project(path: ':commonUI')
 
+    // Room DB
+    implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+
+
     //google auth
     implementation "com.google.android.gms:play-services-auth:$google_auth"
 
     implementation 'androidx.preference:preference:1.1.1'
+
+    //markDown lib
+    implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+    implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
