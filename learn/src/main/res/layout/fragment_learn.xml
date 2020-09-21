@@ -35,6 +35,6 @@
 
         <include
             layout="@layout/component_progress_bar"
-            android:visibility="@{viewmodel.showLoadingIndicator ? View.VISIBLE : View.GONE}" />
+            android:id="@+id/progress_bar_button" />
     </LinearLayout>
 </layout>

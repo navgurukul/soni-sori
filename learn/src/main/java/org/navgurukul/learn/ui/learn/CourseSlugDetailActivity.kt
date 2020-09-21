@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.tiagohm.markdownview.css.styles.Github
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
@@ -91,11 +92,11 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
 
     private fun fetchMarkDownContent() {
+        mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(currentStudy.courseId, currentStudy.exerciseSlugName)
             .observe(this, Observer {
-                mBinding.progressBar.visibility = View.VISIBLE
+                mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty() && null != it.first().content) {
-                    mBinding.progressBar.visibility = View.GONE
                     mBinding.markDownContent.apply {
                         this.addStyleSheet(Github())
                         this.loadMarkdown(it.first().content)
@@ -155,5 +156,14 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         if (!isFromPreviousActivity)
             CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
         finish()
+    }
+
+    fun getYouTubePlayerView(videoId: String) {
+        lifecycle.addObserver(mBinding.youtubeView)
+        mBinding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer) {
+                youTubePlayer.loadVideo(videoId, 0f)
+            }
+        })
     }
 }

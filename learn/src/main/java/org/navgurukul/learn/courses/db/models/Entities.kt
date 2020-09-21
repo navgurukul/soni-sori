@@ -1,56 +1,15 @@
 package org.navgurukul.learn.courses.db.models
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import java.io.Serializable
 
-// This class all model classes which represent our DB entities.
-
-// Table which stores all the courses
-@Entity(tableName = "saral_courses")
-data class Course(
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "id")
-    @SerializedName("id")
-    val id: String,
-
-    @ColumnInfo(name = "name")
-    @SerializedName("name")
-    val name: String,
-
-    @ColumnInfo(name = "type")
-    @SerializedName("type")
-    val type: String?,
-
-    @ColumnInfo(name = "logo")
-    @SerializedName("logo")
-    val logoUrl: String?,
-
-    @ColumnInfo(name = "short_description")
-    @SerializedName("short_description")
-    val description: String?,
-
-    @ColumnInfo(name = "sequence_number")
-    @SerializedName("sequence_num")
-    val sequence: String?,
-
-    var number: String? = "0"
-)
-
-
 // Since one course can have multiple exercises. Course id will be a foreign key for exercise
-@Entity(
-    tableName = "course_exercise",
-    foreignKeys = [
-        ForeignKey(
-            entity = Course::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("course_id"),
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity(tableName = "course_exercise")
 data class Exercise(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")

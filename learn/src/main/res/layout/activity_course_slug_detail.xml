@@ -24,18 +24,26 @@
 
         <include
             android:id="@+id/slideComponent"
-            android:layout_below="@+id/header"
+            layout="@layout/component_exercise_detail_sliding_pan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/header"
             android:layout_marginStart="@dimen/dimen_slider_layout"
-            android:layout_marginTop="@dimen/dimen_20_dp"
-            layout="@layout/component_exercise_detail_sliding_pan" />
+            android:layout_marginTop="@dimen/dimen_20_dp" />
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_youtube_view_height"
+            app:autoPlay="false"
+            app:showFullScreenButton="true" />
+
 
         <br.tiagohm.markdownview.MarkdownView
             android:id="@+id/markDownContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/header"
+            android:layout_below="@+id/youtube_view"
             android:layout_marginTop="@dimen/dimen_10_dp"
             app:escapeHtml="false" />
 
@@ -44,7 +52,6 @@
             layout="@layout/component_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="@{viewmodel.showLoadingIndicator ? View.VISIBLE : View.GONE}" />
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 </layout>

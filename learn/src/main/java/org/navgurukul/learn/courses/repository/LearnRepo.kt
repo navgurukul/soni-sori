@@ -1,8 +1,6 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Deferred
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -10,11 +8,11 @@ import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.ExerciseSlug
-import org.navgurukul.learn.courses.network.CoursesResponseContainer
 import org.navgurukul.learn.courses.network.ExerciseResponseContainer
 import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.ui.common.Util
+import org.navgurukul.learn.courses.network.model.PathWayCourseContainer
+import org.navgurukul.learn.util.LearnUtils
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -24,25 +22,27 @@ class LearnRepo(
 
     fun getCoursesData(): LiveData<List<Course>?> {
         val courseDao = database.courseDao()
-        return object : NetworkBoundResource<List<Course>, CoursesResponseContainer>() {
-            override suspend fun saveCallResult(data: CoursesResponseContainer) {
-                courseDao.insertCourses(data.availableCourses)
+        return object : NetworkBoundResource<List<Course>, PathWayCourseContainer>() {
+            override suspend fun saveCallResult(data: PathWayCourseContainer) {
+                data.courses?.map {
+                    it.pathwayId = data.id
+                    it.pathwayName = data.name
+                }?.toList()
+                courseDao.insertCourses(data.courses!!)
             }
 
             override fun shouldFetch(data: List<Course>?): Boolean {
-                //if network avail && shared pref
-                return Util.isOnline(application) && (data == null || data.isEmpty())
-//                TODO: inform user to please connect to interest and try again
+                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
-            override suspend fun makeApiCallAsync(): Deferred<CoursesResponseContainer> {
-                return courseApi.getCoursesAsync()
+            override suspend fun makeApiCallAsync(): Deferred<PathWayCourseContainer> {
+                return courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
             }
 
             override suspend fun loadFromDb(): List<Course>? {
                 val data = courseDao.getAllCoursesDirect()
                 data?.forEachIndexed { index, course ->
-                    course.number = (index + 1).toString()
+                    course.number = (index + 1)
                 }
                 return data
             }
@@ -61,7 +61,7 @@ class LearnRepo(
 
             override fun shouldFetch(data: List<Exercise>?): Boolean {
                 //if network avail && shared pref
-                return Util.isOnline(application) && (data == null || data.isEmpty())
+                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
             override suspend fun makeApiCallAsync(): Deferred<ExerciseResponseContainer> {
@@ -92,7 +92,7 @@ class LearnRepo(
 
             override fun shouldFetch(data: List<ExerciseSlug>?): Boolean {
                 //if network avail && shared pref
-                return Util.isOnline(application) && (data == null || data.isEmpty())
+                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
             override suspend fun makeApiCallAsync(): Deferred<ExerciseSlug> {

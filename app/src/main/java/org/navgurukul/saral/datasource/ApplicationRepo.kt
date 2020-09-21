@@ -7,9 +7,6 @@ import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.network.CoursesResponseContainer
-import org.navgurukul.learn.courses.network.NetworkBoundResource
-import org.navgurukul.learn.ui.common.Util
 import org.navgurukul.saral.datasource.network.SaralApi
 import org.navgurukul.saral.datasource.network.model.ClassesContainer
 import org.navgurukul.saral.datasource.network.model.LoginRequest
@@ -35,28 +32,7 @@ class ApplicationRepo(
     }
 
     fun fetchWhereYouLeftData(): LiveData<List<Course>?> {
-        val courseDao = courseDb.courseDao()
-        return object : NetworkBoundResource<List<Course>, CoursesResponseContainer>() {
-            override suspend fun saveCallResult(data: CoursesResponseContainer) {
-                courseDao.insertCourses(data.availableCourses)
-            }
-
-            override fun shouldFetch(data: List<Course>?): Boolean {
-                return Util.isOnline(application) && (data == null || data.isEmpty())
-            }
-
-            override suspend fun makeApiCallAsync(): Deferred<CoursesResponseContainer> {
-                return applicationApi.getCoursesAsync()
-            }
-
-            override suspend fun loadFromDb(): List<Course>? {
-                val data = courseDao.getAllCoursesDirect()
-                data?.forEachIndexed { index, course ->
-                    course.number = (index + 1).toString()
-                }
-                return data
-            }
-        }.asLiveData()
+       TODO()
     }
 
     suspend fun fetchOtherCourseData(): List<ClassesContainer.Classes>? {

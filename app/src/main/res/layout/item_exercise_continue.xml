@@ -34,7 +34,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/dimen_5_dp"
                     android:padding="@dimen/dimen_2_dp"
-                    app:imageUrl="@{course.number}"
+                    app:imageUrl="@{``+course.number}"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_toEndOf="@+id/ivSequence"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="@{course.description}"
+                    android:text="@{course.shortDescription}"
                     tools:text="Study all the basics of python" />
 
                 <ImageView

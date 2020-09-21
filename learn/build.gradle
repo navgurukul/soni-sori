@@ -62,6 +62,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit_gson_adapter"
     implementation "com.squareup.okhttp3:logging-interceptor:$version_retrofit_log"
 
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
     //test
     testImplementation 'junit:junit:4.13'
 

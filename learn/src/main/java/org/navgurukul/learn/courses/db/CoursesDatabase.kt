@@ -15,10 +15,10 @@ interface CourseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(course: List<Course>)
 
-    @Query("select * from saral_courses where id= :id")
+    @Query("select * from pathway_course where id= :id")
     fun course(id: String): LiveData<Course>
 
-    @Query("select * from saral_courses")
+    @Query("select * from pathway_course")
     fun getAllCoursesDirect(): List<Course>?
 }
 
@@ -49,7 +49,7 @@ interface CurrentStudyDao {
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
-    suspend fun getCurrentStudyForCourse(courseId: String): List<CurrentStudy>
+    suspend fun getCurrentStudyForCourse(courseId: String?): List<CurrentStudy>
 }
 
 
