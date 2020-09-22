@@ -5,7 +5,6 @@ import androidx.room.*
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.ExerciseSlug
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
 const val DB_VERSION = 1
@@ -25,22 +24,17 @@ interface CourseDao {
 @Dao
 interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExercise(course: List<Exercise>)
+    fun insertExercise(course: List<Exercise?>?)
 
-    @Query("select * from course_exercise where course_id = :courseId")
+    @Query("select * from course_exercise where courseId = :courseId")
     fun getAllExercisesForCourse(courseId: String): LiveData<List<Exercise>>
 
-    @Query("select * from course_exercise where course_id = :courseId")
+    @Query("select * from course_exercise where id = :exerciseId")
+    fun getExerciseById(exerciseId: String): LiveData<List<Exercise>>
+
+
+    @Query("select * from course_exercise where courseId = :courseId")
     fun getAllExercisesForCourseDirect(courseId: String): List<Exercise>
-}
-
-@Dao
-interface ExerciseSlugDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExerciseSlug(course: ExerciseSlug)
-
-    @Query("select * from exercise_slug where slug = :slug")
-    fun getSlugForExercisesDirect(slug: String): List<ExerciseSlug>
 }
 
 @Dao
@@ -55,7 +49,7 @@ interface CurrentStudyDao {
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Course::class, Exercise::class, ExerciseSlug::class, CurrentStudy::class],
+    entities = [Course::class, Exercise::class, CurrentStudy::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -65,6 +59,5 @@ abstract class CoursesDatabase : RoomDatabase() {
     // DAOs for course, exercises and its sub exercise
     abstract fun courseDao(): CourseDao
     abstract fun exerciseDao(): ExerciseDao
-    abstract fun exerciseSlugDao(): ExerciseSlugDao
     abstract fun currentStudyDao(): CurrentStudyDao
 }

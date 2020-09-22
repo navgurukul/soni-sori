@@ -11,17 +11,17 @@ class Converters {
     companion object {
         @TypeConverter
         @JvmStatic
-        fun listToString(exerciseList: List<Exercise>): String? {
-            if (exerciseList.isNullOrEmpty()) return null
-            val listType: Type = object : TypeToken<List<Exercise?>?>() {}.type
-            return Gson().toJson(exerciseList, listType)
+        fun listToString(list: List<Exercise.ExerciseSlugDetail>): String? {
+            if (list.isNullOrEmpty()) return null
+            val listType: Type = object : TypeToken<List<Exercise.ExerciseSlugDetail?>?>() {}.type
+            return Gson().toJson(list, listType)
         }
 
         @TypeConverter
         @JvmStatic
-        fun stringToList(stringValue: String?): List<Exercise> {
+        fun stringToList(stringValue: String?): List<Exercise.ExerciseSlugDetail> {
             if (stringValue.isNullOrEmpty()) return emptyList()
-            val listType: Type = object : TypeToken<List<Exercise?>?>() {}.type
+            val listType: Type = object : TypeToken<List<Exercise.ExerciseSlugDetail?>?>() {}.type
             return Gson().fromJson(stringValue, listType)
         }
     }

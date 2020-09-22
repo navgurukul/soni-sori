@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.databinding.FragmentLearnBinding
-import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 
 class LearnFragment : Fragment() {
@@ -40,11 +39,10 @@ class LearnFragment : Fragment() {
 
     private fun fetchData(forceUpdate: Boolean) {
         viewModel.fetchCourseData(forceUpdate).observe(viewLifecycleOwner, Observer {
-            mBinding.progressBarButton.visibility = View.GONE
             if (null != it && it.isNotEmpty()) {
+                mBinding.progressBarButton.visibility = View.GONE
                 mCourseAdapter.submitList(it)
-            } else
-                toast(getString(R.string.no_courses_available))
+            }
 
         })
     }

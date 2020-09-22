@@ -12,7 +12,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.BuildConfig
-import org.navgurukul.learn.courses.db.*
+import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnViewModel
@@ -46,7 +46,7 @@ val netModule = module {
     }
 
     fun provideGson(): Gson {
-        return GsonBuilder().create()
+        return GsonBuilder().setLenient().create()
     }
 
 

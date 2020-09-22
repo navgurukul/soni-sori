@@ -14,7 +14,6 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
-import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.common.toolbarColor
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 
@@ -81,6 +80,7 @@ class CourseDetailActivity : AppCompatActivity() {
                         courseId, courseName, it.first.slug!!, it.first.name, it.first.id
                     )
                 )
+            finish()
         }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -92,12 +92,11 @@ class CourseDetailActivity : AppCompatActivity() {
     private fun fetchData() {
         mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
         viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
-            mBinding.contentCourseDetail.progressBar.visibility = View.GONE
             if (null != it && it.isNotEmpty()) {
+                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
                 masterData = it as MutableList<Exercise>
                 mAdapter.submitList(it)
-            } else
-                toast(getString(R.string.detail_not_available))
+            }
         })
     }
 

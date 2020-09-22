@@ -17,8 +17,12 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
         emitSource(learnRepo.getCoursesExerciseData(courseId))
     }
 
-    fun fetchExerciseSlug(courseId: String, slug: String) = liveData {
-        emitSource(learnRepo.getExerciseSlugData(courseId, slug))
+    fun fetchExerciseSlug(
+        exerciseId: String,
+        courseId: String,
+        forceUpdate: Boolean
+    ) = liveData {
+        emitSource(learnRepo.getExerciseSlugData(exerciseId, courseId, forceUpdate))
     }
 
     fun saveCourseExerciseCurrent(

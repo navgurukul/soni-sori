@@ -7,10 +7,9 @@ import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.ExerciseSlug
-import org.navgurukul.learn.courses.network.ExerciseResponseContainer
 import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
+import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.model.PathWayCourseContainer
 import org.navgurukul.learn.util.LearnUtils
 
@@ -51,20 +50,19 @@ class LearnRepo(
 
     fun getCoursesExerciseData(courseId: String): LiveData<List<Exercise>?> {
         val exerciseDao = database.exerciseDao()
-        return object : NetworkBoundResource<List<Exercise>, ExerciseResponseContainer>() {
-            override suspend fun saveCallResult(data: ExerciseResponseContainer) {
-                val mappedData = data.data.map {
-                    it.apply { this.courseId = courseId }
-                }.toList()
+        return object : NetworkBoundResource<List<Exercise>, CourseExerciseContainer>() {
+            override suspend fun saveCallResult(data: CourseExerciseContainer) {
+                val mappedData = data.course?.exercises?.map {
+                    it.apply { this?.courseId = courseId }
+                }?.toList()
                 exerciseDao.insertExercise(mappedData)
             }
 
             override fun shouldFetch(data: List<Exercise>?): Boolean {
-                //if network avail && shared pref
                 return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
-            override suspend fun makeApiCallAsync(): Deferred<ExerciseResponseContainer> {
+            override suspend fun makeApiCallAsync(): Deferred<CourseExerciseContainer> {
                 return courseApi.getExercisesAsync(courseId)
             }
 
@@ -78,31 +76,24 @@ class LearnRepo(
 
     private fun parseData(data: List<Exercise>) {
         data.forEachIndexed { index, exercise ->
-            var sequence = (index + 1).toString()
-            exercise.number = sequence
+            exercise.number = (index + 1)
         }
     }
 
-    fun getExerciseSlugData(courseId: String, slug: String): LiveData<List<ExerciseSlug>?> {
-        val exerciseSlugDao = database.exerciseSlugDao()
-        return object : NetworkBoundResource<List<ExerciseSlug>, ExerciseSlug>() {
-            override suspend fun saveCallResult(data: ExerciseSlug) {
-                exerciseSlugDao.insertExerciseSlug(data)
-            }
-
-            override fun shouldFetch(data: List<ExerciseSlug>?): Boolean {
-                //if network avail && shared pref
-                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
-            }
-
-            override suspend fun makeApiCallAsync(): Deferred<ExerciseSlug> {
-                return courseApi.getExercisesSlugAsync(courseId, slug)
-            }
-
-            override suspend fun loadFromDb(): List<ExerciseSlug>? {
-                return exerciseSlugDao.getSlugForExercisesDirect(slug)
-            }
-        }.asLiveData()
+    suspend fun getExerciseSlugData(
+        exerciseId: String,
+        courseId: String,
+        forceUpdate: Boolean
+    ): LiveData<List<Exercise>> {
+        val exerciseDao = database.exerciseDao()
+        if (forceUpdate) {
+            val result = courseApi.getExercisesAsync(courseId).await()
+            val mappedData = result.course?.exercises?.map {
+                it.apply { this?.courseId = courseId }
+            }?.toList()
+            exerciseDao.insertExercise(mappedData)
+        }
+        return exerciseDao.getExerciseById(exerciseId)
     }
 
     suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {

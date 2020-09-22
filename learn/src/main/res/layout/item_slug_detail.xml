@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_youtube_view_height"
+            android:visibility="gone"
+            app:autoPlay="false"
+            app:showFullScreenButton="true" />
+
+
+        <br.tiagohm.markdownview.MarkdownView
+            android:id="@+id/markDownContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10_dp"
+            android:visibility="gone"
+            app:escapeHtml="false" />
+
+        <View
+            android:id="@+id/pythonCodeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/defaultTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:padding="@dimen/dimen_20_dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

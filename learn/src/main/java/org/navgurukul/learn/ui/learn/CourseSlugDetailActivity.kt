@@ -8,14 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.tiagohm.markdownview.css.styles.Github
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
 
 
 class CourseSlugDetailActivity : AppCompatActivity() {
@@ -37,19 +36,26 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
-    private var isFromPreviousActivity = false
-
+    private lateinit var slugAdapter: ExerciseSlugAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
         parseIntentData()
         mBinding.header.title = currentStudy.exerciseName
-        fetchMarkDownContent()
         initUIElement()
-        initRecyclerView()
+        initRecyclerViewSlidingPanel()
+        initContentRV()
         saveCourseExercise()
+        initSwipeRefresh()
     }
 
+
+    private fun initSwipeRefresh() {
+        mBinding.swipeContainer.setOnRefreshListener {
+            fetchSlugContent(currentStudy.exerciseId, true)
+            mBinding.swipeContainer.isRefreshing = false
+        }
+    }
 
     private fun initUIElement() {
         mBinding.header.backButton.setOnClickListener {
@@ -74,13 +80,13 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private fun showPanel() {
         mBinding.slideComponent.slide.visibility = View.VISIBLE
         mBinding.slideComponent.slide.openPane()
-        mBinding.markDownContent.visibility = View.GONE
+        mBinding.recyclerViewSlug.visibility = View.GONE
     }
 
     private fun hidePanel() {
         mBinding.slideComponent.slide.visibility = View.GONE
         mBinding.slideComponent.slide.closePane()
-        mBinding.markDownContent.visibility = View.VISIBLE
+        mBinding.recyclerViewSlug.visibility = View.VISIBLE
     }
 
 
@@ -91,21 +97,35 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun fetchMarkDownContent() {
+    private fun initContentRV() {
+        slugAdapter = ExerciseSlugAdapter {
+
+        }
+        val layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerViewSlug.layoutManager = layoutManager
+        mBinding.recyclerViewSlug.adapter = slugAdapter
+        fetchSlugContent(currentStudy.exerciseId, false)
+
+    }
+
+    private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
-        viewModel.fetchExerciseSlug(currentStudy.courseId, currentStudy.exerciseSlugName)
+        viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
             .observe(this, Observer {
                 mBinding.progressBar.visibility = View.GONE
-                if (null != it && it.isNotEmpty() && null != it.first().content) {
-                    mBinding.markDownContent.apply {
-                        this.addStyleSheet(Github())
-                        this.loadMarkdown(it.first().content)
-                    }
+                if (null != it && it.isNotEmpty()) {
+                    val data = parseDataForContent(it)
+                    slugAdapter.submitList(data)
                 }
             })
     }
 
-    private fun initRecyclerView() {
+    private fun parseDataForContent(it: List<Exercise>?): List<Exercise.ExerciseSlugDetail> {
+        return it?.firstOrNull()?.content ?: return mutableListOf()
+    }
+
+    private fun initRecyclerViewSlidingPanel() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank()) {
                 start(
@@ -126,7 +146,6 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
         mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
         if (CourseDetailActivity.masterData.isEmpty()) {
-            isFromPreviousActivity = false
             fetchAndSetMasterData()
         } else
             mAdapter.submitList(CourseDetailActivity.masterData)
@@ -153,17 +172,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun moveToPreviousPage() {
-        if (!isFromPreviousActivity)
-            CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
+        CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
         finish()
     }
 
-    fun getYouTubePlayerView(videoId: String) {
-        lifecycle.addObserver(mBinding.youtubeView)
-        mBinding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer) {
-                youTubePlayer.loadVideo(videoId, 0f)
-            }
-        })
-    }
 }

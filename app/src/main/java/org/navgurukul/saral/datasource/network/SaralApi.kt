@@ -2,17 +2,16 @@ package org.navgurukul.saral.datasource.network
 
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
-import org.navgurukul.learn.courses.network.CoursesResponseContainer
-import org.navgurukul.saral.datasource.network.model.*
+import org.navgurukul.saral.datasource.network.model.ClassesContainer
+import org.navgurukul.saral.datasource.network.model.LoginRequest
+import org.navgurukul.saral.datasource.network.model.LoginResponse
+import org.navgurukul.saral.datasource.network.model.MyClassContainer
 import retrofit2.http.*
 
 
 interface SaralApi {
     @POST("users/auth/google")
     fun initLoginAsync(@Body loginRequest: LoginRequest): Deferred<LoginResponse>
-
-    @GET("courses")
-    fun getCoursesAsync(): Deferred<CoursesResponseContainer>
 
     @GET("classes/upcoming")
     fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer>
