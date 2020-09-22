@@ -20,7 +20,7 @@ class LearnRepo(
     private val database: CoursesDatabase
 ) {
 
-    fun getCoursesData(): LiveData<List<Course>?> {
+    fun getCoursesData(forceUpdate: Boolean): LiveData<List<Course>?> {
         val courseDao = database.courseDao()
         return object : NetworkBoundResource<List<Course>, PathWayCourseContainer>() {
             override suspend fun saveCallResult(data: PathWayCourseContainer) {
@@ -32,7 +32,7 @@ class LearnRepo(
             }
 
             override fun shouldFetch(data: List<Course>?): Boolean {
-                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
+                return forceUpdate || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
             }
 
             override suspend fun makeApiCallAsync(): Deferred<PathWayCourseContainer> {

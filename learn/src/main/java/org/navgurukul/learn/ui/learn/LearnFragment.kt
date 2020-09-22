@@ -33,7 +33,13 @@ class LearnFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         mBinding.progressBarButton.visibility = View.VISIBLE
-        viewModel.fetchCourseData().observe(viewLifecycleOwner, Observer {
+        fetchData(false)
+
+        initSwipeRefresh()
+    }
+
+    private fun fetchData(forceUpdate: Boolean) {
+        viewModel.fetchCourseData(forceUpdate).observe(viewLifecycleOwner, Observer {
             mBinding.progressBarButton.visibility = View.GONE
             if (null != it && it.isNotEmpty()) {
                 mCourseAdapter.submitList(it)
@@ -41,6 +47,13 @@ class LearnFragment : Fragment() {
                 toast(getString(R.string.no_courses_available))
 
         })
+    }
+
+    private fun initSwipeRefresh() {
+        mBinding.swipeContainer.setOnRefreshListener {
+            fetchData(true)
+            mBinding.swipeContainer.isRefreshing = false
+        }
     }
 
     private fun initRecyclerView() {

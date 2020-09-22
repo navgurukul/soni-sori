@@ -16,25 +16,31 @@
         <import type="android.view.View" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/rlCourseContainer"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f2f2f2"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/component_course_header" />
+        <LinearLayout
+            android:id="@+id/rlCourseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f2f2f2"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_5_dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_course" />
+            <include layout="@layout/component_course_header" />
 
-        <include
-            layout="@layout/component_progress_bar"
-            android:id="@+id/progress_bar_button" />
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5_dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_course" />
+
+            <include
+                android:id="@+id/progress_bar_button"
+                layout="@layout/component_progress_bar" />
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
