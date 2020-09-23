@@ -37,6 +37,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
     private lateinit var slugAdapter: ExerciseSlugAdapter
+    private var masterData: MutableList<Exercise> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
@@ -80,6 +82,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private fun showPanel() {
         mBinding.slideComponent.slide.visibility = View.VISIBLE
         mBinding.slideComponent.slide.openPane()
+        initRecyclerViewSlidingPanel()
         mBinding.recyclerViewSlug.visibility = View.GONE
     }
 
@@ -145,10 +148,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
         mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
-        if (CourseDetailActivity.masterData.isEmpty()) {
-            fetchAndSetMasterData()
-        } else
-            mAdapter.submitList(CourseDetailActivity.masterData)
+        fetchAndSetMasterData()
     }
 
     private fun fetchAndSetMasterData() {
@@ -156,8 +156,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             mBinding.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
                 mBinding.progressBar.visibility = View.GONE
-                CourseDetailActivity.masterData = it as MutableList<Exercise>
-                mAdapter.submitList(CourseDetailActivity.masterData)
+                masterData = it as MutableList<Exercise>
+                mAdapter.submitList(masterData)
             }
         })
     }

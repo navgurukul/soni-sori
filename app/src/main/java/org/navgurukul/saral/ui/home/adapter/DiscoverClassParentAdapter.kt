@@ -80,10 +80,12 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
                 constraint: CharSequence,
                 results: FilterResults
             ) {
-                if (constraint.isEmpty())
-                    submitList(parseData(parentList.toMutableList()))
-                else
-                    submitList(parseData(results.values as MutableList<ClassesContainer.Classes?>))
+                if (results.values != null) {
+                    if (constraint.isEmpty())
+                        submitList(parseData(parentList.toMutableList()))
+                    else
+                        submitList(parseData(results.values as MutableList<ClassesContainer.Classes?>))
+                }
             }
         }
     }

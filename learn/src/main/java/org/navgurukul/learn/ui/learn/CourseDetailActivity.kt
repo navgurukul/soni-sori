@@ -30,10 +30,8 @@ class CourseDetailActivity : AppCompatActivity() {
             intent.putExtra(ARG_KEY_COURSE_NAME, courseName)
             context.startActivity(intent)
         }
-
-        var masterData: MutableList<Exercise> = mutableListOf()
     }
-
+    private var masterData: MutableList<Exercise> = mutableListOf()
     private lateinit var courseId: String
     private lateinit var courseName: String
     private lateinit var mBinding: ActivityCourseDetailBinding

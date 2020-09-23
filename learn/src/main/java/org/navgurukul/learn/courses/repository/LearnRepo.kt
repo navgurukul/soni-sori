@@ -31,7 +31,8 @@ class LearnRepo(
             }
 
             override fun shouldFetch(data: List<Course>?): Boolean {
-                return forceUpdate || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
+                return (forceUpdate && LearnUtils.isOnline(application))
+                        || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
             }
 
             override suspend fun makeApiCallAsync(): Deferred<PathWayCourseContainer> {
@@ -86,7 +87,7 @@ class LearnRepo(
         forceUpdate: Boolean
     ): LiveData<List<Exercise>> {
         val exerciseDao = database.exerciseDao()
-        if (forceUpdate) {
+        if (forceUpdate && LearnUtils.isOnline(application)) {
             val result = courseApi.getExercisesAsync(courseId).await()
             val mappedData = result.course?.exercises?.map {
                 it.apply { this?.courseId = courseId }
