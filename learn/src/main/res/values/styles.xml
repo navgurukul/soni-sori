@@ -34,6 +34,15 @@
 
     </style>
 
+    <style name="text_view_profile">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">@dimen/dimen_5_dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen_5_dp</item>
+        <item name="android:fontFamily">@font/n_regular</item>
+
+    </style>
+
     <style name="text_view_course_status">
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginStart">@dimen/dimen_5_dp</item>

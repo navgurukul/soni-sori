@@ -11,28 +11,28 @@ data class LoginResponse(
 ) {
     data class User(
         @SerializedName("center")
-        var center: Any?,
+        var center: Any? = null,
         @SerializedName("created_at")
-        var createdAt: String?,
+        var createdAt: String? = null,
         @SerializedName("email")
-        var email: String?,
+        var email: String? = "",
         @SerializedName("github_link")
-        var githubLink: Any?,
+        var githubLink: Any? = null,
         @SerializedName("google_user_id")
-        var googleUserId: String?,
+        var googleUserId: String? = null,
         @SerializedName("id")
-        var id: String?,
+        var id: String? = null,
         @SerializedName("linkedin_link")
-        var linkedinLink: Any?,
+        var linkedinLink: Any? = null,
         @SerializedName("medium_link")
-        var mediumLink: Any?,
+        var mediumLink: Any? = null,
         @SerializedName("name")
-        var name: String?,
+        var name: String? = "",
         @SerializedName("pathways")
-        var pathways: List<Any?>?,
+        var pathways: List<Any?>? = null,
         @SerializedName("profile_picture")
-        var profilePicture: String?,
+        var profilePicture: String? = null,
         @SerializedName("rolesList")
-        var rolesList: List<Any?>?
+        var rolesList: List<Any?>? = emptyList()
     )
 }

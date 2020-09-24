@@ -26,13 +26,56 @@ object AppUtils {
         return preferenceManager.getBoolean(KEY_USER_LOGIN, false)
     }
 
+    fun isFakeLogin(context: Context): Boolean {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferenceManager.getBoolean(KEY_IS_FAKE_LOGIN, false)
+    }
+
+    fun getCurrentUser(application: Context): LoginResponse.User {
+        var userLoginResponse: LoginResponse.User = LoginResponse.User()
+        val userLoginResponseString = PreferenceManager.getDefaultSharedPreferences(application)
+            .getString(KEY_USER_RESPONSE, "")
+        if (userLoginResponseString.isNullOrEmpty() && isFakeLogin(application)) {
+            val fakeUserLoginResponseString =
+                PreferenceManager.getDefaultSharedPreferences(application)
+                    .getString(KEY_FAKE_USER_RESPONSE, "")
+            if (!fakeUserLoginResponseString.isNullOrEmpty()) {
+                val fakeUserLoginResponse =
+                    Gson().fromJson(
+                        fakeUserLoginResponseString,
+                        FakeUserLoginResponse.User::class.java
+                    )
+                userLoginResponse.email = fakeUserLoginResponse.email
+                userLoginResponse.name = fakeUserLoginResponse?.name
+            }
+        } else
+            userLoginResponse =
+                Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
+        return userLoginResponse
+    }
+
+    fun getFakeLoginResponseId(application: Application): Int? {
+        val fakeUserLoginResponseString =
+            PreferenceManager.getDefaultSharedPreferences(application)
+                .getString(KEY_FAKE_USER_RESPONSE, "")
+        if (!fakeUserLoginResponseString.isNullOrEmpty()) {
+            val fakeUserLoginResponse =
+                Gson().fromJson(
+                    fakeUserLoginResponseString,
+                    FakeUserLoginResponse.User::class.java
+                )
+            return fakeUserLoginResponse?.id?.toIntOrNull()
+        }
+        return 0
+    }
+
     fun saveUserLoginResponse(
         response: LoginResponse,
         application: Application
     ) {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
         val editor = preferenceManager.edit()
-        editor.putString(KEY_USER_RESPONSE, Gson().toJson(response))
+        editor.putString(KEY_USER_RESPONSE, Gson().toJson(response.user))
         editor.putString(KEY_AUTH_TOKEN, response.token)
         editor.putBoolean(KEY_USER_LOGIN, true)
         editor.apply()
@@ -44,10 +87,17 @@ object AppUtils {
     ) {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
         val editor = preferenceManager.edit()
-        editor.putString(KEY_FAKE_USER_RESPONSE, Gson().toJson(response))
+        editor.putString(KEY_FAKE_USER_RESPONSE, Gson().toJson(response.user))
         editor.putString(KEY_AUTH_TOKEN, response.token)
         editor.putBoolean(KEY_USER_LOGIN, true)
         editor.putBoolean(KEY_IS_FAKE_LOGIN, true)
+        editor.apply()
+    }
+
+    fun saveUserResponse(user: LoginResponse.User, application: Application) {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
+        val editor = preferenceManager.edit()
+        editor.putString(KEY_FAKE_USER_RESPONSE, Gson().toJson(user))
         editor.apply()
     }
 
@@ -106,13 +156,6 @@ object AppUtils {
             ${classes.description}
             
             Class Type -  ${classes.classType}
-        """.trimIndent()
-    }
-
-    fun getSpecialInstruction(classes: ClassesContainer.Classes): String {
-        return """
-            ${classes.title}
-            ${classes.description}
         """.trimIndent()
     }
 

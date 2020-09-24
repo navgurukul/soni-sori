@@ -4,5 +4,6 @@ import java.io.Serializable
 
 data class LoginRequest(
     var idToken: String?,
-    var mode: String = "android"
+    var mode: String = "android",
+    var id: Int? = null
 ) : Serializable

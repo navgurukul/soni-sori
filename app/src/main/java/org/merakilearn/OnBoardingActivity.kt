@@ -1,5 +1,8 @@
 package org.merakilearn
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +16,15 @@ import org.merakilearn.util.AppUtils
 class OnBoardingActivity : AppCompatActivity() {
     private val splashTime: Long = 1500L
     private lateinit var mBinding: ActivityOnBoardingBinding
+
+    companion object {
+        fun launch(context: Context) {
+            val intent = Intent(context, OnBoardingActivity::class.java)
+            context.startActivity(intent)
+            (context as Activity).finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)

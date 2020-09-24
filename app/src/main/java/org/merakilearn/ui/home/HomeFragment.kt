@@ -51,7 +51,13 @@ class HomeFragment : Fragment() {
 
     private fun initToolBarClickListener() {
         mBinding.idHeader.ivProfilePic.setOnClickListener {
-
+            AppUtils.changeFragment(
+                parentFragmentManager,
+                ProfileFragment.newInstance(),
+                R.id.nav_host_fragment,
+                true,
+                LoginFragment.TAG
+            )
         }
     }
 

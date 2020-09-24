@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/rlDiscoverHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_discover_height"
+        android:background="@color/colorWhite">
+
+        <ImageView
+            android:id="@+id/ivBackButton"
+            android:layout_width="@dimen/dimen_50_dp"
+            android:layout_height="@dimen/dimen_50_dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_10_dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvMyDetails"
+            style="@style/text_view_home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_toEndOf="@+id/ivBackButton"
+            android:gravity="center_vertical"
+            android:text="@string/my_details" />
+
+        <ImageView
+            android:id="@+id/ivLogOut"
+            android:layout_width="@dimen/dimen_50_dp"
+            android:layout_height="@dimen/dimen_50_dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_10_dp"
+            android:src="@drawable/ic_log_out"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+</layout>

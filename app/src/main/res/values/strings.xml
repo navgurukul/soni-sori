@@ -35,4 +35,16 @@
 
     <string name="default_notification_channel_id" translatable="false">meraki_fcm_default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Meraki</string>
+    <string name="my_details">My Details</string>
+    <string name="name">Name</string>
+    <string name="email">Email Id</string>
+    <string name="save">Save</string>
+    <string name="link_google_account">Link Google Account</string>
+    <string name="unable_to_update">Unable to update your profile. Please try again</string>
+    <string name="profile_updated_successfully">Your profile is updated successfully</string>
+    <string name="account_linked_successfully">Account is linked successfully</string>
+    <string name="want_log_out">Are you sure you want to log out from application ?</string>
+    <string name="okay">Yes</string>
+    <string name="cancel">No</string>
+    <string name="please_connect">Please connect your account to update</string>
 </resources>

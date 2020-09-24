@@ -3,11 +3,15 @@ package org.merakilearn.datasource
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.ClassesContainer
 import org.merakilearn.datasource.network.model.LoginRequest
+import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.MyClassContainer
 import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -21,7 +25,10 @@ class ApplicationRepo(
 
     suspend fun initLoginServer(authToken: String?): Boolean {
         return try {
-            val req = applicationApi.initLoginAsync(LoginRequest(authToken))
+            val loginRequest = LoginRequest(authToken)
+            if (AppUtils.isFakeLogin(application))
+                loginRequest.id = AppUtils.getFakeLoginResponseId(application)
+            val req = applicationApi.initLoginAsync(loginRequest)
             val response = req.await()
             AppUtils.saveUserLoginResponse(response, application)
             true
@@ -32,7 +39,7 @@ class ApplicationRepo(
     }
 
     fun fetchWhereYouLeftData(): LiveData<List<Course>?> {
-       TODO()
+        TODO()
     }
 
     suspend fun fetchOtherCourseData(): List<ClassesContainer.Classes>? {
@@ -97,6 +104,31 @@ class ApplicationRepo(
             val req = applicationApi.initFakeSignUpAsync()
             val response = req.await()
             AppUtils.saveFakeLoginResponse(response, application)
+            true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun updateProfile(user: LoginResponse.User): Boolean {
+        return try {
+            val req = applicationApi.initUserUpdateAsync(user)
+            val response = req.await()
+            AppUtils.saveUserResponse(response, application)
+            true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun logOut(): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                courseDb.clearAllTables()
+                PreferenceManager.getDefaultSharedPreferences(application).edit().clear().apply()
+            }
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
