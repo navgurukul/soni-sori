@@ -66,5 +66,15 @@
             android:layout_centerHorizontal="true"
             android:text="@string/powered_by" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_button"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="@dimen/dimen_progress_bar"
+            android:layout_height="@dimen/dimen_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:elevation="2dp" />
     </RelativeLayout>
 </layout>

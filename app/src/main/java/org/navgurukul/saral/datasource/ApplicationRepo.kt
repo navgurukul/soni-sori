@@ -92,6 +92,18 @@ class ApplicationRepo(
         }
     }
 
+    suspend fun initFakeSignUp(): Boolean {
+        return try {
+            val req = applicationApi.initFakeSignUpAsync()
+            val response = req.await()
+            AppUtils.saveFakeLoginResponse(response, application)
+            true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            false
+        }
+    }
+
     companion object {
         private const val TAG = "ApplicationRepo"
     }

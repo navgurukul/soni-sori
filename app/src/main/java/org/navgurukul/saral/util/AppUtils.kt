@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import org.navgurukul.saral.datasource.network.model.ClassesContainer
+import org.navgurukul.saral.datasource.network.model.FakeUserLoginResponse
 import org.navgurukul.saral.datasource.network.model.LoginResponse
 
 object AppUtils {
@@ -15,6 +16,10 @@ object AppUtils {
     private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
     private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
     private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
+
+    private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
+    private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
+
 
     fun isUserLoggedIn(context: Context): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
@@ -30,6 +35,19 @@ object AppUtils {
         editor.putString(KEY_USER_RESPONSE, Gson().toJson(response))
         editor.putString(KEY_AUTH_TOKEN, response.token)
         editor.putBoolean(KEY_USER_LOGIN, true)
+        editor.apply()
+    }
+
+    fun saveFakeLoginResponse(
+        response: FakeUserLoginResponse,
+        application: Application
+    ) {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
+        val editor = preferenceManager.edit()
+        editor.putString(KEY_FAKE_USER_RESPONSE, Gson().toJson(response))
+        editor.putString(KEY_AUTH_TOKEN, response.token)
+        editor.putBoolean(KEY_USER_LOGIN, true)
+        editor.putBoolean(KEY_IS_FAKE_LOGIN, true)
         editor.apply()
     }
 

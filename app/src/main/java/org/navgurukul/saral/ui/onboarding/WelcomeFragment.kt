@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.saral.MainActivity
 import org.navgurukul.saral.R
 import org.navgurukul.saral.databinding.FragmentWelcomeBinding
@@ -21,6 +24,7 @@ class WelcomeFragment : Fragment() {
     }
 
     private lateinit var mBinding: FragmentWelcomeBinding
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +46,18 @@ class WelcomeFragment : Fragment() {
             )
         }
 
-        mBinding.tvStarted.setOnClickListener{
-            val intent = Intent(this.context, MainActivity::class.java)
-            startActivity(intent)
+        mBinding.tvStarted.setOnClickListener {
+            mBinding.progressBarButton.visibility = View.VISIBLE
+            viewModel.initFakeSignUp().observe(viewLifecycleOwner, Observer {
+                mBinding.progressBarButton.visibility = View.GONE
+                if (it) {
+                    val intent = Intent(this.context, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    toast(getString(R.string.please_login))
+                }
+            })
+
         }
     }
 

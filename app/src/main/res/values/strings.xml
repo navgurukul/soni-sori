@@ -29,4 +29,5 @@
     <string name="log_out_class">You have been dropped out of class successfully</string>
     <string name="unable_to_drop">Unable to drop out of class</string>
     <string name="drop_out">I want to drop out</string>
+    <string name="please_login">Please login into application</string>
 </resources>

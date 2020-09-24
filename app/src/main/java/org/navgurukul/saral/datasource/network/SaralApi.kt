@@ -2,10 +2,7 @@ package org.navgurukul.saral.datasource.network
 
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
-import org.navgurukul.saral.datasource.network.model.ClassesContainer
-import org.navgurukul.saral.datasource.network.model.LoginRequest
-import org.navgurukul.saral.datasource.network.model.LoginResponse
-import org.navgurukul.saral.datasource.network.model.MyClassContainer
+import org.navgurukul.saral.datasource.network.model.*
 import retrofit2.http.*
 
 
@@ -34,6 +31,9 @@ interface SaralApi {
         @Header(value = "Authorization") token: String?,
         @Path(value = "classId") classId: Int
     ): Deferred<ResponseBody>
+
+    @POST("users/create")
+    fun initFakeSignUpAsync(): Deferred<FakeUserLoginResponse>
 
 
 }
