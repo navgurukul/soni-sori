@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -88,6 +90,20 @@ dependencies {
     implementation "com.google.code.gson:gson:$version_gson"
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit_gson_adapter"
     implementation "com.squareup.okhttp3:logging-interceptor:$version_retrofit_log"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:19.1.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
     //test
     testImplementation 'junit:junit:4.13'
 

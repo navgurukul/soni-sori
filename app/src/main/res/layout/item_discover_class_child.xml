@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="org.navgurukul.saral.datasource.network.model.ClassesContainer.Classes" />
+            type="org.merakilearn.datasource.network.model.ClassesContainer.Classes" />
     </data>
 
     <RelativeLayout
