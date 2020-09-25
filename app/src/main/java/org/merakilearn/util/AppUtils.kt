@@ -97,7 +97,7 @@ object AppUtils {
     fun saveUserResponse(user: LoginResponse.User, application: Application) {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
         val editor = preferenceManager.edit()
-        editor.putString(KEY_FAKE_USER_RESPONSE, Gson().toJson(user))
+        editor.putString(KEY_USER_RESPONSE, Gson().toJson(user))
         editor.apply()
     }
 

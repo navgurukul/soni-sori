@@ -35,6 +35,9 @@ interface SaralApi {
     @POST("users/create")
     fun initFakeSignUpAsync(): Deferred<FakeUserLoginResponse>
 
-    @PUT("users/create")
-    fun initUserUpdateAsync(@Body loginResponse: LoginResponse.User): Deferred<LoginResponse.User>
+    @PUT("users/update")
+    fun initUserUpdateAsync(
+        @Header(value = "Authorization") token: String?,
+        @Body loginResponse: UserUpdate
+    ): Deferred<LoginResponse.User>
 }

@@ -9,10 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.model.ClassesContainer
-import org.merakilearn.datasource.network.model.LoginRequest
-import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.datasource.network.model.MyClassContainer
+import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
@@ -113,7 +110,11 @@ class ApplicationRepo(
 
     suspend fun updateProfile(user: LoginResponse.User): Boolean {
         return try {
-            val req = applicationApi.initUserUpdateAsync(user)
+
+            val req = applicationApi.initUserUpdateAsync(
+                AppUtils.getAuthToken(application),
+                UserUpdate(user.name)
+            )
             val response = req.await()
             AppUtils.saveUserResponse(response, application)
             true

@@ -118,7 +118,7 @@ class ProfileFragment : Fragment() {
             mBinding.llProfileEdit.visibility = View.GONE
             if (it) {
                 toast(getString(R.string.profile_updated_successfully))
-                childFragmentManager.popBackStack()
+                parentFragmentManager.popBackStack()
             } else
                 toast(getString(R.string.unable_to_update))
         })
