@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="classes"
+            type="org.navgurukul.saral.datasource.network.model.ClassesContainer.Classes" />
+
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_height_card_class"
+        android:layout_margin="@dimen/dimen_5_dp"
+        android:background="@drawable/rounded_rect_red">
+
+        <TextView
+            android:id="@+id/tvClassTitle"
+            style="@style/text_view_home_title_class"
+            android:layout_width="@dimen/dimen_width_upcoming"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="@{classes.classType}"
+            tools:text="Master Class" />
+
+        <TextView
+            android:id="@+id/tvClassDescription"
+            style="@style/text_view_home_description_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvClassTitle"
+            android:maxLines="4"
+            android:text='@{classes.title}'
+            tools:text="Study Basics Of Python" />
+
+    </RelativeLayout>
+</layout>

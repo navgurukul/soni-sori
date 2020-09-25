@@ -2,40 +2,37 @@ package org.navgurukul.saral.datasource.network.model
 
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class LoginResponse(
-    @SerializedName("jwt")
-    var jwt: String?,
+    @SerializedName("token")
+    var token: String?,
     @SerializedName("user")
     var user: User?
-):Serializable {
+) {
     data class User(
         @SerializedName("center")
-        var center: String?,
+        var center: Any?,
         @SerializedName("created_at")
         var createdAt: String?,
         @SerializedName("email")
         var email: String?,
         @SerializedName("github_link")
-        var githubLink: String?,
+        var githubLink: Any?,
         @SerializedName("google_user_id")
         var googleUserId: String?,
         @SerializedName("id")
         var id: String?,
-        @SerializedName("isAdmin")
-        var isAdmin: Boolean?,
-        @SerializedName("isAlumni")
-        var isAlumni: Boolean?,
-        @SerializedName("isFacilitator")
-        var isFacilitator: Boolean?,
         @SerializedName("linkedin_link")
-        var linkedinLink: String?,
+        var linkedinLink: Any?,
         @SerializedName("medium_link")
-        var mediumLink: String?,
+        var mediumLink: Any?,
         @SerializedName("name")
         var name: String?,
+        @SerializedName("pathways")
+        var pathways: List<Any?>?,
         @SerializedName("profile_picture")
-        var profilePicture: String?
-    ):Serializable
+        var profilePicture: String?,
+        @SerializedName("rolesList")
+        var rolesList: List<Any?>?
+    )
 }

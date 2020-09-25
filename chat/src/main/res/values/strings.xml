@@ -6,6 +6,9 @@
     <string name="action_quick_reply">Quick Reply</string>
     <string name="action_mark_room_read">Mark as read</string>
     <string name="notification_new_messages">New Messages</string>
+    <string name="chat">Chat</string>
+    <string name="type_answer_here">Type Answer Here...</string>
+
     <string name="downloaded_file">File %1$s has been downloaded!</string>
     <string name="call">Call</string>
     <string name="notification_listening_for_events">Listening for events</string>
@@ -189,12 +192,6 @@
     <string name="markdown_has_been_enabled">Markdown has been enabled.</string>
     <string name="markdown_has_been_disabled">Markdown has been disabled.</string>
     <string name="command_description_discard_session_not_handled">Only supported in encrypted rooms</string>
-    <string name="chat">Chat</string>
-    <string name="type_answer_here">Type Answer Here...</string>
-    <string name="demo_mgs_reply">I am fine thanks. What about you Annu? How your work is going?</string>
-    <string name="name_of_reciver">Abhisek Gupta</string>
-    <string name="sender_mgs">How are you? what are you doing? hjhjfk jkfkjjfj mkmkjfnrkj kmfjnfjnfjrfn mflkmlkmrklkdmkflmmflnr</string>
-    <string name="sender_name">Annu Bharti</string>
 
     <string name="send_file_step_idle">Waiting…</string>
     <string name="send_file_step_encrypting_thumbnail">Encrypting thumbnail…</string>

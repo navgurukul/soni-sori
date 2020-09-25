@@ -1,11 +1,11 @@
 package org.navgurukul.saral.ui.onboarding
 
 import androidx.lifecycle.*
-import org.navgurukul.saral.datasource.LoginRepo
+import org.navgurukul.saral.datasource.ApplicationRepo
 
-class LoginViewModel(private val loginRepo:LoginRepo) : ViewModel() {
+class LoginViewModel(private val applicationRepo:ApplicationRepo) : ViewModel() {
 
     fun initLoginServer(authToken:String?) = liveData {
-        emit(loginRepo.initLoginServer(authToken))
+        emit(applicationRepo.initLoginServer(authToken))
     }
 }

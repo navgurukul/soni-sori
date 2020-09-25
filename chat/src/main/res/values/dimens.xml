@@ -4,38 +4,24 @@
     <dimen name="chat_header_height">80dp</dimen>
     <dimen name="course_profile_pic">50dp</dimen>
     <dimen name="dimen_0_dp">0dp</dimen>
-
-
     <dimen name="dimen_2_dp">2dp</dimen>
     <dimen name="dimen_3_dp">3dp</dimen>
     <dimen name="dimen_4_dp">4dp</dimen>
     <dimen name="dimen_5_dp">5dp</dimen>
     <dimen name="dimen_8_dp">8dp</dimen>
     <dimen name="dimen_10_dp">10dp</dimen>
-
-
     <dimen name="dimen_15_dp">15dp</dimen>
     <dimen name="dimen_16_dp">16dp</dimen>
-
     <dimen name="dimen_20_dp">20dp</dimen>
     <dimen name="dimen_25_dp">25dp</dimen>
     <dimen name="dimen_35_dp">35dp</dimen>
     <dimen name="dimen_40_dp">40dp</dimen>
-
     <dimen name="dimen_68_dp">68dp</dimen>
-
-
     <dimen name="dimen_18_sp">18sp</dimen>
-
-
-
     <dimen name="avatar_size_small">32dp</dimen>
     <dimen name="circular_progress_bar_size">40dp</dimen>
     <dimen name="notification_area_minimum_height">48dp</dimen>
-
     <item name="dialog_width_ratio" format="float" type="dimen">0.75</item>
-
-
     <dimen name="pill_avatar_size">16dp</dimen>
     <dimen name="pill_min_height">20dp</dimen>
     <dimen name="chat_avatar_size">40dp</dimen>

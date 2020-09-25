@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_colorWhite"
+            android:padding="@dimen/dimen_10_dp">
+
+
+            <ImageView
+                android:id="@+id/iv_user_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                android:layout_width="@dimen/dimen_40_dp"
+                android:layout_height="@dimen/dimen_40_dp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_user_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_8_dp"
+                android:gravity="start"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:paddingBottom="@dimen/dimen_15_dp">
+
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_5_dp"
+                        android:layout_marginTop="@dimen/dimen_5_dp"
+                        android:layout_marginEnd="@dimen/dimen_10_dp"
+                        android:gravity="start"
+                        android:text="@string/sender_name"/>
+
+                    <TextView
+                        android:id="@+id/tv_reflection_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:background="@color/colorLightRedBg"
+                        android:layout_marginStart="@dimen/dimen_5_dp"
+                        android:layout_marginTop="@dimen/dimen_5_dp"
+                        android:layout_marginEnd="@dimen/dimen_20_dp"
+                        android:text="@string/sender_mgs"/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_self"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_colorWhite"
+            android:padding="10sp">
+
+
+            <ImageView
+                android:id="@+id/iv_user_profile_self"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                android:layout_width="@dimen/dimen_40_dp"
+                android:layout_height="@dimen/dimen_40_dp" />
+
+            <LinearLayout
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_user_profile_self"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_8_dp"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:paddingBottom="@dimen/dimen_15_dp">
+
+                    <TextView
+                        android:id="@+id/tv_user_name_self"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_5_dp"
+                        android:layout_marginTop="@dimen/dimen_5_dp"
+                        android:layout_marginRight="@dimen/dimen_5_dp"
+                        android:gravity="end"
+                        android:text="@string/name_of_reciver"/>
+
+                    <TextView
+                        android:id="@+id/tv_reflection_comment_self"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="@dimen/dimen_20_dp"
+                        android:layout_marginTop="@dimen/dimen_5_dp"
+                        android:layout_marginEnd="@dimen/dimen_5_dp"
+                        android:background="@color/colorLightRedBg"
+                        android:text="@string/demo_mgs_reply"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+    </layout>

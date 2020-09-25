@@ -34,7 +34,7 @@ class WelcomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         mBinding.tvAlready.setOnClickListener {
             AppUtils.changeFragment(
-                getParentFragmentManager(),
+                parentFragmentManager,
                 LoginFragment.newInstance(),
                 R.id.fragment_container_onboarding,
                 true,
