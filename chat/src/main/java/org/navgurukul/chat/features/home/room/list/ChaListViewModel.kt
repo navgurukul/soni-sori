@@ -4,21 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import im.vector.matrix.android.api.session.room.model.RoomSummary
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.repo.AuthenticationRepository
-import org.navgurukul.chat.core.utils.DataSource
 import org.navgurukul.chat.features.home.HomeRoomListDataSource
-import org.navgurukul.commonui.BaseViewModel
+import org.navgurukul.commonui.platform.BaseViewModel
+import org.navgurukul.commonui.platform.EmptyViewState
 
-class ChaListtViewModel(
+class ChaListViewModel(
     authenticationRepository: AuthenticationRepository,
     activeSessionHolder: ActiveSessionHolder,
     homeRoomListDataSource: HomeRoomListDataSource,
     roomSummaryItemFactory: RoomSummaryItemFactory
-) : BaseViewModel(), Listener {
+) : BaseViewModel<RoomListViewEvents, EmptyViewState>(EmptyViewState), Listener {
 
     val rooms: MutableLiveData<List<RoomSummaryItem>> = MutableLiveData()
 
@@ -39,12 +38,12 @@ class ChaListtViewModel(
             .subscribe { roomsList ->
                 rooms.value = roomsList
             }
-            .addTo(disposable)
+            .disposeOnClear()
 
     }
 
     override fun onRoomClicked(room: RoomSummary) {
-        TODO("Not yet implemented")
+        _viewEvents.postValue(RoomListViewEvents.SelectRoom(room))
     }
 
 }

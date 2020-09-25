@@ -17,14 +17,18 @@
 package org.navgurukul.chat.features.home
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
 import com.amulyakhare.textdrawable.TextDrawable
 import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.request.ImageRequest
 import im.vector.matrix.android.api.session.content.ContentUrlResolver
 import im.vector.matrix.android.api.util.MatrixItem
+import org.navgurukul.chat.core.extensions.getBitmap
+import org.navgurukul.chat.core.extensions.getBitmapFromCache
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.utils.getColorFromRoomId
 import org.navgurukul.chat.core.utils.getColorFromUserId
@@ -56,6 +60,16 @@ class AvatarRenderer(private val activeSessionHolder: ActiveSessionHolder) {
                 .bold()
                 .endConfig()
                 .buildRound(matrixItem.firstLetterOfDisplayName(), avatarColor)
+    }
+
+    fun getAvatarDrawable(context: Context, matrixItem: MatrixItem, callback: (BitmapDrawable?) -> Unit) {
+        val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
+        ImageRequest.fromUri(resolvedUrl)?.getBitmap(context, callback)
+    }
+
+    fun getCachedAvatarDrawable(context: Context, matrixItem: MatrixItem): BitmapDrawable? {
+        val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
+        return ImageRequest.fromUri(resolvedUrl)?.getBitmapFromCache(context)
     }
 
     // PRIVATE API *********************************************************************************

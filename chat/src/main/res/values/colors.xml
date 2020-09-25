@@ -23,4 +23,11 @@
     <color name="saral_avatar_fill_2">#FF368bd6</color>
     <color name="saral_avatar_fill_3">#FFac3ba8</color>
     <color name="saral_avatar_fill_1">#FF03B381</color>
+
+    <color name="waiting_background_color">#AAAAAAAA</color>
+
+    <color name="header_panel_background">#FFF3F8FD</color>
+    <color name="block_background_color">#FFEEEEEE</color>
+    <color name="spoiler_background_color">#FF000000</color>
+
 </resources>

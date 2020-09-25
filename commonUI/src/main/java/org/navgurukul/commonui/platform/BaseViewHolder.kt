@@ -1,4 +1,4 @@
-package org.navgurukul.commonui
+package org.navgurukul.commonui.platform
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
