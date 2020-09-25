@@ -93,9 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_margin="@dimen/dimen_20_dp"
             android:background="@color/colorRed"
-            android:padding="@dimen/dimen_10_dp"
             android:text="@string/enroll_to_class"
             android:textColor="@color/colorWhite" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

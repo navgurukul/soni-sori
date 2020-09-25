@@ -1,5 +1,6 @@
 package org.merakilearn.util
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
+import org.merakilearn.OnBoardingActivity
 import org.merakilearn.datasource.network.model.ClassesContainer
 import org.merakilearn.datasource.network.model.FakeUserLoginResponse
 import org.merakilearn.datasource.network.model.LoginResponse
@@ -20,6 +22,12 @@ object AppUtils {
     private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
     private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
 
+    fun validateLoginStatus(context: Activity) {
+        val isUserLogin = isUserLoggedIn(context)
+        if (!isUserLogin) {
+            OnBoardingActivity.launch(context)
+        }
+    }
 
     fun isUserLoggedIn(context: Context): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
@@ -101,6 +109,14 @@ object AppUtils {
         editor.apply()
     }
 
+    fun resetFakeLogin(application: Application) {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)
+        val editor = preferenceManager.edit()
+        editor.putBoolean(KEY_IS_FAKE_LOGIN, false)
+        editor.apply()
+    }
+
+
     fun getAuthToken(context: Context): String? {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
         val token = preferenceManager.getString(KEY_AUTH_TOKEN, "")
@@ -158,5 +174,6 @@ object AppUtils {
             Class Type -  ${classes.classType}
         """.trimIndent()
     }
+
 
 }

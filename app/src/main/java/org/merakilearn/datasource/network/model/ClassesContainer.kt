@@ -37,7 +37,9 @@ data class ClassesContainer(
         val facilitator: Facilitator?,
         @SerializedName("rules")
         val rules: Rules?,
-        var number:Int? = 0
+        var number: Int? = 0,
+        @SerializedName("enrolled")
+        var isEnrolled: Boolean = false
     ) : Serializable {
         data class Facilitator(
             @SerializedName("name")

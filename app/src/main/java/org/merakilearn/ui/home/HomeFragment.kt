@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
+import org.merakilearn.ProfileActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
@@ -51,13 +52,7 @@ class HomeFragment : Fragment() {
 
     private fun initToolBarClickListener() {
         mBinding.idHeader.ivProfilePic.setOnClickListener {
-            AppUtils.changeFragment(
-                parentFragmentManager,
-                ProfileFragment.newInstance(),
-                R.id.nav_host_fragment,
-                true,
-                LoginFragment.TAG
-            )
+            ProfileActivity.launch(requireActivity())
         }
     }
 

@@ -17,6 +17,10 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
         emitSource(learnRepo.getCoursesExerciseData(courseId))
     }
 
+    fun fetchCourseExerciseDataWithCourse(courseId: String) = liveData {
+        emitSource(learnRepo.fetchCourseExerciseDataWithCourse(courseId))
+    }
+
     fun fetchExerciseSlug(
         exerciseId: String,
         courseId: String,
@@ -36,5 +40,6 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
     fun startDesiredActivity(courseId: String)= liveData {
         emit(learnRepo.fetchCurrentStudyForCourse(courseId))
     }
+
 
 }

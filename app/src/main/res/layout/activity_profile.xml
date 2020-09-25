@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="org.merakilearn.datasource.network.model.LoginResponse.User" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/idHeader"
+                layout="@layout/component_header_profile"
+                android:background="@color/colorWhite" />
+
+            <RelativeLayout
+                android:id="@+id/rlProfileHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10_dp"
+                android:background="@color/colorWhite">
+
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="@dimen/dimen_100_dp"
+                    android:layout_height="@dimen/dimen_100_dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:src="@drawable/avatar"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/text_view_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/ivEdit"
+                    android:layout_toEndOf="@+id/ivProfile"
+                    android:gravity="center_vertical"
+                    android:text="@={user.name}"
+                    tools:text="Neha Singh" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    style="@style/text_view_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_toStartOf="@+id/ivEdit"
+                    android:layout_toEndOf="@+id/ivProfile"
+                    android:gravity="center_vertical"
+                    android:text="@={user.email}"
+                    tools:text="nehasingh@xyz.com" />
+
+                <ImageView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="@dimen/dimen_50_dp"
+                    android:layout_height="@dimen/dimen_50_dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:src="@drawable/ic_edit"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/llProfileEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_10_dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10_dp"
+                    android:hint="@string/name"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:text="@={user.name}" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_10_dp"
+                    android:hint="@string/email"
+                    android:inputType="none"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:text="@={user.email}" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar_button"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="@dimen/dimen_progress_bar"
+            android:layout_height="@dimen/dimen_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:elevation="2dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/linkAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorRed"
+            android:padding="@dimen/dimen_10_dp"
+            android:text="@string/link_google_account"
+            android:textColor="@color/colorWhite"
+            android:visibility="visible" />
+    </RelativeLayout>
+</layout>

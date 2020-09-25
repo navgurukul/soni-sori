@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -31,6 +32,7 @@ class CourseDetailActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
     private var masterData: MutableList<Exercise> = mutableListOf()
     private lateinit var courseId: String
     private lateinit var courseName: String
@@ -42,6 +44,10 @@ class CourseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_detail)
         parseIntentData()
+        renderUI()
+    }
+
+    private fun renderUI() {
         initToolBar()
         initExpandableToolBar()
         initRecyclerView()
@@ -53,7 +59,31 @@ class CourseDetailActivity : AppCompatActivity() {
         if (intent.hasExtra(ARG_KEY_COURSE_ID) && intent.hasExtra(ARG_KEY_COURSE_NAME)) {
             courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
             courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
+        } else {
+            val action: String? = intent?.action
+            val data: Uri? = intent?.data
+            val uriString = data.toString()
+            if (action == Intent.ACTION_VIEW) {
+                if (uriString.contains("/courses/")) {
+                    fetchClassDataAndShow(uriString.split("/").last())
+                }
+            }
         }
+    }
+
+    private fun fetchClassDataAndShow(last: String) {
+        courseId = last
+        mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
+        viewModel.fetchCourseExerciseDataWithCourse(courseId).observe(this, Observer {
+            if (null != it && it.isNotEmpty()) {
+                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+                courseId = it.firstOrNull()?.id.toString()
+                courseName = it.firstOrNull()?.name.toString()
+                renderUI()
+            } else {
+                finish()
+            }
+        })
     }
 
     private fun initToolBar() {

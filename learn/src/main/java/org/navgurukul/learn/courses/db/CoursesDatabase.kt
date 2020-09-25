@@ -14,11 +14,17 @@ interface CourseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(course: List<Course>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCourse(course: Course?)
+
     @Query("select * from pathway_course where id= :id")
     fun course(id: String): LiveData<Course>
 
     @Query("select * from pathway_course")
     fun getAllCoursesDirect(): List<Course>?
+
+    @Query("select * from pathway_course where id=:courseId")
+    fun getCourseById(courseId: String): List<Course>
 }
 
 @Dao

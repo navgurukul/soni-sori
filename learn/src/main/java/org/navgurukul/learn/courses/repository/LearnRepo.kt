@@ -75,6 +75,7 @@ class LearnRepo(
         }.asLiveData()
     }
 
+
     private fun parseData(data: List<Exercise>) {
         data.forEachIndexed { index, exercise ->
             exercise.number = (index + 1)
@@ -97,6 +98,33 @@ class LearnRepo(
         return exerciseDao.getExerciseById(exerciseId)
     }
 
+
+    fun fetchCourseExerciseDataWithCourse(courseId: String): LiveData<List<Course>?> {
+        val courseDao = database.courseDao()
+        val exerciseDao = database.exerciseDao()
+        return object : NetworkBoundResource<List<Course>, CourseExerciseContainer>() {
+            override suspend fun saveCallResult(data: CourseExerciseContainer) {
+                val mappedData = data.course?.exercises?.map {
+                    it.apply { this?.courseId = courseId }
+                }?.toList()
+                courseDao.insertCourse(data.course)
+                exerciseDao.insertExercise(mappedData)
+            }
+
+            override fun shouldFetch(data: List<Course>?): Boolean {
+                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
+            }
+
+            override suspend fun makeApiCallAsync(): Deferred<CourseExerciseContainer> {
+                return courseApi.getExercisesAsync(courseId)
+            }
+
+            override suspend fun loadFromDb(): List<Course>? {
+                return courseDao.getCourseById(courseId)
+            }
+        }.asLiveData()
+    }
+
     suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
         val currentStudyDao = database.currentStudyDao()
         currentStudyDao.saveCourseExerciseCurrent(currentStudy)
@@ -106,4 +134,6 @@ class LearnRepo(
         val currentStudyDao = database.currentStudyDao()
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
+
+
 }

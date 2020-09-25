@@ -33,5 +33,9 @@ data class Course(
     @SerializedName("type")
     var type: String? = null,
     @Ignore
-    var number: Int? = null
+    var number: Int? = null,
+
+    @Ignore
+    @SerializedName("exercises")
+    var exercises: List<Exercise?>? = listOf()
 )

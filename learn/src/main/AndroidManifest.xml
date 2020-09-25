@@ -18,7 +18,23 @@
     <application>
         <activity
             android:name=".ui.learn.CourseDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="merakilearn.org"
+                    android:pathPattern="/course/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="merakilearn.org"
+                    android:pathPattern="/course/.*"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.learn.CourseSlugDetailActivity"

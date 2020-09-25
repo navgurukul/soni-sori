@@ -53,6 +53,7 @@ class WelcomeFragment : Fragment() {
                 if (it) {
                     val intent = Intent(this.context, MainActivity::class.java)
                     startActivity(intent)
+                    requireActivity().finish()
                 } else {
                     toast(getString(R.string.please_login))
                 }

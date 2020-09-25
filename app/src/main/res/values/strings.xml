@@ -27,7 +27,7 @@
     <string name="class_detail">Class Detail</string>
     <string name="special_instructions">Special Instructions</string>
     <string name="enroll_to_class">Enroll To Class</string>
-    <string name="unable_to_enroll">Unable to enroll you currently</string>
+    <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="enrolled">You have been enrolled to class successfully</string>
     <string name="log_out_class">You have been dropped out of class successfully</string>
     <string name="unable_to_drop">Unable to drop out of class</string>

@@ -22,12 +22,16 @@ class ApplicationRepo(
 
     suspend fun initLoginServer(authToken: String?): Boolean {
         return try {
+            val isFakeLogin = AppUtils.isFakeLogin(application)
             val loginRequest = LoginRequest(authToken)
-            if (AppUtils.isFakeLogin(application))
+            if (isFakeLogin) {
                 loginRequest.id = AppUtils.getFakeLoginResponseId(application)
+            }
             val req = applicationApi.initLoginAsync(loginRequest)
             val response = req.await()
             AppUtils.saveUserLoginResponse(response, application)
+            if (isFakeLogin)
+                AppUtils.resetFakeLogin(application)
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
@@ -75,6 +79,20 @@ class ApplicationRepo(
             mutableListOf()
         }
 
+    }
+
+    suspend fun fetchClassData(classId: String?): ClassesContainer.Classes? {
+        return try {
+            val req = applicationApi.fetchClassDataAsync(
+                AppUtils.getAuthToken(application),
+                classId?.toIntOrNull()
+            )
+            val response = req.await()
+            response
+        } catch (ex: Exception) {
+            Log.e(TAG, "fetchUpcomingClassData: ", ex)
+            null
+        }
     }
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
@@ -136,6 +154,7 @@ class ApplicationRepo(
             false
         }
     }
+
 
     companion object {
         private const val TAG = "ApplicationRepo"

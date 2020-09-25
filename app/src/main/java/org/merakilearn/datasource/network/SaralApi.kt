@@ -40,4 +40,10 @@ interface SaralApi {
         @Header(value = "Authorization") token: String?,
         @Body loginResponse: UserUpdate
     ): Deferred<LoginResponse.User>
+
+    @GET("classes/{classId}")
+    fun fetchClassDataAsync(
+        @Header(value = "Authorization") token: String?,
+        @Path(value = "classId") classId: Int?
+    ): Deferred<ClassesContainer.Classes>
 }

@@ -2,6 +2,7 @@ package org.merakilearn
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -39,11 +40,15 @@ class EnrollActivity : AppCompatActivity() {
     private lateinit var classes: ClassesContainer.Classes
     private var isEnrolled: Boolean = false
     private val viewModel: HomeViewModel by viewModel()
-
+    private var isFromDeepLink = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_discover_enroll)
         parseIntentData()
+
+    }
+
+    private fun initPageRender() {
         initToolBar()
         initExpandableToolBar()
         initButtonClick()
@@ -72,14 +77,14 @@ class EnrollActivity : AppCompatActivity() {
                 if (isEnrolled) {
                     if (it) {
                         toast(getString(R.string.log_out_class))
-                        finish()
+                        backToPreviousActivity()
                     } else {
                         toast(getString(R.string.unable_to_drop))
                     }
                 } else {
                     if (it) {
                         toast(getString(R.string.enrolled))
-                        finish()
+                        backToPreviousActivity()
                     } else {
                         toast(getString(R.string.unable_to_enroll))
                     }
@@ -92,7 +97,33 @@ class EnrollActivity : AppCompatActivity() {
         if (intent.hasExtra(ARG_KEY_CLASS_ID)) {
             classes = intent.getSerializableExtra(ARG_KEY_CLASS_ID) as ClassesContainer.Classes
             isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, false)
+            initPageRender()
+        } else {
+            isFromDeepLink = true
+            val action: String? = intent?.action
+            val data: Uri? = intent?.data
+            val uriString = data.toString()
+            if (action == Intent.ACTION_VIEW) {
+                if (uriString.contains("/class/")) {
+                    fetchClassDataAndShow(uriString.split("/").last())
+                }
+            }
         }
+    }
+
+    private fun fetchClassDataAndShow(last: String) {
+        mBinding.progressBarButton.visibility = View.VISIBLE
+        viewModel.fetchClassData(last).observe(this, Observer {
+            mBinding.progressBarButton.visibility = View.GONE
+            if (it != null) {
+                classes = it
+                isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, classes.isEnrolled)
+                initPageRender()
+            } else {
+                MainActivity.launch(this)
+            }
+
+        })
     }
 
     private fun initToolBar() {
@@ -109,8 +140,20 @@ class EnrollActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)
-            finish()
+            backToPreviousActivity()
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        backToPreviousActivity()
+    }
+
+    private fun backToPreviousActivity() {
+        if (isFromDeepLink) {
+            MainActivity.launch(this)
+        } else
+            finish()
     }
 
 }
