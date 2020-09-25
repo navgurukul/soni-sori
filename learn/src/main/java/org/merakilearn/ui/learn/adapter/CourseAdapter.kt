@@ -1,4 +1,4 @@
-package org.merakilearn.ui.home.adapter
+package org.merakilearn.ui.learn.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import org.merakilearn.databinding.ItemCourseBinding
 import org.merakilearn.ui.common.DataBoundListAdapter
 
 
-class WhereYouLeftAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
+class CourseAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
 
     DataBoundListAdapter<Course, ItemCourseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Course>() {

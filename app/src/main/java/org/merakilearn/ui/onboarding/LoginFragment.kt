@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentLoginBinding
-import org.navgurukul.learn.ui.common.toast
+import org.merakilearn.ui.common.toast
 
 
 class LoginFragment : Fragment() {

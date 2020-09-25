@@ -7,7 +7,7 @@
 
         <variable
             name="course"
-            type="org.navgurukul.learn.courses.db.models.Course" />
+            type="org.merakilearn.courses.db.models.Course" />
     </data>
 
     <RelativeLayout

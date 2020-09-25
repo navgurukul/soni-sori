@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="org.navgurukul.learn">
+    package="org.merakilearn">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +17,7 @@
 
     <application>
         <activity
-            android:name=".ui.learn.CourseDetailActivity"
+            android:name="org.merakilearn.ui.learn.CourseDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".ui.learn.CourseSlugDetailActivity"
+            android:name="org.merakilearn.ui.learn.CourseSlugDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 

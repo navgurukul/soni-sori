@@ -4,12 +4,12 @@ import android.app.Application
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.merakilearn.courses.db.CoursesDatabase
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.more.MoreViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
-import org.navgurukul.learn.courses.db.CoursesDatabase
 import retrofit2.Retrofit
 
 val viewModelModule = module {

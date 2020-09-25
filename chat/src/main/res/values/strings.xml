@@ -198,4 +198,9 @@
     <string name="send_file_step_sending_thumbnail">Sending thumbnail (%1$s / %2$s)</string>
     <string name="send_file_step_encrypting_file">Encrypting file…</string>
     <string name="send_file_step_sending_file">Sending file (%1$s / %2$s)</string>
+
+    <string name="demo_mgs_reply">I am fine thanks. What about you Annu? How your work is going?</string>
+    <string name="name_of_reciver">Abhisek Gupta</string>
+    <string name="sender_mgs">How are you? what are you doing? hjhjfk jkfkjjfj mkmkjfnrkj kmfjnfjnfjrfn mflkmlkmrklkdmkflmmflnr</string>
+    <string name="sender_name">Annu Bharti</string>
 </resources>

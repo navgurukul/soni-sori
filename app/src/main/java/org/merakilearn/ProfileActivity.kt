@@ -19,10 +19,10 @@ import com.google.android.gms.tasks.Task
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.ui.common.toast
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.util.AppUtils
-import org.navgurukul.learn.ui.common.toast
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
