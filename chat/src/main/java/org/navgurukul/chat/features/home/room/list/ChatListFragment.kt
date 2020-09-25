@@ -1,29 +1,23 @@
 package org.navgurukul.chat.features.home.room.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_chat.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.chat.R
+import org.navgurukul.chat.features.navigator.ChatNavigator
+import org.navgurukul.commonui.platform.BaseFragment
 
+class ChatListFragment : BaseFragment() {
 
-class ChatListFragment : androidx.fragment.app.Fragment() {
-
-    private val viewModel: ChaListtViewModel by viewModel()
+    private val viewModel: ChaListViewModel by viewModel()
+    private val navigator: ChatNavigator by inject()
     private val adapter: ChatListAdapter by lazy { ChatListAdapter(requireContext()) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_chat, container, false)
-    }
+    override fun getLayoutResId(): Int = R.layout.fragment_chat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +27,17 @@ class ChatListFragment : androidx.fragment.app.Fragment() {
             adapter.update(it)
         })
 
+        viewModel.viewEvents.observe(viewLifecycleOwner, Observer  {
+            when (it) {
+                is RoomListViewEvents.Loading    -> showLoading(it.message)
+                is RoomListViewEvents.Failure    -> showFailure(it.throwable)
+                is RoomListViewEvents.SelectRoom -> handleSelectRoom(it)
+                is RoomListViewEvents.Done       -> Unit
+            }
+        })
+    }
 
+    private fun handleSelectRoom(event: RoomListViewEvents.SelectRoom) {
+        navigator.openRoom(requireActivity(), event.roomSummary.roomId)
     }
 }

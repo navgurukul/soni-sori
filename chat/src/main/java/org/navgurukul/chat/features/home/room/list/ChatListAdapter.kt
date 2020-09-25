@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import im.vector.matrix.android.api.session.room.model.RoomSummary
 import org.navgurukul.chat.R
-import org.navgurukul.commonui.BaseViewHolder
+import org.navgurukul.commonui.platform.BaseViewHolder
 import org.navgurukul.commonui.DiffUtilCallback
 
 class ChatListAdapter(context: Context): RecyclerView.Adapter<BaseViewHolder<RoomSummaryItem>>() {

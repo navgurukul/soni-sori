@@ -17,17 +17,14 @@
 package org.navgurukul.chat.features.home.room.list
 
 import android.view.View
-import im.vector.matrix.android.api.session.room.members.ChangeMembershipState
 import im.vector.matrix.android.api.session.room.model.RoomSummary
 import im.vector.matrix.android.api.util.toMatrixItem
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.core.resources.DateProvider
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.room.TypingHelper
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
-import javax.inject.Inject
 
 interface Listener {
     fun onRoomClicked(room: RoomSummary)

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/waiting_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/waiting_background_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/waiting_view_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_4x"
+            android:background="?attr/colorBackgroundFloating"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_4x"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="@dimen/dialog_width_ratio">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/waiting_view_status_circular_progress"
+                    android:layout_width="@dimen/circular_progress_bar_size"
+                    android:layout_height="@dimen/circular_progress_bar_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/spacing_2x" />
+
+                <TextView
+                    android:id="@+id/waiting_view_status_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/textColor"
+                    android:visibility="gone"
+                    tools:text="Waiting status..."
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/waiting_view_status_horizontal_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:visibility="gone"
+                tools:max="100"
+                tools:progress="30"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

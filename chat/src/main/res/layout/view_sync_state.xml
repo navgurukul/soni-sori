@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <!-- Trick to remove surrounding padding (clip from wrapping frame) -->
+    <FrameLayout
+        android:id="@+id/syncStateProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:layout_gravity="center"
+            android:background="?colorSurface"
+            android:indeterminate="true" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/syncStateNoNetwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorError"
+        android:gravity="center"
+        android:text="@string/no_connectivity_to_the_server_indicator"
+        android:textColor="?attr/colorOnError"
+        android:visibility="gone"
+        tools:layout_marginTop="10dp"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/syncStateNoNetworkAirplane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/notification_accent_color"
+        android:visibility="gone"
+        tools:layout_marginTop="10dp"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="@string/no_connectivity_to_the_server_indicator_airplane"
+            android:textColor="?attr/colorOnPrimary"
+            app:drawableStartCompat="@drawable/ic_airplane_mode_16"
+            app:drawableTint="?attr/colorOnPrimary" />
+
+    </FrameLayout>
+
+</merge>
