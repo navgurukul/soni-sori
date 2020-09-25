@@ -4,4 +4,7 @@
 
     <attr name="textPrimary" format="color" />
     <attr name="textSecondary" format="color" />
+    <attr name="textContrast" format="color" />
+    <attr name="backgroundColor" format="color" />
+    <attr name="borderColor" format="color" />
 </resources>

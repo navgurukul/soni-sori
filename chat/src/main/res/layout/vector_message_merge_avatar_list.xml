@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/mels_list_avatar_1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:roundAsCircle="true"
+        tools:src="@tools:sample/avatars" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/mels_list_avatar_2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginLeft="-5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:ignore="NegativeMargin"
+        app:roundAsCircle="true"
+        tools:src="@tools:sample/avatars" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/mels_list_avatar_3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginLeft="-5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:ignore="NegativeMargin"
+        app:roundAsCircle="true"
+        tools:src="@tools:sample/avatars" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/mels_list_avatar_4"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginLeft="-5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:ignore="NegativeMargin"
+        app:roundAsCircle="true"
+        tools:src="@tools:sample/avatars" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/mels_list_avatar_5"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginLeft="-5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:ignore="NegativeMargin"
+        app:roundAsCircle="true"
+        tools:src="@tools:sample/avatars" />
+
+</LinearLayout>
