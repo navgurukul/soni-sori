@@ -42,7 +42,7 @@ import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
 val viewModelModules = module {
-    viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get(), get(), get()) }
+    viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
     viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
     viewModel { (roomDetailViewState : RoomDetailViewState) -> RoomDetailFragmentViewModel(roomDetailViewState, get(), get(), get(), get()) }
 }

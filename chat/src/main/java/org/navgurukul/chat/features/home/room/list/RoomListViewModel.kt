@@ -1,31 +1,18 @@
 package org.navgurukul.chat.features.home.room.list
 
-import androidx.lifecycle.viewModelScope
 import im.vector.matrix.rx.rx
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.launch
 import org.navgurukul.chat.core.repo.ActiveSessionDataSource
-import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.chat.features.home.HomeRoomListDataSource
 import org.navgurukul.commonui.platform.BaseViewModel
 
 class RoomListViewModel(
     initialState: RoomListViewState,
-    authenticationRepository: AuthenticationRepository,
-    activeSessionHolder: ActiveSessionHolder,
     private val activeSessionDataSource: ActiveSessionDataSource,
     private val homeRoomListDataSource: HomeRoomListDataSource
 ) : BaseViewModel<RoomListViewEvents, RoomListViewState>(initialState) {
 
     init {
-        //TODO remove this
-        if (!activeSessionHolder.hasActiveSession()) {
-            viewModelScope.launch {
-                authenticationRepository.login()
-            }
-        }
-
         observeRoomSummaries()
         observeSyncState()
     }

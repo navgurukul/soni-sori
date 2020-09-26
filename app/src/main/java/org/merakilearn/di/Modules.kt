@@ -10,6 +10,7 @@ import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.more.MoreViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.navgurukul.learn.courses.db.CoursesDatabase
+import org.navgurukul.chat.core.repo.AuthenticationRepository
 import retrofit2.Retrofit
 
 val viewModelModule = module {
@@ -29,15 +30,17 @@ val repositoryModule = module {
     fun provideAppRepo(
         api: SaralApi,
         application: Application,
-        courseDb: CoursesDatabase
+        courseDb: CoursesDatabase,
+        authenticationRepository: AuthenticationRepository
     ): ApplicationRepo {
         return ApplicationRepo(
             api,
             application,
-            courseDb
+            courseDb,
+            authenticationRepository
         )
     }
 
-    single { provideAppRepo(get(), androidApplication(),get()) }
+    single { provideAppRepo(get(), androidApplication(),get(), get()) }
 }
 val appModules = arrayListOf(viewModelModule,apiModule, repositoryModule)
