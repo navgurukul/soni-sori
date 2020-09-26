@@ -23,61 +23,34 @@ import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.core.resources.DateProvider
 import org.navgurukul.chat.core.utils.DebouncedClickListener
+import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.TypingHelper
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
-
-interface Listener {
-    fun onRoomClicked(room: RoomSummary)
-}
 
 class RoomSummaryItemFactory(
     private val displayableEventFormatter: DisplayableEventFormatter,
     private val dateFormatter: SaralDateFormatter,
-//    private val stringProvider: StringProvider,
+    private val avatarRenderer: AvatarRenderer,
     private val typingHelper: TypingHelper
 ) {
 
     fun create(
         roomSummary: RoomSummary,
-        listener: Listener?
+        listener: RoomSummaryController.Listener?
     ): RoomSummaryItem {
-        return when (roomSummary.membership) {
-//            Membership.INVITE -> {
-//                val changeMembershipState =
-//                    roomChangeMembershipStates[roomSummary.roomId] ?: ChangeMembershipState.Unknown
-//                createInvitationItem(roomSummary, changeMembershipState, listener)
-//            }
-            else -> createRoomItem(
-                roomSummary,
-                listener?.let { it::onRoomClicked })
-        }
+        return createRoomItem(
+            roomSummary,
+            listener?.let { it::onRoomClicked },
+            listener?.let { it::onRoomLongClicked })
     }
-
-//    private fun createInvitationItem(
-//        roomSummary: RoomSummary,
-//        changeMembershipState: ChangeMembershipState,
-//        listener: Listener?
-//    ): RoomSummaryItem {
-//        val secondLine = if (roomSummary.isDirect) {
-//            roomSummary.inviterId
-//        } else {
-//            roomSummary.inviterId?.let {
-//                stringProvider.getString(R.string.invited_by, it)
-//            }
-//        }
-//
-//        return RoomSummaryItem(
-//            id = roomSummary.roomId,
-//            matrixItem = roomSummary.toMatrixItem(),
-//            secondLine = secondLine,
-//            itemClickListener = View.OnClickListener { listener?.onRoomClicked(roomSummary) })
-//    }
 
     fun createRoomItem(
         roomSummary: RoomSummary,
-        onClick: ((RoomSummary) -> Unit)?
+        onClick: ((RoomSummary) -> Unit)?,
+        onLongClick: ((RoomSummary) -> Boolean)?
     ): RoomSummaryItem {
         val unreadCount = roomSummary.notificationCount
+        val showHighlighted = roomSummary.highlightCount > 0
         var latestFormattedEvent: CharSequence = ""
         var latestEventTime: CharSequence = ""
         val latestEvent = roomSummary.latestPreviewableEvent
@@ -85,8 +58,7 @@ class RoomSummaryItemFactory(
             val date = latestEvent.root.localDateTime()
             val currentDate = DateProvider.currentLocalDateTime()
             val isSameDay = date.toLocalDate() == currentDate.toLocalDate()
-            latestFormattedEvent =
-                displayableEventFormatter.format(latestEvent, roomSummary.isDirect.not())
+            latestFormattedEvent = displayableEventFormatter.format(latestEvent, roomSummary.isDirect.not())
             latestEventTime = if (isSameDay) {
                 dateFormatter.formatMessageHour(date)
             } else {
@@ -94,19 +66,25 @@ class RoomSummaryItemFactory(
             }
         }
         val typingMessage = typingHelper.getTypingMessage(roomSummary.typingUsers)
-        return RoomSummaryItem(
-            id = roomSummary.roomId,
-            matrixItem = roomSummary.toMatrixItem(),
-            lastEventTime = latestEventTime,
-            typingMessage = typingMessage,
-            lastFormattedEvent = latestFormattedEvent,
-            unreadNotificationCount = unreadCount,
-            hasUnreadMessage = roomSummary.hasUnreadMessages,
-            hasDraft = roomSummary.userDrafts.isNotEmpty(),
-            itemClickListener =
-            DebouncedClickListener(View.OnClickListener {
-                onClick?.invoke(roomSummary)
-            })
-        )
+        return RoomSummaryItem_()
+            .id(roomSummary.roomId)
+            .avatarRenderer(avatarRenderer)
+            .matrixItem(roomSummary.toMatrixItem())
+            .lastEventTime(latestEventTime)
+            .typingMessage(typingMessage)
+            .lastEvent(latestFormattedEvent.toString())
+            .lastFormattedEvent(latestFormattedEvent)
+            .showHighlighted(showHighlighted)
+            .unreadNotificationCount(unreadCount)
+            .hasUnreadMessage(roomSummary.hasUnreadMessages)
+            .hasDraft(roomSummary.userDrafts.isNotEmpty())
+            .itemLongClickListener { _ ->
+                onLongClick?.invoke(roomSummary) ?: false
+            }
+            .itemClickListener(
+                DebouncedClickListener(View.OnClickListener { _ ->
+                    onClick?.invoke(roomSummary)
+                })
+            )
     }
 }

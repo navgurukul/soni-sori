@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.navgurukul.commonui.platform.StateView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".features.home.room.list.RoomListFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/roomListToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/color_colorWhite"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/chat_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dimen_5_dp"
+                android:text="@string/title_chat"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/ic_avatar_border"
+                android:padding="@dimen/dimen_10_dp"
+                android:src="@drawable/avatar"
+                tools:ignore="ContentDescription" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <org.navgurukul.chat.features.sync.SyncStateView
+            android:id="@+id/syncStateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/roomListToolbar" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_2x"
+            android:background="@color/colorGrey"
+            app:layout_constraintTop_toBottomOf="@+id/syncStateView" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/roomListView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</org.navgurukul.commonui.platform.StateView>

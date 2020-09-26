@@ -45,7 +45,6 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionDataSource
 import org.navgurukul.chat.core.resources.StringProvider
 import timber.log.Timber
-import javax.inject.Inject
 
 class NoticeEventFormatter(
     private val activeSessionDataSource: ActiveSessionDataSource,

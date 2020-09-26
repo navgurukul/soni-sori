@@ -17,7 +17,6 @@ import org.navgurukul.chat.core.repo.*
 import org.navgurukul.chat.core.resources.*
 import org.navgurukul.chat.core.utils.DimensionConverter
 import org.navgurukul.chat.features.crypto.KeyRequestHandler
-import org.navgurukul.chat.features.home.room.list.ChaListViewModel
 import org.navgurukul.chat.features.grouplist.SelectedGroupDataSource
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.HomeRoomListDataSource
@@ -30,8 +29,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
 import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
 import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
-import org.navgurukul.chat.features.home.room.list.ChronologicalRoomComparator
-import org.navgurukul.chat.features.home.room.list.RoomSummaryItemFactory
+import org.navgurukul.chat.features.home.room.list.*
 import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.MatrixHtmlPluginConfigure
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
@@ -44,7 +42,7 @@ import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
 val viewModelModules = module {
-    viewModel { ChaListViewModel(get(), get(), get(), get()) }
+    viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get(), get(), get()) }
     viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
     viewModel { (roomDetailViewState : RoomDetailViewState) -> RoomDetailFragmentViewModel(roomDetailViewState, get(), get(), get(), get()) }
 }
@@ -66,7 +64,7 @@ val factoryModule = module {
     single { HomeRoomListDataSource() }
     single { SelectedGroupDataSource() }
     single { ChronologicalRoomComparator() }
-    single { RoomSummaryItemFactory(get(), get(), get()) }
+
     single { TypingHelper(get()) }
     single { SaralDateFormatter(androidContext(), get()) }
     single { DisplayableEventFormatter(get(), get(), get()) }
@@ -89,6 +87,8 @@ val factoryModule = module {
     single { EmojiCompatFontProvider() }
     single<ErrorFormatter> { ChatErrorFormatter(get()) }
 
+    factory { RoomSummaryController(get()) }
+    factory { RoomSummaryItemFactory(get(), get(), get(), get()) }
 
     factory { (scope : Scope) -> NoticeItemFactory(informationDataFactory = get(parameters = {parametersOf(scope)}),
         eventFormatter = get(),

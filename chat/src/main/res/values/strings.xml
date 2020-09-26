@@ -211,4 +211,7 @@
     <string name="quote">Quote</string>
     <string name="reply">Reply</string>
     <string name="room_message_placeholder">Send a message</string>
+    <string name="room_list_rooms_empty_title">Rooms</string>
+    <string name="room_list_rooms_empty_body">Your direct message conversations will be displayed here</string>
+    <string name="network_error_please_check_and_retry">Network error: please check your connection and retry.</string>
 </resources>

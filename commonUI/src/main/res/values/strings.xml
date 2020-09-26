@@ -11,4 +11,6 @@
     <string name="action_close">Close</string>
     <string name="join">Join</string>
     <string name="global_retry">Retry</string>
+    <string name="room_list_catchup_empty_title">You’re all caught up!</string>
+    <string name="room_list_catchup_empty_body">You have no more unread messages</string>
 </resources>
