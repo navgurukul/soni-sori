@@ -12,7 +12,12 @@ import org.navgurukul.chat.features.home.room.detail.timeline.tools.findPillsAnd
 @EpoxyModelClass
 abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
 
     @EpoxyAttribute
     var searchForPills: Boolean = false

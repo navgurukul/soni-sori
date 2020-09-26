@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.AvatarRenderer
@@ -38,7 +37,7 @@ abstract class DefaultItem : BaseEventItem<DefaultItem.Holder>() {
     override fun getViewType() = STUB_ID
 
     class Holder : BaseHolder(STUB_ID) {
-        val avatarImageView by bind<SimpleDraweeView>(R.id.itemDefaultAvatarView)
+        val avatarImageView by bind<ImageView>(R.id.itemDefaultAvatarView)
         val messageTextView by bind<TextView>(R.id.itemDefaultTextView)
     }
 

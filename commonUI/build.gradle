@@ -33,6 +33,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.1'
 
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$live_data_version"
+
     // rx
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
     implementation "io.reactivex.rxjava2:rxjava:2.2.10"

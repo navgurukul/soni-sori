@@ -29,8 +29,8 @@ sealed class RoomDetailAction : ViewModelAction {
 //    object EnterTrackingUnreadMessagesState : RoomDetailAction()
     object ExitTrackingUnreadMessagesState : RoomDetailAction()
 //
-//    data class EnterEditMode(val eventId: String, val text: String) : RoomDetailAction()
-//    data class EnterQuoteMode(val eventId: String, val text: String) : RoomDetailAction()
+    data class EnterEditMode(val eventId: String, val text: String) : RoomDetailAction()
+    data class EnterQuoteMode(val eventId: String, val text: String) : RoomDetailAction()
     data class EnterReplyMode(val eventId: String, val text: String) : RoomDetailAction()
     data class ExitSpecialMode(val text: String) : RoomDetailAction()
 //
@@ -56,7 +56,7 @@ sealed class RoomDetailAction : ViewModelAction {
 //    data class AcceptVerificationRequest(val transactionId: String, val otherUserId: String) : RoomDetailAction()
 //    data class DeclineVerificationRequest(val transactionId: String, val otherUserId: String) : RoomDetailAction()
 //    data class RequestVerification(val userId: String) : RoomDetailAction()
-//    data class ResumeVerification(val transactionId: String, val otherUserId: String?) : RoomDetailAction()
+    data class ResumeVerification(val transactionId: String, val otherUserId: String?) : RoomDetailAction()
     data class TapOnFailedToDecrypt(val eventId: String) : RoomDetailAction()
 //    data class ReRequestKeys(val eventId: String) : RoomDetailAction()
 //

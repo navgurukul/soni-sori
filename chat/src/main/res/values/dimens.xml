@@ -25,4 +25,5 @@
     <dimen name="pill_avatar_size">16dp</dimen>
     <dimen name="pill_min_height">20dp</dimen>
     <dimen name="chat_avatar_size">40dp</dimen>
+    <dimen name="message_item_corner_radius">24dp</dimen>
 </resources>

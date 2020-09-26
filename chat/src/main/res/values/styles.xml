@@ -11,4 +11,12 @@
         <item name="android:layout_marginBottom">@dimen/spacing_1x</item>
         <item name="android:layout_marginTop">@dimen/spacing_1x</item>
     </style>
+
+    <style name="AlerterButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+    </style>
 </resources>

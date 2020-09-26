@@ -40,8 +40,8 @@ class AuthenticationRepository(
         getLoginFlow()?.let { _ ->
             return suspendCoroutine {
                 authService.getLoginWizard().login(
-                    /*"t-saral"*/"saquib19",
-                    /*"hello123"*/"navgurukul",
+                    /*"t-saral"*/"suhaibroomy91@gmail.com",
+                    /*"hello123"*/"suhaibroomy",
                     "Android",
                     object : MatrixCallback<Session> {
                         override fun onSuccess(data: Session) {

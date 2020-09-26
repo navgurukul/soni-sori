@@ -1,5 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail
 
+import androidx.lifecycle.LiveDataReactiveStreams
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import im.vector.matrix.android.api.MatrixCallback
@@ -26,6 +27,7 @@ import im.vector.matrix.android.api.session.room.send.UserDraft
 import im.vector.matrix.android.api.session.room.timeline.Timeline
 import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import im.vector.matrix.android.api.session.room.timeline.TimelineSettings
+import im.vector.matrix.android.api.session.room.timeline.getTextEditableContent
 import im.vector.matrix.android.api.util.toOptional
 import im.vector.matrix.android.internal.crypto.attachments.toElementToDecrypt
 import im.vector.matrix.android.internal.crypto.model.event.EncryptedEventContent
@@ -33,11 +35,13 @@ import im.vector.matrix.android.internal.crypto.model.event.WithHeldCode
 import im.vector.matrix.rx.asObservable
 import im.vector.matrix.rx.rx
 import im.vector.matrix.rx.unwrap
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.navgurukul.chat.R
+import org.navgurukul.chat.core.model.Success
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
@@ -100,6 +104,7 @@ class RoomDetailFragmentViewModel(
         timeline.addListener(this)
         observeRoomSummary()
         observeMembershipChanges()
+        observeRoomMemberSummary()
 //        observeSummaryState()
         getUnreadState()
         observeSyncState()
@@ -133,8 +138,8 @@ class RoomDetailFragmentViewModel(
 //            is RoomDetailAction.UndoReaction                     -> handleUndoReact(action)
 //            is RoomDetailAction.UpdateQuickReactAction           -> handleUpdateQuickReaction(action)
             is RoomDetailAction.ExitSpecialMode                  -> handleExitSpecialMode(action)
-//            is RoomDetailAction.EnterEditMode                    -> handleEditAction(action)
-//            is RoomDetailAction.EnterQuoteMode                   -> handleQuoteAction(action)
+            is RoomDetailAction.EnterEditMode                    -> handleEditAction(action)
+            is RoomDetailAction.EnterQuoteMode                   -> handleQuoteAction(action)
             is RoomDetailAction.EnterReplyMode                   -> handleReplyAction(action)
             is RoomDetailAction.DownloadOrOpen                   -> handleOpenOrDownloadFile(action)
             is RoomDetailAction.NavigateToEvent                  -> handleNavigateToEvent(action)
@@ -152,7 +157,7 @@ class RoomDetailFragmentViewModel(
 //            is RoomDetailAction.AcceptVerificationRequest        -> handleAcceptVerification(action)
 //            is RoomDetailAction.DeclineVerificationRequest       -> handleDeclineVerification(action)
 //            is RoomDetailAction.RequestVerification              -> handleRequestVerification(action)
-//            is RoomDetailAction.ResumeVerification               -> handleResumeRequestVerification(action)
+            is RoomDetailAction.ResumeVerification               -> handleResumeRequestVerification(action)
 //            is RoomDetailAction.ReRequestKeys                    -> handleReRequestKeys(action)
             is RoomDetailAction.TapOnFailedToDecrypt             -> handleTapOnFailedToDecrypt(action)
 //            is RoomDetailAction.SelectStickerAttachment          -> handleSelectStickerAttachment()
@@ -239,6 +244,36 @@ class RoomDetailFragmentViewModel(
         }
         setState { copy(sendMode = SendMode.REGULAR(action.text)) }
     }
+
+    private fun handleEditAction(action: RoomDetailAction.EnterEditMode) {
+        saveCurrentDraft(action.text)
+
+        room.getTimeLineEvent(action.eventId)?.let { timelineEvent ->
+            setState { copy(sendMode = SendMode.EDIT(timelineEvent, action.text)) }
+            timelineEvent.root.eventId?.let {
+                room.saveDraft(UserDraft.EDIT(it, timelineEvent.getTextEditableContent() ?: ""), NoOpMatrixCallback())
+            }
+        }
+    }
+
+    private fun handleQuoteAction(action: RoomDetailAction.EnterQuoteMode) {
+        saveCurrentDraft(action.text)
+
+        room.getTimeLineEvent(action.eventId)?.let { timelineEvent ->
+            setState { copy(sendMode = SendMode.QUOTE(timelineEvent, action.text)) }
+            viewState.value?.let { state ->
+                // Save a new draft and keep the previously entered text, if it was not an edit
+                timelineEvent.root.eventId?.let {
+                    if (state.sendMode is SendMode.EDIT) {
+                        room.saveDraft(UserDraft.QUOTE(it, ""), NoOpMatrixCallback())
+                    } else {
+                        room.saveDraft(UserDraft.QUOTE(it, action.text), NoOpMatrixCallback())
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun observeDrafts() {
         room.rx().liveDrafts()
@@ -344,6 +379,26 @@ class RoomDetailFragmentViewModel(
             .disposeOnClear()
     }
 
+//    private fun observeSummaryState() {
+//        asyncSubscribe(RoomDetailViewState::asyncRoomSummary) { summary ->
+//            roomSummaryHolder.set(summary)
+//            setState {
+//                val typingMessage = typingHelper.getTypingMessage(summary.typingUsers)
+//                copy(typingMessage = typingMessage)
+//            }
+//            if (summary.membership == Membership.INVITE) {
+//                summary.inviterId?.let { inviterId ->
+//                    session.getUser(inviterId)
+//                }?.also {
+//                    setState { copy(asyncInviter = Success(it)) }
+//                }
+//            }
+//            room.getStateEvent(EventType.STATE_ROOM_TOMBSTONE)?.also {
+//                setState { copy(tombstoneEvent = it) }
+//            }
+//        }
+//    }
+
 
     private fun observeRoomSummary() {
         room.rx().liveRoomSummary()
@@ -353,6 +408,20 @@ class RoomDetailFragmentViewModel(
                     asyncRoomSummary = async
                 )
             }
+    }
+
+    private fun observeRoomMemberSummary() {
+        val roomMemberQueryParams = roomMemberQueryParams {
+            displayName = QueryStringValue.IsNotEmpty
+            memberships = Membership.activeMemberships()
+        }
+
+        room.rx().liveRoomMembers(roomMemberQueryParams)
+            .subscribe { roomMembers ->
+                setState {
+                    copy( subtitle = roomMembers.joinToString(limit = 10) { it.displayName.toString() })
+                }
+            }.disposeOnClear()
     }
 
     private fun observeUnreadState() {
@@ -753,6 +822,18 @@ class RoomDetailFragmentViewModel(
 
     private fun handleMarkAllAsRead() {
         room.markAsRead(ReadService.MarkAsReadParams.BOTH, NoOpMatrixCallback())
+    }
+
+    private fun handleResumeRequestVerification(action: RoomDetailAction.ResumeVerification) {
+        // Check if this request is still active and handled by me
+        session.cryptoService().verificationService().getExistingVerificationRequestInRoom(room.roomId, action.transactionId)?.let {
+            if (it.handledByOtherSession) return
+            if (!it.isFinished) {
+                _viewEvents.value = RoomDetailFragmentViewEvents.ActionSuccess(action.copy(
+                    otherUserId = it.otherUserId
+                ))
+            }
+        }
     }
 
     companion object {

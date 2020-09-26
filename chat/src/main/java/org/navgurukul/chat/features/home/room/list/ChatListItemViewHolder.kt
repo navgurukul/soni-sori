@@ -1,10 +1,10 @@
 package org.navgurukul.chat.features.home.room.list
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.facebook.drawee.view.SimpleDraweeView
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.setTextOrHide
@@ -15,7 +15,7 @@ class ChatListItemViewHolder(view: View) : BaseViewHolder<RoomSummaryItem>(view)
 
     private val avatarRenderer: AvatarRenderer by inject(AvatarRenderer::class.java)
 
-    private val avatarView = view.findViewById<SimpleDraweeView>(R.id.roomAvatarView)
+    private val avatarView = view.findViewById<ImageView>(R.id.roomAvatarView)
     private val roomNameView = view.findViewById<TextView>(R.id.roomNameView)
     private val lastEventView = view.findViewById<TextView>(R.id.roomLastEventView)
     private val lastEventTimeView = view.findViewById<TextView>(R.id.roomLastEventTimeView)

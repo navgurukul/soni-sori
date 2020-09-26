@@ -198,4 +198,17 @@
     <string name="send_file_step_sending_thumbnail">Sending thumbnail (%1$s / %2$s)</string>
     <string name="send_file_step_encrypting_file">Encrypting file…</string>
     <string name="send_file_step_sending_file">Sending file (%1$s / %2$s)</string>
+    <string name="devices_details_last_seen_format">%1$s @ %2$s</string>
+    <string name="encryption_information_unknown_ip">unknown session</string>
+    <string name="you_added_a_new_device_with_info">A new session is requesting encryption keys.\Session name: %1$s\nLast seen: %2$s\nIf you didn’t log in on another session, ignore this request.</string>
+    <string name="your_unverified_device_requesting_with_info">An unverified session is requesting encryption keys.\nSession name: %1$s\nLast seen: %2$s\nIf you didn’t log in on another session, ignore this request.</string>
+    <string name="you_added_a_new_device">You added a new session \'%s\', which is requesting encryption keys.</string>
+    <string name="your_unverified_device_requesting">Your unverified session  \'%s\' is requesting encryption keys.</string>
+    <string name="key_share_request">Key Share Request</string>
+    <string name="share_without_verifying_short_label">Share</string>
+    <string name="ignore_request_short_label">Ignore</string>
+    <string name="edit">Edit</string>
+    <string name="quote">Quote</string>
+    <string name="reply">Reply</string>
+    <string name="room_message_placeholder">Send a message</string>
 </resources>

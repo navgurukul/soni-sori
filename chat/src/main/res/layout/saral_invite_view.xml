@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/inviteAvatarView"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginStart="@dimen/spacing_2x"
         android:layout_marginTop="@dimen/spacing_2x"
         android:layout_marginEnd="@dimen/spacing_2x"
-        app:roundAsCircle="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

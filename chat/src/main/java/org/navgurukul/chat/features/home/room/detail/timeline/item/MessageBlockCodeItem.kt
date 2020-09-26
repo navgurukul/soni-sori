@@ -10,7 +10,12 @@ import org.navgurukul.chat.core.extensions.setTextOrHide
 @EpoxyModelClass
 abstract class MessageBlockCodeItem : AbsMessageItem<MessageBlockCodeItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
 
     @EpoxyAttribute
     var message: CharSequence? = null

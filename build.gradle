@@ -47,6 +47,7 @@ task clean(type: Delete) {
 }
 
 ext {
+    live_data_version = '2.2.0'
     material_version = "1.2.0"
     appcompat_version = "1.2.0"
     contraint_layout_version = "2.0.1"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/roomAvatarView"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
@@ -15,8 +15,7 @@
         android:layout_marginBottom="@dimen/spacing_4x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:roundAsCircle="true" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/roomNameView"

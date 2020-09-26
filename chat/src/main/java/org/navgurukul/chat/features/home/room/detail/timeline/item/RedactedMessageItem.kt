@@ -6,7 +6,13 @@ import org.navgurukul.chat.R
 @EpoxyModelClass
 abstract class RedactedMessageItem : AbsMessageItem<RedactedMessageItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
+
     override fun getViewType() = STUB_ID
 
     override fun shouldShowReactionAtBottom() = false

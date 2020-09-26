@@ -6,29 +6,48 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.toSpannable
-import androidx.core.view.isVisible
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import com.facebook.drawee.view.SimpleDraweeView
 import im.vector.matrix.android.api.crypto.RoomEncryptionTrustLevel
 import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.navgurukul.chat.R
+import org.navgurukul.chat.features.themes.ThemeUtils
 
 /**
  * Encapsulate the timeline composer UX.
  *
  */
-class TextComposerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
-                                                 defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+class TextComposerView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     interface Callback : ComposerEditText.Callback {
         fun onCloseRelatedMessage()
         fun onSendMessage(text: CharSequence)
         fun onAddAttachment()
+    }
+
+    val composerRelatedMessageTitle: TextView by lazy {
+        findViewById<TextView>(R.id.composer_related_message_sender)
+    }
+
+    val composerRelatedMessageContent: TextView by lazy {
+        findViewById<TextView>(R.id.composer_related_message_preview)
+    }
+
+    val composerRelatedMessageActionIcon: ImageView by lazy {
+        findViewById<ImageView>(R.id.composer_related_message_action_image)
+    }
+
+    val composerRelatedMessageAvatar: ImageView by lazy {
+        findViewById<ImageView>(R.id.composer_related_message_avatar_view)
     }
 
     var callback: Callback? = null
@@ -37,7 +56,7 @@ class TextComposerView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private val animationDuration = 100L
 
-    val composerAvatarImageView: SimpleDraweeView
+    val composerAvatarImageView: ImageView
 
     val text: Editable?
         get() = composerEditText.text
@@ -65,6 +84,7 @@ class TextComposerView @JvmOverloads constructor(context: Context, attrs: Attrib
         }
 
         composerAvatarImageView = findViewById(R.id.composer_avatar_view)
+        setBackgroundColor(ThemeUtils.getColor(context, R.attr.colorPrimaryVariant))
     }
 
     fun collapse(animate: Boolean = true, transitionComplete: (() -> Unit)? = null) {

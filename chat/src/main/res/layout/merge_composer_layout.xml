@@ -78,11 +78,11 @@
         tools:ignore="MissingConstraints" />
 
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/composer_avatar_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:roundAsCircle="true"
+        android:visibility="gone"
         tools:ignore="MissingConstraints"
         tools:src="@tools:sample/avatars" />
 
@@ -90,6 +90,7 @@
         android:id="@+id/attachmentButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/option_send_files"
         android:src="@drawable/ic_attachment"
@@ -113,20 +114,23 @@
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/send"
         android:src="@drawable/ic_send"
-        android:tint="?attr/colorAccent"
+        android:padding="@dimen/spacing_3x"
+        android:scaleType="fitCenter"
+        android:tint="?attr/colorPrimary"
         tools:ignore="MissingConstraints" />
 
     <org.navgurukul.chat.features.home.room.detail.composer.ComposerEditText
         android:id="@+id/composerEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@drawable/rounded_rect_bordered_shape_8"
         android:inputType="textCapSentences|textMultiLine"
         android:nextFocusLeft="@id/composerEditText"
         android:nextFocusUp="@id/composerEditText"
         android:padding="8dp"
         android:textColor="?textPrimary"
-        android:textSize="14sp"
+        android:textSize="16sp"
+        android:hint="@string/room_message_placeholder"
         tools:hint="@string/room_message_placeholder_not_encrypted"
         tools:ignore="MissingConstraints" />
 
