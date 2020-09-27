@@ -44,7 +44,6 @@ class CourseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_detail)
         parseIntentData()
-        renderUI()
     }
 
     private fun renderUI() {
@@ -59,12 +58,13 @@ class CourseDetailActivity : AppCompatActivity() {
         if (intent.hasExtra(ARG_KEY_COURSE_ID) && intent.hasExtra(ARG_KEY_COURSE_NAME)) {
             courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
             courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
+            renderUI()
         } else {
             val action: String? = intent?.action
             val data: Uri? = intent?.data
             val uriString = data.toString()
             if (action == Intent.ACTION_VIEW) {
-                if (uriString.contains("/courses/")) {
+                if (uriString.contains("/course/")) {
                     fetchClassDataAndShow(uriString.split("/").last())
                 }
             }
@@ -80,8 +80,6 @@ class CourseDetailActivity : AppCompatActivity() {
                 courseId = it.firstOrNull()?.id.toString()
                 courseName = it.firstOrNull()?.name.toString()
                 renderUI()
-            } else {
-                finish()
             }
         })
     }
