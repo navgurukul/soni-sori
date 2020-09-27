@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewmodel"
+            type="org.navgurukul.learn.ui.learn.LearnViewModel" />
+
         <variable
             name="itemOnClick"
             type="android.view.View.OnClickListener" />

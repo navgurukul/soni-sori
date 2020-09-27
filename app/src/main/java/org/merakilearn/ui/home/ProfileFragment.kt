@@ -22,10 +22,10 @@ import org.merakilearn.OnBoardingActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentUserProfileBinding
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.ui.common.toast
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.ui.common.toast
 
 
 class ProfileFragment : Fragment() {

@@ -8,11 +8,11 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import org.merakilearn.courses.db.CoursesDatabase
-import org.merakilearn.courses.db.models.Course
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.courses.db.CoursesDatabase
+import org.navgurukul.learn.courses.db.models.Course
 
 class ApplicationRepo(
     private val applicationApi: SaralApi,

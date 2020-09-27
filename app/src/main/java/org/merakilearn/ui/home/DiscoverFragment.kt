@@ -17,8 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentDiscoverClassBinding
-import org.merakilearn.ui.common.toast
 import org.merakilearn.ui.home.adapter.DiscoverClassParentAdapter
+import org.navgurukul.learn.ui.common.toast
 
 
 class DiscoverFragment : Fragment() {

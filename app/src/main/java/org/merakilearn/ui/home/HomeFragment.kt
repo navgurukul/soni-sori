@@ -13,12 +13,12 @@ import org.merakilearn.EnrollActivity
 import org.merakilearn.ProfileActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
-import org.merakilearn.ui.common.toast
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
 import org.merakilearn.ui.home.adapter.OtherCourseAdapter
 import org.merakilearn.ui.home.adapter.WhereYouLeftAdapter
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.ui.common.toast
 
 
 class HomeFragment : Fragment() {

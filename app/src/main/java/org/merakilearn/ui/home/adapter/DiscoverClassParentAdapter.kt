@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemDiscoverClassParentBinding
 import org.merakilearn.datasource.network.model.ClassesContainer
-import org.merakilearn.ui.common.DataBoundListAdapter
 import org.merakilearn.util.DateTimeUtil
+import org.navgurukul.learn.ui.common.DataBoundListAdapter
 import java.util.*
 
 

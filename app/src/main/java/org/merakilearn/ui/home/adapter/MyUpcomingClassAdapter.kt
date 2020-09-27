@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemUpcomingClassBinding
 import org.merakilearn.datasource.network.model.MyClassContainer
-import org.merakilearn.ui.common.DataBoundListAdapter
+import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
 class MyUpcomingClassAdapter(callback: (MyClassContainer.MyClass) -> Unit) :

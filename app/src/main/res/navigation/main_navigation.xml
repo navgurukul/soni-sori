@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_learn"
-        android:name="org.merakilearn.ui.learn.LearnFragment"
+        android:name="org.navgurukul.learn.ui.learn.LearnFragment"
         android:label="@string/title_learn"
         tools:layout="@layout/fragment_learn" />
 

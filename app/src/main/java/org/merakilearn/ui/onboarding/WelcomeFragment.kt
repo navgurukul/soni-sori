@@ -12,8 +12,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentWelcomeBinding
-import org.merakilearn.ui.common.toast
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.ui.common.toast
 
 
 class WelcomeFragment : Fragment() {

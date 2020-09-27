@@ -13,10 +13,10 @@ import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityDiscoverEnrollBinding
 import org.merakilearn.datasource.network.model.ClassesContainer
-import org.merakilearn.ui.common.toast
-import org.merakilearn.ui.common.toolbarColor
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.ui.common.toast
+import org.navgurukul.learn.ui.common.toolbarColor
 
 class EnrollActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityDiscoverEnrollBinding

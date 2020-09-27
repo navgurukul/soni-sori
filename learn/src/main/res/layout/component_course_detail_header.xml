@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,6 +18,14 @@
             android:layout_width="@dimen/width_course_progress"
             android:layout_height="wrap_content"
             android:progress="55" />
+        <!-- <TextView
+            android:id="@+id/tvCompletionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5_dp"
+            android:layout_alignParentBottom="true"
+            android:text="55 % completed"
+            tools:text="55 % completed" />-->
 
     </RelativeLayout>
 </layout>

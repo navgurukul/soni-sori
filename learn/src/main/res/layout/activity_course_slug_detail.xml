@@ -5,6 +5,11 @@
 
     <data>
 
+        <variable
+            name="viewmodel"
+            type="org.navgurukul.learn.ui.learn.LearnViewModel" />
+
+
         <import type="android.view.View" />
     </data>
 
