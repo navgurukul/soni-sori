@@ -24,8 +24,12 @@ open class BaseViewModel<VE: ViewEvents, S: ViewState>(initialState: S): ViewMod
     private val _viewState = MutableLiveData<S>(initialState)
     val viewState: LiveData<S> = _viewState
 
+    private var lastState = initialState
+
     protected fun setState(reducer: S.() -> S) {
-        _viewState.postValue(reducer(_viewState.value!!))
+        val newState = reducer(lastState)
+        lastState = newState
+        _viewState.postValue(newState)
     }
 
     override fun onCleared() {
