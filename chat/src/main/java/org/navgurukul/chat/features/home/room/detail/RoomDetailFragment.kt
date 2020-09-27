@@ -60,7 +60,6 @@ import org.navgurukul.chat.features.media.VideoContentRenderer
 import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.chat.features.share.SharedData
-import org.navgurukul.chat.features.themes.ThemeUtils
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.views.JumpToReadMarkerView
 import timber.log.Timber
@@ -157,6 +156,7 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.ActionFailure                    -> displayRoomDetailActionFailure(it)
                 is RoomDetailFragmentViewEvents.ShowMessage                      -> showSnackWithMessage(it.message, Snackbar.LENGTH_LONG)
                 is RoomDetailFragmentViewEvents.NavigateToEvent                  -> navigateToEvent(it)
+                is RoomDetailFragmentViewEvents.OpenDeepLink                     -> openDeepLink(it)
 //                is RoomDetailFragmentViewEvents.FileTooBigError                  -> displayFileTooBigError(it)
 //                is RoomDetailFragmentViewEvents.DownloadFileState                -> handleDownloadFileState(it)
                 is RoomDetailFragmentViewEvents.JoinRoomCommandSuccess           -> handleJoinedToAnotherRoom(it)
@@ -169,6 +169,10 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
             }
         })
+    }
+
+    private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
+        navigator.openDeepLink(requireContext(), event.deepLink)
     }
 
     private fun invalidateState(state: RoomDetailViewState) {

@@ -21,6 +21,7 @@ sealed class RoomDetailFragmentViewEvents : ViewEvents {
     data class ShowE2EErrorMessage(val withHeldCode: WithHeldCode?) : RoomDetailFragmentViewEvents()
 
     data class NavigateToEvent(val eventId: String) : RoomDetailFragmentViewEvents()
+    data class OpenDeepLink(val deepLink: String) : RoomDetailFragmentViewEvents()
 
     abstract class SendMessageResult : RoomDetailFragmentViewEvents()
 

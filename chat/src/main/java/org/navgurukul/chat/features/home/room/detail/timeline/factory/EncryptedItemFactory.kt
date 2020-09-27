@@ -12,7 +12,6 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.resources.ColorProvider
 import org.navgurukul.chat.core.resources.DrawableProvider
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInformationDataFactory
@@ -20,6 +19,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageItem
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageTextItem_
 import org.navgurukul.chat.features.home.room.detail.timeline.tools.createLinkMovementMethod
 import org.navgurukul.chat.features.settings.ChatPreferences
+import org.navgurukul.commonui.resources.StringProvider
 
 // This class handles timeline events who haven't been successfully decrypted
 class EncryptedItemFactory(

@@ -1,6 +1,4 @@
-package org.navgurukul.chat.core.model
-
-import java.util.*
+package org.navgurukul.commonui.model
 
 /**
  * The T generic is unused for some classes but since it is sealed and useful for Success and Fail,

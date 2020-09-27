@@ -41,7 +41,7 @@ class RoomListViewModel(
     }
 
     private fun handleSelectRoom(action: RoomListAction.SelectRoom) = viewState.value?.let {
-        _viewEvents.value = RoomListViewEvents.SelectRoom(action.roomSummary)
+        _viewEvents.setValue(RoomListViewEvents.SelectRoom(action.roomSummary))
     }
 
     fun handle(action: RoomListAction) {

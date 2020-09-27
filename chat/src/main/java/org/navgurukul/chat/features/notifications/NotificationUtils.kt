@@ -17,11 +17,11 @@ import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.utils.startNotificationChannelSettingsIntent
 import org.navgurukul.chat.features.home.room.detail.RoomDetailActivity
 import org.navgurukul.chat.features.home.room.detail.RoomDetailArgs
 import org.navgurukul.chat.features.settings.ChatPreferences
+import org.navgurukul.commonui.resources.StringProvider
 import timber.log.Timber
 import kotlin.random.Random
 

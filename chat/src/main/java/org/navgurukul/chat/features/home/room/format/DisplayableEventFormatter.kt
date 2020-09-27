@@ -25,7 +25,7 @@ import im.vector.matrix.android.api.session.room.timeline.getTextEditableContent
 import me.gujun.android.span.span
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.resources.ColorProvider
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 
 class DisplayableEventFormatter(
     private val stringProvider: StringProvider,

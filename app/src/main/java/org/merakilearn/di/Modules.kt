@@ -9,6 +9,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.more.MoreViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
+import org.merakilearn.ui.onboarding.WelcomeViewModel
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import retrofit2.Retrofit
@@ -17,6 +18,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { MoreViewModel() }
+    viewModel { WelcomeViewModel(get(), get(), get()) }
 }
 
 val apiModule = module {

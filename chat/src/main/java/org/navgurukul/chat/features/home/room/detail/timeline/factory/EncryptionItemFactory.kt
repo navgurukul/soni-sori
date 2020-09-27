@@ -5,7 +5,6 @@ import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import im.vector.matrix.android.internal.crypto.MXCRYPTO_ALGORITHM_MEGOLM
 import im.vector.matrix.android.internal.crypto.model.event.EncryptionEventContent
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
@@ -13,6 +12,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInfo
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageItemAttributesFactory
 import org.navgurukul.chat.features.home.room.detail.timeline.item.StatusTileTimelineItem
 import org.navgurukul.chat.features.home.room.detail.timeline.item.StatusTileTimelineItem_
+import org.navgurukul.commonui.resources.StringProvider
 
 class EncryptionItemFactory (
     private val messageItemAttributesFactory: MessageItemAttributesFactory,

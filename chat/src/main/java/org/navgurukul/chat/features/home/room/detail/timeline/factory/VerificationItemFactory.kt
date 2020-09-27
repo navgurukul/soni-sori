@@ -12,7 +12,6 @@ import im.vector.matrix.android.internal.session.room.VerificationState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
@@ -21,6 +20,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInfo
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageItemAttributesFactory
 import org.navgurukul.chat.features.home.room.detail.timeline.item.StatusTileTimelineItem
 import org.navgurukul.chat.features.home.room.detail.timeline.item.StatusTileTimelineItem_
+import org.navgurukul.commonui.resources.StringProvider
 
 /**
  * Can creates verification conclusion items

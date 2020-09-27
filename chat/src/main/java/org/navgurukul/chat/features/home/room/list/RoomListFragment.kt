@@ -14,9 +14,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
-import org.navgurukul.chat.core.model.Fail
-import org.navgurukul.chat.core.model.Incomplete
-import org.navgurukul.chat.core.model.Success
+import org.navgurukul.commonui.model.Fail
+import org.navgurukul.commonui.model.Incomplete
+import org.navgurukul.commonui.model.Success
 import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.StateView

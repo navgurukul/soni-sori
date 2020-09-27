@@ -116,16 +116,16 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun initFakeSignUp(): Boolean {
+    suspend fun performFakeSignUp(): FakeUserLoginResponse? {
         return try {
             val req = applicationApi.initFakeSignUpAsync()
             val response = req.await()
             AppUtils.saveFakeLoginResponse(response, application)
-            authenticationRepository.login(response.user!!.chatId!!, response.user!!.chatPassword!!)
-            true
+            authenticationRepository.login(response.user.chatId, response.user.chatPassword)
+            response
         } catch (ex: Exception) {
             ex.printStackTrace()
-            false
+            null
         }
     }
 

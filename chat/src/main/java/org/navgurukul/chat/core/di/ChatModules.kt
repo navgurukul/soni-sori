@@ -72,7 +72,6 @@ val factoryModule = module {
     single { RoomHistoryVisibilityFormatter(get()) }
     single { NotificationUtils(androidContext(), get(), get()) }
     single { ChatPreferences(androidContext()) }
-    single { StringProvider(androidContext().resources) }
     single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
     single { DimensionConverter(androidContext().resources) }
     single { LocaleProvider(androidContext().resources) }

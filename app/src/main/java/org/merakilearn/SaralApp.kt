@@ -9,6 +9,7 @@ import org.koin.core.context.startKoin
 import org.merakilearn.di.appModules
 import org.navgurukul.chat.core.ChatInitializer
 import org.navgurukul.chat.core.di.chatModules
+import org.navgurukul.commonui.di.commonUIModules
 import org.navgurukul.learn.di.learnModules
 import org.navgurukul.playground.di.playgroundModules
 
@@ -18,7 +19,7 @@ class SaralApp : Application() {
         startKoin {
             androidContext(this@SaralApp)
             androidLogger()
-            modules(appModules + chatModules + learnModules + playgroundModules)
+            modules(appModules + chatModules + learnModules + playgroundModules + commonUIModules)
         }
 
         ChatInitializer.initialise(this)

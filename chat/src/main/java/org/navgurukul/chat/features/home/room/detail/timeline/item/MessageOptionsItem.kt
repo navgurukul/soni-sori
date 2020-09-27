@@ -32,7 +32,11 @@ abstract class MessageOptionsItem : AbsMessageItem<MessageOptionsItem.Holder>() 
     @EpoxyAttribute
     var informationData: MessageInformationData? = null
 
-    override fun getViewType() = STUB_ID
+    override fun getViewType() = if (attributes.informationData.sentByMe) {
+        STUB_ID + R.drawable.sent_timeline_item_background
+    } else {
+        STUB_ID + R.drawable.received_timeline_item_background
+    }
 
     override fun bind(holder: Holder) {
         super.bind(holder)

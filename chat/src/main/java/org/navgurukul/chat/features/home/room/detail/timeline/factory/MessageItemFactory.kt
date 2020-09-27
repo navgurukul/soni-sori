@@ -20,7 +20,6 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.ColorProvider
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.utils.DebouncedClickListener
 import org.navgurukul.chat.core.utils.DimensionConverter
 import org.navgurukul.chat.core.utils.containsOnlyEmojis
@@ -35,6 +34,7 @@ import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
 import org.navgurukul.chat.features.media.ImageContentRenderer
 import org.navgurukul.chat.features.media.VideoContentRenderer
+import org.navgurukul.commonui.resources.StringProvider
 
 class MessageItemFactory(
     private val colorProvider: ColorProvider,

@@ -8,7 +8,7 @@ import im.vector.matrix.android.api.auth.data.LoginFlowResult
 import im.vector.matrix.android.api.session.Session
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.configureAndStart
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

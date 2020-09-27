@@ -2,17 +2,15 @@ package org.navgurukul.chat.features.home.room.detail
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import kotlinx.android.parcel.Parcelize
+import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.replaceFragment
-import org.navgurukul.chat.features.share.SharedData
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 
 class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
@@ -41,6 +39,19 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
             )
         }
 
+        viewModel.viewEvents.observe(this, Observer {
+            when (it) {
+                is RoomDetailViewEvents.RoomLeft -> handleRoomLeft(it)
+            }
+        })
+
+    }
+
+    private fun handleRoomLeft(roomLeft: RoomDetailViewEvents.RoomLeft) {
+        if (roomLeft.leftMessage != null) {
+            Toast.makeText(this, roomLeft.leftMessage, Toast.LENGTH_LONG).show()
+        }
+        finish()
     }
 
     override fun configure(toolbar: Toolbar) {
