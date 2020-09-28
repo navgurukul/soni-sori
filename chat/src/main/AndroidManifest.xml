@@ -21,6 +21,13 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <!-- Exported false, should only be accessible from this app!! -->
+        <receiver
+            android:name=".features.notifications.NotificationBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>

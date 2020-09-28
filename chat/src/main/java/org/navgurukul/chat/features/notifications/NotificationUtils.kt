@@ -16,10 +16,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.utils.startNotificationChannelSettingsIntent
-import org.navgurukul.chat.features.home.room.detail.RoomDetailActivity
-import org.navgurukul.chat.features.home.room.detail.RoomDetailArgs
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.resources.StringProvider
 import timber.log.Timber
@@ -31,7 +30,9 @@ import kotlin.random.Random
  */
 class NotificationUtils constructor(private val context: Context,
                                     private val stringProvider: StringProvider,
-                                    private val chatPreferences: ChatPreferences) {
+                                    private val chatPreferences: ChatPreferences,
+                                    private val merakiNavigator: MerakiNavigator
+) {
 
     companion object {
         /* ==========================================================================================
@@ -159,7 +160,7 @@ class NotificationUtils constructor(private val context: Context,
     @SuppressLint("NewApi")
     fun buildForegroundServiceNotification(@StringRes subTitleResId: Int, withProgress: Boolean = true): Notification {
         // build the pending intent go to the home screen if this is clicked.
-        val i = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
+        val i = merakiNavigator.homeLauncherIntent(context, false)
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         val pi = PendingIntent.getActivity(context, 0, i, 0)
 
@@ -377,7 +378,7 @@ class NotificationUtils constructor(private val context: Context,
                             stringProvider.getString(R.string.join),
                             joinIntentPendingIntent)
 
-                    val contentIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
+                    val contentIntent = merakiNavigator.homeLauncherIntent(context,false)
                     contentIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     // pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
                     contentIntent.data = Uri.parse("foobar://" + inviteNotifiableEvent.eventId)
@@ -415,7 +416,7 @@ class NotificationUtils constructor(private val context: Context,
                 .setColor(accentColor)
                 .setAutoCancel(true)
                 .apply {
-                    val contentIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
+                    val contentIntent = merakiNavigator.homeLauncherIntent(context,false)
                     contentIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     // pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
                     contentIntent.data = Uri.parse("foobar://" + simpleNotifiableEvent.eventId)
@@ -436,22 +437,21 @@ class NotificationUtils constructor(private val context: Context,
                 .build()
     }
 
-    //TODO relook at this
     private fun buildOpenRoomIntent(roomId: String): PendingIntent? {
-        val roomIntentTap = RoomDetailActivity.newIntent(context, RoomDetailArgs(roomId))
+        val roomIntentTap = merakiNavigator.openRoomIntent(context, roomId)
         roomIntentTap.action = TAP_TO_VIEW_ACTION
         // pending intent get reused by system, this will mess up the extra params, so put unique info to avoid that
         roomIntentTap.data = Uri.parse("foobar://openRoom?$roomId")
 
         // Recreate the back stack
         return TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(context.packageManager.getLaunchIntentForPackage(context.packageName)!!)
+                .addNextIntentWithParentStack(merakiNavigator.homeLauncherIntent(context,false))
                 .addNextIntent(roomIntentTap)
                 .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun buildOpenHomePendingIntentForSummary(): PendingIntent {
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
+        val intent = merakiNavigator.homeLauncherIntent(context,true)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         intent.data = Uri.parse("foobar://tapSummary")
         return PendingIntent.getActivity(context, Random.nextInt(1000), intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -550,45 +550,4 @@ class NotificationUtils constructor(private val context: Context,
         notificationManager.cancel(tag, id)
     }
 
-    /**
-     * Cancel the foreground notification service
-     */
-    fun cancelNotificationForegroundService() {
-        notificationManager.cancel(NOTIFICATION_ID_FOREGROUND_SERVICE)
-    }
-
-    /**
-     * Cancel all the notification
-     */
-    fun cancelAllNotifications() {
-        // Keep this try catch (reported by GA)
-        try {
-            notificationManager.cancelAll()
-        } catch (e: Exception) {
-            Timber.e(e, "## cancelAllNotifications() failed")
-        }
-    }
-
-    /**
-     * Return true it the user has enabled the do not disturb mode
-     */
-    fun isDoNotDisturbModeOn(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return false
-        }
-
-        // We cannot use NotificationManagerCompat here.
-        val setting = (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).currentInterruptionFilter
-
-        return setting == NotificationManager.INTERRUPTION_FILTER_NONE
-                || setting == NotificationManager.INTERRUPTION_FILTER_ALARMS
-    }
-
-    private fun ensureTitleNotEmpty(title: String?): CharSequence {
-        if (title.isNullOrBlank()) {
-            return stringProvider.getString(R.string.app_name)
-        }
-
-        return title
-    }
 }

@@ -40,6 +40,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.*
 import org.navgurukul.chat.core.glide.GlideApp
@@ -57,7 +58,7 @@ import org.navgurukul.chat.features.html.PillImageSpan
 import org.navgurukul.chat.features.invite.SaralInviteView
 import org.navgurukul.chat.features.media.ImageContentRenderer
 import org.navgurukul.chat.features.media.VideoContentRenderer
-import org.navgurukul.chat.features.navigator.ChatNavigator
+import org.navgurukul.chat.features.notifications.NotificationDrawerManager
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.chat.features.share.SharedData
 import org.navgurukul.commonui.platform.BaseFragment
@@ -93,7 +94,9 @@ class RoomDetailFragment : BaseFragment(),
         GlideApp.with(this)
     }
 
-    private val navigator: ChatNavigator by inject()
+    private val navigator: MerakiNavigator by inject()
+
+    private val notificationDrawerManager: NotificationDrawerManager by inject()
 
     private var lockSendButton = false
 
@@ -758,8 +761,15 @@ class RoomDetailFragment : BaseFragment(),
             .show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        notificationDrawerManager.setCurrentRoom(roomDetailArgs.roomId)
+    }
+
     override fun onPause() {
         super.onPause()
+
+        notificationDrawerManager.setCurrentRoom(null)
 
         viewModel.handle(RoomDetailAction.SaveDraft(composerLayout.composerEditText.text.toString()))
     }

@@ -66,4 +66,5 @@ ext {
     version_retrofit_log = "3.9.0"
     timber_version = "4.7.1"
     rxBinding_version = "3.0.0"
+    firebase_messaging_version = "20.2.4"
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
@@ -12,15 +13,47 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.merakilearn.util.AppUtils
+import kotlinx.android.parcel.Parcelize
+import org.koin.android.ext.android.inject
+import org.merakilearn.core.appopen.AppOpenDelegate
+
+@Parcelize
+data class MainActivityArgs(
+    val clearNotification: Boolean
+) : Parcelable
 
 class MainActivity : AppCompatActivity() {
+
     companion object {
+        const val KEY_ARG = "MainActivity:args"
+
         fun launch(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
             (context as Activity).finish()
         }
+
+        fun newIntent(context: Context, clearNotification: Boolean = false): Intent {
+            val args = MainActivityArgs(
+                clearNotification = clearNotification
+            )
+
+            return Intent(context, OnBoardingActivity::class.java)
+                .apply {
+                    putExtra(OnBoardingActivity.KEY_ARG, args)
+                }
+        }
     }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
+            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+        }
+    }
+
+
+    private val appOpenDelegate: AppOpenDelegate by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +62,10 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
+
+        intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
+            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+        }
         findViewById<View>(R.id.headerIv).setOnClickListener {
             if (AppUtils.isFakeLogin(this))
                 OnBoardingActivity.launchLoginFragment(this)

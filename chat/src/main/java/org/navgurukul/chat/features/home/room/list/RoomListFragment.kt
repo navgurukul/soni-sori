@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_room_list.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.features.navigator.ChatNavigator
@@ -27,7 +28,7 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
 
 
     private val viewModel: RoomListViewModel by viewModel(parameters = { parametersOf(RoomListViewState()) })
-    private val navigator: ChatNavigator by inject()
+    private val navigator: MerakiNavigator by inject()
     private val roomController: RoomSummaryController by inject()
 
     override fun getLayoutResId(): Int = R.layout.fragment_room_list

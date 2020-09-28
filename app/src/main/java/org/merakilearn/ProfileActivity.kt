@@ -101,7 +101,9 @@ class ProfileActivity : AppCompatActivity() {
                 viewModel.logOut().observe(this, Observer {
                     if (it) {
                         dialog.dismiss()
-                        OnBoardingActivity.launch(this)
+                        OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(
+                            clearNotification = true
+                        ))
                     }
                 })
             }.setNegativeButton(

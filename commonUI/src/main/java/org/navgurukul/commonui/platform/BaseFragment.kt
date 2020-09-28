@@ -1,5 +1,6 @@
 package org.navgurukul.commonui.platform
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.distinctUntilChanged
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -60,10 +58,12 @@ abstract class BaseFragment : Fragment() {
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
             show()
         }
+        lifecycle.addObserver( DialogDismissLifecycleObserver(progress) )
     }
 
     protected fun dismissLoadingDialog() {
         progress?.dismiss()
+        progress = null
     }
 
     /**
@@ -136,5 +136,12 @@ abstract class BaseFragment : Fragment() {
                 .show()
         }
     }
+}
 
+class DialogDismissLifecycleObserver( private var dialog: Dialog? ) : LifecycleObserver {
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause() {
+        dialog?.dismiss()
+        dialog = null
+    }
 }

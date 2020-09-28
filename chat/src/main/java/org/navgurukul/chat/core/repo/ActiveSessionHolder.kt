@@ -4,12 +4,14 @@ import arrow.core.Option
 import im.vector.matrix.android.api.session.Session
 import org.navgurukul.chat.core.di.ImageManager
 import org.navgurukul.chat.features.crypto.KeyRequestHandler
+import org.navgurukul.chat.features.notifications.PushRuleTriggerListener
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicReference
 
 class ActiveSessionHolder(
     private val sessionObservableStore: ActiveSessionDataSource,
     private val imageManager: ImageManager,
+    private val pushRuleTriggerListener: PushRuleTriggerListener,
     private val keyRequestHandler: KeyRequestHandler
 ) {
 
@@ -20,6 +22,7 @@ class ActiveSessionHolder(
         activeSession.set(session)
         keyRequestHandler.start(session)
         imageManager.onSessionStarted(session)
+        pushRuleTriggerListener.startWithSession(session)
         sessionObservableStore.post(Option.just(session))
     }
 
@@ -28,6 +31,7 @@ class ActiveSessionHolder(
         activeSession.set(null)
         keyRequestHandler.stop()
         sessionObservableStore.post(Option.empty())
+        pushRuleTriggerListener.stop()
     }
 
     fun hasActiveSession(): Boolean {

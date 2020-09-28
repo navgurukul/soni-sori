@@ -135,6 +135,20 @@
         <item quantity="other">%d membership changes</item>
     </plurals>
 
+    <plurals name="notification_unread_notified_messages">
+        <item quantity="one">1 unread notified message</item>
+        <item quantity="other">%d unread notified messages</item>
+    </plurals>
+    <plurals name="notification_compat_summary_line_for_room" >
+        <item quantity="one">%1$s: 1 message</item>
+        <item quantity="other">%1$s: %2$d messages</item>
+    </plurals>
+
+    <plurals name="notification_compat_summary_title">
+        <item quantity="one">%d notification</item>
+        <item quantity="other">%d notifications</item>
+    </plurals>
+
     <string name="room_created_summary_item">%s created and configured the room.</string>
     <string name="room_created_summary_item_by_you">You created and configured the room.</string>
     <string name="notice_crypto_unable_to_decrypt_merged">Waiting for encryption history</string>
@@ -218,4 +232,17 @@
     <string name="room_list_rooms_empty_title">Rooms</string>
     <string name="room_list_rooms_empty_body">Your direct message conversations will be displayed here</string>
     <string name="network_error_please_check_and_retry">Network error: please check your connection and retry.</string>
+    <string name="notification_inline_reply_failed">** Failed to send - please open room</string>
+    <string name="notification_ticker_text_dm">%1$s: %2$s</string>
+    <string name="notification_ticker_text_group">%1$s: %2$s %3$s</string>
+    <string name="notification_unknown_room_name">Room</string>
+    <string name="notification_new_invitation">New Invitation</string>
+    <string name="notification_unknown_new_event">New Event</string>
+
+    <!-- Note: pusher_http_url should have path '/_matrix/push/v1/notify' -->
+    <string name="pusher_http_url" translatable="false">https://m.navgurukul.org/pushgateway/_matrix/push/v1/notify</string>
+    <!-- Note: pusher_app_id cannot exceed 64 chars -->
+    <string name="pusher_app_id" translatable="false">org.navgurukul.bol</string>
+    <string name="no_valid_google_play_services_apk">Google Play Services not found. Notifications may not work properly</string>
+
 </resources>

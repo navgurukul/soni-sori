@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.util.AppUtils
-import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.learn.ui.common.toast
 
@@ -22,7 +22,7 @@ class WelcomeFragment : BaseFragment() {
 
     private val viewModel: WelcomeViewModel by viewModel()
 
-    private val navigator: ChatNavigator by inject()
+    private val navigator: MerakiNavigator by inject()
 
     override fun getLayoutResId(): Int = R.layout.fragment_welcome
 

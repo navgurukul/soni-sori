@@ -13,37 +13,34 @@ import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.koin.java.KoinJavaComponent.inject
 import org.merakilearn.MainActivity
 import org.merakilearn.R
+import org.merakilearn.core.push.FCMServiceDelegate
 
 class MerakiMessagingService : FirebaseMessagingService() {
+
+    private val fcmServiceDelegate: FCMServiceDelegate by inject(FCMServiceDelegate::class.java)
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-            handleNow()
-        }
-
         // Check if message contains a notification payload.
         remoteMessage.notification.let {
             Log.d(TAG, "Message Notification Body: ${it?.body}")
             sendNotification(it?.title, it?.body, it?.imageUrl)
         }
+
+        fcmServiceDelegate.onMessageReceived(remoteMessage)
     }
 
 
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
         sendRegistrationToServer(token)
-    }
-
-    private fun handleNow() {
-        Log.d(TAG, "Short lived task is done.")
+        fcmServiceDelegate.onNewToken(token)
     }
 
 

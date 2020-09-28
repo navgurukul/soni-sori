@@ -18,6 +18,7 @@ import timber.log.Timber
 class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     private val activeSessionHolder: ActiveSessionHolder by inject(ActiveSessionHolder::class.java)
+    private val notificationDrawerManager: NotificationDrawerManager by inject(NotificationDrawerManager::class.java)
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent == null || context == null) return
@@ -25,17 +26,26 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         when (intent.action) {
             NotificationUtils.SMART_REPLY_ACTION        ->
                 handleSmartReply(intent, context)
+            NotificationUtils.DISMISS_ROOM_NOTIF_ACTION ->
+                intent.getStringExtra(KEY_ROOM_ID)?.let {
+                    notificationDrawerManager.clearMessageEventOfRoom(it)
+                }
+            NotificationUtils.DISMISS_SUMMARY_ACTION    ->
+                notificationDrawerManager.clearAllEvents()
             NotificationUtils.MARK_ROOM_READ_ACTION     ->
                 intent.getStringExtra(KEY_ROOM_ID)?.let {
+                    notificationDrawerManager.clearMessageEventOfRoom(it)
                     handleMarkAsRead(it)
                 }
             NotificationUtils.JOIN_ACTION               -> {
                 intent.getStringExtra(KEY_ROOM_ID)?.let {
+                    notificationDrawerManager.clearMemberShipNotificationForRoom(it)
                     handleJoinRoom(it)
                 }
             }
             NotificationUtils.REJECT_ACTION             -> {
                 intent.getStringExtra(KEY_ROOM_ID)?.let {
+                    notificationDrawerManager.clearMemberShipNotificationForRoom(it)
                     handleRejectRoom(it)
                 }
             }

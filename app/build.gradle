@@ -45,6 +45,7 @@ dependencies {
     implementation project(":learn")
     implementation project(":chat")
     implementation project(":playground")
+    implementation project(path: ':core')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -99,7 +100,7 @@ dependencies {
     //firebase
     implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation "com.google.firebase:firebase-messaging:$firebase_messaging_version"
     implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx:19.1.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1'

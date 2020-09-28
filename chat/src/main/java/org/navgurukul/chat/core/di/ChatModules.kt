@@ -9,10 +9,15 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
+import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.core.navigator.ChatModuleNavigator
+import org.merakilearn.core.push.FCMServiceDelegate
 import org.navgurukul.chat.EmojiCompatFontProvider
 import org.navgurukul.chat.R
+import org.navgurukul.chat.core.ChatAppOpenDelegate
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.error.ChatErrorFormatter
+import org.navgurukul.chat.core.pushers.PushersManager
 import org.navgurukul.chat.core.repo.*
 import org.navgurukul.chat.core.resources.*
 import org.navgurukul.chat.core.utils.DimensionConverter
@@ -34,10 +39,11 @@ import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.MatrixHtmlPluginConfigure
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
 import org.navgurukul.chat.features.media.ImageContentRenderer
-import org.navgurukul.chat.features.navigator.ChatNavigator
-import org.navgurukul.chat.features.navigator.DefaultChatNavigator
-import org.navgurukul.chat.features.notifications.NotificationUtils
+import org.navgurukul.chat.features.navigator.ChatNavigatorContract
+import org.navgurukul.chat.features.notifications.*
 import org.navgurukul.chat.features.popup.PopupAlertManager
+import org.navgurukul.chat.features.push.ChatFCMServiceDelegate
+import org.navgurukul.chat.features.push.FcmHelper
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
@@ -52,8 +58,18 @@ val factoryModule = module {
         Matrix.initialize(androidContext(), MatrixConfiguration())
         Matrix.getInstance(androidContext()).authenticationService()
     }
+    single { NotificationDrawerManager(androidContext(), get(), get(), get(), get(), get(), get(), get()) }
+    single { IconLoader(androidContext()) }
+    single { BitmapLoader(androidContext()) }
+    single { OutdatedEventDetector(get()) }
+    single<FCMServiceDelegate> { ChatFCMServiceDelegate(androidContext()) }
+    single<AppOpenDelegate> { ChatAppOpenDelegate(get(), get(), get(), get()) }
+    single { FcmHelper() }
+    single { PushersManager(get(), get(), get()) }
     single { UserPreferencesProvider(get()) }
-    single { ActiveSessionHolder(get(), get(), get()) }
+    single { PushRuleTriggerListener(get()) }
+    single { NotifiableEventResolver(get(), get(), get()) }
+    single { ActiveSessionHolder(get(), get(), get(), get()) }
     single { KeyRequestHandler(androidContext(), get()) }
     single { PopupAlertManager() }
     single { ImageManager(androidContext(), get()) }
@@ -70,12 +86,12 @@ val factoryModule = module {
     single { DisplayableEventFormatter(get(), get(), get()) }
     single { NoticeEventFormatter(get(), get(), get()) }
     single { RoomHistoryVisibilityFormatter(get()) }
-    single { NotificationUtils(androidContext(), get(), get()) }
+    single { NotificationUtils(androidContext(), get(), get(), get()) }
     single { ChatPreferences(androidContext()) }
     single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
     single { DimensionConverter(androidContext().resources) }
     single { LocaleProvider(androidContext().resources) }
-    single<ChatNavigator> { DefaultChatNavigator(get(), get()) }
+    single<ChatModuleNavigator> { ChatNavigatorContract(get(), get()) }
     single { SaralHtmlCompressor() }
     single { MessageColorProvider(get()) }
     single { AvatarSizeProvider(get()) }

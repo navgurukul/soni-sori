@@ -4,8 +4,10 @@ import android.app.Application
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.network.SaralApi
+import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.more.MoreViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
@@ -19,6 +21,10 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { MoreViewModel() }
     viewModel { WelcomeViewModel(get(), get(), get()) }
+}
+
+val factoryModule = module {
+    single<AppModuleNavigator> { AppModuleNavigationContract() }
 }
 
 val apiModule = module {
@@ -45,4 +51,4 @@ val repositoryModule = module {
 
     single { provideAppRepo(get(), androidApplication(),get(), get()) }
 }
-val appModules = arrayListOf(viewModelModule,apiModule, repositoryModule)
+val appModules = arrayListOf(viewModelModule, apiModule, factoryModule, repositoryModule)

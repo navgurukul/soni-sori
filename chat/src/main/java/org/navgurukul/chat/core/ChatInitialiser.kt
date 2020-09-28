@@ -12,8 +12,11 @@ import org.navgurukul.chat.core.extensions.configureAndStart
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.repo.AppStateHandler
 import org.navgurukul.chat.features.lifecycle.SaralActivityLifecycleCallbacks
+import org.navgurukul.chat.features.notifications.NotificationDrawerManager
 import org.navgurukul.chat.features.notifications.NotificationUtils
 import org.navgurukul.chat.features.popup.PopupAlertManager
+import org.navgurukul.chat.features.push.FcmHelper
+import org.navgurukul.chat.features.settings.ChatPreferences
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -29,6 +32,7 @@ object ChatInitializer {
             val appStateHandler: AppStateHandler by inject(AppStateHandler::class.java)
             val notificationUtils: NotificationUtils by inject(NotificationUtils::class.java)
             val popupAlertManager: PopupAlertManager by inject(PopupAlertManager::class.java)
+            val notificationDrawerManager: NotificationDrawerManager by inject(NotificationDrawerManager::class.java)
 
             if (authenticationService.hasAuthenticatedSessions() && !activeSessionHolder.hasActiveSession()) {
                 val lastAuthenticatedSession = authenticationService.getLastAuthenticatedSession()!!
@@ -47,6 +51,7 @@ object ChatInitializer {
                 @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
                 fun entersBackground() {
                     Timber.i("App entered background") // call persistInfo
+                    notificationDrawerManager.persistInfo()
                 }
             })
             ProcessLifecycleOwner.get().lifecycle.addObserver(appStateHandler)
