@@ -11,12 +11,15 @@ import io.noties.markwon.SpannableBuilder
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.MarkwonHtmlRenderer
 import io.noties.markwon.html.tag.LinkHandler
+import org.navgurukul.chat.core.glide.GlideRequests
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.home.AvatarRenderer
 
-class MxLinkTagHandler(private val context: Context,
-                       private val avatarRenderer: AvatarRenderer,
-                       private val sessionHolder: ActiveSessionHolder
+class MxLinkTagHandler(
+    private val glideRequests: GlideRequests,
+    private val context: Context,
+    private val avatarRenderer: AvatarRenderer,
+    private val sessionHolder: ActiveSessionHolder
 ) : LinkHandler() {
 
     override fun handle(visitor: MarkwonVisitor, renderer: MarkwonHtmlRenderer, tag: HtmlTag) {
@@ -24,17 +27,26 @@ class MxLinkTagHandler(private val context: Context,
         if (link != null) {
             val permalinkData = PermalinkParser.parse(link)
             val matrixItem = when (permalinkData) {
-                is PermalinkData.UserLink  -> {
+                is PermalinkData.UserLink -> {
                     val user = sessionHolder.getSafeActiveSession()?.getUser(permalinkData.userId)
                     MatrixItem.UserItem(permalinkData.userId, user?.displayName, user?.avatarUrl)
                 }
-                is PermalinkData.RoomLink  -> {
+                is PermalinkData.RoomLink -> {
                     if (permalinkData.eventId == null) {
-                        val room: RoomSummary? = sessionHolder.getSafeActiveSession()?.getRoomSummary(permalinkData.roomIdOrAlias)
+                        val room: RoomSummary? = sessionHolder.getSafeActiveSession()
+                            ?.getRoomSummary(permalinkData.roomIdOrAlias)
                         if (permalinkData.isRoomAlias) {
-                            MatrixItem.RoomAliasItem(permalinkData.roomIdOrAlias, room?.displayName, room?.avatarUrl)
+                            MatrixItem.RoomAliasItem(
+                                permalinkData.roomIdOrAlias,
+                                room?.displayName,
+                                room?.avatarUrl
+                            )
                         } else {
-                            MatrixItem.RoomItem(permalinkData.roomIdOrAlias, room?.displayName, room?.avatarUrl)
+                            MatrixItem.RoomItem(
+                                permalinkData.roomIdOrAlias,
+                                room?.displayName,
+                                room?.avatarUrl
+                            )
                         }
                     } else {
                         // Exclude event link (used in reply events, we do not want to pill the "in reply to")
@@ -42,27 +54,32 @@ class MxLinkTagHandler(private val context: Context,
                     }
                 }
                 is PermalinkData.GroupLink -> {
-                    val group = sessionHolder.getSafeActiveSession()?.getGroupSummary(permalinkData.groupId)
-                    MatrixItem.GroupItem(permalinkData.groupId, group?.displayName, group?.avatarUrl)
+                    val group =
+                        sessionHolder.getSafeActiveSession()?.getGroupSummary(permalinkData.groupId)
+                    MatrixItem.GroupItem(
+                        permalinkData.groupId,
+                        group?.displayName,
+                        group?.avatarUrl
+                    )
                 }
-                else                       -> null
+                else -> null
             }
 
             if (matrixItem == null) {
                 super.handle(visitor, renderer, tag)
             } else {
-                val span = PillImageSpan(avatarRenderer, context, matrixItem)
+                val span = PillImageSpan(glideRequests, avatarRenderer, context, matrixItem)
                 SpannableBuilder.setSpans(
-                        visitor.builder(),
-                        span,
-                        tag.start(),
-                        tag.end()
+                    visitor.builder(),
+                    span,
+                    tag.start(),
+                    tag.end()
                 )
                 SpannableBuilder.setSpans(
-                        visitor.builder(),
-                        URLSpan(link),
-                        tag.start(),
-                        tag.end()
+                    visitor.builder(),
+                    URLSpan(link),
+                    tag.start(),
+                    tag.end()
                 )
             }
         } else {

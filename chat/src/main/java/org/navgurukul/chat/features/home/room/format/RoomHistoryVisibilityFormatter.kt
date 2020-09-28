@@ -18,7 +18,7 @@ package org.navgurukul.chat.features.home.room.format
 
 import im.vector.matrix.android.api.session.room.model.RoomHistoryVisibility
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 
 class RoomHistoryVisibilityFormatter(
         private val stringProvider: StringProvider

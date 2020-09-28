@@ -5,6 +5,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.html.TagHandlerNoOp
 import org.commonmark.node.Node
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.ColorProvider
 import org.navgurukul.chat.features.home.AvatarRenderer
@@ -41,7 +42,7 @@ class MatrixHtmlPluginConfigure (private val context: Context,
         plugin
                 .addHandler(TagHandlerNoOp.create("a"))
                 .addHandler(FontTagHandler())
-                .addHandler(MxLinkTagHandler(context, avatarRenderer, session))
+                .addHandler(MxLinkTagHandler(GlideApp.with(context), context, avatarRenderer, session))
                 .addHandler(MxReplyTagHandler())
                 .addHandler(SpanHandler(colorProvider))
     }

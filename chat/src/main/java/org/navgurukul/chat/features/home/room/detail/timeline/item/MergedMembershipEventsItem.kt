@@ -3,11 +3,11 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.children
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
@@ -31,7 +31,7 @@ abstract class MergedMembershipEventsItem : BasedMergedItem<MergedMembershipEven
             holder.avatarListView.visibility = View.VISIBLE
             holder.avatarListView.children.forEachIndexed { index, view ->
                 val data = distinctMergeData.getOrNull(index)
-                if (data != null && view is SimpleDraweeView) {
+                if (data != null && view is ImageView) {
                     view.visibility = View.VISIBLE
                     attributes.avatarRenderer.render(data.toMatrixItem(), view)
                 } else {

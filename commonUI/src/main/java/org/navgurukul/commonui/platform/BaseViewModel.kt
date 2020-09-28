@@ -1,33 +1,35 @@
 package org.navgurukul.commonui.platform
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.navgurukul.chat.core.model.Async
-import org.navgurukul.chat.core.model.Fail
-import org.navgurukul.chat.core.model.Loading
-import org.navgurukul.chat.core.model.Success
-import org.navgurukul.commonui.BuildConfig
-import kotlin.reflect.KProperty1
+import org.navgurukul.commonui.model.Async
+import org.navgurukul.commonui.model.Fail
+import org.navgurukul.commonui.model.Loading
+import org.navgurukul.commonui.model.Success
+import timber.log.Timber
 
 open class BaseViewModel<VE: ViewEvents, S: ViewState>(initialState: S): ViewModel() {
 
     private val disposables = CompositeDisposable()
 
     // Used to post transient events to the View
-    protected val _viewEvents = MutableLiveData<VE>()
+    protected val _viewEvents = SingleLiveEvent<VE>()
     val viewEvents: LiveData<VE> = _viewEvents
 
     // Used to post transient events to the View
     private val _viewState = MutableLiveData<S>(initialState)
     val viewState: LiveData<S> = _viewState
 
+    private var lastState = initialState
+
     protected fun setState(reducer: S.() -> S) {
-        _viewState.postValue(reducer(_viewState.value!!))
+        val newState = reducer(lastState)
+        lastState = newState
+        _viewState.postValue(newState)
     }
 
     override fun onCleared() {
@@ -75,7 +77,7 @@ open class BaseViewModel<VE: ViewEvents, S: ViewState>(initialState: S): ViewMod
             success
         }
             .onErrorReturn { e ->
-                if (BuildConfig.DEBUG) Log.e(BaseViewModel::class.java.name, "Observable encountered error", e)
+                Timber.e(e, "Observable encountered error")
                 Fail(e)
             }
             .subscribe { asyncData -> setState { stateReducer(asyncData) } }

@@ -4,6 +4,7 @@
     android:id="@+id/messageTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:fontFamily="@font/nunito"
     android:textColor="?textPrimary"
-    tools:text="@sample/saral.json/data/message"
-    android:textSize="14sp"/>
+    android:textSize="16sp"
+    tools:text="@sample/saral.json/data/message" />

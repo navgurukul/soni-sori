@@ -8,7 +8,7 @@ import im.vector.matrix.android.api.auth.data.LoginFlowResult
 import im.vector.matrix.android.api.session.Session
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.configureAndStart
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -36,13 +36,10 @@ class AuthenticationRepository(
         )
     }
 
-    suspend fun login(): Session? {
+    suspend fun login(id: String, pass: String): Session? {
         getLoginFlow()?.let { _ ->
             return suspendCoroutine {
-                authService.getLoginWizard().login(
-                    /*"t-saral"*/"saquib19",
-                    /*"hello123"*/"navgurukul",
-                    "Android",
+                authService.getLoginWizard().login(id, pass, "Android",
                     object : MatrixCallback<Session> {
                         override fun onSuccess(data: Session) {
                             super.onSuccess(data)

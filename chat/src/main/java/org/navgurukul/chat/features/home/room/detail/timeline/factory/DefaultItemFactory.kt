@@ -3,7 +3,6 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 import android.view.View
 import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
@@ -11,6 +10,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInfo
 import org.navgurukul.chat.features.home.room.detail.timeline.item.DefaultItem
 import org.navgurukul.chat.features.home.room.detail.timeline.item.DefaultItem_
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
+import org.navgurukul.commonui.resources.StringProvider
 
 class DefaultItemFactory(
     private val avatarSizeProvider: AvatarSizeProvider,

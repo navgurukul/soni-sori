@@ -11,13 +11,15 @@ import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
+import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 
 class ApplicationRepo(
     private val applicationApi: SaralApi,
     private val application: Application,
-    private val courseDb: CoursesDatabase
+    private val courseDb: CoursesDatabase,
+    private val authenticationRepository: AuthenticationRepository
 ) {
 
     suspend fun initLoginServer(authToken: String?): Boolean {
@@ -114,15 +116,16 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun initFakeSignUp(): Boolean {
+    suspend fun performFakeSignUp(): FakeUserLoginResponse? {
         return try {
             val req = applicationApi.initFakeSignUpAsync()
             val response = req.await()
             AppUtils.saveFakeLoginResponse(response, application)
-            true
+            authenticationRepository.login(response.user.chatId, response.user.chatPassword)
+            response
         } catch (ex: Exception) {
             ex.printStackTrace()
-            false
+            null
         }
     }
 

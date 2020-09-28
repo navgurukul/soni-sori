@@ -5,8 +5,8 @@ import im.vector.matrix.android.api.failure.MatrixError
 import im.vector.matrix.android.api.failure.isInvalidPassword
 import im.vector.matrix.android.api.session.identity.IdentityServiceError
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.commonui.error.ErrorFormatter
+import org.navgurukul.commonui.resources.StringProvider
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

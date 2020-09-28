@@ -6,22 +6,24 @@ import java.io.Serializable
 
 data class FakeUserLoginResponse(
     @SerializedName("token")
-    var token: String? = "",
+    val token: String,
     @SerializedName("user")
-    var user: User? = User()
+    val user: User,
+    @SerializedName("room_id")
+val roomId: String
 ) : Serializable {
     data class User(
         @SerializedName("chat_id")
-        var chatId: String? = "",
+        val chatId: String,
         @SerializedName("chat_password")
-        var chatPassword: String? = "",
+        val chatPassword: String,
         @SerializedName("created_at")
-        var createdAt: String? = "",
+        val createdAt: String,
         @SerializedName("email")
-        var email: String? = "",
+        val email: String,
         @SerializedName("id")
-        var id: String? = "",
+        val id: String,
         @SerializedName("name")
-        var name: String? = ""
+        val name: String
     ) : Serializable
 }

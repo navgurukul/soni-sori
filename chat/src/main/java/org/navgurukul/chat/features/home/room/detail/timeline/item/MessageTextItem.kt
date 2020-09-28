@@ -12,7 +12,12 @@ import org.navgurukul.chat.features.home.room.detail.timeline.tools.findPillsAnd
 @EpoxyModelClass
 abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
 
     @EpoxyAttribute
     var searchForPills: Boolean = false
@@ -44,7 +49,11 @@ abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
         holder.messageView.setTextFuture(textFuture)
     }
 
-    override fun getViewType() = STUB_ID
+    override fun getViewType() = if (attributes.informationData.sentByMe) {
+        STUB_ID + R.drawable.sent_timeline_item_background
+    } else {
+        STUB_ID + R.drawable.received_timeline_item_background
+    }
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val messageView by bind<AppCompatTextView>(R.id.messageTextView)

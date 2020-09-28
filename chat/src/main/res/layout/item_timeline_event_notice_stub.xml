@@ -6,13 +6,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/itemNoticeAvatarView"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:roundAsCircle="true"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView

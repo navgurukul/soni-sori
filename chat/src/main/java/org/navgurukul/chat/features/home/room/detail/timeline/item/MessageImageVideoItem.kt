@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.ContentUploadStateTrackerBinder
 import org.navgurukul.chat.features.media.ImageContentRenderer
@@ -16,7 +15,12 @@ import org.navgurukul.chat.features.media.ImageContentRenderer
 @EpoxyModelClass
 abstract class MessageImageVideoItem : AbsMessageItem<MessageImageVideoItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
 
     @EpoxyAttribute
     lateinit var mediaData: ImageContentRenderer.Data
@@ -56,11 +60,15 @@ abstract class MessageImageVideoItem : AbsMessageItem<MessageImageVideoItem.Hold
         super.unbind(holder)
     }
 
-    override fun getViewType() = STUB_ID
+    override fun getViewType() = if (attributes.informationData.sentByMe) {
+        STUB_ID + R.drawable.sent_timeline_item_background
+    } else {
+        STUB_ID + R.drawable.received_timeline_item_background
+    }
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val progressLayout by bind<ViewGroup>(R.id.messageMediaUploadProgressLayout)
-        val imageView by bind<SimpleDraweeView>(R.id.messageThumbnailView)
+        val imageView by bind<ImageView>(R.id.messageThumbnailView)
         val playContentView by bind<ImageView>(R.id.messageMediaPlayView)
 
         val mediaContentView by bind<ViewGroup>(R.id.messageContentMedia)

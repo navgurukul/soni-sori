@@ -7,9 +7,8 @@ import im.vector.matrix.android.api.session.room.model.RoomSummary
 import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import im.vector.matrix.android.api.session.sync.SyncState
 import im.vector.matrix.android.api.session.user.model.User
-import im.vector.matrix.android.api.session.widgets.model.Widget
-import org.navgurukul.chat.core.model.Async
-import org.navgurukul.chat.core.model.Uninitialized
+import org.navgurukul.commonui.model.Async
+import org.navgurukul.commonui.model.Uninitialized
 import org.navgurukul.commonui.platform.ViewState
 
 /**
@@ -35,21 +34,21 @@ sealed class UnreadState {
 }
 
 data class RoomDetailViewState(
-        val roomId: String,
-        val eventId: String?,
-        val myRoomMember: Async<RoomMemberSummary> = Uninitialized,
-        val asyncInviter: Async<User> = Uninitialized,
-        val asyncRoomSummary: Async<RoomSummary> = Uninitialized,
-        val typingMessage: String? = null,
-        val sendMode: SendMode = SendMode.REGULAR(""),
-        val tombstoneEvent: Event? = null,
-        val tombstoneEventHandling: Async<String> = Uninitialized,
-        val syncState: SyncState = SyncState.Idle,
-        val highlightedEventId: String? = null,
-        val unreadState: UnreadState = UnreadState.Unknown,
-        val canShowJumpToReadMarker: Boolean = true,
-        val changeMembershipState: ChangeMembershipState = ChangeMembershipState.Unknown,
-        val canSendMessage: Boolean = true
+    val roomId: String,
+    val eventId: String?,
+    val myRoomMember: Async<RoomMemberSummary> = Uninitialized,
+    val asyncInviter: Async<User> = Uninitialized,
+    val asyncRoomSummary: Async<RoomSummary> = Uninitialized,
+    val subtitle: String? = null,
+    val sendMode: SendMode = SendMode.REGULAR(""),
+    val tombstoneEvent: Event? = null,
+    val tombstoneEventHandling: Async<String> = Uninitialized,
+    val syncState: SyncState = SyncState.Idle,
+    val highlightedEventId: String? = null,
+    val unreadState: UnreadState = UnreadState.Unknown,
+    val canShowJumpToReadMarker: Boolean = true,
+    val changeMembershipState: ChangeMembershipState = ChangeMembershipState.Unknown,
+    val canSendMessage: Boolean = true
 ) : ViewState {
 
 }

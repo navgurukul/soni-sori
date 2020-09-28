@@ -6,70 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".features.home.room.detail.RoomDetailFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/roomToolbar"
-        style="@style/Widget.AppCompat.Toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?actionBarSize"
-        android:elevation="4dp"
-        android:transitionName="toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/roomToolbar"
+            style="@style/Widget.AppCompat.Toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:transitionName="toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/roomToolbarContentView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/roomToolbarAvatarImageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:roundAsCircle="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/roomToolbarContentView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/roomToolbarTitleView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?textPrimary"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/roomToolbarSubtitleView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/roomToolbarAvatarImageView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@sample/saral.json/data/roomName" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="?attr/borderColor"/>
 
-            <TextView
-                android:id="@+id/roomToolbarSubtitleView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?textSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/roomToolbarAvatarImageView"
-                app:layout_constraintTop_toBottomOf="@+id/roomToolbarTitleView"
-                tools:text="@sample/saral.json/data/roomTopic" />
+                <ImageButton
+                    android:id="@+id/roomToolbarBackButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:background="@null"
+                    android:tint="?textPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/roomToolbarAvatarImageView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    app:layout_constraintTop_toTopOf="@id/roomToolbarAvatarImageView"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/roomToolbarAvatarImageView"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    android:layout_marginBottom="@dimen/spacing_2x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/roomToolbarBackButton"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.appcompat.widget.Toolbar>
+                <TextView
+                    android:id="@+id/roomToolbarTitleView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_2x"
+                    android:layout_marginEnd="@dimen/spacing_2x"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nunito_bold"
+                    android:maxLines="1"
+                    android:textColor="?textPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/roomToolbarSubtitleView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/roomToolbarAvatarImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="@sample/saral.json/data/roomName" />
+
+                <TextView
+                    android:id="@+id/roomToolbarSubtitleView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_2x"
+                    android:layout_marginTop="@dimen/spacing_1x"
+                    android:layout_marginEnd="@dimen/spacing_2x"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nunito"
+                    android:maxLines="1"
+                    android:textColor="?textPrimary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/roomToolbarAvatarImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/roomToolbarTitleView"
+                    tools:text="@sample/saral.json/data/roomTopic" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/recyclerViewBarrier"

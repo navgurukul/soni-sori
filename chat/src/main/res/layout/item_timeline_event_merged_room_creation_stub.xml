@@ -28,13 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/creationEncryptionTile">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/itemNoticeAvatarView"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            app:roundAsCircle="true"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView

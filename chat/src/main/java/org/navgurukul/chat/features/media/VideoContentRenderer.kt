@@ -1,10 +1,10 @@
 package org.navgurukul.chat.features.media
 
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
 import androidx.core.view.isVisible
-import com.facebook.drawee.view.SimpleDraweeView
 import im.vector.matrix.android.api.MatrixCallback
 import im.vector.matrix.android.api.session.file.FileService
 import im.vector.matrix.android.internal.crypto.attachments.ElementToDecrypt
@@ -30,7 +30,7 @@ class VideoContentRenderer (private val activeSessionHolder: ActiveSessionHolder
     ) : AttachmentData
 
     fun render(data: Data,
-               thumbnailView: SimpleDraweeView,
+               thumbnailView: ImageView,
                loadingView: ProgressBar,
                videoView: VideoView,
                errorView: TextView

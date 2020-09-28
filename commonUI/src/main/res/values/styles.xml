@@ -25,6 +25,9 @@
         <item name="backgroundColor">@color/backgroundColor</item>
         <item name="borderColor">@color/borderColor</item>
 
+        <item name="actionBarSize">@dimen/actionBarSize</item>
+
     </style>
+
 
 </resources>
