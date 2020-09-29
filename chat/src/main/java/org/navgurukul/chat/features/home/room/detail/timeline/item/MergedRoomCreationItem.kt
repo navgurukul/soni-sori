@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
@@ -84,7 +83,7 @@ abstract class MergedRoomCreationItem : BasedMergedItem<MergedRoomCreationItem.H
 
     class Holder : BasedMergedItem.Holder(STUB_ID) {
         val summaryView by bind<TextView>(R.id.itemNoticeTextView)
-        val avatarView by bind<SimpleDraweeView>(R.id.itemNoticeAvatarView)
+        val avatarView by bind<ImageView>(R.id.itemNoticeAvatarView)
         val encryptionTile by bind<ViewGroup>(R.id.creationEncryptionTile)
 
         val e2eTitleTextView by bind<TextView>(R.id.itemVerificationDoneTitleTextView)

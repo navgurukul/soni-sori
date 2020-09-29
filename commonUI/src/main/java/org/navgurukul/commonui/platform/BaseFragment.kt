@@ -7,7 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.map
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,15 +23,20 @@ import org.navgurukul.commonui.R
 import org.navgurukul.commonui.error.ErrorFormatter
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KProperty1
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
 
     protected val errorFormatter: ErrorFormatter by inject()
 
     //TODO remove with custom progress dialog
     private var progress: ProgressDialog? = null
 
-    final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    final override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         Timber.i("onCreateView Fragment ${this.javaClass.simpleName}")
         return inflater.inflate(getLayoutResId(), container, false)
     }
@@ -41,6 +51,7 @@ abstract class BaseFragment: Fragment() {
     open fun showFailure(throwable: Throwable) {
         displayErrorDialog(throwable)
     }
+
 
     protected fun showLoadingDialog(message: CharSequence? = null, cancelable: Boolean = false) {
         progress = ProgressDialog(requireContext()).apply {
@@ -58,7 +69,22 @@ abstract class BaseFragment: Fragment() {
     /**
      * Accesses ViewModel state from a single ViewModel synchronously and returns the result of the block.
      */
-    fun <A : BaseViewModel<*, B>, B : ViewState, C> withState(viewModel: A, block: (B) -> C) = block(viewModel.viewState.value!!)
+    fun <A : BaseViewModel<*, B>, B : ViewState, C> withState(viewModel: A, block: (B) -> C) =
+        block(viewModel.viewState.value!!)
+
+    fun <S : ViewState, A, B> BaseViewModel<*, S>.selectSubscribe(
+        prop1: KProperty1<S, A>,
+        prop2: KProperty1<S, B>
+    ): LiveData<Pair<A, B>> = viewState.map {
+        Pair(prop1.get(it), prop2.get(it))
+    }.distinctUntilChanged()
+
+    fun <S : ViewState, A> BaseViewModel<*, S>.selectSubscribe(
+        prop1: KProperty1<S, A>
+    ): LiveData<A> = viewState.map {
+        prop1.get(it)
+    }.distinctUntilChanged()
+
 
     protected fun displayErrorDialog(throwable: Throwable) {
         AlertDialog.Builder(requireActivity())
@@ -76,6 +102,20 @@ abstract class BaseFragment: Fragment() {
 
     protected fun Disposable.disposeOnDestroyView() {
         uiDisposables.add(this)
+    }
+
+    /* ==========================================================================================
+     * Toolbar
+     * ========================================================================================== */
+
+    /**
+     * Configure the Toolbar.
+     */
+    protected fun setupToolbar(toolbar: Toolbar) {
+        val parentActivity = activity
+        if (parentActivity is ToolbarConfigurable) {
+            parentActivity.configure(toolbar)
+        }
     }
 
     /* ==========================================================================================

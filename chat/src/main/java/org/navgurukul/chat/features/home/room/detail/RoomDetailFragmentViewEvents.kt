@@ -14,13 +14,14 @@ sealed class RoomDetailFragmentViewEvents : ViewEvents {
     data class Failure(val throwable: Throwable) : RoomDetailFragmentViewEvents()
     data class OnNewTimelineEvents(val eventIds: List<String>) : RoomDetailFragmentViewEvents()
 
-//    data class ActionSuccess(val action: RoomDetailAction) : RoomDetailFragmentViewEvents()
+    data class ActionSuccess(val action: RoomDetailAction) : RoomDetailFragmentViewEvents()
 //    data class ActionFailure(val action: RoomDetailAction, val throwable: Throwable) : RoomDetailFragmentViewEvents()
 
     data class ShowMessage(val message: String) : RoomDetailFragmentViewEvents()
     data class ShowE2EErrorMessage(val withHeldCode: WithHeldCode?) : RoomDetailFragmentViewEvents()
 
     data class NavigateToEvent(val eventId: String) : RoomDetailFragmentViewEvents()
+    data class OpenDeepLink(val deepLink: String) : RoomDetailFragmentViewEvents()
 
     abstract class SendMessageResult : RoomDetailFragmentViewEvents()
 

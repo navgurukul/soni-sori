@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.ClickListener
 import org.navgurukul.chat.core.epoxy.onClick
@@ -54,7 +53,7 @@ abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
     override fun getViewType() = STUB_ID
 
     class Holder : BaseHolder(STUB_ID) {
-        val avatarImageView by bind<SimpleDraweeView>(R.id.itemNoticeAvatarView)
+        val avatarImageView by bind<ImageView>(R.id.itemNoticeAvatarView)
         val noticeTextView by bind<TextView>(R.id.itemNoticeTextView)
         val e2EDecorationView by bind<ImageView>(R.id.messageE2EDecoration)
     }

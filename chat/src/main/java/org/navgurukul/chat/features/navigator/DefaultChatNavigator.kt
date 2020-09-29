@@ -3,6 +3,7 @@ package org.navgurukul.chat.features.navigator
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.app.TaskStackBuilder
 import org.navgurukul.chat.core.error.fatalError
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
@@ -25,6 +26,11 @@ class DefaultChatNavigator(
         startActivity(context, intent, buildTask)
     }
 
+    override fun openDeepLink(context: Context, deepLink: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+        intent.setPackage(context.packageName)
+        startActivity(context, intent, false)
+    }
 
     private fun startActivity(context: Context, intent: Intent, buildTask: Boolean) {
         if (buildTask) {

@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "../chat/lib", include: ["*.jar"])
 
     //modules
     implementation project(":learn")
@@ -56,6 +57,10 @@ dependencies {
     // Koin for Kotlin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    // Matrix
+    implementation files('../chat/lib/matrix-sdk-android-release.aar')
+    implementation files('../chat/lib/matrix-sdk-android-rx-release.aar')
 
     //Navigation
     implementation 'androidx.navigation:navigation-fragment:2.3.0'

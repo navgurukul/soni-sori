@@ -43,9 +43,8 @@ import im.vector.matrix.android.internal.crypto.MXCRYPTO_ALGORITHM_MEGOLM
 import im.vector.matrix.android.internal.crypto.model.event.EncryptionEventContent
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionDataSource
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 import timber.log.Timber
-import javax.inject.Inject
 
 class NoticeEventFormatter(
     private val activeSessionDataSource: ActiveSessionDataSource,

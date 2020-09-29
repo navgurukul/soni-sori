@@ -1,42 +1,35 @@
 package org.merakilearn.ui.onboarding
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_welcome.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.MainActivity
 import org.merakilearn.R
-import org.merakilearn.databinding.FragmentWelcomeBinding
 import org.merakilearn.util.AppUtils
+import org.navgurukul.chat.features.navigator.ChatNavigator
+import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.learn.ui.common.toast
 
 
-class WelcomeFragment : Fragment() {
+class WelcomeFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = WelcomeFragment()
         const val TAG = "WelcomeFragment"
     }
 
-    private lateinit var mBinding: FragmentWelcomeBinding
-    private val viewModel: LoginViewModel by viewModel()
+    private val viewModel: WelcomeViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_welcome, container, false)
-        return mBinding.root
-    }
+    private val navigator: ChatNavigator by inject()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mBinding.tvAlready.setOnClickListener {
+    override fun getLayoutResId(): Int = R.layout.fragment_welcome
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tvAlready.setOnClickListener {
             AppUtils.changeFragment(
                 parentFragmentManager,
                 LoginFragment.newInstance(),
@@ -46,20 +39,29 @@ class WelcomeFragment : Fragment() {
             )
         }
 
-        mBinding.tvStarted.setOnClickListener {
-            mBinding.progressBarButton.visibility = View.VISIBLE
-            viewModel.initFakeSignUp().observe(viewLifecycleOwner, Observer {
-                mBinding.progressBarButton.visibility = View.GONE
-                if (it) {
-                    val intent = Intent(this.context, MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                } else {
-                    toast(getString(R.string.please_login))
-                }
-            })
-
+        tvStarted.setOnClickListener {
+            viewModel.handle(WelcomeViewActions.InitiateFakeSignUp)
         }
+
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            progress_bar_button.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            it.initialSyncProgress?.let { progressState ->
+                showLoading(getString(progressState.statusText))
+            } ?: run {
+                dismissLoadingDialog()
+            }
+        })
+
+        viewModel.viewEvents.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is WelcomeViewEvents.ShowToast -> toast(it.toastText)
+                is WelcomeViewEvents.OpenMerakiChat -> openMerakiChat(it.roomId)
+            }
+        })
     }
 
+    private fun openMerakiChat(roomId: String) {
+        navigator.openRoom(requireContext(), roomId)
+        requireActivity().finish()
+    }
 }

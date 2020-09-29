@@ -13,10 +13,11 @@ import im.vector.matrix.rx.unwrap
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.EmptyViewState
 import org.navgurukul.commonui.platform.ViewEvents
+import org.navgurukul.commonui.resources.StringProvider
 
 sealed class RoomDetailViewEvents: ViewEvents {
     data class RoomLeft(val leftMessage: String?) : RoomDetailViewEvents()
@@ -24,7 +25,7 @@ sealed class RoomDetailViewEvents: ViewEvents {
 
 class RoomDetailViewModel(roomId: String,
                           private val stringProvider: StringProvider,
-                          private val session: Session
+                          private val activeSessionHolder: ActiveSessionHolder
 ): BaseViewModel<RoomDetailViewEvents, EmptyViewState>(EmptyViewState) {
 
     private val roomIdObservable = BehaviorRelay.createDefault(Optional.from(roomId))
@@ -37,12 +38,13 @@ class RoomDetailViewModel(roomId: String,
         roomIdObservable
             .unwrap()
             .switchMap { roomId ->
+                val session = activeSessionHolder.getSafeActiveSession() ?: return@switchMap Observable.just(Optional.empty<RoomDetailViewEvents.RoomLeft>())
                 val room = session.getRoom(roomId) ?: return@switchMap Observable.just(Optional.empty<RoomDetailViewEvents.RoomLeft>())
                 room.rx()
                     .liveRoomSummary()
                     .unwrap()
                     .observeOn(Schedulers.computation())
-                    .map { mapToLeftViewEvent(room, it) }
+                    .map { mapToLeftViewEvent(session, room, it) }
             }
             .unwrap()
             .subscribe { event ->
@@ -51,7 +53,7 @@ class RoomDetailViewModel(roomId: String,
             .disposeOnClear()
     }
 
-    private fun mapToLeftViewEvent(room: Room, roomSummary: RoomSummary): Optional<RoomDetailViewEvents.RoomLeft> {
+    private fun mapToLeftViewEvent(session: Session, room: Room, roomSummary: RoomSummary): Optional<RoomDetailViewEvents.RoomLeft> {
         if (roomSummary.membership.isActive()) {
             return Optional.empty()
         }

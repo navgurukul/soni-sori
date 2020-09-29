@@ -4,10 +4,8 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import com.airbnb.epoxy.EpoxyAttribute
-import com.facebook.drawee.view.SimpleDraweeView
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.AvatarRenderer
@@ -73,7 +71,7 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
     private fun Attributes.getMemberNameColor() = messageColorProvider.getMemberNameTextColor(informationData.senderId)
 
     abstract class Holder(@IdRes stubId: Int) : AbsBaseMessageItem.Holder(stubId) {
-        val avatarImageView by bind<SimpleDraweeView>(R.id.messageAvatarImageView)
+        val avatarImageView by bind<ImageView>(R.id.messageAvatarImageView)
         val memberNameView by bind<TextView>(R.id.messageMemberNameView)
         val timeView by bind<TextView>(R.id.messageTimeView)
     }

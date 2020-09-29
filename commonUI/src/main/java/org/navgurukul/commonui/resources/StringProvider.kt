@@ -1,4 +1,4 @@
-package org.navgurukul.chat.core.resources
+package org.navgurukul.commonui.resources
 
 import android.content.res.Resources
 import androidx.annotation.NonNull

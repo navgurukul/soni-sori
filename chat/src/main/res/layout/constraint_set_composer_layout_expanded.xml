@@ -5,6 +5,7 @@
     android:id="@+id/composerLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPrimaryVariant"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
@@ -63,7 +64,7 @@
     <TextView
         android:id="@+id/composer_related_message_preview"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="?textPrimary"
@@ -71,6 +72,7 @@
         app:layout_constraintEnd_toEndOf="@id/composer_related_message_sender"
         app:layout_constraintStart_toStartOf="@id/composer_related_message_sender"
         app:layout_constraintTop_toBottomOf="@id/composer_related_message_sender"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@tools:sample/lorem/random" />
 
     <ImageView
@@ -100,7 +102,7 @@
         app:layout_constraintTop_toTopOf="@id/composer_related_message_preview" />
 
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/composer_avatar_view"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -111,7 +113,7 @@
         app:layout_goneMarginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:roundAsCircle="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/composerEditText"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +129,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_attachment"
         android:tint="?attr/colorAccent"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/sendButton"
         app:layout_constraintTop_toBottomOf="parent" />
 
@@ -142,11 +145,15 @@
 
     <ImageButton
         android:id="@+id/sendButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_send"
-        android:tint="?attr/colorAccent"
+        android:tint="?attr/colorPrimary"
+        android:scaleType="fitCenter"
+        android:padding="@dimen/spacing_3x"
+        android:layout_marginBottom="@dimen/spacing_half_x"
+        android:layout_marginTop="@dimen/spacing_half_x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/composerEditText"
@@ -157,14 +164,17 @@
         android:id="@+id/composerEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@drawable/rounded_rect_bordered_shape_8"
         android:hint="@string/room_message_placeholder_not_encrypted"
         android:inputType="textCapSentences|textMultiLine"
         android:minHeight="48dp"
         android:nextFocusLeft="@id/composerEditText"
         android:nextFocusUp="@id/composerEditText"
         android:padding="8dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/spacing_3x"
+        android:layout_marginBottom="@dimen/spacing_3x"
+        android:layout_marginStart="@dimen/spacing_3x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendButton"
         app:layout_constraintStart_toEndOf="@id/composer_avatar_view"

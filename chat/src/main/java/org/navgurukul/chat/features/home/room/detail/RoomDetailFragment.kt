@@ -1,13 +1,15 @@
 package org.navgurukul.chat.features.home.room.detail
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Spannable
 import android.view.View
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -18,16 +20,14 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.OnModelBuildFinishedListener
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding3.widget.textChanges
-import im.vector.matrix.android.api.session.Session
 import im.vector.matrix.android.api.session.events.model.Event
 import im.vector.matrix.android.api.session.room.model.Membership
 import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.session.room.model.message.MessageImageInfoContent
-import im.vector.matrix.android.api.session.room.model.message.MessageVideoContent
-import im.vector.matrix.android.api.session.room.model.message.MessageWithAttachmentContent
+import im.vector.matrix.android.api.session.room.model.message.*
 import im.vector.matrix.android.api.session.room.send.SendState
 import im.vector.matrix.android.api.session.room.timeline.Timeline
 import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import im.vector.matrix.android.api.session.room.timeline.getLastMessageContent
 import im.vector.matrix.android.api.util.MatrixItem
 import im.vector.matrix.android.api.util.toMatrixItem
 import im.vector.matrix.android.internal.crypto.model.event.EncryptedEventContent
@@ -35,23 +35,24 @@ import im.vector.matrix.android.internal.crypto.model.event.WithHeldCode
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_room_detail.*
 import kotlinx.android.synthetic.main.merge_composer_layout.view.*
+import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.*
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.utils.Debouncer
 import org.navgurukul.chat.core.utils.createUIHandler
+import org.navgurukul.chat.core.utils.getColorFromUserId
 import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
-import org.navgurukul.chat.features.home.room.detail.timeline.item.AbsMessageItem
-import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
-import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageTextItem
-import org.navgurukul.chat.features.home.room.detail.timeline.item.ReadReceiptData
+import org.navgurukul.chat.features.home.room.detail.timeline.item.*
+import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.PillImageSpan
 import org.navgurukul.chat.features.invite.SaralInviteView
 import org.navgurukul.chat.features.media.ImageContentRenderer
@@ -59,7 +60,6 @@ import org.navgurukul.chat.features.media.VideoContentRenderer
 import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.chat.features.share.SharedData
-import org.navgurukul.chat.features.themes.ThemeUtils
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.views.JumpToReadMarkerView
 import timber.log.Timber
@@ -89,6 +89,10 @@ class RoomDetailFragment : BaseFragment(),
         )
     })
 
+    private val glideRequests by lazy {
+        GlideApp.with(this)
+    }
+
     private val navigator: ChatNavigator by inject()
 
     private var lockSendButton = false
@@ -102,6 +106,8 @@ class RoomDetailFragment : BaseFragment(),
 
     private val chatPreferences: ChatPreferences by inject()
 
+    private val eventHtmlRenderer: EventHtmlRenderer by inject()
+
     private lateinit var scrollOnNewMessageCallback: ScrollOnNewMessageCallback
     private lateinit var scrollOnHighlightedEventCallback: ScrollOnHighlightedEventCallback
 
@@ -114,6 +120,7 @@ class RoomDetailFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar(roomToolbar)
         setupRecyclerView()
         setupComposer()
         setupInviteView()
@@ -121,18 +128,35 @@ class RoomDetailFragment : BaseFragment(),
         setupJumpToReadMarkerView()
         setupJumpToBottomView()
 
+        viewModel.selectSubscribe(RoomDetailViewState::sendMode, RoomDetailViewState::canSendMessage).observe(viewLifecycleOwner, Observer { (mode, canSend) ->
+            if (!canSend) {
+                return@Observer
+            }
+            when (mode) {
+                is SendMode.REGULAR -> renderRegularMode(mode.text)
+                is SendMode.EDIT    -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_edit, R.string.edit, mode.text)
+                is SendMode.QUOTE   -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_quote, R.string.quote, mode.text)
+                is SendMode.REPLY   -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_reply, R.string.reply, mode.text)
+            }
+        })
+
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             invalidateState(it)
+        })
+
+        viewModel.selectSubscribe(RoomDetailViewState::syncState).observe(viewLifecycleOwner, Observer { syncState ->
+            syncStateView.render(syncState)
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RoomDetailFragmentViewEvents.Failure                          -> showErrorInSnackbar(it.throwable)
                 is RoomDetailFragmentViewEvents.OnNewTimelineEvents              -> scrollOnNewMessageCallback.addNewTimelineEventIds(it.eventIds)
-//                is RoomDetailFragmentViewEvents.ActionSuccess                    -> displayRoomDetailActionSuccess(it)
+                is RoomDetailFragmentViewEvents.ActionSuccess                    -> displayRoomDetailActionSuccess(it)
 //                is RoomDetailFragmentViewEvents.ActionFailure                    -> displayRoomDetailActionFailure(it)
                 is RoomDetailFragmentViewEvents.ShowMessage                      -> showSnackWithMessage(it.message, Snackbar.LENGTH_LONG)
                 is RoomDetailFragmentViewEvents.NavigateToEvent                  -> navigateToEvent(it)
+                is RoomDetailFragmentViewEvents.OpenDeepLink                     -> openDeepLink(it)
 //                is RoomDetailFragmentViewEvents.FileTooBigError                  -> displayFileTooBigError(it)
 //                is RoomDetailFragmentViewEvents.DownloadFileState                -> handleDownloadFileState(it)
                 is RoomDetailFragmentViewEvents.JoinRoomCommandSuccess           -> handleJoinedToAnotherRoom(it)
@@ -147,9 +171,13 @@ class RoomDetailFragment : BaseFragment(),
         })
     }
 
+    private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
+        navigator.openDeepLink(requireContext(), event.deepLink)
+    }
+
     private fun invalidateState(state: RoomDetailViewState) {
         val summary = state.asyncRoomSummary()
-        renderToolbar(summary, state.typingMessage)
+        renderToolbar(summary, state.subtitle)
         val inviter = state.asyncInviter()
         if (summary?.membership == Membership.JOIN) {
 //            roomWidgetsBannerView.render(state.activeRoomWidgets())
@@ -183,6 +211,52 @@ class RoomDetailFragment : BaseFragment(),
             activity?.finish()
         }
     }
+
+    private fun renderRegularMode(text: String) {
+//        autoCompleter.exitSpecialMode()
+        composerLayout.collapse()
+
+        updateComposerText(text)
+        composerLayout.sendButton.contentDescription = getString(R.string.send)
+    }
+
+    private fun renderSpecialMode(event: TimelineEvent,
+                                  @DrawableRes iconRes: Int,
+                                  @StringRes descriptionRes: Int,
+                                  defaultContent: String) {
+//        autoCompleter.enterSpecialMode()
+        // switch to expanded bar
+        composerLayout.composerRelatedMessageTitle.apply {
+            text = event.senderInfo.disambiguatedDisplayName
+            setTextColor(ContextCompat.getColor(requireContext(), getColorFromUserId(event.root.senderId)))
+        }
+
+        val messageContent: MessageContent? = event.getLastMessageContent()
+        val nonFormattedBody = messageContent?.body ?: ""
+        var formattedBody: CharSequence? = null
+        if (messageContent is MessageTextContent && messageContent.format == MessageFormat.FORMAT_MATRIX_HTML) {
+            val parser = Parser.builder().build()
+            val document = parser.parse(messageContent.formattedBody ?: messageContent.body)
+            formattedBody = eventHtmlRenderer.render(document)
+        }
+        composerLayout.composerRelatedMessageContent.text = (formattedBody ?: nonFormattedBody)
+
+        updateComposerText(defaultContent)
+
+        composerLayout.composerRelatedMessageActionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes))
+        composerLayout.sendButton.contentDescription = getString(descriptionRes)
+
+        avatarRenderer.render(event.senderInfo.toMatrixItem(), composerLayout.composerRelatedMessageAvatar)
+
+        composerLayout.expand {
+            if (isAdded) {
+                // need to do it here also when not using quick reply
+                focusComposerAndShowKeyboard()
+            }
+        }
+        focusComposerAndShowKeyboard()
+    }
+
 
     private fun setupNotificationView() {
         notificationAreaView.delegate = object : NotificationAreaView.Delegate {
@@ -319,8 +393,8 @@ class RoomDetailFragment : BaseFragment(),
                         return false
                     }
                     return when (model) {
-//                        is MessageFileItem,
-//                        is MessageImageVideoItem,
+                        is MessageFileItem,
+                        is MessageImageVideoItem,
                         is MessageTextItem -> {
                             return (model as AbsMessageItem).attributes.informationData.sendState == SendState.SYNCED
                         }
@@ -335,6 +409,14 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun renderToolbar(roomSummary: RoomSummary?, typingMessage: String?) {
+        roomToolbarBackButton.setOnClickListener {
+            activity?.finish()
+        }
+
+        roomToolbarAvatarImageView.setOnClickListener {
+            activity?.finish()
+        }
+
         if (roomSummary == null) {
             roomToolbarContentView.isClickable = false
         } else {
@@ -351,13 +433,6 @@ class RoomDetailFragment : BaseFragment(),
         val subtitle = typingMessage?.takeIf { it.isNotBlank() } ?: topic
         roomToolbarSubtitleView.apply {
             setTextOrHide(subtitle)
-            if (typingMessage.isNullOrBlank()) {
-                setTextColor(ThemeUtils.getColor(requireContext(), R.attr.textSecondary))
-                setTypeface(null, Typeface.NORMAL)
-            } else {
-                setTextColor(ThemeUtils.getColor(requireContext(), R.attr.colorSecondary))
-                setTypeface(null, Typeface.BOLD)
-            }
         }
     }
 
@@ -381,6 +456,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     override fun onTimelineItemAction(itemAction: RoomDetailAction) {
+        viewModel.handle(itemAction)
     }
 
     override fun onEventCellClicked(
@@ -389,9 +465,9 @@ class RoomDetailFragment : BaseFragment(),
         view: View
     ) {
         when (messageContent) {
-//            is MessageVerificationRequestContent -> {
-//                viewModel.handle(RoomDetailAction.ResumeVerification(informationData.eventId, null))
-//            }
+            is MessageVerificationRequestContent -> {
+                viewModel.handle(RoomDetailAction.ResumeVerification(informationData.eventId, null))
+            }
             is MessageWithAttachmentContent -> {
                 val action = RoomDetailAction.DownloadOrOpen(informationData.eventId, messageContent)
                 viewModel.handle(action)
@@ -511,7 +587,7 @@ class RoomDetailFragment : BaseFragment(),
                     buildSpannedString {
                         append(displayName)
                         setSpan(
-                            PillImageSpan(
+                            PillImageSpan(glideRequests,
                                 avatarRenderer,
                                 requireContext(),
                                 MatrixItem.UserItem(userId, displayName, roomMember?.avatarUrl)
@@ -614,6 +690,22 @@ class RoomDetailFragment : BaseFragment(),
                 ?: 0)
         }
     }
+
+    //TODO
+    private fun displayRoomDetailActionSuccess(result: RoomDetailFragmentViewEvents.ActionSuccess) {
+//        when (val data = result.action) {
+//            is RoomDetailAction.ResumeVerification        -> {
+//                val otherUserId = data.otherUserId ?: return
+//                VerificationBottomSheet().apply {
+//                    arguments = Bundle().apply {
+//                        putParcelable(MvRx.KEY_ARG, VerificationBottomSheet.VerificationArgs(
+//                            otherUserId, data.transactionId, roomId = roomDetailArgs.roomId))
+//                    }
+//                }.show(parentFragmentManager, "REQ")
+//            }
+//        }
+    }
+
 
     private fun renderSendMessageResult(sendMessageResult: RoomDetailFragmentViewEvents.SendMessageResult) {
         when (sendMessageResult) {

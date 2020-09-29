@@ -1,34 +1,22 @@
-/*
- * Copyright 2019 New Vector Ltd
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.navgurukul.chat.features.home
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import androidx.annotation.AnyThread
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.amulyakhare.textdrawable.TextDrawable
-import com.facebook.drawee.view.SimpleDraweeView
-import com.facebook.imagepipeline.request.ImageRequest
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.DrawableImageViewTarget
+import com.bumptech.glide.request.target.Target
 import im.vector.matrix.android.api.session.content.ContentUrlResolver
 import im.vector.matrix.android.api.util.MatrixItem
-import org.navgurukul.chat.core.extensions.getBitmap
-import org.navgurukul.chat.core.extensions.getBitmapFromCache
+import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.chat.core.glide.GlideRequest
+import org.navgurukul.chat.core.glide.GlideRequests
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.utils.getColorFromRoomId
 import org.navgurukul.chat.core.utils.getColorFromUserId
@@ -44,40 +32,88 @@ class AvatarRenderer(private val activeSessionHolder: ActiveSessionHolder) {
     }
 
     @UiThread
-    fun render(matrixItem: MatrixItem, imageView: SimpleDraweeView) {
-        val placeholder = getPlaceholderDrawable(imageView.context, matrixItem)
-        val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
-        imageView.hierarchy.setPlaceholderImage(placeholder)
-        imageView.setImageURI(resolvedUrl)
+    fun render(matrixItem: MatrixItem, imageView: ImageView) {
+        render(imageView.context,
+            GlideApp.with(imageView),
+            matrixItem,
+            DrawableImageViewTarget(imageView)
+        )
     }
 
+    @UiThread
+    fun render(matrixItem: MatrixItem, imageView: ImageView, glideRequests: GlideRequests) {
+        render(imageView.context,
+            glideRequests,
+            matrixItem,
+            DrawableImageViewTarget(imageView)
+        )
+    }
+
+    @UiThread
+    fun render(context: Context,
+               glideRequests: GlideRequests,
+               matrixItem: MatrixItem,
+               target: Target<Drawable>
+    ) {
+        val placeholder = getPlaceholderDrawable(context, matrixItem)
+        buildGlideRequest(glideRequests, matrixItem.avatarUrl)
+            .placeholder(placeholder)
+            .into(target)
+    }
+
+    @AnyThread
+    @Throws
+    fun shortcutDrawable(context: Context, glideRequests: GlideRequests, matrixItem: MatrixItem, iconSize: Int): Bitmap {
+        return glideRequests
+            .asBitmap()
+            .apply {
+                val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
+                if (resolvedUrl != null) {
+                    load(resolvedUrl)
+                } else {
+                    val avatarColor = avatarColor(matrixItem, context)
+                    load(TextDrawable.builder()
+                        .beginConfig()
+                        .bold()
+                        .endConfig()
+                        .buildRect(matrixItem.firstLetterOfDisplayName(), avatarColor)
+                        .toBitmap(width = iconSize, height = iconSize))
+                }
+            }
+            .submit(iconSize, iconSize)
+            .get()
+    }
+
+    @AnyThread
+    fun getCachedDrawable(glideRequests: GlideRequests, matrixItem: MatrixItem): Drawable {
+        return buildGlideRequest(glideRequests, matrixItem.avatarUrl)
+            .onlyRetrieveFromCache(true)
+            .submit()
+            .get()
+    }
 
     @AnyThread
     fun getPlaceholderDrawable(context: Context, matrixItem: MatrixItem): Drawable {
         val avatarColor = avatarColor(matrixItem, context)
         return TextDrawable.builder()
-                .beginConfig()
-                .bold()
-                .endConfig()
-                .buildRound(matrixItem.firstLetterOfDisplayName(), avatarColor)
-    }
-
-    fun getAvatarDrawable(context: Context, matrixItem: MatrixItem, callback: (BitmapDrawable?) -> Unit) {
-        val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
-        ImageRequest.fromUri(resolvedUrl)?.getBitmap(context, callback)
-    }
-
-    fun getCachedAvatarDrawable(context: Context, matrixItem: MatrixItem): BitmapDrawable? {
-        val resolvedUrl = resolvedUrl(matrixItem.avatarUrl)
-        return ImageRequest.fromUri(resolvedUrl)?.getBitmapFromCache(context)
+            .beginConfig()
+            .bold()
+            .endConfig()
+            .buildRound(matrixItem.firstLetterOfDisplayName(), avatarColor)
     }
 
     // PRIVATE API *********************************************************************************
 
+    private fun buildGlideRequest(glideRequests: GlideRequests, avatarUrl: String?): GlideRequest<Drawable> {
+        val resolvedUrl = resolvedUrl(avatarUrl)
+        return glideRequests
+            .load(resolvedUrl)
+            .apply(RequestOptions.circleCropTransform())
+    }
 
     private fun resolvedUrl(avatarUrl: String?): String? {
         return activeSessionHolder.getSafeActiveSession()?.contentUrlResolver()
-                ?.resolveThumbnail(avatarUrl, THUMBNAIL_SIZE, THUMBNAIL_SIZE, ContentUrlResolver.ThumbnailMethod.SCALE)
+            ?.resolveThumbnail(avatarUrl, THUMBNAIL_SIZE, THUMBNAIL_SIZE, ContentUrlResolver.ThumbnailMethod.SCALE)
     }
 
     private fun avatarColor(matrixItem: MatrixItem, context: Context): Int {

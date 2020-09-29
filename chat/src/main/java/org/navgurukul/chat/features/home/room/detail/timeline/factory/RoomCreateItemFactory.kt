@@ -7,10 +7,10 @@ import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import me.gujun.android.span.span
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-import org.navgurukul.chat.core.resources.StringProvider
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.item.RoomCreateItem_
+import org.navgurukul.commonui.resources.StringProvider
 
 class RoomCreateItemFactory(
     private val stringProvider: StringProvider,

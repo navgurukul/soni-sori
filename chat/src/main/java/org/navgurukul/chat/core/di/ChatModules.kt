@@ -16,7 +16,7 @@ import org.navgurukul.chat.core.error.ChatErrorFormatter
 import org.navgurukul.chat.core.repo.*
 import org.navgurukul.chat.core.resources.*
 import org.navgurukul.chat.core.utils.DimensionConverter
-import org.navgurukul.chat.features.home.room.list.ChaListViewModel
+import org.navgurukul.chat.features.crypto.KeyRequestHandler
 import org.navgurukul.chat.features.grouplist.SelectedGroupDataSource
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.HomeRoomListDataSource
@@ -29,8 +29,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
 import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
 import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
-import org.navgurukul.chat.features.home.room.list.ChronologicalRoomComparator
-import org.navgurukul.chat.features.home.room.list.RoomSummaryItemFactory
+import org.navgurukul.chat.features.home.room.list.*
 import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.MatrixHtmlPluginConfigure
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
@@ -38,11 +37,12 @@ import org.navgurukul.chat.features.media.ImageContentRenderer
 import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.chat.features.navigator.DefaultChatNavigator
 import org.navgurukul.chat.features.notifications.NotificationUtils
+import org.navgurukul.chat.features.popup.PopupAlertManager
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
 val viewModelModules = module {
-    viewModel { ChaListViewModel(get(), get(), get(), get()) }
+    viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
     viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
     viewModel { (roomDetailViewState : RoomDetailViewState) -> RoomDetailFragmentViewModel(roomDetailViewState, get(), get(), get(), get()) }
 }
@@ -53,7 +53,10 @@ val factoryModule = module {
         Matrix.getInstance(androidContext()).authenticationService()
     }
     single { UserPreferencesProvider(get()) }
-    single { ActiveSessionHolder(get()) }
+    single { ActiveSessionHolder(get(), get(), get()) }
+    single { KeyRequestHandler(androidContext(), get()) }
+    single { PopupAlertManager() }
+    single { ImageManager(androidContext(), get()) }
     single { AvatarRenderer(get()) }
     single { AuthenticationRepository(get(), get(), get(), get()) }
     single { AppStateHandler(get(), get(), get(), get()) }
@@ -61,7 +64,7 @@ val factoryModule = module {
     single { HomeRoomListDataSource() }
     single { SelectedGroupDataSource() }
     single { ChronologicalRoomComparator() }
-    single { RoomSummaryItemFactory(get(), get(), get()) }
+
     single { TypingHelper(get()) }
     single { SaralDateFormatter(androidContext(), get()) }
     single { DisplayableEventFormatter(get(), get(), get()) }
@@ -69,7 +72,6 @@ val factoryModule = module {
     single { RoomHistoryVisibilityFormatter(get()) }
     single { NotificationUtils(androidContext(), get(), get()) }
     single { ChatPreferences(androidContext()) }
-    single { StringProvider(androidContext().resources) }
     single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
     single { DimensionConverter(androidContext().resources) }
     single { LocaleProvider(androidContext().resources) }
@@ -83,6 +85,9 @@ val factoryModule = module {
     single { MatrixHtmlPluginConfigure(androidContext(), get(), get(), get()) }
     single { EmojiCompatFontProvider() }
     single<ErrorFormatter> { ChatErrorFormatter(get()) }
+
+    factory { RoomSummaryController(get()) }
+    factory { RoomSummaryItemFactory(get(), get(), get(), get()) }
 
     factory { (scope : Scope) -> NoticeItemFactory(informationDataFactory = get(parameters = {parametersOf(scope)}),
         eventFormatter = get(),

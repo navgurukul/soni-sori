@@ -10,7 +10,12 @@ import org.navgurukul.chat.core.extensions.setTextOrHide
 @EpoxyModelClass
 abstract class MessageBlockCodeItem : AbsMessageItem<MessageBlockCodeItem.Holder>() {
 
-    override fun getDefaultLayout(): Int = R.layout.item_timeline_event_base
+    override fun getDefaultLayout(): Int =
+        if (attributes.informationData.sentByMe) {
+            R.layout.sent_item_timeline_event_base
+        } else {
+            R.layout.item_timeline_event_base
+        }
 
     @EpoxyAttribute
     var message: CharSequence? = null
@@ -27,7 +32,11 @@ abstract class MessageBlockCodeItem : AbsMessageItem<MessageBlockCodeItem.Holder
         holder.editedView.setTextOrHide(editedSpan)
     }
 
-    override fun getViewType() = STUB_ID
+    override fun getViewType() = if (attributes.informationData.sentByMe) {
+        STUB_ID + R.drawable.sent_timeline_item_background
+    } else {
+        STUB_ID + R.drawable.received_timeline_item_background
+    }
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val messageView by bind<TextView>(R.id.codeBlockTextView)

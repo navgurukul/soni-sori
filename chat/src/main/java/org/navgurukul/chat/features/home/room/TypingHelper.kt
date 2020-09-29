@@ -2,7 +2,7 @@ package org.navgurukul.chat.features.home.room
 
 import im.vector.matrix.android.api.session.room.sender.SenderInfo
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.resources.StringProvider
+import org.navgurukul.commonui.resources.StringProvider
 
 class TypingHelper(private val stringProvider: StringProvider) {
 
