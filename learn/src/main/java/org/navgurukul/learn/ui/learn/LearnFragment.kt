@@ -1,6 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
+
 
 class LearnFragment : Fragment() {
 
@@ -35,6 +38,18 @@ class LearnFragment : Fragment() {
         fetchData(false)
 
         initSwipeRefresh()
+
+        setHeaderTitle()
+    }
+
+    private fun setHeaderTitle() {
+        try {
+            val clazz = Class.forName("org.merakilearn.MainActivity")
+            val method = clazz.getMethod("setHeaderTitle", String::class.java, Activity::class.java)
+            method.invoke(clazz.newInstance(), getString(R.string.courses), activity)
+        } catch (ex: Exception) {
+            Log.e(TAG, "setHeaderTitle: ", ex)
+        }
     }
 
     private fun fetchData(forceUpdate: Boolean) {
@@ -46,6 +61,7 @@ class LearnFragment : Fragment() {
 
         })
     }
+
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
@@ -71,5 +87,9 @@ class LearnFragment : Fragment() {
             else
                 CourseDetailActivity.start(requireContext(), it.id, it.name)
         })
+    }
+
+    companion object {
+        private const val TAG = "LearnFragment"
     }
 }

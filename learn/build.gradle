@@ -29,6 +29,8 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$contraint_layout_version"
 
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
     // Koin for Kotlin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"

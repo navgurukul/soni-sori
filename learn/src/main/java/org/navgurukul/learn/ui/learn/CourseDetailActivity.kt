@@ -17,6 +17,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseDetailBinding
 import org.navgurukul.learn.ui.common.toolbarColor
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+import org.navgurukul.learn.util.LearnUtils
 
 
 class CourseDetailActivity : AppCompatActivity() {
@@ -43,7 +44,11 @@ class CourseDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_detail)
-        parseIntentData()
+        if (LearnUtils.isUserLoggedIn(this)) {
+            parseIntentData()
+        } else
+            LearnUtils.launchOnBoardingActivity(this)
+
     }
 
     private fun renderUI() {

@@ -11,6 +11,7 @@
 
         <include
             android:id="@+id/idHeader"
+            android:visibility="gone"
             layout="@layout/component_home_header" />
 
         <TextView
@@ -21,16 +22,16 @@
             android:layout_below="@+id/idHeader"
             android:ellipsize="end"
             android:maxLines="2"
-            android:visibility="gone"
-            android:text="@string/where_you_left" />
+            android:text="@string/where_you_left"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewCourseContinue"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/height_rv_continue_study"
-            android:visibility="gone"
             android:layout_below="@+id/tvWhereYouLeft"
             android:layout_marginTop="@dimen/dimen_5_dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_exercise_continue" />
 
@@ -51,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/recyclerviewCourseContinue"
             android:layout_toStartOf="@+id/ivArrow"
-            android:visibility="visible"
-            android:text="@string/view_all" />
+            android:text="@string/view_all"
+            android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivArrow"
@@ -70,6 +71,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/upcomingClass"
             android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progress_bar_button_my"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/dimen_progress_bar"
+                android:layout_height="@dimen/dimen_progress_bar"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:elevation="2dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_my_upcoming_class"
@@ -119,9 +130,11 @@
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="@dimen/dimen_progress_bar"
             android:layout_height="@dimen/dimen_progress_bar"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
+
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:indeterminate="true"
+            android:layout_margin="@dimen/dimen_50_dp"
             android:visibility="gone"
             app:elevation="2dp" />
 

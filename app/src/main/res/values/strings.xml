@@ -48,4 +48,6 @@
     <string name="okay">Yes</string>
     <string name="cancel">No</string>
     <string name="please_connect">Please connect your account to update</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="email_already_used">This email is already linked with another account</string>
 </resources>

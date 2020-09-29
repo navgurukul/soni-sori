@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
-import org.merakilearn.ProfileActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
@@ -19,6 +18,7 @@ import org.merakilearn.ui.home.adapter.WhereYouLeftAdapter
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.ui.common.toast
+import org.navgurukul.learn.ui.learn.CourseDetailActivity
 
 
 class HomeFragment : Fragment() {
@@ -44,16 +44,23 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        fetchDataForRV()
-        initRecyclerView()
-        initDiscoverClassButton()
-        initToolBarClickListener()
+        initMyClassViewAndData()
     }
 
-    private fun initToolBarClickListener() {
-        mBinding.idHeader.ivProfilePic.setOnClickListener {
-            ProfileActivity.launch(requireActivity())
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initDiscoverClassButton()
+        initOtherCourseViewAndData()
+    }
+
+    private fun initOtherCourseViewAndData() {
+        initOtherCourseRV()
+        fetchDataOtherCourse()
+    }
+
+    private fun initMyClassViewAndData() {
+        initUpComingClassesRV()
+        fetchMyClassData()
     }
 
     private fun initDiscoverClassButton() {
@@ -76,40 +83,30 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun fetchDataForRV() {
-       /* viewModel.fetchWhereYouLeftData().observe(viewLifecycleOwner, Observer {
-            if (null != it && it.isNotEmpty()) {
-                mWhereYouLeftAdapter.submitList(it)
-            }
-        })*/
-
-        viewModel.fetchMyClasses().observe(viewLifecycleOwner, Observer {
-            toggleProgressBarVisibility(View.VISIBLE)
-            if (null != it && it.isNotEmpty()) {
-                toggleProgressBarVisibility(View.GONE)
-                mBinding.emptyMyClass.root.visibility = View.GONE
-                mBinding.recyclerviewMyUpcomingClass.visibility = View.VISIBLE
-                mMyUpcomingClassAdapter.submitList(it)
-            } else {
-                toggleProgressBarVisibility(View.GONE)
-                mBinding.emptyMyClass.root.visibility = View.VISIBLE
-                mBinding.recyclerviewMyUpcomingClass.visibility = View.GONE
-            }
-        })
-
+    private fun fetchDataOtherCourse() {
+        mBinding.progressBarButton.visibility = View.VISIBLE
         viewModel.fetchOtherCourseData().observe(viewLifecycleOwner, Observer {
+            mBinding.progressBarButton.visibility = View.GONE
             if (null != it && it.isNotEmpty()) {
                 mOtherCourseAdapter.submitList(it)
             }
         })
     }
 
-    private fun initRecyclerView() {
-      //  initWhereYouLeftRV()
-        initUpComingClassesRV()
-        initOtherCourseRV()
+    private fun fetchMyClassData() {
+        mBinding.progressBarButtonMy.visibility = View.VISIBLE
+        viewModel.fetchMyClasses().observe(viewLifecycleOwner, Observer {
+            mBinding.progressBarButtonMy.visibility = View.GONE
+            if (null != it && it.isNotEmpty()) {
+                mBinding.emptyMyClass.root.visibility = View.GONE
+                mBinding.recyclerviewMyUpcomingClass.visibility = View.VISIBLE
+                mMyUpcomingClassAdapter.submitList(it)
+            } else {
+                mBinding.emptyMyClass.root.visibility = View.VISIBLE
+                mBinding.recyclerviewMyUpcomingClass.visibility = View.GONE
+            }
+        })
     }
-
 
     private fun initWhereYouLeftRV() {
         mWhereYouLeftAdapter = WhereYouLeftAdapter {
@@ -123,7 +120,7 @@ class HomeFragment : Fragment() {
 
     private fun initOtherCourseRV() {
         mOtherCourseAdapter = OtherCourseAdapter {
-            EnrollActivity.start(requireContext(), it, false)
+            CourseDetailActivity.start(requireContext(), it.id, it.name)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -133,17 +130,12 @@ class HomeFragment : Fragment() {
 
     private fun initUpComingClassesRV() {
         mMyUpcomingClassAdapter = MyUpcomingClassAdapter {
-            EnrollActivity.start(requireContext(), it.classes.first(), true)
+            EnrollActivity.start(requireContext(), it.classX?.id, true)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         mBinding.recyclerviewMyUpcomingClass.layoutManager = layoutManager
         mBinding.recyclerviewMyUpcomingClass.adapter = mMyUpcomingClassAdapter
-    }
-
-
-    private fun toggleProgressBarVisibility(visibility: Int) {
-        mBinding.progressBarButton.visibility = visibility
     }
 
 }

@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemDiscoverClassParentBinding
-import org.merakilearn.datasource.network.model.ClassesContainer
+import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.util.DateTimeUtil
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
-class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
+class DiscoverClassParentAdapter(callback: (Classes) -> Unit) :
     DataBoundListAdapter<DiscoverClassParentAdapter.DiscoverData, ItemDiscoverClassParentBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<DiscoverData>() {
             override fun areItemsTheSame(oldItem: DiscoverData, newItem: DiscoverData): Boolean {
@@ -29,7 +29,7 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
         }
     ), Filterable {
     private val mCallback = callback
-    private var parentList: List<ClassesContainer.Classes> = mutableListOf()
+    private var parentList: List<Classes> = mutableListOf()
 
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemDiscoverClassParentBinding {
         return DataBindingUtil.inflate(
@@ -44,7 +44,7 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
     }
 
     private fun initChildAdapter(
-        data: List<ClassesContainer.Classes>,
+        data: List<Classes>,
         binding: ItemDiscoverClassParentBinding
     ) {
         val discoverClassChildAdapter = DiscoverClassChildAdapter {
@@ -57,7 +57,7 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
         discoverClassChildAdapter.submitList(data)
     }
 
-    data class DiscoverData(var date: String?, var data: MutableList<ClassesContainer.Classes>)
+    data class DiscoverData(var date: String?, var data: MutableList<Classes>)
 
     override fun getFilter(): Filter {
         return object : Filter() {
@@ -84,13 +84,13 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
                     if (constraint.isEmpty())
                         submitList(parseData(parentList.toMutableList()))
                     else
-                        submitList(parseData(results.values as MutableList<ClassesContainer.Classes?>))
+                        submitList(parseData(results.values as MutableList<Classes?>))
                 }
             }
         }
     }
 
-    private fun parseData(it: MutableList<ClassesContainer.Classes?>): MutableList<DiscoverData>? {
+    private fun parseData(it: MutableList<Classes?>): MutableList<DiscoverData>? {
         val data = it.groupBy {
             it?.startTime
         }
@@ -99,16 +99,16 @@ class DiscoverClassParentAdapter(callback: (ClassesContainer.Classes) -> Unit) :
             list.add(
                 DiscoverData(
                     it.key,
-                    it.value as MutableList<ClassesContainer.Classes>
+                    it.value as MutableList<Classes>
                 )
             )
         }
         return list
     }
 
-    fun submitData(it: MutableList<ClassesContainer.Classes?>) {
-        parentList = it as MutableList<ClassesContainer.Classes>
-        val parseData = parseData(it as MutableList<ClassesContainer.Classes?>)
+    fun submitData(it: MutableList<Classes?>) {
+        parentList = it as MutableList<Classes>
+        val parseData = parseData(it as MutableList<Classes?>)
         submitList(parseData)
         notifyDataSetChanged()
     }

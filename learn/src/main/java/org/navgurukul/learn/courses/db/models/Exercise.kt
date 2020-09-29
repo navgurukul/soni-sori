@@ -34,7 +34,9 @@ data class Exercise(
     @SerializedName("submission_type")
     var submissionType: String? = String(),
     @Ignore
-    var number: Int? = 0
+    var number: Int? = 0,
+
+    var courseName: String? = ""
 ) : Serializable {
     data class ExerciseSlugDetail(
         @SerializedName("type")

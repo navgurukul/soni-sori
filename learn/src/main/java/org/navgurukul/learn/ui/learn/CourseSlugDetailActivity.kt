@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
+import org.navgurukul.learn.util.LearnUtils
 
 
 class CourseSlugDetailActivity : AppCompatActivity() {
@@ -42,13 +44,49 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
-        parseIntentData()
-        mBinding.header.title = currentStudy.exerciseName
-        initUIElement()
-        initRecyclerViewSlidingPanel()
-        initContentRV()
-        saveCourseExercise()
-        initSwipeRefresh()
+        if (LearnUtils.isUserLoggedIn(this)) {
+            parseIntentData()
+        } else
+            LearnUtils.launchOnBoardingActivity(this)
+
+    }
+
+    private fun parseIntentData() {
+        if (intent.hasExtra(ARG_KEY_CURRENT_STUDY)) {
+            currentStudy = intent.getSerializableExtra(ARG_KEY_CURRENT_STUDY) as CurrentStudy
+            renderUI()
+        } else {
+            val action: String? = intent?.action
+            val data: Uri? = intent?.data
+            val uriString = data.toString()
+            if (action == Intent.ACTION_VIEW) {
+                if (uriString.contains("/exercise/")) {
+                    val courseId = data?.pathSegments?.get(1)
+                    val exerciseId = uriString.split("/").last()
+                    fetchExerciseDataAndShow(exerciseId, courseId.toString())
+                }
+            } else {
+                renderUI()
+            }
+        }
+    }
+
+    private fun fetchExerciseDataAndShow(exerciseId: String, courseId: String) {
+        mBinding.progressBar.visibility = View.VISIBLE
+        viewModel.fetchExerciseSlug(exerciseId, courseId, true)
+            .observe(this, Observer {
+                mBinding.progressBar.visibility = View.GONE
+                if (null != it && it.isNotEmpty()) {
+                    currentStudy = CurrentStudy(
+                        courseId = courseId,
+                        courseName = it.firstOrNull()?.courseName,
+                        exerciseSlugName = it.firstOrNull()?.slug!!,
+                        exerciseName = it.firstOrNull()?.name,
+                        exerciseId = exerciseId
+                    )
+                    renderUI()
+                }
+            })
     }
 
 
@@ -93,12 +131,14 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun parseIntentData() {
-        if (intent.hasExtra(ARG_KEY_CURRENT_STUDY)) {
-            currentStudy = intent.getSerializableExtra(ARG_KEY_CURRENT_STUDY) as CurrentStudy
-        }
+    private fun renderUI() {
+        mBinding.header.title = currentStudy.exerciseName
+        initUIElement()
+        initRecyclerViewSlidingPanel()
+        initContentRV()
+        saveCourseExercise()
+        initSwipeRefresh()
     }
-
 
     private fun initContentRV() {
         slugAdapter = ExerciseSlugAdapter {
@@ -172,7 +212,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun moveToPreviousPage() {
-        CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName)
+        CourseDetailActivity.start(this, currentStudy.courseId, currentStudy.courseName ?: "")
         finish()
     }
 

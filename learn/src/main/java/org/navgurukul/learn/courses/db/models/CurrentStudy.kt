@@ -8,8 +8,8 @@ import java.io.Serializable
 data class CurrentStudy(
     @PrimaryKey(autoGenerate = false)
     var courseId: String,
-    var courseName: String,
-    var exerciseSlugName: String,
+    var courseName: String?,
+    var exerciseSlugName: String?,
     var exerciseName: String?,
     var exerciseId: String
 ) : Serializable

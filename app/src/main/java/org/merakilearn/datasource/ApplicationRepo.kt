@@ -43,9 +43,9 @@ class ApplicationRepo(
         TODO()
     }
 
-    suspend fun fetchOtherCourseData(): List<ClassesContainer.Classes>? {
+    suspend fun fetchOtherCourseData(): List<Course>? {
         return try {
-            val req = applicationApi.getRecommendedClassAsync(AppUtils.getAuthToken(application))
+            val req = applicationApi.getRecommendedCourseAsync(AppUtils.getAuthToken(application))
             val response = req.await()
             response.forEachIndexed { index, course ->
                 course.number = (index + 1)
@@ -57,11 +57,11 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun fetchUpcomingClassData(): MutableList<ClassesContainer.Classes?>? {
+    suspend fun fetchUpcomingClassData(): List<Classes?>? {
         return try {
             val req = applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application))
-            val response = req.await()
-            response.classes as MutableList<ClassesContainer.Classes?>?
+            val response = req?.await()
+            response?.classes
         } catch (ex: Exception) {
             Log.e(TAG, "fetchUpcomingClassData: ", ex)
             mutableListOf()
@@ -69,11 +69,11 @@ class ApplicationRepo(
 
     }
 
-    suspend fun fetchMyClassData(): MutableList<MyClassContainer.MyClass?>? {
+    suspend fun fetchMyClassData(): List<MyClass?>? {
         return try {
             val req = applicationApi.getMyClassesAsync(AppUtils.getAuthToken(application))
             val response = req.await()
-            response.myClass as MutableList<MyClassContainer.MyClass?>?
+            response
         } catch (ex: Exception) {
             Log.e(TAG, "fetchUpcomingClassData: ", ex)
             mutableListOf()
@@ -81,7 +81,7 @@ class ApplicationRepo(
 
     }
 
-    suspend fun fetchClassData(classId: String?): ClassesContainer.Classes? {
+    suspend fun fetchClassData(classId: String?): Classes? {
         return try {
             val req = applicationApi.fetchClassDataAsync(
                 AppUtils.getAuthToken(application),

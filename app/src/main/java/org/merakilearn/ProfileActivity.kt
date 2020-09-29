@@ -28,7 +28,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
     private val viewModel: LoginViewModel by viewModel()
     private var mGoogleSignInClient: GoogleSignInClient? = null
-    private var isFakeLogin = false
     private lateinit var user: LoginResponse.User
     private var isFromDeepLink = false
 
@@ -43,14 +42,16 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
-        AppUtils.validateLoginStatus(this)
-        initIntentFilter()
-        initLinkButton()
-        initGoogleSignInOption()
-        initToolBarClickListener()
-        user = AppUtils.getCurrentUser(this)
-        mBinding.user = user
-
+        if (AppUtils.isUserLoggedIn(this) && !AppUtils.isFakeLogin(this)) {
+            initIntentFilter()
+            initLinkButton()
+            initGoogleSignInOption()
+            initToolBarClickListener()
+            user = AppUtils.getCurrentUser(this)
+            mBinding.user = user
+        } else {
+            OnBoardingActivity.launch(this)
+        }
     }
 
     private fun initIntentFilter() {
@@ -111,17 +112,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initLinkButton() {
-        if (AppUtils.isFakeLogin(this)) {
-            mBinding.linkAccount.visibility = View.VISIBLE
-            isFakeLogin = true
-        } else {
-            mBinding.linkAccount.text = getString(R.string.save)
-        }
         mBinding.linkAccount.setOnClickListener {
-            if (isFakeLogin)
-                signIn()
-            else
-                updateProfile()
+            updateProfile()
         }
     }
 

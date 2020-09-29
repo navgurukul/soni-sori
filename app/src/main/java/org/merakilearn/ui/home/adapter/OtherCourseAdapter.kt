@@ -6,19 +6,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemRecommendedClassBinding
-import org.merakilearn.datasource.network.model.ClassesContainer
+import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class OtherCourseAdapter(callback: (ClassesContainer.Classes) -> Unit) :
+class OtherCourseAdapter(callback: (Course) -> Unit) :
 
-    DataBoundListAdapter<ClassesContainer.Classes, ItemRecommendedClassBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<ClassesContainer.Classes>() {
-            override fun areItemsTheSame(oldItem: ClassesContainer.Classes, newItem: ClassesContainer.Classes): Boolean {
+    DataBoundListAdapter<Course, ItemRecommendedClassBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<Course>() {
+            override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
                 return false
             }
 
-            override fun areContentsTheSame(oldItem: ClassesContainer.Classes, newItem: ClassesContainer.Classes): Boolean {
+            override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
                 return false
             }
         }
@@ -31,7 +31,7 @@ class OtherCourseAdapter(callback: (ClassesContainer.Classes) -> Unit) :
         )
     }
 
-    override fun bind(binding: ItemRecommendedClassBinding, item: ClassesContainer.Classes) {
+    override fun bind(binding: ItemRecommendedClassBinding, item: Course) {
         binding.course = item
         binding.root.setOnClickListener {
             mCallback.invoke(item)

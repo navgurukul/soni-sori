@@ -3,6 +3,7 @@ package org.merakilearn.datasource.network
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.model.*
+import org.navgurukul.learn.courses.db.models.Course
 import retrofit2.http.*
 
 
@@ -11,13 +12,13 @@ interface SaralApi {
     fun initLoginAsync(@Body loginRequest: LoginRequest): Deferred<LoginResponse>
 
     @GET("classes/upcoming")
-    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer>
+    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer?>?
 
-    @GET("classes/recommended")
-    fun getRecommendedClassAsync(@Header(value = "Authorization") token: String?): Deferred<List<ClassesContainer.Classes>>
+    @GET("courses/recommended")
+    fun getRecommendedCourseAsync(@Header(value = "Authorization") token: String?): Deferred<List<Course>>
 
     @GET("classes")
-    fun getMyClassesAsync(@Header(value = "Authorization") token: String?): Deferred<MyClassContainer>
+    fun getMyClassesAsync(@Header(value = "Authorization") token: String?): Deferred<List<MyClass>>
 
     @POST("classes/{classId}/register")
     fun enrollToClassAsync(
@@ -45,5 +46,5 @@ interface SaralApi {
     fun fetchClassDataAsync(
         @Header(value = "Authorization") token: String?,
         @Path(value = "classId") classId: Int?
-    ): Deferred<ClassesContainer.Classes>
+    ): Deferred<Classes>
 }

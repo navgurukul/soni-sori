@@ -1,11 +1,13 @@
 package org.navgurukul.learn.ui.learn.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import br.tiagohm.markdownview.css.styles.Github
+import com.google.gson.Gson
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -33,8 +35,10 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     ) {
     companion object {
         private val TYPE_MD = "markdown"
-        private val TYPE_PYTHON = ""
+        private val TYPE_PYTHON = "python"
         private val TYPE_YOUTUBE_VIDEO = "youtube"
+        private const val TAG = "ExerciseSlugAdapter"
+
     }
 
     private val mCallback = callback
@@ -77,7 +81,6 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
-        binding.pythonCodeView.visibility = View.GONE
         binding.defaultTextView.visibility = View.GONE
 
         binding.markDownContent.visibility = View.VISIBLE
@@ -95,16 +98,29 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     ) {
         binding.youtubeView.visibility = View.GONE
         binding.defaultTextView.visibility = View.GONE
-        binding.markDownContent.visibility = View.GONE
+        binding.markDownContent.visibility = View.VISIBLE
+        val value = item.value
+        var content = value.toString()
+        val gson = Gson()
+        try {
+            val code = gson.fromJson(gson.toJson(value), PythonCode::class.java).code
+            content = """
+            ```python
+            $code
+            ```
+            """.trimIndent()
+        } catch (ex: Exception) {
+            Log.e(TAG, "initPythonCodeView: ", ex)
+        }
 
-        binding.pythonCodeView.visibility = View.VISIBLE
-
-
+        binding.markDownContent.apply {
+            this.addStyleSheet(Github())
+            this.loadMarkdown(content)
+        }
     }
 
 
     private fun initYouTubeView(item: Exercise.ExerciseSlugDetail, binding: ItemSlugDetailBinding) {
-        binding.pythonCodeView.visibility = View.GONE
         binding.markDownContent.visibility = View.GONE
         binding.defaultTextView.visibility = View.GONE
 
@@ -123,12 +139,13 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
-        binding.pythonCodeView.visibility = View.GONE
         binding.markDownContent.visibility = View.GONE
 
         binding.defaultTextView.visibility = View.VISIBLE
         binding.defaultTextView.text = item.value.toString()
 
     }
+
+    data class PythonCode(val code: String?, val testCases: Any?)
 
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="course"
-            type="org.merakilearn.datasource.network.model.ClassesContainer.Classes" />
+            type="org.navgurukul.learn.courses.db.models.Course" />
     </data>
 
     <RelativeLayout
@@ -46,7 +46,7 @@
                     android:layout_toEndOf="@+id/ivSequence"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{course.title}"
+                    android:text="@{course.name}"
                     tools:text="Introduction To Python" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_toEndOf="@+id/ivSequence"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="@{course.description}"
+                    android:text="@{course.shortDescription}"
                     tools:text="Study all the basics of python" />
 
                 <ImageView

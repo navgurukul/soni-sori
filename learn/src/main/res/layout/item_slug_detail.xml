@@ -27,11 +27,6 @@
             android:visibility="gone"
             app:escapeHtml="false" />
 
-        <View
-            android:id="@+id/pythonCodeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <TextView
             android:id="@+id/defaultTextView"
             android:layout_width="match_parent"

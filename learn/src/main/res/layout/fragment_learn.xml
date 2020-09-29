@@ -28,7 +28,9 @@
             android:background="#f2f2f2"
             android:orientation="vertical">
 
-            <include layout="@layout/component_course_header" />
+            <include
+                layout="@layout/component_course_header"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerviewCourse"

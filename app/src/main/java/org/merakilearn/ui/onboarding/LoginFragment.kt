@@ -28,12 +28,12 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
         const val TAG = "LoginFragment"
         private const val RC_SIGN_IN = 9001
+        private const val LINK_ACCOUNT = "arg_link"
     }
 
     private lateinit var mBinding: FragmentLoginBinding
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private val viewModel: LoginViewModel by viewModel()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,15 +88,11 @@ class LoginFragment : Fragment() {
         toggleProgressBarVisibility(View.VISIBLE)
         viewModel.initLoginServer(idToken).observe(this, Observer {
             toggleProgressBarVisibility(View.GONE)
-            proceedWithSignInResult(it)
+            if (it) {
+                MainActivity.launch(requireContext())
+            } else
+                toast(getString(R.string.email_already_used))
         })
-    }
-
-    private fun proceedWithSignInResult(it: Boolean) {
-        if (it)
-            MainActivity.launch(requireContext())
-        else
-            toast(getString(R.string.unable_to_sign))
     }
 
     private fun toggleProgressBarVisibility(visibiltiy: Int) {

@@ -8,7 +8,9 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import org.merakilearn.databinding.ActivityOnBoardingBinding
+import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.SplashFragment
 import org.merakilearn.ui.onboarding.WelcomeFragment
 import org.merakilearn.util.AppUtils
@@ -23,13 +25,25 @@ class OnBoardingActivity : AppCompatActivity() {
             context.startActivity(intent)
             (context as Activity).finish()
         }
+
+        fun launchLoginFragment(context: FragmentActivity) {
+            val intent = Intent(context, OnBoardingActivity::class.java)
+            intent.putExtra(LAUNCH_LOGIN, true)
+            context.startActivity(intent)
+        }
+
+        private const val LAUNCH_LOGIN = "arg_launch_login"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
-        showFragment(SplashFragment.newInstance(), SplashFragment.TAG)
-        initDelayedStart()
+        if (intent.hasExtra(LAUNCH_LOGIN) && intent.getBooleanExtra(LAUNCH_LOGIN, false)) {
+            showFragment(LoginFragment.newInstance(), LoginFragment.TAG)
+        } else {
+            showFragment(SplashFragment.newInstance(), SplashFragment.TAG)
+            initDelayedStart()
+        }
     }
 
     private fun initDelayedStart() {

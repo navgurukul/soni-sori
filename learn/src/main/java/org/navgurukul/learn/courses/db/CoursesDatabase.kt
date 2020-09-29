@@ -32,6 +32,9 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertExercise(course: List<Exercise?>?)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertExerciseAsync(course: List<Exercise?>?)
+
     @Query("select * from course_exercise where courseId = :courseId")
     fun getAllExercisesForCourse(courseId: String): LiveData<List<Exercise>>
 

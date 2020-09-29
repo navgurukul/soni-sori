@@ -1,6 +1,5 @@
 package org.merakilearn.util
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.fragment.app.Fragment
@@ -8,8 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
-import org.merakilearn.OnBoardingActivity
-import org.merakilearn.datasource.network.model.ClassesContainer
+import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.datasource.network.model.FakeUserLoginResponse
 import org.merakilearn.datasource.network.model.LoginResponse
 
@@ -22,12 +20,6 @@ object AppUtils {
     private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
     private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
 
-    fun validateLoginStatus(context: Activity) {
-        val isUserLogin = isUserLoggedIn(context)
-        if (!isUserLogin) {
-            OnBoardingActivity.launch(context)
-        }
-    }
 
     fun isUserLoggedIn(context: Context): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
@@ -154,12 +146,12 @@ object AppUtils {
         transaction.commitAllowingStateLoss()
     }
 
-    fun getClassSchedule(classes: ClassesContainer.Classes): String {
-        val teacher = classes.facilitator?.name
-        val date = DateTimeUtil.stringToDate(classes.startTime)
-        val startTime = DateTimeUtil.stringToTime(classes.startTime)
-        val endTime = DateTimeUtil.stringToTime(classes.endTime)
-        val day = DateTimeUtil.stringToDay(classes.startTime)
+    fun getClassSchedule(classes: Classes?): String {
+        val teacher = classes?.facilitator?.name
+        val date = DateTimeUtil.stringToDate(classes?.startTime)
+        val startTime = DateTimeUtil.stringToTime(classes?.startTime)
+        val endTime = DateTimeUtil.stringToTime(classes?.endTime)
+        val day = DateTimeUtil.stringToDay(classes?.startTime)
         return """
             Teacher - $teacher
             Date - $date ($day),
@@ -167,11 +159,10 @@ object AppUtils {
         """.trimIndent()
     }
 
-    fun getAboutClass(classes: ClassesContainer.Classes): String {
+    fun getAboutClass(classes: Classes?): String {
         return """
-            ${classes.description}
-            
-            Class Type -  ${classes.classType}
+            ${classes?.description}
+            Class Type -  ${classes?.type}
         """.trimIndent()
     }
 

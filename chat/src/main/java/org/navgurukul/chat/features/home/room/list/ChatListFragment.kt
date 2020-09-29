@@ -1,6 +1,8 @@
 package org.navgurukul.chat.features.home.room.list
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,12 +34,27 @@ class ChatListFragment : BaseFragment() {
                 is RoomListViewEvents.Loading    -> showLoading(it.message)
                 is RoomListViewEvents.Failure    -> showFailure(it.throwable)
                 is RoomListViewEvents.SelectRoom -> handleSelectRoom(it)
-                is RoomListViewEvents.Done       -> Unit
+                is RoomListViewEvents.Done -> Unit
             }
         })
+        setHeaderTitle()
     }
 
     private fun handleSelectRoom(event: RoomListViewEvents.SelectRoom) {
         navigator.openRoom(requireActivity(), event.roomSummary.roomId)
+    }
+
+    private fun setHeaderTitle() {
+        try {
+            val clazz = Class.forName("org.merakilearn.MainActivity")
+            val method = clazz.getMethod("setHeaderTitle", String::class.java, Activity::class.java)
+            method.invoke(clazz.newInstance(), getString(R.string.title_chat), activity)
+        } catch (ex: Exception) {
+            Log.e(TAG, "setHeaderTitle: ", ex)
+        }
+    }
+
+    companion object {
+        private const val TAG = "ChatListFragment"
     }
 }

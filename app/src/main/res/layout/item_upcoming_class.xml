@@ -6,7 +6,7 @@
 
         <variable
             name="classes"
-            type="org.merakilearn.datasource.network.model.ClassesContainer.Classes" />
+            type="org.merakilearn.datasource.network.model.MyClass.Class" />
 
     </data>
 
@@ -23,7 +23,7 @@
             android:layout_width="@dimen/dimen_width_upcoming"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="@{classes.classType}"
+            android:text="@{classes.type}"
             tools:text="Master Class" />
 
         <TextView

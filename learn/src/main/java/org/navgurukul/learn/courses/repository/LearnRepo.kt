@@ -91,9 +91,12 @@ class LearnRepo(
         if (forceUpdate && LearnUtils.isOnline(application)) {
             val result = courseApi.getExercisesAsync(courseId).await()
             val mappedData = result.course?.exercises?.map {
-                it.apply { this?.courseId = courseId }
+                it.apply {
+                    this?.courseId = courseId
+                    this?.courseName = result.course?.name
+                }
             }?.toList()
-            exerciseDao.insertExercise(mappedData)
+            exerciseDao.insertExerciseAsync(mappedData)
         }
         return exerciseDao.getExerciseById(exerciseId)
     }

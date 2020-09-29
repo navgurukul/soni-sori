@@ -17,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentDiscoverClassBinding
+import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.ui.home.adapter.DiscoverClassParentAdapter
 import org.navgurukul.learn.ui.common.toast
 
@@ -115,7 +116,7 @@ class DiscoverFragment : Fragment() {
         viewModel.fetchUpcomingClass().observe(viewLifecycleOwner, Observer {
             toggleProgressBarVisibility(View.GONE)
             if (null != it && it.isNotEmpty()) {
-                discoverClassParentAdapter.submitData(it)
+                discoverClassParentAdapter.submitData(it as MutableList<Classes?>)
             } else {
                 toast(getString(R.string.no_class_scheduled))
             }
@@ -125,7 +126,7 @@ class DiscoverFragment : Fragment() {
 
     private fun initDiscoverClassRV() {
         discoverClassParentAdapter = DiscoverClassParentAdapter {
-            EnrollActivity.start(requireContext(), it, false)
+            EnrollActivity.start(requireContext(), it.id, false)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
