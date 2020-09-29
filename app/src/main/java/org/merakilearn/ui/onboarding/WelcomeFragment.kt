@@ -61,7 +61,7 @@ class WelcomeFragment : BaseFragment() {
     }
 
     private fun openMerakiChat(roomId: String) {
-        navigator.openRoom(requireContext(), roomId)
+        navigator.openRoom(requireContext(), roomId, true)
         requireActivity().finish()
     }
 }

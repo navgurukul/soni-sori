@@ -8,6 +8,7 @@
 
     <application>
         <activity android:name=".features.home.room.detail.RoomDetailActivity"
+            android:parentActivityName="org.merakilearn.MainActivity"
             android:theme="@style/AppTheme"/>
 
         <activity

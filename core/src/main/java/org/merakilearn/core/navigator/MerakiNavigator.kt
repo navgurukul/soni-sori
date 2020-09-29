@@ -22,8 +22,8 @@ class MerakiNavigator(
 
     fun openRoomIntent(context: Context, roomId: String) = chatModuleNavigator.launchIntentForRoom(context, roomId)
 
-    fun openRoom(context: Context, roomId: String) {
-        startActivity(context, openRoomIntent(context, roomId), false)
+    fun openRoom(context: Context, roomId: String, buildTask: Boolean = false) {
+        startActivity(context, openRoomIntent(context, roomId), buildTask)
     }
 
     fun openDeepLink(context: Context, deepLink: String) {
