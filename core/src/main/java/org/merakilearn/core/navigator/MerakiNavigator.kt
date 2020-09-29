@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
+import java.lang.Exception
+import java.net.URL
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
@@ -26,6 +28,9 @@ class MerakiNavigator(
 
     fun openDeepLink(context: Context, deepLink: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+        if (isMerakiUrl(deepLink)) {
+            intent.setPackage(context.packageName)
+        }
         startActivity(context, intent, false)
     }
 
@@ -36,6 +41,18 @@ class MerakiNavigator(
             stackBuilder.startActivities()
         } else {
             context.startActivity(intent)
+        }
+    }
+
+    companion object {
+        const val MERAKI_DEEP_LINK_URL = "merakilearn.org"
+
+        fun isMerakiUrl(url: String): Boolean {
+            return try {
+                URL(url).host == MERAKI_DEEP_LINK_URL
+            } catch (e: Exception) {
+                false
+            }
         }
     }
 }
