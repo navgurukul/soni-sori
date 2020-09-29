@@ -10,6 +10,10 @@
         <activity android:name=".features.home.room.detail.RoomDetailActivity"
             android:theme="@style/AppTheme"/>
 
+        <activity
+            android:name=".features.media.MerakiAttachmentViewerActivity"
+            android:theme="@style/AppTheme.Transparent" />
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"

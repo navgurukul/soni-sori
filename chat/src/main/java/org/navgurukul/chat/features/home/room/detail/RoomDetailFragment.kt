@@ -11,6 +11,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
+import androidx.core.util.Pair
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -58,6 +60,7 @@ import org.navgurukul.chat.features.html.PillImageSpan
 import org.navgurukul.chat.features.invite.SaralInviteView
 import org.navgurukul.chat.features.media.ImageContentRenderer
 import org.navgurukul.chat.features.media.VideoContentRenderer
+import org.navgurukul.chat.features.navigator.ChatInternalNavigator
 import org.navgurukul.chat.features.notifications.NotificationDrawerManager
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.chat.features.share.SharedData
@@ -95,6 +98,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private val navigator: MerakiNavigator by inject()
+    private val chatInternalNavigator: ChatInternalNavigator by inject()
 
     private val notificationDrawerManager: NotificationDrawerManager by inject()
 
@@ -533,6 +537,15 @@ class RoomDetailFragment : BaseFragment(),
         mediaData: ImageContentRenderer.Data,
         view: View
     ) {
+        chatInternalNavigator.openMediaViewer(
+            activity = requireActivity(),
+            roomId = roomDetailArgs.roomId,
+            mediaData = mediaData,
+            view = view
+        ) { pairs ->
+            pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
+            pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+        }
     }
 
     override fun onVideoMessageClicked(
@@ -540,6 +553,15 @@ class RoomDetailFragment : BaseFragment(),
         mediaData: VideoContentRenderer.Data,
         view: View
     ) {
+        chatInternalNavigator.openMediaViewer(
+            activity = requireActivity(),
+            roomId = roomDetailArgs.roomId,
+            mediaData = mediaData,
+            view = view
+        ) { pairs ->
+            pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
+            pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+        }
     }
 
     private fun updateJumpToReadMarkerViewVisibility() {

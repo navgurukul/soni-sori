@@ -244,5 +244,7 @@
     <!-- Note: pusher_app_id cannot exceed 64 chars -->
     <string name="pusher_app_id" translatable="false">org.navgurukul.bol</string>
     <string name="no_valid_google_play_services_apk">Google Play Services not found. Notifications may not work properly</string>
+    <string name="share">Share</string>
+    <string name="play_video">Play</string>
 
 </resources>

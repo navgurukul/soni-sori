@@ -38,7 +38,9 @@ import org.navgurukul.chat.features.home.room.list.*
 import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.MatrixHtmlPluginConfigure
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
+import org.navgurukul.chat.features.media.AttachmentProviderFactory
 import org.navgurukul.chat.features.media.ImageContentRenderer
+import org.navgurukul.chat.features.navigator.ChatInternalNavigator
 import org.navgurukul.chat.features.navigator.ChatNavigatorContract
 import org.navgurukul.chat.features.notifications.*
 import org.navgurukul.chat.features.popup.PopupAlertManager
@@ -92,6 +94,8 @@ val factoryModule = module {
     single { DimensionConverter(androidContext().resources) }
     single { LocaleProvider(androidContext().resources) }
     single<ChatModuleNavigator> { ChatNavigatorContract(get(), get()) }
+    single { ChatInternalNavigator() }
+    single { AttachmentProviderFactory(get(), get(), get()) }
     single { SaralHtmlCompressor() }
     single { MessageColorProvider(get()) }
     single { AvatarSizeProvider(get()) }
