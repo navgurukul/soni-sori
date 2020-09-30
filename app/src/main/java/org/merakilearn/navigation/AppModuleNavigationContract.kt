@@ -18,4 +18,11 @@ class AppModuleNavigationContract: AppModuleNavigator {
     override fun launchIntentForHomeActivity(context: Context, clearNotification: Boolean): Intent {
         return MainActivity.newIntent(context, clearNotification)
     }
+
+    override fun launchIntentForOnBoardingActivity(
+        context: Context,
+        clearNotification: Boolean
+    ): Intent {
+        return OnBoardingActivity.newIntent(context, clearNotification)
+    }
 }

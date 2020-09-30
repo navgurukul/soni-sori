@@ -48,7 +48,7 @@ class EnrollActivity : AppCompatActivity() {
         if (AppUtils.isUserLoggedIn(this)) {
             parseIntentData()
         } else
-            OnBoardingActivity.launch(this)
+            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
 
     }
 

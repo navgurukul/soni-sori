@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -40,6 +42,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private lateinit var mAdapter: CourseExerciseAdapter
     private lateinit var slugAdapter: ExerciseSlugAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
+    private val merakiNavigator: MerakiNavigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +50,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         if (LearnUtils.isUserLoggedIn(this)) {
             parseIntentData()
         } else
-            LearnUtils.launchOnBoardingActivity(this)
+            merakiNavigator.restartApp(this, true)
 
     }
 

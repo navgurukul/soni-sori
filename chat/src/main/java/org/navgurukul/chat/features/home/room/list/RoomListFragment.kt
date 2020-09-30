@@ -17,7 +17,6 @@ import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
-import org.navgurukul.chat.features.navigator.ChatNavigator
 import org.navgurukul.commonui.model.Fail
 import org.navgurukul.commonui.model.Incomplete
 import org.navgurukul.commonui.model.Success

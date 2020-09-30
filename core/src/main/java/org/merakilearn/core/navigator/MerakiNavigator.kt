@@ -34,7 +34,19 @@ class MerakiNavigator(
         startActivity(context, intent, false)
     }
 
-    private fun startActivity(context: Context, intent: Intent, buildTask: Boolean) {
+    fun restartApp(context: Context, clearNotification: Boolean) {
+        startActivity(context,
+            appModuleNavigator.launchIntentForOnBoardingActivity(context, clearNotification),
+            buildTask = false,
+            newTask = true
+        )
+    }
+
+    private fun startActivity(context: Context, intent: Intent, buildTask: Boolean, newTask: Boolean = false) {
+        if (newTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+
         if (buildTask) {
             val stackBuilder = TaskStackBuilder.create(context)
             stackBuilder.addNextIntentWithParentStack(intent)

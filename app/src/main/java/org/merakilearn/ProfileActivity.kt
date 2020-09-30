@@ -50,7 +50,7 @@ class ProfileActivity : AppCompatActivity() {
             user = AppUtils.getCurrentUser(this)
             mBinding.user = user
         } else {
-            OnBoardingActivity.launch(this)
+            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
         }
     }
 
