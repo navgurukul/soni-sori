@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
+import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
@@ -45,6 +46,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initMyClassViewAndData()
+        (activity as MainActivity).setHeaderTitle(getString(R.string.app_name), requireActivity())
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

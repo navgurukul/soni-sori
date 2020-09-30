@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -40,5 +41,11 @@ class MainActivity : AppCompatActivity() {
     //Don't make this method private and don't change name or param value as it is used from other module using reflection
     fun setHeaderTitle(title: String, context: Activity) {
         context.findViewById<TextView>(R.id.headerTitle).text = title
+    }
+
+    fun toggleSearch(visibility: Int): SearchView? {
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.visibility = visibility
+        return searchView
     }
 }

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/color_colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -25,17 +26,37 @@
             android:textColor="@color/colorBlack"
             android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/headerIv"
-            android:layout_width="@dimen/course_profile_pic"
-            android:layout_height="@dimen/course_profile_pic"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dimen_10_dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/ic_avatar_border"
-            android:padding="@dimen/dimen_10_dp"
-            android:src="@drawable/avatar"
-            tools:ignore="ContentDescription" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:layout_toStartOf="@+id/headerIv"
+                android:adjustViewBounds="true"
+                android:animateLayoutChanges="true"
+                android:iconifiedByDefault="true"
+                android:layoutDirection="rtl"
+                android:padding="@dimen/dimen_10_dp"
+                android:queryHint="@string/search_classes"
+                android:searchIcon="@drawable/ic_baseline_search_24"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/headerIv"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:adjustViewBounds="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_avatar_border"
+                android:padding="@dimen/dimen_10_dp"
+                android:src="@drawable/avatar"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <fragment

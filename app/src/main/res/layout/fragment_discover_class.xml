@@ -6,20 +6,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColor">
-
-        <include
-            android:id="@+id/idHeader"
-            layout="@layout/component_discover_header" />
+        android:background="@color/backgroundColorHome"
+        android:padding="@dimen/dimen_5_dp">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/languageChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/idHeader"
             android:layout_margin="@dimen/dimen_10_dp"
             android:padding="@dimen/dimen_10_dp"
             app:singleLine="false"
+            android:visibility="gone"
             app:singleSelection="true" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -27,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_discover_class_parent"
-            android:layout_below="@+id/languageChipGroup"
-            android:layout_marginTop="@dimen/dimen_5_dp" />
+            android:layout_below="@+id/languageChipGroup" />
 
         <ProgressBar
             android:id="@+id/progress_bar_button"

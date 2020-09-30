@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
+import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentDiscoverClassBinding
 import org.merakilearn.datasource.network.model.Classes
@@ -32,6 +33,7 @@ class DiscoverFragment : Fragment() {
     private lateinit var mBinding: FragmentDiscoverClassBinding
     private val viewModel: HomeViewModel by viewModel()
     private lateinit var discoverClassParentAdapter: DiscoverClassParentAdapter
+    private var searchView: SearchView? = null
     var states = arrayOf(
         intArrayOf(android.R.attr.state_checked),
         intArrayOf(-android.R.attr.state_checked)
@@ -51,6 +53,12 @@ class DiscoverFragment : Fragment() {
         return mBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        searchView = (activity as MainActivity).toggleSearch(View.VISIBLE)
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initChipGroup()
@@ -60,14 +68,9 @@ class DiscoverFragment : Fragment() {
 
     }
 
+
     private fun initSearchListener() {
-        mBinding.idHeader.ivBackButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        mBinding.idHeader.searchView.setOnSearchClickListener {
-            mBinding.idHeader.tvSearchTitle.visibility = View.GONE
-        }
-        mBinding.idHeader.searchView.setOnQueryTextListener(object :
+        searchView?.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 discoverClassParentAdapter.filter.filter(query)
@@ -80,9 +83,8 @@ class DiscoverFragment : Fragment() {
             }
         })
 
-        mBinding.idHeader.searchView.setOnCloseListener {
+        searchView?.setOnCloseListener {
             discoverClassParentAdapter.filter.filter("")
-            mBinding.idHeader.tvSearchTitle.visibility = View.VISIBLE
             false
         }
     }
@@ -139,4 +141,8 @@ class DiscoverFragment : Fragment() {
         mBinding.progressBarButton.visibility = visibility
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).toggleSearch(View.GONE)
+    }
 }

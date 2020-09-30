@@ -15,6 +15,7 @@
             android:id="@+id/roomListToolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:visibility="gone"
             android:background="@color/color_colorWhite"
             app:layout_constraintTop_toTopOf="parent">
 
