@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "449891326531-4crb45h4lp1qvdjgg7k7ht1nlkufh553.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.merakilearn",
+            "certificate_hash": "e31deab450d87d4c341273adea38f01ba2a70b92"
+          }
+        },
+        {
+          "client_id": "449891326531-gtka8uippcja29o4e7rhihfbbvsu2c7n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.merakilearn",
+            "certificate_hash": "d25482a4a7686769ecde52b72e8ec6c1bb510fbf"
+          }
+        },
+        {
           "client_id": "449891326531-jv9ulof4hfsuth41buj5buiv5cmf17re.apps.googleusercontent.com",
           "client_type": 3
         }

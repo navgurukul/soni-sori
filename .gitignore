@@ -1,3 +1,6 @@
+app/release
+*jks
+*pepk
 *patch
 *.iml
 .gradle
