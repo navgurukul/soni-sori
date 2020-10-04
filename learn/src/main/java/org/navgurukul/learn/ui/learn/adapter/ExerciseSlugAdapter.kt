@@ -100,22 +100,18 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.defaultTextView.visibility = View.GONE
         binding.markDownContent.visibility = View.VISIBLE
         val value = item.value
-        var content = value.toString()
+        var content = StringBuilder()
         val gson = Gson()
         try {
             val code = gson.fromJson(gson.toJson(value), PythonCode::class.java).code
-            content = """
-            ```python
-            $code
-            ```
-            """.trimIndent()
+            content.append("```python").append("\n").append(code).append("\n").append("```")
         } catch (ex: Exception) {
             Log.e(TAG, "initPythonCodeView: ", ex)
         }
 
         binding.markDownContent.apply {
             this.addStyleSheet(Github())
-            this.loadMarkdown(content)
+            this.loadMarkdown(content.toString())
         }
     }
 
