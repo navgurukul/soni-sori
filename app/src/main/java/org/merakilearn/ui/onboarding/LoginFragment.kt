@@ -77,10 +77,16 @@ class LoginFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            getBackendServerToken(account?.idToken)
+            logOutSelectedAccount(account)
         } catch (e: ApiException) {
             Log.e(TAG, "signInResult:failed code=", e)
             toast(getString(R.string.unable_to_sign))
+        }
+    }
+
+    private fun logOutSelectedAccount(account: GoogleSignInAccount) {
+        mGoogleSignInClient?.signOut()?.addOnSuccessListener {
+            getBackendServerToken(account.idToken)
         }
     }
 
