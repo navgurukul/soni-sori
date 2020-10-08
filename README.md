@@ -13,5 +13,5 @@ This application is meant to help users to learn Programming from wherever they 
 Add the following parameters in the local.properties file
 ``` 
 chaquopy.license=[LICENSE_KEY_HERE]
-chaquopy.applicationId=merakilearn
+chaquopy.applicationId=org.merakilearn
 ```
