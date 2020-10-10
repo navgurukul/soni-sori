@@ -3,5 +3,5 @@
     <dimen name="height_bottom_peek">80dp</dimen>
     <dimen name="height_top_buffer">120dp</dimen>
     <dimen name="width_control">48dp</dimen>
-    <dimen name="height_output_divider">3dp</dimen>
+    <dimen name="height_output_divider">2dp</dimen>
 </resources>

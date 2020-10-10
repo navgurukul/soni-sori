@@ -1,6 +1,7 @@
 package org.navgurukul.playground.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -9,15 +10,10 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.text.style.StyleSpan
-import android.view.KeyEvent
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -29,15 +25,20 @@ import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 
 class PlaygroundActivity : AppCompatActivity() {
+    companion object{
+        const val KEY_PREF_CODE_BACKUP = "PlaygroundActivity.CodeBackup"
+    }
     private val viewModel: PlaygroundViewModel by viewModel()
     private lateinit var etInput: EditText
     private lateinit var tvOutput: TextView
     private lateinit var tvError: TextView
     private lateinit var etCode: EditText
+    private lateinit var layoutInput: View
+    private lateinit var ibEnter: ImageButton
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
     private lateinit var bottomSheet: View
-    private lateinit var bottomSheetTopBuffer: View
     private lateinit var bottomSheetPeeklayout: LinearLayout
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,12 +50,16 @@ class PlaygroundActivity : AppCompatActivity() {
         setContentView(R.layout.activity_playground)
         setSupportActionBar(findViewById(R.id.toolBar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-
+        createSharedPrefs()
         createCode()
         createBottomSheet()
         createError()
         createInput()
         createOutput()
+    }
+
+    private fun createSharedPrefs() {
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
     }
 
 
@@ -70,6 +75,12 @@ class PlaygroundActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.playground_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.itemId
         if (id == android.R.id.home) {
@@ -77,11 +88,26 @@ class PlaygroundActivity : AppCompatActivity() {
             super.onBackPressed()
             return true
         }
+        else if(id == R.id.clear){
+            etCode.text.clear()
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if(sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
+            // If bottom sheet is expanded, collapse it on back button
+            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            return
+        }
+        super.onBackPressed()
     }
 
     private fun createCode() {
         etCode = findViewById(R.id.etCode)
+
+        // Restore code from shared Prefs
+        etCode.setText(sharedPreferences.getString(KEY_PREF_CODE_BACKUP,""))
 
         etCode.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -96,6 +122,24 @@ class PlaygroundActivity : AppCompatActivity() {
             tvOutput.text = "" // clear output window
             viewModel.start(etCode.text.toString())
         }
+
+        etCode.addTextChangedListener( object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                // cache text to shared Pref
+                sharedPreferences.edit().putString(KEY_PREF_CODE_BACKUP, etCode.text.toString()).apply()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do Nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do Nothing
+            }
+
+        }
+
+        )
     }
 
     private fun createError() {
@@ -108,8 +152,9 @@ class PlaygroundActivity : AppCompatActivity() {
     }
 
     private fun createInput() {
+        layoutInput = findViewById(R.id.layoutInput)
         etInput = findViewById(R.id.etInput)
-
+        ibEnter = findViewById(R.id.ibEnter)
         // Strip formatting from pasted text.
         etInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -118,6 +163,7 @@ class PlaygroundActivity : AppCompatActivity() {
                 count: Int,
                 after: Int
             ) {
+                // Do nothing
             }
 
             override fun onTextChanged(
@@ -126,6 +172,7 @@ class PlaygroundActivity : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
+                // Do nothing
             }
 
             override fun afterTextChanged(e: Editable) {
@@ -138,6 +185,9 @@ class PlaygroundActivity : AppCompatActivity() {
                 }
             }
         })
+        ibEnter.setOnClickListener {
+            etInput.onEditorAction(EditorInfo.IME_ACTION_DONE)
+        }
 
         // At least on API level 28, if an ACTION_UP is lost during a rotation, then the app
         // (or any other app which takes focus) will receive an endless stream of ACTION_DOWNs
@@ -146,7 +196,8 @@ class PlaygroundActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 event != null && event.action == KeyEvent.ACTION_UP
             ) {
-                val text: String = etInput.text.toString() + "\n"
+                // Add explicit space from the input
+                val text: String = " " + etInput.text.toString() + "\n"
                 etInput.setText("")
                 output(span(text, StyleSpan(Typeface.BOLD)))
                 viewModel.onInput(text)
@@ -155,11 +206,12 @@ class PlaygroundActivity : AppCompatActivity() {
             // If we return false on ACTION_DOWN, we won't be given the ACTION_UP.
             true
         })
-        viewModel.inputEnabled.observe(this, Observer<Boolean?> { enabled ->
+        viewModel.inputEnabled.observe(this, Observer<Boolean> { enabled ->
             val imm =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (enabled!!) {
-                etInput.visibility = View.VISIBLE
+            if (enabled) {
+                layoutInput.visibility = View.VISIBLE
+                ibEnter.isEnabled =  true
                 etInput.isEnabled = true
 
                 // requestFocus alone doesn't always bring up the soft keyboard during startup
@@ -174,7 +226,9 @@ class PlaygroundActivity : AppCompatActivity() {
             } else {
                 // Disable rather than hide, otherwise tvOutput gets a gray background on API
                 // level 26, like tvCaption in the main menu when you press an arrow key.
-                etInput.setEnabled(false)
+                layoutInput.visibility = View.GONE
+                ibEnter.isEnabled =  false
+                etInput.isEnabled = false
                 imm.hideSoftInputFromWindow(tvOutput.windowToken, 0)
             }
         })

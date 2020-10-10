@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':commonUI')
     implementation "androidx.core:core-ktx:$core_ktx_verision"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"
