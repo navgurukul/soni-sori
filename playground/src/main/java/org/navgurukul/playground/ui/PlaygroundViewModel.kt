@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.chaquo.python.Python
 import org.navgurukul.playground.chaquopy.utils.BufferedLiveEvent
+import org.navgurukul.playground.repo.PlaygroundRepository
 
 
-class PlaygroundViewModel : ViewModel() {
+class PlaygroundViewModel(private val playgroundRepository: PlaygroundRepository) : ViewModel() {
     companion object {
         const val PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE = "File \"<string>\","
     }
-
     private var state = Thread.State.NEW
     private val _inputEnabled = MutableLiveData<Boolean>(false)
     private val _error = MutableLiveData<String?>(null)
@@ -121,6 +121,10 @@ class PlaygroundViewModel : ViewModel() {
             ).trimEnd()
         )
     }
+
+    fun getCachedCode() = playgroundRepository.getCachedCode()
+
+    fun cacheCode(code: String) = playgroundRepository.cacheCode(code)
 
 
 }

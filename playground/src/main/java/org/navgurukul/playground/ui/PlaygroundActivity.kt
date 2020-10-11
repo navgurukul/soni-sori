@@ -25,9 +25,7 @@ import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 
 class PlaygroundActivity : AppCompatActivity() {
-    companion object{
-        const val KEY_PREF_CODE_BACKUP = "PlaygroundActivity.CodeBackup"
-    }
+
     private val viewModel: PlaygroundViewModel by viewModel()
     private lateinit var etInput: EditText
     private lateinit var tvOutput: TextView
@@ -38,7 +36,7 @@ class PlaygroundActivity : AppCompatActivity() {
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
     private lateinit var bottomSheet: View
     private lateinit var bottomSheetPeeklayout: LinearLayout
-    private lateinit var sharedPreferences: SharedPreferences
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +48,6 @@ class PlaygroundActivity : AppCompatActivity() {
         setContentView(R.layout.activity_playground)
         setSupportActionBar(findViewById(R.id.toolBar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-        createSharedPrefs()
         createCode()
         createBottomSheet()
         createError()
@@ -58,9 +55,6 @@ class PlaygroundActivity : AppCompatActivity() {
         createOutput()
     }
 
-    private fun createSharedPrefs() {
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-    }
 
 
     override fun onResume() {
@@ -107,7 +101,8 @@ class PlaygroundActivity : AppCompatActivity() {
         etCode = findViewById(R.id.etCode)
 
         // Restore code from shared Prefs
-        etCode.setText(sharedPreferences.getString(KEY_PREF_CODE_BACKUP,""))
+        etCode.setText(viewModel.getCachedCode())
+        etCode.setSelection(etCode.text.length)
 
         etCode.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -126,7 +121,7 @@ class PlaygroundActivity : AppCompatActivity() {
         etCode.addTextChangedListener( object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 // cache text to shared Pref
-                sharedPreferences.edit().putString(KEY_PREF_CODE_BACKUP, etCode.text.toString()).apply()
+                viewModel.cacheCode(etCode.text.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
