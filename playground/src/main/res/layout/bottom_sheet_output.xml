@@ -58,10 +58,10 @@
                 <TextView
                     android:id="@+id/tvError"
                     style="@style/ConsoleOutput"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_error"
+                    android:gravity="center_vertical"
                     android:textColor="@color/error_text" />
 
                 <TextView
@@ -73,18 +73,41 @@
             </LinearLayout>
         </ScrollView>
 
-        <EditText
-            android:id="@+id/etInput"
-            style="@style/Code"
+
+        <LinearLayout
+            android:id="@+id/layoutInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:ems="10"
-            android:hint="@string/enter_input_here"
-            android:imeOptions="actionDone|flagNoFullscreen"
-            android:inputType="textNoSuggestions|textVisiblePassword"
-            android:padding="8dp"
-            android:singleLine="true" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:paddingLeft="8dp"
+            >
+
+            <EditText
+                android:id="@+id/etInput"
+                style="@style/Code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:ems="10"
+                android:hint="@string/enter_input_here"
+                android:imeOptions="actionDone|flagNoFullscreen"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:padding="8dp"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:id="@+id/ibEnter"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_enter_round"
+                android:tint="?attr/colorPrimary" />
+        </LinearLayout>
 
 
     </LinearLayout>

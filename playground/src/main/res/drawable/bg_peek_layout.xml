@@ -6,7 +6,7 @@
             <corners
                 android:topLeftRadius="32dp"
                 android:topRightRadius="32dp" />
-            <stroke android:color="@color/stroke_peek" android:width="@dimen/height_output_divider" />
+            <stroke android:color="?attr/borderColor" android:width="@dimen/height_output_divider" />
         </shape>
     </item>
 

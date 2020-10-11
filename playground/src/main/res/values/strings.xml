@@ -16,6 +16,7 @@
     <string name="control_single_quotes" translatable="false">\'</string>
     <string name="curly_brace_open" translatable="false">{</string>
     <string name="curly_brace_close" translatable="false">}</string>
+    <string name="clear">Clear</string>
 
 
 </resources>

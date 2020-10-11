@@ -15,6 +15,7 @@
 
     <application>
         <activity android:name=".ui.PlaygroundActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_playground"/>
     </application>
 
