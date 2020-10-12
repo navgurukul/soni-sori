@@ -52,6 +52,7 @@ class ProfileActivity : AppCompatActivity() {
         } else {
             OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
         }
+        mBinding.tvAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
     }
 
     private fun initIntentFilter() {
@@ -101,9 +102,11 @@ class ProfileActivity : AppCompatActivity() {
                 viewModel.logOut().observe(this, Observer {
                     if (it) {
                         dialog.dismiss()
-                        OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(
-                            clearNotification = true
-                        ))
+                        OnBoardingActivity.restartApp(
+                            this, OnBoardingActivityArgs(
+                                clearNotification = true
+                            )
+                        )
                     }
                 })
             }.setNegativeButton(

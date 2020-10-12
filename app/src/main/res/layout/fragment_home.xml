@@ -3,140 +3,148 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColorHome"
-        android:padding="@dimen/dimen_5_dp">
+        android:background="@color/backgroundColorHome">
 
-        <include
-            android:id="@+id/idHeader"
-            android:visibility="gone"
-            layout="@layout/component_home_header" />
-
-        <TextView
-            android:id="@+id/tvWhereYouLeft"
-            style="@style/text_view_home_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/idHeader"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/where_you_left"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewCourseContinue"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_rv_continue_study"
-            android:layout_below="@+id/tvWhereYouLeft"
-            android:layout_marginTop="@dimen/dimen_5_dp"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_exercise_continue" />
-
-        <TextView
-            android:id="@+id/upcomingClass"
-            style="@style/text_view_home_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recyclerviewCourseContinue"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/upcoming_class" />
-
-        <TextView
-            android:id="@+id/viewAll"
-            style="@style/text_view_home_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recyclerviewCourseContinue"
-            android:layout_toStartOf="@+id/ivArrow"
-            android:text="@string/view_all"
-            android:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivArrow"
-            android:layout_width="@dimen/dimen_30_dp"
-            android:layout_height="@dimen/dimen_30_dp"
-            android:layout_below="@+id/recyclerviewCourseContinue"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dimen_10_dp"
-            android:padding="@dimen/dimen_5_dp"
-            android:src="@drawable/ic_right" />
-
-        <LinearLayout
-            android:id="@+id/ll"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/upcomingClass"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+
+            android:padding="@dimen/dimen_5_dp">
+
+            <include
+                android:id="@+id/idHeader"
+                layout="@layout/component_home_header"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvWhereYouLeft"
+                style="@style/text_view_home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idHeader"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/where_you_left"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewCourseContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_rv_continue_study"
+                android:layout_below="@+id/tvWhereYouLeft"
+                android:layout_marginTop="@dimen/dimen_5_dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_exercise_continue" />
+
+            <TextView
+                android:id="@+id/upcomingClass"
+                style="@style/text_view_home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerviewCourseContinue"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/upcoming_class" />
+
+            <TextView
+                android:id="@+id/viewAll"
+                style="@style/text_view_home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerviewCourseContinue"
+                android:layout_toStartOf="@+id/ivArrow"
+                android:text="@string/view_all"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="@dimen/dimen_30_dp"
+                android:layout_height="@dimen/dimen_30_dp"
+                android:layout_below="@+id/recyclerviewCourseContinue"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dimen_10_dp"
+                android:padding="@dimen/dimen_5_dp"
+                android:src="@drawable/ic_right" />
+
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/upcomingClass"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_button_my"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="@dimen/dimen_progress_bar"
+                    android:layout_height="@dimen/dimen_progress_bar"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:elevation="2dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_my_upcoming_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/height_rv_upcoming_class"
+                    android:layout_margin="@dimen/dimen_5_dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_upcoming_class" />
+
+                <include
+                    android:id="@+id/emptyMyClass"
+                    layout="@layout/component_discover_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_5_dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/otherCourses"
+                style="@style/text_view_home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll"
+                android:text="@string/other_class" />
+
+            <TextView
+                android:id="@+id/otherCoursesDescription"
+                style="@style/text_view_home_description_other_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/otherCourses"
+                android:text="@string/try_other_courses" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewOtherCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/min_height_rv_other_courses"
+                android:layout_below="@+id/otherCoursesDescription"
+                android:layout_marginTop="@dimen/dimen_5_dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_exercise_continue" />
 
             <ProgressBar
-                android:id="@+id/progress_bar_button_my"
+                android:id="@+id/progress_bar_button"
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="@dimen/dimen_progress_bar"
                 android:layout_height="@dimen/dimen_progress_bar"
-                android:layout_gravity="center"
+
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/dimen_50_dp"
                 android:indeterminate="true"
                 android:visibility="gone"
                 app:elevation="2dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_my_upcoming_class"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/height_rv_upcoming_class"
-                android:layout_margin="@dimen/dimen_5_dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_upcoming_class" />
-
-            <include
-                android:id="@+id/emptyMyClass"
-                layout="@layout/component_discover_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_5_dp"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/otherCourses"
-            style="@style/text_view_home_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll"
-            android:text="@string/other_class" />
-
-        <TextView
-            android:id="@+id/otherCoursesDescription"
-            style="@style/text_view_home_description_other_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/otherCourses"
-            android:text="@string/try_other_courses" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewOtherCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/otherCoursesDescription"
-            android:layout_marginTop="@dimen/dimen_5_dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_exercise_continue" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar_button"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="@dimen/dimen_progress_bar"
-            android:layout_height="@dimen/dimen_progress_bar"
-
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminate="true"
-            android:layout_margin="@dimen/dimen_50_dp"
-            android:visibility="gone"
-            app:elevation="2dp" />
-
-    </RelativeLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
