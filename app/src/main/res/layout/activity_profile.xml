@@ -73,6 +73,16 @@
                     android:padding="@dimen/dimen_10_dp"
                     android:src="@drawable/ic_edit"
                     tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    style="@style/text_view_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvEmail"
+                    android:layout_toStartOf="@+id/ivEdit"
+                    android:layout_toEndOf="@+id/ivProfile"
+                    android:gravity="center_vertical"
+                    tools:text="AppVersion: 1.0" />
 
             </RelativeLayout>
 

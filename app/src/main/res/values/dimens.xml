@@ -10,4 +10,5 @@
     <dimen name="app_bar_height_class">200dp</dimen>
     <dimen name="dimen_width_upcoming">200dp</dimen>
     <dimen name="course_discover_height">70dp</dimen>
+    <dimen name="min_height_rv_other_courses">200dp</dimen>
 </resources>
