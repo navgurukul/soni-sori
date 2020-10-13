@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="Teacher: Anjali\nDateTime: 3rd September,5:00PM-5:45PM\nThursday" />
+                tools:text="Teacher: Anjali\nDateTime: 3rd September,5:00PM-5:45PM\nThursday" />
 
             <TextView
                 style="@style/text_view_home_title_date"
