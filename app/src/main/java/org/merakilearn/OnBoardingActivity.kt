@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,7 +14,6 @@ import org.merakilearn.core.appopen.AppOpenDelegate
 import androidx.fragment.app.FragmentActivity
 import org.merakilearn.databinding.ActivityOnBoardingBinding
 import org.merakilearn.ui.onboarding.LoginFragment
-import org.merakilearn.ui.onboarding.SplashFragment
 import org.merakilearn.ui.onboarding.WelcomeFragment
 import org.merakilearn.util.AppUtils
 
@@ -25,7 +23,6 @@ data class OnBoardingActivityArgs(
 ) : Parcelable
 
 class OnBoardingActivity : AppCompatActivity() {
-    private val splashTime: Long = 1500L
     private lateinit var mBinding: ActivityOnBoardingBinding
 
     private val appOpenDelegate: AppOpenDelegate by inject()
@@ -69,19 +66,12 @@ class OnBoardingActivity : AppCompatActivity() {
         if (intent.hasExtra(LAUNCH_LOGIN) && intent.getBooleanExtra(LAUNCH_LOGIN, false)) {
             showFragment(LoginFragment.newInstance(), LoginFragment.TAG)
         } else {
-            showFragment(SplashFragment.newInstance(), SplashFragment.TAG)
-            initDelayedStart()
+            startDestinationActivity()
         }
 
         intent.getParcelableExtra<OnBoardingActivityArgs>(KEY_ARG)?.let { args ->
             appOpenDelegate.onAppOpened(this, args.clearNotification)
         }
-    }
-
-    private fun initDelayedStart() {
-        Handler().postDelayed({
-            startDestinationActivity()
-        }, splashTime)
     }
 
     private fun startDestinationActivity() {
