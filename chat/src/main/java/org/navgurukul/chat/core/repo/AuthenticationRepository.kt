@@ -1,13 +1,20 @@
 package org.navgurukul.chat.core.repo
 
 import android.content.Context
+import com.bumptech.glide.Glide
 import im.vector.matrix.android.api.MatrixCallback
 import im.vector.matrix.android.api.auth.AuthenticationService
 import im.vector.matrix.android.api.auth.data.HomeServerConnectionConfig
 import im.vector.matrix.android.api.auth.data.LoginFlowResult
 import im.vector.matrix.android.api.session.Session
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.configureAndStart
+import org.navgurukul.chat.core.utils.deleteAllFiles
+import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.resources.StringProvider
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -16,6 +23,7 @@ class AuthenticationRepository(
     private val authService: AuthenticationService,
     private val activeSessionHolder: ActiveSessionHolder,
     private val stringProvider: StringProvider,
+    private val saralPreferences: ChatPreferences,
     private val appContext: Context
 ) {
 
@@ -57,4 +65,42 @@ class AuthenticationRepository(
             }
         } ?: return null
     }
+
+    suspend fun logout(): Boolean {
+        activeSessionHolder.getSafeActiveSession()?.let { session ->
+            return suspendCoroutine {
+                session.signOut(true, object : MatrixCallback<Unit> {
+                    override fun onSuccess(data: Unit) {
+                        super.onSuccess(data)
+                        activeSessionHolder.clearActiveSession()
+                        doLocalCleanup()
+                        it.resume(true)
+                    }
+
+                    override fun onFailure(failure: Throwable) {
+                        super.onFailure(failure)
+                        it.resume(false)
+                    }
+                }
+                )
+            }
+        } ?: run {
+            return false
+        }
+    }
+
+    private fun doLocalCleanup() {
+        GlobalScope.launch(Dispatchers.Main) {
+            // On UI Thread
+            saralPreferences.clearPreferences()
+            withContext(Dispatchers.IO) {
+                // On BG thread
+                Glide.get(appContext).clearDiskCache()
+
+                // Also clear cache (Logs, etc...)
+                deleteAllFiles(appContext.cacheDir)
+            }
+        }
+    }
+
 }
