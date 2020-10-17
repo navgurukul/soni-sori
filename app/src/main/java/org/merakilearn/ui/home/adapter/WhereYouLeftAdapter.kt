@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import org.navgurukul.learn.R
+import org.merakilearn.R
+import org.merakilearn.databinding.ItemCourseHomeBinding
 import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class WhereYouLeftAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
+class WhereYouLeftAdapter(val callback: (Pair<Course, ItemCourseHomeBinding>) -> Unit) :
 
-    DataBoundListAdapter<Course, ItemCourseBinding>(
+    DataBoundListAdapter<Course, ItemCourseHomeBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Course>() {
             override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
                 return false
@@ -23,18 +23,17 @@ class WhereYouLeftAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
             }
         }
     ) {
-    private val mCallback = callback
-    override fun createBinding(parent: ViewGroup, viewType: Int): ItemCourseBinding {
+    override fun createBinding(parent: ViewGroup, viewType: Int): ItemCourseHomeBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_course, parent, false
+            R.layout.item_course_home, parent, false
         )
     }
 
-    override fun bind(binding: ItemCourseBinding, item: Course) {
+    override fun bind(binding: ItemCourseHomeBinding, item: Course) {
         binding.course = item
         binding.root.setOnClickListener {
-            mCallback.invoke(Pair(item, binding))
+            callback.invoke(Pair(item, binding))
         }
     }
 

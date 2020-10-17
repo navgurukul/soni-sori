@@ -9,13 +9,13 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.merakilearn.util.AppUtils
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.util.AppUtils
 
 @Parcelize
 data class MainActivityArgs(
@@ -58,10 +58,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        navView.setupWithNavController(navController)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        nav_view.setupWithNavController(navHostFragment.navController)
 
         intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)

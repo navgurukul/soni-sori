@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="textAppearanceEmphasized" format="reference"/>
+    <attr name="textAppearanceEmphasized1" format="reference"/>
+    <attr name="textAppearanceEmphasized2" format="reference"/>
+
+    <attr name="cornerRadius100" format="dimension"/>
+    <attr name="cornerRadius200" format="dimension"/>
+    <attr name="cornerRadius300" format="dimension"/>
+    <attr name="cornerRadius400" format="dimension"/>
+
+    <attr name="elevation100" format="dimension"/>
+    <attr name="elevation200" format="dimension"/>
 
     <attr name="textPrimary" format="color" />
     <attr name="textSecondary" format="color" />

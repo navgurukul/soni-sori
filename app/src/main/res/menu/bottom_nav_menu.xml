@@ -21,10 +21,4 @@
         android:icon="@drawable/ic_playground"
         android:title="@string/title_playground" />
 
-    <item
-        android:id="@+id/navigation_more"
-        android:icon="@drawable/ic_more"
-        android:visible="false"
-        android:title="@string/title_more"/>
-
 </menu>

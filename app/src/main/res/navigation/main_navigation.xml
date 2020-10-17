@@ -27,11 +27,5 @@
         android:id="@+id/navigation_playground"
         android:name="org.navgurukul.playground.ui.PlaygroundActivity"
         android:label="@string/title_playground"
-        tools:layout="@layout/fragment_playground" />
-
-    <fragment
-        android:id="@+id/navigation_more"
-        android:name="org.merakilearn.ui.more.MoreFragment"
-        android:label="@string/title_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/activity_playground" />
 </navigation>
