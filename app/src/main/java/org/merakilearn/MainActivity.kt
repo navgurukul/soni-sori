@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
                 clearNotification = clearNotification
             )
 
-            return Intent(context, OnBoardingActivity::class.java)
+            return Intent(context, MainActivity::class.java)
                 .apply {
-                    putExtra(OnBoardingActivity.KEY_ARG, args)
+                    putExtra(KEY_ARG, args)
                 }
         }
     }
