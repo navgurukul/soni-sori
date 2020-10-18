@@ -11,7 +11,7 @@
     <color name="backgroundColor">#ffffff</color>
     <color name="textColor">#000000</color>
     <color name="textColorContrast">#FF61708B</color>
-    <color name="textColorAlt">#FF9E9E9E</color>
+    <color name="textColorAlt">#665E5E</color>
     <color name="errorColor">#B00020</color>
     <color name="borderColor">#FDEAEA</color>
 

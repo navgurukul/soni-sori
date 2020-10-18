@@ -17,7 +17,17 @@
         <item name="colorOnSurface">@color/textColor</item>
         <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
 
-        <item name="textAppearanceEmphasized">@style/TextAppearance.AppCompat.Emphasized</item>
+        <item name="textAppearanceEmphasized1">@style/TextAppearance.AppCompat.Emphasized1</item>
+        <item name="textAppearanceEmphasized2">@style/TextAppearance.AppCompat.Emphasized2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.AppCompat.Caption</item>
+
+        <item name="cornerRadius100">2dp</item>
+        <item name="cornerRadius200">4dp</item>
+        <item name="cornerRadius300">6dp</item>
+        <item name="cornerRadius400">8dp</item>
+
+        <item name="elevation100">2dp</item>
+        <item name="elevation200">4dp</item>
 
         <item name="textPrimary">@color/textColor</item>
         <item name="textSecondary">@color/textColorAlt</item>

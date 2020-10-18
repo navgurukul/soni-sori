@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,31 +11,60 @@
 
     </data>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="?cornerRadius400"
+        app:cardBackgroundColor="@color/upcoming_class_color_1">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_height_card_class"
-        android:layout_margin="@dimen/dimen_5_dp"
-        android:background="@drawable/rounded_rect_red">
-
-        <TextView
-            android:id="@+id/tvClassTitle"
-            style="@style/text_view_home_title_class"
-            android:layout_width="@dimen/dimen_width_upcoming"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:text="@{classes.type}"
-            tools:text="Master Class" />
-
-        <TextView
-            android:id="@+id/tvClassDescription"
-            style="@style/text_view_home_description_class"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvClassTitle"
-            android:maxLines="4"
-            android:text='@{classes.title}'
-            tools:text="Study Basics Of Python" />
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/ivDecoration"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/upcoming_class_color_decoration_1"
+                android:src="@drawable/ic_upcoming_class_decoration"/>
+
+            <TextView
+                android:id="@+id/tvClassTitle"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:layout_marginStart="@dimen/spacing_3x"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{classes.type}"
+                tools:text="Master Class" />
+
+            <TextView
+                android:id="@+id/tvClassDescription"
+                style="?textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvClassTitle"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="?textSecondary"
+                android:layout_marginTop="@dimen/spacing_1x"
+                android:layout_marginBottom="@dimen/spacing_2x"
+                app:layout_constraintStart_toStartOf="@id/tvClassTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvClassTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:text='@{classes.title}'
+                tools:text="Study Basics Of Python" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

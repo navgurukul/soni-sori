@@ -2,4 +2,11 @@
 <resources>
     <color name="splashBackground">#91C642</color>
     <color name="backgroundColorHome">#EEF7FE</color>
+    <color name="nav_bar_unselected">#9C9C9C</color>
+
+    <color name="upcoming_class_color_1">#FFF3F3</color>
+    <color name="upcoming_class_color_2">#FFF4DD</color>
+    <color name="upcoming_class_color_decoration_1">#FFDCDC</color>
+    <color name="upcoming_class_color_decoration_2">#FAE2B0</color>
+
 </resources>

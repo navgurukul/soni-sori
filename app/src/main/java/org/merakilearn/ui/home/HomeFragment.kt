@@ -18,6 +18,7 @@ import org.merakilearn.ui.home.adapter.OtherCourseAdapter
 import org.merakilearn.ui.home.adapter.WhereYouLeftAdapter
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.util.AppUtils
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.CourseDetailActivity
 
@@ -66,7 +67,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initDiscoverClassButton() {
-        mBinding.emptyMyClass.root.setOnClickListener {
+        mBinding.emptyMyClass.setOnClickListener {
             startDiscoverFragment()
         }
 
@@ -100,11 +101,12 @@ class HomeFragment : Fragment() {
         viewModel.fetchMyClasses().observe(viewLifecycleOwner, Observer {
             mBinding.progressBarButtonMy.visibility = View.GONE
             if (null != it && it.isNotEmpty()) {
-                mBinding.emptyMyClass.root.visibility = View.GONE
+                mBinding.emptyMyClass.visibility = View.GONE
                 mBinding.recyclerviewMyUpcomingClass.visibility = View.VISIBLE
+                mBinding.recyclerviewMyUpcomingClass.addItemDecoration(SpaceItemDecoration(0, requireContext().resources.getDimensionPixelSize(R.dimen.spacing_1x)))
                 mMyUpcomingClassAdapter.submitList(it)
             } else {
-                mBinding.emptyMyClass.root.visibility = View.VISIBLE
+                mBinding.emptyMyClass.visibility = View.VISIBLE
                 mBinding.recyclerviewMyUpcomingClass.visibility = View.GONE
             }
         })
@@ -128,6 +130,7 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerviewOtherCourse.layoutManager = layoutManager
         mBinding.recyclerviewOtherCourse.adapter = mOtherCourseAdapter
+        mBinding.recyclerviewOtherCourse.addItemDecoration(SpaceItemDecoration(requireContext().resources.getDimensionPixelSize(R.dimen.spacing_3x), 0))
     }
 
     private fun initUpComingClassesRV() {
