@@ -1,10 +1,9 @@
 package org.merakilearn.ui.onboarding
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import im.vector.matrix.android.api.session.InitialSyncProgressService
 import im.vector.matrix.rx.asObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.datasource.ApplicationRepo
@@ -23,6 +22,18 @@ class WelcomeViewModel(
     fun handle(action: WelcomeViewActions) {
         when (action) {
             is WelcomeViewActions.InitiateFakeSignUp -> handleFakeSignUp()
+            is WelcomeViewActions.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
+        }
+    }
+
+    private fun loginWithAuthToken(authToken: String) {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            if (applicationRepo.loginWithAuthToken(authToken)) {
+                _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
+            } else {
+                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.email_already_used)))
+            }
         }
     }
 
@@ -67,16 +78,17 @@ class WelcomeViewModel(
 
 sealed class WelcomeViewEvents : ViewEvents {
     class OpenMerakiChat(val roomId: String) : WelcomeViewEvents()
+    object OpenHomeScreen: WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
 }
 
 sealed class WelcomeViewActions : ViewEvents {
+    data class LoginWithAuthToken(val authToken: String) : WelcomeViewActions()
+
     object InitiateFakeSignUp : WelcomeViewActions()
 }
 
 data class WelcomeViewState(
     var isLoading: Boolean = false,
     val initialSyncProgress: InitialSyncProgressService.Status.Progressing? = null
-) : ViewState {
-
-}
+) : ViewState

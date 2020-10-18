@@ -123,6 +123,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1'
     implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
 
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'

@@ -36,11 +36,11 @@ interface SaralApi {
     @POST("users/create")
     fun initFakeSignUpAsync(): Deferred<LoginResponse>
 
-    @PUT("users/update")
+    @PUT("users/me")
     fun initUserUpdateAsync(
         @Header(value = "Authorization") token: String?,
         @Body loginResponse: UserUpdate
-    ): Deferred<LoginResponse.User>
+    ): Deferred<UserUpdateContainer>
 
     @GET("classes/{classId}")
     fun fetchClassDataAsync(

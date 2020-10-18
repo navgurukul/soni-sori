@@ -8,7 +8,7 @@ import org.merakilearn.datasource.network.model.LoginResponse
 class LoginViewModel(private val applicationRepo: ApplicationRepo) : ViewModel() {
 
     fun initLoginServer(authToken: String?) = liveData {
-        emit(applicationRepo.initLoginServer(authToken))
+        emit(applicationRepo.loginWithAuthToken(authToken))
     }
 
     fun updateProfile(user: LoginResponse.User) = liveData {

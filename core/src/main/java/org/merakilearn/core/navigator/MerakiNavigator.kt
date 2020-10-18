@@ -20,6 +20,8 @@ class MerakiNavigator(
         startActivity(context, launcherIntent(context, clearNotification), false)
     }
 
+    fun openHome(context: Context, clearNotification: Boolean) = startActivity(context, homeLauncherIntent(context, clearNotification), false)
+
     fun openRoomIntent(context: Context, roomId: String) = chatModuleNavigator.launchIntentForRoom(context, roomId)
 
     fun openRoom(context: Context, roomId: String, buildTask: Boolean = false) {
