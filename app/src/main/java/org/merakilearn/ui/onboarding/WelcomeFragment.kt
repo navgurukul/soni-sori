@@ -1,7 +1,10 @@
 package org.merakilearn.ui.onboarding
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.android.ext.android.inject
@@ -25,6 +28,17 @@ class WelcomeFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
 
     override fun getLayoutResId(): Int = R.layout.fragment_welcome
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                it.window.statusBarColor = ContextCompat.getColor(it, R.color.colorWhite)
+            } else {
+                it.window.statusBarColor = ContextCompat.getColor(it, R.color.primaryDarkColor)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
