@@ -138,7 +138,7 @@ class ApplicationRepo(
                 UserUpdate(user.name)
             )
             val response = req.await()
-            AppUtils.saveUserResponse(response, application)
+            AppUtils.saveUserResponse(response.user ,application)
             true
         } catch (ex: Exception) {
             ex.printStackTrace()

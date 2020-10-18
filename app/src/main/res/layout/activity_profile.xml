@@ -111,6 +111,8 @@
                     android:hint="@string/email"
                     android:inputType="none"
                     android:padding="@dimen/dimen_10_dp"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
                     android:text="@={user.email}" />
 
             </LinearLayout>
