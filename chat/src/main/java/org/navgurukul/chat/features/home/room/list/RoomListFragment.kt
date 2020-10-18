@@ -22,6 +22,7 @@ import org.navgurukul.commonui.model.Incomplete
 import org.navgurukul.commonui.model.Success
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.StateView
+import org.navgurukul.commonui.platform.ToolbarConfigurable
 
 class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
 
@@ -48,7 +49,8 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
                 is RoomListViewEvents.Done       -> Unit
             }
         })
-        setHeaderTitle()
+
+        (activity as? ToolbarConfigurable)?.setTitle(getString(R.string.title_chat), R.attr.textPrimary)
     }
 
     private fun invalidateState(state: RoomListViewState) {
@@ -129,19 +131,5 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
     }
 
     override fun onAcceptRoomInvitation(room: RoomSummary) {
-    }
-
-    private fun setHeaderTitle() {
-        try {
-            val clazz = Class.forName("org.merakilearn.MainActivity")
-            val method = clazz.getMethod("setHeaderTitle", String::class.java, Activity::class.java)
-            method.invoke(clazz.newInstance(), getString(R.string.title_chat), activity)
-        } catch (ex: Exception) {
-            Log.e(TAG, "setHeaderTitle: ", ex)
-        }
-    }
-
-    companion object {
-        private const val TAG = "RoomListFragment"
     }
 }

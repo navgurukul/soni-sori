@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyVisibilityTracker
 import org.navgurukul.chat.R
-import org.navgurukul.chat.features.themes.ThemeUtils
 
 /**
  * Apply a Vertical LinearLayout Manager to the recyclerView and set the adapter from the epoxy controller

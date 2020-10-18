@@ -5,7 +5,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import org.navgurukul.chat.features.themes.ThemeUtils
+import org.navgurukul.commonui.themes.ThemeUtils
 
 class ColorProvider (private val context: Context) {
 

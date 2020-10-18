@@ -21,6 +21,9 @@
         <item name="textAppearanceEmphasized2">@style/TextAppearance.AppCompat.Emphasized2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.AppCompat.Caption</item>
 
+        <item name="textAppearanceHeadline6">@style/TextAppearance.AppCompat.Headline6</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.AppCompat.Headline5</item>
+
         <item name="cornerRadius100">2dp</item>
         <item name="cornerRadius200">4dp</item>
         <item name="cornerRadius300">6dp</item>

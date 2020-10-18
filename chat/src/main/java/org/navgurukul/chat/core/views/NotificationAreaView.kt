@@ -16,7 +16,7 @@ import me.gujun.android.span.span
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.error.ResourceLimitErrorFormatter
-import org.navgurukul.chat.features.themes.ThemeUtils
+import org.navgurukul.commonui.themes.ThemeUtils
 import timber.log.Timber
 
 /**
