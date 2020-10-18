@@ -1,10 +1,9 @@
 package org.merakilearn.ui.onboarding
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import im.vector.matrix.android.api.session.InitialSyncProgressService
 import im.vector.matrix.rx.asObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.datasource.ApplicationRepo
@@ -19,6 +18,12 @@ class WelcomeViewModel(
     private val stringProvider: StringProvider,
     private val activeSessionHolder: ActiveSessionHolder
 ) : BaseViewModel<WelcomeViewEvents, WelcomeViewState>(WelcomeViewState()) {
+
+    val idToken = MutableLiveData<String?>()
+
+    val loginResult = idToken.switchMap {
+        liveData { emit(applicationRepo.initLoginServer(it)) }
+    }
 
     fun handle(action: WelcomeViewActions) {
         when (action) {
