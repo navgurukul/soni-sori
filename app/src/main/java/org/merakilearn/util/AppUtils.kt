@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import org.merakilearn.datasource.network.model.Classes
-import org.merakilearn.datasource.network.model.FakeUserLoginResponse
 import org.merakilearn.datasource.network.model.LoginResponse
 
 object AppUtils {
@@ -32,26 +31,18 @@ object AppUtils {
     }
 
     fun getCurrentUser(application: Context): LoginResponse.User {
-        var userLoginResponse: LoginResponse.User = LoginResponse.User()
         val userLoginResponseString = PreferenceManager.getDefaultSharedPreferences(application)
             .getString(KEY_USER_RESPONSE, "")
-        if (userLoginResponseString.isNullOrEmpty() && isFakeLogin(application)) {
+        return if (userLoginResponseString.isNullOrEmpty() && isFakeLogin(application)) {
             val fakeUserLoginResponseString =
                 PreferenceManager.getDefaultSharedPreferences(application)
                     .getString(KEY_FAKE_USER_RESPONSE, "")
-            if (!fakeUserLoginResponseString.isNullOrEmpty()) {
-                val fakeUserLoginResponse =
-                    Gson().fromJson(
-                        fakeUserLoginResponseString,
-                        FakeUserLoginResponse.User::class.java
-                    )
-                userLoginResponse.email = fakeUserLoginResponse.email
-                userLoginResponse.name = fakeUserLoginResponse?.name
-            }
+            Gson().fromJson(
+                fakeUserLoginResponseString,
+                LoginResponse.User::class.java
+            )
         } else
-            userLoginResponse =
-                Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
-        return userLoginResponse
+            Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
     }
 
     fun getFakeLoginResponseId(application: Application): Int? {
@@ -62,7 +53,7 @@ object AppUtils {
             val fakeUserLoginResponse =
                 Gson().fromJson(
                     fakeUserLoginResponseString,
-                    FakeUserLoginResponse.User::class.java
+                    LoginResponse.User::class.java
                 )
             return fakeUserLoginResponse?.id?.toIntOrNull()
         }
@@ -82,7 +73,7 @@ object AppUtils {
     }
 
     fun saveFakeLoginResponse(
-        response: FakeUserLoginResponse,
+        response: LoginResponse,
         application: Application
     ) {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(application)

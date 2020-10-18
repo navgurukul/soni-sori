@@ -32,6 +32,7 @@ class ApplicationRepo(
             val req = applicationApi.initLoginAsync(loginRequest)
             val response = req.await()
             AppUtils.saveUserLoginResponse(response, application)
+            authenticationRepository.login(response.user.chatId, response.user.chatPassword)
             if (isFakeLogin)
                 AppUtils.resetFakeLogin(application)
             true
@@ -116,7 +117,7 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun performFakeSignUp(): FakeUserLoginResponse? {
+    suspend fun performFakeSignUp(): LoginResponse? {
         return try {
             val req = applicationApi.initFakeSignUpAsync()
             val response = req.await()
@@ -150,8 +151,8 @@ class ApplicationRepo(
             withContext(Dispatchers.IO) {
                 courseDb.clearAllTables()
                 PreferenceManager.getDefaultSharedPreferences(application).edit().clear().apply()
+                authenticationRepository.logout()
             }
-            true
         } catch (ex: Exception) {
             ex.printStackTrace()
             false

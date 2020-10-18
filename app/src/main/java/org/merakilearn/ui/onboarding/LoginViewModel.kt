@@ -11,10 +11,6 @@ class LoginViewModel(private val applicationRepo: ApplicationRepo) : ViewModel()
         emit(applicationRepo.initLoginServer(authToken))
     }
 
-    fun initFakeSignUp() = liveData {
-        emit(applicationRepo.performFakeSignUp())
-    }
-
     fun updateProfile(user: LoginResponse.User) = liveData {
         emit(applicationRepo.updateProfile(user))
     }

@@ -76,7 +76,7 @@ val factoryModule = module {
     single { PopupAlertManager() }
     single { ImageManager(androidContext(), get()) }
     single { AvatarRenderer(get()) }
-    single { AuthenticationRepository(get(), get(), get(), get()) }
+    single { AuthenticationRepository(get(), get(), get(), get(), androidContext()) }
     single { AppStateHandler(get(), get(), get(), get()) }
     single { ActiveSessionDataSource() }
     single { HomeRoomListDataSource() }
