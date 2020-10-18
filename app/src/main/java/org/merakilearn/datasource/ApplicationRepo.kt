@@ -22,7 +22,7 @@ class ApplicationRepo(
     private val authenticationRepository: AuthenticationRepository
 ) {
 
-    suspend fun initLoginServer(authToken: String?): Boolean {
+    suspend fun loginWithAuthToken(authToken: String?): Boolean {
         return try {
             val isFakeLogin = AppUtils.isFakeLogin(application)
             val loginRequest = LoginRequest(authToken)

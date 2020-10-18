@@ -19,15 +19,21 @@ class WelcomeViewModel(
     private val activeSessionHolder: ActiveSessionHolder
 ) : BaseViewModel<WelcomeViewEvents, WelcomeViewState>(WelcomeViewState()) {
 
-    val idToken = MutableLiveData<String?>()
-
-    val loginResult = idToken.switchMap {
-        liveData { emit(applicationRepo.initLoginServer(it)) }
-    }
-
     fun handle(action: WelcomeViewActions) {
         when (action) {
             is WelcomeViewActions.InitiateFakeSignUp -> handleFakeSignUp()
+            is WelcomeViewActions.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
+        }
+    }
+
+    private fun loginWithAuthToken(authToken: String) {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            if (applicationRepo.loginWithAuthToken(authToken)) {
+                _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
+            } else {
+                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.email_already_used)))
+            }
         }
     }
 
@@ -72,16 +78,17 @@ class WelcomeViewModel(
 
 sealed class WelcomeViewEvents : ViewEvents {
     class OpenMerakiChat(val roomId: String) : WelcomeViewEvents()
+    object OpenHomeScreen: WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
 }
 
 sealed class WelcomeViewActions : ViewEvents {
+    data class LoginWithAuthToken(val authToken: String) : WelcomeViewActions()
+
     object InitiateFakeSignUp : WelcomeViewActions()
 }
 
 data class WelcomeViewState(
     var isLoading: Boolean = false,
     val initialSyncProgress: InitialSyncProgressService.Status.Progressing? = null
-) : ViewState {
-
-}
+) : ViewState

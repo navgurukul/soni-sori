@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -17,11 +16,11 @@ import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.learn.ui.common.toast
+import timber.log.Timber
 
 
 class WelcomeFragment : BaseFragment() {
@@ -35,7 +34,12 @@ class WelcomeFragment : BaseFragment() {
     private val viewModel: WelcomeViewModel by viewModel()
 
     private val navigator: MerakiNavigator by inject()
-    private var mGoogleSignInClient: GoogleSignInClient? = null
+    private val googleSignInClient: GoogleSignInClient by lazy {
+        GoogleSignIn.getClient(requireActivity(), GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestIdToken(getString(R.string.server_client_id))
+            .build())
+    }
 
     override fun getLayoutResId(): Int = R.layout.fragment_welcome
 
@@ -52,8 +56,6 @@ class WelcomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initGoogleSignInOption()
 
         tvAlready.setOnClickListener {
             signInWithGoogle()
@@ -76,22 +78,20 @@ class WelcomeFragment : BaseFragment() {
             when(it) {
                 is WelcomeViewEvents.ShowToast -> toast(it.toastText)
                 is WelcomeViewEvents.OpenMerakiChat -> openMerakiChat(it.roomId)
+                is WelcomeViewEvents.OpenHomeScreen -> openHomeScreen()
             }
         })
     }
 
-    private fun initGoogleSignInOption() {
-        val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(getString(R.string.server_client_id))
-                .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    private fun openHomeScreen() {
+        navigator.openHome(requireContext(), true)
+        requireActivity().finish()
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = mGoogleSignInClient!!.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        googleSignInClient.signOut().addOnCompleteListener {
+            startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
+        }
     }
 
 
@@ -107,35 +107,18 @@ class WelcomeFragment : BaseFragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            logOutSelectedAccount(account)
+
+            account.idToken?.let {
+                viewModel.handle(WelcomeViewActions.LoginWithAuthToken(it))
+            } ?: run {
+                toast(getString(R.string.unable_to_sign))
+            }
+
         } catch (e: ApiException) {
-            Log.e(LoginFragment.TAG, "signInResult:failed code=", e)
+            Timber.e(e, "Google Sign Failed")
             toast(getString(R.string.unable_to_sign))
         }
     }
-
-    private fun logOutSelectedAccount(account: GoogleSignInAccount) {
-        mGoogleSignInClient?.signOut()?.addOnSuccessListener {
-            viewModel.idToken.value = account.idToken
-            observeFetchingBackendToken()
-        }
-    }
-
-    private fun observeFetchingBackendToken() {
-        toggleProgressBarVisibility(View.VISIBLE)
-        viewModel.loginResult.observe(this, Observer {
-            toggleProgressBarVisibility(View.GONE)
-            if (it) {
-                MainActivity.launch(requireContext())
-            } else
-                toast(getString(R.string.email_already_used))
-        })
-    }
-
-    private fun toggleProgressBarVisibility(visibility: Int) {
-        progress_bar_button.visibility = visibility
-    }
-
 
     private fun openMerakiChat(roomId: String) {
         navigator.openRoom(requireContext(), roomId, true)

@@ -1,7 +1,6 @@
 package org.merakilearn
 
 import android.app.Application
-import android.util.Log
 import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,12 +12,18 @@ import org.navgurukul.chat.core.di.chatModules
 import org.navgurukul.commonui.di.commonUIModules
 import org.navgurukul.learn.di.learnModules
 import org.navgurukul.playground.di.playgroundModules
+import timber.log.Timber
 
-class SaralApp : Application() {
+class MerakiApp : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
         startKoin {
-            androidContext(this@SaralApp)
+            androidContext(this@MerakiApp)
             androidLogger()
             modules(appModules + chatModules + learnModules + playgroundModules + commonUIModules + coreModules)
         }
@@ -30,11 +35,7 @@ class SaralApp : Application() {
     private fun subscribeToDefaultTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic(BuildConfig.APPLICATION_ID)
             .addOnCompleteListener { task ->
-                Log.d(TAG, "subscribeToDefaultTopic: ")
+                Timber.d("subscribeToDefaultTopic: ")
             }
-    }
-
-    companion object {
-        private const val TAG = "SaralApp"
     }
 }
