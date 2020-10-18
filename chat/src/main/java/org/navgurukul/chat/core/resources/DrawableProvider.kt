@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import org.navgurukul.chat.features.themes.ThemeUtils
+import org.navgurukul.commonui.themes.ThemeUtils
 
 class DrawableProvider(private val context: Context) {
 

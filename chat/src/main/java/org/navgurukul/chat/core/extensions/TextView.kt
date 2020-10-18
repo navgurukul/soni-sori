@@ -9,7 +9,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import org.navgurukul.chat.R
-import org.navgurukul.chat.features.themes.ThemeUtils
+import org.navgurukul.commonui.themes.ThemeUtils
 
 /**
  * Set a text in the TextView, or set visibility to GONE if the text is null

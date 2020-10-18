@@ -7,17 +7,15 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.toSpannable
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import im.vector.matrix.android.api.crypto.RoomEncryptionTrustLevel
 import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.navgurukul.chat.R
-import org.navgurukul.chat.features.themes.ThemeUtils
+import org.navgurukul.commonui.themes.ThemeUtils
 
 /**
  * Encapsulate the timeline composer UX.

@@ -13,7 +13,6 @@ import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer
-import org.navgurukul.chat.features.themes.ThemeUtils
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -127,7 +126,6 @@ class PopupAlertManager {
         weakCurrentActivity?.get()
                 ?.takeIf { Build.VERSION.SDK_INT >= Build.VERSION_CODES.M }
                 // Do not change anything on Dark themes
-                ?.takeIf { ThemeUtils.isLightTheme(it) }
                 ?.let { it.window?.decorView }
                 ?.let { view ->
                     var flags = view.systemUiVisibility
@@ -141,7 +139,6 @@ class PopupAlertManager {
         weakCurrentActivity?.get()
                 ?.takeIf { Build.VERSION.SDK_INT >= Build.VERSION_CODES.M }
                 // Do not change anything on Dark themes
-                ?.takeIf { ThemeUtils.isLightTheme(it) }
                 ?.let { it.window?.decorView }
                 ?.let { view ->
                     var flags = view.systemUiVisibility

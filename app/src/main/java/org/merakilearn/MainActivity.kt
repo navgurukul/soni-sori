@@ -7,8 +7,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.SearchView
-import android.widget.TextView
+import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.parcel.Parcelize
@@ -16,13 +17,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.util.AppUtils
+import org.navgurukul.commonui.platform.ToolbarConfigurable
+import org.navgurukul.commonui.themes.getThemedColor
 
 @Parcelize
 data class MainActivityArgs(
     val clearNotification: Boolean
 ) : Parcelable
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     companion object {
         const val KEY_ARG = "MainActivity:args"
@@ -71,17 +74,20 @@ class MainActivity : AppCompatActivity() {
             else
                 ProfileActivity.launch(this)
         }
-        setHeaderTitle(getString(R.string.app_name), this)
-    }
-
-    //Don't make this method private and don't change name or param value as it is used from other module using reflection
-    fun setHeaderTitle(title: String, context: Activity) {
-        context.findViewById<TextView>(R.id.headerTitle).text = title
     }
 
     fun toggleSearch(visibility: Int): SearchView? {
         val searchView = findViewById<SearchView>(R.id.searchView)
         searchView.visibility = visibility
         return searchView
+    }
+
+    override fun configure(toolbar: Toolbar) {
+        throw RuntimeException("Custom Toolbar Not supported")
+    }
+
+    override fun setTitle(title: String, @AttrRes colorRes: Int) {
+        headerTitle.text = title
+        headerTitle.setTextColor(getThemedColor(colorRes))
     }
 }

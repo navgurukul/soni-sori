@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -56,6 +57,10 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
 
     override fun configure(toolbar: Toolbar) {
         configureToolbar(toolbar)
+    }
+
+    override fun setTitle(title: String, @AttrRes colorRes: Int) {
+        throw RuntimeException("Set Title is not supported")
     }
 
     companion object {

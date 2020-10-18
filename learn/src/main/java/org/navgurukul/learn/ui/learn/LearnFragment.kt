@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.databinding.FragmentLearnBinding
@@ -39,17 +40,7 @@ class LearnFragment : Fragment() {
 
         initSwipeRefresh()
 
-        setHeaderTitle()
-    }
-
-    private fun setHeaderTitle() {
-        try {
-            val clazz = Class.forName("org.merakilearn.MainActivity")
-            val method = clazz.getMethod("setHeaderTitle", String::class.java, Activity::class.java)
-            method.invoke(clazz.newInstance(), getString(R.string.courses), activity)
-        } catch (ex: Exception) {
-            Log.e(TAG, "setHeaderTitle: ", ex)
-        }
+        (activity as? ToolbarConfigurable)?.setTitle(getString(R.string.courses), R.attr.textPrimary)
     }
 
     private fun fetchData(forceUpdate: Boolean) {

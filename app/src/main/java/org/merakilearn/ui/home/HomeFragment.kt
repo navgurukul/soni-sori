@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
-import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
@@ -19,16 +18,12 @@ import org.merakilearn.ui.home.adapter.WhereYouLeftAdapter
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.util.AppUtils
 import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.CourseDetailActivity
 
 
 class HomeFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = HomeFragment()
-        const val TAG = "HomeFragment"
-    }
 
     private lateinit var mBinding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
@@ -47,7 +42,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initMyClassViewAndData()
-        (activity as MainActivity).setHeaderTitle(getString(R.string.app_name), requireActivity())
+        (activity as? ToolbarConfigurable)?.setTitle(getString(R.string.app_name), R.attr.colorPrimary)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
