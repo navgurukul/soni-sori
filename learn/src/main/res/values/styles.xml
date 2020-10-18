@@ -6,32 +6,13 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="course_item_card_view">
-        <item name="cardElevation">@dimen/card_elevation</item>
-        <item name="cardCornerRadius">@dimen/dimen_5_dp</item>
-        <item name="android:padding">@dimen/dimen_5_dp</item>
-        <item name="android:elevation">@dimen/card_elevation</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_5_dp</item>
-        <item name="cornerRadius">@dimen/dimen_5_dp</item>
-        <item name="cardBackgroundColor">@color/colorWhite</item>
-        <item name="cardUseCompatPadding">true</item>
-    </style>
-
-    <style name="text_view_course_title">
-        <item name="android:padding">@dimen/dimen_5_dp</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:fontFamily">@font/n_bold</item>
-        <item name="android:layout_marginTop">@dimen/dimen_5_dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
-    </style>
-
-    <style name="text_view_course_description">
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">@dimen/dimen_5_dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_10_dp</item>
-        <item name="android:fontFamily">@font/n_regular</item>
-
+        <item name="cardElevation">?elevation200</item>
+        <item name="cardCornerRadius">?cornerRadius400</item>
+        <item name="contentPaddingTop">@dimen/spacing_4x</item>
+        <item name="contentPaddingLeft">@dimen/spacing_3x</item>
+        <item name="contentPaddingRight">@dimen/spacing_4x</item>
+        <item name="contentPaddingBottom">@dimen/spacing_4x</item>
+        <item name="backgroundColor">?backgroundColor</item>
     </style>
 
     <style name="text_view_profile">
@@ -59,26 +40,6 @@
         <item name="android:fontFamily">@font/n_bold</item>
     </style>
 
-    <style name="text_view_course_detail_title">
-        <item name="android:layout_margin">@dimen/dimen_5_dp</item>
-        <item name="android:padding">@dimen/dimen_10_dp</item>
-        <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="exercise_item_card_view">
-        <item name="android:padding">@dimen/dimen_10_dp</item>
-        <item name="cardElevation">@dimen/card_elevation</item>
-        <item name="android:elevation">@dimen/card_elevation</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_5_dp</item>
-        <item name="cornerRadius">@dimen/dimen_5_dp</item>
-        <item name="android:layout_marginStart">@dimen/dimen_10_dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_10_dp</item>
-        <item name="cardBackgroundColor">@color/colorWhite</item>
-        <item name="cardUseCompatPadding">true</item>
-    </style>
-
     <style name="text_view_exercise_title">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorBlack</item>
@@ -92,11 +53,6 @@
         <item name="android:textColor">@color/colorRed</item>
         <item name="android:padding">@dimen/dimen_10_dp</item>
         <item name="android:layout_marginEnd">@dimen/dimen_10_dp</item>
-    </style>
-
-    <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">@color/colorBlack</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <dimen name="dimen_20_dp">20dp</dimen>

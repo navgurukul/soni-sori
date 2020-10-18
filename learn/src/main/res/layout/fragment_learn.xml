@@ -21,28 +21,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rlCourseContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f2f2f2"
+            android:background="@color/course_background"
+            android:paddingStart="@dimen/spacing_4x"
+            android:paddingEnd="@dimen/spacing_4x"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical">
-
-            <include
-                layout="@layout/component_course_header"
-                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerviewCourse"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5_dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_3x"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:clipChildren="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_course" />
 
-            <include
+            <ProgressBar
                 android:id="@+id/progress_bar_button"
-                layout="@layout/component_progress_bar" />
-        </LinearLayout>
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/dimen_progress_bar"
+                android:layout_height="@dimen/dimen_progress_bar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:elevation="2dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
