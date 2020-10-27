@@ -12,12 +12,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/course_item_card_view"
-            app:cardElevation="?elevation200"
-            app:cardCornerRadius="?cornerRadius400"
-            app:contentPaddingTop="@dimen/spacing_4x"
-            app:contentPaddingLeft="@dimen/spacing_3x"
-            app:contentPaddingRight="@dimen/spacing_4x"
-            app:contentPaddingBottom="@dimen/spacing_4x"
+            style="@style/course_item_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

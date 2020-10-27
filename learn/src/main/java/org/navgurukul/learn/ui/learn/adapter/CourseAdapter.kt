@@ -10,7 +10,7 @@ import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class CourseAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
+class CourseAdapter(val callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
 
     DataBoundListAdapter<Course, ItemCourseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Course>() {
@@ -23,7 +23,6 @@ class CourseAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
             }
         }
     ) {
-    private val mCallback = callback
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemCourseBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -34,7 +33,7 @@ class CourseAdapter(callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
     override fun bind(binding: ItemCourseBinding, item: Course) {
         binding.course = item
         binding.root.setOnClickListener {
-            mCallback.invoke(Pair(item, binding))
+            callback.invoke(Pair(item, binding))
         }
     }
 

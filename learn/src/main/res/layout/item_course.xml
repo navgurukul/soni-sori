@@ -14,33 +14,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-
         <androidx.cardview.widget.CardView
         android:id="@+id/course_item_card_view"
         style="@style/course_item_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="0dp">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-
-            <ImageView
+            <TextView
                 android:id="@+id/ivSequence"
-                android:layout_width="@dimen/dimen_30_dp"
-                android:layout_height="@dimen/dimen_30_dp"
-                android:padding="@dimen/dimen_2_dp"
-                android:layout_margin="@dimen/dimen_5_dp"
-                android:layout_centerVertical="true"
-                app:imageUrl="@{``+course.number}"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:background="@drawable/oval_number_background"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:textColor="@color/colorNumber"
+                tools:text="1"
+                android:text="@{``+course.number}"
                 tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvCourseTitle"
-                style="@style/text_view_course_title"
+                style="?textAppearanceEmphasized2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/ivArrow"
@@ -52,7 +51,7 @@
 
             <TextView
                 android:id="@+id/tvCourseDescription"
-                style="@style/text_view_course_description"
+                style="?textAppearanceCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvCourseTitle"
@@ -61,6 +60,8 @@
                 android:text="@{course.shortDescription}"
                 android:maxLines="3"
                 android:ellipsize="end"
+                android:textColor="?textSecondary"
+                android:layout_marginTop="@dimen/spacing_2x"
                 tools:text="Study all the basics of python" />
 
             <ImageView
@@ -70,7 +71,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dimen_10_dp"
-                android:src="@drawable/ic_right"
+                app:tint="?textSecondary"
+                android:src="@drawable/ic_arrow_right"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

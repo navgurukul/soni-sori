@@ -1,8 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
@@ -49,7 +48,7 @@ class LearnFragment : Fragment() {
                 mBinding.progressBarButton.visibility = View.GONE
                 mCourseAdapter.submitList(it)
             }
-
+            //TODO Please implement error or empty state here
         })
     }
 
@@ -69,6 +68,7 @@ class LearnFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerviewCourse.layoutManager = layoutManager
         mBinding.recyclerviewCourse.adapter = mCourseAdapter
+        mBinding.recyclerviewCourse.addItemDecoration(SpaceItemDecoration(requireContext().resources.getDimensionPixelSize(R.dimen.spacing_3x), 0))
     }
 
     private fun startDesiredActivity(it: Course) {
