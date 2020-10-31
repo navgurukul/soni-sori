@@ -1,5 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail
 
+import androidx.lifecycle.Transformations
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import im.vector.matrix.android.api.MatrixCallback
@@ -42,9 +43,12 @@ import org.navgurukul.chat.core.utils.isValidUrl
 import org.navgurukul.chat.core.utils.subscribeLogError
 import org.navgurukul.chat.features.command.CommandParser
 import org.navgurukul.chat.features.command.ParsedCommand
+import org.navgurukul.chat.features.home.room.TypingHelper
+import org.navgurukul.chat.features.home.room.detail.timeline.helper.RoomSummaryHolder
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.TimelineDisplayableEvents
 import org.navgurukul.chat.features.powerlevel.PowerLevelsObservableFactory
 import org.navgurukul.chat.features.settings.ChatPreferences
+import org.navgurukul.commonui.model.Success
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.resources.StringProvider
 import timber.log.Timber
@@ -56,9 +60,9 @@ class RoomDetailFragmentViewModel(
     userPreferencesProvider: UserPreferencesProvider,
     private val chatPreferences: ChatPreferences,
     private val stringProvider: StringProvider,
-    sessionHolder: ActiveSessionHolder
-//    private val roomSummaryHolder: RoomSummaryHolder,
-//    private val typingHelper: TypingHelper
+    sessionHolder: ActiveSessionHolder,
+    private val roomSummaryHolder: RoomSummaryHolder,
+    private val typingHelper: TypingHelper
 ) : BaseViewModel<RoomDetailFragmentViewEvents, RoomDetailViewState>(initialState),
     Timeline.Listener {
 
@@ -100,7 +104,7 @@ class RoomDetailFragmentViewModel(
         observeRoomSummary()
         observeMembershipChanges()
         observeRoomMemberSummary()
-//        observeSummaryState()
+        observeSummaryState()
         getUnreadState()
         observeSyncState()
 //        observeEventDisplayedActions()
@@ -374,25 +378,19 @@ class RoomDetailFragmentViewModel(
             .disposeOnClear()
     }
 
-//    private fun observeSummaryState() {
-//        asyncSubscribe(RoomDetailViewState::asyncRoomSummary) { summary ->
-//            roomSummaryHolder.set(summary)
-//            setState {
-//                val typingMessage = typingHelper.getTypingMessage(summary.typingUsers)
-//                copy(typingMessage = typingMessage)
-//            }
-//            if (summary.membership == Membership.INVITE) {
-//                summary.inviterId?.let { inviterId ->
-//                    session.getUser(inviterId)
-//                }?.also {
-//                    setState { copy(asyncInviter = Success(it)) }
-//                }
-//            }
-//            room.getStateEvent(EventType.STATE_ROOM_TOMBSTONE)?.also {
-//                setState { copy(tombstoneEvent = it) }
-//            }
-//        }
-//    }
+    private fun observeSummaryState() {
+        Transformations.map(viewState) {
+            it.asyncRoomSummary
+        }.asObservable().filter {
+            it is Success
+        }.map {
+            it.invoke()!!
+        }.subscribe{ summary ->
+            roomSummaryHolder.set(summary)
+            val typingMessage = typingHelper.getTypingMessage(summary.typingUsers)
+            setState { copy(typingMessage = typingMessage) }
+        }.disposeOnClear()
+    }
 
 
     private fun observeRoomSummary() {
@@ -414,7 +412,7 @@ class RoomDetailFragmentViewModel(
         room.rx().liveRoomMembers(roomMemberQueryParams)
             .subscribe { roomMembers ->
                 setState {
-                    copy( subtitle = roomMembers.joinToString(limit = 10) { it.displayName.toString() })
+                    copy(subtitle = stringProvider.getString(R.string.members, roomMembers.size))
                 }
             }.disposeOnClear()
     }

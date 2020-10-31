@@ -17,9 +17,9 @@ abstract class MessageImageVideoItem : AbsMessageItem<MessageImageVideoItem.Hold
 
     override fun getDefaultLayout(): Int =
         if (attributes.informationData.sentByMe) {
-            R.layout.sent_item_timeline_event_base
+            R.layout.sent_item_timeline_event_media_message
         } else {
-            R.layout.item_timeline_event_base
+            R.layout.item_timeline_event_media_message
         }
 
     @EpoxyAttribute
@@ -46,8 +46,6 @@ abstract class MessageImageVideoItem : AbsMessageItem<MessageImageVideoItem.Hold
         holder.imageView.setOnClickListener(clickListener)
         holder.imageView.setOnLongClickListener(attributes.itemLongClickListener)
         ViewCompat.setTransitionName(holder.imageView, "imagePreview_${id()}")
-        holder.mediaContentView.setOnClickListener(attributes.itemClickListener)
-        holder.mediaContentView.setOnLongClickListener(attributes.itemLongClickListener)
         // The sending state color will be apply to the progress text
         renderSendState(holder.imageView, null, holder.failedToSendIndicator)
         holder.playContentView.visibility = if (playable) View.VISIBLE else View.GONE
@@ -60,22 +58,17 @@ abstract class MessageImageVideoItem : AbsMessageItem<MessageImageVideoItem.Hold
         super.unbind(holder)
     }
 
-    override fun getViewType() = if (attributes.informationData.sentByMe) {
-        STUB_ID + R.drawable.sent_timeline_item_background
-    } else {
-        STUB_ID + R.drawable.received_timeline_item_background
-    }
+    override fun getViewType() = defaultLayout
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val progressLayout by bind<ViewGroup>(R.id.messageMediaUploadProgressLayout)
         val imageView by bind<ImageView>(R.id.messageThumbnailView)
         val playContentView by bind<ImageView>(R.id.messageMediaPlayView)
 
-        val mediaContentView by bind<ViewGroup>(R.id.messageContentMedia)
         val failedToSendIndicator by bind<ImageView>(R.id.messageFailToSendIndicator)
     }
 
     companion object {
-        private val STUB_ID = R.id.messageContentMediaStub
+        private const val STUB_ID = 0
     }
 }

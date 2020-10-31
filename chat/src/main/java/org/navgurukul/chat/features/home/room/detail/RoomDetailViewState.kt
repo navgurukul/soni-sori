@@ -40,6 +40,7 @@ data class RoomDetailViewState(
     val asyncInviter: Async<User> = Uninitialized,
     val asyncRoomSummary: Async<RoomSummary> = Uninitialized,
     val subtitle: String? = null,
+    val typingMessage: String? = null,
     val sendMode: SendMode = SendMode.REGULAR(""),
     val tombstoneEvent: Event? = null,
     val tombstoneEventHandling: Async<String> = Uninitialized,

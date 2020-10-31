@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Spannable
+import android.text.TextUtils
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -65,6 +66,7 @@ import org.navgurukul.chat.features.notifications.NotificationDrawerManager
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.chat.features.share.SharedData
 import org.navgurukul.commonui.platform.BaseFragment
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.views.JumpToReadMarkerView
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -89,7 +91,8 @@ class RoomDetailFragment : BaseFragment(),
 
     private val viewModel: RoomDetailFragmentViewModel by viewModel(parameters = {
         parametersOf(
-            RoomDetailViewState(roomId = roomDetailArgs.roomId, eventId = roomDetailArgs.eventId)
+            RoomDetailViewState(roomId = roomDetailArgs.roomId, eventId = roomDetailArgs.eventId),
+            lifecycleScope
         )
     })
 
@@ -184,7 +187,8 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun invalidateState(state: RoomDetailViewState) {
         val summary = state.asyncRoomSummary()
-        renderToolbar(summary, state.subtitle)
+        val subtitle = if (TextUtils.isEmpty(state.typingMessage)) state.subtitle else state.typingMessage
+        renderToolbar(summary, subtitle)
         val inviter = state.asyncInviter()
         if (summary?.membership == Membership.JOIN) {
 //            roomWidgetsBannerView.render(state.activeRoomWidgets())
@@ -367,6 +371,7 @@ class RoomDetailFragment : BaseFragment(),
 
         recyclerView.trackItemsVisibilityChange()
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+
 //        val stateRestorer = LayoutManagerStateRestorer(layoutManager).register()
         scrollOnNewMessageCallback = ScrollOnNewMessageCallback(layoutManager, timelineEventController)
         scrollOnHighlightedEventCallback = ScrollOnHighlightedEventCallback(recyclerView, layoutManager, timelineEventController)
@@ -382,6 +387,7 @@ class RoomDetailFragment : BaseFragment(),
         }
         timelineEventController.addModelBuildListener(modelBuildListener)
         recyclerView.adapter = timelineEventController.adapter
+        recyclerView.addItemDecoration(SpaceItemDecoration(recyclerView.context.resources.getDimensionPixelSize(R.dimen.spacing_2x), 0))
 
         if (chatPreferences.swipeToReplyIsEnabled()) {
             val quickReplyHandler = object : RoomMessageTouchHelperCallback.QuickReplayHandler {

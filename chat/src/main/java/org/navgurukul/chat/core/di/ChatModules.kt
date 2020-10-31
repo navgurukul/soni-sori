@@ -52,7 +52,14 @@ import org.navgurukul.commonui.error.ErrorFormatter
 val viewModelModules = module {
     viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
     viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
-    viewModel { (roomDetailViewState : RoomDetailViewState) -> RoomDetailFragmentViewModel(roomDetailViewState, get(), get(), get(), get()) }
+    viewModel { (roomDetailViewState : RoomDetailViewState, scope: Scope) -> RoomDetailFragmentViewModel(
+        initialState = roomDetailViewState,
+        userPreferencesProvider = get(),
+        chatPreferences = get(),
+        stringProvider = get(),
+        sessionHolder = get(),
+        roomSummaryHolder = scope.get(),
+        typingHelper = get()) }
 }
 
 val factoryModule = module {

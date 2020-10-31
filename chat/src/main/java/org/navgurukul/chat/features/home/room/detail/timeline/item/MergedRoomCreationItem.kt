@@ -50,9 +50,6 @@ abstract class MergedRoomCreationItem : BasedMergedItem<MergedRoomCreationItem.H
 
             if (attributes.hasEncryptionEvent) {
                 holder.encryptionTile.isVisible = true
-                holder.encryptionTile.updateLayoutParams<RelativeLayout.LayoutParams> {
-                    this.marginEnd = leftGuideline
-                }
                 if (attributes.isEncryptionAlgorithmSecure) {
                     holder.e2eTitleTextView.text = holder.expandView.resources.getString(R.string.encryption_enabled)
                     holder.e2eTitleDescriptionView.text = holder.expandView.resources.getString(R.string.encryption_enabled_tile_description)

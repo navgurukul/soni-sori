@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_2x">
+
+    <include
+        android:id="@+id/messageAvatarImageView"
+        layout="@layout/item_timeline_event_avatar" />
+
+    <include
+        android:id="@id/item_timeline_event_top"
+        layout="@layout/item_timeline_event_top" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+        app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
+
+        <TextView
+            style="@style/TimelineContentStubBaseParams"
+            android:background="@drawable/received_timeline_item_background"
+            android:textColor="?textContrast"
+            android:textAppearance="?textAppearanceBody1"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableTint="?textContrast"
+            app:drawableStartCompat="@drawable/ic_trash_16"
+            android:text="@string/event_redacted"/>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

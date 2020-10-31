@@ -38,25 +38,18 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="TextAppearance.Saral.Body1" parent="TextAppearance.AppCompat">
+    <style name="TextAppearance.AppCompat.Body1" parent="TextAppearance.AppCompat">
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?textPrimary</item>
     </style>
 
-    <style name="TextAppearance.Saral.Subtitle1" parent="TextAppearance.AppCompat">
+    <style name="TextAppearance.AppCompat.Body2" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">?textSecondary</item>
-    </style>
-
-    <style name="TextAppearance.Saral.Subtitle2" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">?textSecondary</item>
+        <item name="android:textColor">?textPrimary</item>
     </style>
 
     <!--Widget.AppCompat.Button.Borderless.Colored, which sets the text color to colorAccent,

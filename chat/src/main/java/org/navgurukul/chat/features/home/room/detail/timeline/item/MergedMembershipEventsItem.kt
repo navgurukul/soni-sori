@@ -26,8 +26,8 @@ abstract class MergedMembershipEventsItem : BasedMergedItem<MergedMembershipEven
         super.bind(holder)
         if (attributes.isCollapsed) {
             val summary = holder.expandView.resources.getQuantityString(R.plurals.membership_changes, attributes.mergeData.size, attributes.mergeData.size)
-            holder.summaryView.text = summary
-            holder.summaryView.visibility = View.VISIBLE
+            holder.expandTextView.text = summary
+            holder.expandTextView.visibility = View.VISIBLE
             holder.avatarListView.visibility = View.VISIBLE
             holder.avatarListView.children.forEachIndexed { index, view ->
                 val data = distinctMergeData.getOrNull(index)
@@ -40,14 +40,13 @@ abstract class MergedMembershipEventsItem : BasedMergedItem<MergedMembershipEven
             }
         } else {
             holder.avatarListView.visibility = View.INVISIBLE
-            holder.summaryView.visibility = View.GONE
         }
         // No read receipt for this item
 //        holder.readReceiptsView.isVisible = false
     }
 
     class Holder : BasedMergedItem.Holder(STUB_ID) {
-        val summaryView by bind<TextView>(R.id.itemMergedSummaryTextView)
+        val expandTextView by bind<TextView>(R.id.itemMergedExpandTextView)
         val avatarListView by bind<ViewGroup>(R.id.itemMergedAvatarListView)
     }
 

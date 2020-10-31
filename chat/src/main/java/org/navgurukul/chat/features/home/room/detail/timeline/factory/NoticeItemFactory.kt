@@ -33,7 +33,6 @@ class NoticeItemFactory(
             avatarClickListener = { callback?.onAvatarClicked(informationData) }
         )
         return NoticeItem_()
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .highlighted(highlight)
             .attributes(attributes)
     }

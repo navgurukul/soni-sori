@@ -31,9 +31,6 @@ abstract class StatusTileTimelineItem : AbsBaseMessageItem<StatusTileTimelineIte
     @SuppressLint("SetTextI18n")
     override fun bind(holder: Holder) {
         super.bind(holder)
-        holder.endGuideline.updateLayoutParams<RelativeLayout.LayoutParams> {
-            this.marginEnd = leftGuideline
-        }
 
         holder.titleView.text = attributes.title
         holder.descriptionView.text = attributes.description
@@ -56,7 +53,6 @@ abstract class StatusTileTimelineItem : AbsBaseMessageItem<StatusTileTimelineIte
     class Holder : AbsBaseMessageItem.Holder(STUB_ID) {
         val titleView by bind<AppCompatTextView>(R.id.itemVerificationDoneTitleTextView)
         val descriptionView by bind<AppCompatTextView>(R.id.itemVerificationDoneDetailTextView)
-        val endGuideline by bind<View>(R.id.messageEndGuideline)
         val failedToSendIndicator by bind<ImageView>(R.id.messageFailToSendIndicator)
     }
 

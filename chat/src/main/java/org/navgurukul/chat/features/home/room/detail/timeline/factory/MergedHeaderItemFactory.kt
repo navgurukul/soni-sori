@@ -133,7 +133,6 @@ class MergedHeaderItemFactory(
             )
             MergedMembershipEventsItem_()
                 .id(mergeId)
-                .leftGuideline(avatarSizeProvider.leftGuideline)
                 .highlighted(isCollapsed && highlighted)
                 .attributes(attributes)
                 .also {
@@ -220,7 +219,6 @@ class MergedHeaderItemFactory(
         return MergedUTDItem_()
             .id(mergeId)
             .big(mergedEventIds.size > 5)
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .highlighted(highlighted)
             .attributes(attributes)
             .also {
@@ -303,7 +301,6 @@ class MergedHeaderItemFactory(
             )
             MergedRoomCreationItem_()
                 .id(mergeId)
-                .leftGuideline(avatarSizeProvider.leftGuideline)
                 .highlighted(isCollapsed && highlighted)
                 .attributes(attributes)
                 .also {

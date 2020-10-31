@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/messageFileLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_2x">
+
+    <include
+        android:id="@+id/messageAvatarImageView"
+        layout="@layout/item_timeline_event_avatar" />
+
+    <include
+        android:id="@id/item_timeline_event_top"
+        layout="@layout/item_timeline_event_top" />
+
+    <LinearLayout
+        android:id="@+id/messageFileRoot"
+        style="@style/TimelineContentStubBaseParams"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:background="@drawable/received_timeline_item_background"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+        app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
+
+        <!-- the media type -->
+        <RelativeLayout
+            android:id="@+id/messageFileImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+            app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
+
+            <include layout="@layout/view_file_icon" />
+        </RelativeLayout>
+
+        <!-- the media -->
+        <TextView
+            android:id="@+id/messageFilenameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_2x"
+            android:autoLink="none"
+            android:textAppearance="?textAppearanceBody1"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@id/messageFileImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/messageFileImageView"
+            app:layout_constraintTop_toTopOf="@id/messageFileImageView"
+            tools:text="A filename here" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/messageFileUploadProgressLayout"
+        layout="@layout/media_upload_download_progress_layout"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/messageFileRoot"
+        app:layout_constraintTop_toBottomOf="@+id/messageFileRoot"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

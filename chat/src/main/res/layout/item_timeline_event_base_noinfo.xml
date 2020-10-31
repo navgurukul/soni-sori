@@ -18,7 +18,7 @@
         android:id="@+id/messageStartGuideline"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="52dp" />
+        android:layout_marginStart="50dp" />
 
     <FrameLayout
         android:id="@+id/viewStubContainer"
@@ -30,12 +30,14 @@
         <ViewStub
             android:id="@+id/messageContentNoticeStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_notice_stub"
             tools:visibility="visible" />
 
         <ViewStub
             android:id="@+id/messageContentDefaultStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_default_stub"
             tools:layout_marginTop="80dp"
             tools:visibility="visible" />
@@ -50,6 +52,7 @@
         <ViewStub
             android:id="@+id/messageContentMergedHeaderStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_merged_header_stub"
             tools:layout_marginTop="160dp"
             tools:visibility="visible" />
@@ -57,6 +60,7 @@
         <ViewStub
             android:id="@+id/messageContentMergedCreationStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_merged_room_creation_stub"
             tools:layout_marginTop="240dp"
             tools:visibility="visible" />
@@ -64,21 +68,10 @@
         <ViewStub
             android:id="@+id/messageContentMergedUTDStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_merged_utd_stub"
             tools:layout_marginTop="380dp"
             tools:visibility="visible" />
 
     </FrameLayout>
-
-    <ImageView
-        android:id="@+id/messageE2EDecoration"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_toStartOf="@id/viewStubContainer"
-        android:visibility="gone"
-        tools:src="@drawable/ic_shield_warning"
-        tools:visibility="visible" />
-
 </RelativeLayout>

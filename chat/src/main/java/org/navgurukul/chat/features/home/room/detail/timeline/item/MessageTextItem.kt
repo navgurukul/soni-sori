@@ -14,9 +14,9 @@ abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
 
     override fun getDefaultLayout(): Int =
         if (attributes.informationData.sentByMe) {
-            R.layout.sent_item_timeline_event_base
+            R.layout.sent_item_timeline_event_text_message
         } else {
-            R.layout.item_timeline_event_base
+            R.layout.item_timeline_event_text_message
         }
 
     @EpoxyAttribute
@@ -49,17 +49,13 @@ abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
         holder.messageView.setTextFuture(textFuture)
     }
 
-    override fun getViewType() = if (attributes.informationData.sentByMe) {
-        STUB_ID + R.drawable.sent_timeline_item_background
-    } else {
-        STUB_ID + R.drawable.received_timeline_item_background
-    }
+    override fun getViewType() = defaultLayout
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val messageView by bind<AppCompatTextView>(R.id.messageTextView)
     }
 
     companion object {
-        private val STUB_ID = R.id.messageContentTextStub
+        private const val STUB_ID = 0
     }
 }

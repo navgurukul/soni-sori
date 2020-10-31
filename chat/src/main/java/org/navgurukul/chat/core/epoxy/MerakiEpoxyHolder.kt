@@ -23,6 +23,11 @@ abstract class MerakiEpoxyHolder : EpoxyHolder() {
                 ?: throw IllegalStateException("View ID $id for '${prop.name}' not found.")
             }
 
+    protected fun <V : View?> bindNullable(id: Int): ReadOnlyProperty<MerakiEpoxyHolder, V> =
+        Lazy { holder: MerakiEpoxyHolder, _ ->
+            holder.view.findViewById<V>(id)
+        }
+
     /**
      * Taken from Kotterknife.
      * https://github.com/JakeWharton/kotterknife

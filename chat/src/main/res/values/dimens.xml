@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="avatar_size">64dp</dimen>
-    <dimen name="chat_avatar_size">40dp</dimen>
+    <dimen name="chat_avatar_size">44dp</dimen>
     <dimen name="avatar_size_small">32dp</dimen>
 
     <dimen name="chat_header_height">80dp</dimen>

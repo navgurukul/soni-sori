@@ -3,17 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_2x">
+
+    <include
+        android:id="@id/item_timeline_event_top"
+        layout="@layout/sent_item_timeline_event_top" />
 
     <ImageView
         android:id="@+id/messageThumbnailView"
-        android:layout_width="375dp"
+        style="@style/TimelineContentStubBaseParams"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginEnd="@dimen/spacing_3x"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
+        android:background="@drawable/sent_timeline_item_background"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top"
         tools:layout_height="300dp"
         tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -21,11 +30,11 @@
         android:id="@+id/messageFailToSendIndicator"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginEnd="@dimen/spacing_2x"
         app:tint="?colorError"
         android:src="@drawable/ic_error"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@id/messageThumbnailView"
+        app:layout_constraintEnd_toStartOf="@id/messageThumbnailView"
         app:layout_constraintTop_toTopOf="@id/messageThumbnailView"
         tools:visibility="visible" />
 
@@ -47,13 +56,12 @@
         android:id="@+id/messageMediaUploadProgressLayout"
         layout="@layout/media_upload_download_progress_layout"
         android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginBottom="@dimen/spacing_2x"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/messageThumbnailView"
+        app:layout_constraintStart_toStartOf="@id/messageThumbnailView"
         app:layout_constraintTop_toBottomOf="@+id/messageThumbnailView"
         tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
