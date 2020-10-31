@@ -16,7 +16,7 @@
             android:layout_margin="@dimen/dimen_10_dp"
             android:padding="@dimen/dimen_10_dp"
             app:singleLine="false"
-            android:visibility="gone"
+            android:visibility="visible"
             app:singleSelection="true" />
 
         <androidx.recyclerview.widget.RecyclerView

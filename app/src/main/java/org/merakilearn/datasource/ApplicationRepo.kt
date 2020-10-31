@@ -60,9 +60,10 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun fetchUpcomingClassData(): List<Classes?>? {
+    suspend fun fetchUpcomingClassData(langCode: String?): List<Classes?>? {
         return try {
-            val req = applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application))
+            val req =
+                applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application), langCode)
             val response = req?.await()
             response?.classes
         } catch (ex: Exception) {
@@ -138,7 +139,7 @@ class ApplicationRepo(
                 UserUpdate(user.name)
             )
             val response = req.await()
-            AppUtils.saveUserResponse(response.user ,application)
+            AppUtils.saveUserResponse(response.user, application)
             true
         } catch (ex: Exception) {
             ex.printStackTrace()

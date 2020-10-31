@@ -12,7 +12,7 @@ interface SaralApi {
     fun initLoginAsync(@Body loginRequest: LoginRequest): Deferred<LoginResponse>
 
     @GET("classes/upcoming")
-    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer?>?
+    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?, @Query(value = "lang") langCode:String?): Deferred<ClassesContainer?>?
 
     @GET("courses/recommended")
     fun getRecommendedCourseAsync(@Header(value = "Authorization") token: String?): Deferred<List<Course>>

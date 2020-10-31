@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -19,6 +22,7 @@ import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.util.AppUtils
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
+import timber.log.Timber
 
 @Parcelize
 data class MainActivityArgs(
@@ -29,7 +33,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     companion object {
         const val KEY_ARG = "MainActivity:args"
-
         fun launch(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
@@ -62,7 +65,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
 
         intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
@@ -74,6 +78,33 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             else
                 ProfileActivity.launch(this)
         }
+
+        fetchRemoteConfigAndUpdate()
+    }
+
+    private fun fetchRemoteConfigAndUpdate() {
+        val remoteConfig = Firebase.remoteConfig
+        if (BuildConfig.DEBUG) {
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 3600
+            }
+            remoteConfig.setConfigSettingsAsync(configSettings)
+        }
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+
+        var data = remoteConfig.getValue("rc_available_lang").asString()
+        AppUtils.saveLanguageConfig(data, this)
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    data = remoteConfig.getValue("rc_available_lang").asString()
+                    Timber.d("Config params updated: $updated  with values $data")
+                    AppUtils.saveLanguageConfig(data, this)
+                } else {
+                    Timber.w("fetchRemoteConfigAndUpdate Failed")
+                }
+            }
     }
 
     fun toggleSearch(visibility: Int): SearchView? {

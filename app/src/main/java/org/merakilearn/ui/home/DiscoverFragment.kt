@@ -20,6 +20,7 @@ import org.merakilearn.R
 import org.merakilearn.databinding.FragmentDiscoverClassBinding
 import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.ui.home.adapter.DiscoverClassParentAdapter
+import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.ui.common.toast
 
 
@@ -61,11 +62,10 @@ class DiscoverFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        fetchDataForRV(null)
         initChipGroup()
-        fetchDataForRV()
         initDiscoverClassRV()
         initSearchListener()
-
     }
 
 
@@ -90,10 +90,11 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun initChipGroup() {
-        val lang = resources.getStringArray(R.array.language)
-        for (index in lang) {
+        val languageList = AppUtils.getAvailableLanguages(requireContext())
+        for (index in languageList) {
             val chip = Chip(mBinding.languageChipGroup.context)
-            chip.text = index
+            chip.text = index.label
+            chip.tag = index.code
             chip.setHintTextColor(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
@@ -110,12 +111,26 @@ class DiscoverFragment : Fragment() {
             chip.isCheckable = true
             mBinding.languageChipGroup.addView(chip)
         }
+
+        var lastCheckedId = View.NO_ID
+        mBinding.languageChipGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId == View.NO_ID) {
+                fetchDataForRV(null)
+                return@setOnCheckedChangeListener
+            }
+            lastCheckedId = checkedId
+            val chip: Chip = mBinding.languageChipGroup.findViewById(lastCheckedId)
+            fetchDataForRV(chip.tag.toString())
+        }
+
     }
 
 
-    private fun fetchDataForRV() {
+    private fun fetchDataForRV(langCode: String?) {
+        if (this::discoverClassParentAdapter.isInitialized)
+            discoverClassParentAdapter.submitData(mutableListOf())
         toggleProgressBarVisibility(View.VISIBLE)
-        viewModel.fetchUpcomingClass().observe(viewLifecycleOwner, Observer {
+        viewModel.fetchUpcomingClass(langCode).observe(viewLifecycleOwner, Observer {
             toggleProgressBarVisibility(View.GONE)
             if (null != it && it.isNotEmpty()) {
                 discoverClassParentAdapter.submitData(it as MutableList<Classes?>)
