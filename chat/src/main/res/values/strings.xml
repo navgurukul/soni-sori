@@ -247,4 +247,6 @@
     <string name="share">Share</string>
     <string name="play_video">Play</string>
 
+    <string name="link_copied_to_clipboard">Link copied to clipboard</string>
+
 </resources>
