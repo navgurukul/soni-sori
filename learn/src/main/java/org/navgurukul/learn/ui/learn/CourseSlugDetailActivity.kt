@@ -145,7 +145,11 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initContentRV() {
         slugAdapter = ExerciseSlugAdapter {
-
+            if (it.type == ExerciseSlugAdapter.TYPE_PYTHON) {
+                val code = ExerciseSlugAdapter.parsePythonCode(it)
+                if (!code.isNullOrBlank())
+                    merakiNavigator.openPlayground(this, code)
+            }
         }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

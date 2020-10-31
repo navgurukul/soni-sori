@@ -34,7 +34,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/tvStarted"
+            android:id="@+id/tvConnectWithEmail"
             style="@style/text_view_get_started"
             android:layout_width="@dimen/dimen_width_get_started"
             android:layout_height="wrap_content"
@@ -42,18 +42,18 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/background_button"
             android:drawablePadding="@dimen/dimen_10_dp"
-            android:text="@string/get_started"
+            android:text="@string/connect_with_email"
             android:textAlignment="center"
             app:drawableEndCompat="@drawable/ic_arrow_right" />
 
         <TextView
-            android:id="@+id/tvAlready"
+            android:id="@+id/tvSkipLogin"
             style="@style/text_view_powered_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvStarted"
+            android:layout_below="@+id/tvConnectWithEmail"
             android:layout_centerHorizontal="true"
-            android:text="@string/already_account" />
+            android:text="@string/skip_login" />
 
         <TextView
             android:id="@+id/tvPoweredBy"
@@ -73,5 +73,5 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:visibility="gone"
-            app:elevation="2dp" />
+            android:elevation="2dp" />
     </RelativeLayout>

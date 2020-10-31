@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.merakilearn.core.navigator.PlaygroundModuleNavigator
+import org.navgurukul.playground.navigation.PlaygroundModuleNavigatorImpl
 import org.navgurukul.playground.repo.PlaygroundRepository
 import org.navgurukul.playground.repo.PlaygroundRepositoryImpl
 import org.navgurukul.playground.ui.PlaygroundViewModel
@@ -30,5 +32,7 @@ val repoModules = module {
     single { providePlaygroundRepository(get()) }
 }
 
-
-val playgroundModules = arrayListOf(viewModelModules, repoModules)
+val factoryModule = module {
+    single<PlaygroundModuleNavigator> { PlaygroundModuleNavigatorImpl() }
+}
+val playgroundModules = arrayListOf(viewModelModules, repoModules,factoryModule)

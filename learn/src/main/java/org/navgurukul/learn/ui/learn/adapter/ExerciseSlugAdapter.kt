@@ -36,11 +36,20 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     ) {
     companion object {
         private const val TYPE_MD = "markdown"
-        private const val TYPE_PYTHON = "python"
+        const val TYPE_PYTHON = "python"
         private const val TYPE_YOUTUBE_VIDEO = "youtube"
         private const val TYPE_IMAGE = "image"
         private const val TAG = "ExerciseSlugAdapter"
 
+        fun parsePythonCode(item: Exercise.ExerciseSlugDetail): String? {
+            val gson = Gson()
+            return try {
+                gson.fromJson(gson.toJson(item.value), PythonCode::class.java).code
+            } catch (ex: Exception) {
+                Log.e(TAG, "initPythonCodeView: ", ex)
+                null
+            }
+        }
     }
 
     private val mCallback = callback
@@ -52,7 +61,7 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     }
 
     override fun bind(binding: ItemSlugDetailBinding, item: Exercise.ExerciseSlugDetail) {
-        binding.root.setOnClickListener {
+        binding.imageViewPlay.setOnClickListener {
             mCallback.invoke(item)
         }
         bindItem(item, binding)
@@ -84,6 +93,7 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     ) {
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
 
         binding.markDownContent.visibility = View.VISIBLE
 
@@ -101,15 +111,11 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.markDownContent.visibility = View.VISIBLE
-        val value = item.value
+        binding.imageViewPlay.visibility = View.VISIBLE
+        val code = parsePythonCode(item)
         val content = StringBuilder()
-        val gson = Gson()
-        try {
-            val code = gson.fromJson(gson.toJson(value), PythonCode::class.java).code
-            content.append("```python").append("\n").append(code).append("\n").append("```")
-        } catch (ex: Exception) {
-            Log.e(TAG, "initPythonCodeView: ", ex)
-        }
+        content.append("```python").append("\n").append(code).append("\n").append("```")
+
 
         binding.markDownContent.apply {
             this.addStyleSheet(Github())
@@ -121,7 +127,7 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
     private fun initYouTubeView(item: Exercise.ExerciseSlugDetail, binding: ItemSlugDetailBinding) {
         binding.markDownContent.visibility = View.GONE
         binding.imageView.visibility = View.GONE
-
+        binding.imageViewPlay.visibility = View.GONE
         binding.youtubeView.visibility = View.VISIBLE
 
         binding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
@@ -139,7 +145,7 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.youtubeView.visibility = View.GONE
         binding.markDownContent.visibility = View.GONE
         binding.imageView.visibility = View.VISIBLE
-
+        binding.imageViewPlay.visibility = View.GONE
         val value = item.value
         val gson = Gson()
         try {
