@@ -32,10 +32,14 @@ class DiscoverViewModel(
         classes = applicationRepo.fetchUpcomingClassData(langCode)
         classes?.let {
             setState {
+                val items = it.toDiscoverData()
+                val emptyData = items.isEmpty()
                 copy(
                     isLoading = false,
-                    searchEnabled = true,
-                    itemList = it.toDiscoverData()
+                    searchEnabled = !emptyData,
+                    showError = false,
+                    showNoContent = emptyData,
+                    itemList = items
                 )
             }
         } ?: run {
@@ -88,6 +92,7 @@ data class DiscoverData(val date: String, val title: String, val data: List<Clas
 data class DiscoverViewState(
     val isLoading: Boolean = true,
     val showError: Boolean = false,
+    val showNoContent: Boolean = false,
     val searchEnabled: Boolean = false,
     val itemList: List<DiscoverData> = arrayListOf()
 ) : ViewState
