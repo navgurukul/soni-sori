@@ -59,6 +59,5 @@ class EncryptionItemFactory (
                         )
                 )
                 .highlighted(highlight)
-                .leftGuideline(avatarSizeProvider.leftGuideline)
     }
 }

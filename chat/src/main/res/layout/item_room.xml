@@ -25,7 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_6x"
-        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_5x"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -37,35 +39,24 @@
 
     </FrameLayout>
 
-    <!-- Margin bottom does not work, so I use space -->
-    <Space
-        android:id="@+id/roomAvatarBottomSpace"
-        android:layout_width="0dp"
-        android:layout_height="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roomAvatarContainer"
-        tools:layout_marginStart="20dp" />
-
     <TextView
         android:id="@+id/roomNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_4x"
         android:layout_marginEnd="@dimen/spacing_2x"
-        android:layout_marginTop="@dimen/spacing_4x"
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="?textPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/nunito_bold"
+        android:textAppearance="?textAppearanceEmphasized1"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/roomLastEventView"
         app:layout_constraintEnd_toStartOf="@+id/roomDraftBadge"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/roomAvatarContainer"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/saral.json/data/displayName" />
 
     <ImageView
@@ -86,8 +77,8 @@
         android:id="@+id/roomUnreadCounterBadgeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_6x"
         android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_6x"
         android:gravity="center"
         android:minWidth="16dp"
         android:minHeight="16dp"
@@ -106,8 +97,8 @@
         android:id="@+id/roomLastEventTimeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?textSecondary"
         android:layout_marginEnd="@dimen/spacing_6x"
+        android:textColor="?textSecondary"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/roomNameView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,8 +113,9 @@
         android:layout_marginEnd="@dimen/spacing_4x"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textAppearance="?textAppearanceBody2"
         android:textColor="?textSecondary"
-        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"
         app:layout_constraintStart_toStartOf="@+id/roomNameView"
         app:layout_constraintTop_toBottomOf="@+id/roomNameView"
@@ -138,28 +130,12 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="?colorSecondary"
-        android:textSize="12sp"
-        android:textStyle="bold"
+        android:textAppearance="?textAppearanceEmphasized2"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"
         app:layout_constraintStart_toStartOf="@+id/roomNameView"
         app:layout_constraintTop_toBottomOf="@+id/roomNameView"
         tools:text="Alice is typing…" />
-
-    <!-- Margin bottom does not work, so I use space -->
-    <Space
-        android:id="@+id/roomLastEventBottomSpace"
-        android:layout_width="0dp"
-        android:layout_height="7dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomLastEventView"
-        tools:layout_marginStart="120dp" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/roomBottomBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="roomAvatarBottomSpace,roomLastEventBottomSpace" />
 
     <View
         android:id="@+id/roomDividerView"
@@ -168,7 +144,6 @@
         android:background="?borderColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomBottomBarrier" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

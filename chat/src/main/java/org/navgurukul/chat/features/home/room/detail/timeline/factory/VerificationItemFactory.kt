@@ -100,7 +100,6 @@ class VerificationItemFactory(
                                 )
                             )
                             .highlighted(highlight)
-                            .leftGuideline(avatarSizeProvider.leftGuideline)
                     }
                     else -> return ignoredConclusion(event, highlight, callback)
                 }
@@ -133,7 +132,6 @@ class VerificationItemFactory(
                         )
                     )
                     .highlighted(highlight)
-                    .leftGuideline(avatarSizeProvider.leftGuideline)
             }
         }
         return null

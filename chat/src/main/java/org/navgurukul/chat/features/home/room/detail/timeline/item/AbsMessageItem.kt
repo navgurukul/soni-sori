@@ -34,44 +34,55 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
     override fun bind(holder: H) {
         super.bind(holder)
         if (attributes.informationData.showInformation) {
-            holder.avatarImageView.layoutParams = holder.avatarImageView.layoutParams?.apply {
-                height = attributes.avatarSize
-                width = attributes.avatarSize
+            holder.avatarImageView?.let {
+                it.layoutParams = it.layoutParams?.apply {
+                    height = attributes.avatarSize
+                    width = attributes.avatarSize
+                }
+                it.visibility = View.VISIBLE
+                it.setOnClickListener(_avatarClickListener)
+                it.setOnLongClickListener(attributes.itemLongClickListener)
+
+                attributes.avatarRenderer.render(attributes.informationData.matrixItem, it)
             }
-            holder.avatarImageView.visibility = View.VISIBLE
-            holder.avatarImageView.setOnClickListener(_avatarClickListener)
+
+
             holder.memberNameView.visibility = View.VISIBLE
             holder.memberNameView.setOnClickListener(_memberNameClickListener)
             holder.timeView.visibility = View.VISIBLE
             holder.timeView.text = attributes.informationData.time
             holder.memberNameView.text = attributes.informationData.memberName
             holder.memberNameView.setTextColor(attributes.getMemberNameColor())
-            attributes.avatarRenderer.render(attributes.informationData.matrixItem, holder.avatarImageView)
-            holder.avatarImageView.setOnLongClickListener(attributes.itemLongClickListener)
             holder.memberNameView.setOnLongClickListener(attributes.itemLongClickListener)
         } else {
-            holder.avatarImageView.setOnClickListener(null)
+            holder.avatarImageView?.let {
+                it.setOnClickListener(null)
+                it.setOnLongClickListener(null)
+                it.visibility = View.INVISIBLE
+            }
+
             holder.memberNameView.setOnClickListener(null)
-            holder.avatarImageView.visibility = View.GONE
             holder.memberNameView.visibility = View.GONE
             holder.timeView.visibility = View.GONE
-            holder.avatarImageView.setOnLongClickListener(null)
             holder.memberNameView.setOnLongClickListener(null)
         }
     }
 
     override fun unbind(holder: H) {
-        holder.avatarImageView.setOnClickListener(null)
-        holder.avatarImageView.setOnLongClickListener(null)
+        holder.avatarImageView?.let {
+            it.setOnClickListener(null)
+            it.setOnLongClickListener(null)
+        }
         holder.memberNameView.setOnClickListener(null)
         holder.memberNameView.setOnLongClickListener(null)
         super.unbind(holder)
     }
 
-    private fun Attributes.getMemberNameColor() = messageColorProvider.getMemberNameTextColor(informationData.senderId)
+    private fun Attributes.getMemberNameColor() =
+        messageColorProvider.getMemberNameTextColor(informationData.senderId)
 
     abstract class Holder(@IdRes stubId: Int) : AbsBaseMessageItem.Holder(stubId) {
-        val avatarImageView by bind<ImageView>(R.id.messageAvatarImageView)
+        val avatarImageView by bindNullable<ImageView?>(R.id.messageAvatarImageView)
         val memberNameView by bind<TextView>(R.id.messageMemberNameView)
         val timeView by bind<TextView>(R.id.messageTimeView)
     }

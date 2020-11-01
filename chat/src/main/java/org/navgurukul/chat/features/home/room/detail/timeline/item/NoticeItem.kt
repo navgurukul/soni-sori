@@ -32,18 +32,6 @@ abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
         holder.view.setOnLongClickListener(attributes.itemLongClickListener)
 //        holder.readReceiptsView.render(attributes.informationData.readReceipts, attributes.avatarRenderer, _readReceiptsClickListener)
         holder.avatarImageView.onClick(attributes.avatarClickListener)
-
-        when (attributes.informationData.e2eDecoration) {
-            E2EDecoration.NONE                 -> {
-                holder.e2EDecorationView.isVisible = false
-            }
-            E2EDecoration.WARN_IN_CLEAR,
-            E2EDecoration.WARN_SENT_BY_UNVERIFIED,
-            E2EDecoration.WARN_SENT_BY_UNKNOWN -> {
-                holder.e2EDecorationView.setImageResource(R.drawable.ic_shield_warning)
-                holder.e2EDecorationView.isVisible = true
-            }
-        }
     }
 
     override fun getEventIds(): List<String> {
@@ -55,7 +43,6 @@ abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
     class Holder : BaseHolder(STUB_ID) {
         val avatarImageView by bind<ImageView>(R.id.itemNoticeAvatarView)
         val noticeTextView by bind<TextView>(R.id.itemNoticeTextView)
-        val e2EDecorationView by bind<ImageView>(R.id.messageE2EDecoration)
     }
 
     data class Attributes(

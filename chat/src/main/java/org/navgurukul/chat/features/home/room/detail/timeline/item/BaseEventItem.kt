@@ -21,8 +21,6 @@ abstract class BaseEventItem<H : BaseEventItem.BaseHolder> : MerakiEpoxyModel<H>
     // To use for instance when opening a permalink with an eventId
     @EpoxyAttribute
     var highlighted: Boolean = false
-    @EpoxyAttribute
-    open var leftGuideline: Int = 0
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var dimensionConverter: DimensionConverter
@@ -30,10 +28,7 @@ abstract class BaseEventItem<H : BaseEventItem.BaseHolder> : MerakiEpoxyModel<H>
     @CallSuper
     override fun bind(holder: H) {
         super.bind(holder)
-        holder.leftGuideline.updateLayoutParams<RelativeLayout.LayoutParams> {
-            this.marginStart = leftGuideline
-        }
-        holder.checkableBackground.isChecked = highlighted
+//        holder.checkableBackground.isChecked = highlighted
     }
 
     /**
@@ -43,13 +38,14 @@ abstract class BaseEventItem<H : BaseEventItem.BaseHolder> : MerakiEpoxyModel<H>
     abstract fun getEventIds(): List<String>
 
     abstract class BaseHolder(@IdRes val stubId: Int) : MerakiEpoxyHolder() {
-        val leftGuideline by bind<View>(R.id.messageStartGuideline)
-        val checkableBackground by bind<CheckableView>(R.id.messageSelectedBackground)
+//        val checkableBackground by bind<CheckableView>(R.id.messageSelectedBackground)
 //        val readReceiptsView by bind<ReadReceiptsView>(R.id.readReceiptsView)
 
         override fun bindView(itemView: View) {
             super.bindView(itemView)
-            inflateStub()
+            if (stubId != 0) {
+                inflateStub()
+            }
         }
 
         private fun inflateStub() {

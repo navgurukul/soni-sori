@@ -131,8 +131,8 @@
 
     <!-- Mels -->
     <plurals name="membership_changes">
-        <item quantity="one">1 membership change</item>
-        <item quantity="other">%d membership changes</item>
+        <item quantity="one">1 change</item>
+        <item quantity="other">%d changes</item>
     </plurals>
 
     <plurals name="notification_unread_notified_messages">
@@ -247,6 +247,7 @@
     <string name="share">Share</string>
     <string name="play_video">Play</string>
 
+    <string name="members">%d members</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
 
 </resources>

@@ -33,7 +33,6 @@ class DefaultItemFactory(
             readReceiptsCallback = callback
         )
         return DefaultItem_()
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .highlighted(highlight)
             .attributes(attributes)
     }

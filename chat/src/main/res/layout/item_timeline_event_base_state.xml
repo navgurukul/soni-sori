@@ -19,14 +19,14 @@
         android:id="@+id/messageStartGuideline"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="52dp" />
+        android:layout_marginStart="50dp" />
 
     <View
         android:id="@+id/messageEndGuideline"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="52dp" />
+        android:layout_marginEnd="50dp" />
 
     <FrameLayout
         android:id="@+id/viewStubContainer"
@@ -43,28 +43,18 @@
         <ViewStub
             android:id="@+id/messageVerificationRequestStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_verification_stub"
             tools:visibility="gone" />
 
         <ViewStub
             android:id="@+id/messageVerificationDoneStub"
             style="@style/TimelineContentStubBaseParams"
+            android:layout_width="match_parent"
             android:layout="@layout/item_timeline_event_status_tile_stub"
             tools:visibility="visible" />
 
     </FrameLayout>
-
-
-    <ImageView
-        android:id="@+id/messageE2EDecoration"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_alignTop="@id/viewStubContainer"
-        android:layout_toStartOf="@id/viewStubContainer"
-        android:visibility="gone"
-        tools:src="@drawable/ic_shield_warning"
-        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/messageFailToSendIndicator"

@@ -19,6 +19,8 @@
 
         <item name="textAppearanceEmphasized1">@style/TextAppearance.AppCompat.Emphasized1</item>
         <item name="textAppearanceEmphasized2">@style/TextAppearance.AppCompat.Emphasized2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.AppCompat.Body2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.AppCompat.Caption</item>
         <item name="textAppearanceSubtitle1">@style/TextAppearance.AppCompat.Subtitle1</item>
 

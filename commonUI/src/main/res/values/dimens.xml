@@ -5,6 +5,7 @@
     <dimen name="spacing_2x">8dp</dimen>
     <dimen name="spacing_3x">12dp</dimen>
     <dimen name="spacing_4x">16dp</dimen>
+    <dimen name="spacing_5x">20dp</dimen>
     <dimen name="spacing_6x">24dp</dimen>
     <dimen name="spacing_8x">32dp</dimen>
 
