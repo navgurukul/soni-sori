@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import br.tiagohm.markdownview.css.styles.Github
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -60,7 +59,11 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         )
     }
 
-    override fun bind(binding: ItemSlugDetailBinding, item: Exercise.ExerciseSlugDetail) {
+    override fun bind(
+        holder: DataBoundViewHolder<ItemSlugDetailBinding>,
+        item: Exercise.ExerciseSlugDetail
+    ) {
+        val binding = holder.binding
         binding.imageViewPlay.setOnClickListener {
             mCallback.invoke(item)
         }
@@ -98,8 +101,9 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.markDownContent.visibility = View.VISIBLE
 
         binding.markDownContent.apply {
-            this.addStyleSheet(Github())
-            this.loadMarkdown(value)
+            //this.addStyleSheet(Github())
+           // this.loadMarkdown(value)
+            this.loadFromText(value)
         }
     }
 
@@ -118,8 +122,9 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
 
 
         binding.markDownContent.apply {
-            this.addStyleSheet(Github())
-            this.loadMarkdown(content.toString())
+            //this.addStyleSheet(Github())
+            // this.loadMarkdown(content.toString())
+            this.loadFromText(content.toString())
         }
     }
 
@@ -158,6 +163,6 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
 
     data class PythonCode(val code: String?, val testCases: Any?)
 
-    data class Image(val url:String?)
+    data class Image(val url: String?)
 
 }

@@ -141,16 +141,12 @@ object AppUtils {
         transaction.commitAllowingStateLoss()
     }
 
-    fun getClassSchedule(classes: Classes?): String {
-        val teacher = classes?.facilitator?.name
-        val date = DateTimeUtil.stringToDate(classes?.startTime)
-        val startTime = DateTimeUtil.stringToTime(classes?.startTime)
-        val endTime = DateTimeUtil.stringToTime(classes?.endTime)
-        val day = DateTimeUtil.stringToDay(classes?.startTime)
+    fun getClassSchedule(classes: Classes): String {
+        val teacher = classes.facilitator?.name
         return """
-            Teacher - $teacher
-            Date - $date ($day),
-            Time - $startTime - $endTime
+            Mentor - $teacher
+            Date - ${classes.startTime.toDate()}. (${classes.startTime.toDay()}),
+            Time - ${classes.startTime.toTime()} - ${classes.endTime.toTime()}
         """.trimIndent()
     }
 

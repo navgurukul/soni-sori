@@ -55,4 +55,6 @@
     <string name="skip_login">Don\'t want to login? <u>Skip Login</u></string>
     <string name="create_new_account">Create New Account</string>
     <string name="want_login">Your existing data will be lost and you would be signed in using your email account</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

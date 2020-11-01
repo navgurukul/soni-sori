@@ -162,7 +162,6 @@ class MessageItemFactory(
                     .attributes(attributes)
                     .callback(callback)
                     .informationData(informationData)
-                    .leftGuideline(avatarSizeProvider.leftGuideline)
                     .optionsContent(messageContent)
                     .highlighted(highlight)
             }
@@ -193,7 +192,6 @@ class MessageItemFactory(
             .contentUploadStateTrackerBinder(contentUploadStateTrackerBinder)
             .contentDownloadStateTrackerBinder(contentDownloadStateTrackerBinder)
             .highlighted(highlight)
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .filename(messageContent.body)
             .iconRes(R.drawable.ic_headphones)
     }
@@ -244,7 +242,6 @@ class MessageItemFactory(
         val mxcUrl = messageContent.getFileUrl() ?: ""
         return MessageFileItem_()
             .attributes(attributes)
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .izLocalFile(messageContent.getFileUrl().isLocalFile())
             .izDownloaded(
                 sessionHolder.getActiveSession().fileService()
@@ -298,7 +295,6 @@ class MessageItemFactory(
         )
         return MessageImageVideoItem_()
             .attributes(attributes)
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .imageContentRenderer(imageContentRenderer)
             .contentUploadStateTrackerBinder(contentUploadStateTrackerBinder)
             .playable(messageContent.info?.mimeType == "image/gif")
@@ -348,7 +344,6 @@ class MessageItemFactory(
         )
 
         return MessageImageVideoItem_()
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .imageContentRenderer(imageContentRenderer)
             .contentUploadStateTrackerBinder(contentUploadStateTrackerBinder)
@@ -448,7 +443,6 @@ class MessageItemFactory(
                 )
             )
             .searchForPills(isFormatted)
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .highlighted(highlight)
             .movementMethod(createLinkMovementMethod(callback))
@@ -468,7 +462,6 @@ class MessageItemFactory(
                     editedSpan(spannable)
                 }
             }
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .highlighted(highlight)
             .message(formattedBody)
@@ -535,7 +528,6 @@ class MessageItemFactory(
         val message = formattedBody.linkify(callback)
 
         return MessageTextItem_()
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .message(message)
             .highlighted(highlight)
@@ -564,7 +556,6 @@ class MessageItemFactory(
                     message(message)
                 }
             }
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .highlighted(highlight)
             .movementMethod(createLinkMovementMethod(callback))
@@ -582,7 +573,6 @@ class MessageItemFactory(
         highlight: Boolean
     ): RedactedMessageItem? {
         return RedactedMessageItem_()
-            .leftGuideline(avatarSizeProvider.leftGuideline)
             .attributes(attributes)
             .highlighted(highlight)
     }

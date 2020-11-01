@@ -60,7 +60,7 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun fetchUpcomingClassData(langCode: String?): List<Classes?>? {
+    suspend fun fetchUpcomingClassData(langCode: String?): List<Classes>? {
         return try {
             val req =
                 applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application), langCode)

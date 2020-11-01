@@ -44,15 +44,6 @@
                     tools:listitem="@layout/item_course_exercise" />
             </RelativeLayout>
 
-            <br.tiagohm.markdownview.MarkdownView
-                android:id="@+id/markDownContent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimen_10_dp"
-                android:padding="@dimen/dimen_10_dp"
-                android:visibility="gone"
-                app:escapeHtml="false" />
-
             <include
                 android:id="@+id/progressBar"
                 layout="@layout/component_progress_bar"

@@ -18,9 +18,9 @@ abstract class MessageFileItem : AbsMessageItem<MessageFileItem.Holder>() {
 
     override fun getDefaultLayout(): Int =
         if (attributes.informationData.sentByMe) {
-            R.layout.sent_item_timeline_event_base
+            R.layout.sent_item_timeline_event_file
         } else {
-            R.layout.item_timeline_event_base
+            R.layout.item_timeline_event_file
         }
 
     @EpoxyAttribute
@@ -91,11 +91,7 @@ abstract class MessageFileItem : AbsMessageItem<MessageFileItem.Holder>() {
         contentDownloadStateTrackerBinder.unbind(mxcUrl)
     }
 
-    override fun getViewType() = if (attributes.informationData.sentByMe) {
-        STUB_ID + R.drawable.sent_timeline_item_background
-    } else {
-        STUB_ID + R.drawable.received_timeline_item_background
-    }
+    override fun getViewType() = defaultLayout
 
     class Holder : AbsMessageItem.Holder(STUB_ID) {
         val progressLayout by bind<ViewGroup>(R.id.messageFileUploadProgressLayout)
@@ -107,6 +103,6 @@ abstract class MessageFileItem : AbsMessageItem<MessageFileItem.Holder>() {
     }
 
     companion object {
-        private val STUB_ID = R.id.messageContentFileStub
+        private const val STUB_ID = 0
     }
 }

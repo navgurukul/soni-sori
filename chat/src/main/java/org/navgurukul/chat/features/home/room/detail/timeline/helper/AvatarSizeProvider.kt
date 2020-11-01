@@ -4,11 +4,7 @@ import org.navgurukul.chat.core.utils.DimensionConverter
 
 class AvatarSizeProvider(private val dimensionConverter: DimensionConverter) {
 
-    private val avatarStyle = AvatarStyle.SMALL
-
-    val leftGuideline: Int by lazy {
-        dimensionConverter.dpToPx(avatarStyle.avatarSizeDP + 8)
-    }
+    private val avatarStyle = AvatarStyle.MEDIUM
 
     val avatarSize: Int by lazy {
         dimensionConverter.dpToPx(avatarStyle.avatarSizeDP)

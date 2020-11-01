@@ -30,7 +30,8 @@ class WhereYouLeftAdapter(val callback: (Pair<Course, ItemCourseHomeBinding>) ->
         )
     }
 
-    override fun bind(binding: ItemCourseHomeBinding, item: Course) {
+    override fun bind(holder: DataBoundViewHolder<ItemCourseHomeBinding>, item: Course) {
+        val binding = holder.binding
         binding.course = item
         binding.root.setOnClickListener {
             callback.invoke(Pair(item, binding))

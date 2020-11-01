@@ -3,6 +3,6 @@
     tools:ignore="MissingDefaultResource">
     <key>rc_available_lang</key>
     <value>
-        [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"},{"code":"te","label":"Telugu"},{"code":"ta","label":"Tamil"}]
+        [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
     </value>
 </entry>

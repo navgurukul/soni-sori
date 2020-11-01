@@ -30,7 +30,6 @@ abstract class MergedUTDItem : BasedMergedItem<MergedUTDItem.Holder>() {
         super.bind(holder)
 
         holder.mergedTile.updateLayoutParams<RelativeLayout.LayoutParams> {
-            this.marginEnd = leftGuideline
             if (big == true) {
                 this.height = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,

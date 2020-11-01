@@ -84,11 +84,13 @@ class LoginFragment : Fragment() {
     }
 
     private fun logOutAndSignInAgain() {
-        viewModel.logOut().observe(viewLifecycleOwner, Observer {
-            if (it)
-                signIn()
+        mGoogleSignInClient?.signOut()?.addOnCompleteListener {
+            viewModel.logOut().observe(viewLifecycleOwner, Observer {
+                if (it)
+                    signIn()
 
-        })
+            })
+        }
     }
 
     private fun initGoogleSignInOption() {

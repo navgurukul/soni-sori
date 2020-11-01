@@ -107,12 +107,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             }
     }
 
-    fun toggleSearch(visibility: Int): SearchView? {
-        val searchView = findViewById<SearchView>(R.id.searchView)
-        searchView.visibility = visibility
-        return searchView
-    }
-
     override fun configure(toolbar: Toolbar) {
         throw RuntimeException("Custom Toolbar Not supported")
     }

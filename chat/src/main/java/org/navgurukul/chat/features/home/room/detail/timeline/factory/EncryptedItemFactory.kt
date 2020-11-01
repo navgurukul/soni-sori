@@ -99,7 +99,6 @@ class EncryptedItemFactory(
                 val informationData = messageInformationDataFactory.create(event, nextEvent)
                 val attributes = attributesFactory.create(event.root.content.toModel<EncryptedEventContent>(), informationData, callback)
                 return MessageTextItem_()
-                        .leftGuideline(avatarSizeProvider.leftGuideline)
                         .highlighted(highlight)
                         .attributes(attributes)
                         .message(spannableStr)

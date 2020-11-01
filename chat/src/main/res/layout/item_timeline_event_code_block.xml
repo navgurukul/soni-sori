@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_2x">
+
+    <include
+        android:id="@+id/messageAvatarImageView"
+        layout="@layout/item_timeline_event_avatar" />
+
+    <include
+        android:id="@id/item_timeline_event_top"
+        layout="@layout/item_timeline_event_top" />
+
+    <LinearLayout
+        style="@style/TimelineContentStubBaseParams"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/received_timeline_item_background"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/codeBlockTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody1"/>
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/codeBlockEditedView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceBody1"
+            android:layout_marginTop="@dimen/spacing_1x" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,6 @@
     <string name="global_retry">Retry</string>
     <string name="room_list_catchup_empty_title">You’re all caught up!</string>
     <string name="room_list_catchup_empty_body">You have no more unread messages</string>
+    <string name="empty_state_no_content_description">Sorry! we couldn’t find any content, please come  back later</string>
+    <string name="empty_state_no_content_title">No Content</string>
 </resources>

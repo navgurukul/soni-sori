@@ -43,10 +43,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
 
     //markDown lib
-    implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
-    implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
+  //  implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+   // implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation "androidx.slidingpanelayout:slidingpanelayout:1.1.0"
+    implementation 'com.github.GrenderG:MarkdownView:0.1.2'
 
     // Lifecycle and Viewmodels
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions_verision"

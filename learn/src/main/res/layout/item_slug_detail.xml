@@ -9,6 +9,7 @@
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
+        android:layout_margin="@dimen/dimen_5_dp"
         android:layout_height="wrap_content">
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -24,26 +25,27 @@
             android:background="@color/colorWhite"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageViewPlay"
-                android:layout_width="@dimen/dimen_30_dp"
-                android:layout_height="@dimen/dimen_30_dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_5_dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dimen_5_dp"
-                android:src="@drawable/ic_baseline_play_circle"
-                android:visibility="gone" />
-
-            <br.tiagohm.markdownview.MarkdownView
+            <es.dmoral.markdownview.MarkdownView
                 android:id="@+id/markDownContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/imageViewPlay"
                 android:clickable="true"
                 android:focusable="true"
+                android:layout_marginEnd="@dimen/dimen_5_dp"
+                android:layout_marginStart="@dimen/dimen_5_dp"
                 android:visibility="gone"
-                app:escapeHtml="false" />
+                android:padding="@dimen/dimen_5_dp" />
+            <ImageView
+                android:id="@+id/imageViewPlay"
+                android:layout_width="@dimen/dimen_50_dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/markDownContent"
+                android:layout_marginStart="@dimen/dimen_5_dp"
+                android:src="@drawable/ic_run"
+                android:visibility="gone" />
+
+
         </RelativeLayout>
 
         <ImageView

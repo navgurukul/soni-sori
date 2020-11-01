@@ -10,8 +10,8 @@
         android:id="@+id/mediaProgressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:textAppearance="?textAppearanceCaption"
         tools:text="Information" />
 
     <ProgressBar

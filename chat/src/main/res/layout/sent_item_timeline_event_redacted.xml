@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_2x">
+
+    <include
+        android:id="@id/item_timeline_event_top"
+        layout="@layout/sent_item_timeline_event_top" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginStart="@dimen/spacing_6x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
+
+        <TextView
+            style="@style/TimelineContentStubBaseParams"
+            android:textAppearance="?textAppearanceBody1"
+            android:background="@drawable/sent_timeline_item_background"
+            android:textColor="?textContrast"
+            android:textSize="14sp"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableTint="?textContrast"
+            android:layout_gravity="end"
+            android:gravity="end"
+            app:drawableStartCompat="@drawable/ic_trash_16"
+            android:text="@string/event_redacted"/>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

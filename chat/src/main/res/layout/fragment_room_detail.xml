@@ -117,7 +117,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/syncStateView"
-        tools:listitem="@layout/item_timeline_event_base" />
+        tools:listitem="@layout/item_timeline_event_text_message" />
 
     <FrameLayout
         android:id="@+id/bannersContainer"

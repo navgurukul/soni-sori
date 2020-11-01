@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?backgroundColor"
-    android:padding="8dp">
+    android:padding="@dimen/spacing_2x">
 
     <View
         android:layout_width="match_parent"
@@ -20,10 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="?backgroundColor"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
+        android:paddingStart="@dimen/spacing_6x"
+        android:paddingEnd="@dimen/spacing_6x"
         android:textColor="?textSecondary"
-        android:textSize="15sp"
+        android:textAppearance="?textAppearanceBody2"
         tools:text="@tools:sample/date/day_of_week" />
 
 </FrameLayout>
