@@ -8,7 +8,7 @@
     <dimen name="height_rv_upcoming_class">140dp</dimen>
     <dimen name="dimen_height_card_class">100dp</dimen>
     <dimen name="app_bar_height_class">200dp</dimen>
-    <dimen name="dimen_width_upcoming">150dp</dimen>
+    <dimen name="dimen_width_upcoming">175dp</dimen>
     <dimen name="course_discover_height">70dp</dimen>
     <dimen name="min_height_rv_other_courses">200dp</dimen>
     <dimen name="bottom_bar_height">68dp</dimen>
