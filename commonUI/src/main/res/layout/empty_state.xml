@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/emptyStateImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_8x"
+        app:layout_constraintBottom_toTopOf="@+id/emptyStateTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:src="@drawable/illus_no_content" />
+
+    <TextView
+        android:id="@+id/emptyStateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginTop="@dimen/spacing_8x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:layout_marginBottom="@dimen/spacing_4x"
+        android:textAppearance="?textAppearanceHeadline5"
+        android:textColor="?textBrand"
+        app:layout_constraintBottom_toTopOf="@+id/emptyStateDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emptyStateImage"
+        tools:text="No Content" />
+
+    <TextView
+        android:id="@+id/emptyStateDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:gravity="center"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textColor="?textSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emptyStateTitle"
+        tools:text="Sorry! we couldn’t find any content , please come
+back later" />
+
+</merge>

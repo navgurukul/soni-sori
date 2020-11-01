@@ -15,8 +15,8 @@ import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
+import org.merakilearn.ui.discover.DiscoverViewModel
 import org.merakilearn.ui.home.HomeViewModel
-import org.merakilearn.ui.more.MoreViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
 import org.navgurukul.chat.core.repo.AuthenticationRepository
@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel(get()) }
-    viewModel { MoreViewModel() }
     viewModel { WelcomeViewModel(get(), get(), get()) }
+    viewModel { DiscoverViewModel(get(), get()) }
 }
 
 val factoryModule = module {
@@ -57,7 +57,7 @@ val networkModule = module {
     }
 
     fun provideGson(): Gson {
-        return GsonBuilder().setLenient().create()
+        return GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").setLenient().create()
     }
 
 

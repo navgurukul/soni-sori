@@ -248,5 +248,6 @@
     <string name="play_video">Play</string>
 
     <string name="members">%d members</string>
+    <string name="link_copied_to_clipboard">Link copied to clipboard</string>
 
 </resources>

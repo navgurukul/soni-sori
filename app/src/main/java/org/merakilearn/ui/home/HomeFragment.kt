@@ -1,5 +1,6 @@
 package org.merakilearn.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.FragmentHomeBinding
+import org.merakilearn.ui.discover.DiscoverActivity
 import org.merakilearn.ui.home.adapter.MyUpcomingClassAdapter
 import org.merakilearn.ui.home.adapter.OtherCourseAdapter
 import org.merakilearn.ui.home.adapter.WhereYouLeftAdapter
-import org.merakilearn.ui.onboarding.LoginFragment
-import org.merakilearn.util.AppUtils
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
@@ -63,22 +63,16 @@ class HomeFragment : Fragment() {
 
     private fun initDiscoverClassButton() {
         mBinding.emptyMyClass.setOnClickListener {
-            startDiscoverFragment()
+            startDiscoverActivity()
         }
 
         mBinding.viewAll.setOnClickListener {
-            startDiscoverFragment()
+            startDiscoverActivity()
         }
     }
 
-    private fun startDiscoverFragment() {
-        AppUtils.changeFragment(
-            parentFragmentManager,
-            DiscoverFragment.newInstance(),
-            R.id.nav_host_fragment,
-            true,
-            LoginFragment.TAG
-        )
+    private fun startDiscoverActivity() {
+        DiscoverActivity.start(requireContext())
     }
 
     private fun fetchDataOtherCourse() {
@@ -130,7 +124,7 @@ class HomeFragment : Fragment() {
 
     private fun initUpComingClassesRV() {
         mMyUpcomingClassAdapter = MyUpcomingClassAdapter {
-            EnrollActivity.start(requireContext(), it.classX?.id, true)
+            EnrollActivity.start(requireContext(), it.classes.id, true)
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

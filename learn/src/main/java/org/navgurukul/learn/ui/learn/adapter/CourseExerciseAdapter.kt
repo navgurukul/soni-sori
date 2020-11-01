@@ -31,7 +31,8 @@ class CourseExerciseAdapter(callback: (Pair<Exercise, ItemCourseExerciseBinding>
         )
     }
 
-    override fun bind(binding: ItemCourseExerciseBinding, item: Exercise) {
+    override fun bind(holder: DataBoundViewHolder<ItemCourseExerciseBinding>, item: Exercise) {
+        val binding = holder.binding
         binding.exercise = item
         binding.root.setOnClickListener {
             mCallback.invoke(Pair(item, binding))

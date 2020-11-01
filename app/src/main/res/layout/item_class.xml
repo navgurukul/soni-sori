@@ -7,24 +7,26 @@
 
         <variable
             name="classes"
-            type="org.merakilearn.datasource.network.model.MyClass.Class" />
+            type="org.merakilearn.datasource.network.model.Classes" />
 
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="?cornerRadius400"
+        android:foreground="?selectableItemBackground"
         app:cardBackgroundColor="@color/upcoming_class_color_1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/ivDecoration"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="77:52"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -34,35 +36,52 @@
             <TextView
                 android:id="@+id/tvClassTitle"
                 style="?textAppearanceEmphasized2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:textColor="?textBrand"
                 android:layout_marginTop="@dimen/spacing_2x"
                 android:layout_marginStart="@dimen/spacing_3x"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="@{classes.type}"
                 tools:text="Master Class" />
 
             <TextView
                 android:id="@+id/tvClassDescription"
                 style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvClassTitle"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="?textSecondary"
                 android:layout_marginTop="@dimen/spacing_1x"
-                android:layout_marginBottom="@dimen/spacing_2x"
+                android:layout_marginBottom="@dimen/spacing_1x"
                 app:layout_constraintStart_toStartOf="@id/tvClassTitle"
                 app:layout_constraintTop_toBottomOf="@id/tvClassTitle"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvClassTiming"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/spacing_3x"
                 android:text='@{classes.title}'
                 tools:text="Study Basics Of Python" />
+
+            <TextView
+                android:id="@+id/tvClassTiming"
+                style="?textAppearanceCaption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvClassTitle"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="?textSecondary"
+                android:layout_marginBottom="@dimen/spacing_2x"
+                app:layout_constraintStart_toStartOf="@id/tvClassTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/spacing_2x"
+                tools:text="10:30 AM - 11:30 AM" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

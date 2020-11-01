@@ -48,9 +48,8 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.*
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.utils.Debouncer
+import org.navgurukul.chat.core.utils.*
 import org.navgurukul.chat.core.utils.createUIHandler
-import org.navgurukul.chat.core.utils.getColorFromUserId
 import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
@@ -525,10 +524,15 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     override fun onUrlClicked(url: String, title: String): Boolean {
+        context?.let { openUrlInExternalBrowser(it, url) }
         return true
     }
 
     override fun onUrlLongClicked(url: String): Boolean {
+        if (url != getString(R.string.edited_suffix) && url.isValidUrl()) {
+            // Copy the url to the clipboard
+            copyToClipboard(requireContext(), url, true, R.string.link_copied_to_clipboard)
+        }
         return true
     }
 
