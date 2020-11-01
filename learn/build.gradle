@@ -61,7 +61,6 @@ dependencies {
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
     implementation "com.google.code.gson:gson:$version_gson"
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit_gson_adapter"
     implementation "com.squareup.okhttp3:logging-interceptor:$version_retrofit_log"

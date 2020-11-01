@@ -2,7 +2,6 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.Deferred
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
@@ -12,6 +11,7 @@ import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.model.PathWayCourseContainer
 import org.navgurukul.learn.util.LearnUtils
+import java.lang.Exception
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -35,7 +35,7 @@ class LearnRepo(
                         || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
             }
 
-            override suspend fun makeApiCallAsync(): Deferred<PathWayCourseContainer> {
+            override suspend fun makeApiCallAsync(): PathWayCourseContainer {
                 return courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
             }
 
@@ -63,7 +63,7 @@ class LearnRepo(
                 return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
-            override suspend fun makeApiCallAsync(): Deferred<CourseExerciseContainer> {
+            override suspend fun makeApiCallAsync(): CourseExerciseContainer {
                 return courseApi.getExercisesAsync(courseId)
             }
 
@@ -89,14 +89,17 @@ class LearnRepo(
     ): LiveData<List<Exercise>> {
         val exerciseDao = database.exerciseDao()
         if (forceUpdate && LearnUtils.isOnline(application)) {
-            val result = courseApi.getExercisesAsync(courseId).await()
-            val mappedData = result.course?.exercises?.map {
-                it.apply {
-                    this?.courseId = courseId
-                    this?.courseName = result.course?.name
-                }
-            }?.toList()
-            exerciseDao.insertExerciseAsync(mappedData)
+            try {
+                val result = courseApi.getExercisesAsync(courseId)
+                val mappedData = result.course?.exercises?.map {
+                    it.apply {
+                        this?.courseId = courseId
+                        this?.courseName = result.course?.name
+                    }
+                }?.toList()
+                exerciseDao.insertExerciseAsync(mappedData)
+            } catch (ex: Exception) {
+            }
         }
         return exerciseDao.getExerciseById(exerciseId)
     }
@@ -118,7 +121,7 @@ class LearnRepo(
                 return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
-            override suspend fun makeApiCallAsync(): Deferred<CourseExerciseContainer> {
+            override suspend fun makeApiCallAsync(): CourseExerciseContainer {
                 return courseApi.getExercisesAsync(courseId)
             }
 

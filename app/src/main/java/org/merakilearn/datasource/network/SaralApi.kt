@@ -1,6 +1,5 @@
 package org.merakilearn.datasource.network
 
-import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.model.*
 import org.navgurukul.learn.courses.db.models.Course
@@ -9,42 +8,42 @@ import retrofit2.http.*
 
 interface SaralApi {
     @POST("users/auth/google")
-    fun initLoginAsync(@Body loginRequest: LoginRequest): Deferred<LoginResponse>
+    suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("classes/upcoming")
-    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): Deferred<ClassesContainer?>?
+    suspend fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?): ClassesContainer
 
     @GET("courses/recommended")
-    fun getRecommendedCourseAsync(@Header(value = "Authorization") token: String?): Deferred<List<Course>>
+    suspend fun getRecommendedCourseAsync(@Header(value = "Authorization") token: String?): List<Course>
 
     @GET("classes")
-    fun getMyClassesAsync(@Header(value = "Authorization") token: String?): Deferred<List<MyClass>>
+    suspend fun getMyClassesAsync(@Header(value = "Authorization") token: String?): List<MyClass>
 
     @POST("classes/{classId}/register")
-    fun enrollToClassAsync(
+    suspend fun enrollToClassAsync(
         @Header(value = "Authorization") token: String?,
         @Path(value = "classId") classId: Int,
         @Body hashMap: MutableMap<String, Any>
-    ): Deferred<ResponseBody>
+    ): ResponseBody
 
     @DELETE("classes/{classId}/unregister")
-    fun logOutToClassAsync(
+    suspend fun logOutToClassAsync(
         @Header(value = "Authorization") token: String?,
         @Path(value = "classId") classId: Int
-    ): Deferred<ResponseBody>
+    ): ResponseBody
 
     @POST("users/create")
-    fun initFakeSignUpAsync(): Deferred<LoginResponse>
+    suspend fun initFakeSignUpAsync(): LoginResponse
 
     @PUT("users/me")
-    fun initUserUpdateAsync(
+    suspend fun initUserUpdateAsync(
         @Header(value = "Authorization") token: String?,
         @Body loginResponse: UserUpdate
-    ): Deferred<UserUpdateContainer>
+    ): UserUpdateContainer
 
     @GET("classes/{classId}")
-    fun fetchClassDataAsync(
+    suspend fun fetchClassDataAsync(
         @Header(value = "Authorization") token: String?,
         @Path(value = "classId") classId: Int?
-    ): Deferred<Classes>
+    ): Classes
 }
