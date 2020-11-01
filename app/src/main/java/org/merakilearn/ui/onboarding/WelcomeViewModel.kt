@@ -10,6 +10,7 @@ import org.merakilearn.datasource.ApplicationRepo
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
+import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 
@@ -82,13 +83,13 @@ sealed class WelcomeViewEvents : ViewEvents {
     class ShowToast(val toastText: String) : WelcomeViewEvents()
 }
 
-sealed class WelcomeViewActions : ViewEvents {
+sealed class WelcomeViewActions : ViewModelAction {
     data class LoginWithAuthToken(val authToken: String) : WelcomeViewActions()
 
     object InitiateFakeSignUp : WelcomeViewActions()
 }
 
 data class WelcomeViewState(
-    var isLoading: Boolean = false,
+    val isLoading: Boolean = false,
     val initialSyncProgress: InitialSyncProgressService.Status.Progressing? = null
 ) : ViewState

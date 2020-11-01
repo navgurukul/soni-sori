@@ -31,7 +31,8 @@ class OtherCourseAdapter(callback: (Course) -> Unit) :
         )
     }
 
-    override fun bind(binding: ItemCourseHomeBinding, item: Course) {
+    override fun bind(holder: DataBoundViewHolder<ItemCourseHomeBinding>, item: Course) {
+        val binding = holder.binding
         binding.course = item
         binding.root.setOnClickListener {
             mCallback.invoke(item)

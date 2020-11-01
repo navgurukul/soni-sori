@@ -51,7 +51,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         )
     }
 
-    override fun bind(binding: ItemSlugDetailBinding, item: Exercise.ExerciseSlugDetail) {
+    override fun bind(holder: DataBoundViewHolder<ItemSlugDetailBinding>, item: Exercise.ExerciseSlugDetail) {
+        val binding = holder.binding
         binding.root.setOnClickListener {
             mCallback.invoke(item)
         }

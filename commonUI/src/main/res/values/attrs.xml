@@ -12,6 +12,7 @@
     <attr name="elevation200" format="dimension"/>
 
     <attr name="textPrimary" format="color" />
+    <attr name="textBrand" format="color" />
     <attr name="textSecondary" format="color" />
     <attr name="textContrast" format="color" />
     <attr name="backgroundColor" format="color" />

@@ -52,6 +52,9 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.discover.DiscoverActivity"/>
+
         <activity
             android:name=".OnBoardingActivity"
             android:label="@string/app_name"
