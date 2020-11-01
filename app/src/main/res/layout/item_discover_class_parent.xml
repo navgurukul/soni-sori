@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="date"
             type="String" />
@@ -16,11 +14,14 @@
 
         <TextView
             android:id="@+id/tvDate"
-            style="@style/text_view_home_title_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="@{date}"
+            android:textColor="?textBrand"
+            android:textAppearance="?textAppearanceBody1"
+            android:paddingEnd="@dimen/spacing_4x"
+            android:paddingStart="@dimen/spacing_4x"
             tools:text="14th September" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -28,8 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDate"
-            android:padding="@dimen/dimen_10_dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_discover_class_child" />
+            android:layout_marginTop="@dimen/spacing_2x"
+            tools:listitem="@layout/item_class" />
     </RelativeLayout>
 </layout>

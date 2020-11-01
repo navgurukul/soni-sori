@@ -20,6 +20,7 @@
         <item name="textAppearanceEmphasized1">@style/TextAppearance.AppCompat.Emphasized1</item>
         <item name="textAppearanceEmphasized2">@style/TextAppearance.AppCompat.Emphasized2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.AppCompat.Subtitle1</item>
 
         <item name="textAppearanceHeadline6">@style/TextAppearance.AppCompat.Headline6</item>
         <item name="textAppearanceHeadline5">@style/TextAppearance.AppCompat.Headline5</item>
@@ -33,6 +34,7 @@
         <item name="elevation200">4dp</item>
 
         <item name="textPrimary">@color/textColor</item>
+        <item name="textBrand">@color/primaryColor</item>
         <item name="textSecondary">@color/textColorAlt</item>
         <item name="textContrast">@color/textColorContrast</item>
         <item name="backgroundColor">@color/backgroundColor</item>

@@ -51,4 +51,6 @@
     <string name="update_profile">Update Profile</string>
     <string name="email_already_used">This email is already linked with another account</string>
     <string name="app_version">App Version: %1$s</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

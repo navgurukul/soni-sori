@@ -14,10 +14,6 @@ class HomeViewModel(private val applicationRepo:ApplicationRepo) : ViewModel() {
         emit(applicationRepo.fetchOtherCourseData())
     }
 
-    fun fetchUpcomingClass()= liveData {
-        emit(applicationRepo.fetchUpcomingClassData())
-    }
-
     fun fetchMyClasses() = liveData {
         emit(applicationRepo.fetchMyClassData())
     }

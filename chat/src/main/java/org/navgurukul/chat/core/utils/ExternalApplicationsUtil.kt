@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import org.navgurukul.chat.BuildConfig
 import org.navgurukul.chat.R
 import timber.log.Timber
 import java.io.File
@@ -13,7 +12,7 @@ import java.io.File
 fun shareMedia(context: Context, file: File, mediaMimeType: String?) {
     var mediaUri: Uri? = null
     try {
-        mediaUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file)
+        mediaUri = FileProvider.getUriForFile(context, context.packageName + ".fileProvider", file)
     } catch (e: Exception) {
         Timber.e(e, "onMediaAction Selected File cannot be shared")
     }

@@ -38,7 +38,6 @@ class EnrollActivity : AppCompatActivity() {
     }
 
     private var classId: Int? = 0
-    private var classes: Classes? = null
     private var isEnrolled: Boolean = false
     private val viewModel: HomeViewModel by viewModel()
     private var isFromDeepLink = false
@@ -75,9 +74,8 @@ class EnrollActivity : AppCompatActivity() {
         viewModel.fetchClassData(last).observe(this, Observer {
             mBinding.progressBarButton.visibility = View.GONE
             if (it != null) {
-                classes = it
-                isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, classes?.enrolled ?: false)
-                initPageRender()
+                isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, it.enrolled)
+                initPageRender(it)
             } else {
                 MainActivity.launch(this)
             }
@@ -86,31 +84,31 @@ class EnrollActivity : AppCompatActivity() {
     }
 
 
-    private fun initPageRender() {
+    private fun initPageRender(classes: Classes) {
         initToolBar()
-        initExpandableToolBar()
-        initButtonClick()
-        initUI()
+        initExpandableToolBar(classes)
+        initButtonClick(classes)
+        initUI(classes)
     }
 
-    private fun initUI() {
+    private fun initUI(classes: Classes) {
         mBinding.classDetail.tvClassDetail.text = AppUtils.getClassSchedule(classes)
         mBinding.classDetail.tvAbout.text = AppUtils.getAboutClass(classes)
-        if (!classes?.rules?.en.isNullOrBlank()) {
+        if (!classes.rules?.en.isNullOrBlank()) {
             mBinding.classDetail.tvSpecialInstruction.apply {
                 this.addStyleSheet(Github())
-                this.loadMarkdown(classes?.rules?.en)
+                this.loadMarkdown(classes.rules?.en)
             }
         }
     }
 
-    private fun initButtonClick() {
+    private fun initButtonClick(classes: Classes) {
         if (isEnrolled) {
             mBinding.enroll.text = getString(R.string.drop_out)
         }
         mBinding.enroll.setOnClickListener {
             mBinding.progressBarButton.visibility = View.VISIBLE
-            viewModel.enrollToClass(classes?.id!!, isEnrolled).observe(this, Observer {
+            viewModel.enrollToClass(classes.id, isEnrolled).observe(this, Observer {
                 mBinding.progressBarButton.visibility = View.GONE
                 if (isEnrolled) {
                     if (it) {
@@ -138,10 +136,10 @@ class EnrollActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
     }
 
-    private fun initExpandableToolBar() {
+    private fun initExpandableToolBar(classes: Classes) {
         mBinding.toolbarLayout.setExpandedTitleColor(toolbarColor())
         mBinding.toolbarLayout.setCollapsedTitleTextColor(toolbarColor())
-        mBinding.toolbarLayout.title = classes?.title
+        mBinding.toolbarLayout.title = classes.title
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

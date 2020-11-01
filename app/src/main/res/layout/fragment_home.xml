@@ -114,7 +114,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintTop_toBottomOf="@id/upcomingClass"
-                tools:listitem="@layout/item_upcoming_class" />
+                tools:listitem="@layout/item_class" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/empty_my_class"
