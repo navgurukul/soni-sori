@@ -32,10 +32,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dimen_10_dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/ic_avatar_border"
-            android:padding="@dimen/dimen_10_dp"
+            android:background="@drawable/avatar_background_border"
+            android:padding="@dimen/spacing_1x"
             android:layout_gravity="end"
-            android:src="@drawable/avatar"
             tools:ignore="ContentDescription" />
 
     </androidx.appcompat.widget.Toolbar>

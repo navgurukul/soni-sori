@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,6 +23,7 @@ import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.util.AppUtils
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.learn.ui.common.toast
 
 class ProfileActivity : AppCompatActivity() {
@@ -46,7 +48,7 @@ class ProfileActivity : AppCompatActivity() {
             initIntentFilter()
             initLinkButton()
             initGoogleSignInOption()
-            initToolBarClickListener()
+            initToolBar()
             user = AppUtils.getCurrentUser(this)
             mBinding.user = user
         } else {
@@ -70,7 +72,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun initToolBarClickListener() {
+    private fun initToolBar() {
         mBinding.idHeader.ivBackButton.setOnClickListener {
             finishCurrent()
         }
@@ -85,6 +87,13 @@ class ProfileActivity : AppCompatActivity() {
         mBinding.idHeader.ivLogOut.setOnClickListener {
             showLogOutDialog()
         }
+
+        GlideApp.with(mBinding.ivProfile)
+            .load(user.profilePicture)
+            .placeholder(R.drawable.illus_default_avatar)
+            .fallback(R.drawable.illus_default_avatar)
+            .transform(CircleCrop())
+            .into(mBinding.ivProfile)
     }
 
     private fun finishCurrent() {
