@@ -20,8 +20,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     private suspend fun fetchFromNetwork(dbSource: ResultType?) {
         dbSource?.let(result::postValue)
         try {
-            val apiResponse = makeApiCallAsync()
-            val data = apiResponse.await()
+            val data = makeApiCallAsync()
             saveCallResult(data)
             result.postValue(loadFromDb())
         } catch (e: Exception) {
@@ -34,7 +33,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
 
-    protected abstract suspend fun makeApiCallAsync(): Deferred<RequestType>
+    protected abstract suspend fun makeApiCallAsync(): RequestType
 
     protected abstract suspend fun saveCallResult(data: RequestType)
 
