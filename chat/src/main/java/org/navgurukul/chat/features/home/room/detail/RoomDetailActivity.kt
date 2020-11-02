@@ -28,11 +28,13 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_detail)
 
-        if (savedInstanceState == null) {
-            val roomDetailArgs: RoomDetailArgs =
-                intent?.extras?.getParcelable(EXTRA_ROOM_DETAIL_ARGS) ?: return
+        val roomDetailArgs: RoomDetailArgs =
+            intent?.extras?.getParcelable(EXTRA_ROOM_DETAIL_ARGS) ?: return
 
-            currentRoomId = roomDetailArgs.roomId
+        currentRoomId = roomDetailArgs.roomId
+
+        if (savedInstanceState == null) {
+
             replaceFragment(
                 R.id.roomDetailContainer,
                 RoomDetailFragment::class.java,
