@@ -14,7 +14,7 @@ class EmptyStateView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attributes, defaultStyleAttr, defaultStyleRes) {
 
     enum class State {
-        NO_CONTENT
+        NO_CONTENT, ERROR
     }
 
     var state: State = State.NO_CONTENT
@@ -22,6 +22,11 @@ class EmptyStateView @JvmOverloads constructor(
             field = value
             when (value) {
                 State.NO_CONTENT -> {
+                    emptyStateDescription.text = context.getString(R.string.empty_state_no_content_description)
+                    emptyStateTitle.text = context.getString(R.string.empty_state_no_content_title)
+                    emptyStateImage.setImageResource(R.drawable.illus_no_content)
+                }
+                State.ERROR -> {
                     emptyStateDescription.text = context.getString(R.string.empty_state_no_content_description)
                     emptyStateTitle.text = context.getString(R.string.empty_state_no_content_title)
                     emptyStateImage.setImageResource(R.drawable.illus_no_content)
