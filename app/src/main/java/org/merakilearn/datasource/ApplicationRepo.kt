@@ -154,29 +154,6 @@ class ApplicationRepo(
         }
     }
 
-    fun fetchRemoteConfigLanguageData(): List<Language> {
-        val remoteConfig = Firebase.remoteConfig
-        if (BuildConfig.DEBUG) {
-            val configSettings = remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 3600
-            }
-            remoteConfig.setConfigSettingsAsync(configSettings)
-        }
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
-        remoteConfig.fetchAndActivate()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    Timber.d("Config params updated: $updated  with values ${remoteConfig.all}")
-                } else {
-                    Timber.w("fetchRemoteConfigAndUpdate Failed")
-                }
-            }
-        val data = remoteConfig.getValue("rc_available_lang").asString()
-        return AppUtils.getAvailableLanguages(data)
-    }
-
-
     companion object {
         private const val TAG = "ApplicationRepo"
     }

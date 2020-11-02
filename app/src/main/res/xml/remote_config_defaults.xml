@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <entry xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
-    <key>rc_available_lang</key>
+    <key>available_lang</key>
     <value>
         [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
     </value>

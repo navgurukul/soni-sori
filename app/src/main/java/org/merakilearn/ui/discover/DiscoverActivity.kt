@@ -2,14 +2,12 @@ package org.merakilearn.ui.discover
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
@@ -18,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
 import org.merakilearn.R
 import org.merakilearn.core.extentions.enableChildren
-import org.merakilearn.util.AppUtils
+import org.merakilearn.datasource.network.model.Language
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.views.EmptyStateView
 
@@ -40,28 +38,12 @@ class DiscoverActivity : AppCompatActivity() {
         }
     }
 
-    var states = arrayOf(
-        intArrayOf(android.R.attr.state_checked),
-        intArrayOf(-android.R.attr.state_checked)
-    )
-
-    private var colors = intArrayOf(
-        Color.RED,
-        Color.WHITE
-    )
-
-    private var colorsText = intArrayOf(
-        Color.WHITE,
-        Color.BLACK
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_discover_class)
 
         setupToolbar()
-        initChipGroup()
         setupObserver()
         initSearchListener()
 
@@ -94,6 +76,10 @@ class DiscoverActivity : AppCompatActivity() {
                 emptyStateView.isVisible = false
             }
         })
+
+        viewModel.supportedLanguages.observe(this, Observer {
+            setupChipGroup(it)
+        })
     }
 
     private fun setupToolbar() {
@@ -121,29 +107,36 @@ class DiscoverActivity : AppCompatActivity() {
         })
     }
 
-    private fun initChipGroup() {
-        val languageList = viewModel.getClassLanguage()
-        for (index in languageList) {
-            val chip = Chip(this)
-            chip.text = index.label
-            chip.tag = index.code
-            chip.setTextColor(ColorStateList(states, colorsText))
-            chip.chipBackgroundColor = ColorStateList(states, colors)
-            chip.chipStrokeColor =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorRed))
-            chip.chipStrokeWidth = 2.0f
-            chip.isClickable = true
-            chip.isCheckable = true
-            chip.checkedIcon = null
-            languageChipGroup.addView(chip)
+    private fun setupChipGroup(languageList: List<Language>) {
+        if (languageChipGroup.childCount > 0) {
+            languageChipGroup.removeAllViews()
         }
-        languageChipGroup.setOnCheckedChangeListener { group, checkedId ->
-            if (checkedId == View.NO_ID) {
-                viewModel.handle(DiscoverViewActions.FilterFromClass(null))
-                return@setOnCheckedChangeListener
+
+        if (languageList.isEmpty()) {
+            languageChipGroup.isVisible = false
+        } else {
+            languageChipGroup.isVisible = true
+            for (index in languageList) {
+                val chip = Chip(this)
+                chip.text = index.label
+                chip.tag = index.code
+                chip.setTextColor(AppCompatResources.getColorStateList(this, R.color.language_chip_text_color))
+                chip.chipBackgroundColor = AppCompatResources.getColorStateList(this, R.color.language_chip_background_color)
+                chip.chipStrokeColor = AppCompatResources.getColorStateList(this, R.color.language_chip_border_color)
+                chip.setChipStrokeWidthResource(R.dimen.chip_border_width)
+                chip.isClickable = true
+                chip.isCheckable = true
+                chip.checkedIcon = null
+                languageChipGroup.addView(chip)
             }
-            val chip: Chip = languageChipGroup.findViewById(checkedId)
-            viewModel.handle(DiscoverViewActions.FilterFromClass((chip.tag.toString())))
+            languageChipGroup.setOnCheckedChangeListener { group, checkedId ->
+                if (checkedId == View.NO_ID) {
+                    viewModel.handle(DiscoverViewActions.FilterFromClass(null))
+                    return@setOnCheckedChangeListener
+                }
+                val chip: Chip = languageChipGroup.findViewById(checkedId)
+                viewModel.handle(DiscoverViewActions.FilterFromClass((chip.tag.toString())))
+            }
         }
     }
 }

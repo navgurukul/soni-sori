@@ -11,7 +11,7 @@ interface SaralApi {
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("classes/upcoming")
-    fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?, @Query(value = "lang") langCode:String?): ClassesContainer
+    suspend fun getUpComingClassesAsync(@Header(value = "Authorization") token: String?, @Query(value = "lang") langCode:String?): ClassesContainer
 
     @GET("courses/recommended")
     suspend fun getRecommendedCourseAsync(@Header(value = "Authorization") token: String?): List<Course>

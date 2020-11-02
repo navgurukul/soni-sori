@@ -1,9 +1,11 @@
 package org.merakilearn.ui.discover
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.Config
 import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.datasource.network.model.Language
 import org.merakilearn.util.relativeDay
@@ -17,34 +19,37 @@ import org.navgurukul.commonui.resources.StringProvider
 
 class DiscoverViewModel(
     private val applicationRepo: ApplicationRepo,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    config: Config
 ) :
     BaseViewModel<EmptyViewEvents, DiscoverViewState>(DiscoverViewState()) {
 
     private var classes: List<Classes>? = null
 
+    val supportedLanguages = MutableLiveData<List<Language>>(config.getObjectifiedValue(Config.KEY_AVAILABLE_LANG))
+
     init {
-        viewModelScope.launch {
-            fetchClassesData(null)
-        }
+        fetchClassesData(null)
     }
 
-    private suspend fun fetchClassesData(langCode: String?) {
-        classes = applicationRepo.fetchUpcomingClassData(langCode)
-        classes?.let {
-            setState {
-                val items = it.toDiscoverData()
-                val emptyData = items.isEmpty()
-                copy(
-                    isLoading = false,
-                    searchEnabled = !emptyData,
-                    showError = false,
-                    showNoContent = emptyData,
-                    itemList = items
-                )
+    private fun fetchClassesData(langCode: String?) {
+        viewModelScope.launch {
+            classes = applicationRepo.fetchUpcomingClassData(langCode)
+            classes?.let {
+                setState {
+                    val items = it.toDiscoverData()
+                    val emptyData = items.isEmpty()
+                    copy(
+                        isLoading = false,
+                        searchEnabled = !emptyData,
+                        showError = false,
+                        showNoContent = emptyData,
+                        itemList = items
+                    )
+                }
+            } ?: run {
+                setState { copy(isLoading = false, searchEnabled = false, showError = true) }
             }
-        } ?: run {
-            setState { copy(isLoading = false, searchEnabled = false, showError = true) }
         }
     }
 
@@ -74,9 +79,7 @@ class DiscoverViewModel(
     }
 
     private fun handleClassFromLangCode(action: DiscoverViewActions.FilterFromClass) {
-        viewModelScope.launch {
-            fetchClassesData(action.langCode)
-        }
+        fetchClassesData(action.langCode)
     }
 
     private fun List<Classes>.toDiscoverData(): List<DiscoverData> {
@@ -85,10 +88,6 @@ class DiscoverViewModel(
                 val title = "${it.key.toLocalDate().relativeDay(stringProvider)}, ${it.key}"
                 DiscoverData(it.key, title, it.value)
             }
-    }
-
-    fun getClassLanguage():List<Language>{
-        return applicationRepo.fetchRemoteConfigLanguageData()
     }
 }
 
