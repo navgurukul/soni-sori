@@ -9,8 +9,10 @@
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/dimen_5_dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:layout_margin="@dimen/spacing_2x"
+        android:padding="@dimen/spacing_2x">
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/youtube_view"
@@ -22,29 +24,38 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@color/colorWhite"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <es.dmoral.markdownview.MarkdownView
                 android:id="@+id/markDownContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_2x"
                 android:clickable="true"
                 android:focusable="true"
-                android:layout_marginEnd="@dimen/dimen_5_dp"
-                android:layout_marginStart="@dimen/dimen_5_dp"
-                android:visibility="gone"
-                android:padding="@dimen/dimen_5_dp" />
-            <ImageView
-                android:id="@+id/imageViewPlay"
-                android:layout_width="@dimen/dimen_50_dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/markDownContent"
-                android:layout_marginStart="@dimen/dimen_5_dp"
-                android:src="@drawable/ic_run"
+                android:padding="@dimen/spacing_2x"
                 android:visibility="gone" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/imageViewPlay"
+                android:layout_width="@dimen/dimen_80_dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/markDownContent"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/spacing_1x"
+                android:drawableEnd="@drawable/ic_play"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="@dimen/spacing_2x"
+                android:paddingEnd="@dimen/spacing_2x"
+                android:text="@string/run"
+                android:textColor="@color/colorWhite"
+                app:backgroundTint="@color/run_background"
+                app:cornerRadius="0dp"
+                android:visibility="gone"
+                app:drawableTint="@color/colorWhite" />
 
         </RelativeLayout>
 

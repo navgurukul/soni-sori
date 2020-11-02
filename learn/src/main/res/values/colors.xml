@@ -10,5 +10,5 @@
     <color name="exerciseBackground">#FFDCDC</color>
     <color name="colorNumber">#D63447</color>
     <color name="course_background">#f2f2f2</color>
-
+    <color name="run_background">#D63447</color>
 </resources>
