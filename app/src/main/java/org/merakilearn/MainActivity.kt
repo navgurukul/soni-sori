@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -78,10 +79,18 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         findViewById<ImageView>(R.id.headerIv).let {
             val currentUser = AppUtils.getCurrentUser(this)
 
+            val requestOptions = RequestOptions()
+                .centerCrop()
+                .transform(CircleCrop())
+
+            val thumbnail= GlideApp.with(this)
+                .load(R.drawable.illus_default_avatar)
+                .apply(requestOptions)
+
             GlideApp.with(it)
                 .load(currentUser.profilePicture)
-                .placeholder(R.drawable.illus_default_avatar)
-                .fallback(R.drawable.illus_default_avatar)
+                .apply(requestOptions)
+                .thumbnail(thumbnail)
                 .transform(CircleCrop())
                 .into(it)
 
