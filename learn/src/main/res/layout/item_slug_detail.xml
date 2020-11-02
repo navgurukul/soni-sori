@@ -39,7 +39,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/imageViewPlay"
-                android:layout_width="@dimen/dimen_80_dp"
+                android:layout_width="@dimen/dimen_code_play_button_height"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/markDownContent"
                 android:layout_alignParentEnd="true"

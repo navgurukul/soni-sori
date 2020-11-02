@@ -92,33 +92,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                     ProfileActivity.launch(this)
             }
         }
-
-        fetchRemoteConfigAndUpdate()
-    }
-
-    private fun fetchRemoteConfigAndUpdate() {
-        val remoteConfig = Firebase.remoteConfig
-        if (BuildConfig.DEBUG) {
-            val configSettings = remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 3600
-            }
-            remoteConfig.setConfigSettingsAsync(configSettings)
-        }
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
-
-        var data = remoteConfig.getValue("rc_available_lang").asString()
-        AppUtils.saveLanguageConfig(data, this)
-        remoteConfig.fetchAndActivate()
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    data = remoteConfig.getValue("rc_available_lang").asString()
-                    Timber.d("Config params updated: $updated  with values $data")
-                    AppUtils.saveLanguageConfig(data, this)
-                } else {
-                    Timber.w("fetchRemoteConfigAndUpdate Failed")
-                }
-            }
     }
 
     override fun configure(toolbar: Toolbar) {

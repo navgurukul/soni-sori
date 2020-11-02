@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.network.model.Classes
+import org.merakilearn.datasource.network.model.Language
 import org.merakilearn.util.relativeDay
 import org.merakilearn.util.toDate
 import org.merakilearn.util.toLocalDate
@@ -84,6 +85,10 @@ class DiscoverViewModel(
                 val title = "${it.key.toLocalDate().relativeDay(stringProvider)}, ${it.key}"
                 DiscoverData(it.key, title, it.value)
             }
+    }
+
+    fun getClassLanguage():List<Language>{
+        return applicationRepo.fetchRemoteConfigLanguageData()
     }
 }
 

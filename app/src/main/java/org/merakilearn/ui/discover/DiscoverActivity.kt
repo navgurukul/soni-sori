@@ -122,7 +122,7 @@ class DiscoverActivity : AppCompatActivity() {
     }
 
     private fun initChipGroup() {
-        val languageList = AppUtils.getAvailableLanguages(this)
+        val languageList = viewModel.getClassLanguage()
         for (index in languageList) {
             val chip = Chip(this)
             chip.text = index.label
@@ -137,14 +137,12 @@ class DiscoverActivity : AppCompatActivity() {
             chip.checkedIcon = null
             languageChipGroup.addView(chip)
         }
-        var lastCheckedId: Int
         languageChipGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == View.NO_ID) {
                 viewModel.handle(DiscoverViewActions.FilterFromClass(null))
                 return@setOnCheckedChangeListener
             }
-            lastCheckedId = checkedId
-            val chip: Chip = languageChipGroup.findViewById(lastCheckedId)
+            val chip: Chip = languageChipGroup.findViewById(checkedId)
             viewModel.handle(DiscoverViewActions.FilterFromClass((chip.tag.toString())))
         }
     }

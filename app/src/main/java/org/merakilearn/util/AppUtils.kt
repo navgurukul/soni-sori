@@ -157,18 +157,9 @@ object AppUtils {
         """.trimIndent()
     }
 
-    fun saveLanguageConfig(data: String, context: Context) {
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
-        val editor = preferenceManager.edit()
-        editor.putString(KEY_AVAIL_LANGUAGE, data)
-        editor.apply()
-    }
-
-    fun getAvailableLanguages(context: Context): List<Language> {
-        val langResponse = PreferenceManager.getDefaultSharedPreferences(context)
-            .getString(KEY_AVAIL_LANGUAGE, "")
+    fun getAvailableLanguages(data: String): List<Language> {
         val type: Type = object : TypeToken<List<Language>>() {}.type
-        return Gson().fromJson(langResponse, type)
+        return Gson().fromJson(data, type)
     }
 
 
