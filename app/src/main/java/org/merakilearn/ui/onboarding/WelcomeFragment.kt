@@ -57,12 +57,12 @@ class WelcomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvAlready.setOnClickListener {
-            signInWithGoogle()
+        tvSkipLogin.setOnClickListener {
+            viewModel.handle(WelcomeViewActions.InitiateFakeSignUp)
         }
 
-        tvStarted.setOnClickListener {
-            viewModel.handle(WelcomeViewActions.InitiateFakeSignUp)
+        tvConnectWithEmail.setOnClickListener {
+            signInWithGoogle()
         }
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {

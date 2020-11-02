@@ -4,7 +4,7 @@ import org.koin.dsl.module
 import org.merakilearn.core.navigator.MerakiNavigator
 
 private val module = module {
-    single { MerakiNavigator(get(), get()) }
+    single { MerakiNavigator(get(), get(),get()) }
 }
 
 val coreModules = arrayListOf(module)

@@ -73,7 +73,7 @@ class PlaygroundViewModel(private val playgroundRepository: PlaygroundRepository
 
                 val stackTrace = py.getModule("chaquopy.main").callAttr("main", code).toString()
                 if (stackTrace.isEmpty()) {
-                    output("Finished")
+                   // output("Finished")
                 } else {
                     error(stackTrace)
                 }

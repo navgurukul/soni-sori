@@ -1,13 +1,10 @@
 package org.navgurukul.playground.ui
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Editable
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.CharacterStyle
 import android.text.style.StyleSpan
 import android.view.*
@@ -15,11 +12,13 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.bottom_sheet_output.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
@@ -38,7 +37,6 @@ class PlaygroundActivity : AppCompatActivity() {
     private lateinit var bottomSheetPeeklayout: LinearLayout
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Check of Python is started or not or else start
         if (!Python.isStarted()) {
@@ -53,8 +51,38 @@ class PlaygroundActivity : AppCompatActivity() {
         createError()
         createInput()
         createOutput()
+
+        parseIntentData()
     }
 
+    private fun parseIntentData() {
+        if (intent.hasExtra(ARG_CODE) && !TextUtils.isEmpty(intent.getStringExtra(ARG_CODE))) {
+            val code = intent.getStringExtra(ARG_CODE)!!
+            val existingCode = viewModel.getCachedCode()
+            if (TextUtils.isEmpty(existingCode)) {
+                etCode.setText(code)
+                etCode.setSelection(etCode.text.length)
+            } else {
+                showDialogToOverrideCode(code)
+            }
+        }
+    }
+
+    private fun showDialogToOverrideCode(code: String) {
+        AlertDialog.Builder(this).setMessage(getString(R.string.replace_code))
+            .setPositiveButton(
+                getString(android.R.string.ok)
+            ) { dialog, _ ->
+                dialog.dismiss()
+                etCode.setText(code)
+                etCode.setSelection(etCode.text.length)
+            }.setNegativeButton(
+                getString(android.R.string.cancel)
+            ) { dialog, _ ->
+                dialog.dismiss()
+            }.setCancelable(false)
+            .create().show()
+    }
 
 
     override fun onResume() {
@@ -81,15 +109,14 @@ class PlaygroundActivity : AppCompatActivity() {
             // If home button pressed Exit the activity
             super.onBackPressed()
             return true
-        }
-        else if(id == R.id.clear){
+        } else if (id == R.id.clear) {
             etCode.text.clear()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        if(sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             // If bottom sheet is expanded, collapse it on back button
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return
@@ -118,7 +145,7 @@ class PlaygroundActivity : AppCompatActivity() {
             viewModel.start(etCode.text.toString())
         }
 
-        etCode.addTextChangedListener( object: TextWatcher{
+        etCode.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 // cache text to shared Pref
                 viewModel.cacheCode(etCode.text.toString())
@@ -196,6 +223,9 @@ class PlaygroundActivity : AppCompatActivity() {
                 etInput.setText("")
                 output(span(text, StyleSpan(Typeface.BOLD)))
                 viewModel.onInput(text)
+                svOutput.post {
+                    svOutput.fullScroll(View.FOCUS_DOWN)
+                }
             }
 
             // If we return false on ACTION_DOWN, we won't be given the ACTION_UP.
@@ -206,7 +236,7 @@ class PlaygroundActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (enabled) {
                 layoutInput.visibility = View.VISIBLE
-                ibEnter.isEnabled =  true
+                ibEnter.isEnabled = true
                 etInput.isEnabled = true
 
                 // requestFocus alone doesn't always bring up the soft keyboard during startup
@@ -222,7 +252,7 @@ class PlaygroundActivity : AppCompatActivity() {
                 // Disable rather than hide, otherwise tvOutput gets a gray background on API
                 // level 26, like tvCaption in the main menu when you press an arrow key.
                 layoutInput.visibility = View.GONE
-                ibEnter.isEnabled =  false
+                ibEnter.isEnabled = false
                 etInput.isEnabled = false
                 imm.hideSoftInputFromWindow(tvOutput.windowToken, 0)
             }
@@ -276,6 +306,15 @@ class PlaygroundActivity : AppCompatActivity() {
         } else {
             etCode.requestFocus()
             etCode.isCursorVisible = true
+        }
+    }
+
+    companion object {
+        private const val ARG_CODE = "arg_code"
+        fun launch(code: String?, context: Context): Intent {
+            val intent = Intent(context, PlaygroundActivity::class.java)
+            intent.putExtra(ARG_CODE, code)
+            return intent
         }
     }
 

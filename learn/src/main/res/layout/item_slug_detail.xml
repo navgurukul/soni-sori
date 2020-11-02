@@ -7,8 +7,12 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:layout_margin="@dimen/spacing_2x"
+        android:padding="@dimen/spacing_2x">
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/youtube_view"
@@ -18,14 +22,42 @@
             app:autoPlay="false"
             app:showFullScreenButton="true" />
 
-
-        <br.tiagohm.markdownview.MarkdownView
-            android:id="@+id/markDownContent"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10_dp"
-            android:visibility="gone"
-            app:escapeHtml="false" />
+            >
+
+            <es.dmoral.markdownview.MarkdownView
+                android:id="@+id/markDownContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_2x"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/spacing_2x"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/imageViewPlay"
+                android:layout_width="@dimen/dimen_code_play_button_height"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/markDownContent"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/spacing_1x"
+                android:drawableEnd="@drawable/ic_play"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="@dimen/spacing_2x"
+                android:paddingEnd="@dimen/spacing_2x"
+                android:text="@string/run"
+                android:textColor="@color/colorWhite"
+                app:backgroundTint="@color/run_background"
+                app:cornerRadius="0dp"
+                android:visibility="gone"
+                app:drawableTint="@color/colorWhite" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/imageView"

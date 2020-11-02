@@ -33,7 +33,7 @@ class WelcomeViewModel(
             if (applicationRepo.loginWithAuthToken(authToken)) {
                 _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
             } else {
-                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.email_already_used)))
+                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
         }
     }
@@ -46,7 +46,7 @@ class WelcomeViewModel(
             fakeUserLoginResponse?.let {
                 observeInitialSync(it.roomId)
             } ?: run {
-                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.please_login)))
+                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }
         }
     }

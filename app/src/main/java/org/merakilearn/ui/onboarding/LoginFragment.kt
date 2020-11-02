@@ -1,5 +1,6 @@
 package org.merakilearn.ui.onboarding
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -60,7 +61,35 @@ class LoginFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initGoogleSignInOption()
         mBinding.tvLogin.setOnClickListener {
+            showConfirmation()
+        }
+
+        mBinding.tvCreateAccount.setOnClickListener {
             signIn()
+        }
+    }
+
+    private fun showConfirmation() {
+        AlertDialog.Builder(requireActivity()).setMessage(getString(R.string.want_login))
+            .setPositiveButton(
+                getString(R.string.okay)
+            ) { dialog, _ ->
+                dialog.dismiss()
+                logOutAndSignInAgain()
+            }.setNegativeButton(
+                getString(R.string.cancel)
+            ) { dialog, _ ->
+                dialog.dismiss()
+            }.create().show()
+    }
+
+    private fun logOutAndSignInAgain() {
+        mGoogleSignInClient?.signOut()?.addOnCompleteListener {
+            viewModel.logOut().observe(viewLifecycleOwner, Observer {
+                if (it)
+                    signIn()
+
+            })
         }
     }
 

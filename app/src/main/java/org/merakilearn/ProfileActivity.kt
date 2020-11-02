@@ -48,8 +48,8 @@ class ProfileActivity : AppCompatActivity() {
             initIntentFilter()
             initLinkButton()
             initGoogleSignInOption()
-            initToolBar()
             user = AppUtils.getCurrentUser(this)
+            initToolBar()
             mBinding.user = user
         } else {
             OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))

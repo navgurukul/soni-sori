@@ -4,16 +4,20 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Deferred
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
+import org.merakilearn.BuildConfig
+import org.merakilearn.R
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
+import timber.log.Timber
 
 class ApplicationRepo(
     private val applicationApi: SaralApi,
@@ -53,17 +57,18 @@ class ApplicationRepo(
             }
             response
         } catch (ex: Exception) {
-            Log.e(TAG, "fetchOtherCourseData: ", ex)
+            Timber.tag(TAG).e(ex, "fetchOtherCourseData: ")
             mutableListOf()
         }
     }
 
-    suspend fun fetchUpcomingClassData(): List<Classes> {
+    suspend fun fetchUpcomingClassData(langCode: String?): List<Classes>? {
         return try {
-            val response = applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application))
+            val response =
+                applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application), langCode)
             response.classes
         } catch (ex: Exception) {
-            Log.e(TAG, "fetchUpcomingClassData: ", ex)
+            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
             mutableListOf()
         }
 
@@ -74,7 +79,7 @@ class ApplicationRepo(
             val response = applicationApi.getMyClassesAsync(AppUtils.getAuthToken(application))
             response
         } catch (ex: Exception) {
-            Log.e(TAG, "fetchUpcomingClassData: ", ex)
+            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
             mutableListOf()
         }
 
@@ -88,7 +93,7 @@ class ApplicationRepo(
             )
             response
         } catch (ex: Exception) {
-            Log.e(TAG, "fetchUpcomingClassData: ", ex)
+            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
             null
         }
     }
@@ -105,7 +110,7 @@ class ApplicationRepo(
             }
             true
         } catch (ex: Exception) {
-            Log.e(TAG, "enrollToClass: ", ex)
+            Timber.tag(TAG).e(ex, "enrollToClass: ")
             false
         }
     }
@@ -148,7 +153,6 @@ class ApplicationRepo(
             false
         }
     }
-
 
     companion object {
         private const val TAG = "ApplicationRepo"

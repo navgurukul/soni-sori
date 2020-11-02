@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="This class is for students who are new to meraki and wants to learn programming. You will taught basics " />
+                tools:text="This class is for students who are new to meraki and wants to learn programming. You will taught basics " />
 
             <TextView
                 style="@style/text_view_home_title_date"
@@ -65,12 +65,13 @@
                 android:maxLines="2"
                 android:text="@string/special_instructions" />
 
-            <br.tiagohm.markdownview.MarkdownView
+            <es.dmoral.markdownview.MarkdownView
                 android:id="@+id/tvSpecialInstruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10_dp"
-                app:escapeHtml="false" />
+                android:padding="@dimen/dimen_5_dp"
+                />
 
         </LinearLayout>
 

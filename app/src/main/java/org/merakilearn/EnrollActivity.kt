@@ -9,7 +9,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import br.tiagohm.markdownview.css.styles.Github
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityDiscoverEnrollBinding
 import org.merakilearn.datasource.network.model.Classes
@@ -96,8 +95,9 @@ class EnrollActivity : AppCompatActivity() {
         mBinding.classDetail.tvAbout.text = AppUtils.getAboutClass(classes)
         if (!classes.rules?.en.isNullOrBlank()) {
             mBinding.classDetail.tvSpecialInstruction.apply {
-                this.addStyleSheet(Github())
-                this.loadMarkdown(classes.rules?.en)
+                //this.addStyleSheet(Github())
+                //this.loadMarkdown(classes.rules?.en)
+                this.loadFromText(classes.rules?.en)
             }
         }
     }

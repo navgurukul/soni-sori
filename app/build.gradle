@@ -27,7 +27,7 @@ android {
         }
 
         debug {
-            buildConfigField "String", "SERVER_URL", "\"https://dev-api.merakilearn.org/apiDocs/\""
+            buildConfigField "String", "SERVER_URL", "\"https://dev-api.merakilearn.org/\""
         }
     }
     compileOptions {
@@ -107,8 +107,9 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     //markDown lib
-    implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
-    implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
+   // implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+    // implementation 'com.github.tiagohm.MarkdownView:emoji:0.19.0'
+    implementation 'com.github.GrenderG:MarkdownView:0.1.2'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"

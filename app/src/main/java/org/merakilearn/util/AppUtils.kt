@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.merakilearn.datasource.network.model.Classes
+import org.merakilearn.datasource.network.model.Language
 import org.merakilearn.datasource.network.model.LoginResponse
+import java.lang.reflect.Type
 
 object AppUtils {
 
@@ -19,6 +22,7 @@ object AppUtils {
     private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
     private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
 
+    private const val KEY_AVAIL_LANGUAGE = "KEY_AVAIL_LANGUAGE"
 
     fun isUserLoggedIn(context: Context): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
@@ -108,9 +112,7 @@ object AppUtils {
 
 
     fun addFragmentToActivity(
-        fragmentManager: FragmentManager, fragment: Fragment
-        , frameId: Int
-        , tag: String?
+        fragmentManager: FragmentManager, fragment: Fragment, frameId: Int, tag: String?
     ) {
         val transaction = fragmentManager.beginTransaction()
         transaction.replace(frameId, fragment, tag)
@@ -120,9 +122,11 @@ object AppUtils {
 
 
     fun changeFragment(
-        fragmentManager: FragmentManager
-        , fragment: Fragment, frameId: Int
-        , isAddToBackStack: Boolean, tag: String?
+        fragmentManager: FragmentManager,
+        fragment: Fragment,
+        frameId: Int,
+        isAddToBackStack: Boolean,
+        tag: String?
     ) {
         val transaction = fragmentManager.beginTransaction()
         if (null != tag) {
@@ -140,7 +144,7 @@ object AppUtils {
     fun getClassSchedule(classes: Classes): String {
         val teacher = classes.facilitator?.name
         return """
-            Teacher - $teacher
+            Mentor - $teacher
             Date - ${classes.startTime.toDate()}. (${classes.startTime.toDay()}),
             Time - ${classes.startTime.toTime()} - ${classes.endTime.toTime()}
         """.trimIndent()
@@ -151,6 +155,11 @@ object AppUtils {
             ${classes?.description}
             Class Type -  ${classes?.type}
         """.trimIndent()
+    }
+
+    fun getAvailableLanguages(data: String): List<Language> {
+        val type: Type = object : TypeToken<List<Language>>() {}.type
+        return Gson().fromJson(data, type)
     }
 
 

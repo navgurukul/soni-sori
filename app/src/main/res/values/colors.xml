@@ -9,5 +9,6 @@
     <color name="upcoming_class_color_decoration_1">#FFDCDC</color>
     <color name="upcoming_class_color_decoration_2">#FAE2B0</color>
     <color name="avatar_border_color">#FFD31D</color>
+    <color name="chip_selected_color">#FFFF0000</color>
 
 </resources>

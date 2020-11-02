@@ -34,6 +34,8 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
+    implementation "com.google.code.gson:gson:$version_gson"
+
     //firebase
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging_version"
 

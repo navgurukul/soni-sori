@@ -12,6 +12,7 @@ import org.koin.dsl.module
 import org.merakilearn.BuildConfig
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.Config
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.discover.DiscoverViewModel
@@ -29,7 +30,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { WelcomeViewModel(get(), get(), get()) }
-    viewModel { DiscoverViewModel(get(), get()) }
+    viewModel { DiscoverViewModel(get(), get(), get()) }
 }
 
 val factoryModule = module {
@@ -99,5 +100,6 @@ val repositoryModule = module {
     }
 
     single { provideAppRepo(get(), androidApplication(),get(), get()) }
+    single { Config() }
 }
 val appModules = arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule)

@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_10_dp"
         android:padding="@dimen/dimen_10_dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar"
         app:singleLine="false"

@@ -29,4 +29,5 @@
     <dimen name="dimen_100_dp">100dp</dimen>
     <dimen name="dimen_slider_layout">100dp</dimen>
     <dimen name="dimen_youtube_view_height">250dp</dimen>
+    <dimen name="dimen_code_play_button_height">80dp</dimen>
 </resources>

@@ -4,25 +4,37 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
-import java.lang.Exception
 import java.net.URL
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
-    private val chatModuleNavigator: ChatModuleNavigator
+    private val chatModuleNavigator: ChatModuleNavigator,
+    private val playgroundModuleNavigator: PlaygroundModuleNavigator
 ) {
 
-    fun launcherIntent(context: Context, clearNotification: Boolean): Intent = appModuleNavigator.launchIntentForLauncherActivity(context, clearNotification)
+    fun launcherIntent(context: Context, clearNotification: Boolean): Intent =
+        appModuleNavigator.launchIntentForLauncherActivity(context, clearNotification)
 
-    fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent = appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
+    fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
+        appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
 
     fun openLauncherActivity(context: Context, clearNotification: Boolean) {
         startActivity(context, launcherIntent(context, clearNotification), false)
     }
 
-    fun openHome(context: Context, clearNotification: Boolean) = startActivity(context, homeLauncherIntent(context, clearNotification), false)
+    fun openPlayground(context: Context, code: String) {
+        startActivity(
+            context,
+            playgroundModuleNavigator.launchPlaygroundActivity(context, code),
+            false
+        )
+    }
 
-    fun openRoomIntent(context: Context, roomId: String) = chatModuleNavigator.launchIntentForRoom(context, roomId)
+    fun openHome(context: Context, clearNotification: Boolean) =
+        startActivity(context, homeLauncherIntent(context, clearNotification), false)
+
+    fun openRoomIntent(context: Context, roomId: String) =
+        chatModuleNavigator.launchIntentForRoom(context, roomId)
 
     fun openRoom(context: Context, roomId: String, buildTask: Boolean = false) {
         startActivity(context, openRoomIntent(context, roomId), buildTask)
@@ -37,14 +49,20 @@ class MerakiNavigator(
     }
 
     fun restartApp(context: Context, clearNotification: Boolean) {
-        startActivity(context,
+        startActivity(
+            context,
             appModuleNavigator.launchIntentForOnBoardingActivity(context, clearNotification),
             buildTask = false,
             newTask = true
         )
     }
 
-    private fun startActivity(context: Context, intent: Intent, buildTask: Boolean, newTask: Boolean = false) {
+    private fun startActivity(
+        context: Context,
+        intent: Intent,
+        buildTask: Boolean,
+        newTask: Boolean = false
+    ) {
         if (newTask) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }

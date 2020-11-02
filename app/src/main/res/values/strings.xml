@@ -8,7 +8,7 @@
     <string name="description">I am <font fgcolor='#D63447'>Meraki.</font>\nI am here to help you learn</string>
     <string name="powered_by">Powered by Nav-Gurukul</string>
     <string name="get_started">Let\'s get started!</string>
-    <string name="already_account">Already have an account? <u>Connect with email</u></string>
+    <string name="already_account">Already have an account? <u>Login Now</u></string>
     <string name="login_with_email">Login with Email</string>
     <string name="new_to_meraki">New to Meraki? <u>SignUp here</u></string>
     <string name="unable_to_sign">Unable to Sign in ! Please try again</string>
@@ -32,7 +32,7 @@
     <string name="log_out_class">You have been dropped out of class successfully</string>
     <string name="unable_to_drop">Unable to drop out of class</string>
     <string name="drop_out">I want to drop out</string>
-    <string name="please_login">Please login into application</string>
+    <string name="unable_to_process_request">Unable to process your request, please try again</string>
 
     <string name="default_notification_channel_id" translatable="false">meraki_fcm_default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Meraki</string>
@@ -51,6 +51,10 @@
     <string name="update_profile">Update Profile</string>
     <string name="email_already_used">This email is already linked with another account</string>
     <string name="app_version">App Version: %1$s</string>
+    <string name="connect_with_email">Connect with Email</string>
+    <string name="skip_login">Don\'t want to login? <u>Skip Login</u></string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="want_login">Your existing data will be lost and you would be signed in using your email account</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
 </resources>
