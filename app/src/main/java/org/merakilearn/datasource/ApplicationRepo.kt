@@ -29,8 +29,7 @@ class ApplicationRepo(
             if (isFakeLogin) {
                 loginRequest.id = AppUtils.getFakeLoginResponseId(application)
             }
-            val req = applicationApi.initLoginAsync(loginRequest)
-            val response = req.await()
+            val response = applicationApi.initLoginAsync(loginRequest)
             AppUtils.saveUserLoginResponse(response, application)
             authenticationRepository.login(response.user.chatId, response.user.chatPassword)
             if (isFakeLogin)
@@ -48,8 +47,7 @@ class ApplicationRepo(
 
     suspend fun fetchOtherCourseData(): List<Course>? {
         return try {
-            val req = applicationApi.getRecommendedCourseAsync(AppUtils.getAuthToken(application))
-            val response = req.await()
+            val response = applicationApi.getRecommendedCourseAsync(AppUtils.getAuthToken(application))
             response.forEachIndexed { index, course ->
                 course.number = (index + 1)
             }
@@ -62,10 +60,9 @@ class ApplicationRepo(
 
     suspend fun fetchUpcomingClassData(langCode: String?): List<Classes>? {
         return try {
-            val req =
+            val response =
                 applicationApi.getUpComingClassesAsync(AppUtils.getAuthToken(application), langCode)
-            val response = req?.await()
-            response?.classes
+            response.classes
         } catch (ex: Exception) {
             Log.e(TAG, "fetchUpcomingClassData: ", ex)
             mutableListOf()
@@ -73,10 +70,9 @@ class ApplicationRepo(
 
     }
 
-    suspend fun fetchMyClassData(): List<MyClass?>? {
+    suspend fun fetchMyClassData(): List<MyClass> {
         return try {
-            val req = applicationApi.getMyClassesAsync(AppUtils.getAuthToken(application))
-            val response = req.await()
+            val response = applicationApi.getMyClassesAsync(AppUtils.getAuthToken(application))
             response
         } catch (ex: Exception) {
             Log.e(TAG, "fetchUpcomingClassData: ", ex)
@@ -87,11 +83,10 @@ class ApplicationRepo(
 
     suspend fun fetchClassData(classId: String?): Classes? {
         return try {
-            val req = applicationApi.fetchClassDataAsync(
+            val response = applicationApi.fetchClassDataAsync(
                 AppUtils.getAuthToken(application),
                 classId?.toIntOrNull()
             )
-            val response = req.await()
             response
         } catch (ex: Exception) {
             Log.e(TAG, "fetchUpcomingClassData: ", ex)
@@ -101,16 +96,14 @@ class ApplicationRepo(
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
-            val req: Deferred<ResponseBody>
             if (enrolled) {
-                req = applicationApi.logOutToClassAsync(AppUtils.getAuthToken(application), classId)
+                applicationApi.logOutToClassAsync(AppUtils.getAuthToken(application), classId)
             } else {
-                req = applicationApi.enrollToClassAsync(
+                applicationApi.enrollToClassAsync(
                     AppUtils.getAuthToken(application), classId,
                     mutableMapOf()
                 )
             }
-            val response = req.await()
             true
         } catch (ex: Exception) {
             Log.e(TAG, "enrollToClass: ", ex)
@@ -120,8 +113,7 @@ class ApplicationRepo(
 
     suspend fun performFakeSignUp(): LoginResponse? {
         return try {
-            val req = applicationApi.initFakeSignUpAsync()
-            val response = req.await()
+            val response = applicationApi.initFakeSignUpAsync()
             AppUtils.saveFakeLoginResponse(response, application)
             authenticationRepository.login(response.user.chatId, response.user.chatPassword)
             response
@@ -133,13 +125,11 @@ class ApplicationRepo(
 
     suspend fun updateProfile(user: LoginResponse.User): Boolean {
         return try {
-
-            val req = applicationApi.initUserUpdateAsync(
+            val response = applicationApi.initUserUpdateAsync(
                 AppUtils.getAuthToken(application),
                 UserUpdate(user.name)
             )
-            val response = req.await()
-            AppUtils.saveUserResponse(response.user, application)
+            AppUtils.saveUserResponse(response.user ,application)
             true
         } catch (ex: Exception) {
             ex.printStackTrace()

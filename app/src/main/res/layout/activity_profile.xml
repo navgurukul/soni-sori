@@ -37,8 +37,8 @@
                     android:layout_height="@dimen/dimen_100_dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:padding="@dimen/dimen_10_dp"
-                    android:src="@drawable/avatar"
+                    android:padding="@dimen/spacing_1x"
+                    android:background="@drawable/avatar_background_border"
                     tools:ignore="ContentDescription" />
 
                 <TextView

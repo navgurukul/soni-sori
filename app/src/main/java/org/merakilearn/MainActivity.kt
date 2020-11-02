@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
-import android.widget.SearchView
+import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.util.AppUtils
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
 import timber.log.Timber
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     companion object {
         const val KEY_ARG = "MainActivity:args"
+
         fun launch(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
@@ -72,11 +74,23 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
-        findViewById<View>(R.id.headerIv).setOnClickListener {
-            if (AppUtils.isFakeLogin(this))
-                OnBoardingActivity.launchLoginFragment(this)
-            else
-                ProfileActivity.launch(this)
+
+        findViewById<ImageView>(R.id.headerIv).let {
+            val currentUser = AppUtils.getCurrentUser(this)
+
+            GlideApp.with(it)
+                .load(currentUser.profilePicture)
+                .placeholder(R.drawable.illus_default_avatar)
+                .fallback(R.drawable.illus_default_avatar)
+                .transform(CircleCrop())
+                .into(it)
+
+            it.setOnClickListener {
+                if (AppUtils.isFakeLogin(this))
+                    OnBoardingActivity.launchLoginFragment(this)
+                else
+                    ProfileActivity.launch(this)
+            }
         }
 
         fetchRemoteConfigAndUpdate()

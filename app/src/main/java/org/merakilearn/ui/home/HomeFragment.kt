@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initDiscoverClassButton()
         initOtherCourseViewAndData()
+        initUpComingClassesRV()
     }
 
     private fun initOtherCourseViewAndData() {
@@ -57,7 +58,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initMyClassViewAndData() {
-        initUpComingClassesRV()
         fetchMyClassData()
     }
 
@@ -92,7 +92,6 @@ class HomeFragment : Fragment() {
             if (null != it && it.isNotEmpty()) {
                 mBinding.emptyMyClass.visibility = View.GONE
                 mBinding.recyclerviewMyUpcomingClass.visibility = View.VISIBLE
-                mBinding.recyclerviewMyUpcomingClass.addItemDecoration(SpaceItemDecoration(0, requireContext().resources.getDimensionPixelSize(R.dimen.spacing_1x)))
                 mMyUpcomingClassAdapter.submitList(it)
             } else {
                 mBinding.emptyMyClass.visibility = View.VISIBLE
@@ -129,6 +128,7 @@ class HomeFragment : Fragment() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         mBinding.recyclerviewMyUpcomingClass.layoutManager = layoutManager
+        mBinding.recyclerviewMyUpcomingClass.addItemDecoration(SpaceItemDecoration(0, requireContext().resources.getDimensionPixelSize(R.dimen.spacing_2x)))
         mBinding.recyclerviewMyUpcomingClass.adapter = mMyUpcomingClassAdapter
     }
 

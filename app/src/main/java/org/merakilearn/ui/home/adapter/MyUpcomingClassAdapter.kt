@@ -40,8 +40,8 @@ class MyUpcomingClassAdapter(val callback: (MyClass) -> Unit) :
             R.layout.item_class, parent, false
         )
 
-        binding.root.post {
-            binding.root.layoutParams.width = parent.context.resources.getDimensionPixelSize(R.dimen.dimen_width_upcoming)
+        binding.root.layoutParams = binding.root.layoutParams.apply {
+            width = parent.context.resources.getDimensionPixelSize(R.dimen.dimen_width_upcoming)
         }
 
         return binding
