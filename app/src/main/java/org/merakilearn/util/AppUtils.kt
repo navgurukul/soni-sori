@@ -140,27 +140,4 @@ object AppUtils {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         transaction.commitAllowingStateLoss()
     }
-
-    fun getClassSchedule(classes: Classes): String {
-        val teacher = classes.facilitator?.name
-        return """
-            Mentor - $teacher
-            Date - ${classes.startTime.toDate()}. (${classes.startTime.toDay()}),
-            Time - ${classes.startTime.toTime()} - ${classes.endTime.toTime()}
-        """.trimIndent()
-    }
-
-    fun getAboutClass(classes: Classes?): String {
-        return """
-            ${classes?.description}
-            Class Type -  ${classes?.type}
-        """.trimIndent()
-    }
-
-    fun getAvailableLanguages(data: String): List<Language> {
-        val type: Type = object : TypeToken<List<Language>>() {}.type
-        return Gson().fromJson(data, type)
-    }
-
-
 }

@@ -19,33 +19,6 @@
         <item name="android:layout_margin">@dimen/dimen_5_dp</item>
     </style>
 
-    <style name="text_view_home_title_date">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorRed</item>
-        <item name="android:fontFamily">@font/n_regular</item>
-        <item name="android:layout_marginTop">@dimen/dimen_10_dp</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_5_dp</item>
-        <item name="android:padding">@dimen/dimen_10_dp</item>
-    </style>
-    <style name="text_view_home_title_class">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/colorRed</item>
-        <item name="android:fontFamily">@font/n_bold</item>
-        <item name="android:padding">@dimen/dimen_10_dp</item>
-    </style>
-    <style name="text_view_home_description_class">
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginStart">@dimen/dimen_10_dp</item>
-        <item name="android:fontFamily">@font/n_regular</item>
-    </style>
-    <style name="text_view_home_description_other_class">
-        <item name="android:textSize">16sp</item>
-        <item name="android:paddingStart">@dimen/dimen_5_dp</item>
-        <item name="android:paddingEnd">@dimen/dimen_5_dp</item>
-        <item name="android:fontFamily">@font/n_regular</item>
-        <item name="android:layout_marginStart">@dimen/dimen_5_dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
-    </style>
     <style name="text_view_description">
         <item name="android:textSize">22sp</item>
         <item name="android:padding">@dimen/dimen_10_dp</item>

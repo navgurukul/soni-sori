@@ -2,162 +2,193 @@ package org.merakilearn
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.MenuItem
-import android.view.View
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.core.app.NavUtils
+import androidx.core.app.TaskStackBuilder
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_discover_enroll.*
+import kotlinx.android.synthetic.main.content_class_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.databinding.ActivityDiscoverEnrollBinding
-import org.merakilearn.datasource.network.model.Classes
-import org.merakilearn.ui.home.HomeViewModel
+import org.koin.core.parameter.parametersOf
 import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.common.toolbarColor
+import kotlin.math.abs
+
+@Parcelize
+data class EnrollActivityArgs(
+    val classId: Int,
+    val isEnrolled: Boolean
+) : Parcelable
 
 class EnrollActivity : AppCompatActivity() {
-    private lateinit var mBinding: ActivityDiscoverEnrollBinding
 
     companion object {
-        private const val ARG_KEY_CLASS_ID = "arg_class"
-        private const val ARG_KEY_IS_ENROLLED = "arg_is_enrolled"
+        private const val ENROLL_ACTIVITY_ARGS = "enroll_activity_args"
 
         fun start(
             context: Context,
-            classId: Int?,
+            classId: Int,
             isEnrolled: Boolean
         ) {
             val intent = Intent(context, EnrollActivity::class.java)
-            intent.putExtra(ARG_KEY_CLASS_ID, classId)
-            intent.putExtra(ARG_KEY_IS_ENROLLED, isEnrolled)
+            intent.putExtra(ENROLL_ACTIVITY_ARGS, EnrollActivityArgs(classId, isEnrolled))
             context.startActivity(intent)
         }
     }
 
-    private var classId: Int? = 0
-    private var isEnrolled: Boolean = false
-    private val viewModel: HomeViewModel by viewModel()
-    private var isFromDeepLink = false
+    private val viewModel: EnrollViewModel by viewModel(parameters = {
+        parametersOf(
+            classId, isEnrolled
+        )
+    })
+
+    private var classId = 0
+    private var isEnrolled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_discover_enroll)
+        setContentView(R.layout.activity_discover_enroll)
+
         if (AppUtils.isUserLoggedIn(this)) {
-            parseIntentData()
-        } else
-            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
-
-    }
-
-    private fun parseIntentData() {
-        if (intent.hasExtra(ARG_KEY_CLASS_ID)) {
-            classId = intent.getIntExtra(ARG_KEY_CLASS_ID, 0)
-            isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, false)
-        } else {
-            isFromDeepLink = true
-            val action: String? = intent?.action
-            val data: Uri? = intent?.data
-            val uriString = data.toString()
-            if (action == Intent.ACTION_VIEW) {
-                if (uriString.contains("/class/"))
-                    classId = uriString.split("/").last().toIntOrNull()
-
-            }
-        }
-        fetchClassDataAndShow(classId.toString())
-    }
-
-    private fun fetchClassDataAndShow(last: String) {
-        mBinding.progressBarButton.visibility = View.VISIBLE
-        viewModel.fetchClassData(last).observe(this, Observer {
-            mBinding.progressBarButton.visibility = View.GONE
-            if (it != null) {
-                isEnrolled = intent.getBooleanExtra(ARG_KEY_IS_ENROLLED, it.enrolled)
-                initPageRender(it)
+            if (intent.hasExtra(ENROLL_ACTIVITY_ARGS)) {
+                val enrollActivityArgs =
+                    intent.getParcelableExtra<EnrollActivityArgs>(ENROLL_ACTIVITY_ARGS)
+                        ?: run {
+                            finish()
+                            return@onCreate
+                        }
+                classId = enrollActivityArgs.classId
+                isEnrolled = enrollActivityArgs.isEnrolled
             } else {
-                MainActivity.launch(this)
-            }
-
-        })
-    }
-
-
-    private fun initPageRender(classes: Classes) {
-        initToolBar()
-        initExpandableToolBar(classes)
-        initButtonClick(classes)
-        initUI(classes)
-    }
-
-    private fun initUI(classes: Classes) {
-        mBinding.classDetail.tvClassDetail.text = AppUtils.getClassSchedule(classes)
-        mBinding.classDetail.tvAbout.text = AppUtils.getAboutClass(classes)
-        if (!classes.rules?.en.isNullOrBlank()) {
-            mBinding.classDetail.tvSpecialInstruction.apply {
-                //this.addStyleSheet(Github())
-                //this.loadMarkdown(classes.rules?.en)
-                this.loadFromText(classes.rules?.en)
-            }
-        }
-    }
-
-    private fun initButtonClick(classes: Classes) {
-        if (isEnrolled) {
-            mBinding.enroll.text = getString(R.string.drop_out)
-        }
-        mBinding.enroll.setOnClickListener {
-            mBinding.progressBarButton.visibility = View.VISIBLE
-            viewModel.enrollToClass(classes.id, isEnrolled).observe(this, Observer {
-                mBinding.progressBarButton.visibility = View.GONE
-                if (isEnrolled) {
-                    if (it) {
-                        toast(getString(R.string.log_out_class))
-                        backToPreviousActivity()
-                    } else {
-                        toast(getString(R.string.unable_to_drop))
-                    }
+                val action: String? = intent?.action
+                val data: Uri? = intent?.data
+                val uriString = data.toString()
+                if (action == Intent.ACTION_VIEW && uriString.contains("/class/")) {
+                    classId = uriString.split("/").last().toInt()
                 } else {
-                    if (it) {
-                        toast(getString(R.string.enrolled))
-                        backToPreviousActivity()
-                    } else {
-                        toast(getString(R.string.unable_to_enroll))
-                    }
+                    finish()
+                    return
                 }
-            })
+            }
+        } else {
+            finish()
+            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
+            return
+        }
+
+        viewModel.viewState.observe(this, Observer {
+            updateState(it)
+        })
+
+        viewModel.viewEvents.observe(this, Observer {
+            when (it) {
+                is EnrollViewEvents.ShowToast -> toast(it.toastText)
+                is EnrollViewEvents.CloseScreen -> finish()
+            }
+        })
+
+        enroll.setOnClickListener {
+            viewModel.handle(EnrollViewActions.EnrollToClass)
+        }
+
+        app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val percentage: Double =
+                abs(verticalOffset).toDouble() / collapsingToolbarLayout.height
+            enroll_top_corner.isVisible = percentage <= 0.6
+        })
+
+        initToolBar()
+    }
+
+    private fun updateState(it: EnrollViewState) {
+        progress_bar_button.isVisible = it.isLoading
+        it.about?.let {
+            tvAbout.isVisible = true
+            tvAboutTitle.isVisible = true
+            tvAbout.text = it
+        } ?: run {
+            tvAbout.isVisible = false
+            tvAboutTitle.isVisible = false
+        }
+
+        it.details?.let {
+            tvClassDetail.isVisible = true
+            tvClassDetailTitle.isVisible = true
+            tvClassDetail.text = it
+        } ?: run {
+            tvClassDetail.isVisible = false
+            tvClassDetailTitle.isVisible = false
+        }
+
+        it.type?.let {
+            tvClassType.isVisible = true
+            tvClassType.text = it
+        } ?: run {
+            tvClassType.isVisible = false
+        }
+
+        it.rules?.let {
+            tvSpecialInstruction.isVisible = true
+            tvSpecialInstructionTitle.isVisible = true
+            tvSpecialInstruction.loadFromText(it)
+        } ?: kotlin.run {
+            tvSpecialInstruction.isVisible = false
+            tvSpecialInstructionTitle.isVisible = false
+        }
+
+        it.enrollButton?.let {
+            enroll.isVisible = true
+            enroll.text = it
+        } ?: kotlin.run {
+            enroll.isVisible = false
+        }
+
+        it.title?.let {
+            collapsingToolbarLayout.title = it
         }
     }
 
 
     private fun initToolBar() {
-        setSupportActionBar(mBinding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-    }
-
-    private fun initExpandableToolBar(classes: Classes) {
-        mBinding.toolbarLayout.setExpandedTitleColor(toolbarColor())
-        mBinding.toolbarLayout.setCollapsedTitleTextColor(toolbarColor())
-        mBinding.toolbarLayout.title = classes.title
+        setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeButtonEnabled(true)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home)
-            backToPreviousActivity()
+        if (item.itemId == android.R.id.home) {
+            navigateUp()
+        }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        backToPreviousActivity()
+        navigateUp()
     }
 
-    private fun backToPreviousActivity() {
-        if (isFromDeepLink) {
-            MainActivity.launch(this)
-        } else
+    private fun navigateUp() {
+        val upIntent = NavUtils.getParentActivityIntent(this) ?: run {
             finish()
+            return
+        }
+
+        if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot) {
+            TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities()
+        } else {
+            NavUtils.navigateUpTo(this, upIntent)
+        }
     }
 
 }
