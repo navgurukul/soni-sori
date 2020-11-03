@@ -18,12 +18,4 @@ class HomeViewModel(private val applicationRepo:ApplicationRepo) : ViewModel() {
     fun fetchMyClasses() = liveData {
         emit(applicationRepo.fetchMyClassData())
     }
-
-    fun enrollToClass(classId: Int, enrolled: Boolean) = liveData {
-        emit(applicationRepo.enrollToClass(classId, enrolled))
-    }
-
-    fun fetchClassData(classId: String) = liveData {
-        emit(applicationRepo.fetchClassData(classId))
-    }
 }

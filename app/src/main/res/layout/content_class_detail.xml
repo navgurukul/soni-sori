@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".EnrollActivity"
+    tools:showIn="@layout/activity_discover_enroll">
 
-    <data>
-
-        <variable
-            name="course"
-            type="org.merakilearn.datasource.network.model.Classes" />
-    </data>
-
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".EnrollActivity"
-        tools:showIn="@layout/activity_discover_enroll">
+        android:background="@drawable/rounded_rect"
+        android:paddingStart="@dimen/spacing_4x"
+        android:paddingEnd="@dimen/spacing_4x"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll"
+        <TextView
+            android:id="@+id/tvAboutTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/about"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="?textBrand" />
+
+        <TextView
+            android:id="@+id/tvAbout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rounded_rect"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="?textAppearanceBody2"
+            android:textColor="?textPrimary"
+            android:ellipsize="end"
+            tools:text="This class is for students who are new to meraki and wants to learn programming. You will taught basics " />
 
-            <TextView
-                style="@style/text_view_home_title_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/about" />
+        <TextView
+            android:id="@+id/tvClassDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="?textBrand"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:text="@string/class_detail" />
 
-            <TextView
-                android:id="@+id/tvAbout"
-                style="@style/text_view_home_description_class"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                tools:text="This class is for students who are new to meraki and wants to learn programming. You will taught basics " />
+        <TextView
+            android:id="@+id/tvClassDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="?textAppearanceBody2"
+            android:textColor="?textPrimary"
+            tools:text="Teacher: Anjali\nDateTime: 3rd September,5:00PM-5:45PM\nThursday" />
 
-            <TextView
-                style="@style/text_view_home_title_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/class_detail" />
+        <TextView
+            android:id="@+id/tvSpecialInstructionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="?textBrand"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:text="@string/special_instructions" />
 
-            <TextView
-                android:id="@+id/tvClassDetail"
-                style="@style/text_view_home_description_class"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                tools:text="Teacher: Anjali\nDateTime: 3rd September,5:00PM-5:45PM\nThursday" />
+        <es.dmoral.markdownview.MarkdownView
+            android:id="@+id/tvSpecialInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"/>
 
-            <TextView
-                style="@style/text_view_home_title_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/special_instructions" />
+    </LinearLayout>
 
-            <es.dmoral.markdownview.MarkdownView
-                android:id="@+id/tvSpecialInstruction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10_dp"
-                android:padding="@dimen/dimen_5_dp"
-                />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-
-</layout>
+</androidx.core.widget.NestedScrollView>

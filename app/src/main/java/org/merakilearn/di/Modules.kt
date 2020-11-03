@@ -10,6 +10,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.merakilearn.BuildConfig
+import org.merakilearn.EnrollViewModel
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.Config
@@ -31,6 +32,10 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { WelcomeViewModel(get(), get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
+    viewModel { (classId : Int, isEnrolled: Boolean) -> EnrollViewModel(classId = classId,
+        isEnrolled = isEnrolled,
+        stringProvider = get(),
+        applicationRepo = get()) }
 }
 
 val factoryModule = module {
@@ -99,7 +104,7 @@ val repositoryModule = module {
         )
     }
 
-    single { provideAppRepo(get(), androidApplication(),get(), get()) }
+    single { provideAppRepo(get(), androidApplication(), get(), get()) }
     single { Config() }
 }
 val appModules = arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule)

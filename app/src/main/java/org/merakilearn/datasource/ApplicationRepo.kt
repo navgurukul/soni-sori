@@ -85,11 +85,11 @@ class ApplicationRepo(
 
     }
 
-    suspend fun fetchClassData(classId: String?): Classes? {
+    suspend fun fetchClassData(classId: Int): Classes? {
         return try {
             val response = applicationApi.fetchClassDataAsync(
                 AppUtils.getAuthToken(application),
-                classId?.toIntOrNull()
+                classId
             )
             response
         } catch (ex: Exception) {
