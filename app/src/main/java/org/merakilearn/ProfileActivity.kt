@@ -5,23 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
@@ -30,12 +22,10 @@ import org.navgurukul.learn.ui.common.toast
 class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
     private val viewModel: LoginViewModel by viewModel()
-    private var mGoogleSignInClient: GoogleSignInClient? = null
     private lateinit var user: LoginResponse.User
     private var isFromDeepLink = false
 
     companion object {
-        private const val RC_SIGN_IN = 9001
         fun launch(context: Context) {
             val intent = Intent(context, ProfileActivity::class.java)
             context.startActivity(intent)
@@ -48,7 +38,6 @@ class ProfileActivity : AppCompatActivity() {
         if (AppUtils.isUserLoggedIn(this) && !AppUtils.isFakeLogin(this)) {
             initIntentFilter()
             initLinkButton()
-            initGoogleSignInOption()
             user = AppUtils.getCurrentUser(this)
             initToolBar()
             mBinding.user = user
@@ -151,58 +140,6 @@ class ProfileActivity : AppCompatActivity() {
             } else
                 toast(getString(R.string.unable_to_update))
         })
-    }
-
-
-    private fun initGoogleSignInOption() {
-        val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(getString(R.string.server_client_id))
-                .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
-
-
-    private fun signIn() {
-        val signInIntent = mGoogleSignInClient!!.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task =
-                GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            getBackendServerToken(account?.idToken)
-        } catch (e: ApiException) {
-            Log.e(LoginFragment.TAG, "signInResult:failed code=", e)
-            toast(getString(R.string.unable_to_sign))
-        }
-    }
-
-    private fun getBackendServerToken(idToken: String?) {
-        toggleProgressBarVisibility(View.VISIBLE)
-        viewModel.initLoginServer(idToken).observe(this, Observer {
-            toggleProgressBarVisibility(View.GONE)
-            proceedWithSignInResult(it)
-        })
-    }
-
-    private fun proceedWithSignInResult(it: Boolean) {
-        if (it) {
-            toast(getString(R.string.account_linked_successfully))
-            MainActivity.launch(this)
-        } else
-            toast(getString(R.string.unable_to_sign))
     }
 
     private fun toggleProgressBarVisibility(visibiltiy: Int) {

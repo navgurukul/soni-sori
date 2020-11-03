@@ -9,7 +9,9 @@ data class LoginResponse(
     @SerializedName("user")
     var user: User,
     @SerializedName("room_id")
-    val roomId: String
+    val roomId: String,
+    @SerializedName("is_first_time")
+    val is_first_time: Boolean
 ) {
     data class User(
         @SerializedName("chat_id")
