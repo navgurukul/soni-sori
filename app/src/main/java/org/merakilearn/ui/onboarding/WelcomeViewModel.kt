@@ -30,8 +30,14 @@ class WelcomeViewModel(
     private fun loginWithAuthToken(authToken: String) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            if (applicationRepo.loginWithAuthToken(authToken)) {
-                _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
+            val loginResponse = applicationRepo.loginWithAuthToken(authToken)
+            setState { copy(isLoading = false) }
+            if (loginResponse != null) {
+                if (loginResponse.is_first_time) {
+                    observeInitialSync(loginResponse.roomId)
+                } else {
+                    _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
+                }
             } else {
                 _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }

@@ -137,7 +137,7 @@ class LoginFragment : Fragment() {
         toggleProgressBarVisibility(View.VISIBLE)
         viewModel.initLoginServer(idToken).observe(this, Observer {
             toggleProgressBarVisibility(View.GONE)
-            if (it) {
+            if (it != null) {
                 MainActivity.launch(requireContext())
             } else
                 toast(getString(R.string.email_already_used))

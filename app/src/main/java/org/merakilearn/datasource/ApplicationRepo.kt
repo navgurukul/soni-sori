@@ -26,7 +26,7 @@ class ApplicationRepo(
     private val authenticationRepository: AuthenticationRepository
 ) {
 
-    suspend fun loginWithAuthToken(authToken: String?): Boolean {
+    suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
             val isFakeLogin = AppUtils.isFakeLogin(application)
             val loginRequest = LoginRequest(authToken)
@@ -38,10 +38,10 @@ class ApplicationRepo(
             authenticationRepository.login(response.user.chatId, response.user.chatPassword)
             if (isFakeLogin)
                 AppUtils.resetFakeLogin(application)
-            true
+            response
         } catch (ex: Exception) {
             ex.printStackTrace()
-            false
+            null
         }
     }
 
