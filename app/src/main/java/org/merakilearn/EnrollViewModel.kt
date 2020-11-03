@@ -30,7 +30,7 @@ class EnrollViewModel(private val classId: Int,
                     stringProvider.getString(R.string.enroll_to_class)
                 }
                 val teacherName =  classes.facilitator?.name ?: stringProvider.getString(R.string.unavailable)
-                val date = "${classes.startTime.toDate()}. (${classes.startTime.toDay()}"
+                val date = "${classes.startTime.toDate()}. (${classes.startTime.toDay()})"
                 val time = "${classes.startTime.toTime()} - ${classes.endTime.toTime()}"
                 val dateAndTiming = stringProvider.getString(R.string.enroll_date_and_time, teacherName, date, time)
                 setState { copy(isLoading = false, showError = false, enrollButton = buttonText,
