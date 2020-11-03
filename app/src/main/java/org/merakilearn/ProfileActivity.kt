@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -88,10 +89,18 @@ class ProfileActivity : AppCompatActivity() {
             showLogOutDialog()
         }
 
+        val requestOptions = RequestOptions()
+            .centerCrop()
+            .transform(CircleCrop())
+
+        val thumbnail= GlideApp.with(this)
+            .load(R.drawable.illus_default_avatar)
+            .apply(requestOptions)
+
         GlideApp.with(mBinding.ivProfile)
             .load(user.profilePicture)
-            .placeholder(R.drawable.illus_default_avatar)
-            .fallback(R.drawable.illus_default_avatar)
+            .apply(requestOptions)
+            .thumbnail(thumbnail)
             .transform(CircleCrop())
             .into(mBinding.ivProfile)
     }
