@@ -13,13 +13,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -77,29 +75,38 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         findViewById<ImageView>(R.id.headerIv).let {
-            val currentUser = AppUtils.getCurrentUser(this)
-
-            val requestOptions = RequestOptions()
-                .centerCrop()
-                .transform(CircleCrop())
-
-            val thumbnail= GlideApp.with(this)
-                .load(R.drawable.illus_default_avatar)
-                .apply(requestOptions)
-
-            GlideApp.with(it)
-                .load(currentUser.profilePicture)
-                .apply(requestOptions)
-                .thumbnail(thumbnail)
-                .transform(CircleCrop())
-                .into(it)
-
-            it.setOnClickListener {
-                if (AppUtils.isFakeLogin(this))
-                    OnBoardingActivity.launchLoginFragment(this)
-                else
-                    ProfileActivity.launch(this)
+            AppUtils.getCurrentUser(this)?.let {currentUser->
+                setUserThumbnail(it, currentUser)
+            }?.run {
+                OnBoardingActivity.restartApp(this@MainActivity,OnBoardingActivityArgs(true))
             }
+        }
+    }
+
+    private fun setUserThumbnail(
+        it: ImageView,
+        currentUser: LoginResponse.User
+    ) {
+        val requestOptions = RequestOptions()
+            .centerCrop()
+            .transform(CircleCrop())
+
+        val thumbnail = GlideApp.with(this)
+            .load(R.drawable.illus_default_avatar)
+            .apply(requestOptions)
+
+        GlideApp.with(it)
+            .load(currentUser.profilePicture)
+            .apply(requestOptions)
+            .thumbnail(thumbnail)
+            .transform(CircleCrop())
+            .into(it)
+
+        it.setOnClickListener {
+            if (AppUtils.isFakeLogin(this))
+                OnBoardingActivity.launchLoginFragment(this)
+            else
+                ProfileActivity.launch(this)
         }
     }
 

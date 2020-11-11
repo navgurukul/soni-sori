@@ -7,11 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import org.merakilearn.datasource.network.model.Classes
-import org.merakilearn.datasource.network.model.Language
 import org.merakilearn.datasource.network.model.LoginResponse
-import java.lang.reflect.Type
 
 object AppUtils {
 
@@ -34,7 +30,7 @@ object AppUtils {
         return preferenceManager.getBoolean(KEY_IS_FAKE_LOGIN, false)
     }
 
-    fun getCurrentUser(application: Context): LoginResponse.User {
+    fun getCurrentUser(application: Context): LoginResponse.User? {
         val userLoginResponseString = PreferenceManager.getDefaultSharedPreferences(application)
             .getString(KEY_USER_RESPONSE, "")
         return if (userLoginResponseString.isNullOrEmpty() && isFakeLogin(application)) {
@@ -45,8 +41,12 @@ object AppUtils {
                 fakeUserLoginResponseString,
                 LoginResponse.User::class.java
             )
-        } else
-            Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
+        } else {
+            if (userLoginResponseString.isNullOrEmpty()) {
+                return null
+            } else
+                Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
+        }
     }
 
     fun getFakeLoginResponseId(application: Application): Int? {
@@ -116,27 +116,6 @@ object AppUtils {
     ) {
         val transaction = fragmentManager.beginTransaction()
         transaction.replace(frameId, fragment, tag)
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        transaction.commitAllowingStateLoss()
-    }
-
-
-    fun changeFragment(
-        fragmentManager: FragmentManager,
-        fragment: Fragment,
-        frameId: Int,
-        isAddToBackStack: Boolean,
-        tag: String?
-    ) {
-        val transaction = fragmentManager.beginTransaction()
-        if (null != tag) {
-            transaction.replace(frameId, fragment, tag)
-        } else {
-            transaction.replace(frameId, fragment)
-        }
-        if (isAddToBackStack) {
-            transaction.addToBackStack(fragment.javaClass.simpleName)
-        }
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         transaction.commitAllowingStateLoss()
     }

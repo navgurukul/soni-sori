@@ -38,13 +38,19 @@ class ProfileActivity : AppCompatActivity() {
         if (AppUtils.isUserLoggedIn(this) && !AppUtils.isFakeLogin(this)) {
             initIntentFilter()
             initLinkButton()
-            user = AppUtils.getCurrentUser(this)
-            initToolBar()
-            mBinding.user = user
+            AppUtils.getCurrentUser(this)?.let {
+                user = it
+                initToolBar()
+                mBinding.user = user
+                mBinding.tvAppVersion.text =
+                    getString(R.string.app_version, BuildConfig.VERSION_NAME)
+            }?.run {
+                OnBoardingActivity.restartApp(this@ProfileActivity, OnBoardingActivityArgs(true))
+            }
         } else {
             OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
         }
-        mBinding.tvAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+
     }
 
     private fun initIntentFilter() {
