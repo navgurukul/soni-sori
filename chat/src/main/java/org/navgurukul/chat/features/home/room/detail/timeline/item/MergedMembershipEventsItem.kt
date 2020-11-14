@@ -58,7 +58,6 @@ abstract class MergedMembershipEventsItem : BasedMergedItem<MergedMembershipEven
         override val isCollapsed: Boolean,
         override val mergeData: List<Data>,
         override val avatarRenderer: AvatarRenderer,
-        override val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback? = null,
         override val onCollapsedStateChanged: (Boolean) -> Unit
     ) : BasedMergedItem.Attributes
 }

@@ -18,10 +18,6 @@ abstract class DefaultItem : BaseEventItem<DefaultItem.Holder>() {
     @EpoxyAttribute
     lateinit var attributes: Attributes
 
-    private val _readReceiptsClickListener = DebouncedClickListener(View.OnClickListener {
-        attributes.readReceiptsCallback?.onReadReceiptsClicked(attributes.informationData.readReceipts)
-    })
-
     override fun bind(holder: Holder) {
         super.bind(holder)
         holder.messageTextView.text = attributes.text
@@ -45,8 +41,7 @@ abstract class DefaultItem : BaseEventItem<DefaultItem.Holder>() {
         val avatarRenderer: AvatarRenderer,
         val informationData: MessageInformationData,
         val text: CharSequence,
-        val itemLongClickListener: View.OnLongClickListener? = null,
-        val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback? = null
+        val itemLongClickListener: View.OnLongClickListener? = null
     )
 
     companion object {

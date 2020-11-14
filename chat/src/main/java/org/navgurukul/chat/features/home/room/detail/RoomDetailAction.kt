@@ -26,7 +26,7 @@ sealed class RoomDetailAction : ViewModelAction {
     object AcceptInvite : RoomDetailAction()
     object RejectInvite : RoomDetailAction()
 //
-//    object EnterTrackingUnreadMessagesState : RoomDetailAction()
+    object EnterTrackingUnreadMessagesState : RoomDetailAction()
     object ExitTrackingUnreadMessagesState : RoomDetailAction()
 //
     data class EnterEditMode(val eventId: String, val text: String) : RoomDetailAction()

@@ -33,9 +33,7 @@ class MessageItemAttributesFactory (
             memberClickListener = DebouncedClickListener(View.OnClickListener {
                 callback?.onMemberNameClicked(informationData)
             }),
-            reactionPillCallback = callback,
             avatarCallback = callback,
-            readReceiptsCallback = callback,
             emojiTypeFace = emojiCompatFontProvider.typeface
         )
     }

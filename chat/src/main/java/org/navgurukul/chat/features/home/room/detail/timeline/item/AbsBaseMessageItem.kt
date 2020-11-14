@@ -22,10 +22,6 @@ abstract class AbsBaseMessageItem<H : AbsBaseMessageItem.Holder> : BaseEventItem
 
     abstract val baseAttributes: Attributes
 
-    private val _readReceiptsClickListener = DebouncedClickListener(View.OnClickListener {
-        baseAttributes.readReceiptsCallback?.onReadReceiptsClicked(baseAttributes.informationData.readReceipts)
-    })
-
     open fun shouldShowReactionAtBottom(): Boolean {
         return true
     }
@@ -65,7 +61,5 @@ abstract class AbsBaseMessageItem<H : AbsBaseMessageItem.Holder> : BaseEventItem
         val messageColorProvider: MessageColorProvider
         val itemLongClickListener: View.OnLongClickListener?
         val itemClickListener: View.OnClickListener?
-        val reactionPillCallback: TimelineEventController.ReactionPillCallback?
-        val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback?
     }
 }

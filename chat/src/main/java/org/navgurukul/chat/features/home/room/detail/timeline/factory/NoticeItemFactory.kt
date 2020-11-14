@@ -29,7 +29,6 @@ class NoticeItemFactory(
             itemLongClickListener = View.OnLongClickListener { view ->
                 callback?.onEventLongClicked(informationData, null, view) ?: false
             },
-            readReceiptsCallback = callback,
             avatarClickListener = { callback?.onAvatarClicked(informationData) }
         )
         return NoticeItem_()

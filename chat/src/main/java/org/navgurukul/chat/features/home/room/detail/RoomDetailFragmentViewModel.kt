@@ -150,7 +150,7 @@ class RoomDetailFragmentViewModel(
             is RoomDetailAction.MarkAllAsRead                    -> handleMarkAllAsRead()
 //            is RoomDetailAction.ReportContent                    -> handleReportContent(action)
 //            is RoomDetailAction.IgnoreUser                       -> handleIgnoreUser(action)
-//            is RoomDetailAction.EnterTrackingUnreadMessagesState -> startTrackingUnreadMessages()
+            is RoomDetailAction.EnterTrackingUnreadMessagesState -> startTrackingUnreadMessages()
             is RoomDetailAction.ExitTrackingUnreadMessagesState  -> stopTrackingUnreadMessages()
             is RoomDetailAction.ReplyToOptions                   -> handleReplyToOptions(action)
 //            is RoomDetailAction.AcceptVerificationRequest        -> handleAcceptVerification(action)

@@ -98,9 +98,7 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
         override val itemLongClickListener: View.OnLongClickListener? = null,
         override val itemClickListener: View.OnClickListener? = null,
         val memberClickListener: View.OnClickListener? = null,
-        override val reactionPillCallback: TimelineEventController.ReactionPillCallback? = null,
         val avatarCallback: TimelineEventController.AvatarCallback? = null,
-        override val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback? = null,
         val emojiTypeFace: Typeface? = null
     ) : AbsBaseMessageItem.Attributes {
 

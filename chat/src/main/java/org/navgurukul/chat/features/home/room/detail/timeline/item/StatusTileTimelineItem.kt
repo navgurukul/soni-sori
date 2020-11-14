@@ -72,8 +72,6 @@ abstract class StatusTileTimelineItem : AbsBaseMessageItem<StatusTileTimelineIte
         override val messageColorProvider: MessageColorProvider,
         override val itemLongClickListener: View.OnLongClickListener? = null,
         override val itemClickListener: View.OnClickListener? = null,
-        override val reactionPillCallback: TimelineEventController.ReactionPillCallback? = null,
-        override val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback? = null,
         val emojiTypeFace: Typeface? = null
     ) : AbsBaseMessageItem.Attributes
 

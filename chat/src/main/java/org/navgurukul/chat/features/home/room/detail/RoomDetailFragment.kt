@@ -448,22 +448,6 @@ class RoomDetailFragment : BaseFragment(),
         }
     }
 
-    override fun onLoadMore(direction: Timeline.Direction) {
-        viewModel.handle(RoomDetailAction.LoadMoreTimelineEvents(direction))
-    }
-
-    override fun onEventInvisible(event: TimelineEvent) {
-        viewModel.handle(RoomDetailAction.TimelineEventTurnsInvisible(event))
-    }
-
-    override fun onEventVisible(event: TimelineEvent) {
-        viewModel.handle(RoomDetailAction.TimelineEventTurnsVisible(event))
-    }
-
-    override fun onRoomCreateLinkClicked(url: String) {
-    }
-
-
     override fun onEditedDecorationClicked(informationData: MessageInformationData) {
     }
 
@@ -498,19 +482,6 @@ class RoomDetailFragment : BaseFragment(),
         return true
     }
 
-    override fun onClickOnReactionPill(
-        informationData: MessageInformationData,
-        reaction: String,
-        on: Boolean
-    ) {
-    }
-
-    override fun onLongClickOnReactionPill(
-        informationData: MessageInformationData,
-        reaction: String
-    ) {
-    }
-
     override fun onAvatarClicked(informationData: MessageInformationData) {
         openRoomMemberProfile(informationData.senderId)
     }
@@ -536,10 +507,9 @@ class RoomDetailFragment : BaseFragment(),
         return true
     }
 
-    override fun onReadReceiptsClicked(readReceipts: List<ReadReceiptData>) {
-    }
-
     override fun onReadMarkerVisible() {
+        updateJumpToReadMarkerViewVisibility()
+        viewModel.handle(RoomDetailAction.EnterTrackingUnreadMessagesState)
     }
 
     override fun onImageMessageClicked(

@@ -53,9 +53,7 @@ class EncryptionItemFactory (
                                 messageColorProvider = messageColorProvider,
                                 emojiTypeFace = attributes.emojiTypeFace,
                                 itemClickListener = attributes.itemClickListener,
-                                itemLongClickListener = attributes.itemLongClickListener,
-                                reactionPillCallback = attributes.reactionPillCallback,
-                                readReceiptsCallback = attributes.readReceiptsCallback
+                                itemLongClickListener = attributes.itemLongClickListener
                         )
                 )
                 .highlighted(highlight)

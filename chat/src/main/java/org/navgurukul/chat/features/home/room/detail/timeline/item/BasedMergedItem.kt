@@ -55,7 +55,6 @@ abstract class BasedMergedItem<H : BasedMergedItem.Holder> : BaseEventItem<H>() 
         val isCollapsed: Boolean
         val mergeData: List<Data>
         val avatarRenderer: AvatarRenderer
-        val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback?
         val onCollapsedStateChanged: (Boolean) -> Unit
     }
 
