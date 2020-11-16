@@ -15,7 +15,7 @@ sealed class RoomDetailFragmentViewEvents : ViewEvents {
     data class OnNewTimelineEvents(val eventIds: List<String>) : RoomDetailFragmentViewEvents()
 
     data class ActionSuccess(val action: RoomDetailAction) : RoomDetailFragmentViewEvents()
-//    data class ActionFailure(val action: RoomDetailAction, val throwable: Throwable) : RoomDetailFragmentViewEvents()
+    data class ActionFailure(val action: RoomDetailAction, val throwable: Throwable) : RoomDetailFragmentViewEvents()
 
     data class ShowMessage(val message: String) : RoomDetailFragmentViewEvents()
     data class ShowE2EErrorMessage(val withHeldCode: WithHeldCode?) : RoomDetailFragmentViewEvents()

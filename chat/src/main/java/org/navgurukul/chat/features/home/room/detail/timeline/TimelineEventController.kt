@@ -40,7 +40,7 @@ class TimelineEventController(
     EpoxyController.Interceptor {
 
 
-    interface Callback : BaseCallback, AvatarCallback, UrlClickCallback, ReadReceiptsCallback{
+    interface Callback : BaseCallback, AvatarCallback, ReactionPillCallback, UrlClickCallback, ReadReceiptsCallback{
         fun onEditedDecorationClicked(informationData: MessageInformationData)
         fun onImageMessageClicked(
             messageImageContent: MessageImageInfoContent,
@@ -57,6 +57,11 @@ class TimelineEventController(
 
         // TODO move all callbacks to this?
         fun onTimelineItemAction(itemAction: RoomDetailAction)
+    }
+
+    interface ReactionPillCallback {
+        fun onClickOnReactionPill(informationData: MessageInformationData, reaction: String, on: Boolean)
+        fun onLongClickOnReactionPill(informationData: MessageInformationData, reaction: String)
     }
 
     interface BaseCallback {

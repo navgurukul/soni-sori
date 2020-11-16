@@ -15,38 +15,38 @@ sealed class RoomDetailAction : ViewModelAction {
     data class TimelineEventTurnsVisible(val event: TimelineEvent) : RoomDetailAction()
     data class TimelineEventTurnsInvisible(val event: TimelineEvent) : RoomDetailAction()
     data class LoadMoreTimelineEvents(val direction: Timeline.Direction) : RoomDetailAction()
-//    data class SendReaction(val targetEventId: String, val reaction: String) : RoomDetailAction()
-//    data class UndoReaction(val targetEventId: String, val reaction: String, val reason: String? = "") : RoomDetailAction()
-//    data class RedactAction(val targetEventId: String, val reason: String? = "") : RoomDetailAction()
-//    data class UpdateQuickReactAction(val targetEventId: String, val selectedReaction: String, val add: Boolean) : RoomDetailAction()
+    data class SendReaction(val targetEventId: String, val reaction: String) : RoomDetailAction()
+    data class UndoReaction(val targetEventId: String, val reaction: String, val reason: String? = "") : RoomDetailAction()
+    data class RedactAction(val targetEventId: String, val reason: String? = "") : RoomDetailAction()
+    data class UpdateQuickReactAction(val targetEventId: String, val selectedReaction: String, val add: Boolean) : RoomDetailAction()
     data class NavigateToEvent(val eventId: String, val highlight: Boolean) : RoomDetailAction()
     object MarkAllAsRead : RoomDetailAction()
     data class DownloadOrOpen(val eventId: String, val messageFileContent: MessageWithAttachmentContent) : RoomDetailAction()
     data class HandleTombstoneEvent(val event: Event) : RoomDetailAction()
     object AcceptInvite : RoomDetailAction()
     object RejectInvite : RoomDetailAction()
-//
+
     object EnterTrackingUnreadMessagesState : RoomDetailAction()
     object ExitTrackingUnreadMessagesState : RoomDetailAction()
-//
+
     data class EnterEditMode(val eventId: String, val text: String) : RoomDetailAction()
     data class EnterQuoteMode(val eventId: String, val text: String) : RoomDetailAction()
     data class EnterReplyMode(val eventId: String, val text: String) : RoomDetailAction()
     data class ExitSpecialMode(val text: String) : RoomDetailAction()
-//
-//    data class ResendMessage(val eventId: String) : RoomDetailAction()
-//    data class RemoveFailedEcho(val eventId: String) : RoomDetailAction()
-//
+
+    data class ResendMessage(val eventId: String) : RoomDetailAction()
+    data class RemoveFailedEcho(val eventId: String) : RoomDetailAction()
+
     data class ReplyToOptions(val eventId: String, val optionIndex: Int, val optionValue: String) : RoomDetailAction()
-//
-//    data class ReportContent(
-//            val eventId: String,
-//            val senderId: String?,
-//            val reason: String,
-//            val spam: Boolean = false,
-//            val inappropriate: Boolean = false) : RoomDetailAction()
-//
-//    data class IgnoreUser(val userId: String?) : RoomDetailAction()
+
+    data class ReportContent(
+            val eventId: String,
+            val senderId: String?,
+            val reason: String,
+            val spam: Boolean = false,
+            val inappropriate: Boolean = false) : RoomDetailAction()
+
+    data class IgnoreUser(val userId: String?) : RoomDetailAction()
 //
 //    object ClearSendQueue : RoomDetailAction()
 //    object ResendAll : RoomDetailAction()

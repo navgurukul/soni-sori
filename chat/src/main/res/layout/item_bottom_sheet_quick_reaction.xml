@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_2x">
+
+    <TextView
+        android:id="@+id/quickReaction0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="👍" />
+
+    <TextView
+        android:id="@+id/quickReaction1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="👎" />
+
+    <TextView
+        android:id="@+id/quickReaction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="😀" />
+
+
+    <TextView
+        android:id="@+id/quickReaction3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="🎉" />
+
+    <TextView
+        android:id="@+id/quickReaction4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="😕" />
+
+    <TextView
+        android:id="@+id/quickReaction5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="♥" />
+
+    <TextView
+        android:id="@+id/quickReaction6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="🍆" />
+
+    <TextView
+        android:id="@+id/quickReaction7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x"
+        android:textColor="?textSecondary"
+        android:textAppearance="?textAppearanceHeadline5"
+        tools:ignore="MissingConstraints"
+        tools:text="👀" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/reactionsFlowHelper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="quickReaction0,quickReaction1,quickReaction2,quickReaction3,quickReaction4,quickReaction5,quickReaction6,quickReaction7"
+        app:flow_horizontalGap="0dp"
+        app:flow_horizontalStyle="spread"
+        app:flow_verticalBias="0"
+        app:flow_verticalGap="@dimen/spacing_1x"
+        app:flow_wrapMode="chain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,7 @@ import im.vector.matrix.android.api.MatrixCallback
 import im.vector.matrix.android.api.NoOpMatrixCallback
 import im.vector.matrix.android.api.query.QueryStringValue
 import im.vector.matrix.android.api.session.crypto.MXCryptoError
-import im.vector.matrix.android.api.session.events.model.EventType
-import im.vector.matrix.android.api.session.events.model.toContent
-import im.vector.matrix.android.api.session.events.model.toModel
+import im.vector.matrix.android.api.session.events.model.*
 import im.vector.matrix.android.api.session.file.FileService
 import im.vector.matrix.android.api.session.room.members.ChangeMembershipState
 import im.vector.matrix.android.api.session.room.members.roomMemberQueryParams
@@ -36,6 +34,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
@@ -130,12 +130,12 @@ class RoomDetailFragmentViewModel(
             is RoomDetailAction.TimelineEventTurnsVisible        -> handleEventVisible(action)
             is RoomDetailAction.TimelineEventTurnsInvisible      -> handleEventInvisible(action)
             is RoomDetailAction.LoadMoreTimelineEvents           -> handleLoadMore(action)
-//            is RoomDetailAction.SendReaction                     -> handleSendReaction(action)
+            is RoomDetailAction.SendReaction                     -> handleSendReaction(action)
             is RoomDetailAction.AcceptInvite                     -> handleAcceptInvite()
             is RoomDetailAction.RejectInvite                     -> handleRejectInvite()
-//            is RoomDetailAction.RedactAction                     -> handleRedactEvent(action)
-//            is RoomDetailAction.UndoReaction                     -> handleUndoReact(action)
-//            is RoomDetailAction.UpdateQuickReactAction           -> handleUpdateQuickReaction(action)
+            is RoomDetailAction.RedactAction                     -> handleRedactEvent(action)
+            is RoomDetailAction.UndoReaction                     -> handleUndoReact(action)
+            is RoomDetailAction.UpdateQuickReactAction           -> handleUpdateQuickReaction(action)
             is RoomDetailAction.ExitSpecialMode                  -> handleExitSpecialMode(action)
             is RoomDetailAction.EnterEditMode                    -> handleEditAction(action)
             is RoomDetailAction.EnterQuoteMode                   -> handleQuoteAction(action)
@@ -143,13 +143,13 @@ class RoomDetailFragmentViewModel(
             is RoomDetailAction.DownloadOrOpen                   -> handleOpenOrDownloadFile(action)
             is RoomDetailAction.NavigateToEvent                  -> handleNavigateToEvent(action)
             is RoomDetailAction.HandleTombstoneEvent             -> handleTombstoneEvent(action)
-//            is RoomDetailAction.ResendMessage                    -> handleResendEvent(action)
-//            is RoomDetailAction.RemoveFailedEcho                 -> handleRemove(action)
+            is RoomDetailAction.ResendMessage                    -> handleResendEvent(action)
+            is RoomDetailAction.RemoveFailedEcho                 -> handleRemove(action)
 //            is RoomDetailAction.ClearSendQueue                   -> handleClearSendQueue()
 //            is RoomDetailAction.ResendAll                        -> handleResendAll()
             is RoomDetailAction.MarkAllAsRead                    -> handleMarkAllAsRead()
-//            is RoomDetailAction.ReportContent                    -> handleReportContent(action)
-//            is RoomDetailAction.IgnoreUser                       -> handleIgnoreUser(action)
+            is RoomDetailAction.ReportContent                    -> handleReportContent(action)
+            is RoomDetailAction.IgnoreUser                       -> handleIgnoreUser(action)
             is RoomDetailAction.EnterTrackingUnreadMessagesState -> startTrackingUnreadMessages()
             is RoomDetailAction.ExitTrackingUnreadMessagesState  -> stopTrackingUnreadMessages()
             is RoomDetailAction.ReplyToOptions                   -> handleReplyToOptions(action)
@@ -606,6 +606,29 @@ class RoomDetailFragmentViewModel(
                     _viewEvents.setValue((RoomDetailFragmentViewEvents.MessageSent))
                     popDraft()
                 }
+                is SendMode.QUOTE   -> {
+                    val messageContent: MessageContent? =
+                        state.sendMode.timelineEvent.annotations?.editSummary?.aggregatedContent.toModel()
+                            ?: state.sendMode.timelineEvent.root.getClearContent().toModel()
+                    val textMsg = messageContent?.body
+
+                    val finalText = legacyRiotQuoteText(textMsg, action.text.toString())
+
+                    // TODO check for pills?
+
+                    // TODO Refactor this, just temporary for quotes
+                    val parser = Parser.builder().build()
+                    val document = parser.parse(finalText)
+                    val renderer = HtmlRenderer.builder().build()
+                    val htmlText = renderer.render(document)
+                    if (finalText == htmlText) {
+                        room.sendTextMessage(finalText)
+                    } else {
+                        room.sendFormattedTextMessage(finalText, htmlText)
+                    }
+                    _viewEvents.setValue(RoomDetailFragmentViewEvents.MessageSent)
+                    popDraft()
+                }
                 is SendMode.REPLY   -> {
                     state.sendMode.timelineEvent.let {
                         room.replyToMessage(it, action.text.toString(), action.autoMarkdown)
@@ -614,6 +637,26 @@ class RoomDetailFragmentViewModel(
                     }
                 }
             }
+        }
+    }
+
+    private fun legacyRiotQuoteText(quotedText: String?, myText: String): String {
+        val messageParagraphs = quotedText?.split("\n\n".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
+        return buildString {
+            if (messageParagraphs != null) {
+                for (i in messageParagraphs.indices) {
+                    if (messageParagraphs[i].isNotBlank()) {
+                        append("> ")
+                        append(messageParagraphs[i])
+                    }
+
+                    if (i != messageParagraphs.lastIndex) {
+                        append("\n\n")
+                    }
+                }
+            }
+            append("\n\n")
+            append(myText)
         }
     }
 
@@ -751,6 +794,85 @@ class RoomDetailFragmentViewModel(
 
     private fun handleRejectInvite() {
         room.leave(null, NoOpMatrixCallback())
+    }
+
+    private fun handleRedactEvent(action: RoomDetailAction.RedactAction) {
+        val event = room.getTimeLineEvent(action.targetEventId) ?: return
+        room.redactEvent(event.root, action.reason)
+    }
+
+    private fun handleUndoReact(action: RoomDetailAction.UndoReaction) {
+        room.undoReaction(action.targetEventId, action.reaction)
+    }
+
+    private fun handleResendEvent(action: RoomDetailAction.ResendMessage) {
+        val targetEventId = action.eventId
+        room.getTimeLineEvent(targetEventId)?.let {
+            // State must be UNDELIVERED or Failed
+            if (!it.root.sendState.hasFailed()) {
+                Timber.e("Cannot resend message, it is not failed, Cancel first")
+                return
+            }
+            when {
+                it.root.isTextMessage()  -> room.resendTextMessage(it)
+                it.root.isImageMessage() -> room.resendMediaMessage(it)
+                else                     -> {
+                    // TODO
+                }
+            }
+        }
+    }
+
+    private fun handleRemove(action: RoomDetailAction.RemoveFailedEcho) {
+        val targetEventId = action.eventId
+        room.getTimeLineEvent(targetEventId)?.let {
+            // State must be UNDELIVERED or Failed
+            if (!it.root.sendState.hasFailed()) {
+                Timber.e("Cannot resend message, it is not failed, Cancel first")
+                return
+            }
+            room.deleteFailedEcho(it)
+        }
+    }
+
+    private fun handleReportContent(action: RoomDetailAction.ReportContent) {
+        room.reportContent(action.eventId, -100, action.reason, object : MatrixCallback<Unit> {
+            override fun onSuccess(data: Unit) {
+                _viewEvents.setValue(RoomDetailFragmentViewEvents.ActionSuccess(action))
+            }
+
+            override fun onFailure(failure: Throwable) {
+                _viewEvents.setValue(RoomDetailFragmentViewEvents.ActionFailure(action, failure))
+            }
+        })
+    }
+
+    private fun handleSendReaction(action: RoomDetailAction.SendReaction) {
+        room.sendReaction(action.targetEventId, action.reaction)
+    }
+
+    private fun handleIgnoreUser(action: RoomDetailAction.IgnoreUser) {
+        if (action.userId.isNullOrEmpty()) {
+            return
+        }
+
+        session.ignoreUserIds(listOf(action.userId), object : MatrixCallback<Unit> {
+            override fun onSuccess(data: Unit) {
+                _viewEvents.setValue(RoomDetailFragmentViewEvents.ActionSuccess(action))
+            }
+
+            override fun onFailure(failure: Throwable) {
+                _viewEvents.setValue(RoomDetailFragmentViewEvents.ActionFailure(action, failure))
+            }
+        })
+    }
+
+    private fun handleUpdateQuickReaction(action: RoomDetailAction.UpdateQuickReactAction) {
+        if (action.add) {
+            room.sendReaction(action.targetEventId, action.selectedReaction)
+        } else {
+            room.undoReaction(action.targetEventId, action.selectedReaction)
+        }
     }
 
     private fun handleAcceptInvite() {

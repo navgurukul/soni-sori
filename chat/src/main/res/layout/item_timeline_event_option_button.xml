@@ -22,6 +22,7 @@
         android:layout_marginTop="@dimen/spacing_2x"
         android:layout_marginEnd="@dimen/spacing_6x"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/reactionsContainer"
         app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
@@ -51,5 +52,16 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reactionsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:paddingTop="@dimen/spacing_2x"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_message_preview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/bottomSheetRoomPreviewAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_2x"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/avatar"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/bottomSheetRoomPreviewName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/spacing_2x"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="?textPrimary"
+        android:textAppearance="?textAppearanceEmphasized2"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomSheetRoomPreviewAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/bottomSheetRoomPreviewFavorite"
+        app:layout_constraintStart_toEndOf="@id/bottomSheetRoomPreviewAvatar"
+        app:layout_constraintTop_toTopOf="@id/bottomSheetRoomPreviewAvatar"
+        tools:text="@tools:sample/full_names" />
+
+    <ImageView
+        android:id="@+id/bottomSheetRoomPreviewFavorite"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomSheetRoomPreviewAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/bottomSheetRoomPreviewSettings"
+        app:layout_constraintTop_toTopOf="@id/bottomSheetRoomPreviewAvatar"
+        tools:contentDescription="@string/room_list_quick_actions_favorite_add"
+        tools:src="@drawable/ic_star_24dp"
+        tools:tint="?textSecondary" />
+
+    <ImageView
+        android:id="@+id/bottomSheetRoomPreviewSettings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/room_list_quick_actions_settings"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_room_actions_settings"
+        app:tint="?textSecondary"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomSheetRoomPreviewAvatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottomSheetRoomPreviewAvatar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

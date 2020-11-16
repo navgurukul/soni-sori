@@ -13,6 +13,7 @@ import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.navigator.ChatModuleNavigator
 import org.merakilearn.core.push.FCMServiceDelegate
 import org.navgurukul.chat.EmojiCompatFontProvider
+import org.navgurukul.chat.EmojiCompatWrapper
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.ChatAppOpenDelegate
 import org.navgurukul.chat.core.date.SaralDateFormatter
@@ -29,8 +30,15 @@ import org.navgurukul.chat.features.home.room.TypingHelper
 import org.navgurukul.chat.features.home.room.detail.*
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
+import org.navgurukul.chat.features.home.room.detail.timeline.action.MessageActionState
+import org.navgurukul.chat.features.home.room.detail.timeline.action.MessageActionsController
+import org.navgurukul.chat.features.home.room.detail.timeline.action.MessageActionsViewModel
+import org.navgurukul.chat.features.home.room.detail.timeline.action.MessageSharedActionDataSource
 import org.navgurukul.chat.features.home.room.detail.timeline.factory.*
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
+import org.navgurukul.chat.features.home.room.detail.timeline.reactions.DisplayReactionsViewState
+import org.navgurukul.chat.features.home.room.detail.timeline.reactions.ViewReactionsEpoxyController
+import org.navgurukul.chat.features.home.room.detail.timeline.reactions.ViewReactionsViewModel
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
 import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
 import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
@@ -46,12 +54,18 @@ import org.navgurukul.chat.features.notifications.*
 import org.navgurukul.chat.features.popup.PopupAlertManager
 import org.navgurukul.chat.features.push.ChatFCMServiceDelegate
 import org.navgurukul.chat.features.push.FcmHelper
+import org.navgurukul.chat.features.reactions.*
+import org.navgurukul.chat.features.reactions.data.EmojiDataSource
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
 val viewModelModules = module {
+    viewModel { EmojiSearchResultViewModel(EmojiSearchResultViewState(), get()) }
+    viewModel { EmojiChooserViewModel() }
+    viewModel { (displayReactionsViewState : DisplayReactionsViewState) -> ViewReactionsViewModel(displayReactionsViewState, get(), get()) }
     viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
     viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
+    viewModel { (messageActionState : MessageActionState) -> MessageActionsViewModel(messageActionState, get(), get(), get(), get(),get()) }
     viewModel { (roomDetailViewState : RoomDetailViewState, scope: Scope) -> RoomDetailFragmentViewModel(
         initialState = roomDetailViewState,
         userPreferencesProvider = get(),
@@ -112,6 +126,13 @@ val factoryModule = module {
     single { MatrixHtmlPluginConfigure(androidContext(), get(), get(), get()) }
     single { EmojiCompatFontProvider() }
     single<ErrorFormatter> { ChatErrorFormatter(get()) }
+    single { EmojiDataSource(androidContext().resources) }
+    single { EmojiCompatWrapper(androidContext()) }
+
+    factory { EmojiSearchResultController(get(), get()) }
+    factory { EmojiRecyclerAdapter(get()) }
+
+    factory { ViewReactionsEpoxyController(get(), get()) }
 
     factory { RoomSummaryController(get()) }
     factory { RoomSummaryItemFactory(get(), get(), get(), get()) }
@@ -130,14 +151,15 @@ val factoryModule = module {
         avatarRenderer = get(),
         stringProvider = get()) }
 
-    factory { (scope : Scope) -> VerificationItemFactory(messageColorProvider = get(),
+    factory { (scope : Scope) -> VerificationItemFactory(
+        messageColorProvider = get(),
         messageItemAttributesFactory = get(),
-        avatarSizeProvider = get(),
         userPreferencesProvider = get(),
         stringProvider = get(),
         sessionHolder = get(),
         messageInformationDataFactory = get(parameters = {parametersOf(scope)}),
-        noticeItemFactory = get(parameters = {parametersOf(scope)})) }
+        noticeItemFactory = get(parameters = {parametersOf(scope)})
+    ) }
 
     factory { (scope : Scope) -> RoomCreateItemFactory(noticeItemFactory = get(parameters = {parametersOf(scope)}),
         stringProvider = get(),
@@ -151,11 +173,12 @@ val factoryModule = module {
         attributesFactory = get(),
         chatPreferences = get()) }
 
-    factory { (scope : Scope) -> EncryptionItemFactory(informationDataFactory = get(parameters = {parametersOf(scope)}),
+    factory { (scope : Scope) -> EncryptionItemFactory(
         messageItemAttributesFactory = get(),
         messageColorProvider = get(),
         stringProvider = get(),
-        avatarSizeProvider = get()) }
+        informationDataFactory = get(parameters = {parametersOf(scope)})
+    ) }
 
     factory { (scope : Scope) -> MessageItemFactory(colorProvider = get(),
         dimensionConverter = get(),
@@ -200,11 +223,17 @@ val factoryModule = module {
         avatarSizeProvider = get(),
         emojiCompatFontProvider = get()) }
 
+    factory { MessageActionsController(get(), get(), get()) }
+
     scope(named<RoomDetailFragment>()) {
         scoped { TimelineMediaSizeProvider() }
         scoped { ContentUploadStateTrackerBinder(get(), get(), get()) }
         scoped { ContentDownloadStateTrackerBinder(get(), get(), get()) }
         scoped { RoomSummaryHolder() }
+    }
+
+    scope(named<RoomDetailActivity>()) {
+        scoped { MessageSharedActionDataSource() }
     }
 }
 

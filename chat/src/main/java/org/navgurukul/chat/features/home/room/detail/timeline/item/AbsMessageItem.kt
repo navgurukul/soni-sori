@@ -2,6 +2,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 
 import android.graphics.Typeface
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.IdRes
@@ -48,6 +49,7 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
 
 
             holder.memberNameView.visibility = View.VISIBLE
+            holder.topContainer.visibility = View.VISIBLE
             holder.memberNameView.setOnClickListener(_memberNameClickListener)
             holder.timeView.visibility = View.VISIBLE
             holder.timeView.text = attributes.informationData.time
@@ -64,6 +66,7 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
             holder.memberNameView.setOnClickListener(null)
             holder.memberNameView.visibility = View.GONE
             holder.timeView.visibility = View.GONE
+            holder.topContainer.visibility = View.GONE
             holder.memberNameView.setOnLongClickListener(null)
         }
     }
@@ -84,6 +87,7 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
     abstract class Holder(@IdRes stubId: Int) : AbsBaseMessageItem.Holder(stubId) {
         val avatarImageView by bindNullable<ImageView?>(R.id.messageAvatarImageView)
         val memberNameView by bind<TextView>(R.id.messageMemberNameView)
+        val topContainer by bind<ViewGroup>(R.id.item_timeline_event_top)
         val timeView by bind<TextView>(R.id.messageTimeView)
     }
 
@@ -99,7 +103,8 @@ abstract class AbsMessageItem<H : AbsMessageItem.Holder> : AbsBaseMessageItem<H>
         override val itemClickListener: View.OnClickListener? = null,
         val memberClickListener: View.OnClickListener? = null,
         val avatarCallback: TimelineEventController.AvatarCallback? = null,
-        val emojiTypeFace: Typeface? = null
+        val emojiTypeFace: Typeface? = null,
+        override val reactionPillCallback: TimelineEventController.ReactionPillCallback?
     ) : AbsBaseMessageItem.Attributes {
 
         // Have to override as it's used to diff epoxy items

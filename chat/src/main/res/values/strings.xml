@@ -249,5 +249,52 @@
 
     <string name="members">%d members</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
+    <string name="encryption_information_decryption_error">Decryption error</string>
+
+    <!-- Event Actions -->
+    <string name="message_add_reaction">Add Reaction</string>
+    <string name="message_copy">Copy</string>
+    <string name="save">Save</string>
+    <string name="remove">Remove</string>
+    <string name="message_action_item_redact">Remove…</string>
+    <string name="view_source">View Source</string>
+    <string name="view_decrypted_source">View Decrypted Source</string>
+    <string name="permalink">Permalink</string>
+    <string name="report_content">Report Content</string>
+    <string name="report_content_spam">It\'s Spam</string>
+    <string name="report_content_inappropriate">It\'s Inappropriate</string>
+    <string name="report_content_custom">Custom Report</string>
+    <string name="message_ignore_user">Block user</string>
+    <string name="message_view_reaction">View Reactions</string>
+    <string name="message_view_edit_history">View Edit Histpry</string>
+    <string name="e2e_re_request_encryption_key">Re-request encryption keys from your other sessions.</string>
+    <string name="e2e_use_keybackup">Unlock encrypted messages history</string>
+    <string name="avatar">Avatar</string>
+    <string name="room_list_quick_actions_favorite_add">Add to favorites</string>
+    <string name="room_list_quick_actions_settings">Settings</string>
+    <string name="room_list_quick_actions_favorite_remove">Remove from favorites</string>
+    <string name="encrypted_unverified">Encrypted by an unverified device</string>
+    <string name="unencrypted">Unencrypted</string>
+    <string name="delete_event_dialog_content">Are you sure you wish to remove (delete) this event? Note that if you delete a room name or topic change, it could undo the change.</string>
+    <string name="delete_event_dialog_reason_checkbox">Include a reason</string>
+    <string name="delete_event_dialog_reason_hint">Reason for redacting</string>
+    <string name="delete_event_dialog_title">Confirm Removal</string>
+
+    <string name="content_reported_title">"Content reported"</string>
+    <string name="content_reported_content">"This content was reported.\n\nIf you don't want to see any more content from this user, you can block him to hide his messages"</string>
+    <string name="content_reported_as_spam_title">"Reported as spam"</string>
+    <string name="content_reported_as_spam_content">"This content was reported as spam.\n\nIf you don't want to see any more content from this user, you can block him to hide his messages"</string>
+    <string name="content_reported_as_inappropriate_title">"Reported as inappropriate"</string>
+    <string name="content_reported_as_inappropriate_content">"This content was reported as inappropriate.\n\nIf you don't want to see any more content from this user, you can block him to hide his messages"</string>
+    <string name="block_user">BLOCK USER</string>
+    <string name="report_content_custom_hint">Reason for reporting this content</string>
+    <string name="report_content_custom_title">Report this content</string>
+    <string name="report_content_custom_submit">REPORT</string>
+    <string name="reactions">Reactions</string>
+    <string name="title_activity_emoji_reaction_picker">Reactions</string>
+    <string name="search">Search</string>
+    <string name="reaction_search_type_hint">Type keywords to find a reaction.</string>
+    <string name="no_result_placeholder">No results</string>
+
 
 </resources>
