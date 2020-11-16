@@ -11,13 +11,7 @@ import androidx.preference.PreferenceManager
 object LearnUtils {
 
     private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
-    private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
     private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
-
-    private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
-    private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
-
-
 
     fun getAuthToken(context: Context): String? {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
@@ -28,11 +22,6 @@ object LearnUtils {
     fun isUserLoggedIn(context: Context): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
         return preferenceManager.getBoolean(KEY_USER_LOGIN, false)
-    }
-
-    fun isFakeLogin(context: Context): Boolean {
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
-        return preferenceManager.getBoolean(KEY_IS_FAKE_LOGIN, false)
     }
 
     fun isOnline(context: Context): Boolean {
@@ -49,7 +38,11 @@ object LearnUtils {
             @Suppress("DEPRECATION")
             val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
             @Suppress("DEPRECATION")
-            return activeNetwork?.isConnectedOrConnecting!!
+            activeNetwork?.isConnectedOrConnecting?.let {
+                return it
+            }?.run {
+                return false
+            }
         }
         return false
     }
