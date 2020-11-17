@@ -3,6 +3,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.helper
 import com.airbnb.epoxy.VisibilityState
 import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
+import org.navgurukul.chat.features.home.room.detail.RoomDetailAction
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 
 class ReadMarkerVisibilityStateChangedListener(private val callback: TimelineEventController.Callback?)
@@ -21,9 +22,9 @@ class TimelineEventVisibilityStateChangedListener(private val callback: Timeline
 
     override fun onVisibilityStateChanged(visibilityState: Int) {
         if (visibilityState == VisibilityState.VISIBLE) {
-            callback?.onEventVisible(event)
+            callback?.onTimelineItemAction(RoomDetailAction.TimelineEventTurnsVisible(event))
         } else if (visibilityState == VisibilityState.INVISIBLE) {
-            callback?.onEventInvisible(event)
+            callback?.onTimelineItemAction(RoomDetailAction.TimelineEventTurnsInvisible(event))
         }
     }
 }
@@ -34,9 +35,9 @@ class MergedTimelineEventVisibilityStateChangedListener(private val callback: Ti
 
     override fun onVisibilityStateChanged(visibilityState: Int) {
         if (visibilityState == VisibilityState.VISIBLE) {
-            events.forEach { callback?.onEventVisible(it) }
+            events.forEach { callback?.onTimelineItemAction(RoomDetailAction.TimelineEventTurnsVisible(it)) }
         } else if (visibilityState == VisibilityState.INVISIBLE) {
-            events.forEach { callback?.onEventInvisible(it) }
+            events.forEach { callback?.onTimelineItemAction(RoomDetailAction.TimelineEventTurnsInvisible(it)) }
         }
     }
 }

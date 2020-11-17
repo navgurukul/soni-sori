@@ -69,6 +69,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/messageFileRoot"
         app:layout_constraintTop_toBottomOf="@+id/messageFileRoot"
+        app:layout_constraintBottom_toTopOf="@id/reactionsContainer"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reactionsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/messageAvatarImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:paddingTop="@dimen/spacing_2x"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

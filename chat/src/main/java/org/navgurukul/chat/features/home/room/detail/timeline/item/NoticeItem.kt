@@ -21,10 +21,6 @@ abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
     @EpoxyAttribute
     lateinit var attributes: Attributes
 
-    private val _readReceiptsClickListener = DebouncedClickListener(View.OnClickListener {
-        attributes.readReceiptsCallback?.onReadReceiptsClicked(attributes.informationData.readReceipts)
-    })
-
     override fun bind(holder: Holder) {
         super.bind(holder)
         holder.noticeTextView.text = attributes.noticeText
@@ -50,7 +46,6 @@ abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
         val informationData: MessageInformationData,
         val noticeText: CharSequence,
         val itemLongClickListener: View.OnLongClickListener? = null,
-        val readReceiptsCallback: TimelineEventController.ReadReceiptsCallback? = null,
         val avatarClickListener: ClickListener? = null
     )
 

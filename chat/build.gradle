@@ -41,8 +41,6 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def arrow_version = "0.8.2"
     def epoxy_version = "3.11.0"
     def daggerVersion = '2.25.4'
@@ -72,6 +70,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$contraint_layout_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Koin for Kotlin
     implementation "org.koin:koin-android:$koin_version"
@@ -169,6 +168,8 @@ dependencies {
 
     //test
     testImplementation 'junit:junit:4.13'
+
+    implementation 'androidx.emoji:emoji:1.0.0'
 
     //androidTest
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

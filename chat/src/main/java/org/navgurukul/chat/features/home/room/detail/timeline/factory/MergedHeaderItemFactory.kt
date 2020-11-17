@@ -128,8 +128,7 @@ class MergedHeaderItemFactory(
                 onCollapsedStateChanged = {
                     mergeItemCollapseStates[event.localId] = it
                     requestModelBuild()
-                },
-                readReceiptsCallback = callback
+                }
             )
             MergedMembershipEventsItem_()
                 .id(mergeId)
@@ -296,7 +295,6 @@ class MergedHeaderItemFactory(
                 },
                 hasEncryptionEvent = hasEncryption,
                 isEncryptionAlgorithmSecure = encryptionAlgorithm == MXCRYPTO_ALGORITHM_MEGOLM,
-                readReceiptsCallback = callback,
                 currentUserId = activeSessionHolder.getSafeActiveSession()?.myUserId ?: ""
             )
             MergedRoomCreationItem_()

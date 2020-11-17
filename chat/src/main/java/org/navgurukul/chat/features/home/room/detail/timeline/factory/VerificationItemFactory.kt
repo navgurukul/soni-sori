@@ -15,7 +15,6 @@ import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
-import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInformationDataFactory
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageItemAttributesFactory
 import org.navgurukul.chat.features.home.room.detail.timeline.item.StatusTileTimelineItem
@@ -30,7 +29,6 @@ import org.navgurukul.commonui.resources.StringProvider
 class VerificationItemFactory(
     private val messageColorProvider: MessageColorProvider,
     private val messageItemAttributesFactory: MessageItemAttributesFactory,
-    private val avatarSizeProvider: AvatarSizeProvider,
     private val userPreferencesProvider: UserPreferencesProvider,
     private val stringProvider: StringProvider,
     private val sessionHolder: ActiveSessionHolder,
@@ -94,9 +92,8 @@ class VerificationItemFactory(
                                     messageColorProvider = messageColorProvider,
                                     emojiTypeFace = attributes.emojiTypeFace,
                                     itemClickListener = attributes.itemClickListener,
-                                    itemLongClickListener = attributes.itemLongClickListener,
-                                    reactionPillCallback = attributes.reactionPillCallback,
-                                    readReceiptsCallback = attributes.readReceiptsCallback
+                                    reactionPillCallback = callback,
+                                    itemLongClickListener = attributes.itemLongClickListener
                                 )
                             )
                             .highlighted(highlight)
@@ -126,9 +123,8 @@ class VerificationItemFactory(
                             messageColorProvider = messageColorProvider,
                             emojiTypeFace = attributes.emojiTypeFace,
                             itemClickListener = attributes.itemClickListener,
-                            itemLongClickListener = attributes.itemLongClickListener,
-                            reactionPillCallback = attributes.reactionPillCallback,
-                            readReceiptsCallback = attributes.readReceiptsCallback
+                            reactionPillCallback = callback,
+                            itemLongClickListener = attributes.itemLongClickListener
                         )
                     )
                     .highlighted(highlight)

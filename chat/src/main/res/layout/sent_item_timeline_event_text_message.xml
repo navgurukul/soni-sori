@@ -14,23 +14,36 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_3x"
-        android:layout_marginTop="@dimen/spacing_2x"
         android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        app:layout_goneMarginTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/reactionsContainer"
         app:layout_constraintTop_toBottomOf="@id/item_timeline_event_top">
 
         <TextView
             android:id="@+id/messageTextView"
             style="@style/TimelineContentStubBaseParams"
-            android:background="@drawable/sent_timeline_item_background"
-            android:textColor="?textPrimary"
-            android:gravity="end"
             android:layout_gravity="end"
+            android:background="@drawable/sent_timeline_item_background"
+            android:gravity="end"
             android:textAppearance="?textAppearanceBody1"
+            android:textColor="?textPrimary"
             tools:text="@sample/saral.json/data/message" />
 
     </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reactionsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_2x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:layout_marginStart="@dimen/spacing_6x"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

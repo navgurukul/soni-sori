@@ -40,14 +40,8 @@ class TimelineEventController(
     EpoxyController.Interceptor {
 
 
-    interface Callback : BaseCallback, ReactionPillCallback, AvatarCallback, UrlClickCallback,
-        ReadReceiptsCallback {
-        fun onLoadMore(direction: Timeline.Direction)
-        fun onEventInvisible(event: TimelineEvent)
-        fun onEventVisible(event: TimelineEvent)
-        fun onRoomCreateLinkClicked(url: String)
-
-        //        fun onEncryptedMessageClicked(informationData: MessageInformationData, view: View)
+    interface Callback : BaseCallback, AvatarCallback, ReactionPillCallback, UrlClickCallback, ReadReceiptsCallback{
+        fun onEditedDecorationClicked(informationData: MessageInformationData)
         fun onImageMessageClicked(
             messageImageContent: MessageImageInfoContent,
             mediaData: ImageContentRenderer.Data,
@@ -60,21 +54,13 @@ class TimelineEventController(
             view: View
         )
 
-        //        fun onFileMessageClicked(eventId: String, messageFileContent: MessageFileContent)
-//        fun onAudioMessageClicked(messageAudioContent: MessageAudioContent)
-        fun onEditedDecorationClicked(informationData: MessageInformationData)
 
         // TODO move all callbacks to this?
         fun onTimelineItemAction(itemAction: RoomDetailAction)
     }
 
     interface ReactionPillCallback {
-        fun onClickOnReactionPill(
-            informationData: MessageInformationData,
-            reaction: String,
-            on: Boolean
-        )
-
+        fun onClickOnReactionPill(informationData: MessageInformationData, reaction: String, on: Boolean)
         fun onLongClickOnReactionPill(informationData: MessageInformationData, reaction: String)
     }
 
@@ -98,7 +84,6 @@ class TimelineEventController(
     }
 
     interface ReadReceiptsCallback {
-        fun onReadReceiptsClicked(readReceipts: List<ReadReceiptData>)
         fun onReadMarkerVisible()
     }
 
@@ -382,7 +367,7 @@ class TimelineEventController(
     private fun LoadingItem_.setVisibilityStateChangedListener(direction: Timeline.Direction): LoadingItem_ {
         return onVisibilityStateChanged { _, _, visibilityState ->
             if (visibilityState == VisibilityState.VISIBLE) {
-                callback?.onLoadMore(direction)
+                callback?.onTimelineItemAction(RoomDetailAction.LoadMoreTimelineEvents(direction))
             }
         }
     }

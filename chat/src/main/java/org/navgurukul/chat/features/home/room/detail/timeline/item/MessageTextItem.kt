@@ -43,7 +43,7 @@ abstract class MessageTextItem : AbsMessageItem<MessageTextItem.Holder>() {
             message?.findPillsAndProcess(coroutineScope) { it.bind(holder.messageView) }
         }
         val textFuture = PrecomputedTextCompat.getTextFuture(
-            message ?: "",
+            message?.trim() ?: "",
             TextViewCompat.getTextMetricsParams(holder.messageView),
             null)
         holder.messageView.setTextFuture(textFuture)

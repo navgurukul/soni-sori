@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?backgroundColor"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/spacing_4x"
+    android:paddingEnd="@dimen/spacing_4x">
+
+    <!-- size in dp, because we do not want the display to be impacted by font size setting -->
+    <TextView
+        android:id="@+id/item_emoji_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_2x"
+        android:textColor="?textPrimary"
+        android:textSize="25dp"
+        tools:ignore="SpUsage"
+        tools:text="@sample/reactions.json/data/reaction" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_emoji_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?textPrimary"
+            android:textAppearance="?textAppearanceEmphasized1"
+            tools:text="Smiley Face" />
+
+        <TextView
+            android:id="@+id/item_emoji_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="?textSecondary"
+            android:textAppearance="?textAppearanceBody2"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="Smile, foo, bar"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

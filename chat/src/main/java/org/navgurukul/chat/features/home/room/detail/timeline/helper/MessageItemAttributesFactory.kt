@@ -35,7 +35,6 @@ class MessageItemAttributesFactory (
             }),
             reactionPillCallback = callback,
             avatarCallback = callback,
-            readReceiptsCallback = callback,
             emojiTypeFace = emojiCompatFontProvider.typeface
         )
     }

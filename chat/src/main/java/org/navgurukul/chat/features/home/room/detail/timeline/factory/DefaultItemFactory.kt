@@ -29,8 +29,7 @@ class DefaultItemFactory(
             text = text,
             itemLongClickListener = View.OnLongClickListener { view ->
                 callback?.onEventLongClicked(informationData, null, view) ?: false
-            },
-            readReceiptsCallback = callback
+            }
         )
         return DefaultItem_()
             .highlighted(highlight)

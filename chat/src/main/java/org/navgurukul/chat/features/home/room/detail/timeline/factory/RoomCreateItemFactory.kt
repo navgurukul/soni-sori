@@ -27,7 +27,6 @@ class RoomCreateItemFactory(
             +"\n"
             span(stringProvider.getString(R.string.room_tombstone_predecessor_link)) {
                 textDecorationLine = "underline"
-                onClick = { callback?.onRoomCreateLinkClicked(roomLink) }
             }
         }
         return RoomCreateItem_()
