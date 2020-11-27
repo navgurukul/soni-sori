@@ -25,11 +25,11 @@ val repoModules = module {
 
     single { provideSharedPrefs(androidApplication()) }
 
-    fun providePlaygroundRepository(sharedPreferences: SharedPreferences): PlaygroundRepository {
-        return PlaygroundRepositoryImpl(sharedPreferences)
+    fun providePlaygroundRepository(sharedPreferences: SharedPreferences, application: Application): PlaygroundRepository {
+        return PlaygroundRepositoryImpl(sharedPreferences,application)
     }
 
-    single { providePlaygroundRepository(get()) }
+    single { providePlaygroundRepository(get(),androidApplication()) }
 }
 
 val factoryModule = module {

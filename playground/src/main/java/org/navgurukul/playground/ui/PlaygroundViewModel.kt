@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.chaquo.python.Python
 import org.navgurukul.playground.chaquopy.utils.BufferedLiveEvent
 import org.navgurukul.playground.repo.PlaygroundRepository
+import kotlin.coroutines.CoroutineContext
 
 
 class PlaygroundViewModel(private val playgroundRepository: PlaygroundRepository) : ViewModel() {
@@ -125,6 +126,9 @@ class PlaygroundViewModel(private val playgroundRepository: PlaygroundRepository
     fun getCachedCode() = playgroundRepository.getCachedCode()
 
     fun cacheCode(code: String) = playgroundRepository.cacheCode(code)
+    fun saveCode(code: String, fileName: String) {
+        playgroundRepository.saveCode(code,fileName)
+    }
 
 
 }

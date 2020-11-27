@@ -8,4 +8,19 @@
         android:icon="@drawable/ic_clear"
         app:iconTint="@android:color/white"
         />
+    <item android:id="@+id/share"
+        android:title="@string/share"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share"
+        app:iconTint="@android:color/white"
+        />
+
+    <item android:id="@+id/save"
+        android:title="@string/save"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_save"
+        app:iconTint="@android:color/white"
+        />
+
+
 </menu>

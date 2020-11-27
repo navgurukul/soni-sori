@@ -111,8 +111,73 @@ class PlaygroundActivity : AppCompatActivity() {
             return true
         } else if (id == R.id.clear) {
             etCode.text.clear()
+        } else if (id == R.id.share) {
+            shareCode()
+        } else if (id == R.id.save) {
+            saveCode()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareCode() {
+        if (!TextUtils.isEmpty(etCode.text.toString())) {
+            showShareIntent(etCode.text.toString())
+        }else{
+            Toast.makeText(
+                this@PlaygroundActivity,
+                getString(R.string.nothing_to_share),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showShareIntent(code: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, code)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_code))
+        startActivity(shareIntent)
+
+    }
+
+    private fun saveCode() {
+        if (!TextUtils.isEmpty(etCode.text.toString())) {
+            showDialogForFileName()
+        }else{
+            Toast.makeText(
+                this@PlaygroundActivity,
+                getString(R.string.nothing_to_save),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showDialogForFileName() {
+        val input = EditText(this)
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        lp.setMargins(10,10,10,10)
+        input.layoutParams = lp
+
+        val alertDialog = AlertDialog.Builder(this).setMessage(getString(R.string.enter_file_name))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                viewModel.saveCode(etCode.text.toString(), input.text.toString())
+                dialog.dismiss()
+                Toast.makeText(
+                    this@PlaygroundActivity,
+                    getString(R.string.code_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }.create()
+
+        alertDialog.setView(input)
+        alertDialog.show()
+
     }
 
     override fun onBackPressed() {
