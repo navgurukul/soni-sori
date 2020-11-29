@@ -43,6 +43,7 @@ object AppUtils {
             )
         } else {
             if (userLoginResponseString.isNullOrEmpty()) {
+                PreferenceManager.getDefaultSharedPreferences(application).edit().clear().apply()
                 return null
             } else
                 Gson().fromJson(userLoginResponseString, LoginResponse.User::class.java)
