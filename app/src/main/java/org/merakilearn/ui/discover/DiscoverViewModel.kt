@@ -10,7 +10,6 @@ import org.merakilearn.datasource.network.model.Classes
 import org.merakilearn.datasource.network.model.Language
 import org.merakilearn.util.relativeDay
 import org.merakilearn.util.toDate
-import org.merakilearn.util.toLocalDate
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.EmptyViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -85,7 +84,7 @@ class DiscoverViewModel(
     private fun List<Classes>.toDiscoverData(): List<DiscoverData> {
         return groupBy { it.startTime.toDate() }
             .map {
-                val title = "${it.key.toLocalDate().relativeDay(stringProvider)}, ${it.key}"
+                val title = "${it.key.toDate().relativeDay(stringProvider)}, ${it.key}"
                 DiscoverData(it.key, title, it.value)
             }
     }
