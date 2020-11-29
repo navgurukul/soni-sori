@@ -1,10 +1,9 @@
 package org.merakilearn.util
 
+import android.text.format.DateUtils
 import org.merakilearn.R
 import org.navgurukul.commonui.resources.StringProvider
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun Date.toDay(): String {
@@ -13,24 +12,27 @@ fun Date.toDay(): String {
 }
 
 fun Date.toTime(): String {
-    val outputFormat = SimpleDateFormat("hh:mm aa", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
     return outputFormat.format(this)
 }
 
 fun Date.toDate(): String {
-    val outputFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH)
     return outputFormat.format(this)
 }
 
-fun String.toLocalDate(): LocalDate = LocalDate.parse(this, DateTimeFormatter.ofPattern("dd MMMM, yyyy"))
+fun String.toDate(): Date = SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH).parse(this)!!
 
-fun LocalDate.relativeDay(stringProvider: StringProvider): String {
-    val now = LocalDate.now()
-    return if (this == now) {
-        stringProvider.getString(R.string.today)
-    } else if (this == now.plusDays(1)) {
-        stringProvider.getString(R.string.tomorrow)
-    } else {
-        dayOfWeek.name.toLowerCase().capitalize()
+fun Date.relativeDay(stringProvider: StringProvider): String {
+    return when {
+        DateUtils.isToday(time) -> {
+            stringProvider.getString(R.string.today)
+        }
+        DateUtils.isToday(time - DateUtils.DAY_IN_MILLIS) -> {
+            stringProvider.getString(R.string.tomorrow)
+        }
+        else -> {
+            toDay().toLowerCase().capitalize()
+        }
     }
 }
