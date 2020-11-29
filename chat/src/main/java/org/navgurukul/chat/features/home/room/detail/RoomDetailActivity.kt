@@ -18,7 +18,7 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
 
     private lateinit var currentRoomId: String
 
-    private val viewModel: RoomDetailViewModel by viewModel(parameters = {
+    private val requireActiveMembershipViewModel: RequireActiveMembershipViewModel by viewModel(parameters = {
         parametersOf(
             currentRoomId
         )
@@ -42,15 +42,15 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
             )
         }
 
-        viewModel.viewEvents.observe(this, Observer {
+        requireActiveMembershipViewModel.viewEvents.observe(this, Observer {
             when (it) {
-                is RoomDetailViewEvents.RoomLeft -> handleRoomLeft(it)
+                is RequireActiveMembershipViewEvents.RoomLeft -> handleRoomLeft(it)
             }
         })
 
     }
 
-    private fun handleRoomLeft(roomLeft: RoomDetailViewEvents.RoomLeft) {
+    private fun handleRoomLeft(roomLeft: RequireActiveMembershipViewEvents.RoomLeft) {
         if (roomLeft.leftMessage != null) {
             Toast.makeText(this, roomLeft.leftMessage, Toast.LENGTH_LONG).show()
         }

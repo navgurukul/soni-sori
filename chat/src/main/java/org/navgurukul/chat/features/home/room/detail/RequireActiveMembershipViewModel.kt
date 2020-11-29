@@ -19,14 +19,14 @@ import org.navgurukul.commonui.platform.EmptyViewState
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.resources.StringProvider
 
-sealed class RoomDetailViewEvents: ViewEvents {
-    data class RoomLeft(val leftMessage: String?) : RoomDetailViewEvents()
+sealed class RequireActiveMembershipViewEvents: ViewEvents {
+    data class RoomLeft(val leftMessage: String?) : RequireActiveMembershipViewEvents()
 }
 
-class RoomDetailViewModel(roomId: String,
-                          private val stringProvider: StringProvider,
-                          private val activeSessionHolder: ActiveSessionHolder
-): BaseViewModel<RoomDetailViewEvents, EmptyViewState>(EmptyViewState) {
+class RequireActiveMembershipViewModel(roomId: String,
+                                       private val stringProvider: StringProvider,
+                                       private val activeSessionHolder: ActiveSessionHolder
+): BaseViewModel<RequireActiveMembershipViewEvents, EmptyViewState>(EmptyViewState) {
 
     private val roomIdObservable = BehaviorRelay.createDefault(Optional.from(roomId))
 
@@ -38,8 +38,8 @@ class RoomDetailViewModel(roomId: String,
         roomIdObservable
             .unwrap()
             .switchMap { roomId ->
-                val session = activeSessionHolder.getSafeActiveSession() ?: return@switchMap Observable.just(Optional.empty<RoomDetailViewEvents.RoomLeft>())
-                val room = session.getRoom(roomId) ?: return@switchMap Observable.just(Optional.empty<RoomDetailViewEvents.RoomLeft>())
+                val session = activeSessionHolder.getSafeActiveSession() ?: return@switchMap Observable.just(Optional.empty<RequireActiveMembershipViewEvents.RoomLeft>())
+                val room = session.getRoom(roomId) ?: return@switchMap Observable.just(Optional.empty<RequireActiveMembershipViewEvents.RoomLeft>())
                 room.rx()
                     .liveRoomSummary()
                     .unwrap()
@@ -53,7 +53,7 @@ class RoomDetailViewModel(roomId: String,
             .disposeOnClear()
     }
 
-    private fun mapToLeftViewEvent(session: Session, room: Room, roomSummary: RoomSummary): Optional<RoomDetailViewEvents.RoomLeft> {
+    private fun mapToLeftViewEvent(session: Session, room: Room, roomSummary: RoomSummary): Optional<RequireActiveMembershipViewEvents.RoomLeft> {
         if (roomSummary.membership.isActive()) {
             return Optional.empty()
         }
@@ -66,19 +66,19 @@ class RoomDetailViewModel(roomId: String,
                 val message = senderDisplayName?.let {
                     stringProvider.getString(R.string.has_been_kicked, roomSummary.displayName, it)
                 }
-                RoomDetailViewEvents.RoomLeft(message)
+                RequireActiveMembershipViewEvents.RoomLeft(message)
             }
             Membership.KNOCK -> {
                 val message = senderDisplayName?.let {
                     stringProvider.getString(R.string.has_been_kicked, roomSummary.displayName, it)
                 }
-                RoomDetailViewEvents.RoomLeft(message)
+                RequireActiveMembershipViewEvents.RoomLeft(message)
             }
             Membership.BAN   -> {
                 val message = senderDisplayName?.let {
                     stringProvider.getString(R.string.has_been_banned, roomSummary.displayName, it)
                 }
-                RoomDetailViewEvents.RoomLeft(message)
+                RequireActiveMembershipViewEvents.RoomLeft(message)
             }
             else             -> null
         }

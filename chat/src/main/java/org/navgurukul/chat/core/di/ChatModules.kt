@@ -43,6 +43,10 @@ import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
 import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
 import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
 import org.navgurukul.chat.features.home.room.list.*
+import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsEpoxyController
+import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsSharedActionViewModel
+import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsState
+import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsViewModel
 import org.navgurukul.chat.features.html.EventHtmlRenderer
 import org.navgurukul.chat.features.html.MatrixHtmlPluginConfigure
 import org.navgurukul.chat.features.html.SaralHtmlCompressor
@@ -56,15 +60,25 @@ import org.navgurukul.chat.features.push.ChatFCMServiceDelegate
 import org.navgurukul.chat.features.push.FcmHelper
 import org.navgurukul.chat.features.reactions.*
 import org.navgurukul.chat.features.reactions.data.EmojiDataSource
+import org.navgurukul.chat.features.roomprofile.RoomProfileController
+import org.navgurukul.chat.features.roomprofile.RoomProfileSharedActionViewModel
+import org.navgurukul.chat.features.roomprofile.RoomProfileViewModel
+import org.navgurukul.chat.features.roomprofile.RoomProfileViewState
+import org.navgurukul.chat.features.roomprofile.members.*
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.error.ErrorFormatter
 
 val viewModelModules = module {
     viewModel { EmojiSearchResultViewModel(EmojiSearchResultViewState(), get()) }
     viewModel { EmojiChooserViewModel() }
+    viewModel { RoomProfileSharedActionViewModel() }
+    viewModel { RoomListQuickActionsSharedActionViewModel() }
     viewModel { (displayReactionsViewState : DisplayReactionsViewState) -> ViewReactionsViewModel(displayReactionsViewState, get(), get()) }
     viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
-    viewModel { (roomId : String) -> RoomDetailViewModel(roomId, get(), get()) }
+    viewModel { (roomMemberListViewState : RoomMemberListViewState) -> RoomMemberListViewModel(roomMemberListViewState, RoomMemberSummaryComparator(), get()) }
+    viewModel { (roomListQuickActionsState : RoomListQuickActionsState) -> RoomListQuickActionsViewModel(roomListQuickActionsState, get()) }
+    viewModel { (roomId : String) -> RequireActiveMembershipViewModel(roomId, get(), get()) }
+    viewModel { (viewState : RoomProfileViewState) -> RoomProfileViewModel(viewState, get(), get()) }
     viewModel { (messageActionState : MessageActionState) -> MessageActionsViewModel(messageActionState, get(), get(), get(), get(),get()) }
     viewModel { (roomDetailViewState : RoomDetailViewState, scope: Scope) -> RoomDetailFragmentViewModel(
         initialState = roomDetailViewState,
@@ -129,6 +143,9 @@ val factoryModule = module {
     single { EmojiDataSource(androidContext().resources) }
     single { EmojiCompatWrapper(androidContext()) }
 
+    factory { RoomProfileController(get(), get()) }
+    factory { RoomListQuickActionsEpoxyController(get(), get()) }
+    factory { RoomMemberListController(get(), get(), RoomMemberSummaryFilter(), get()) }
     factory { EmojiSearchResultController(get(), get()) }
     factory { EmojiRecyclerAdapter(get()) }
 

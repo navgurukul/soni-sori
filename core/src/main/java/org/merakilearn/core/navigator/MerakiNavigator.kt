@@ -30,6 +30,10 @@ class MerakiNavigator(
         )
     }
 
+    fun openRoomProfile(context: Context, roomId: String) {
+        startActivity(context, chatModuleNavigator.launchIntentForRoomProfile(context, roomId), false)
+    }
+
     fun openHome(context: Context, clearNotification: Boolean) =
         startActivity(context, homeLauncherIntent(context, clearNotification), false)
 
