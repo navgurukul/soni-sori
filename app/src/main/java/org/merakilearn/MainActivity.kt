@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         findViewById<ImageView>(R.id.headerIv).let {
             AppUtils.getCurrentUser(this)?.let {currentUser->
                 setUserThumbnail(it, currentUser)
+            } ?: run {
+                OnBoardingActivity.restartApp(this@MainActivity,OnBoardingActivityArgs(true))
             }
         }
     }

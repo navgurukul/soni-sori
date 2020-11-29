@@ -5,18 +5,24 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.koin.java.KoinJavaComponent.inject
 import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.core.push.FCMServiceDelegate
+import timber.log.Timber
 
 class MerakiMessagingService : FirebaseMessagingService() {
 
@@ -25,11 +31,11 @@ class MerakiMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        Timber.d("From: ${remoteMessage.from}")
 
         // Check if message contains a notification payload.
         remoteMessage.notification.let {
-            Log.d(TAG, "Message Notification Body: ${it?.body}")
+            Timber.d("Message Notification Body: ${it?.body}")
             sendNotification(it?.title, it?.body, it?.imageUrl)
         }
 
@@ -38,14 +44,14 @@ class MerakiMessagingService : FirebaseMessagingService() {
 
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
+        Timber.d("Refreshed token: $token")
         sendRegistrationToServer(token)
         fcmServiceDelegate.onNewToken(token)
     }
 
 
     private fun sendRegistrationToServer(token: String?) {
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
+        Timber.d("sendRegistrationTokenToServer($token)")
     }
 
     /**
@@ -58,6 +64,7 @@ class MerakiMessagingService : FirebaseMessagingService() {
         messageBody: String?,
         imageUrl: Uri?
     ) {
+
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
@@ -78,14 +85,6 @@ class MerakiMessagingService : FirebaseMessagingService() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val futureTarget = Glide.with(this)
-            .asBitmap()
-            .load(imageUrl)
-            .submit()
-        val bitmap = futureTarget.get()
-        notificationBuilder.setLargeIcon(bitmap)
-        Glide.with(this).clear(futureTarget)
-
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -96,7 +95,30 @@ class MerakiMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0, notificationBuilder.build())
+        Glide.with(this)
+            .asBitmap()
+            .load(imageUrl)
+            .into(object: CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    notificationBuilder.setLargeIcon(resource)
+                    notificationManager.notify(0, notificationBuilder.build())
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    AppCompatResources.getDrawable(this@MerakiMessagingService, R.mipmap.ic_launcher)?.let {
+                        notificationBuilder.setLargeIcon(it.toBitmap())
+                    }
+                    notificationManager.notify(0, notificationBuilder.build())
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    AppCompatResources.getDrawable(this@MerakiMessagingService, R.mipmap.ic_launcher)?.let {
+                        notificationBuilder.setLargeIcon(it.toBitmap())
+                    }
+                    notificationManager.notify(0, notificationBuilder.build())
+                }
+
+            })
     }
 
     companion object {
