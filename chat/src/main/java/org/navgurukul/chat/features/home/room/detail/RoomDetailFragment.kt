@@ -157,6 +157,11 @@ class RoomDetailFragment : BaseFragment(),
         setupJumpToReadMarkerView()
         setupJumpToBottomView()
 
+        roomToolbarContentView.debouncedClicks {
+            navigator.openRoomProfile(requireActivity(), roomDetailArgs.roomId)
+        }
+
+
         viewModel.selectSubscribe(RoomDetailViewState::sendMode, RoomDetailViewState::canSendMessage).observe(viewLifecycleOwner, Observer { (mode, canSend) ->
             if (!canSend) {
                 return@Observer

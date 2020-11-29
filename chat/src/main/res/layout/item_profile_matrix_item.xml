@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?backgroundColor"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="64dp"
+    android:paddingStart="@dimen/spacing_4x"
+    android:paddingTop="@dimen/spacing_2x"
+    android:paddingEnd="@dimen/spacing_4x"
+    android:paddingBottom="@dimen/spacing_2x">
+
+    <ImageView
+        android:id="@+id/matrixItemAvatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/matrixItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:drawablePadding="@dimen/spacing_4x"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?textPrimary"
+        android:textAppearance="?textAppearanceBody1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/matrixItemSubtitle"
+        app:layout_constraintEnd_toStartOf="@+id/matrixItemEditable"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/matrixItemAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginStart="0dp"
+        tools:text="@sample/saral.json/data/displayName" />
+
+    <TextView
+        android:id="@+id/matrixItemSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:drawablePadding="@dimen/spacing_4x"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?textSecondary"
+        android:textSize="12sp"
+        android:textAppearance="?textAppearanceCaption"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/matrixItemEditable"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/matrixItemAvatar"
+        app:layout_constraintTop_toBottomOf="@id/matrixItemTitle"
+        app:layout_goneMarginStart="0dp"
+        tools:text="@sample/saral.json/data/mxid" />
+
+    <ImageView
+        android:id="@+id/matrixItemEditable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?textSecondary"
+        tools:ignore="MissingPrefix" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

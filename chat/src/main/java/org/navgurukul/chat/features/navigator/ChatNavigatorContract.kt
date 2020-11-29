@@ -8,6 +8,7 @@ import org.navgurukul.chat.core.error.fatalError
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.home.room.detail.RoomDetailActivity
 import org.navgurukul.chat.features.home.room.detail.RoomDetailArgs
+import org.navgurukul.chat.features.roomprofile.RoomProfileActivity
 import org.navgurukul.chat.features.settings.ChatPreferences
 
 class ChatNavigatorContract(
@@ -21,5 +22,9 @@ class ChatNavigatorContract(
         }
         val args = RoomDetailArgs(roomId)
         return RoomDetailActivity.newIntent(context, args)
+    }
+
+    override fun launchIntentForRoomProfile(context: Context, roomId: String): Intent {
+        return RoomProfileActivity.newIntent(context, roomId)
     }
 }

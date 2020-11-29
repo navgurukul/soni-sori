@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemProfileSectionView"
+    android:layout_width="match_parent"
+    tools:text="Security"
+    android:gravity="bottom"
+    android:paddingBottom="@dimen/spacing_2x"
+    android:paddingStart="@dimen/spacing_4x"
+    android:paddingEnd="@dimen/spacing_4x"
+    android:textAppearance="?textAppearanceHeadline6"
+    android:textColor="?textPrimary"
+    android:background="?backgroundColor"
+    android:layout_height="56dp"/>
+

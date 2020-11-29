@@ -11,6 +11,7 @@ interface AppModuleNavigator {
 
 interface ChatModuleNavigator {
     fun launchIntentForRoom(context: Context, roomId: String): Intent
+    fun launchIntentForRoomProfile(context: Context, roomId: String): Intent
 }
 
 interface PlaygroundModuleNavigator{
