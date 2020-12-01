@@ -44,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
                 mBinding.user = user
                 mBinding.tvAppVersion.text =
                     getString(R.string.app_version, BuildConfig.VERSION_NAME)
-            }?.run {
+            }?:run {
                 OnBoardingActivity.restartApp(this@ProfileActivity, OnBoardingActivityArgs(true))
             }
         } else {
