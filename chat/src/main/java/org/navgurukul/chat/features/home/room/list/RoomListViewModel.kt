@@ -35,6 +35,7 @@ class RoomListViewModel(
         homeRoomListDataSource
             .observe()
             .observeOn(Schedulers.computation())
+            .map { roomSummary -> roomSummary.filter { it.membership.isActive() } }
             .execute { asyncRooms ->
                 copy(asyncRooms = asyncRooms)
             }
