@@ -1,16 +1,10 @@
 package org.merakilearn.datasource
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.merakilearn.BuildConfig
-import org.merakilearn.R
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
@@ -18,6 +12,7 @@ import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import timber.log.Timber
+import java.io.File
 
 class ApplicationRepo(
     private val applicationApi: SaralApi,
@@ -147,6 +142,36 @@ class ApplicationRepo(
                 courseDb.clearAllTables()
                 PreferenceManager.getDefaultSharedPreferences(application).edit().clear().apply()
                 authenticationRepository.logout()
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun fetchSavedFile(): List<Pair<String, String>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val savedFiles = mutableListOf<Pair<String, String>>()
+                val directory = application.applicationContext?.obbDir
+                directory?.listFiles()?.forEach {
+                    if (it.isFile) {
+                        savedFiles.add(Pair(it.path, it.name.split("_")[0]))
+                    }
+                }
+                savedFiles
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            emptyList()
+        }
+    }
+
+    suspend fun deleteFile(first: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val file = File(first)
+                file.delete()
             }
         } catch (ex: Exception) {
             ex.printStackTrace()

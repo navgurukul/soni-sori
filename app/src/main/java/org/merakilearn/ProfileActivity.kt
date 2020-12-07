@@ -6,25 +6,34 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
+import java.io.File
+
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
     private val viewModel: LoginViewModel by viewModel()
     private lateinit var user: LoginResponse.User
     private var isFromDeepLink = false
-
+    private val filesList = mutableListOf<Pair<String, String>>()
+    private val merakiNavigator: MerakiNavigator by inject()
     companion object {
         fun launch(context: Context) {
             val intent = Intent(context, ProfileActivity::class.java)
@@ -38,6 +47,7 @@ class ProfileActivity : AppCompatActivity() {
         if (AppUtils.isUserLoggedIn(this) && !AppUtils.isFakeLogin(this)) {
             initIntentFilter()
             initLinkButton()
+            initSavedFile()
             AppUtils.getCurrentUser(this)?.let {
                 user = it
                 initToolBar()
@@ -52,6 +62,88 @@ class ProfileActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun initSavedFile() {
+        val adapter = SavedFileAdapter {
+            showPopupMenu(it)
+        }
+        val padding = resources.getDimensionPixelSize(R.dimen.spacing_2x)
+        mBinding.recyclerview.layoutManager = GridLayoutManager(this, 2)
+        mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
+        mBinding.recyclerview.adapter = adapter
+        viewModel.fetchSavedFile.observe(this, Observer {
+            updateAdapter(it)
+        })
+
+        mBinding.tvViewAll.setOnClickListener {
+            adapter.submitList(filesList)
+        }
+    }
+
+    private fun updateAdapter(
+        listData: List<Pair<String, String>>
+    ) {
+        val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
+        filesList.clear()
+        filesList.addAll(listData)
+        if (listData.isEmpty()) {
+            mBinding.rlSavedFile.visibility = View.GONE
+        } else {
+            mBinding.rlSavedFile.visibility = View.VISIBLE
+        }
+        if (listData.isNotEmpty() && listData.size >= 4)
+            adapter.submitList(listData.subList(0, 4))
+        else
+            adapter.submitList(listData)
+    }
+
+    private fun showPopupMenu(it: Triple<String, String, View>) {
+        val popup = PopupMenu(this, it.third)
+        popup.menuInflater.inflate(R.menu.popup_menu_saved_file, popup.menu)
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.share -> shareFile(it.first)
+                R.id.delete -> deleteSavedFile(it.first)
+                R.id.copy -> copyContent(it.first)
+            }
+            true
+        }
+        popup.show()
+
+    }
+
+    private fun deleteSavedFile(first: String) {
+        viewModel.deleteFile(first).observe(this, Observer {
+            if (it) {
+               val newList= filesList.filter {pair->
+                    pair.first != first
+                }.toMutableList()
+                updateAdapter(newList)
+                filesList.clear()
+                filesList.addAll(newList)
+                toast(getString(R.string.file_deleted))
+            }
+        })
+    }
+
+    private fun copyContent(first: String) {
+        val code = File(first).bufferedReader().readLine()
+        if (!code.isNullOrBlank())
+            merakiNavigator.openPlayground(this, code)
+    }
+
+    private fun shareFile(first: String) {
+        val code = File(first).bufferedReader().readLine()
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, code)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, getString(org.navgurukul.playground.R.string.share_code))
+        startActivity(shareIntent)
+    }
+
 
     private fun initIntentFilter() {
         val action: String? = intent?.action
@@ -133,6 +225,7 @@ class ProfileActivity : AppCompatActivity() {
         mBinding.linkAccount.setOnClickListener {
             updateProfile()
         }
+        mBinding.linkAccount.visibility = View.GONE
     }
 
     private fun updateProfile() {
@@ -140,6 +233,7 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.updateProfile(user).observe(this, Observer {
             toggleProgressBarVisibility(View.GONE)
             mBinding.llProfileEdit.visibility = View.GONE
+            mBinding.linkAccount.visibility = View.GONE
             if (it) {
                 toast(getString(R.string.profile_updated_successfully))
                 finish()

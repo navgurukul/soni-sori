@@ -18,4 +18,12 @@ class LoginViewModel(private val applicationRepo: ApplicationRepo) : ViewModel()
     fun logOut() = liveData {
         emit(applicationRepo.logOut())
     }
+
+    fun deleteFile(first: String) = liveData {
+        emit(applicationRepo.deleteFile(first))
+    }
+
+    val fetchSavedFile = liveData {
+        emit(applicationRepo.fetchSavedFile())
+    }
 }

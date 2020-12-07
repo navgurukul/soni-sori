@@ -59,4 +59,8 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="enroll_date_and_time">Mentor - %1$s\nDate - %2$s\nTime - %3$s</string>
     <string name="unavailable">Unavailable</string>
+    <string name="files_saved">Files Saved</string>
+    <string name="delete">Delete</string>
+    <string name="copy_to_playground">Copy to Playground</string>
+    <string name="file_deleted">File is deleted</string>
 </resources>

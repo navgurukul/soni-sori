@@ -37,7 +37,7 @@ class PlaygroundRepositoryImpl(
             val fileOutStream= FileOutputStream(File(directory.toString()+File.separator+finalFileName))
             val outputStreamWriter =
                 OutputStreamWriter(fileOutStream)
-            outputStreamWriter.write(data)
+            outputStreamWriter.write(code)
             outputStreamWriter.close()
         } catch (e: IOException) {
             Log.e("Exception", "File write failed: $e")
