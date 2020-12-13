@@ -1,6 +1,6 @@
 package org.navgurukul.chat.core.pushers
 
-import im.vector.matrix.android.api.MatrixCallback
+import org.matrix.android.sdk.api.MatrixCallback
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.LocaleProvider

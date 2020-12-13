@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.helper
 
 import com.airbnb.epoxy.VisibilityState
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.features.home.room.detail.RoomDetailAction
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

@@ -1,8 +1,8 @@
 package org.merakilearn.ui.onboarding
 
 import androidx.lifecycle.*
-import im.vector.matrix.android.api.session.InitialSyncProgressService
-import im.vector.matrix.rx.asObservable
+import org.matrix.android.sdk.api.session.InitialSyncProgressService
+import org.matrix.android.sdk.rx.asObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.launch
 import org.merakilearn.R

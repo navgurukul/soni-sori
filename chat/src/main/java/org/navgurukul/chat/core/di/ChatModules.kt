@@ -1,8 +1,8 @@
 package org.navgurukul.chat.core.di
 
 import android.view.ContextThemeWrapper
-import im.vector.matrix.android.api.Matrix
-import im.vector.matrix.android.api.MatrixConfiguration
+import org.matrix.android.sdk.api.Matrix
+import org.matrix.android.sdk.api.MatrixConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf

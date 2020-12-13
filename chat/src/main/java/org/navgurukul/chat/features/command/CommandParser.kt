@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.command
 
-import im.vector.matrix.android.api.MatrixPatterns
-import im.vector.matrix.android.api.session.identity.ThreePid
+import org.matrix.android.sdk.api.MatrixPatterns
+import org.matrix.android.sdk.api.session.identity.ThreePid
 import org.navgurukul.chat.core.extensions.isEmail
 import org.navgurukul.chat.core.extensions.isMsisdn
 import timber.log.Timber

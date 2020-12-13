@@ -2,7 +2,7 @@ package org.navgurukul.chat.features.home.room.detail
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import im.vector.matrix.android.api.session.room.timeline.Timeline
+import org.matrix.android.sdk.api.session.room.timeline.Timeline
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.commonui.platform.DefaultListUpdateCallback
 import timber.log.Timber

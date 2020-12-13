@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="?attr/background"
+        android:background="?attr/backgroundColor"
         android:drawablePadding="16dp"
         android:gravity="center|start"
         android:minHeight="80dp"

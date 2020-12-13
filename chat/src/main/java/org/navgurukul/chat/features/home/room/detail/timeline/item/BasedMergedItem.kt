@@ -4,7 +4,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.IdRes
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

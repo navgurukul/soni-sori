@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.ClickListener
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder

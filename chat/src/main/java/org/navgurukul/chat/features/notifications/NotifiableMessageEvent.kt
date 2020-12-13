@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.notifications
 
 import androidx.core.app.NotificationCompat
-import im.vector.matrix.android.api.session.events.model.EventType
+import org.matrix.android.sdk.api.session.events.model.EventType
 import org.navgurukul.chat.features.notifications.NotifiableEvent
 
 data class NotifiableMessageEvent(

@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.google.android.material.button.MaterialButton
-import im.vector.matrix.android.api.session.room.model.message.MessageOptionsContent
+import org.matrix.android.sdk.api.session.room.model.message.MessageOptionsContent
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.setTextOrHide
 import org.navgurukul.chat.features.home.room.detail.RoomDetailAction

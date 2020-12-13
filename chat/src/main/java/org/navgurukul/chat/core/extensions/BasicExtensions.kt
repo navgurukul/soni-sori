@@ -3,7 +3,7 @@ package org.navgurukul.chat.core.extensions
 import android.util.Patterns
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import im.vector.matrix.android.api.extensions.ensurePrefix
+import org.matrix.android.sdk.api.extensions.ensurePrefix
 
 inline fun <T> T.ooi(block: (T) -> Unit): T = also(block)
 

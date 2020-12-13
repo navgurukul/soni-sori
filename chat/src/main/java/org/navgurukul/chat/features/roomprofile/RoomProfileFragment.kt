@@ -7,9 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
-import im.vector.matrix.android.api.session.room.notification.RoomNotificationState
-import im.vector.matrix.android.api.util.MatrixItem
-import im.vector.matrix.android.api.util.toMatrixItem
+import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
+import org.matrix.android.sdk.api.util.MatrixItem
+import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_room_profile.*
 import kotlinx.android.synthetic.main.view_stub_room_profile_header.*

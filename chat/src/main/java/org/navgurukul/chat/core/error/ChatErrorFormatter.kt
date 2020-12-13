@@ -1,9 +1,9 @@
 package org.navgurukul.chat.core.error
 
-import im.vector.matrix.android.api.failure.Failure
-import im.vector.matrix.android.api.failure.MatrixError
-import im.vector.matrix.android.api.failure.isInvalidPassword
-import im.vector.matrix.android.api.session.identity.IdentityServiceError
+import org.matrix.android.sdk.api.failure.Failure
+import org.matrix.android.sdk.api.failure.MatrixError
+import org.matrix.android.sdk.api.failure.isInvalidPassword
+import org.matrix.android.sdk.api.session.identity.IdentityServiceError
 import org.navgurukul.chat.R
 import org.navgurukul.commonui.error.ErrorFormatter
 import org.navgurukul.commonui.resources.StringProvider

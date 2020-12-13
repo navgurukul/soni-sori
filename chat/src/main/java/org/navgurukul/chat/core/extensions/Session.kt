@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
-import im.vector.matrix.android.api.session.Session
-import im.vector.matrix.android.api.session.crypto.keysbackup.KeysBackupState
-import im.vector.matrix.android.api.session.sync.FilterService
+import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.crypto.keysbackup.KeysBackupState
+import org.matrix.android.sdk.api.session.sync.FilterService
 import org.navgurukul.chat.core.services.SaralSyncService
 import timber.log.Timber
 
@@ -21,7 +21,8 @@ fun Session.configureAndStart(context: Context) {
 fun Session.startSyncing(context: Context) {
     val applicationContext = context.applicationContext
     if (!hasAlreadySynced()) {
-        SaralSyncService.newIntent(applicationContext, sessionId).also {
+        // initial sync is done as a service so it can continue below app lifecycle
+        SaralSyncService.newOneShotIntent(applicationContext, sessionId, 0).also {
             try {
                 ContextCompat.startForegroundService(applicationContext, it)
             } catch (ex: Throwable) {

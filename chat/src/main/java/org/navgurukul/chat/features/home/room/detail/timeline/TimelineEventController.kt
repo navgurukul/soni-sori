@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.VisibilityState
-import im.vector.matrix.android.api.session.room.model.message.MessageImageInfoContent
-import im.vector.matrix.android.api.session.room.model.message.MessageVideoContent
-import im.vector.matrix.android.api.session.room.timeline.Timeline
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.room.model.message.MessageImageInfoContent
+import org.matrix.android.sdk.api.session.room.model.message.MessageVideoContent
+import org.matrix.android.sdk.api.session.room.timeline.Timeline
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.core.extensions.nextOrNull

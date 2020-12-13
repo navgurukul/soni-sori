@@ -3,7 +3,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.helper
 import android.graphics.drawable.Drawable
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import im.vector.matrix.android.api.session.file.ContentDownloadStateTracker
+import org.matrix.android.sdk.api.session.file.ContentDownloadStateTracker
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider

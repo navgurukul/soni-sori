@@ -2,7 +2,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.action
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import im.vector.matrix.android.api.session.room.model.message.MessageWithAttachmentContent
+import org.matrix.android.sdk.api.session.room.model.message.MessageWithAttachmentContent
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
 import org.navgurukul.commonui.platform.ViewModelAction

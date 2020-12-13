@@ -1,9 +1,9 @@
 package org.navgurukul.chat.features.home.room.detail
 
-import im.vector.matrix.android.api.session.events.model.Event
-import im.vector.matrix.android.api.session.room.model.message.MessageWithAttachmentContent
-import im.vector.matrix.android.api.session.room.timeline.Timeline
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.events.model.Event
+import org.matrix.android.sdk.api.session.room.model.message.MessageWithAttachmentContent
+import org.matrix.android.sdk.api.session.room.timeline.Timeline
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.navgurukul.commonui.platform.ViewModelAction
 
 sealed class RoomDetailAction : ViewModelAction {
@@ -32,7 +32,7 @@ sealed class RoomDetailAction : ViewModelAction {
     data class EnterEditMode(val eventId: String, val text: String) : RoomDetailAction()
     data class EnterQuoteMode(val eventId: String, val text: String) : RoomDetailAction()
     data class EnterReplyMode(val eventId: String, val text: String) : RoomDetailAction()
-    data class ExitSpecialMode(val text: String) : RoomDetailAction()
+    data class EnterRegularMode(val text: String, val fromSharing: Boolean) : RoomDetailAction()
 
     data class ResendMessage(val eventId: String) : RoomDetailAction()
     data class RemoveFailedEcho(val eventId: String) : RoomDetailAction()

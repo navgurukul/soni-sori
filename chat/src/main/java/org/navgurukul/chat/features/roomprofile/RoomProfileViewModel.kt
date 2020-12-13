@@ -1,15 +1,15 @@
 package org.navgurukul.chat.features.roomprofile
 
 import androidx.core.content.pm.ShortcutInfoCompat
-import im.vector.matrix.android.api.MatrixCallback
-import im.vector.matrix.android.api.session.room.members.roomMemberQueryParams
-import im.vector.matrix.android.api.session.room.model.Membership
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
-import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.session.room.notification.RoomNotificationState
-import im.vector.matrix.rx.RxRoom
-import im.vector.matrix.rx.rx
-import im.vector.matrix.rx.unwrap
+import org.matrix.android.sdk.api.MatrixCallback
+import org.matrix.android.sdk.api.session.room.members.roomMemberQueryParams
+import org.matrix.android.sdk.api.session.room.model.Membership
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
+import org.matrix.android.sdk.rx.RxRoom
+import org.matrix.android.sdk.rx.rx
+import org.matrix.android.sdk.rx.unwrap
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.commonui.model.Async

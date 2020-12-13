@@ -7,8 +7,8 @@ import android.os.HandlerThread
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
-import im.vector.matrix.android.api.session.Session
-import im.vector.matrix.android.api.session.content.ContentUrlResolver
+import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.content.ContentUrlResolver
 import me.gujun.android.span.span
 import org.navgurukul.chat.BuildConfig
 import org.navgurukul.chat.R

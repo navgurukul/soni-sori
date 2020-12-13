@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.roomprofile.members
 
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
 
 class RoomMemberSummaryComparator : Comparator<RoomMemberSummary> {
 

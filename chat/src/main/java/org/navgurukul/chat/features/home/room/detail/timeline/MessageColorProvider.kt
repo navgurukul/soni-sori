@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.home.room.detail.timeline
 
 import androidx.annotation.ColorInt
-import im.vector.matrix.android.api.session.room.send.SendState
+import org.matrix.android.sdk.api.session.room.send.SendState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.resources.ColorProvider
 import org.navgurukul.chat.core.utils.getColorFromUserId

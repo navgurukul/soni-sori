@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.home.room.list
 
 import com.airbnb.epoxy.EpoxyController
-import im.vector.matrix.android.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
 
 class RoomSummaryController(
     private val roomSummaryItemFactory: RoomSummaryItemFactory

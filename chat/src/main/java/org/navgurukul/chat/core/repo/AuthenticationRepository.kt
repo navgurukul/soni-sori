@@ -2,11 +2,11 @@ package org.navgurukul.chat.core.repo
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import im.vector.matrix.android.api.MatrixCallback
-import im.vector.matrix.android.api.auth.AuthenticationService
-import im.vector.matrix.android.api.auth.data.HomeServerConnectionConfig
-import im.vector.matrix.android.api.auth.data.LoginFlowResult
-import im.vector.matrix.android.api.session.Session
+import org.matrix.android.sdk.api.MatrixCallback
+import org.matrix.android.sdk.api.auth.AuthenticationService
+import org.matrix.android.sdk.api.auth.data.HomeServerConnectionConfig
+import org.matrix.android.sdk.api.auth.data.LoginFlowResult
+import org.matrix.android.sdk.api.session.Session
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

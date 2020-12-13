@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.KEY_ARG
 import org.navgurukul.chat.core.extensions.args
@@ -49,7 +50,7 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
     ))})
 
     private val sharedActionDataSource: MessageSharedActionDataSource by lazy {
-        requireActivity().lifecycleScope.get<MessageSharedActionDataSource>()
+        (requireActivity() as KoinScopeComponent).scope.get()
     }
 
     override fun onCreateView(

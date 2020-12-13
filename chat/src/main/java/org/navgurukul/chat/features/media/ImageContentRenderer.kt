@@ -11,9 +11,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.target.Target
-import im.vector.matrix.android.api.session.content.ContentUrlResolver
-import im.vector.matrix.android.internal.crypto.attachments.ElementToDecrypt
+import org.matrix.android.sdk.api.session.content.ContentUrlResolver
 import kotlinx.android.parcel.Parcelize
+import org.matrix.android.sdk.internal.crypto.attachments.ElementToDecrypt
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.glide.GlideRequest
@@ -29,6 +29,9 @@ interface AttachmentData : Parcelable {
     val mimeType: String?
     val url: String?
     val elementToDecrypt: ElementToDecrypt?
+
+    // If true will load non mxc url, be careful to set it only for attachments sent by you
+    val allowNonMxcUrls: Boolean
 }
 
 class ImageContentRenderer(
@@ -46,11 +49,11 @@ class ImageContentRenderer(
         val height: Int?,
         val maxHeight: Int,
         val width: Int?,
-        val maxWidth: Int
-    ) : AttachmentData {
-
-        fun isLocalFile() = url.isLocalFile()
-    }
+        val maxWidth: Int,
+        val isLocalFile: Boolean = url.isLocalFile(),
+        // If true will load non mxc url, be careful to set it only for images sent by you
+        override val allowNonMxcUrls: Boolean = false
+    ) : AttachmentData
 
     enum class Mode {
         FULL_SIZE,

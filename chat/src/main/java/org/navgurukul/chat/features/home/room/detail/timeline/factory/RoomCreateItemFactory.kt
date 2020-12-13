@@ -1,9 +1,8 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.factory
 
-import im.vector.matrix.android.api.permalinks.PermalinkFactory
-import im.vector.matrix.android.api.session.events.model.toModel
-import im.vector.matrix.android.api.session.room.model.create.RoomCreateContent
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.events.model.toModel
+import org.matrix.android.sdk.api.session.room.model.create.RoomCreateContent
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import me.gujun.android.span.span
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
@@ -19,9 +18,6 @@ class RoomCreateItemFactory(
 ) {
 
     fun create(event: TimelineEvent, callback: TimelineEventController.Callback?): MerakiEpoxyModel<*>? {
-        val createRoomContent = event.root.getClearContent().toModel<RoomCreateContent>() ?: return null
-        val predecessorId = createRoomContent.predecessor?.roomId ?: return defaultRendering(event, callback)
-        val roomLink = PermalinkFactory.createPermalink(predecessorId) ?: return null
         val text = span {
             +stringProvider.getString(R.string.room_tombstone_continuation_description)
             +"\n"

@@ -3,8 +3,8 @@ package org.navgurukul.chat.core.epoxy.profiles
 import android.view.View
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyAttribute
-import im.vector.matrix.android.api.crypto.RoomEncryptionTrustLevel
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.crypto.RoomEncryptionTrustLevel
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.extensions.setTextOrHide
 import org.navgurukul.chat.features.home.AvatarRenderer

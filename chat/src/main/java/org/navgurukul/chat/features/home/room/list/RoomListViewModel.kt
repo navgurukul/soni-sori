@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.list
 
-import im.vector.matrix.rx.rx
+import org.matrix.android.sdk.rx.rx
 import io.reactivex.schedulers.Schedulers
 import org.navgurukul.chat.core.repo.ActiveSessionDataSource
 import org.navgurukul.chat.features.home.HomeRoomListDataSource

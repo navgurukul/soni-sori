@@ -2,7 +2,7 @@ package org.navgurukul.chat.core.epoxy.profiles
 
 import androidx.annotation.DrawableRes
 import com.airbnb.epoxy.EpoxyController
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.core.epoxy.ClickListener
 import org.navgurukul.chat.core.epoxy.dividerItem
 import org.navgurukul.chat.features.home.AvatarRenderer

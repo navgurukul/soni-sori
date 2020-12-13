@@ -3,10 +3,10 @@ package org.navgurukul.chat.features.media
 import android.content.Context
 import android.view.View
 import androidx.core.view.isVisible
-import im.vector.matrix.android.api.MatrixCallback
-import im.vector.matrix.android.api.session.events.model.isVideoMessage
-import im.vector.matrix.android.api.session.file.FileService
-import im.vector.matrix.android.api.session.room.Room
+import org.matrix.android.sdk.api.MatrixCallback
+import org.matrix.android.sdk.api.session.events.model.isVideoMessage
+import org.matrix.android.sdk.api.session.file.FileService
+import org.matrix.android.sdk.api.session.room.Room
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.features.attachmentviewer.AttachmentInfo
