@@ -1,10 +1,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/splashBackground" />
 
-    <item android:gravity="center">
+    <item android:drawable="@color/backgroundColor"/>
+    <item android:gravity="center" android:top="-100dp">
         <bitmap
             android:gravity="center"
             android:src="@drawable/splash_icon" />
     </item>
 
+    <item android:gravity="center" android:top="200dp">
+        <bitmap
+            android:src="@drawable/illus_meraki" />
+    </item>
 </layer-list>
