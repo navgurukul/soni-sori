@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.factory
 
-import im.vector.matrix.android.api.session.events.model.EventType
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.events.model.EventType
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

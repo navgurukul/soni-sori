@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.invite
 
 import androidx.core.view.isInvisible
-import im.vector.matrix.android.api.session.room.members.ChangeMembershipState
+import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
 import org.navgurukul.commonui.platform.ButtonStateView
 
 object InviteButtonStateBinder {

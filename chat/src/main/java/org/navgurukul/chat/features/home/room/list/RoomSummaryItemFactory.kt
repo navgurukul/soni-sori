@@ -17,8 +17,8 @@
 package org.navgurukul.chat.features.home.room.list
 
 import android.view.View
-import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.util.toMatrixItem
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.util.toMatrixItem
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.core.resources.DateProvider

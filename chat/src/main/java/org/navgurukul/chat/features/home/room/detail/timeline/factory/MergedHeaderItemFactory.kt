@@ -1,11 +1,11 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.factory
 
-import im.vector.matrix.android.api.session.events.model.EventType
-import im.vector.matrix.android.api.session.events.model.toModel
-import im.vector.matrix.android.api.session.room.model.create.RoomCreateContent
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
-import im.vector.matrix.android.internal.crypto.MXCRYPTO_ALGORITHM_MEGOLM
-import im.vector.matrix.android.internal.crypto.model.event.EncryptionEventContent
+import org.matrix.android.sdk.api.session.events.model.EventType
+import org.matrix.android.sdk.api.session.events.model.toModel
+import org.matrix.android.sdk.api.session.room.model.create.RoomCreateContent
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.internal.crypto.MXCRYPTO_ALGORITHM_MEGOLM
+import org.matrix.android.sdk.internal.crypto.model.event.EncryptionEventContent
 import org.navgurukul.chat.core.extensions.prevOrNull
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.home.AvatarRenderer

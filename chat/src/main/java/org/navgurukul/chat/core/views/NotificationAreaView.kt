@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.italic
-import im.vector.matrix.android.api.failure.MatrixError
-import im.vector.matrix.android.api.session.events.model.Event
+import org.matrix.android.sdk.api.failure.MatrixError
+import org.matrix.android.sdk.api.session.events.model.Event
 import kotlinx.android.synthetic.main.view_notification_area.view.*
 import me.gujun.android.span.span
 import me.saket.bettermovementmethod.BetterLinkMovementMethod

@@ -29,27 +29,29 @@ import com.airbnb.epoxy.OnModelBuildFinishedListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding3.widget.textChanges
-import im.vector.matrix.android.api.permalinks.PermalinkFactory
-import im.vector.matrix.android.api.session.events.model.Event
-import im.vector.matrix.android.api.session.room.model.Membership
-import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.session.room.model.message.*
-import im.vector.matrix.android.api.session.room.send.SendState
-import im.vector.matrix.android.api.session.room.timeline.Timeline
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
-import im.vector.matrix.android.api.session.room.timeline.getLastMessageContent
-import im.vector.matrix.android.api.util.MatrixItem
-import im.vector.matrix.android.api.util.toMatrixItem
-import im.vector.matrix.android.internal.crypto.model.event.EncryptedEventContent
-import im.vector.matrix.android.internal.crypto.model.event.WithHeldCode
+import org.matrix.android.sdk.api.session.events.model.Event
+import org.matrix.android.sdk.api.session.room.model.Membership
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.model.message.*
+import org.matrix.android.sdk.api.session.room.send.SendState
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.room.timeline.getLastMessageContent
+import org.matrix.android.sdk.api.util.MatrixItem
+import org.matrix.android.sdk.api.util.toMatrixItem
+import org.matrix.android.sdk.internal.crypto.model.event.EncryptedEventContent
+import org.matrix.android.sdk.internal.crypto.model.event.WithHeldCode
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_room_detail.*
 import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.Scope
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.dialogs.ConfirmationDialogBuilder
@@ -97,22 +99,24 @@ private const val REACTION_SELECT_REQUEST_CODE = 0
 class RoomDetailFragment : BaseFragment(),
     TimelineEventController.Callback,
     SaralInviteView.Callback,
-    JumpToReadMarkerView.Callback {
+    JumpToReadMarkerView.Callback, KoinScopeComponent {
+
+    override val scope: Scope by lazy { fragmentScope() }
 
     private lateinit var layoutManager: LinearLayoutManager
     private val roomDetailArgs: RoomDetailArgs by args()
 
-    private val timelineEventController: TimelineEventController by inject(parameters = { parametersOf(lifecycleScope)})
+    private val timelineEventController: TimelineEventController by inject(parameters = { parametersOf(scope)})
 
     private val viewModel: RoomDetailFragmentViewModel by viewModel(parameters = {
         parametersOf(
             RoomDetailViewState(roomId = roomDetailArgs.roomId, eventId = roomDetailArgs.eventId),
-            lifecycleScope
+            scope
         )
     })
 
     private val sharedActionDataSource: MessageSharedActionDataSource by lazy {
-        requireActivity().lifecycleScope.get<MessageSharedActionDataSource>()
+        (requireActivity() as KoinScopeComponent).scope.get()
     }
 
     private val glideRequests by lazy {
@@ -476,7 +480,7 @@ class RoomDetailFragment : BaseFragment(),
             }
 
             override fun onCloseRelatedMessage() {
-                viewModel.handle(RoomDetailAction.ExitSpecialMode(composerLayout.text.toString()))
+                viewModel.handle(RoomDetailAction.EnterRegularMode(composerLayout.text.toString(), false))
             }
 
             override fun onRichContentSelected(contentUri: Uri): Boolean {
@@ -505,8 +509,6 @@ class RoomDetailFragment : BaseFragment(),
             }
             .disposeOnDestroyView()
     }
-
-
 
     private fun setupRecyclerView() {
         timelineEventController.callback = this
@@ -1040,7 +1042,7 @@ class RoomDetailFragment : BaseFragment(),
 //                }
             }
         }
-         super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {
@@ -1057,7 +1059,4 @@ class RoomDetailFragment : BaseFragment(),
         viewModel.handle(RoomDetailAction.ExitTrackingUnreadMessagesState)
         super.onDestroy()
     }
-
-
-
 }

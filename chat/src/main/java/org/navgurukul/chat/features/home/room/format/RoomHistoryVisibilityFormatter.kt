@@ -16,7 +16,7 @@
 
 package org.navgurukul.chat.features.home.room.format
 
-import im.vector.matrix.android.api.session.room.model.RoomHistoryVisibility
+import org.matrix.android.sdk.api.session.room.model.RoomHistoryVisibility
 import org.navgurukul.chat.R
 import org.navgurukul.commonui.resources.StringProvider
 

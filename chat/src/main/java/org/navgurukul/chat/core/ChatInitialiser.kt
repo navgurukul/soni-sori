@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.jakewharton.threetenabp.AndroidThreeTen
-import im.vector.matrix.android.api.auth.AuthenticationService
+import org.matrix.android.sdk.api.auth.AuthenticationService
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.core.extensions.configureAndStart
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
@@ -15,8 +15,6 @@ import org.navgurukul.chat.features.lifecycle.SaralActivityLifecycleCallbacks
 import org.navgurukul.chat.features.notifications.NotificationDrawerManager
 import org.navgurukul.chat.features.notifications.NotificationUtils
 import org.navgurukul.chat.features.popup.PopupAlertManager
-import org.navgurukul.chat.features.push.FcmHelper
-import org.navgurukul.chat.features.settings.ChatPreferences
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 

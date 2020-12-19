@@ -2,7 +2,7 @@ package org.navgurukul.chat.features.home.room.detail
 
 import android.net.Uri
 import androidx.annotation.StringRes
-import im.vector.matrix.android.internal.crypto.model.event.WithHeldCode
+import org.matrix.android.sdk.internal.crypto.model.event.WithHeldCode
 import org.navgurukul.chat.features.command.Command
 import org.navgurukul.commonui.platform.ViewEvents
 import java.io.File

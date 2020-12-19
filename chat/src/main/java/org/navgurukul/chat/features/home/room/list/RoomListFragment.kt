@@ -7,9 +7,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import im.vector.matrix.android.api.failure.Failure
-import im.vector.matrix.android.api.session.room.model.Membership
-import im.vector.matrix.android.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.failure.Failure
+import org.matrix.android.sdk.api.session.room.model.Membership
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import kotlinx.android.synthetic.main.fragment_room_list.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

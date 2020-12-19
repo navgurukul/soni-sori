@@ -5,22 +5,21 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import im.vector.matrix.android.api.session.events.model.Event
-import im.vector.matrix.android.api.session.events.model.toModel
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
-import im.vector.matrix.android.api.session.room.model.RoomThirdPartyInviteContent
-import im.vector.matrix.android.api.util.toMatrixItem
+import org.matrix.android.sdk.api.session.events.model.Event
+import org.matrix.android.sdk.api.session.events.model.toModel
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.session.room.model.RoomThirdPartyInviteContent
+import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.synthetic.main.fragment_room_setting_generic.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
 import org.navgurukul.chat.features.home.AvatarRenderer
-import org.navgurukul.chat.features.navigator.ChatInternalNavigator
 import org.navgurukul.chat.features.roomprofile.RoomProfileArgs
 import org.navgurukul.commonui.platform.BaseFragment
 
@@ -32,7 +31,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     private val roomProfileArgs: RoomProfileArgs by args()
 
     private val viewModel: RoomMemberListViewModel by viewModel(parameters = { parametersOf(RoomMemberListViewState(roomProfileArgs.roomId))})
-    private val navigator: ChatInternalNavigator by inject()
+    private val navigator: MerakiNavigator by inject()
 
     override fun getLayoutResId() = R.layout.fragment_room_member_list
 
@@ -44,10 +43,22 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
 //        setupInviteUsersButton()
         recyclerView.configureWith(roomMemberListController, hasFixedSize = true)
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+        viewModel.viewState.observe(viewLifecycleOwner, {
             setUpWithState(it)
         })
+
+        viewModel.viewEvents.observe(viewLifecycleOwner, {
+            when(it) {
+                is RoomMemberListViewEvents.OpenRoom -> handleOpenRoom(it.roomId)
+            }
+        })
     }
+
+    private fun handleOpenRoom(roomId: String) {
+        navigator.openRoom(requireContext(), roomId)
+        requireActivity().finish()
+    }
+
 
 //    private fun setupInviteUsersButton() {
 //        inviteUsersButton.debouncedClicks {
@@ -101,6 +112,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     }
 
     override fun onRoomMemberClicked(roomMember: RoomMemberSummary) {
+        viewModel.handle(RoomMemberListAction.OpenOrCreateDm(roomMember.userId))
     }
 
     override fun onThreePidInviteClicked(event: Event) {

@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
-import im.vector.matrix.android.api.MatrixCallback
-import im.vector.matrix.android.api.session.file.FileService
+import org.matrix.android.sdk.api.MatrixCallback
+import org.matrix.android.sdk.api.session.file.FileService
 import org.navgurukul.chat.features.attachmentviewer.AttachmentInfo
 import org.navgurukul.chat.features.attachmentviewer.AttachmentSourceProvider
 import org.navgurukul.chat.features.attachmentviewer.ImageLoaderTarget

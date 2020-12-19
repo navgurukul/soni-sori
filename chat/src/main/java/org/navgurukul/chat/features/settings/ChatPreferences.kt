@@ -6,7 +6,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import im.vector.matrix.android.api.extensions.tryThis
 import org.navgurukul.chat.BuildConfig
 import timber.log.Timber
 
@@ -361,12 +360,6 @@ class ChatPreferences(private val context: Context) {
         defaultPrefs.edit(true) {
             putStringSet(SETTINGS_UNKNOWN_DEVICE_DISMISSED_LIST, deviceIds.toSet())
         }
-    }
-
-    fun getUnknownDeviceDismissedList(): List<String> {
-        return tryThis {
-            defaultPrefs.getStringSet(SETTINGS_UNKNOWN_DEVICE_DISMISSED_LIST, null)?.toList()
-        }.orEmpty()
     }
 
     /**

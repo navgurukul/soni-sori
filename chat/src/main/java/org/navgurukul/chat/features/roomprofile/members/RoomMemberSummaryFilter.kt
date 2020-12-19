@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.roomprofile.members
 
-import im.vector.matrix.android.api.extensions.orFalse
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.extensions.orFalse
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
 import io.reactivex.functions.Predicate
 
 class RoomMemberSummaryFilter: Predicate<RoomMemberSummary> {

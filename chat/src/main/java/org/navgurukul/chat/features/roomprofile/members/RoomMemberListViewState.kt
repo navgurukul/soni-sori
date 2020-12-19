@@ -2,9 +2,9 @@
 package org.navgurukul.chat.features.roomprofile.members
 
 import androidx.annotation.StringRes
-import im.vector.matrix.android.api.session.events.model.Event
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
-import im.vector.matrix.android.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.events.model.Event
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.navgurukul.chat.R
 import org.navgurukul.commonui.model.Async
 import org.navgurukul.commonui.model.Uninitialized

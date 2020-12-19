@@ -1,8 +1,8 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.reactions
 
-import im.vector.matrix.android.api.session.room.model.ReactionAggregatedSummary
-import im.vector.matrix.rx.RxRoom
-import im.vector.matrix.rx.unwrap
+import org.matrix.android.sdk.api.session.room.model.ReactionAggregatedSummary
+import org.matrix.android.sdk.rx.RxRoom
+import org.matrix.android.sdk.rx.unwrap
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.navgurukul.chat.core.date.SaralDateFormatter

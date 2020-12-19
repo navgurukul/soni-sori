@@ -1,32 +1,33 @@
 package org.navgurukul.chat.features.roomprofile.members
 
 import androidx.lifecycle.viewModelScope
-import im.vector.matrix.android.api.NoOpMatrixCallback
-import im.vector.matrix.android.api.query.QueryStringValue
-import im.vector.matrix.android.api.session.events.model.EventType
-import im.vector.matrix.android.api.session.events.model.toModel
-import im.vector.matrix.android.api.session.room.members.roomMemberQueryParams
-import im.vector.matrix.android.api.session.room.model.Membership
-import im.vector.matrix.android.api.session.room.model.PowerLevelsContent
-import im.vector.matrix.android.api.session.room.model.RoomMemberSummary
-import im.vector.matrix.android.api.session.room.powerlevels.PowerLevelsHelper
-import im.vector.matrix.android.api.session.room.powerlevels.Role
-import im.vector.matrix.rx.mapOptional
-import im.vector.matrix.rx.rx
-import im.vector.matrix.rx.unwrap
+import org.matrix.android.sdk.api.NoOpMatrixCallback
+import org.matrix.android.sdk.api.query.QueryStringValue
+import org.matrix.android.sdk.api.session.events.model.EventType
+import org.matrix.android.sdk.api.session.events.model.toModel
+import org.matrix.android.sdk.api.session.room.members.roomMemberQueryParams
+import org.matrix.android.sdk.api.session.room.model.Membership
+import org.matrix.android.sdk.api.session.room.model.PowerLevelsContent
+import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
+import org.matrix.android.sdk.api.session.room.powerlevels.PowerLevelsHelper
+import org.matrix.android.sdk.api.session.room.powerlevels.Role
+import org.matrix.android.sdk.rx.mapOptional
+import org.matrix.android.sdk.rx.rx
+import org.matrix.android.sdk.rx.unwrap
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.matrix.android.sdk.internal.util.awaitCallback
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.powerlevel.PowerLevelsObservableFactory
 import org.navgurukul.commonui.platform.BaseViewModel
-import org.navgurukul.commonui.platform.EmptyViewEvents
+import org.navgurukul.commonui.platform.ViewEvents
 
 class RoomMemberListViewModel(
-    initialState: RoomMemberListViewState,
+    private val initialState: RoomMemberListViewState,
     private val roomMemberSummaryComparator: RoomMemberSummaryComparator,
     activeSessionHolder: ActiveSessionHolder
-) : BaseViewModel<EmptyViewEvents, RoomMemberListViewState>(initialState) {
+) : BaseViewModel<RoomMemberListViewEvents, RoomMemberListViewState>(initialState) {
 
     private val session = activeSessionHolder.getActiveSession()
     private val room = session.getRoom(initialState.roomId)!!
@@ -45,13 +46,13 @@ class RoomMemberListViewModel(
         }
 
         Observable
-            .combineLatest<List<RoomMemberSummary>, PowerLevelsContent, RoomMemberSummaries>(
+            .combineLatest(
                 room.rx().liveRoomMembers(roomMemberQueryParams),
                 room.rx()
                     .liveStateEvent(EventType.STATE_ROOM_POWER_LEVELS, QueryStringValue.NoCondition)
                     .mapOptional { it.content.toModel<PowerLevelsContent>() }
                     .unwrap(),
-                BiFunction { roomMembers, powerLevelsContent ->
+                { roomMembers, powerLevelsContent ->
                     buildRoomMemberSummaries(powerLevelsContent, roomMembers)
                 }
             )
@@ -128,6 +129,24 @@ class RoomMemberListViewModel(
         when (action) {
             is RoomMemberListAction.RevokeThreePidInvite -> handleRevokeThreePidInvite(action)
             is RoomMemberListAction.FilterMemberList -> handleFilterMemberList(action)
+            is RoomMemberListAction.OpenOrCreateDm -> handleOpenOrCreateDm(action)
+        }
+    }
+
+    private fun handleOpenOrCreateDm(action: RoomMemberListAction.OpenOrCreateDm) {
+        val existingDmRoomId = session.getExistingDirectRoomWithUser(action.userId)
+        if (existingDmRoomId == null) {
+            // First create a direct room
+            viewModelScope.launch(Dispatchers.IO) {
+                val roomId = awaitCallback<String> {
+                    session.createDirectRoom(action.userId, it)
+                }
+                _viewEvents.postValue(RoomMemberListViewEvents.OpenRoom(roomId))
+            }
+        } else {
+            if (existingDmRoomId != initialState.roomId) {
+                _viewEvents.postValue(RoomMemberListViewEvents.OpenRoom(existingDmRoomId))
+            }
         }
     }
 
@@ -149,4 +168,8 @@ class RoomMemberListViewModel(
             )
         }
     }
+}
+
+sealed class RoomMemberListViewEvents: ViewEvents {
+    data class OpenRoom(val roomId: String) : RoomMemberListViewEvents()
 }

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
-import im.vector.matrix.android.api.session.content.ContentUploadStateTracker
-import im.vector.matrix.android.api.session.room.send.SendState
+import org.matrix.android.sdk.api.session.content.ContentUploadStateTracker
+import org.matrix.android.sdk.api.session.room.send.SendState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.utils.TextUtils.formatFileSize

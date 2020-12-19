@@ -11,8 +11,8 @@ import androidx.annotation.UiThread
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.chip.ChipDrawable
-import im.vector.matrix.android.api.session.room.send.MatrixItemSpan
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.session.room.send.MatrixItemSpan
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.glide.GlideRequests
 import org.navgurukul.chat.features.home.AvatarRenderer

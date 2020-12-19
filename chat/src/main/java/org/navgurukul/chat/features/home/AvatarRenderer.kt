@@ -12,8 +12,8 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.Target
-import im.vector.matrix.android.api.session.content.ContentUrlResolver
-import im.vector.matrix.android.api.util.MatrixItem
+import org.matrix.android.sdk.api.session.content.ContentUrlResolver
+import org.matrix.android.sdk.api.util.MatrixItem
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.glide.GlideRequest
 import org.navgurukul.chat.core.glide.GlideRequests

@@ -8,7 +8,7 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.helper.widget.Flow.CHAIN_PACKED
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import im.vector.matrix.android.api.session.room.send.SendState
+import org.matrix.android.sdk.api.session.room.send.SendState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider

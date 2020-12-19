@@ -4,10 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.RemoteInput
-import im.vector.matrix.android.api.NoOpMatrixCallback
-import im.vector.matrix.android.api.session.Session
-import im.vector.matrix.android.api.session.room.Room
-import im.vector.matrix.android.api.session.room.read.ReadService
+import org.matrix.android.sdk.api.NoOpMatrixCallback
+import org.matrix.android.sdk.api.session.Session
+import org.matrix.android.sdk.api.session.room.Room
+import org.matrix.android.sdk.api.session.room.read.ReadService
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import timber.log.Timber

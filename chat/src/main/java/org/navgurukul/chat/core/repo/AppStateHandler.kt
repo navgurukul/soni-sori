@@ -20,10 +20,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import arrow.core.Option
-import im.vector.matrix.android.api.session.group.model.GroupSummary
-import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.session.room.roomSummaryQueryParams
-import im.vector.matrix.rx.rx
+import org.matrix.android.sdk.api.session.group.model.GroupSummary
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
+import org.matrix.android.sdk.rx.rx
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

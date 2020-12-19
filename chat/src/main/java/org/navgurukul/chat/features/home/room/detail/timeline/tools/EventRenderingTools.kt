@@ -5,8 +5,8 @@ import android.text.style.ClickableSpan
 import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
-import im.vector.matrix.android.api.permalinks.MatrixLinkify
-import im.vector.matrix.android.api.permalinks.MatrixPermalinkSpan
+import org.matrix.android.sdk.api.session.permalinks.MatrixLinkify
+import org.matrix.android.sdk.api.session.permalinks.MatrixPermalinkSpan
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.helper
 
-import im.vector.matrix.android.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
 
 class RoomSummaryHolder {
 

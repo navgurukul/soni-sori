@@ -1,7 +1,7 @@
 package org.navgurukul.chat.features.home.room.list
 
-import im.vector.matrix.android.api.session.room.model.RoomSummary
-import im.vector.matrix.android.api.session.room.notification.RoomNotificationState
+import org.matrix.android.sdk.api.session.room.model.RoomSummary
+import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
 import org.navgurukul.commonui.platform.ViewModelAction
 
 sealed class RoomListAction : ViewModelAction {

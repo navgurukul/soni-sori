@@ -1,7 +1,7 @@
 package org.navgurukul.chat.core.repo
 
 import arrow.core.Option
-import im.vector.matrix.android.api.session.Session
+import org.matrix.android.sdk.api.session.Session
 import org.navgurukul.chat.core.di.ImageManager
 import org.navgurukul.chat.features.crypto.KeyRequestHandler
 import org.navgurukul.chat.features.notifications.PushRuleTriggerListener

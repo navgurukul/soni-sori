@@ -3,7 +3,7 @@ package org.navgurukul.chat.core.di
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
-import im.vector.matrix.android.api.session.Session
+import org.matrix.android.sdk.api.session.Session
 import org.navgurukul.chat.core.glide.FactoryUrl
 import org.navgurukul.chat.core.repo.ActiveSessionDataSource
 import java.io.InputStream

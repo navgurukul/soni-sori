@@ -2,8 +2,8 @@ package org.navgurukul.chat.features.home.room.list.actions
 
 import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
-import im.vector.matrix.android.api.session.room.notification.RoomNotificationState
-import im.vector.matrix.android.api.util.toMatrixItem
+import org.matrix.android.sdk.api.session.room.notification.RoomNotificationState
+import org.matrix.android.sdk.api.util.toMatrixItem
 import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetActionItem
 import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetRoomPreviewItem
 import org.navgurukul.chat.core.epoxy.dividerItem

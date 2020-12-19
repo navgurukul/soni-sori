@@ -11,6 +11,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.KEY_ARG
 import org.navgurukul.chat.core.extensions.args
@@ -32,7 +33,7 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
     private val viewModel: ViewReactionsViewModel by viewModel(parameters = { parametersOf(DisplayReactionsViewState(args.eventId, args.roomId)) })
 
     private val sharedActionViewModel: MessageSharedActionDataSource by lazy {
-        requireActivity().lifecycleScope.get<MessageSharedActionDataSource>()
+        (requireActivity() as KoinScopeComponent).scope.get()
     }
 
     private val epoxyController: ViewReactionsEpoxyController by inject()

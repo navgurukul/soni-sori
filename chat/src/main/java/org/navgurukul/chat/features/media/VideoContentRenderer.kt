@@ -5,9 +5,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
 import androidx.core.view.isVisible
-import im.vector.matrix.android.api.MatrixCallback
-import im.vector.matrix.android.api.session.file.FileService
-import im.vector.matrix.android.internal.crypto.attachments.ElementToDecrypt
+import org.matrix.android.sdk.api.MatrixCallback
+import org.matrix.android.sdk.api.session.file.FileService
+import org.matrix.android.sdk.internal.crypto.attachments.ElementToDecrypt
 import kotlinx.android.parcel.Parcelize
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
@@ -26,6 +26,8 @@ class VideoContentRenderer (private val activeSessionHolder: ActiveSessionHolder
         override val mimeType: String?,
         override val url: String?,
         override val elementToDecrypt: ElementToDecrypt?,
+        // If true will load non mxc url, be careful to set it only for video sent by you
+        override val allowNonMxcUrls: Boolean = false,
         val thumbnailMediaData: ImageContentRenderer.Data
     ) : AttachmentData
 

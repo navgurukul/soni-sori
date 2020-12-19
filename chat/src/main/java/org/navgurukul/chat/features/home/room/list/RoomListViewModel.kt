@@ -1,16 +1,18 @@
 package org.navgurukul.chat.features.home.room.list
 
-import im.vector.matrix.rx.rx
+import org.matrix.android.sdk.rx.rx
 import io.reactivex.schedulers.Schedulers
-import org.navgurukul.chat.core.repo.ActiveSessionDataSource
+import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.home.HomeRoomListDataSource
 import org.navgurukul.commonui.platform.BaseViewModel
 
 class RoomListViewModel(
     initialState: RoomListViewState,
-    private val activeSessionDataSource: ActiveSessionDataSource,
+    activeSessionHolder: ActiveSessionHolder,
     private val homeRoomListDataSource: HomeRoomListDataSource
 ) : BaseViewModel<RoomListViewEvents, RoomListViewState>(initialState) {
+
+    private val session = activeSessionHolder.getActiveSession()
 
     init {
         observeRoomSummaries()
@@ -18,11 +20,8 @@ class RoomListViewModel(
     }
 
     private fun observeSyncState() {
-        activeSessionDataSource
-            .observe()
-            .switchMap {
-                it.orNull()?.rx()?.liveSyncState()
-            }
+        session.rx()
+            .liveSyncState()
             .subscribe { syncState ->
                 setState {
                     copy(syncState = syncState)

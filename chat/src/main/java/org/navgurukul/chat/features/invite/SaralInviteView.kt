@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
-import im.vector.matrix.android.api.session.room.members.ChangeMembershipState
-import im.vector.matrix.android.api.session.user.model.User
-import im.vector.matrix.android.api.util.toMatrixItem
+import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
+import org.matrix.android.sdk.api.session.user.model.User
+import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.synthetic.main.saral_invite_view.view.*
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.R

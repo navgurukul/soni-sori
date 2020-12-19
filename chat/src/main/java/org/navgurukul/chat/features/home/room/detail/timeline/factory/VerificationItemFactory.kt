@@ -1,14 +1,14 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.factory
 
-import im.vector.matrix.android.api.session.crypto.verification.CancelCode
-import im.vector.matrix.android.api.session.crypto.verification.safeValueOf
-import im.vector.matrix.android.api.session.events.model.EventType
-import im.vector.matrix.android.api.session.events.model.RelationType
-import im.vector.matrix.android.api.session.events.model.toModel
-import im.vector.matrix.android.api.session.room.model.message.MessageRelationContent
-import im.vector.matrix.android.api.session.room.model.message.MessageVerificationCancelContent
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
-import im.vector.matrix.android.internal.session.room.VerificationState
+import org.matrix.android.sdk.api.session.crypto.verification.CancelCode
+import org.matrix.android.sdk.api.session.crypto.verification.safeValueOf
+import org.matrix.android.sdk.api.session.events.model.EventType
+import org.matrix.android.sdk.api.session.events.model.RelationType
+import org.matrix.android.sdk.api.session.events.model.toModel
+import org.matrix.android.sdk.api.session.room.model.message.MessageRelationContent
+import org.matrix.android.sdk.api.session.room.model.message.MessageVerificationCancelContent
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.internal.session.room.VerificationState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.repo.ActiveSessionHolder

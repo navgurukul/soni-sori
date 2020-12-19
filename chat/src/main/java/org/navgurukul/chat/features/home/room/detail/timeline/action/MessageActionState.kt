@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.action
 
-import im.vector.matrix.android.api.session.room.timeline.TimelineEvent
+import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.navgurukul.chat.core.extensions.canReact
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
 import org.navgurukul.commonui.model.Async

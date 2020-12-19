@@ -7,14 +7,19 @@ import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import org.koin.androidx.scope.activityScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.Scope
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.replaceFragment
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 
-class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable {
+class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable, KoinScopeComponent {
+
+    override val scope: Scope by lazy { activityScope() }
 
     private lateinit var currentRoomId: String
 
