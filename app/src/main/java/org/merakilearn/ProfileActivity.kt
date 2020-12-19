@@ -114,9 +114,10 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun deleteSavedFile(first: String) {
-        viewModel.deleteFile(first).observe(this, Observer {
+        viewModel.deleteFile(first)
+        viewModel.deleteFile.observe(this, Observer {
             if (it) {
-               val newList= filesList.filter {pair->
+                val newList = filesList.filter { pair ->
                     pair.first != first
                 }.toMutableList()
                 updateAdapter(newList)
@@ -127,20 +128,21 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun copyContent(first: String) {
-        val code = File(first).bufferedReader().readLine()
-        if (!code.isNullOrBlank())
-            merakiNavigator.openPlayground(this, code)
+    private fun copyContent(fileName: String) {
+        merakiNavigator.openPlaygroundWithFileContent(this, fileName)
     }
 
-    private fun shareFile(first: String) {
-        val code = File(first).bufferedReader().readLine()
+    private fun shareFile(fileName: String) {
+        val code = File(fileName).bufferedReader().readLine()
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, code)
             type = "text/plain"
         }
-        val shareIntent = Intent.createChooser(sendIntent, getString(org.navgurukul.playground.R.string.share_code))
+        val shareIntent = Intent.createChooser(
+            sendIntent,
+            getString(org.navgurukul.playground.R.string.share_code)
+        )
         startActivity(shareIntent)
     }
 

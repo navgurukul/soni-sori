@@ -1,11 +1,19 @@
 package org.merakilearn.ui.onboarding
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.FileDataSource
 import org.merakilearn.datasource.network.model.LoginResponse
 
-class LoginViewModel(private val applicationRepo: ApplicationRepo) : ViewModel() {
+class LoginViewModel(
+    private val applicationRepo: ApplicationRepo,
+    private val fileDataSource: FileDataSource
+) : ViewModel() {
+
+    private val _deleteFile = MutableLiveData<String>()
 
     fun initLoginServer(authToken: String?) = liveData {
         emit(applicationRepo.loginWithAuthToken(authToken))
@@ -19,11 +27,16 @@ class LoginViewModel(private val applicationRepo: ApplicationRepo) : ViewModel()
         emit(applicationRepo.logOut())
     }
 
-    fun deleteFile(first: String) = liveData {
-        emit(applicationRepo.deleteFile(first))
+    fun deleteFile(first: String) {
+        _deleteFile.postValue(first)
     }
 
+    val deleteFile = _deleteFile.switchMap {
+        liveData {
+            emit(fileDataSource.deleteFile(it))
+        }
+    }
     val fetchSavedFile = liveData {
-        emit(applicationRepo.fetchSavedFile())
+        emit(fileDataSource.fetchSavedFile())
     }
 }

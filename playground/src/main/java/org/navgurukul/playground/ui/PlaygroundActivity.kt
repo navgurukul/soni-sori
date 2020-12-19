@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_output.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
+import java.io.File
 
 class PlaygroundActivity : AppCompatActivity() {
 
@@ -59,12 +60,23 @@ class PlaygroundActivity : AppCompatActivity() {
         if (intent.hasExtra(ARG_CODE) && !TextUtils.isEmpty(intent.getStringExtra(ARG_CODE))) {
             val code = intent.getStringExtra(ARG_CODE)!!
             val existingCode = viewModel.getCachedCode()
-            if (TextUtils.isEmpty(existingCode)) {
-                etCode.setText(code)
-                etCode.setSelection(etCode.text.length)
-            } else {
-                showDialogToOverrideCode(code)
-            }
+            parseCodeToUI(existingCode, code)
+        }
+
+        if (intent.hasExtra(ARG_FILE_NAME) ) {
+            val fileName = intent.getStringExtra(ARG_FILE_NAME)!!
+            val existingCode = viewModel.getCachedCode()
+            val code = File(fileName).bufferedReader().readLine()
+            parseCodeToUI(existingCode, code)
+        }
+    }
+
+    private fun parseCodeToUI(existingCode: String, code: String) {
+        if (TextUtils.isEmpty(existingCode)) {
+            etCode.setText(code)
+            etCode.setSelection(etCode.text.length)
+        } else {
+            showDialogToOverrideCode(code)
         }
     }
 
@@ -376,9 +388,16 @@ class PlaygroundActivity : AppCompatActivity() {
 
     companion object {
         private const val ARG_CODE = "arg_code"
+        private const val ARG_FILE_NAME = "arg_file_name"
         fun launch(code: String?, context: Context): Intent {
             val intent = Intent(context, PlaygroundActivity::class.java)
             intent.putExtra(ARG_CODE, code)
+            return intent
+        }
+
+        fun launchWithFileContent(fileName: String, context: Context): Intent {
+            val intent = Intent(context, PlaygroundActivity::class.java)
+            intent.putExtra(ARG_FILE_NAME, fileName)
             return intent
         }
     }

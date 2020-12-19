@@ -16,4 +16,5 @@ interface ChatModuleNavigator {
 
 interface PlaygroundModuleNavigator{
     fun launchPlaygroundActivity(context: Context, code: String):Intent
+    fun openPlaygroundWithFileContent(context: Context, fileName: String): Intent
 }

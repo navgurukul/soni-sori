@@ -14,6 +14,7 @@ import org.merakilearn.EnrollViewModel
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.Config
+import org.merakilearn.datasource.FileDataSource
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.discover.DiscoverViewModel
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 
 val viewModelModule = module {
-    viewModel { LoginViewModel(get()) }
+    viewModel { LoginViewModel(get(),get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { WelcomeViewModel(get(), get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
@@ -107,4 +108,13 @@ val repositoryModule = module {
     single { provideAppRepo(get(), androidApplication(), get(), get()) }
     single { Config() }
 }
-val appModules = arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule)
+
+val fileDataSource = module {
+    fun provideFileDataSource(application: Application): FileDataSource {
+        return FileDataSource(application)
+    }
+    single { provideFileDataSource(androidApplication()) }
+}
+val appModules =
+    arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule,
+        fileDataSource)

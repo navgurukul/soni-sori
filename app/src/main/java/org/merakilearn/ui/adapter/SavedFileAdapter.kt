@@ -46,7 +46,7 @@ class SavedFileAdapter(var callback: ((Triple<String, String, View>) -> Unit)? =
                     oldItem: Pair<String, String>,
                     newItem: Pair<String, String>
                 ): Boolean {
-                    return oldItem.first == newItem.first
+                    return oldItem.second == newItem.second
                 }
             }
     }
