@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_output.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
+import java.io.File
 
 class PlaygroundActivity : AppCompatActivity() {
 
@@ -59,12 +60,23 @@ class PlaygroundActivity : AppCompatActivity() {
         if (intent.hasExtra(ARG_CODE) && !TextUtils.isEmpty(intent.getStringExtra(ARG_CODE))) {
             val code = intent.getStringExtra(ARG_CODE)!!
             val existingCode = viewModel.getCachedCode()
-            if (TextUtils.isEmpty(existingCode)) {
-                etCode.setText(code)
-                etCode.setSelection(etCode.text.length)
-            } else {
-                showDialogToOverrideCode(code)
-            }
+            parseCodeToUI(existingCode, code)
+        }
+
+        if (intent.hasExtra(ARG_FILE_NAME) ) {
+            val fileName = intent.getStringExtra(ARG_FILE_NAME)!!
+            val existingCode = viewModel.getCachedCode()
+            val code = File(fileName).bufferedReader().readLine()
+            parseCodeToUI(existingCode, code)
+        }
+    }
+
+    private fun parseCodeToUI(existingCode: String, code: String) {
+        if (TextUtils.isEmpty(existingCode)) {
+            etCode.setText(code)
+            etCode.setSelection(etCode.text.length)
+        } else {
+            showDialogToOverrideCode(code)
         }
     }
 
@@ -111,8 +123,73 @@ class PlaygroundActivity : AppCompatActivity() {
             return true
         } else if (id == R.id.clear) {
             etCode.text.clear()
+        } else if (id == R.id.share) {
+            shareCode()
+        } else if (id == R.id.save) {
+            saveCode()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareCode() {
+        if (!TextUtils.isEmpty(etCode.text.toString())) {
+            showShareIntent(etCode.text.toString())
+        }else{
+            Toast.makeText(
+                this@PlaygroundActivity,
+                getString(R.string.nothing_to_share),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showShareIntent(code: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, code)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_code))
+        startActivity(shareIntent)
+
+    }
+
+    private fun saveCode() {
+        if (!TextUtils.isEmpty(etCode.text.toString())) {
+            showDialogForFileName()
+        }else{
+            Toast.makeText(
+                this@PlaygroundActivity,
+                getString(R.string.nothing_to_save),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showDialogForFileName() {
+        val input = EditText(this)
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        lp.setMargins(10,10,10,10)
+        input.layoutParams = lp
+
+        val alertDialog = AlertDialog.Builder(this).setMessage(getString(R.string.enter_file_name))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                viewModel.saveCode(etCode.text.toString(), input.text.toString())
+                dialog.dismiss()
+                Toast.makeText(
+                    this@PlaygroundActivity,
+                    getString(R.string.code_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }.create()
+
+        alertDialog.setView(input)
+        alertDialog.show()
+
     }
 
     override fun onBackPressed() {
@@ -311,9 +388,16 @@ class PlaygroundActivity : AppCompatActivity() {
 
     companion object {
         private const val ARG_CODE = "arg_code"
+        private const val ARG_FILE_NAME = "arg_file_name"
         fun launch(code: String?, context: Context): Intent {
             val intent = Intent(context, PlaygroundActivity::class.java)
             intent.putExtra(ARG_CODE, code)
+            return intent
+        }
+
+        fun launchWithFileContent(fileName: String, context: Context): Intent {
+            val intent = Intent(context, PlaygroundActivity::class.java)
+            intent.putExtra(ARG_FILE_NAME, fileName)
             return intent
         }
     }

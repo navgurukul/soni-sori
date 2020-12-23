@@ -30,6 +30,14 @@ class MerakiNavigator(
         )
     }
 
+    fun openPlaygroundWithFileContent(context: Context, fileName: String) {
+        startActivity(
+            context,
+            playgroundModuleNavigator.openPlaygroundWithFileContent(context, fileName),
+            false
+        )
+    }
+
     fun openRoomProfile(context: Context, roomId: String) {
         startActivity(context, chatModuleNavigator.launchIntentForRoomProfile(context, roomId), false)
     }

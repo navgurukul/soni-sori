@@ -11,4 +11,8 @@ class PlaygroundModuleNavigatorImpl : PlaygroundModuleNavigator {
     override fun launchPlaygroundActivity(context: Context, code: String): Intent {
         return PlaygroundActivity.launch(code, context)
     }
+
+    override fun openPlaygroundWithFileContent(context: Context, fileName: String): Intent {
+        return PlaygroundActivity.launchWithFileContent(fileName, context)
+    }
 }

@@ -7,6 +7,6 @@ fun String.capitalizeWords(): String = split(" ").joinToString(" ") { it.capital
 
 val gson = Gson()
 
-inline fun <reified T> String.objectify(): T {
-    return gson.fromJson(this, object: TypeToken<T>() {}.type)
-}
+inline fun <reified T> String.objectify(): T = gson.fromJson(this, object : TypeToken<T>() {}.type)
+
+fun Any.jsonify(): String = gson.toJson(this)

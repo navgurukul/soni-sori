@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="user"
-            type="org.merakilearn.datasource.network.model.LoginResponse.User" />
-    </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,6 +10,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/updateProfile"
             android:orientation="vertical">
 
             <include
@@ -49,7 +43,6 @@
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
                     android:gravity="center_vertical"
-                    android:text="@={user.name}"
                     tools:text="Neha Singh" />
 
                 <TextView
@@ -61,7 +54,6 @@
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
                     android:gravity="center_vertical"
-                    android:text="@={user.email}"
                     tools:text="nehasingh@xyz.com" />
 
                 <ImageView
@@ -100,8 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_10_dp"
                     android:hint="@string/name"
-                    android:padding="@dimen/dimen_10_dp"
-                    android:text="@={user.name}" />
+                    android:padding="@dimen/dimen_10_dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etEmail"
@@ -112,12 +103,51 @@
                     android:inputType="none"
                     android:padding="@dimen/dimen_10_dp"
                     android:focusableInTouchMode="false"
-                    android:focusable="false"
-                    android:text="@={user.email}" />
+                    android:focusable="false" />
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlSavedFile">
 
+                <TextView
+                    android:id="@+id/tvSavedFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/spacing_3x"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    android:paddingStart="@dimen/spacing_4x"
+                    android:paddingEnd="@dimen/spacing_4x"
+                    android:text="@string/files_saved"
+                    android:textColor="#D63447"
+                    tools:text="Files Saved" />
+
+                <TextView
+                    android:id="@+id/tvViewAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/spacing_3x"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/spacing_4x"
+                    android:paddingEnd="@dimen/spacing_4x"
+                    android:textColor="#D63447"
+                    android:text="@string/view_all" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvSavedFile"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/item_saved_file" />
+            </RelativeLayout>
         </LinearLayout>
 
         <ProgressBar
@@ -132,7 +162,7 @@
             app:elevation="2dp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/linkAccount"
+            android:id="@+id/updateProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -140,6 +170,6 @@
             android:padding="@dimen/dimen_10_dp"
             android:text="@string/update_profile"
             android:textColor="@color/colorWhite"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

@@ -18,11 +18,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.ui.profile.ProfileActivity
 import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
-import timber.log.Timber
 
 @Parcelize
 data class MainActivityArgs(

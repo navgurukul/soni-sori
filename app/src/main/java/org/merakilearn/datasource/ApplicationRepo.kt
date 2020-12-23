@@ -1,16 +1,10 @@
 package org.merakilearn.datasource
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.merakilearn.BuildConfig
-import org.merakilearn.R
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.merakilearn.util.AppUtils
@@ -18,6 +12,7 @@ import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import timber.log.Timber
+import java.io.File
 
 class ApplicationRepo(
     private val applicationApi: SaralApi,
@@ -25,7 +20,6 @@ class ApplicationRepo(
     private val courseDb: CoursesDatabase,
     private val authenticationRepository: AuthenticationRepository
 ) {
-
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
             val isFakeLogin = AppUtils.isFakeLogin(application)
