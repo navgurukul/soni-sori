@@ -1,11 +1,10 @@
 package org.navgurukul.playground.repo
 
-import android.R.attr.data
 import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
-import android.os.Environment
-import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -20,6 +19,7 @@ class PlaygroundRepositoryImpl(
     PlaygroundRepository {
     companion object {
         const val KEY_PREF_CODE_BACKUP = "Playground.CodeBackup"
+        const val DIRECTORY_NAME = "Python"
     }
 
     override fun cacheCode(code: String) {
@@ -31,17 +31,50 @@ class PlaygroundRepositoryImpl(
     }
 
     override fun saveCode(code: String, fileName: String) {
-        val directory = application.applicationContext?.obbDir
-        val finalFileName = fileName + "_" + Date().time+".py"
         try {
-            val fileOutStream= FileOutputStream(File(directory.toString()+File.separator+finalFileName))
+            val directory = File(
+                application.applicationContext?.getExternalFilesDir(null),
+                DIRECTORY_NAME
+            ).also {
+                it.mkdirs()
+            }
+            val finalFileName = fileName + "_" + Date().time + ".py"
+            val fileOutStream =
+                FileOutputStream(File(directory.toString() + File.separator + finalFileName))
             val outputStreamWriter =
                 OutputStreamWriter(fileOutStream)
             outputStreamWriter.write(code)
             outputStreamWriter.close()
-        } catch (e: IOException) {
-            Log.e("Exception", "File write failed: $e")
+        } catch (ex: IOException) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
         }
+    }
 
+    override suspend fun fetchSavedFiles(): Array<File> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val directory = File(
+                    application.applicationContext?.getExternalFilesDir(null),
+                    DIRECTORY_NAME
+                ).also {
+                    it.mkdirs()
+                }
+                directory.listFiles() ?: emptyArray()
+            }
+        } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            emptyArray()
+        }
+    }
+
+    override suspend fun deleteFile(file: File): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                file.delete()
+            }
+        } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            false
+        }
     }
 }

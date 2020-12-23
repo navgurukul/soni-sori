@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="user"
-            type="org.merakilearn.datasource.network.model.LoginResponse.User" />
-    </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,7 +10,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/linkAccount"
+            android:layout_above="@+id/updateProfile"
             android:orientation="vertical">
 
             <include
@@ -50,7 +43,6 @@
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
                     android:gravity="center_vertical"
-                    android:text="@={user.name}"
                     tools:text="Neha Singh" />
 
                 <TextView
@@ -62,7 +54,6 @@
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
                     android:gravity="center_vertical"
-                    android:text="@={user.email}"
                     tools:text="nehasingh@xyz.com" />
 
                 <ImageView
@@ -101,8 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_10_dp"
                     android:hint="@string/name"
-                    android:padding="@dimen/dimen_10_dp"
-                    android:text="@={user.name}" />
+                    android:padding="@dimen/dimen_10_dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etEmail"
@@ -113,8 +103,7 @@
                     android:inputType="none"
                     android:padding="@dimen/dimen_10_dp"
                     android:focusableInTouchMode="false"
-                    android:focusable="false"
-                    android:text="@={user.email}" />
+                    android:focusable="false" />
 
             </LinearLayout>
 
@@ -173,7 +162,7 @@
             app:elevation="2dp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/linkAccount"
+            android:id="@+id/updateProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -181,6 +170,6 @@
             android:padding="@dimen/dimen_10_dp"
             android:text="@string/update_profile"
             android:textColor="@color/colorWhite"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

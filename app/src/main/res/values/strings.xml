@@ -42,6 +42,7 @@
     <string name="save">Save</string>
     <string name="link_google_account">Link Google Account</string>
     <string name="unable_to_update">Unable to update your profile. Please try again</string>
+    <string name="unable_to_log_out">Unable to Log out your profile. Please try again</string>
     <string name="profile_updated_successfully">Your profile is updated successfully</string>
     <string name="account_linked_successfully">Account is linked successfully</string>
     <string name="want_log_out">Are you sure you want to log out from application ?</string>
@@ -63,4 +64,5 @@
     <string name="delete">Delete</string>
     <string name="copy_to_playground">Copy to Playground</string>
     <string name="file_deleted">File is deleted</string>
+    <string name="collapse">Collapse</string>
 </resources>

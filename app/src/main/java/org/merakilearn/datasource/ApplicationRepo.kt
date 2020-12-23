@@ -20,7 +20,6 @@ class ApplicationRepo(
     private val courseDb: CoursesDatabase,
     private val authenticationRepository: AuthenticationRepository
 ) {
-
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
             val isFakeLogin = AppUtils.isFakeLogin(application)

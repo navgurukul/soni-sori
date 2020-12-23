@@ -1,6 +1,6 @@
 package org.merakilearn.di
 
-import android.app.Application
+import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -14,23 +14,23 @@ import org.merakilearn.EnrollViewModel
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
 import org.merakilearn.datasource.Config
-import org.merakilearn.datasource.FileDataSource
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.discover.DiscoverViewModel
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
-import org.navgurukul.chat.core.repo.AuthenticationRepository
-import org.navgurukul.learn.courses.db.CoursesDatabase
+import org.merakilearn.ui.profile.ProfileViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
 val viewModelModule = module {
-    viewModel { LoginViewModel(get(),get()) }
+    viewModel { LoginViewModel(get()) }
     viewModel { HomeViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { WelcomeViewModel(get(), get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
     viewModel { (classId : Int, isEnrolled: Boolean) -> EnrollViewModel(classId = classId,
@@ -52,6 +52,15 @@ val apiModule = module {
 
 
 val networkModule = module {
+
+    fun provideLogInterceptor(): Interceptor {
+        val logging = HttpLoggingInterceptor()
+        logging.level = if (BuildConfig.DEBUG)
+            HttpLoggingInterceptor.Level.BODY
+        else
+            HttpLoggingInterceptor.Level.NONE
+        return logging
+    }
 
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -81,40 +90,11 @@ val networkModule = module {
 
 }
 
-fun provideLogInterceptor(): Interceptor {
-    val logging = HttpLoggingInterceptor()
-    logging.level = if (BuildConfig.DEBUG)
-        HttpLoggingInterceptor.Level.BODY
-    else
-        HttpLoggingInterceptor.Level.NONE
-    return logging
-}
-
 val repositoryModule = module {
-    fun provideAppRepo(
-        api: SaralApi,
-        application: Application,
-        courseDb: CoursesDatabase,
-        authenticationRepository: AuthenticationRepository
-    ): ApplicationRepo {
-        return ApplicationRepo(
-            api,
-            application,
-            courseDb,
-            authenticationRepository
-        )
-    }
-
-    single { provideAppRepo(get(), androidApplication(), get(), get()) }
+    single { ApplicationRepo(get(), androidApplication(), get(), get()) }
     single { Config() }
+    single { UserRepo(get(), PreferenceManager.getDefaultSharedPreferences(androidApplication()), get(), get()) }
 }
 
-val fileDataSource = module {
-    fun provideFileDataSource(application: Application): FileDataSource {
-        return FileDataSource(application)
-    }
-    single { provideFileDataSource(androidApplication()) }
-}
 val appModules =
-    arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule,
-        fileDataSource)
+    arrayListOf(viewModelModule, apiModule, networkModule, factoryModule, repositoryModule)

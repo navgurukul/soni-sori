@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import org.merakilearn.datasource.network.model.LoginResponse
 
+//TODO move user related methods to user repo
 object AppUtils {
 
     private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"

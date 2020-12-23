@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemSavedFileBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
+import java.io.File
 
 
-class SavedFileAdapter(var callback: ((Triple<String, String, View>) -> Unit)? = null) :
+class SavedFileAdapter(var callback: ((File, View) -> Unit)? = null) :
 
-    DataBoundListAdapter<Pair<String, String>, ItemSavedFileBinding>(
+    DataBoundListAdapter<File, ItemSavedFileBinding>(
         mDiffCallback = DIFF_CALLBACK
     ) {
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemSavedFileBinding {
@@ -24,29 +25,29 @@ class SavedFileAdapter(var callback: ((Triple<String, String, View>) -> Unit)? =
 
     override fun bind(
         holder: DataBoundViewHolder<ItemSavedFileBinding>,
-        item: Pair<String, String>
+        item: File
     ) {
-        holder.binding.tvSavedFile.text = item.second
+        holder.binding.tvSavedFile.text = item.name.replaceAfterLast("_", "").removeSuffix("_")
         holder.binding.root.setOnClickListener {
-            callback?.invoke(Triple(item.first,item.second,holder.binding.root))
+            callback?.invoke(item, it)
         }
     }
 
     companion object {
         val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<Pair<String, String>>() {
+            object : DiffUtil.ItemCallback<File>() {
                 override fun areItemsTheSame(
-                    oldItem: Pair<String, String>,
-                    newItem: Pair<String, String>
+                    oldItem: File,
+                    newItem: File
                 ): Boolean {
-                    return oldItem.first == newItem.first
+                    return oldItem == newItem
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Pair<String, String>,
-                    newItem: Pair<String, String>
+                    oldItem: File,
+                    newItem: File
                 ): Boolean {
-                    return oldItem.second == newItem.second
+                    return oldItem == newItem
                 }
             }
     }
