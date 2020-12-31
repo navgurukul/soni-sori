@@ -1,3 +1,4 @@
+include ':typing'
 include ':core'
 include ':commonUI'
 include ':playground'

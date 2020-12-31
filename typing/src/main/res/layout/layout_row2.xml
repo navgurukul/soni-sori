@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scrollbars="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/ll_row_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/key_btn_61"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="tab" />
+
+        <Button
+            android:id="@+id/key_btn_45"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_61"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="Q" />
+
+        <Button
+            android:id="@+id/key_btn_51"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_45"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="W" />
+
+        <Button
+            android:id="@+id/key_btn_33"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_51"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="E" />
+
+        <Button
+            android:id="@+id/key_btn_46"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_33"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="R" />
+
+        <Button
+            android:id="@+id/key_btn_48"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_46"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="T" />
+
+        <Button
+            android:id="@+id/key_btn_53"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_48"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="Y" />
+
+        <Button
+            android:id="@+id/key_btn_49"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_53"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="U" />
+
+        <Button
+            android:id="@+id/key_btn_37"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_49"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="I" />
+
+        <Button
+            android:id="@+id/key_btn_43"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_37"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="O" />
+
+        <Button
+            android:id="@+id/key_btn_44"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_43"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="P" />
+
+        <Button
+            android:id="@+id/key_btn_71"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_44"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="{" />
+
+        <Button
+            android:id="@+id/key_btn_72"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_71"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="}" />
+
+        <Button
+            android:id="@+id/key_btn_73"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/key_btn_72"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:text="|" />
+
+    </RelativeLayout>
+</ScrollView>

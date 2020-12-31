@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_tab"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:elevation="8dp">
+
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btn_home"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_tab_selector"
+            android:button="@null"
+            android:checked="true"
+            android:textAlignment="center"
+            android:text="@string/beginner"
+            android:textColor="@drawable/bottom_tab_text_selector"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/btn_youtube"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_tab_selector"
+            android:button="@null"
+            android:textAlignment="center"
+            android:text="@string/intermediate"
+            android:textColor="@drawable/bottom_tab_text_selector"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/btn_status"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bottom_tab_selector"
+            android:button="@null"
+            android:textAlignment="center"
+            android:text="@string/advanced"
+            android:textColor="@drawable/bottom_tab_text_selector"
+            android:textSize="16sp" />
+
+    </RadioGroup>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TypingAssist</string>
+    <string name="beginner">Beginner</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="compatible">ANDROID COMPATIBLE</string>
+    <string name="usb_otg">USB OTG</string>
+    <string name="not_compatible">ANDROID NOT COMPATIBLE</string>
+    <string name="not_compatible_yet">(YET)</string>
+    <string name="continue2">Continue</string>
+</resources>

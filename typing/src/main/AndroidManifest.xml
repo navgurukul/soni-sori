@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="org.navgurukul.typing">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_typing">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application>
+        <activity android:name=".OTGCheckerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.merakilearn.OnBoardingActivity" />
+        </activity>
+        <activity android:name=".dashboard.DashboardActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".KeyboardActivity"
+            android:screenOrientation="landscape" />
+    </application>
+</manifest>
