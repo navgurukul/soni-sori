@@ -48,28 +48,28 @@ jobs:
       - name: Build the app
         run: ./gradlew app:assembleDebug
 
-      - name: Releasing using Hub
-        uses: ShaunLWM/action-release-debugapk@main
-        env:
-         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-         APP_FOLDER: app
-         RELEASE_TITLE: New Build
+      # Commented because this doesn't work 
+      # - name: Releasing using Hub
+      #   uses: ShaunLWM/action-release-debugapk@main
+      #   env:
+      #    GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      #    APP_FOLDER: app
+      #    RELEASE_TITLE: New Build
 
       # Release management works but needs some Android specific tweaks 
       # Uncomment when needed
       
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      #   with:
-      #     tag_name: ${{ github.ref }}
-      #     release_name: Release ${{ github.ref }}
-      #     body: |
-      #       Changes in this Release
-      #       - First Change
-      #       - Second Change
-      #     draft: false
-      #     prerelease: false
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Release Build 
+          draft: false
+          prerelease: false
 
