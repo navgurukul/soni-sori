@@ -46,7 +46,16 @@ jobs:
         run: ./gradlew app:test  
       
       - name: Build the app
-        run: ./gradlew app:assembleRelease
+        run: ./gradlew app:assembleDebug
+
+      - name: Releasing using Hub
+        uses: ShaunLWM/action-release-debugapk@master
+        env:
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+         APP_FOLDER: app
+         RELEASE_TITLE: New Build
+
+      # 53d702ec0ad28290c8252f75db99bdaeb93a1b12 
 
       # Release management works but needs some Android specific tweaks 
       # Uncomment when needed
