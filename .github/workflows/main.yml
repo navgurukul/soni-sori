@@ -32,6 +32,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       
+      - name: Create local.properties 
+        shell: bash
+        run: |
+          touch ./local.properties
+          echo "⚙️ Creating a new local.properties file"
+          echo "sdk.dir=ANDROID_SDK_ROOT" > ./local.properties
+
       - name: Check Lint
         run: ./gradlew app:lint
       
