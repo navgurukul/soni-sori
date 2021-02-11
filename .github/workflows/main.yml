@@ -39,16 +39,15 @@ jobs:
           echo "⚙️ Creating a new local.properties file"
           echo "sdk.dir=ANDROID_SDK_ROOT" > ./local.properties
 
-      # - name: 🧹 Check Lint
-      #   run: ./gradlew app:lint
+      - name: 🧹 Check Lint
+        run: ./gradlew app:lint
       
-      # - name: 🧪 Run tests
-      #   run: ./gradlew app:test
+      - name: 🧪 Run tests
+        run: ./gradlew app:test
 
       - name: 📦 Build the app
         run: ./gradlew app:assembleDebug
 
-      # This ain't working, will retry with a new PR.
       - name: 🎁 Releasing using Hub
         uses: ShaunLWM/action-release-debugapk@master
         env:
