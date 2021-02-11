@@ -25,4 +25,6 @@ jobs:
       - uses: actions/setup@v1
         with: 
           name: 'Build Job'
-        run: echo 'Build Complete'
+          
+      - name: Post build step
+        run: echo Build Complete
