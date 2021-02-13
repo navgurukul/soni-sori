@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,6 +20,13 @@ import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
 import org.navgurukul.learn.util.LearnUtils
+
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.android.play.core.tasks.OnFailureListener
+import com.google.android.play.core.tasks.OnSuccessListener
+import org.navgurukul.learn.util.TypingGuruPreferenceManager
 
 
 class CourseSlugDetailActivity : AppCompatActivity() {
@@ -43,10 +51,13 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private lateinit var slugAdapter: ExerciseSlugAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
+    private lateinit var splitInstallManager : SplitInstallManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
+        // Instantiate an instance of SplitInstallManager for the dynamic feature module
+        splitInstallManager = SplitInstallManagerFactory.create(this);
         if (LearnUtils.isUserLoggedIn(this)) {
             parseIntentData()
         } else
@@ -149,6 +160,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
                 val code = ExerciseSlugAdapter.parsePythonCode(it)
                 if (!code.isNullOrBlank())
                     merakiNavigator.openPlayground(this, code)
+            } else if (it.type == ExerciseSlugAdapter.TYPE_TRY_TYPING || it.type == ExerciseSlugAdapter.TYPE_PRACTICE_TYPING) {
+                loadTypingTutor(it)
             }
         }
         val layoutManager =
@@ -157,6 +170,48 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         mBinding.recyclerViewSlug.adapter = slugAdapter
         fetchSlugContent(currentStudy.exerciseId, false)
 
+    }
+
+    private fun loadTypingTutor(it: Exercise.ExerciseSlugDetail) {
+        // Builds a request to install the feature1 module
+        val request = SplitInstallRequest
+                .newBuilder() // You can download multiple on demand modules per
+                // request by invoking the following method for each
+                // module you want to install.
+                .addModule("typing")
+                .build()
+
+        // Begin the installation of the feature1 module and handle success/failure
+        splitInstallManager
+                .startInstall(request)
+                .addOnSuccessListener(object : OnSuccessListener<Int?> {
+                    override fun onSuccess(integer: Int?) {
+                        // Module download successful
+                        if (TypingGuruPreferenceManager.instance().iWebViewShown()) {
+                            val intent = Intent()
+                                .setClassName(packageName, "org.navgurukul.typingguru.ui.KeyboardActivity")
+                            intent.putExtra("content", it.value as ArrayList<String>)
+                            intent.putExtra("type", it.type)
+                            startActivity(intent)
+                        } else {
+                            TypingGuruPreferenceManager.instance().setWebViewDisplayStatus(true)
+                            val intent = Intent()
+                                .setClassName(packageName, "org.navgurukul.typingguru.ui.WebViewActivity")
+                            startActivity(intent)
+                        }
+                    }
+                })
+                .addOnFailureListener(object : OnFailureListener {
+                    override fun onFailure(e: Exception) {
+                        // Module download failed; handle the error here
+                        Toast.makeText(
+                                applicationContext,
+                                "Couldn't download typing guru: " + e.message,
+                                Toast.LENGTH_LONG
+                        ).show()
+                        e.printStackTrace()
+                    }
+                })
     }
 
     private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {

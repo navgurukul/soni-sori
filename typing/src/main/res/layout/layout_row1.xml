@@ -10,25 +10,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/key_btn_1"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/key_btn_68"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/key_selector"
             android:textColor="@drawable/text_selector"
-            android:text="." />
+            android:text="`" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_8"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/key_btn_1"
+            android:layout_toRightOf="@+id/key_btn_68"
             android:background="@drawable/key_selector"
             android:textColor="@drawable/text_selector"
             android:text="1" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_9"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -38,7 +38,7 @@
             android:textColor="@drawable/text_selector"
             android:text="2" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_10"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -48,7 +48,7 @@
             android:textColor="@drawable/text_selector"
             android:text="3" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_11"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -58,7 +58,7 @@
             android:textColor="@drawable/text_selector"
             android:text="4" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_12"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -68,7 +68,7 @@
             android:textColor="@drawable/text_selector"
             android:text="5" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_13"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -78,7 +78,7 @@
             android:textColor="@drawable/text_selector"
             android:text="6" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_14"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -88,7 +88,7 @@
             android:textColor="@drawable/text_selector"
             android:text="7" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_15"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -98,7 +98,7 @@
             android:textColor="@drawable/text_selector"
             android:text="8" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_16"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -108,7 +108,7 @@
             android:textColor="@drawable/text_selector"
             android:text="9" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_7"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -118,7 +118,7 @@
             android:textColor="@drawable/text_selector"
             android:text="0" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_69"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -128,7 +128,7 @@
             android:textColor="@drawable/text_selector"
             android:text="_" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_70"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -138,7 +138,7 @@
             android:textColor="@drawable/text_selector"
             android:text="=" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_67"
             android:layout_width="100dp"
             android:layout_height="50dp"

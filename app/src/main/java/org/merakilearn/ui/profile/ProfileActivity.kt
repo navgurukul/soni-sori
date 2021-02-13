@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
@@ -16,11 +15,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.tasks.OnFailureListener
-import com.google.android.play.core.tasks.OnSuccessListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,7 +33,6 @@ import java.io.File
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
-    private lateinit var splitInstallManager : SplitInstallManager
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
 
@@ -53,8 +46,6 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
-        // Instantiate an instance of SplitInstallManager for the dynamic feature module
-        splitInstallManager = SplitInstallManagerFactory.create(this);
 
         if (!AppUtils.isUserLoggedIn(this) || AppUtils.isFakeLogin(this)) {
             OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
@@ -94,11 +85,6 @@ class ProfileActivity : AppCompatActivity() {
 
         mBinding.ivEdit.setOnClickListener {
             viewModel.handle(ProfileViewActions.EditProfileClicked)
-        }
-
-        //download typing subfeature within app from google play store
-        mBinding.txtDownloadTyping.setOnClickListener{
-            loadTypingTutor()
         }
 
         initSavedFile()
@@ -244,37 +230,5 @@ class ProfileActivity : AppCompatActivity() {
             ) { dialog, _ ->
                 dialog.dismiss()
             }.create().show()
-    }
-
-    private fun loadTypingTutor() {
-        // Builds a request to install the feature1 module
-        val request = SplitInstallRequest
-            .newBuilder() // You can download multiple on demand modules per
-            // request by invoking the following method for each
-            // module you want to install.
-            .addModule("typing")
-            .build()
-
-        // Begin the installation of the feature1 module and handle success/failure
-        splitInstallManager
-            .startInstall(request)
-            .addOnSuccessListener(object : OnSuccessListener<Int?> {
-                override fun onSuccess(integer: Int?) {
-                    // Module download successful
-                    val intent = Intent()
-                        .setClassName(packageName, "org.navgurukul.typing.OTGCheckerActivity")
-                    startActivity(intent)
-                }
-            })
-            .addOnFailureListener(object : OnFailureListener {
-                override fun onFailure(e: Exception) {
-                    // Module download failed; handle the error here
-                    Toast.makeText(
-                        applicationContext,
-                        "Couldn't download typing: " + e.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
     }
 }

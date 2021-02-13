@@ -78,21 +78,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/layout_download_typing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10_dp">
-
-                <TextView
-                    android:id="@+id/txt_download_typing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Download Typing tutor"/>
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:id="@+id/llProfileEdit"
                 android:layout_width="match_parent"

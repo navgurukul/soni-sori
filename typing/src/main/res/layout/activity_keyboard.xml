@@ -4,14 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".KeyboardActivity">
+    tools:context=".ui.KeyboardActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight=".05">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/ic_back" />
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toLeftOf="@+id/btn_replay"
+            android:layout_toRightOf="@+id/btn_back"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/green_seekbar_progress_drawable" />
+
+        <Button
+            android:id="@+id/btn_replay"
+            android:layout_width="36dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/ic_replay" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_display_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="5dp"
-        android:layout_weight=".2"
+        android:layout_weight=".15"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -25,7 +62,7 @@
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:scrollbars="vertical">
@@ -33,7 +70,7 @@
             <RelativeLayout
                 android:id="@+id/keyboard_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/rounded_rectangle"
                 android:padding="10dp">
 
@@ -104,7 +141,7 @@
                     android:layout_marginLeft="100dp"
                     android:layout_toRightOf="@+id/img_left"
                     android:src="@drawable/hand_img_j"
-                    android:tag="hjkl:nm" />
+                    android:tag="hjkl;nm,." />
 
                 <ImageView
                     android:id="@+id/img_right2"

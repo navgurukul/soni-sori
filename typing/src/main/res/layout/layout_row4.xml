@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_59"
             android:layout_width="130dp"
             android:layout_height="50dp"
@@ -18,7 +18,7 @@
             android:text="shift"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_54"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -28,7 +28,7 @@
             android:text="Z"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_52"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -38,7 +38,7 @@
             android:text="X"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_31"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -48,7 +48,7 @@
             android:text="C"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_50"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -58,7 +58,7 @@
             android:text="V"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_30"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -68,7 +68,7 @@
             android:text="B"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_42"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -78,7 +78,7 @@
             android:text="N"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_41"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -88,37 +88,37 @@
             android:text="M"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_55"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/key_btn_41"
             android:background="@drawable/key_selector"
-            android:text="\u003C"
+            android:text=","
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_56"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/key_btn_55"
             android:background="@drawable/key_selector"
-            android:text="\u003E"
+            android:text="."
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_76"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/key_btn_56"
             android:background="@drawable/key_selector"
-            android:text="\u003F"
+            android:text="/"
             android:textColor="@drawable/text_selector" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_60"
             android:layout_width="130dp"
             android:layout_height="50dp"

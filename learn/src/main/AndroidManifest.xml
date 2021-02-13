@@ -12,6 +12,7 @@
         <dist:delivery>
             <dist:install-time />
         </dist:delivery>
+
         <dist:fusing dist:include="true" />
     </dist:module>
 
@@ -35,7 +36,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.learn.CourseSlugDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
