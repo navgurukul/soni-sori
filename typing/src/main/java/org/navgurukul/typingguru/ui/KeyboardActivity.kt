@@ -48,6 +48,9 @@ class KeyboardActivity : AppCompatActivity() {
     private val PRACTICE_TIME : Int = 180 // 3 minutes
     private var currentTime = 0
     private val interval : Long = 1000 // 1 Second
+    private var noOfWrongKey : Int = 0
+    private var noOfRightKey : Int = 0
+
     private val handler: Handler = Handler()
     private val runnable = object : Runnable {
         override fun run() {
@@ -79,7 +82,10 @@ class KeyboardActivity : AppCompatActivity() {
         updatePracticeViewList()
         progress.max = list.size
 
-        btn_back.setOnClickListener {finish()}
+        btn_back.setOnClickListener {
+            Logger.d(TAG, "back button clicked")
+            finish()
+        }
         btn_replay.setOnClickListener {refreshView(false)}
         if (!retake) {
             showInfoDialog()
@@ -99,6 +105,8 @@ class KeyboardActivity : AppCompatActivity() {
         lesson = 0
         isTypingStarted = false
         practiceListData.clear()
+        noOfRightKey = 0
+        noOfWrongKey = 0
     }
 
     private fun showInfoDialog() {
@@ -235,6 +243,7 @@ class KeyboardActivity : AppCompatActivity() {
         Logger.d(TAG, "hintText: $hintText")
         if (pressedButtonText.equals(hintText, ignoreCase = true)) {
             Logger.d(TAG, "Key matched!!!")
+            noOfRightKey++
             btn.setBackground(getDrawable(R.drawable.key_selector))
             updateView(true)
             keyPressCounter++
@@ -243,6 +252,7 @@ class KeyboardActivity : AppCompatActivity() {
             progress.progress = keyPressCounter
         } else {
             Logger.e(TAG,"Key does not match")
+            noOfWrongKey++
             btn.setBackground(getDrawable(R.drawable.key_wrong_selector))
             updateView(false)
         }
@@ -285,6 +295,8 @@ class KeyboardActivity : AppCompatActivity() {
                 intent.putExtra("time_taken", elapsedTime)
                 intent.putExtra("content", content)
                 intent.putExtra("type", type)
+                intent.putExtra("noOfRightKey", noOfRightKey)
+                intent.putExtra("noOfWrongKey", noOfWrongKey)
                 startActivity(intent)
                 finish()
             } else {
