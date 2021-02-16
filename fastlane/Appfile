@@ -1,0 +1,2 @@
+json_key_file("/Users/sam/Downloads/chanakya-259818-366299e1ac21.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("org.merakilearn") # e.g. com.krausefx.app
