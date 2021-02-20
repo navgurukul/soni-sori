@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_weight=".05">
+        android:layout_weight=".1">
 
         <Button
             android:id="@+id/btn_back"
@@ -18,20 +18,36 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
-            android:focusable="false"
-            android:background="@drawable/ic_back" />
+            android:background="@drawable/ic_back"
+            android:focusable="false" />
 
-        <SeekBar
-            android:id="@+id/progress"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/btn_replay"
-            android:layout_toRightOf="@+id/btn_back"
-            android:max="100"
-            android:progress="0"
-            android:progressDrawable="@drawable/green_seekbar_progress_drawable" />
+            android:layout_toRightOf="@+id/btn_back">
+
+            <SeekBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/green_seekbar_progress_drawable" />
+
+            <TextView
+                android:id="@+id/txt_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/progress"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text="00/3:00"
+                android:textColor="@color/timer_text_color"
+                android:textSize="10sp" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/btn_replay"
@@ -59,7 +75,7 @@
         android:id="@+id/ll_keypad"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight=".8">
+        android:layout_weight=".75">
 
         <ScrollView
             android:layout_width="wrap_content"
@@ -135,6 +151,15 @@
                     android:tag="qwert" />
 
                 <ImageView
+                    android:id="@+id/img_left3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="0dp"
+                    android:src="@drawable/hand_img_1"
+                    android:tag="12345" />
+
+                <ImageView
                     android:id="@+id/img_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -154,6 +179,14 @@
                     android:layout_toRightOf="@+id/img_left"
                     android:src="@drawable/hand_img_period"
                     android:tag="yuiop" />
+
+                <ImageView
+                    android:id="@+id/img_right3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_left"
+                    android:src="@drawable/hand_img_6"
+                    android:tag="67890" />
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

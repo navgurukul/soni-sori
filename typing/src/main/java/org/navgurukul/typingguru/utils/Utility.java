@@ -3,6 +3,7 @@ package org.navgurukul.typingguru.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Utility {
 
@@ -35,5 +36,13 @@ public class Utility {
             result.add(s);
         }
         return result;
+    }
+
+    public static String convertMinutesToMMSS(int second) {
+        long millis = 1000*second;
+        String ms = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+        return ms;
     }
 }

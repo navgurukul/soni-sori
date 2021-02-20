@@ -16,4 +16,5 @@
     <color name="info_text_color">#484848</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="timer_text_color">#3F3D56</color>
 </resources>

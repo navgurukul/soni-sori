@@ -56,6 +56,7 @@ class KeyboardActivity : AppCompatActivity() {
         override fun run() {
             currentTime += 1
             Logger.d(TAG, "Current time $currentTime")
+            txt_timer.text = "${Utility.convertMinutesToMMSS(currentTime)}/3:00"
             if (currentTime < PRACTICE_TIME) {
                 handler.postDelayed(this, interval);
             } else {
@@ -91,10 +92,13 @@ class KeyboardActivity : AppCompatActivity() {
             showInfoDialog()
         }
         if(type == TYPE_PRACTICE_TYPING) {
+            txt_timer.visibility = View.VISIBLE
             handler.postAtTime(runnable, System.currentTimeMillis() + interval);
             handler.postDelayed(runnable, interval);
             start = Date().time
             practiceListData.add(list)
+        } else {
+            txt_timer.visibility = View.GONE
         }
     }
 
@@ -164,12 +168,25 @@ class KeyboardActivity : AppCompatActivity() {
                 img_right.setImageResource(R.drawable.right_resting_hand)
                 img_right2.visibility = View.INVISIBLE
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
             } else if(img_left2.tag.toString().contains(tvItem.text as String)) {
                 img_left2.visibility = View.VISIBLE
                 img_left2.setImageResource(getHandDrawable(tvItem.text as String))
                 img_right.visibility = View.VISIBLE
                 img_right.setImageResource(R.drawable.right_resting_hand)
                 img_right2.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
+                img_left.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
+            } else if(img_left3.tag.toString().contains(tvItem.text as String)) {
+                img_left3.visibility = View.VISIBLE
+                img_left3.setImageResource(getHandDrawable(tvItem.text as String))
+                img_right.visibility = View.VISIBLE
+                img_right.setImageResource(R.drawable.right_resting_hand)
+                img_right2.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
+                img_left2.visibility = View.INVISIBLE
                 img_left.visibility = View.INVISIBLE
             } else if(img_right.tag.toString().contains(tvItem.text as String)) {
                 img_right.visibility = View.VISIBLE
@@ -177,7 +194,9 @@ class KeyboardActivity : AppCompatActivity() {
                 img_left.visibility = View.VISIBLE
                 img_left.setImageResource(R.drawable.left_resting_hand)
                 img_right2.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             } else if(img_right2.tag.toString().contains(tvItem.text as String)) {
                 img_right2.visibility = View.VISIBLE
                 img_right2.setImageResource(getHandDrawable(tvItem.text as String))
@@ -185,13 +204,26 @@ class KeyboardActivity : AppCompatActivity() {
                 img_left.setImageResource(R.drawable.left_resting_hand)
                 img_right.visibility = View.INVISIBLE
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
+            } else if(img_right3.tag.toString().contains(tvItem.text as String)) {
+                img_right3.visibility = View.VISIBLE
+                img_right3.setImageResource(getHandDrawable(tvItem.text as String))
+                img_left.visibility = View.VISIBLE
+                img_left.setImageResource(R.drawable.left_resting_hand)
+                img_right.visibility = View.INVISIBLE
+                img_right2.visibility = View.INVISIBLE
+                img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             } else {//space
                 img_right.visibility = View.VISIBLE
                 img_right.setImageResource(R.drawable.space)
                 img_left.visibility = View.VISIBLE
                 img_left.setImageResource(R.drawable.left_resting_hand)
                 img_right2.visibility = View.INVISIBLE
+                img_right3.visibility = View.INVISIBLE
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             }
         }
     }
