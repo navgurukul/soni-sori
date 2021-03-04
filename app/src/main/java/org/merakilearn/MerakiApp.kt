@@ -13,6 +13,7 @@ import org.navgurukul.chat.core.ChatInitializer
 import org.navgurukul.chat.core.di.chatModules
 import org.navgurukul.commonui.di.commonUIModules
 import org.navgurukul.learn.di.learnModules
+import org.navgurukul.learn.util.TypingGuruPreferenceManager
 import org.navgurukul.playground.di.playgroundModules
 import timber.log.Timber
 
@@ -35,6 +36,8 @@ class MerakiApp : Application() {
 
         ChatInitializer.initialise(this)
         subscribeToDefaultTopic()
+
+        TypingGuruPreferenceManager.instance().init(this)
     }
 
     private fun subscribeToDefaultTopic() {

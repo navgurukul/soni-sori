@@ -38,6 +38,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         const val TYPE_PYTHON = "python"
         private const val TYPE_YOUTUBE_VIDEO = "youtube"
         private const val TYPE_IMAGE = "image"
+        const val TYPE_TRY_TYPING = "trytyping"
+        const val TYPE_PRACTICE_TYPING = "practicetyping"
         private const val TAG = "ExerciseSlugAdapter"
 
         fun parsePythonCode(item: Exercise.ExerciseSlugDetail): String? {
@@ -67,6 +69,14 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.setOnClickListener {
             mCallback.invoke(item)
         }
+        binding.typing.setOnClickListener {
+            Log.d(TAG, "Type : "+item.type)
+            mCallback.invoke(item)
+        }
+        binding.practiceTyping.setOnClickListener {
+            Log.d(TAG, "Type : "+item.type)
+            mCallback.invoke(item)
+        }
         bindItem(item, binding)
     }
 
@@ -74,6 +84,7 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         item: Exercise.ExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
+        Log.d(TAG, "Type : "+item.type)
         when (item.type) {
             TYPE_MD -> {
                 initMarkDownContent(item.value?.toString(), binding)
@@ -87,6 +98,12 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
             TYPE_IMAGE -> {
                 initImageView(item, binding)
             }
+            TYPE_TRY_TYPING -> {
+                initTryTypingView(item, binding)
+            }
+            TYPE_PRACTICE_TYPING -> {
+                initPracticeTypingView(item, binding)
+            }
         }
     }
 
@@ -97,6 +114,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
 
         binding.markDownContent.visibility = View.VISIBLE
 
@@ -112,8 +131,11 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         item: Exercise.ExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
+        Log.d(TAG, "Value  : "+item.value)
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
         binding.markDownContent.visibility = View.VISIBLE
         binding.imageViewPlay.visibility = View.VISIBLE
         val code = parsePythonCode(item)
@@ -133,6 +155,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.markDownContent.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
         binding.youtubeView.visibility = View.VISIBLE
 
         binding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
@@ -151,6 +175,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.markDownContent.visibility = View.GONE
         binding.imageView.visibility = View.VISIBLE
         binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
         val value = item.value
         val gson = Gson()
         try {
@@ -159,6 +185,32 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         } catch (ex: Exception) {
             Log.e(TAG, "initImageView: ", ex)
         }
+    }
+
+    private fun initTryTypingView(
+        item: Exercise.ExerciseSlugDetail,
+        binding: ItemSlugDetailBinding
+    ) {
+        Log.d(TAG, "Value  : "+item.value)
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.markDownContent.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.VISIBLE
+        binding.relPracticeTyping.visibility = View.GONE
+    }
+
+    private fun initPracticeTypingView(
+            item: Exercise.ExerciseSlugDetail,
+            binding: ItemSlugDetailBinding
+    ) {
+        Log.d(TAG, "Value  : "+item.value)
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.markDownContent.visibility = View.VISIBLE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.VISIBLE
     }
 
     data class PythonCode(val code: String?, val testCases: Any?)

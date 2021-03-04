@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="current_text">#0052F2</color>
+    <color name="correct_text">#E9F4D9</color>
+    <color name="green_progress_bar">#7CC144</color>
+    <color name="default_progress_bar">#E1E3E6</color>
+    <color name="grey">#CECECE</color>
+    <color name="warning">#E69F83</color>
+    <color name="back_text_color">#201F1F</color>
+    <color name="row_color">#F4F4F4</color>
+    <color name="accuracy_color">#C9DCFF</color>
+    <color name="errorColor_70">#B3B00020</color>
+    <color name="info_text_color">#484848</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="key_board_default_text">#727272</color>
+    <color name="timer_text_color">#3F3D56</color>
+    <color name="key_background">#E5E5E5</color>
+</resources>

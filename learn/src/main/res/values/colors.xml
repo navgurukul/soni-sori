@@ -11,4 +11,6 @@
     <color name="colorNumber">#D63447</color>
     <color name="course_background">#f2f2f2</color>
     <color name="run_background">#D63447</color>
+    <color name="row_color">#F4F4F4</color>
+    <color name="errorColor_70">#B3B00020</color>
 </resources>
