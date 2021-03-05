@@ -65,4 +65,5 @@
     <string name="copy_to_playground">Copy to Playground</string>
     <string name="file_deleted">File is deleted</string>
     <string name="collapse">Collapse</string>
+    <string name="title_typing">Typing</string>
 </resources>
