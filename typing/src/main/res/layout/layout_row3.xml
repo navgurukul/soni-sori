@@ -19,6 +19,8 @@
             android:tag="115"
             android:textAllCaps="false"
             android:textSize="10sp"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
             android:text="caps lock" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -170,6 +172,8 @@
             android:tag="66"
             android:textAllCaps="false"
             android:textSize="10sp"
+            android:paddingRight="10dp"
+            android:textAlignment="textEnd"
             android:text="enter" />
 
     </RelativeLayout>

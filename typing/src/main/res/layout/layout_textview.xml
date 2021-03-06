@@ -6,8 +6,8 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:textSize="18sp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/bottom_high_light"
-        android:layout_width="60dp"
+        android:layout_width="38dp"
         android:layout_height="1dp"
         android:textSize="18sp"
         android:layout_marginLeft="2dp"
@@ -27,7 +27,7 @@
         android:layout_below="@+id/text"
         android:gravity="center_vertical|center_horizontal"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:background="@color/current_text" />
 
 </RelativeLayout>
