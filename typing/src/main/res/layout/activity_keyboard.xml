@@ -81,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal">
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="223dp"
             android:layout_alignParentBottom="true"
@@ -142,7 +142,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="10dp" />
             </RelativeLayout>
-        </ScrollView>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/img_left"
