@@ -18,6 +18,8 @@
             android:textColor="@drawable/text_selector"
             android:textAllCaps="false"
             android:textSize="10sp"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
             android:text="tab" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -171,7 +173,7 @@
             android:background="@drawable/key_selector"
             android:textColor="@drawable/text_selector"
             android:textSize="10sp"
-            android:text="\" />
+            android:text="\\" />
 
     </RelativeLayout>
 </ScrollView>

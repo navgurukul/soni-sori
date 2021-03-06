@@ -16,6 +16,8 @@
             android:layout_height="38dp"
             android:background="@drawable/key_selector"
             android:text="shift"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textSize="10sp"
             android:textColor="@drawable/text_selector" />
@@ -145,6 +147,8 @@
             android:layout_toRightOf="@+id/key_btn_76"
             android:background="@drawable/key_selector"
             android:text="shift"
+            android:paddingRight="10dp"
+            android:textAlignment="textEnd"
             android:textSize="10sp"
             android:textAllCaps="false"
             android:textColor="@drawable/text_selector" />

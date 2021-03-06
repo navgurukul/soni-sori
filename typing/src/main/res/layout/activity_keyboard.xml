@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.KeyboardActivity">
 
     <RelativeLayout
+        android:id="@+id/rel_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp">
@@ -23,6 +23,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/btn_settings"
             android:layout_toRightOf="@+id/btn_back">
 
@@ -65,7 +66,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:gravity="center_horizontal"
+        android:layout_below="@+id/rel_top"
+        android:layout_above="@+id/ll_keypad"
+        android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
     </LinearLayout>
@@ -73,15 +76,15 @@
     <RelativeLayout
         android:id="@+id/ll_keypad"
         android:layout_width="619dp"
-        android:layout_height="match_parent"
+        android:layout_height="233dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="223dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:scrollbars="vertical">
 
@@ -148,8 +151,19 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="47dp"
-            android:src="@drawable/left_resting_hand"
+            android:src="@drawable/hand_img_q"
             android:tag="asdfgzxcvbqwert" />
+
+        <ImageView
+            android:id="@+id/img_left2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="26dp"
+            android:src="@drawable/hand_img_tab"
+            android:tag="tab"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/img_right"
@@ -157,9 +171,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="100dp"
-            android:src="@drawable/right_resting_hand"
-            android:tag="hjkl;nm,.yuiop" />
+            android:layout_marginRight="110dp"
+            android:src="@drawable/hand_img_k"
+            android:tag="hjkl;nm,.yuiop/" />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

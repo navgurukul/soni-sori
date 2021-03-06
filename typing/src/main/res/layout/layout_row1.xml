@@ -153,13 +153,14 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/key_btn_67"
-            android:layout_width="62dp"
+            android:layout_width="60dp"
             android:layout_height="38dp"
             android:layout_marginLeft="3dp"
             android:layout_toRightOf="@+id/key_btn_70"
             android:background="@drawable/key_selector"
             android:textColor="@drawable/text_selector"
             android:text="backspace"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textSize="10sp"/>
 

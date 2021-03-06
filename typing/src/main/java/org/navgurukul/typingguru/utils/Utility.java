@@ -11,7 +11,7 @@ public class Utility {
     private static Map<String, Integer> keyMap;
     static {
         keyMap = new HashMap<>();
-        keyMap.put("a", 23);
+        keyMap.put("a", 29);
         keyMap.put("s", 47);
         keyMap.put("d", 32);
         keyMap.put("f", 34);
@@ -20,7 +20,7 @@ public class Utility {
         keyMap.put("j", 38);
         keyMap.put("k", 39);
         keyMap.put("l", 40);
-        keyMap.put("l", 40);
+        keyMap.put(";", 74);
         keyMap.put(" ", 62);
         keyMap.put("q", 45);
         keyMap.put("w", 51);
@@ -32,6 +32,17 @@ public class Utility {
         keyMap.put("i", 37);
         keyMap.put("o", 43);
         keyMap.put("p", 44);
+        keyMap.put("z", 54);
+        keyMap.put("x", 52);
+        keyMap.put("c", 31);
+        keyMap.put("v", 50);
+        keyMap.put("b", 30);
+        keyMap.put("n", 42);
+        keyMap.put("m", 41);
+        keyMap.put(",", 55);
+        keyMap.put(".", 56);
+        keyMap.put("/", 76);
+        keyMap.put("tab", 61);
     }
 
     public static Integer getKeyCodeByText(String text) {
