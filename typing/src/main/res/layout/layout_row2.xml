@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="horizontal">
 
@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_61"
             android:layout_width="59dp"
             android:layout_height="38dp"
@@ -23,6 +24,7 @@
             android:text="tab" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_45"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -35,6 +37,7 @@
             android:text="q" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_51"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -47,6 +50,7 @@
             android:text="w" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_33"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -59,6 +63,7 @@
             android:text="e" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_46"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -71,6 +76,7 @@
             android:text="r" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_48"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -83,6 +89,7 @@
             android:text="t" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_53"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -95,6 +102,7 @@
             android:text="y" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_49"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -107,6 +115,7 @@
             android:text="u" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_37"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -119,6 +128,7 @@
             android:text="i" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_43"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -131,6 +141,7 @@
             android:text="o" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_44"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -143,6 +154,7 @@
             android:text="p" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_71"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -154,6 +166,7 @@
             android:text="[" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_72"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -165,6 +178,7 @@
             android:text="]" />
 
         <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/key_btn_73"
             android:layout_width="38dp"
             android:layout_height="38dp"
