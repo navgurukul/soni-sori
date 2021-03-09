@@ -5,6 +5,9 @@ import android.content.SharedPreferences
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.navgurukul.playground.R
+import org.navgurukul.playground.repo.model.PlaygroundItemModel
+import org.navgurukul.playground.repo.model.PlaygroundTypes
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -20,6 +23,23 @@ class PlaygroundRepositoryImpl(
     companion object {
         const val KEY_PREF_CODE_BACKUP = "Playground.CodeBackup"
         const val DIRECTORY_NAME = "Python"
+    }
+
+    override fun getAllPlaygrounds(): List<PlaygroundItemModel> {
+        return arrayListOf(
+            PlaygroundItemModel(
+                PlaygroundTypes.PYTHON,
+                R.string.python,
+                R.drawable.ic_python_icon,
+                R.color.python_item_bg_color
+            ),
+            PlaygroundItemModel(
+                PlaygroundTypes.TYPING_APP,
+                R.string.typing,
+                R.drawable.ic_typing_icon,
+                R.color.typing_item_bg_color
+            )
+        )
     }
 
     override fun cacheCode(code: String) {

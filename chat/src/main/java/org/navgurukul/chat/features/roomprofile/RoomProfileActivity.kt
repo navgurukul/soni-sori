@@ -3,6 +3,7 @@ package org.navgurukul.chat.features.roomprofile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -121,8 +122,9 @@ class RoomProfileActivity :
         configureToolbar(toolbar)
     }
 
-    override fun setTitle(title: String, colorRes: Int) {
+    override fun configure(title: String, subtitle: String?, colorRes: Int, showProfile: Boolean, onClickListener: View.OnClickListener?) {
     }
+
 }
 
 class RoomProfileSharedActionViewModel :

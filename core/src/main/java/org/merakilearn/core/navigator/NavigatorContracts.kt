@@ -1,5 +1,6 @@
 package org.merakilearn.core.navigator
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 
@@ -14,7 +15,11 @@ interface ChatModuleNavigator {
     fun launchIntentForRoomProfile(context: Context, roomId: String): Intent
 }
 
-interface PlaygroundModuleNavigator{
-    fun launchPlaygroundActivity(context: Context, code: String):Intent
+interface PlaygroundModuleNavigator {
+    fun launchPlaygroundActivity(context: Context, code: String): Intent
     fun openPlaygroundWithFileContent(context: Context, fileName: String): Intent
+}
+
+interface TypingAppModuleNavigator {
+    fun launchTypingApp(activity: Activity, content: ArrayList<String>, code: String)
 }

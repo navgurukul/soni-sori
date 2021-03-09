@@ -2,21 +2,16 @@ package org.navgurukul.learn.ui.learn
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
@@ -25,13 +20,6 @@ import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
 import org.navgurukul.learn.util.LearnUtils
-
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.tasks.OnFailureListener
-import com.google.android.play.core.tasks.OnSuccessListener
-import org.navgurukul.learn.util.TypingGuruPreferenceManager
 
 
 class CourseSlugDetailActivity : AppCompatActivity() {
@@ -56,13 +44,12 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private lateinit var slugAdapter: ExerciseSlugAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
-    private lateinit var splitInstallManager : SplitInstallManager
+    private val dynamicFeatureModuleManager: DynamicFeatureModuleManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
-        splitInstallManager = SplitInstallManagerFactory.create(this);
         if (LearnUtils.isUserLoggedIn(this)) {
             parseIntentData()
         } else
@@ -178,87 +165,15 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun loadTypingTutor(it: Exercise.ExerciseSlugDetail) {
-        // Builds a request to install the feature1 module
-        val request = SplitInstallRequest
-                .newBuilder() // You can download multiple on demand modules per
-                // request by invoking the following method for each
-                // module you want to install.
-                .addModule("typing")
-                .build()
-
-        // Begin the installation of the feature1 module and handle success/failure
-        splitInstallManager
-                .startInstall(request)
-                .addOnSuccessListener(object : OnSuccessListener<Int?> {
-                    override fun onSuccess(integer: Int?) {
-                        // Module download successful
-                        if (TypingGuruPreferenceManager.instance().iWebViewShown()) {
-                            startKeyBoardActivity(it)
-                        } else {
-                            showInfoDialog(it);
-                        }
-                    }
-                })
-                .addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(e: Exception) {
-                        // Module download failed; handle the error here
-                        Toast.makeText(
-                                applicationContext,
-                                "Couldn't download typing guru: " + e.message,
-                                Toast.LENGTH_LONG
-                        ).show()
-                        e.printStackTrace()
-                    }
-                })
-    }
-
-    private fun startKeyBoardActivity(it: Exercise.ExerciseSlugDetail) {
-        val intent = Intent()
-                .setClassName(packageName, "org.navgurukul.typingguru.ui.KeyboardActivity")
-        intent.putExtra("content", it.value as ArrayList<String>)
-        intent.putExtra("type", it.type)
-        startActivity(intent)
-    }
-
-    private fun showInfoDialog(item: Exercise.ExerciseSlugDetail) {
-        try {
-            val inflater: LayoutInflater = getLayoutInflater()
-            val alertLayout: View = inflater.inflate(R.layout.layout_keyboard_dialog, null)
-            val btnOwn: AppCompatButton = alertLayout.findViewById(R.id.btn_own) as AppCompatButton
-            val btnPurchase: AppCompatButton = alertLayout.findViewById(R.id.btn_purchase) as AppCompatButton
-            val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
-            builder.setView(alertLayout)
-            builder.setCancelable(true)
-            val btAlertDialog: android.app.AlertDialog? = builder.create()
-            btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            btAlertDialog?.setCancelable(false)
-            btnOwn.setOnClickListener {
-                if (btAlertDialog != null && btAlertDialog.isShowing) {
-                    btAlertDialog.dismiss()
-                    TypingGuruPreferenceManager.instance().setWebViewDisplayStatus(true)
-                    startKeyBoardActivity(item)
-                }
-            }
-            btnPurchase.setOnClickListener {
-                if (btAlertDialog != null && btAlertDialog.isShowing) {
-                    btAlertDialog.dismiss()
-                    TypingGuruPreferenceManager.instance().setWebViewDisplayStatus(true)
-                    val intent = Intent()
-                            .setClassName(packageName, "org.navgurukul.typingguru.ui.WebViewActivity")
-                    startActivity(intent)
-                }
-            }
-            btAlertDialog?.show()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        dynamicFeatureModuleManager.installModule("typing", {
+            merakiNavigator.launchTypingApp(this, it.value as ArrayList<String>, it.type!!)
+        })
     }
 
     private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
-            .observe(this, Observer {
+            .observe(this, {
                 mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty()) {
                     val data = parseDataForContent(it)

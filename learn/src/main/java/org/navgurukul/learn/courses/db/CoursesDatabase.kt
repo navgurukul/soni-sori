@@ -2,12 +2,30 @@ package org.navgurukul.learn.courses.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 1
+const val DB_VERSION = 2
+
+@Dao
+interface PathwayDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPathways(course: List<Pathway>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPathway(course: Pathway)
+
+    @Query("select * from pathway")
+    fun getAllPathways(): List<Pathway>
+
+    @Query("select * from pathway where id=:pathwayId")
+    fun getByPathwayId(pathwayId: String): List<Pathway>
+}
 
 @Dao
 interface CourseDao {
@@ -25,6 +43,9 @@ interface CourseDao {
 
     @Query("select * from pathway_course where id=:courseId")
     fun getCourseById(courseId: String): List<Course>
+
+    @Query("select * from pathway_course where pathwayId=:pathwayId")
+    fun getCoursesByPathwayId(pathwayId: Int): List<Course>
 }
 
 @Dao
@@ -55,10 +76,17 @@ interface CurrentStudyDao {
     suspend fun getCurrentStudyForCourse(courseId: String?): List<CurrentStudy>
 }
 
+val MIGRATION_1_2 = object: Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL,  `logo` TEXT, PRIMARY KEY(`id`))")
+    }
+
+}
+
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Course::class, Exercise::class, CurrentStudy::class],
+    entities = [Pathway::class, Course::class, Exercise::class, CurrentStudy::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -67,6 +95,7 @@ abstract class CoursesDatabase : RoomDatabase() {
 
     // DAOs for course, exercises and its sub exercise
     abstract fun courseDao(): CourseDao
+    abstract fun pathwayDao(): PathwayDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun currentStudyDao(): CurrentStudyDao
 }

@@ -1,6 +1,5 @@
 package org.navgurukul.learn.util
 
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities

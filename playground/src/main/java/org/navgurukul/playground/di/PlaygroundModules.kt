@@ -10,9 +10,11 @@ import org.navgurukul.playground.navigation.PlaygroundModuleNavigatorImpl
 import org.navgurukul.playground.repo.PlaygroundRepository
 import org.navgurukul.playground.repo.PlaygroundRepositoryImpl
 import org.navgurukul.playground.ui.PlaygroundViewModel
+import org.navgurukul.playground.ui.PythonPlaygroundViewModel
 
 val viewModelModules = module {
-    viewModel { PlaygroundViewModel(get()) }
+    viewModel { PythonPlaygroundViewModel(get()) }
+    viewModel { PlaygroundViewModel(get(), get()) }
 }
 
 val repoModules = module {

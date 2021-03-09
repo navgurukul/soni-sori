@@ -24,9 +24,9 @@ import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 import java.io.File
 
-class PlaygroundActivity : AppCompatActivity() {
+class PythonPlaygroundActivity : AppCompatActivity() {
 
-    private val viewModel: PlaygroundViewModel by viewModel()
+    private val viewModel: PythonPlaygroundViewModel by viewModel()
     private lateinit var etInput: EditText
     private lateinit var tvOutput: TextView
     private lateinit var tvError: TextView
@@ -136,7 +136,7 @@ class PlaygroundActivity : AppCompatActivity() {
             showShareIntent(etCode.text.toString())
         }else{
             Toast.makeText(
-                this@PlaygroundActivity,
+                this@PythonPlaygroundActivity,
                 getString(R.string.nothing_to_share),
                 Toast.LENGTH_SHORT
             ).show()
@@ -159,7 +159,7 @@ class PlaygroundActivity : AppCompatActivity() {
             showDialogForFileName()
         }else{
             Toast.makeText(
-                this@PlaygroundActivity,
+                this@PythonPlaygroundActivity,
                 getString(R.string.nothing_to_save),
                 Toast.LENGTH_SHORT
             ).show()
@@ -181,7 +181,7 @@ class PlaygroundActivity : AppCompatActivity() {
                 viewModel.saveCode(etCode.text.toString(), input.text.toString())
                 dialog.dismiss()
                 Toast.makeText(
-                    this@PlaygroundActivity,
+                    this@PythonPlaygroundActivity,
                     getString(R.string.code_saved),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -390,13 +390,13 @@ class PlaygroundActivity : AppCompatActivity() {
         private const val ARG_CODE = "arg_code"
         private const val ARG_FILE_NAME = "arg_file_name"
         fun launch(code: String?, context: Context): Intent {
-            val intent = Intent(context, PlaygroundActivity::class.java)
+            val intent = Intent(context, PythonPlaygroundActivity::class.java)
             intent.putExtra(ARG_CODE, code)
             return intent
         }
 
         fun launchWithFileContent(fileName: String, context: Context): Intent {
-            val intent = Intent(context, PlaygroundActivity::class.java)
+            val intent = Intent(context, PythonPlaygroundActivity::class.java)
             intent.putExtra(ARG_FILE_NAME, fileName)
             return intent
         }

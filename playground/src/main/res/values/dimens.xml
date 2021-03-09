@@ -4,4 +4,5 @@
     <dimen name="height_top_buffer">120dp</dimen>
     <dimen name="width_control">48dp</dimen>
     <dimen name="height_output_divider">2dp</dimen>
+    <dimen name="playground_icon_size">80dp</dimen>
 </resources>

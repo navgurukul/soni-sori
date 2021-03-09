@@ -58,4 +58,14 @@
 
     <dimen name="dimen_20_dp">20dp</dimen>
     <dimen name="dimen_16_dp">16dp</dimen>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/sheet_background</item>
+    </style>
 </resources>

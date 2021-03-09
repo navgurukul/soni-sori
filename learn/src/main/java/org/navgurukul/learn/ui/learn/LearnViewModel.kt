@@ -9,10 +9,6 @@ import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
 
-    fun fetchCourseData(forceUpdate: Boolean) = liveData {
-        emitSource(learnRepo.getCoursesData(forceUpdate))
-    }
-
     fun fetchCourseExerciseData(courseId: String) = liveData {
         emitSource(learnRepo.getCoursesExerciseData(courseId))
     }
@@ -36,10 +32,4 @@ class LearnViewModel(private val learnRepo: LearnRepo) : ViewModel() {
             learnRepo.saveCourseExerciseCurrent(currentStudy)
         }
     }
-
-    fun startDesiredActivity(courseId: String)= liveData {
-        emit(learnRepo.fetchCurrentStudyForCourse(courseId))
-    }
-
-
 }

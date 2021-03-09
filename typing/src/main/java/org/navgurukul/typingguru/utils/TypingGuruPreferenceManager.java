@@ -1,4 +1,4 @@
-package org.navgurukul.learn.util;
+package org.navgurukul.typingguru.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,7 +19,9 @@ public class TypingGuruPreferenceManager {
     }
 
     public void init(Context context) {
-        mSharedPreferences = context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        }
     }
 
     private SharedPreferences.Editor getEditor() {

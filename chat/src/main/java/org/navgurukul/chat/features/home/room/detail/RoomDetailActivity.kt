@@ -3,6 +3,7 @@ package org.navgurukul.chat.features.home.room.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
@@ -66,7 +67,7 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable, KoinScopeCom
         configureToolbar(toolbar)
     }
 
-    override fun setTitle(title: String, @AttrRes colorRes: Int) {
+    override fun configure(title: String, subtitle: String?, @AttrRes colorRes: Int, showProfile: Boolean, onClickListener: View.OnClickListener?) {
         throw RuntimeException("Set Title is not supported")
     }
 

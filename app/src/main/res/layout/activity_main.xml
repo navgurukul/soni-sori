@@ -14,28 +14,54 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/headerTitle"
-            style="?textAppearanceHeadline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_5_dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/app_name"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/headerIv"
-            android:layout_width="@dimen/course_profile_pic"
-            android:layout_height="@dimen/course_profile_pic"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/dimen_10_dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/avatar_background_border"
-            android:padding="@dimen/spacing_1x"
-            android:layout_gravity="end"
-            tools:ignore="ContentDescription" />
+            <TextView
+                android:id="@+id/headerTitle"
+                style="?textAppearanceHeadline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="?textPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/headerSubtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headerSubtitle"
+                style="?textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_drop_down"
+                android:drawablePadding="@dimen/spacing_2x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?textPrimary"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerTitle"
+                tools:text="Sample Subtitle" />
+
+            <ImageView
+                android:id="@+id/headerIv"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/avatar_background_border"
+                android:padding="@dimen/spacing_1x"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 

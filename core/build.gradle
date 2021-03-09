@@ -22,6 +22,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -35,6 +42,9 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
     implementation "com.google.code.gson:gson:$version_gson"
+
+    //to get dynamic feature module
+    implementation 'com.google.android.play:core:1.9.0'
 
     //firebase
     implementation "com.google.firebase:firebase-messaging:$firebase_messaging_version"

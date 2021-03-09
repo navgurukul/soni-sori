@@ -1,8 +1,6 @@
 package org.navgurukul.chat.features.home.room.list
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -50,7 +48,7 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
             }
         })
 
-        (activity as? ToolbarConfigurable)?.setTitle(getString(R.string.title_chat), R.attr.textPrimary)
+        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_chat), null, R.attr.textPrimary)
     }
 
     private fun invalidateState(state: RoomListViewState) {
