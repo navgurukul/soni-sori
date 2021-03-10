@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Utility {
+    public static final String KEYBOARD_URL = "https://navgurukul.github.io/rosa-parks/index.html";
     private static Map<String, Integer> keyMap;
     static {
         keyMap = new HashMap<>();
