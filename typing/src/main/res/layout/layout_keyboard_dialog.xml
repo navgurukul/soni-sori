@@ -79,7 +79,7 @@
                 android:layout_height="44dp"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/btn_own"
-                android:background="@drawable/start_btn_selector"
+                android:background="@drawable/primary_btn_selector"
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingLeft="11dp"
                 android:paddingRight="11dp"

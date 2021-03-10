@@ -98,9 +98,5 @@
     <string name="ongoing">Ongoing</string>
     <string name="courses">Courses</string>
     <string name="run">RUN</string>
-    <string name="do_you_own_a_keyboard">Do you own a keyboard?</string>
-    <string name="keyboard_purchase_hint">A keyboard is must for this course. Let us help you with purchasing a keyboard.</string>
-    <string name="purchase_new">Purchase New</string>
-    <string name="i_have_one_already">I have one already</string>
     <string name="select_program">Select Program</string>
 </resources>

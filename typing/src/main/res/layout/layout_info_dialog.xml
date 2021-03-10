@@ -51,7 +51,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="19dp"
-                android:background="@drawable/start_btn_selector"
+                android:background="@drawable/primary_btn_selector"
                 android:fontFamily="@font/nunito"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/okay_understood"

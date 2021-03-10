@@ -18,7 +18,7 @@
     <application>
         <activity
             android:name=".ui.learn.CourseDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -38,7 +38,7 @@
 
         <activity
             android:name=".ui.learn.CourseSlugDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
