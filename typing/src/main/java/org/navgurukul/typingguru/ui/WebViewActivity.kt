@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import org.navgurukul.typingguru.R
+import org.navgurukul.typingguru.utils.Utility
 
 class WebViewActivity : AppCompatActivity() {
     lateinit var mWebView: WebView
@@ -17,7 +18,7 @@ class WebViewActivity : AppCompatActivity() {
 
         mWebView = findViewById<View>(R.id.webview) as WebView
         mWebView.webViewClient = MyBrowser()
-        mWebView.loadUrl("https://navgurukul.github.io/rosa-parks/firstPage.html");
+        mWebView.loadUrl(Utility.KEYBOARD_URL);
     }
 
     private class MyBrowser : WebViewClient() {
