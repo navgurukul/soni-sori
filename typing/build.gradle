@@ -2,6 +2,7 @@ plugins {
     id 'com.android.dynamic-feature'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'com.google.gms.google-services'
     id 'kotlin-kapt'
 }
 
@@ -34,8 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-
 }
 
 dependencies {
@@ -55,4 +54,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
 }

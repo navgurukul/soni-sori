@@ -3,9 +3,12 @@ package org.navgurukul.typingguru.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.merakilearn.datasource.Config;
+
 public class TypingGuruPreferenceManager {
     private SharedPreferences mSharedPreferences;
     private static final String PREF_NAME = "typing-guru";
+    Config remoteConfig;
     private TypingGuruPreferenceManager() {
 
     }
@@ -22,6 +25,10 @@ public class TypingGuruPreferenceManager {
         if (mSharedPreferences == null) {
             mSharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
+        if (remoteConfig == null) {
+            remoteConfig = new Config();
+            remoteConfig.initialise();
+        }
     }
 
     private SharedPreferences.Editor getEditor() {
@@ -37,5 +44,9 @@ public class TypingGuruPreferenceManager {
 
     public boolean iWebViewShown() {
         return mSharedPreferences.getBoolean("isShown", false);
+    }
+
+    public Config getRemoteConfig() {
+        return remoteConfig;
     }
 }

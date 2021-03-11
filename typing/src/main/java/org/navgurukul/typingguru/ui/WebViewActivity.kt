@@ -6,10 +6,13 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import org.merakilearn.datasource.Config
 import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.utils.Utility
+import org.navgurukul.typingguru.utils.Logger
+import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 
 class WebViewActivity : AppCompatActivity() {
+    private val TAG = "WebViewActivity"
     lateinit var mWebView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +21,12 @@ class WebViewActivity : AppCompatActivity() {
 
         mWebView = findViewById<View>(R.id.webview) as WebView
         mWebView.webViewClient = MyBrowser()
-        mWebView.loadUrl(Utility.KEYBOARD_URL);
+        val remoteConfig = TypingGuruPreferenceManager.instance().remoteConfig
+        if (remoteConfig != null) {
+            val webUrl : String = remoteConfig.getValue(Config.KEYBOARD_URL_KEY)
+            Logger.d(TAG, "Web url : $webUrl")
+            mWebView.loadUrl(webUrl)
+        }
     }
 
     private class MyBrowser : WebViewClient() {

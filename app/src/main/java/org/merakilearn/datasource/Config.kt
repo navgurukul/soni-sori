@@ -14,6 +14,7 @@ class Config {
 
     companion object {
         const val KEY_AVAILABLE_LANG = "available_lang"
+        const val KEYBOARD_URL_KEY = "keyboard_purchase_url"
     }
 
     /**
