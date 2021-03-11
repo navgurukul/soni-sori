@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pathway"
+            type="org.navgurukul.learn.courses.db.models.Pathway" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_4x">
+
+        <ImageView
+            android:id="@+id/iv_pathway_icon"
+            android:layout_width="@dimen/pathway_select_icon_size"
+            android:layout_height="@dimen/pathway_select_icon_size"
+            android:layout_marginEnd="@dimen/spacing_5x"
+            android:padding="@dimen/spacing_2x"
+            android:background="@drawable/pathway_selection_icon_bg"
+            tools:src="@drawable/ic_typing_icon" />
+
+        <TextView
+            android:id="@+id/tv_pathway_title"
+            style="?textAppearanceEmphasized2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{pathway.name}"
+            android:textColor="?textPrimary" />
+
+    </LinearLayout>
+</layout>

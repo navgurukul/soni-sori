@@ -10,16 +10,16 @@ import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class CourseAdapter(val callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
+class CourseAdapter(val callback: (Course) -> Unit) :
 
     DataBoundListAdapter<Course, ItemCourseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Course>() {
             override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
-                return false
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
-                return false
+                return oldItem == newItem
             }
         }
     ) {
@@ -34,7 +34,7 @@ class CourseAdapter(val callback: (Pair<Course, ItemCourseBinding>) -> Unit) :
         val binding = holder.binding
         binding.course = item
         binding.root.setOnClickListener {
-            callback.invoke(Pair(item, binding))
+            callback.invoke(item)
         }
     }
 

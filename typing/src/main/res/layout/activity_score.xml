@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="16dp"
+                    android:layout_height="17dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/ic_back" />
+
+                <TextView
+                    android:id="@+id/txt_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/btn_back"
+                    android:fontFamily="@font/nunito"
+                    android:text="@string/exercise_score"
+                    android:textColor="@color/back_text_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:id="@+id/btn_share"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:paddingRight="0dp"
+                    android:paddingLeft="0dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="12dp"
+                    app:icon="@drawable/ic_share"
+                    app:iconTint="@color/black_alpha" />
+
+                <View
+                    android:id="@+id/row"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/row_color" />
+            </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar">
+
+            <LinearLayout
+                android:id="@+id/rel_meter"
+                android:layout_width="match_parent"
+                android:layout_height="159dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/score_meter_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_speed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <org.navgurukul.typingguru.score.graph.TubeSpeedometer
+                        android:id="@+id/speedometer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="20dp"
+                        app:sv_centerCircleColor="#0000"
+                        app:sv_endDegree="360"
+                        app:sv_indicator="NormalIndicator"
+                        app:sv_indicatorColor="@color/colorBlack"
+                        app:sv_indicatorWidth="4dp"
+                        app:sv_speedTextColor="@android:color/transparent"
+                        app:sv_speedometerBackColor="@color/colorWhite"
+                        app:sv_startDegree="180"
+                        app:sv_tickNumber="0"
+                        app:sv_unit="Speed"
+                        app:sv_unitTextColor="@color/colorBlack"
+                        app:sv_unitTextSize="12sp"
+                        app:sv_unitUnderSpeedText="true"
+                        app:sv_withTremble="false" />
+
+
+                    <TextView
+                        android:id="@+id/txt_lbl_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nunito"
+                        android:text="@string/speed"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_wpm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_wpm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/nunito"
+                        android:text="10"
+                        android:textColor="@color/green_progress_bar"
+                        android:textSize="50sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_lbl_wpm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:fontFamily="@font/nunito"
+                        android:text="@string/wpm"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_summary"
+                android:layout_width="match_parent"
+                android:layout_height="159dp"
+                android:layout_below="@+id/rel_meter"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/ll_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/accuracy_background_drawable">
+
+                    <ImageView
+                        android:id="@+id/img_watch"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_watch" />
+
+                    <TextView
+                        android:id="@+id/txt_lbl_time_taken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginTop="33dp"
+                        android:text="@string/time_taken"
+                        android:textColor="@color/current_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txt_time_taken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_lbl_time_taken"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginTop="7dp"
+                        android:text="0:29"
+                        android:textColor="@color/current_text"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:id="@+id/txt_lbl_time_taken_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_lbl_time_taken"
+                        android:layout_alignBaseline="@+id/txt_time_taken"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/txt_time_taken"
+                        android:text="@string/mm_ss"
+                        android:textColor="@color/current_text"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_accuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/accuracy_background_drawable">
+
+                    <ImageView
+                        android:id="@+id/img_accuracy"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_accuracy" />
+
+                    <TextView
+                        android:id="@+id/txt_lbl_accuracy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginTop="33dp"
+                        android:text="@string/accuracy"
+                        android:textColor="@color/current_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txt_accuracy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_lbl_accuracy"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginTop="7dp"
+                        android:text="NA"
+                        android:textColor="@color/current_text"
+                        android:textSize="36sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="28dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_retake"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/retake_btn_selector"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/retake_test"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_back_to_lessons"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/primary_btn_selector"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/back_to_lesson"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

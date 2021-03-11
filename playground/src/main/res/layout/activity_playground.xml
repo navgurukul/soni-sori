@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PlaygroundActivity">
+    tools:context=".ui.PythonPlaygroundActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -175,7 +175,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/height_top_buffer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.PlaygroundActivity">
+        tools:context=".ui.PythonPlaygroundActivity">
 
         <include layout="@layout/bottom_sheet_output" />
 

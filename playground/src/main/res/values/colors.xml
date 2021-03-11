@@ -11,4 +11,6 @@
     <color name="stroke_peek">#EEEEEE</color>
     <color name="run_background">#D63447</color>
     <color name="run_text">#FFFFFF</color>
+    <color name="typing_item_bg_color">#E9F4D9</color>
+    <color name="python_item_bg_color">#FFFBEB</color>
 </resources>

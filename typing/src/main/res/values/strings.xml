@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TypingAssist</string>
+    <string name="exercise_score">Exercise score</string>
+    <string name="speed">Speed</string>
+    <string name="wpm">wpm\n(words per min)</string>
+    <string name="time_taken">Time Taken</string>
+    <string name="mm_ss">mm:ss</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="retake_test">Retake Test</string>
+    <string name="back_to_lesson">Back to Lessons</string>
+    <string name="info_text">1. Connect your keyboard to the mobile using bluetooth or connector\n\n2. Check if the keyboard is working</string>
+    <string name="okay_understood">Okay, understood</string>
+    <string name="do_you_own_a_keyboard">Do you own a keyboard?</string>
+    <string name="keyboard_purchase_hint">A keyboard is must for this course. Let us help you with purchasing a keyboard.</string>
+    <string name="purchase_new">Purchase New</string>
+    <string name="i_have_one_already">I have one already</string>
+</resources>

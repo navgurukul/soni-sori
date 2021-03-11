@@ -2,14 +2,17 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
-import org.navgurukul.learn.courses.network.model.PathWayCourseContainer
+import org.navgurukul.learn.courses.network.model.PathwayCourseContainer
+import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.util.LearnUtils
 import java.lang.Exception
 
@@ -19,15 +22,63 @@ class LearnRepo(
     private val database: CoursesDatabase
 ) {
 
+    fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
+        val pathwayDao = database.pathwayDao()
+        val courseDao = database.courseDao()
+        return networkBoundResourceFlow(loadFromDb = {
+            val data = pathwayDao.getAllPathways()
+            data.map {
+                it.courses = courseDao.getCoursesByPathwayId(it.id).apply {
+                    forEachIndexed { index, course ->
+                        course.number = (index + 1)
+                    }
+                }
+            }
+            data
+        }, shouldFetch = { data ->
+            (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
+        }, makeApiCallAsync = {
+            courseApi.getPathways(LearnUtils.getAuthToken(application))
+        }, saveCallResult = { data ->
+            data.pathways.forEach { pathway ->
+                pathway.courses.map {
+                    it.pathwayId = pathway.id
+                }
+                courseDao.insertCourses(pathway.courses)
+            }
+            pathwayDao.insertPathways(data.pathways)
+
+        })
+    }
+
+    fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
+        val courseDao = database.courseDao()
+        return networkBoundResourceFlow(loadFromDb = {
+            val data = courseDao.getCoursesByPathwayId(pathwayId)
+            data.forEachIndexed { index, course ->
+                course.number = (index + 1)
+            }
+            data
+        }, shouldFetch = { data ->
+            (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
+        }, makeApiCallAsync = {
+            courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
+        }, saveCallResult = { data ->
+            data.courses.map {
+                it.pathwayId = data.id
+            }.toList()
+            courseDao.insertCourses(data.courses)
+        })
+    }
+
     fun getCoursesData(forceUpdate: Boolean): LiveData<List<Course>?> {
         val courseDao = database.courseDao()
-        return object : NetworkBoundResource<List<Course>, PathWayCourseContainer>() {
-            override suspend fun saveCallResult(data: PathWayCourseContainer) {
-                data.courses?.map {
+        return object : NetworkBoundResource<List<Course>, PathwayCourseContainer>() {
+            override suspend fun saveCallResult(data: PathwayCourseContainer) {
+                data.courses.map {
                     it.pathwayId = data.id
-                    it.pathwayName = data.name
-                }?.toList()
-                courseDao.insertCourses(data.courses!!)
+                }.toList()
+                courseDao.insertCourses(data.courses)
             }
 
             override fun shouldFetch(data: List<Course>?): Boolean {
@@ -35,7 +86,7 @@ class LearnRepo(
                         || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
             }
 
-            override suspend fun makeApiCallAsync(): PathWayCourseContainer {
+            override suspend fun makeApiCallAsync(): PathwayCourseContainer {
                 return courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
             }
 

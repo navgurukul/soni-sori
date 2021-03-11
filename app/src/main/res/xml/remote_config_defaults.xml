@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<entry xmlns:tools="http://schemas.android.com/tools"
+<defaultsMap
+    xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
-    <key>available_lang</key>
-    <value>
-        [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
-    </value>
-</entry>
+    <entry>
+        <key>available_lang</key>
+        <value>
+            [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
+        </value>
+    </entry>
+    <entry>
+        <key>keyboard_purchase_url</key>
+        <value>https://navgurukul.github.io/rosa-parks/index.html</value>
+    </entry>
+</defaultsMap>

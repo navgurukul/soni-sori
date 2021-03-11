@@ -1,6 +1,5 @@
 package org.merakilearn.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +41,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initMyClassViewAndData()
-        (activity as? ToolbarConfigurable)?.setTitle(getString(R.string.app_name), R.attr.colorPrimary)
+        (activity as? ToolbarConfigurable)?.configure(getString(R.string.app_name), null, R.attr.colorPrimary, true)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

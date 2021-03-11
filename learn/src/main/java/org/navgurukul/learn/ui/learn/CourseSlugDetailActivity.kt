@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
@@ -43,10 +44,12 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private lateinit var slugAdapter: ExerciseSlugAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
+    private val dynamicFeatureModuleManager: DynamicFeatureModuleManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
+        // Instantiate an instance of SplitInstallManager for the dynamic feature module
         if (LearnUtils.isUserLoggedIn(this)) {
             parseIntentData()
         } else
@@ -149,6 +152,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
                 val code = ExerciseSlugAdapter.parsePythonCode(it)
                 if (!code.isNullOrBlank())
                     merakiNavigator.openPlayground(this, code)
+            } else if (it.type == ExerciseSlugAdapter.TYPE_TRY_TYPING || it.type == ExerciseSlugAdapter.TYPE_PRACTICE_TYPING) {
+                loadTypingTutor(it)
             }
         }
         val layoutManager =
@@ -159,10 +164,16 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun loadTypingTutor(it: Exercise.ExerciseSlugDetail) {
+        dynamicFeatureModuleManager.installModule("typing", {
+            merakiNavigator.launchTypingApp(this, it.value as ArrayList<String>, it.type!!)
+        })
+    }
+
     private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
-            .observe(this, Observer {
+            .observe(this, {
                 mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty()) {
                     val data = parseDataForContent(it)

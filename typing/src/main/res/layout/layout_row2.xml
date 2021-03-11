@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/ll_row_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_61"
+            android:layout_width="59dp"
+            android:layout_height="38dp"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:text="tab" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_45"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_61"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="q" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_51"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_45"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="w" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_33"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_51"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="e" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_46"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_33"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="r" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_48"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_46"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="t" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_53"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_48"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="y" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_49"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_53"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="u" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_37"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_49"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="i" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_43"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_37"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="o" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_44"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_43"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:text="p" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_71"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_44"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="10sp"
+            android:text="[" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_72"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_71"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="10sp"
+            android:text="]" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_73"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@+id/key_btn_72"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textSize="10sp"
+            android:text="\\" />
+
+    </RelativeLayout>
+</ScrollView>

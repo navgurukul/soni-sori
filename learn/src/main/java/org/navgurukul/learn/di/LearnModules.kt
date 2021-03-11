@@ -6,13 +6,17 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.CoursesDatabase
+import org.navgurukul.learn.courses.db.MIGRATION_1_2
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnViewModel
+import org.navgurukul.learn.util.LearnPreferences
 import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LearnViewModel(get()) }
+    viewModel { LearnFragmentViewModel(get(), get()) }
 }
 
 
@@ -30,10 +34,13 @@ val databaseModule = module {
             application.applicationContext,
             CoursesDatabase::class.java,
             "course.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     single { provideDatabase(androidApplication()) }
+    single { LearnPreferences(androidApplication()) }
 }
 
 val repositoryModule = module {

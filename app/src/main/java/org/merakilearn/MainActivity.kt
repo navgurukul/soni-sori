@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -75,10 +77,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         findViewById<ImageView>(R.id.headerIv).let {
-            AppUtils.getCurrentUser(this)?.let {currentUser->
+            AppUtils.getCurrentUser(this)?.let { currentUser ->
                 setUserThumbnail(it, currentUser)
             } ?: run {
-                OnBoardingActivity.restartApp(this@MainActivity,OnBoardingActivityArgs(true))
+                OnBoardingActivity.restartApp(this@MainActivity, OnBoardingActivityArgs(true))
             }
         }
     }
@@ -114,8 +116,30 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         throw RuntimeException("Custom Toolbar Not supported")
     }
 
-    override fun setTitle(title: String, @AttrRes colorRes: Int) {
+    override fun configure(
+        title: String,
+        subtitle: String?,
+        @AttrRes colorRes: Int,
+        showProfile: Boolean,
+        onClickListener: View.OnClickListener?
+    ) {
         headerTitle.text = title
         headerTitle.setTextColor(getThemedColor(colorRes))
+
+        subtitle?.let {
+            headerSubtitle.text = subtitle
+            headerSubtitle.isVisible = true
+        } ?: run {
+            headerSubtitle.isVisible = false
+        }
+
+        headerIv.isVisible = showProfile
+
+        onClickListener?.let { listener ->
+            appToolbar.setOnClickListener {
+                listener.onClick(it)
+            }
+        }
+
     }
 }

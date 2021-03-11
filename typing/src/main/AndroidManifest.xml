@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="org.navgurukul.typingguru">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_typing">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application>
+
+        <activity
+            android:name=".ui.KeyboardActivity"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />
+        </activity>
+        <activity
+            android:name=".score.ScoreActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.RetryActivity"></activity>
+        <activity android:name=".ui.WebViewActivity" />
+    </application>
+</manifest>

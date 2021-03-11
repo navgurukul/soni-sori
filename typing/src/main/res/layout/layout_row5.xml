@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/ll_row_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/key_btn_62"
+            android:layout_width="254dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/key_selector"
+            android:textColor="@drawable/text_selector"
+            android:textAllCaps="false"
+            android:text=" " />
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -57,6 +57,108 @@
                 android:visibility="gone"
                 app:drawableTint="@color/colorWhite" />
 
+            <RelativeLayout
+                android:id="@+id/relStartTyping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/markDownContent"
+                android:visibility="gone"
+                android:background="@drawable/hint_box_drawable">
+
+                <TextView
+                    android:id="@+id/txt_lbl_keyboard_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="11dp"
+                    android:fontFamily="@font/nunito"
+                    android:text="Kya aapke pas extrenal keyboard hai?"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_lbl_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_lbl_keyboard_hint"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/nunito"
+                    android:text="Aap typing abhi start kar sakte hai"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/typing"
+                    android:layout_width="158dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/txt_lbl_start"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="19dp"
+                    android:background="@drawable/primary_btn_selector"
+                    android:fontFamily="@font/nunito"
+                    android:text="Try Typing"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relPracticeTyping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/markDownContent"
+                android:visibility="gone"
+                android:background="@drawable/hint_box_drawable">
+
+                <TextView
+                    android:id="@+id/txt_lbl_keyboard_hint2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="11dp"
+                    android:fontFamily="@font/nunito"
+                    android:text="Kya aapke pas extrenal keyboard hai?"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_lbl_start2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_lbl_keyboard_hint2"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/nunito"
+                    android:text="Aap typing abhi start kar sakte hai"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/practiceTyping"
+                    android:layout_width="158dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/txt_lbl_start2"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="19dp"
+                    android:background="@drawable/primary_btn_selector"
+                    android:fontFamily="@font/nunito"
+                    android:text="Practice Typing"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <ImageView

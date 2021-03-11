@@ -32,9 +32,15 @@
             android:clipToPadding="false"
             android:orientation="vertical">
 
+            <org.navgurukul.commonui.views.EmptyStateView
+                android:id="@+id/empty_state_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerviewCourse"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/spacing_3x"
                 app:layout_constraintTop_toTopOf="parent"

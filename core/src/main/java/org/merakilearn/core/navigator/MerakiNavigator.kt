@@ -1,16 +1,31 @@
 package org.merakilearn.core.navigator
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
     private val chatModuleNavigator: ChatModuleNavigator,
     private val playgroundModuleNavigator: PlaygroundModuleNavigator
 ) {
+
+    private val typingAppModuleNavigator: TypingAppModuleNavigator? by lazy {
+        val serviceIterator = ServiceLoader.load(
+            TypingAppModuleNavigator::class.java,
+            TypingAppModuleNavigator::class.java.classLoader
+        ).iterator()
+        if (serviceIterator.hasNext()) {
+            serviceIterator.next()
+        } else {
+            null
+        }
+    }
 
     fun launcherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForLauncherActivity(context, clearNotification)
@@ -67,6 +82,10 @@ class MerakiNavigator(
             buildTask = false,
             newTask = true
         )
+    }
+
+    fun launchTypingApp(activity: Activity, content: ArrayList<String>, code: String) {
+        typingAppModuleNavigator?.launchTypingApp(activity, content, code)
     }
 
     private fun startActivity(
