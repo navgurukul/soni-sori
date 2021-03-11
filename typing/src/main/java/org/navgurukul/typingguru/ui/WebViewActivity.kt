@@ -1,21 +1,20 @@
 package org.navgurukul.typingguru.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import org.merakilearn.datasource.Config
 import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.utils.RemoteConfig
+import org.navgurukul.typingguru.utils.Logger
 import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
-import org.navgurukul.typingguru.utils.Utility
 
 class WebViewActivity : AppCompatActivity() {
     private val TAG = "WebViewActivity"
     lateinit var mWebView: WebView
-    private val KEYBOARD_URL_KEY = "keyboard_purchase_url"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
@@ -24,8 +23,8 @@ class WebViewActivity : AppCompatActivity() {
         mWebView.webViewClient = MyBrowser()
         val remoteConfig = TypingGuruPreferenceManager.instance().remoteConfig
         if (remoteConfig != null) {
-            val webUrl = remoteConfig.getValueFromRemoteConfig(KEYBOARD_URL_KEY)
-            Log.d(TAG, "Web url : $webUrl")
+            val webUrl : String = remoteConfig.getValue(Config.KEYBOARD_URL_KEY)
+            Logger.d(TAG, "Web url : $webUrl")
             mWebView.loadUrl(webUrl)
         }
     }

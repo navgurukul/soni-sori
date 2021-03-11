@@ -3,12 +3,12 @@ package org.navgurukul.typingguru.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import org.merakilearn.datasource.Config;
 
 public class TypingGuruPreferenceManager {
     private SharedPreferences mSharedPreferences;
     private static final String PREF_NAME = "typing-guru";
-    RemoteConfig remoteConfig;
+    Config remoteConfig;
     private TypingGuruPreferenceManager() {
 
     }
@@ -26,7 +26,7 @@ public class TypingGuruPreferenceManager {
             mSharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
         if (remoteConfig == null) {
-            remoteConfig = new RemoteConfig(FirebaseRemoteConfig.getInstance());
+            remoteConfig = new Config();
             remoteConfig.initialise();
         }
     }
@@ -46,7 +46,7 @@ public class TypingGuruPreferenceManager {
         return mSharedPreferences.getBoolean("isShown", false);
     }
 
-    public RemoteConfig getRemoteConfig() {
+    public Config getRemoteConfig() {
         return remoteConfig;
     }
 }
