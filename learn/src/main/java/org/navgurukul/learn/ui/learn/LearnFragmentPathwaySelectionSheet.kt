@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -107,6 +106,7 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
 
         Glide.with(binding.ivPathwayIcon)
             .load(item.logo)
+            .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
             .thumbnail(thumbnail)
             .into(binding.ivPathwayIcon)
     }

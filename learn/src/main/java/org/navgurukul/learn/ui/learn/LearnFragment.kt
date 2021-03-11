@@ -86,7 +86,7 @@ class LearnFragment : Fragment() {
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            viewModel.refreshCourses()
+            viewModel.handle(LearnFragmentViewActions.RefreshCourses)
         }
     }
 

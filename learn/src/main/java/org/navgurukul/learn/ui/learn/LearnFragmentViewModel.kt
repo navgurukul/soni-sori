@@ -12,18 +12,30 @@ import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.util.LearnPreferences
 
-class LearnFragmentViewModel(private val learnRepo: LearnRepo) :
+class LearnFragmentViewModel(
+    private val learnRepo: LearnRepo,
+    private val learnPreferences: LearnPreferences
+) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
 
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
-            learnRepo.getPathwayData(false).collect {
+            learnRepo.getPathwayData(true).collect {
                 it?.let {
                     if (it.isNotEmpty()) {
                         setState {
-                            val currentPathway =  it[currentPathwayIndex]
+                            val lastSelectedPathwayId = learnPreferences.lastSelectedPathWayId
+                            var currentPathwayIndex = currentPathwayIndex
+                            var currentPathway = it[currentPathwayIndex]
+                            it.forEachIndexed { index, pathway ->
+                                if (pathway.id == lastSelectedPathwayId) {
+                                    currentPathwayIndex = index
+                                    currentPathway = pathway
+                                }
+                            }
                             val courses = currentPathway.courses
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
@@ -32,6 +44,7 @@ class LearnFragmentViewModel(private val learnRepo: LearnRepo) :
                                 loading = courses.isEmpty(),
                                 pathways = it,
                                 courses = courses,
+                                currentPathwayIndex = currentPathwayIndex,
                                 subtitle = currentPathway.name
                             )
                         }
@@ -43,23 +56,25 @@ class LearnFragmentViewModel(private val learnRepo: LearnRepo) :
         }
     }
 
-    fun refreshCourses() {
-        val currentState = viewState.value!!
-        if (currentState.pathways.size > currentState.currentPathwayIndex) {
-            selectPathway(currentState.pathways[currentState.currentPathwayIndex])
-        } else {
-            setState { copy() }
-        }
-    }
-
-    fun selectPathway(pathway: Pathway, forceUpdate: Boolean = false) {
-        setState { copy(currentPathwayIndex = pathways.indexOf(pathway), subtitle = pathway.name, loading = true) }
-        _viewEvents.postValue(LearnFragmentViewEvents.DismissPathwaySelectionSheet)
+    private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let { setState { copy(courses = it, loading = false) } }
             }
         }
+    }
+
+    fun selectPathway(pathway: Pathway) {
+        setState {
+            copy(
+                currentPathwayIndex = pathways.indexOf(pathway),
+                subtitle = pathway.name,
+                loading = true
+            )
+        }
+        learnPreferences.lastSelectedPathWayId = pathway.id
+        _viewEvents.postValue(LearnFragmentViewEvents.DismissPathwaySelectionSheet)
+        refreshCourses(pathway, false)
     }
 
     fun selectCourse(course: Course) {
@@ -77,9 +92,18 @@ class LearnFragmentViewModel(private val learnRepo: LearnRepo) :
     }
 
     fun handle(actions: LearnFragmentViewActions) {
-        when(actions) {
+        when (actions) {
             is LearnFragmentViewActions.ToolbarClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
+            }
+            LearnFragmentViewActions.RefreshCourses -> {
+                val currentState = viewState.value!!
+                if (currentState.pathways.size > currentState.currentPathwayIndex) {
+                    refreshCourses(pathway = currentState.pathways[currentState.currentPathwayIndex], true)
+                } else {
+                    //TO hide progress bar
+                    setState { copy() }
+                }
             }
         }
     }
@@ -101,6 +125,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
         LearnFragmentViewEvents()
 }
 
-sealed class LearnFragmentViewActions: ViewModelAction {
-    object ToolbarClicked: LearnFragmentViewActions()
+sealed class LearnFragmentViewActions : ViewModelAction {
+    object ToolbarClicked : LearnFragmentViewActions()
+    object RefreshCourses : LearnFragmentViewActions()
 }

@@ -7,6 +7,7 @@ import android.net.NetworkInfo
 import android.os.Build
 import androidx.preference.PreferenceManager
 
+//TODO preference related code to appropriate class
 object LearnUtils {
 
     private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"

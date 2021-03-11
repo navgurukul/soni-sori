@@ -11,11 +11,12 @@ import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnViewModel
+import org.navgurukul.learn.util.LearnPreferences
 import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LearnViewModel(get()) }
-    viewModel { LearnFragmentViewModel(get()) }
+    viewModel { LearnFragmentViewModel(get(), get()) }
 }
 
 
@@ -39,6 +40,7 @@ val databaseModule = module {
     }
 
     single { provideDatabase(androidApplication()) }
+    single { LearnPreferences(androidApplication()) }
 }
 
 val repositoryModule = module {
