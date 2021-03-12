@@ -5,12 +5,12 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.ext.android.inject
 import org.merakilearn.datasource.Config
+import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
 
-class WebViewActivity : AppCompatActivity() {
+class WebViewActivity : BaseActivity() {
     private val TAG = "WebViewActivity"
     lateinit var mWebView: WebView
 
@@ -50,4 +50,6 @@ class WebViewActivity : AppCompatActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
+    override fun shouldInstallDynamicModule(): Boolean = true
 }

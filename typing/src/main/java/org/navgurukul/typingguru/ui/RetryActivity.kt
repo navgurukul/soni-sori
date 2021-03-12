@@ -1,14 +1,17 @@
 package org.navgurukul.typingguru.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.android.synthetic.main.activity_retry.*
 import kotlinx.android.synthetic.main.activity_score.btn_back_to_lessons
 import kotlinx.android.synthetic.main.activity_score.btn_retake
+import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
 
-class RetryActivity : AppCompatActivity() {
+class RetryActivity : BaseActivity() {
     private lateinit var content : ArrayList<String>
     private lateinit var type : String
 
@@ -35,4 +38,6 @@ class RetryActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    override fun shouldInstallDynamicModule(): Boolean = true
 }

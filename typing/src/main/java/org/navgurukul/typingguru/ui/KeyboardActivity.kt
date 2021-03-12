@@ -19,7 +19,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.android.synthetic.main.activity_keyboard.*
+import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.utils.Logger
@@ -28,7 +30,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class KeyboardActivity : AppCompatActivity() {
+class KeyboardActivity : BaseActivity() {
     private val TAG : String = "KeyboardActivity"
     private var keyPressCounter : Int = 0
     private lateinit var itemsLayout: LinearLayout
@@ -399,4 +401,6 @@ class KeyboardActivity : AppCompatActivity() {
         }
         return resources.getIdentifier("hand_img_$name", "drawable", "org.merakilearn.typing")
     }
+
+    override fun shouldInstallDynamicModule(): Boolean = true
 }
