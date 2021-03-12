@@ -1,13 +1,12 @@
 package org.merakilearn.core.navigator
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
+import androidx.fragment.app.FragmentActivity
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
@@ -84,7 +83,7 @@ class MerakiNavigator(
         )
     }
 
-    fun launchTypingApp(activity: Activity, content: ArrayList<String>, code: String) {
+    fun launchTypingApp(activity: FragmentActivity, content: ArrayList<String>, code: String) {
         typingAppModuleNavigator?.launchTypingApp(activity, content, code)
     }
 

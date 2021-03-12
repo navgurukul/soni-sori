@@ -1,8 +1,8 @@
 package org.merakilearn.core.navigator
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 
 interface AppModuleNavigator {
     fun launchIntentForLauncherActivity(context: Context, clearNotification: Boolean): Intent
@@ -21,5 +21,5 @@ interface PlaygroundModuleNavigator {
 }
 
 interface TypingAppModuleNavigator {
-    fun launchTypingApp(activity: Activity, content: ArrayList<String>, code: String)
+    fun launchTypingApp(activity: FragmentActivity, content: ArrayList<String>, code: String)
 }

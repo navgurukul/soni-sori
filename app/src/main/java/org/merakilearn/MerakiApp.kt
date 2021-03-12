@@ -1,6 +1,8 @@
 package org.merakilearn
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +19,12 @@ import org.navgurukul.playground.di.playgroundModules
 import timber.log.Timber
 
 class MerakiApp : Application() {
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
+    }
+
     override fun onCreate() {
         super.onCreate()
 

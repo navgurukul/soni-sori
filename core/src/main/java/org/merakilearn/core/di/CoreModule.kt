@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
+import java.io.File
 
 private val module = module {
     single { MerakiNavigator(get(), get(),get()) }

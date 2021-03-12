@@ -40,6 +40,7 @@ class DynamicFeatureModuleManager(private val splitInstallManager: SplitInstallM
         // If module is installed, complete immediately
         if (isInstalled(moduleName)) {
             success?.invoke()
+            return
         }
         // Session identifier
         val sessionId = AtomicInteger()
@@ -50,7 +51,7 @@ class DynamicFeatureModuleManager(private val splitInstallManager: SplitInstallM
             sessionId = sessionId,
             progress = progress,
             onComplete = {
-                if (it != null) {
+                if (it == null) {
                     success?.invoke()
                 } else {
                     error?.invoke((it as? SplitInstallException)?.errorCode ?: 0)
@@ -99,7 +100,9 @@ class DynamicFeatureModuleManager(private val splitInstallManager: SplitInstallM
                                 currentBytes = it.bytesDownloaded()
                             )
                         )
-                    SplitInstallSessionStatus.DOWNLOADED,
+                    SplitInstallSessionStatus.DOWNLOADED -> {
+                        onComplete(null)
+                    }
                     SplitInstallSessionStatus.INSTALLING ->
                         progress?.invoke(DynamicDeliveryProgress.Installing)
                     SplitInstallSessionStatus.INSTALLED ->

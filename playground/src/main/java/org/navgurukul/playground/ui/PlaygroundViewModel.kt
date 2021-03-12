@@ -24,14 +24,14 @@ class PlaygroundViewModel(
         when(playgroundItemModel.type) {
             PlaygroundTypes.TYPING_APP -> {
                 if (dynamicFeatureModuleManager.isInstalled(playgroundItemModel.type.moduleName)) {
-                    _viewEvents.postValue(PlaygroundViewEvents.OpenTypingApp)
+                    _viewEvents.setValue(PlaygroundViewEvents.OpenTypingApp)
                 } else {
-                    _viewEvents.postValue(PlaygroundViewEvents.ShowLoading)
+                    _viewEvents.setValue(PlaygroundViewEvents.ShowLoading)
                     dynamicFeatureModuleManager.installModule(playgroundItemModel.type.moduleName, {
-                        _viewEvents.postValue(PlaygroundViewEvents.HideLoading)
-                        _viewEvents.postValue(PlaygroundViewEvents.OpenTypingApp)
+                        _viewEvents.setValue(PlaygroundViewEvents.HideLoading)
+                        _viewEvents.setValue(PlaygroundViewEvents.OpenTypingApp)
                     }, {
-                        _viewEvents.postValue(PlaygroundViewEvents.HideLoading)
+                        _viewEvents.setValue(PlaygroundViewEvents.HideLoading)
                     })
 
                 }

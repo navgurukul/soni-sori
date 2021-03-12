@@ -14,7 +14,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode project.version_code
-        versionName "1.0"
+        versionName project.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -134,7 +134,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     //to get dynamic feature module
-    implementation 'com.google.android.play:core:1.9.0'
+    implementation 'com.google.android.play:core:1.10.0'
 
     //test
     testImplementation 'junit:junit:4.13'
