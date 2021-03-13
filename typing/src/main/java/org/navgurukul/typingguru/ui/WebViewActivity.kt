@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.ext.android.inject
 import org.merakilearn.datasource.Config
 import org.navgurukul.typingguru.R
+import org.navgurukul.typingguru.utils.Logger
+import org.navgurukul.typingguru.utils.Utility
 
 class WebViewActivity : AppCompatActivity() {
-    private val TAG = "WebViewActivity"
+    private val TAG = "WebViewActivity";
     lateinit var mWebView: WebView
 
     private val config: Config by inject()
@@ -22,7 +24,9 @@ class WebViewActivity : AppCompatActivity() {
 
         mWebView = findViewById<View>(R.id.webview) as WebView
         mWebView.webViewClient = MyBrowser()
-        val webUrl: String = config.getValue(Config.KEYBOARD_URL_KEY)
+        var webUrl: String = config.getValue(Config.KEYBOARD_URL_KEY)
+        webUrl = if (Utility.isOtgSupported(this)) webUrl+"?otg=true" else webUrl+"?otg=false"
+        Logger.d(TAG, "Key board Url $webUrl")
         mWebView.loadUrl(webUrl)
     }
 

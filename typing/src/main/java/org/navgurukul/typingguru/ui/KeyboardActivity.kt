@@ -20,10 +20,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import kotlinx.android.synthetic.main.activity_keyboard.*
+import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.utils.Logger
 import org.navgurukul.typingguru.utils.Utility
+import org.navgurukul.typingguru.utils.Utility.TYPE_PRACTICE_TYPING
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -68,10 +70,18 @@ class KeyboardActivity : AppCompatActivity() {
 
     //this method is required to get intent from other module
     companion object {
-        fun newIntent(context: Context, content : ArrayList<String>, type : String): Intent {
+        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode): Intent {
             return Intent(context, KeyboardActivity::class.java).apply {
-                putExtra("content", content)
-                putExtra("type", type)
+                when (mode) {
+                    is TypingAppModuleNavigator.Mode.Playground -> {
+                        putExtra("content", Utility.getAlphabetList())
+                        putExtra("type", TYPE_PRACTICE_TYPING)
+                    }
+                    is TypingAppModuleNavigator.Mode.Course -> {
+                        putExtra("content", mode.content)
+                        putExtra("type", mode.code)
+                    }
+                }
             }
         }
     }

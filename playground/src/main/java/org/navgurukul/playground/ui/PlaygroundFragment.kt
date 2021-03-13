@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -16,10 +17,6 @@ class PlaygroundFragment : BaseFragment() {
 
     private val viewModel: PlaygroundViewModel by viewModel()
     private val navigator: MerakiNavigator by inject()
-    private val TYPE = "practicetyping";
-    private val TYPING_CONTENT = arrayListOf("a","b","c","d","e","f","g",
-            "h","i","j","k","l","m","n","o","p","q",
-            "r","s","t","u","v","w","x","y","z")
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -43,7 +40,7 @@ class PlaygroundFragment : BaseFragment() {
             when (it) {
                 PlaygroundViewEvents.HideLoading -> dismissLoadingDialog()
                 PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext(), "")
-                PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), TYPING_CONTENT, TYPE)
+                PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), TypingAppModuleNavigator.Mode.Playground)
                 PlaygroundViewEvents.ShowLoading -> showLoading(getString(R.string.installing_module_message))
             }
         })

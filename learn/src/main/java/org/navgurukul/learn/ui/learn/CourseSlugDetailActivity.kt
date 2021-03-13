@@ -13,6 +13,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -166,7 +167,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun loadTypingTutor(it: Exercise.ExerciseSlugDetail) {
         dynamicFeatureModuleManager.installModule("typing", {
-            merakiNavigator.launchTypingApp(this, it.value as ArrayList<String>, it.type!!)
+            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(it.value as ArrayList<String>, it.type!!))
         })
     }
 
