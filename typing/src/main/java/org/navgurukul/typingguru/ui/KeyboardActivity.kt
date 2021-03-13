@@ -88,13 +88,7 @@ class KeyboardActivity : BaseActivity() {
         val intent = intent
         list.clear()
         content = intent.getStringArrayListExtra("content") as ArrayList<String>
-        Logger.d(TAG, "Practice content : $content")
-        if (content.size > 7) {
-            val tempList = content.subList(0, 8)
-            list.addAll(tempList)
-        } else {
-            list = content
-        }
+        list = content
         type = intent.getStringExtra("type") as String
         retake = intent.getBooleanExtra("retake", false)
         Logger.d(TAG, "type : $type")
