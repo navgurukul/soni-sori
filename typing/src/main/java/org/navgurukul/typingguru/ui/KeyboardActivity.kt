@@ -86,7 +86,13 @@ class KeyboardActivity : AppCompatActivity() {
         val intent = intent
         list.clear()
         content = intent.getStringArrayListExtra("content") as ArrayList<String>
-        list = content
+        Logger.d(TAG, "Practice content : $content")
+        if (content.size > 7) {
+            val tempList = content.subList(0, 8)
+            list.addAll(tempList)
+        } else {
+            list = content
+        }
         type = intent.getStringExtra("type") as String
         retake = intent.getBooleanExtra("retake", false)
         Logger.d(TAG, "type : $type")

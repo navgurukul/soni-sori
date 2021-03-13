@@ -132,6 +132,7 @@
             android:background="@drawable/key_selector"
             android:textColor="@drawable/text_selector"
             android:tag="39"
+            android:textAllCaps="false"
             android:textSize="14sp"
             android:text="k" />
 
