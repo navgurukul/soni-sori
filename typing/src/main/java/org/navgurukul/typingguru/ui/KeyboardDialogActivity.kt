@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.transition.Fade
 import android.view.Window
+import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.commonui.platform.BaseActivity
+import org.navgurukul.typingguru.utils.Utility
+import org.navgurukul.typingguru.utils.Utility.TYPE_PRACTICE_TYPING
 
 class KeyboardDialogActivity : BaseActivity() {
 
@@ -14,10 +17,18 @@ class KeyboardDialogActivity : BaseActivity() {
 
         const val CONTENT_KEY = "content"
         const val TYPE_KEY = "type"
-        fun newIntent(context: Context, content : ArrayList<String>, type : String): Intent {
+        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode): Intent {
             return Intent(context, KeyboardDialogActivity::class.java).apply {
-                putExtra(CONTENT_KEY, content)
-                putExtra(TYPE_KEY, type)
+                when (mode) {
+                    is TypingAppModuleNavigator.Mode.Playground -> {
+                        putExtra(CONTENT_KEY, Utility.getAlphabetList())
+                        putExtra(TYPE_KEY, TYPE_PRACTICE_TYPING)
+                    }
+                    is TypingAppModuleNavigator.Mode.Course -> {
+                        putExtra(CONTENT_KEY, mode.content)
+                        putExtra(TYPE_KEY, mode.code)
+                    }
+                }
             }
         }
     }

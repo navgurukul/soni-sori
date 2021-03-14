@@ -21,5 +21,9 @@ interface PlaygroundModuleNavigator {
 }
 
 interface TypingAppModuleNavigator {
-    fun launchTypingApp(activity: FragmentActivity, content: ArrayList<String>, code: String)
+    sealed class Mode {
+        object Playground : Mode()
+        data class Course(val content: ArrayList<String>, val code: String) : Mode()
+    }
+    fun launchTypingApp(activity: FragmentActivity, mode : Mode)
 }

@@ -14,4 +14,6 @@
     <string name="keyboard_purchase_hint">A keyboard is must for this course. Let us help you with purchasing a keyboard.</string>
     <string name="purchase_new">Purchase New</string>
     <string name="i_have_one_already">I have one already</string>
+    <string name="otg_support">Your phone supports OTG</string>
+    <string name="no_otg_support">Your phone does not support OTG</string>
 </resources>

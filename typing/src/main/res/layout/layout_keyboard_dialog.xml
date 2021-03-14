@@ -45,6 +45,18 @@
         android:textColor="?textSecondary"
         app:layout_constraintTop_toBottomOf="@id/txt_lbl_info" />
 
+    <TextView
+        android:id="@+id/txt_lbl_info3"
+        style="?textAppearanceCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/spacing_8x"
+        android:layout_marginStart="@dimen/spacing_8x"
+        android:textColor="?textSecondary"
+        app:layout_constraintTop_toBottomOf="@id/txt_lbl_info2" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_own"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -63,7 +75,7 @@
         app:strokeWidth="2dp"
         android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_lbl_info2" />
+        app:layout_constraintTop_toBottomOf="@id/txt_lbl_info3" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_purchase"
