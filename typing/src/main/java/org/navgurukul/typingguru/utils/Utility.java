@@ -1,5 +1,8 @@
 package org.navgurukul.typingguru.utils;
 
+import android.content.Context;
+import android.hardware.usb.UsbManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +11,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Utility {
-    public static final String KEYBOARD_URL = "https://navgurukul.github.io/rosa-parks/index.html";
+    private static final String TAG = "Utility";
+    public static final String TYPE_PRACTICE_TYPING = "practicetyping";
     private static Map<String, Integer> keyMap;
     static {
         keyMap = new HashMap<>();
@@ -87,5 +91,29 @@ public class Utility {
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
         return ms;
+    }
+
+    public static boolean isOtgSupported(Context context) {
+        try {
+            UsbManager usbManager = (UsbManager)context.getSystemService(Context.USB_SERVICE);
+            Logger.d(TAG, "USB Manager : "+usbManager);
+            if (usbManager == null) {
+                return false;
+            }
+            boolean isOtgSupported = context.getPackageManager().hasSystemFeature("android.hardware.usb.host");
+            Logger.d(TAG, "is Otg Supported :"+isOtgSupported);
+            return isOtgSupported;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static ArrayList<String> getAlphabetList() {
+        char c;
+        ArrayList<String> result = new ArrayList<>();
+        for(c = 'a'; c <= 'z'; ++c)
+            result.add(String.valueOf(c));
+        return result;
     }
 }
