@@ -11,13 +11,13 @@ import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 @AutoService(TypingAppModuleNavigator::class)
 class TypingAppModuleNavigatorImpl : TypingAppModuleNavigator {
 
-    override fun launchTypingApp(activity: FragmentActivity, content: ArrayList<String>, code: String) {
+    override fun launchTypingApp(activity: FragmentActivity, mode : TypingAppModuleNavigator.Mode) {
         TypingGuruPreferenceManager.instance().init(activity)
 
         if (TypingGuruPreferenceManager.instance().iWebViewShown()) {
-            activity.startActivity(KeyboardActivity.newIntent(activity, content, code))
+            activity.startActivity(KeyboardActivity.newIntent(activity, mode))
         } else {
-            activity.startActivity(KeyboardDialogActivity.newIntent(activity, content, code),
+            activity.startActivity(KeyboardDialogActivity.newIntent(activity, mode),
                 ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
         }
 

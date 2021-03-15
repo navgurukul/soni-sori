@@ -83,8 +83,8 @@ class MerakiNavigator(
         )
     }
 
-    fun launchTypingApp(activity: FragmentActivity, content: ArrayList<String>, code: String) {
-        typingAppModuleNavigator?.launchTypingApp(activity, content, code)
+    fun launchTypingApp(activity: FragmentActivity, mode : TypingAppModuleNavigator.Mode) {
+        typingAppModuleNavigator?.launchTypingApp(activity, mode)
     }
 
     private fun startActivity(
