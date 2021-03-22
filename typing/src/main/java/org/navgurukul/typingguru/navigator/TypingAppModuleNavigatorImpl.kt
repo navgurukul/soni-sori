@@ -12,9 +12,9 @@ import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 class TypingAppModuleNavigatorImpl : TypingAppModuleNavigator {
 
     override fun launchTypingApp(activity: FragmentActivity, mode : TypingAppModuleNavigator.Mode) {
-        TypingGuruPreferenceManager.instance().init(activity)
+        TypingGuruPreferenceManager.init(activity)
 
-        if (TypingGuruPreferenceManager.instance().iWebViewShown()) {
+        if (TypingGuruPreferenceManager.iWebViewShown()) {
             activity.startActivity(KeyboardActivity.newIntent(activity, mode))
         } else {
             activity.startActivity(KeyboardDialogActivity.newIntent(activity, mode),
