@@ -21,7 +21,7 @@ class KeyboardDialogActivity : BaseActivity() {
             return Intent(context, KeyboardDialogActivity::class.java).apply {
                 when (mode) {
                     is TypingAppModuleNavigator.Mode.Playground -> {
-                        putExtra(CONTENT_KEY, Utility.getAlphabetList())
+                        putExtra(CONTENT_KEY, Utility.alphabetList)
                         putExtra(TYPE_KEY, TYPE_PRACTICE_TYPING)
                     }
                     is TypingAppModuleNavigator.Mode.Course -> {

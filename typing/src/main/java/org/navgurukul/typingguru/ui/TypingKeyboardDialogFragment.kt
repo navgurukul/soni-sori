@@ -64,7 +64,7 @@ class TypingKeyboardDialogFragment : BaseDialogFragment() {
 
                 val content = requireArguments().getStringArrayList(CONTENT_KEY) as ArrayList<String>
                 val type = requireArguments().getString(TYPE_KEY)!!
-                TypingGuruPreferenceManager.instance().setWebViewDisplayStatus(true)
+                TypingGuruPreferenceManager.setWebViewDisplayStatus(true)
                 startActivity(KeyboardActivity.newIntent(requireContext(), TypingAppModuleNavigator.Mode.Course(content, type)))
 
                 requireActivity().finish()
@@ -73,7 +73,7 @@ class TypingKeyboardDialogFragment : BaseDialogFragment() {
         btnPurchase.setOnClickListener {
             if (!isHidden) {
                 dismiss()
-                TypingGuruPreferenceManager.instance().setWebViewDisplayStatus(true)
+                TypingGuruPreferenceManager.setWebViewDisplayStatus(true)
                 startActivity(Intent(requireContext(), WebViewActivity::class.java))
 
                 requireActivity().finish()
