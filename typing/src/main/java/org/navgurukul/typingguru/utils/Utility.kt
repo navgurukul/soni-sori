@@ -126,5 +126,15 @@ object Utility {
         keyMap["."] = 56
         keyMap["/"] = 76
         keyMap["tab"] = 61
+        keyMap["1"] = 8
+        keyMap["2"] = 9
+        keyMap["3"] = 10
+        keyMap["4"] = 11
+        keyMap["5"] = 12
+        keyMap["6"] = 13
+        keyMap["7"] = 14
+        keyMap["8"] = 15
+        keyMap["9"] = 16
+        keyMap["0"] = 7
     }
 }
