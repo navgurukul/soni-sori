@@ -8,7 +8,7 @@
     <color name="green_progress_bar">#7CC144</color>
     <color name="default_progress_bar">#E1E3E6</color>
     <color name="grey">#CECECE</color>
-    <color name="warning">#E69F83</color>
+    <color name="warning">#F7DFD6</color>
     <color name="back_text_color">#201F1F</color>
     <color name="row_color">#F4F4F4</color>
     <color name="accuracy_color">#C9DCFF</color>

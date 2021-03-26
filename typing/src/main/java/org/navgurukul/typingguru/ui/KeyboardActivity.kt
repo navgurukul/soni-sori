@@ -219,10 +219,19 @@ class KeyboardActivity : BaseActivity() {
                 img_right.visibility = View.VISIBLE
                 img_right.setImageResource(R.drawable.right_resting_hand)
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             } else if(img_left2.tag.toString().contains(tvItem.text as String)) {
                 img_left.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
                 img_left2.visibility = View.VISIBLE
                 img_left2.setImageResource(getHandDrawable(tvItem.text as String))
+                img_right.visibility = View.VISIBLE
+                img_right.setImageResource(R.drawable.right_resting_hand)
+            } else if(img_left3.tag.toString().contains(tvItem.text as String)) {
+                img_left.visibility = View.INVISIBLE
+                img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.VISIBLE
+                img_left3.setImageResource(getHandDrawable(tvItem.text as String))
                 img_right.visibility = View.VISIBLE
                 img_right.setImageResource(R.drawable.right_resting_hand)
             } else if(img_right.tag.toString().contains(tvItem.text as String)) {
@@ -231,12 +240,14 @@ class KeyboardActivity : BaseActivity() {
                 img_left.visibility = View.VISIBLE
                 img_left.setImageResource(R.drawable.left_resting_hand)
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             } else {//space
                 img_right.visibility = View.VISIBLE
                 img_right.setImageResource(R.drawable.space)
                 img_left.visibility = View.VISIBLE
                 img_left.setImageResource(R.drawable.left_resting_hand)
                 img_left2.visibility = View.INVISIBLE
+                img_left3.visibility = View.INVISIBLE
             }
         }
     }

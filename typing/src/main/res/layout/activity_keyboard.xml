@@ -166,6 +166,17 @@
             android:visibility="invisible"/>
 
         <ImageView
+            android:id="@+id/img_left3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="70dp"
+            android:src="@drawable/hand_img_4"
+            android:tag="12345"
+            android:visibility="invisible"/>
+
+        <ImageView
             android:id="@+id/img_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -173,7 +184,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="110dp"
             android:src="@drawable/hand_img_k"
-            android:tag="hjkl;nm,.yuiop/" />
+            android:tag="hjkl;nm,.yuiop/67890" />
     </RelativeLayout>
 
 </RelativeLayout>

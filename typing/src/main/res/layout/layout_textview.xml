@@ -13,6 +13,7 @@
         android:layout_marginRight="2dp"
         android:gravity="center_vertical|center_horizontal"
         android:clickable="true"
+        android:textStyle="bold"
         android:textColor="@drawable/text_selector"
         android:background="@drawable/rounded_border" />
 
