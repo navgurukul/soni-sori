@@ -50,7 +50,7 @@ dependencies {
     implementation(RetrofitDependencies.gson)
 
     //to get dynamic feature module
-    implementation(PlayCoreDependencies.playCore)
+    implementation(GooglePlayDependencies.playCore)
 
     //firebase
     implementation(FirebaseDependencies.messaging)

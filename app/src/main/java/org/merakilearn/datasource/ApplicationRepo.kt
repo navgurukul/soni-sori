@@ -121,20 +121,6 @@ class ApplicationRepo(
         }
     }
 
-    suspend fun updateProfile(user: LoginResponse.User): Boolean {
-        return try {
-            val response = applicationApi.initUserUpdateAsync(
-                AppUtils.getAuthToken(application),
-                UserUpdate(user.name)
-            )
-            AppUtils.saveUserResponse(response.user ,application)
-            true
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            false
-        }
-    }
-
     suspend fun logOut(): Boolean {
         return try {
             withContext(Dispatchers.IO) {

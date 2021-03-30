@@ -42,7 +42,7 @@ dependencies {
     implementation(KoinDependencies.koinViewModel)
 
     //to get dynamic feature module
-    implementation(PlayCoreDependencies.playCore)
+    implementation(GooglePlayDependencies.playCore)
 
     implementation(KotlinDependencies.kotlin)
 
