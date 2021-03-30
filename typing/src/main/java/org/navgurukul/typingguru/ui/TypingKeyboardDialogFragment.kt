@@ -9,6 +9,7 @@ import android.view.View
 import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import org.koin.android.ext.android.inject
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.commonui.platform.BaseDialogFragment
@@ -17,7 +18,9 @@ import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 import org.navgurukul.typingguru.utils.Utility
 
 class TypingKeyboardDialogFragment : BaseDialogFragment() {
-
+    //injecting Utility class from Koin
+    private val utility : Utility by inject()
+    private val typingManager : TypingGuruPreferenceManager by inject()
     companion object {
         const val CONTENT_KEY = "content_key"
         const val TYPE_KEY = "type_key"
@@ -52,7 +55,7 @@ class TypingKeyboardDialogFragment : BaseDialogFragment() {
         val btnOwn: AppCompatButton = view.findViewById(R.id.btn_own) as AppCompatButton
         val btnPurchase: AppCompatButton = view.findViewById(R.id.btn_purchase) as AppCompatButton
         val viewOtg: TextView = view.findViewById(R.id.txt_lbl_info3) as TextView
-        if (Utility.isOtgSupported(requireContext())) {
+        if (utility.isOtgSupported(requireContext())) {
             viewOtg.text = getString(R.string.otg_support)
         } else {
             viewOtg.text = getString(R.string.no_otg_support)
@@ -64,8 +67,8 @@ class TypingKeyboardDialogFragment : BaseDialogFragment() {
 
                 val content = requireArguments().getStringArrayList(CONTENT_KEY) as ArrayList<String>
                 val type = requireArguments().getString(TYPE_KEY)!!
-                TypingGuruPreferenceManager.setWebViewDisplayStatus(true)
-                startActivity(KeyboardActivity.newIntent(requireContext(), TypingAppModuleNavigator.Mode.Course(content, type)))
+                typingManager.setWebViewDisplayStatus(true)
+                startActivity(KeyboardActivity.newIntent(requireContext(), TypingAppModuleNavigator.Mode.Course(content, type), utility))
 
                 requireActivity().finish()
             }
@@ -73,7 +76,7 @@ class TypingKeyboardDialogFragment : BaseDialogFragment() {
         btnPurchase.setOnClickListener {
             if (!isHidden) {
                 dismiss()
-                TypingGuruPreferenceManager.setWebViewDisplayStatus(true)
+                typingManager.setWebViewDisplayStatus(true)
                 startActivity(Intent(requireContext(), WebViewActivity::class.java))
 
                 requireActivity().finish()

@@ -8,7 +8,6 @@ import android.view.Window
 import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.utils.Utility
-import org.navgurukul.typingguru.utils.Utility.TYPE_PRACTICE_TYPING
 
 class KeyboardDialogActivity : BaseActivity() {
 
@@ -17,12 +16,12 @@ class KeyboardDialogActivity : BaseActivity() {
 
         const val CONTENT_KEY = "content"
         const val TYPE_KEY = "type"
-        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode): Intent {
+        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode, utility : Utility): Intent {
             return Intent(context, KeyboardDialogActivity::class.java).apply {
                 when (mode) {
                     is TypingAppModuleNavigator.Mode.Playground -> {
-                        putExtra(CONTENT_KEY, Utility.alphabetList)
-                        putExtra(TYPE_KEY, TYPE_PRACTICE_TYPING)
+                        putExtra(CONTENT_KEY, utility.getAlphabets())
+                        putExtra(TYPE_KEY, utility.TYPE_PRACTICE_TYPING)
                     }
                     is TypingAppModuleNavigator.Mode.Course -> {
                         putExtra(CONTENT_KEY, mode.content)

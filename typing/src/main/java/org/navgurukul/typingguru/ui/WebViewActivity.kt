@@ -9,13 +9,13 @@ import org.koin.android.ext.android.inject
 import org.merakilearn.datasource.Config
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.utils.Logger
 import org.navgurukul.typingguru.utils.Utility
+import timber.log.Timber
 
 class WebViewActivity : BaseActivity() {
-    private val TAG = "WebViewActivity"
     lateinit var mWebView: WebView
-
+    //injecting Utility class from Koin
+    private val utility : Utility by inject()
     private val config: Config by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +25,8 @@ class WebViewActivity : BaseActivity() {
         mWebView = findViewById<View>(R.id.webview) as WebView
         mWebView.webViewClient = MyBrowser()
         var webUrl: String = config.getValue(Config.KEYBOARD_URL_KEY)
-        webUrl = if (Utility.isOtgSupported(this)) webUrl+"?otg=true" else webUrl+"?otg=false"
-        Logger.d(TAG, "Key board Url $webUrl")
+        webUrl = if (utility.isOtgSupported(this)) webUrl+"?otg=true" else webUrl+"?otg=false"
+        Timber.d("Key board Url $webUrl")
         mWebView.loadUrl(webUrl)
     }
 

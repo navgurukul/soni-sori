@@ -17,17 +17,16 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.android.synthetic.main.activity_keyboard.*
+import org.koin.android.ext.android.inject
+
 import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.score.ScoreActivity
-import org.navgurukul.typingguru.utils.Logger
 import org.navgurukul.typingguru.utils.Utility
-import org.navgurukul.typingguru.utils.Utility.TYPE_PRACTICE_TYPING
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -56,12 +55,15 @@ class KeyboardActivity : BaseActivity() {
     private var noOfWrongKey : Int = 0
     private var noOfRightKey : Int = 0
 
+    //injecting Utility class from Koin
+    private val utility : Utility by inject()
+
     private val handler: Handler = Handler()
     private val runnable = object : Runnable {
         override fun run() {
             currentTime += 1
-            Logger.d(TAG, "Current time $currentTime")
-            txt_timer.text = "${Utility.convertMinutesToMMSS(currentTime)}/3:00"
+            Timber.d("Current time $currentTime")
+            txt_timer.text = "${utility.convertMinutesToMMSS(currentTime)}/3:00"
             if (currentTime < PRACTICE_TIME) {
                 handler.postDelayed(this, interval);
             } else {
@@ -74,12 +76,12 @@ class KeyboardActivity : BaseActivity() {
     companion object {
         const val CONTENT_KEY = "content"
         const val TYPE_KEY = "type"
-        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode): Intent {
+        fun newIntent(context: Context, mode : TypingAppModuleNavigator.Mode, utility : Utility): Intent {
             return Intent(context, KeyboardActivity::class.java).apply {
                 when (mode) {
                     is TypingAppModuleNavigator.Mode.Playground -> {
-                        putExtra(CONTENT_KEY, Utility.alphabetList)
-                        putExtra(TYPE_KEY, TYPE_PRACTICE_TYPING)
+                        putExtra(CONTENT_KEY, utility.getAlphabets())
+                        putExtra(TYPE_KEY, utility.TYPE_PRACTICE_TYPING)
                     }
                     is TypingAppModuleNavigator.Mode.Course -> {
                         putExtra(CONTENT_KEY, mode.content)
@@ -100,7 +102,7 @@ class KeyboardActivity : BaseActivity() {
         val intent = intent
         list.clear()
         content = intent.getStringArrayListExtra("content") as ArrayList<String>
-        Logger.d(TAG, "Practice content : $content")
+        Timber.d("Practice content : $content")
         if (content.size > 7) {
             val tempList = content.subList(0, 8)
             list.addAll(tempList)
@@ -109,13 +111,13 @@ class KeyboardActivity : BaseActivity() {
         }
         type = intent.getStringExtra("type") as String
         retake = intent.getBooleanExtra("retake", false)
-        Logger.d(TAG, "type : $type")
+        Timber.d("type : $type")
         preparePracticeListView(list)
         updatePracticeViewList()
         progress.max = list.size
 
         btn_back.setOnClickListener {
-            Logger.d(TAG, "back button clicked")
+            Timber.d("back button clicked")
             finish()
         }
         btn_settings.setOnClickListener {
@@ -205,8 +207,8 @@ class KeyboardActivity : BaseActivity() {
                 val btn: AppCompatButton = findViewById(previousKey)
                 simulateButtonUp(btn)
             }
-            val id = resources.getIdentifier("key_btn_${Utility.getKeyCodeByText(tvItem.text as String)}", "id", "org.merakilearn.typing")
-            Logger.d(TAG, "Resource id : $id")
+            val id = resources.getIdentifier("key_btn_${utility.getKeyCodeByText(tvItem.text as String)}", "id", "org.merakilearn.typing")
+            Timber.d("Resource id : $id")
             if(id != 0) {
                 val btn: AppCompatButton = findViewById(id)
                 simulateButtonDown(btn)
@@ -286,26 +288,27 @@ class KeyboardActivity : BaseActivity() {
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         super.onKeyUp(keyCode, event)
-        Logger.d(TAG, "Key code Up : $keyCode")
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
+        Timber.d("Key code Up : $keyCode")
+        if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
+            || keyCode == KeyEvent.KEYCODE_CAPS_LOCK) {
             return true
         }
         //to calculate wpm
-        Logger.d(TAG, "isTypingStarted : $isTypingStarted")
+        Timber.d("isTypingStarted : $isTypingStarted")
         if(!isTypingStarted) {
             //start = Date().time
             isTypingStarted = true
         }
-        Logger.d(TAG, "Typing start time : $start")
+        Timber.d("Typing start time : $start")
         val id = resources.getIdentifier("key_btn_$keyCode", "id", "org.merakilearn.typing")
-        Logger.d(TAG, "Resource id : $id")
+        Timber.d("Resource id : $id")
         val btn : AppCompatButton = findViewById(id)
         val pressedButtonText = btn.getText().toString()
-        Logger.d(TAG, "pressedButtonText: $pressedButtonText")
+        Timber.d("pressedButtonText: $pressedButtonText")
         val hintText = list.get(keyPressCounter)
-        Logger.d(TAG, "hintText: $hintText")
+        Timber.d("hintText: $hintText")
         if (pressedButtonText.equals(hintText, ignoreCase = true)) {
-            Logger.d(TAG, "Key matched!!!")
+            Timber.d("Key matched!!!")
             noOfRightKey++
             btn.setBackground(getDrawable(R.drawable.key_selector))
             updateView(true)
@@ -314,7 +317,7 @@ class KeyboardActivity : BaseActivity() {
             //update progress bar
             progress.progress = keyPressCounter
         } else {
-            Logger.e(TAG,"Key does not match")
+            Timber.e("Key does not match")
             noOfWrongKey++
             btn.setBackground(getDrawable(R.drawable.key_wrong_selector))
             updateView(false)
@@ -328,6 +331,7 @@ class KeyboardActivity : BaseActivity() {
         simulateButtonDown(btn)
         btn.postDelayed(Runnable
         {
+            btn.setBackground(getDrawable(R.drawable.key_selector))
             if(btn.id != previousKey) {
                 simulateButtonUp(btn)
             }
@@ -340,7 +344,7 @@ class KeyboardActivity : BaseActivity() {
     }
 
     private fun navigateToScoreOrRetryActivity() {
-        Logger.d(TAG, "Lesson completed")
+        Timber.d("Lesson completed")
         //if type is try typing then navigate to try again activity
         var intent: Intent? = null
         if (type == TYPE_TRY_TYPING) {
@@ -355,11 +359,11 @@ class KeyboardActivity : BaseActivity() {
                 //calculate wpm
                 isTypingStarted = false
                 end = Date().time
-                Logger.d(TAG, "Typing end time after completing lesson : $end")
+                Timber.d("Typing end time after completing lesson : $end")
                 val elapsedTime = end-start
-                Logger.d(TAG, "Typing elapsed time : $elapsedTime")
-                val wpm = Utility.calculateWPM(elapsedTime, practiceListData)
-                Logger.d(TAG, "WPM : $wpm")
+                Timber.d("Typing elapsed time : $elapsedTime")
+                val wpm = utility.calculateWPM(elapsedTime, practiceListData)
+                Timber.d("WPM : $wpm")
                 Toast.makeText(this, "Lesson completed", Toast.LENGTH_SHORT).show()
                 intent = Intent(this@KeyboardActivity, ScoreActivity::class.java)
                 intent.putExtra("wpm", wpm)
@@ -381,7 +385,7 @@ class KeyboardActivity : BaseActivity() {
     private fun refreshView(isPractice : Boolean) {
         keyPressCounter = 0
         if(isPractice) {
-            list = Utility.generateRandomWordList(content)
+            list = utility.generateRandomWordList(content)
             progress.max = list.size
             practiceListData.add(list)
         }
