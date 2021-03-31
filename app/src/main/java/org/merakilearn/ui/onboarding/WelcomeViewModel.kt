@@ -5,6 +5,7 @@ import org.matrix.android.sdk.api.session.InitialSyncProgressService
 import org.matrix.android.sdk.rx.asObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.launch
+import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.datasource.ApplicationRepo
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
@@ -17,7 +18,8 @@ import org.navgurukul.commonui.resources.StringProvider
 class WelcomeViewModel(
     private val applicationRepo: ApplicationRepo,
     private val stringProvider: StringProvider,
-    private val activeSessionHolder: ActiveSessionHolder
+    private val activeSessionHolder: ActiveSessionHolder,
+    private val installReferrerManager: InstallReferrerManager
 ) : BaseViewModel<WelcomeViewEvents, WelcomeViewState>(WelcomeViewState()) {
 
     fun handle(action: WelcomeViewActions) {
@@ -33,6 +35,7 @@ class WelcomeViewModel(
             val loginResponse = applicationRepo.loginWithAuthToken(authToken)
             setState { copy(isLoading = false) }
             if (loginResponse != null) {
+                installReferrerManager.checkReferrer()
                 if (loginResponse.is_first_time) {
                     observeInitialSync(loginResponse.roomId)
                 } else {

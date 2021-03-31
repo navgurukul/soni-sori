@@ -46,7 +46,7 @@ dependencies {
     implementation(AndroidxDependencies.constraintLayout)
 
     //to get dynamic feature module
-    implementation(PlayCoreDependencies.playCore)
+    implementation(GooglePlayDependencies.playCore)
 
     // rx
     implementation(RxJavaDependencies.rxKotlin)

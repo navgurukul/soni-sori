@@ -43,6 +43,10 @@ class MerakiApp : Application() {
 
         ChatInitializer.initialise(this)
         subscribeToDefaultTopic()
+
+        val installReferrerManager: InstallReferrerManager by inject()
+        installReferrerManager.checkReferrer()
+
     }
 
     private fun subscribeToDefaultTopic() {

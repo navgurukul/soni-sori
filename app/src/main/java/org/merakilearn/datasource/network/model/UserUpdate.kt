@@ -5,5 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UserUpdate(
     @SerializedName("name")
-    var name: String? = ""
+    val name: String,
+    @SerializedName("partner_id")
+    val partnerId: String?
 )

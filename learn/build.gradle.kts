@@ -104,7 +104,7 @@ dependencies {
     kapt(GlideDependencies.glideCompiler)
 
     //to get dynamic feature module
-    implementation(PlayCoreDependencies.playCore)
+    implementation(GooglePlayDependencies.playCore)
 
     //test
     testImplementation(TestDependencies.jUnit)

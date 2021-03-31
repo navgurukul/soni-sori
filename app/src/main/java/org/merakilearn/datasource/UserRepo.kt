@@ -25,7 +25,28 @@ class UserRepo(
         private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
         private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
+        private const val KEY_INSTALL_REFERRER = "KEY_INSTALL_REFERRER"
+        private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
+        private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
     }
+
+    var installReferrerFetched: Boolean
+        get() = preferences.getBoolean(KEY_INSTALL_REFERRER_FETCHED, false)
+        set(value) {
+            preferences.edit { putBoolean(KEY_INSTALL_REFERRER_FETCHED, value) }
+        }
+
+    var installReferrerUploaded: Boolean
+        get() = preferences.getBoolean(KEY_INSTALL_REFERRER_UPLOADED, false)
+        set(value) {
+            preferences.edit { putBoolean(KEY_INSTALL_REFERRER_UPLOADED, value) }
+        }
+
+    var installReferrer: String?
+        get() = preferences.getString(KEY_INSTALL_REFERRER, null)
+        set(value) {
+            preferences.edit { putString(KEY_INSTALL_REFERRER, value) }
+        }
 
     private fun isFakeLogin(): Boolean {
         return preferences.getBoolean(KEY_IS_FAKE_LOGIN, false)
@@ -46,11 +67,11 @@ class UserRepo(
         }
     }
 
-    suspend fun updateProfile(user: LoginResponse.User): Boolean {
+    suspend fun updateProfile(user: LoginResponse.User, partnerId: String? = null): Boolean {
         return try {
             val response = saralApi.initUserUpdateAsync(
                 getAuthToken(),
-                UserUpdate(user.name)
+                UserUpdate(user.name, partnerId)
             )
             saveUserResponse(response.user)
             true

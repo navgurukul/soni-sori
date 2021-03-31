@@ -88,8 +88,9 @@ object OkReplayDependencies {
     const val okReplay = "com.airbnb.okreplay:okreplay:${Versions.okReplay}"
 }
 
-object PlayCoreDependencies {
+object GooglePlayDependencies {
     const val playCore = "com.google.android.play:core:1.10.0"
+    const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
 }
 
 object GMSDependencies {
