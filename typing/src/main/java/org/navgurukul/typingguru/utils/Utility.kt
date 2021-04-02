@@ -10,11 +10,8 @@ class Utility {
     private var keyMap: HashMap<String, Int> = HashMap()
     val TYPE_PRACTICE_TYPING = "practicetyping"
 
-    private val alphabetList: ArrayList<String> by lazy {
-        ArrayList()
-    }
-
     fun getAlphabets() : ArrayList<String> {
+        val alphabetList: ArrayList<String> = ArrayList()
         var c = 'a'
         while (c <= 'z') {
             alphabetList.add(c.toString())
