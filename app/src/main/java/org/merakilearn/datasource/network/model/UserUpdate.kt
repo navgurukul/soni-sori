@@ -6,6 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class UserUpdate(
     @SerializedName("name")
     val name: String,
-    @SerializedName("partner_id")
-    val partnerId: String?
+    @SerializedName("referrer")
+    val referrer: String?
 )
