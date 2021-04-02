@@ -2,14 +2,23 @@ package org.navgurukul.typingguru.utils
 
 import android.content.Context
 import android.hardware.usb.UsbManager
-import org.navgurukul.typingguru.utils.Logger.d
+import timber.log.Timber
 import java.util.Random
 import java.util.concurrent.TimeUnit
 
-object Utility {
-    private const val TAG = "Utility"
-    const val TYPE_PRACTICE_TYPING = "practicetyping"
+class Utility {
     private var keyMap: HashMap<String, Int> = HashMap()
+    val TYPE_PRACTICE_TYPING = "practicetyping"
+
+    fun getAlphabets() : ArrayList<String> {
+        val alphabetList: ArrayList<String> = ArrayList()
+        var c = 'a'
+        while (c <= 'z') {
+            alphabetList.add(c.toString())
+            ++c
+        }
+        return alphabetList;
+    }
 
     fun getKeyCodeByText(text: String?): Int? {
         return keyMap!![text]
@@ -61,8 +70,7 @@ object Utility {
         return try {
             val usbManager =
                 context.getSystemService(Context.USB_SERVICE) as UsbManager
-            d(
-                TAG,
+            Timber.d(
                 "USB Manager : $usbManager"
             )
             if (usbManager == null) {
@@ -70,8 +78,7 @@ object Utility {
             }
             val isOtgSupported =
                 context.packageManager.hasSystemFeature("android.hardware.usb.host")
-            d(
-                TAG,
+            Timber.d(
                 "is Otg Supported :$isOtgSupported"
             )
             isOtgSupported
@@ -81,17 +88,7 @@ object Utility {
         }
     }
 
-    val alphabetList: ArrayList<String>
-        get() {
-            var c: Char
-            val result = ArrayList<String>()
-            c = 'a'
-            while (c <= 'z') {
-                result.add(c.toString())
-                ++c
-            }
-            return result
-        }
+
 
     init {
         keyMap["a"] = 29
