@@ -84,14 +84,6 @@ class ApplicationRepo(
 
     suspend fun fetchClassData(classId: Int): Classes? {
         return try {
-
-            // To disable crashylytics in Debug application mode
-            if(BuildConfig.DEBUG) {
-                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
-            }else { // release or any other variant
-                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-            }
-
             val response = applicationApi.fetchClassDataAsync(
                 AppUtils.getAuthToken(application),
                 classId
