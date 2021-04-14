@@ -68,7 +68,6 @@ class ProfileActivity : AppCompatActivity() {
                         clearNotification = true
                     )
                 )
-
             }
         })
 
