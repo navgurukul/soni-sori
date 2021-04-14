@@ -53,6 +53,9 @@ dependencies {
     implementation(AndroidxDependencies.constraintLayout)
     implementation(AndroidxDependencies.legacyV4)
 
+    //Timber
+    implementation(MiscellaneousDependencies.timber)
+
     // Logging
     implementation(MiscellaneousDependencies.timber)
 

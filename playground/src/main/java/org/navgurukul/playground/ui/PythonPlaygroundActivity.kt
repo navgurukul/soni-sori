@@ -52,7 +52,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         createError()
         createInput()
         createOutput()
-
         parseIntentData()
     }
 
