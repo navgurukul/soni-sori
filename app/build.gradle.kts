@@ -28,7 +28,7 @@ android {
 
     buildTypes {
         getByName("release") {
-            minifyEnabled(false)
+            minifyEnabled(true)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
         }

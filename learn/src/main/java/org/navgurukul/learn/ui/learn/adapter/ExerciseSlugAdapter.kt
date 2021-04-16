@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Exercise
@@ -213,8 +214,8 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.relPracticeTyping.visibility = View.VISIBLE
     }
 
-    data class PythonCode(val code: String?, val testCases: Any?)
+    data class PythonCode(@SerializedName("code") val code: String?, @SerializedName("testCases") val testCases: Any?)
 
-    data class Image(val url: String?)
+    data class Image(@SerializedName("url") val url: String?)
 
 }

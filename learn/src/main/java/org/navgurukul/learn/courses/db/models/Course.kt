@@ -33,6 +33,7 @@ data class Course(
     @SerializedName("type")
     var type: String? = null,
     @Ignore
+    @SerializedName("number")
     var number: Int? = null,
 
     @Ignore
