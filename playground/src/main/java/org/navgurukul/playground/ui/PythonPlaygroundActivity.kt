@@ -1,5 +1,7 @@
 package org.navgurukul.playground.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -7,19 +9,26 @@ import android.os.Bundle
 import android.text.*
 import android.text.style.CharacterStyle
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import android.widget.TextView.OnEditorActionListener
+import android.widget.TextView.*
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet_output.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.navigator.AppModuleNavigator
+import org.merakilearn.core.navigator.ChatModuleNavigator
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 import java.io.File
@@ -36,6 +45,12 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
     private lateinit var bottomSheet: View
     private lateinit var bottomSheetPeeklayout: LinearLayout
+    private lateinit var errorImage : ImageView
+    private lateinit var errorTextExample : TextView
+    private lateinit var errorTextTip : TextView
+    private lateinit var tvMentorHelp : TextView
+    private lateinit var errorLayout : LinearLayout
+    private val navigator: MerakiNavigator by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +68,8 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         createInput()
         createOutput()
         parseIntentData()
+        createErrorUI()
+
     }
 
     private fun parseIntentData() {
@@ -82,14 +99,14 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     private fun showDialogToOverrideCode(code: String) {
         AlertDialog.Builder(this).setMessage(getString(R.string.replace_code))
             .setPositiveButton(
-                getString(android.R.string.ok)
+                    getString(android.R.string.ok)
             ) { dialog, _ ->
                 dialog.dismiss()
                 etCode.setText(code)
                 etCode.setSelection(etCode.text.length)
             }.setNegativeButton(
-                getString(android.R.string.cancel)
-            ) { dialog, _ ->
+                        getString(android.R.string.cancel)
+                ) { dialog, _ ->
                 dialog.dismiss()
             }.setCancelable(false)
             .create().show()
@@ -135,9 +152,9 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             showShareIntent(etCode.text.toString())
         }else{
             Toast.makeText(
-                this@PythonPlaygroundActivity,
-                getString(R.string.nothing_to_share),
-                Toast.LENGTH_SHORT
+                    this@PythonPlaygroundActivity,
+                    getString(R.string.nothing_to_share),
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -150,7 +167,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         }
         val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_code))
         startActivity(shareIntent)
-
     }
 
     private fun saveCode() {
@@ -158,9 +174,9 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             showDialogForFileName()
         }else{
             Toast.makeText(
-                this@PythonPlaygroundActivity,
-                getString(R.string.nothing_to_save),
-                Toast.LENGTH_SHORT
+                    this@PythonPlaygroundActivity,
+                    getString(R.string.nothing_to_save),
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -168,10 +184,10 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     private fun showDialogForFileName() {
         val input = EditText(this)
         val lp = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
         )
-        lp.setMargins(10,10,10,10)
+        lp.setMargins(10, 10, 10, 10)
         input.layoutParams = lp
 
         val alertDialog = AlertDialog.Builder(this).setMessage(getString(R.string.enter_file_name))
@@ -180,9 +196,9 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 viewModel.saveCode(etCode.text.toString(), input.text.toString())
                 dialog.dismiss()
                 Toast.makeText(
-                    this@PythonPlaygroundActivity,
-                    getString(R.string.code_saved),
-                    Toast.LENGTH_SHORT
+                        this@PythonPlaygroundActivity,
+                        getString(R.string.code_saved),
+                        Toast.LENGTH_SHORT
                 ).show()
             }.create()
 
@@ -256,28 +272,28 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         // Strip formatting from pasted text.
         etInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
-                s: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
             ) {
                 // Do nothing
             }
 
             override fun onTextChanged(
-                s: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
+                    s: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
             ) {
                 // Do nothing
             }
 
             override fun afterTextChanged(e: Editable) {
                 for (cs in e.getSpans(
-                    0,
-                    e.length,
-                    CharacterStyle::class.java
+                        0,
+                        e.length,
+                        CharacterStyle::class.java
                 )) {
                     e.removeSpan(cs)
                 }
@@ -292,7 +308,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         // until the key is pressed again. So we react to ACTION_UP instead.
         etInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
-                event != null && event.action == KeyEvent.ACTION_UP
+                    event != null && event.action == KeyEvent.ACTION_UP
             ) {
                 // Add explicit space from the input
                 val text: String = " " + etInput.text.toString() + "\n"
@@ -309,7 +325,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         })
         viewModel.inputEnabled.observe(this, Observer<Boolean> { enabled ->
             val imm =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (enabled) {
                 layoutInput.visibility = View.VISIBLE
                 ibEnter.isEnabled = true
@@ -321,8 +337,8 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 // onRestoreInstanceState, which will run after this observer.)
                 etInput.requestFocus()
                 imm.showSoftInput(
-                    etInput,
-                    InputMethodManager.SHOW_IMPLICIT
+                        etInput,
+                        InputMethodManager.SHOW_IMPLICIT
                 )
             } else {
                 // Disable rather than hide, otherwise tvOutput gets a gray background on API
@@ -347,7 +363,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         tvOutput = findViewById(R.id.tvOutput)
         viewModel.output.removeObservers(this)
         viewModel.output.observe(this,
-            Observer<CharSequence?> { text -> output(text!!) })
+                Observer<CharSequence?> { text -> output(text!!) })
     }
 
     private fun createBottomSheet() {
@@ -356,16 +372,114 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         // In hidden state initially
         sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetPeeklayout = findViewById(R.id.linearLayoutPeek)
-        bottomSheetPeeklayout.setOnClickListener {
+       /* bottomSheetPeeklayout.setOnClickListener {
             // Toggle Sheet on clicking of peek layout
             if (sheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                 sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED;
             } else {
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
             }
+        }*/
+
+    }
+
+    private fun createErrorUI(){
+        errorImage = findViewById(R.id.errorImage)
+        errorTextExample =findViewById(R.id.errorTextExample)
+        errorTextTip = findViewById(R.id.errorTextTip)
+        tvMentorHelp = findViewById(R.id.tvMentorHelp)
+        errorLayout = findViewById(R.id.errorLayout)
+
+
+        errorImage.visibility = GONE
+        errorTextExample.visibility = GONE
+        errorTextTip.visibility = GONE
+        tvMentorHelp.visibility = GONE
+        errorLayout.visibility = GONE
+
+        val errorText = tvError.text.toString().toLowerCase()
+
+        if(errorText != ""){
+            errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
+            errorImage.visibility = VISIBLE
+            errorLayout.visibility = VISIBLE
+
+            errorTextExample.visibility = VISIBLE
+            errorTextExample.setText("This the the example text we need to set here")
+
+            errorTextTip.visibility = VISIBLE
+            errorTextTip.setText("THis is the import error, Please format this")
+
+            tvMentorHelp.visibility = VISIBLE
+            tvMentorHelp.setOnClickListener(listener)
+        }
+
+        if(errorText.contains("syntaxerror")){
+            errorImage.setImageResource(R.drawable.ic_nameerror)
+
+        }else if(errorText.contains("importerror")){
+            errorImage.setImageResource(R.drawable.ic_importerror)
+
+        }else if(errorText.contains("typerror")){
+            errorImage.setImageResource(R.drawable.ic_typeerror)
+
+        }else if(errorText.contains("indexerror")){
+            errorImage.setImageResource(R.drawable.ic_indexerror)
+
+        }else if(errorText.contains("indentationerror")){
+            errorImage.setImageResource(R.drawable.ic_indexerror)
+
+        }else if(errorText.contains("attributeerror")){
+
+        }else if(errorText.contains("nameerror")){
+            errorImage.setImageResource(R.drawable.ic_nameerror)
+
+        }else if(errorText.contains("indentationerror")){
+
+        }else if(errorText.contains("indentationerror")){
+
         }
 
     }
+
+
+    val listener= View.OnClickListener { view ->
+        when (view.getId()) {
+            R.id.tvMentorHelp -> {
+                // redirect to the mentor tab
+
+                //openMerakiChat("");
+                navigator.openChatApp(this)
+            }
+
+            R.id.copy_btn -> {
+                copyToClipboard(this, tvError.text.toString())
+                Toast.makeText(this,"Copied !!",Toast.LENGTH_SHORT)
+            }
+
+            R.id.cancel_btn -> {
+                onBackPressed()
+            }
+        }
+    }
+
+
+
+    // ==============================================================================================================
+    // Clipboard helper
+    // ==============================================================================================================
+
+    /**
+     * Copy a text to the clipboard, and display a Toast when done
+     *
+     * @param context the context
+     * @param text    the text to copy
+     */
+    fun copyToClipboard(context: Context, text: CharSequence) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("", text))
+    }
+
 
 
     private fun output(text: CharSequence) {
