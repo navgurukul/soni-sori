@@ -1,5 +1,6 @@
 package org.merakilearn.core.navigator
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
@@ -13,6 +14,7 @@ interface AppModuleNavigator {
 interface ChatModuleNavigator {
     fun launchIntentForRoom(context: Context, roomId: String): Intent
     fun launchIntentForRoomProfile(context: Context, roomId: String): Intent
+    fun launchChatApp(activity: Activity): Intent
 }
 
 interface PlaygroundModuleNavigator {

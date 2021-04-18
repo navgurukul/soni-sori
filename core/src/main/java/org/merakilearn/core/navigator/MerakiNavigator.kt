@@ -1,5 +1,6 @@
 package org.merakilearn.core.navigator
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -65,6 +66,11 @@ class MerakiNavigator(
     fun openRoom(context: Context, roomId: String, buildTask: Boolean = false) {
         startActivity(context, openRoomIntent(context, roomId), buildTask)
     }
+
+    fun openChatApp(activity: Activity) {
+        chatModuleNavigator.launchChatApp(activity)
+    }
+
 
     fun openDeepLink(context: Context, deepLink: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
