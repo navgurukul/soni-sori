@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep,allowobfuscation @interface com.google.gson.annotations.SerializedName
+
+-keep class com.chaquo.python.* {*;}
+-keepclassmembers class com.chaquo.python.* {*;}
+-keep class com.chaquo.python.android.* {*;}
+-keepclassmembers class com.chaquo.python.android.* {*;}
+
+-keepclassmembers class org.navgurukul.playground.ui.PythonPlaygroundViewModel {*;}
