@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import org.merakilearn.R
 import org.merakilearn.databinding.ItemClassBinding
 import org.merakilearn.datasource.network.model.MyClass
+import org.merakilearn.datasource.network.model.dateFormatUI
 import org.merakilearn.datasource.network.model.sanitizedType
 import org.merakilearn.datasource.network.model.timeRange
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
@@ -52,6 +53,7 @@ class MyUpcomingClassAdapter(val callback: (MyClass) -> Unit) :
         binding.classes = item.classes
         holder.binding.tvClassTitle.text = item.classes.sanitizedType()
         holder.binding.tvClassTiming.text = item.classes.timeRange()
+        holder.binding.tvClassDate.text = item.classes.dateFormatUI()
 
         binding.root.setOnClickListener {
             callback.invoke(item)

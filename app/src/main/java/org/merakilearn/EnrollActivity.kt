@@ -161,6 +161,19 @@ class EnrollActivity : AppCompatActivity() {
             secondary_action.isVisible = false
         }
 
+        it.language?.let {
+            tvClassLanguage.isVisible = true
+            if(it.toLowerCase().equals("hi")) {
+                tvClassLanguage.text = "HINDI"
+            }else if(it.toLowerCase().equals("en")) {
+                tvClassLanguage.text = "ENGLISH"
+            }else{
+                tvClassLanguage.text ="OTHER"
+            }
+        } ?: kotlin.runCatching {
+            tvClassLanguage.isVisible = false
+        }
+
         it.title?.let {
             collapsingToolbarLayout.title = it
         }

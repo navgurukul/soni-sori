@@ -54,7 +54,8 @@ class EnrollViewModel(
                         details = dateAndTiming,
                         rules = classes.rules?.en,
                         title = classes.title,
-                        type = classes.sanitizedType()
+                        type = classes.sanitizedType(),
+                        language = classes.lang
                     )
                 }
             } ?: run {
@@ -138,5 +139,6 @@ data class EnrollViewState(
     val about: String? = null,
     val details: String? = null,
     val rules: String? = null,
-    val title: String? = null
+    val title: String? = null,
+    val language: String? = null
 ) : ViewState

@@ -3,6 +3,8 @@ package org.merakilearn.datasource.network.model
 
 import com.google.gson.annotations.SerializedName
 import org.merakilearn.core.extentions.capitalizeWords
+import org.merakilearn.util.toDate
+import org.merakilearn.util.toDay
 import org.merakilearn.util.toTime
 import java.util.*
 
@@ -54,3 +56,4 @@ data class Classes(
 fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
 
 fun Classes.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
+fun Classes.dateFormatUI(): String = "${startTime.toDate()}"
