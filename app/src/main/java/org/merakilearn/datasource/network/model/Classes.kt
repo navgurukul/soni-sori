@@ -54,6 +54,5 @@ data class Classes(
 }
 
 fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
-
 fun Classes.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
 fun Classes.dateFormatUI(): String = "${startTime.toDate()}"
