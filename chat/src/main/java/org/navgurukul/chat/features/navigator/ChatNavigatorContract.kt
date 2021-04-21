@@ -34,7 +34,6 @@ class ChatNavigatorContract(
     }
 
     override fun launchChatApp(activity: Activity): Intent {
-        TODO("Not yet implemented")
         return ChatBaseActivity.newIntent(activity)
     }
 }
