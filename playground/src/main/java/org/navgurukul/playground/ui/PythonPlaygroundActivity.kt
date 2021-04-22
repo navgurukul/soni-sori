@@ -402,6 +402,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
+            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             onBackPressed()
         }
 
@@ -438,7 +439,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             //line 1, in <module>
             //    importerror: cannot import name 'cube' from 'math' (/data/user/0/org.merakilearn/files/chaquopy/bootstrap-native/x86/math.so)
 
-            var textParsed = ""
+            /*var textParsed = ""
             val urlMatcher = "\'([^\"]*)\'".toRegex()
             Log.d("abhi_check", urlMatcher.find(errorText)?.value)
             textParsed = urlMatcher.find(errorText)?.value.toString();
@@ -454,7 +455,13 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 .bold { append(textParsed.split("from").get(0)) }
                 .append("in the")
                 .bold { append(textParsed.split("from").get(1)) }
-                .append(" library to import")
+                .append(" library to import")*/
+
+            val exampleText = SpannableStringBuilder()
+                .append("Due to an ")
+                .bold { append("Invalid or Incorrect path") }
+                .append("after the import statement,specified module could not be imported")
+
 
             val tipText = SpannableStringBuilder()
                 .bold { append("FIX: ") }
@@ -553,30 +560,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 .append("(normally Control-C) during the execution of the program.")
             errorTextExample.setText(exampleText)
         }
-
-        /*} else if (errorText.contains("syntaxerror")) {
-            errorImage.setImageResource(R.drawable.ic_importerror)
-
-        } else if (errorText.contains("typerror")) {
-            errorImage.setImageResource(R.drawable.ic_typeerror)
-
-        } else if (errorText.contains("indexerror")) {
-            errorImage.setImageResource(R.drawable.ic_indexerror)
-
-        } else if (errorText.contains("indentationerror")) {
-            errorImage.setImageResource(R.drawable.ic_indexerror)
-
-        } else if (errorText.contains("attributeerror")) {
-            errorImage.setImageResource(R.drawable.ic_nameerror)
-
-        } else if (errorText.contains("nameerror")) {
-            errorImage.setImageResource(R.drawable.ic_nameerror)
-
-        } else if (errorText.contains("indentationerror")) {
-            errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
-        } else if (errorText.contains("indentationerror")) {
-
-        }*/
 
     }
 

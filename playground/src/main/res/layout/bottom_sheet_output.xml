@@ -188,7 +188,7 @@
             android:focusable="true"
             android:enabled="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:drawableRight="@drawable/ic_outline_content_copy_24"
+            android:drawableRight="@drawable/ic_copy_outline"
             android:textColor="@color/error_background" />
         <ImageView
             android:id="@+id/cancel_btn"
