@@ -383,63 +383,58 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     }
 
     private fun createErrorUI() {
-        errorImage = findViewById(R.id.errorImage)
-        errorTextExample = findViewById(R.id.errorTextExample)
-        errorTextTip = findViewById(R.id.errorTextTip)
-        tvMentorHelp = findViewById(R.id.tvMentorHelp)
-        errorLayout = findViewById(R.id.errorLayout)
+        try {
+            errorImage = findViewById(R.id.errorImage)
+            errorTextExample = findViewById(R.id.errorTextExample)
+            errorTextTip = findViewById(R.id.errorTextTip)
+            tvMentorHelp = findViewById(R.id.tvMentorHelp)
+            errorLayout = findViewById(R.id.errorLayout)
 
 
-        errorImage.visibility = GONE
-        errorTextExample.visibility = GONE
-        errorTextTip.visibility = GONE
-        tvMentorHelp.visibility = GONE
-        errorLayout.visibility = GONE
+            errorImage.visibility = GONE
+            errorTextExample.visibility = GONE
+            errorTextTip.visibility = GONE
+            tvMentorHelp.visibility = GONE
+            errorLayout.visibility = GONE
 
-        findViewById<TextView>(R.id.copy_btn).setOnClickListener {
-            copyToClipboard(this, tvError.text.toString())
-            Toast.makeText(this, "Copied !!", Toast.LENGTH_SHORT).show()
-        }
+            findViewById<TextView>(R.id.copy_btn).setOnClickListener {
+                copyToClipboard(this, tvError.text.toString())
+                Toast.makeText(this, "Copied !!", Toast.LENGTH_SHORT).show()
+            }
 
-        findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
-            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            onBackPressed()
-        }
-
-
-        findViewById<TextView>(R.id.tvMentorHelp).setOnClickListener {
-            Toast.makeText(this, "Mentor Help CLicked", Toast.LENGTH_SHORT).show()
-            navigator.openChatApp(this)
-        }
-
-        val errorText = tvError.text.toString().toLowerCase()
-
-        Log.d("abhi_check", "ErrorText:" + errorText);
-        Log.d("abhi_check", "checkCondition" + errorText.contains("importerror"));
-
-        if (errorText != "") {
-            errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
-            errorImage.visibility = VISIBLE
-            errorLayout.visibility = VISIBLE
-
-            errorTextExample.visibility = VISIBLE
-            errorTextExample.setText("Error occured")
-
-            errorTextTip.visibility = VISIBLE
-            val tipText = SpannableStringBuilder()
-                .bold { append("FIX: ") }
-                .append("How to fix this type of error will be given here in short.")
-            errorTextTip.setText(tipText)
-        }
+            findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                onBackPressed()
+            }
 
 
-        if (errorText.contains("importerror")) { // 1
-            errorImage.setImageResource(R.drawable.ic_importerror)
+            findViewById<TextView>(R.id.tvMentorHelp).setOnClickListener {
+                Toast.makeText(this, "Mentor Help CLicked", Toast.LENGTH_SHORT).show()
+                navigator.openChatApp(this)
+            }
 
-            //line 1, in <module>
-            //    importerror: cannot import name 'cube' from 'math' (/data/user/0/org.merakilearn/files/chaquopy/bootstrap-native/x86/math.so)
+            val errorText = tvError.text.toString().toLowerCase()
 
-            /*var textParsed = ""
+            if (errorText != "") {
+                errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
+                errorImage.visibility = VISIBLE
+                errorLayout.visibility = VISIBLE
+
+                errorTextExample.visibility = VISIBLE
+                errorTextExample.setText("Error occured")
+
+                errorTextTip.visibility = VISIBLE
+                val tipText = SpannableStringBuilder()
+                    .bold { append("FIX: ") }
+                    .append("How to fix this type of error will be given here in short.")
+                errorTextTip.setText(tipText)
+            }
+
+
+            if (errorText.contains("importerror")) { // 1
+                errorImage.setImageResource(R.drawable.ic_importerror)
+
+                /*var textParsed = ""
             val urlMatcher = "\'([^\"]*)\'".toRegex()
             Log.d("abhi_check", urlMatcher.find(errorText)?.value)
             textParsed = urlMatcher.find(errorText)?.value.toString();
@@ -457,108 +452,110 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 .bold { append(textParsed.split("from").get(1)) }
                 .append(" library to import")*/
 
-            val exampleText = SpannableStringBuilder()
-                .append("Due to an ")
-                .bold { append("Invalid or Incorrect path") }
-                .append("after the import statement,specified module could not be imported")
+                val exampleText = SpannableStringBuilder()
+                    .append("Due to an ")
+                    .bold { append("Invalid or Incorrect path") }
+                    .append("after the import statement,specified module could not be imported")
 
 
-            val tipText = SpannableStringBuilder()
-                .bold { append("FIX: ") }
-                .append("Check whether the module you are trying to import exist")
+                val tipText = SpannableStringBuilder()
+                    .bold { append("FIX: ") }
+                    .append("Check whether the module you are trying to import exist")
 
-            errorTextExample.setText(exampleText)
-            errorTextTip.setText(tipText)
+                errorTextExample.setText(exampleText)
+                errorTextTip.setText(tipText)
 
-        } else if (errorText.contains("modulenotfounderror")) { //2
-            errorImage.setImageResource(R.drawable.ic_modulenotfound)
-
-
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("You're trying to import a module which is ")
-                .bold { append("not exisiting ") }
-                .append("in the ")
-                .bold { append("library.") }
-
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("indexerror")) { //3
-            errorImage.setImageResource(R.drawable.ic_indexerror)
+            } else if (errorText.contains("modulenotfounderror")) { //2
+                errorImage.setImageResource(R.drawable.ic_modulenotfound)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("You're trying to access an item at an ")
-                .bold { append("invalid index.") }
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("stopiteration")) {//4
-            errorImage.setImageResource(R.drawable.ic_stopiterationnotext)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("You're trying to import a module which is ")
+                    .bold { append("not exisiting ") }
+                    .append("in the ")
+                    .bold { append("library.") }
+
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("indexerror")) { //3
+                errorImage.setImageResource(R.drawable.ic_indexerror)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("You can't call the")
-                .bold { append("next()") }
-                .append("function beyond")
-                .bold { append("iterator items") }
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("valueerror")) {//5
-            errorImage.setImageResource(R.drawable.ic_valueerror)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("You're trying to access an item at an ")
+                    .bold { append("invalid index.") }
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("stopiteration")) {//4
+                errorImage.setImageResource(R.drawable.ic_stopiterationnotext)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("ValueError is thrown when a function's")
-                .bold { append("argument") }
-                .append("is of an inappropriate type")
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("typerror")) {//6
-            errorImage.setImageResource(R.drawable.ic_typeerror)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("You can't call the")
+                    .bold { append("next()") }
+                    .append("function beyond")
+                    .bold { append("iterator items") }
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("valueerror")) {//5
+                errorImage.setImageResource(R.drawable.ic_valueerror)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("You can't do mathematical operations on two")
-                .bold { append("different data types.") }
-            errorTextExample.setText(exampleText)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("ValueError is thrown when a function's")
+                    .bold { append("argument") }
+                    .append("is of an inappropriate type")
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("typerror")) {//6
+                errorImage.setImageResource(R.drawable.ic_typeerror)
 
 
-            val tipText = SpannableStringBuilder()
-                .bold { append("FIX: ") }
-                .append(" 1. Understand the datatypes of both the values/variables\n")
-                .append(" 2. Make the data types same as each other")
-
-            errorTextTip.setText(tipText)
-        } else if (errorText.contains("nameerror")) {//7
-            errorImage.setImageResource(R.drawable.ic_nameerror)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("You can't do mathematical operations on two")
+                    .bold { append("different data types.") }
+                errorTextExample.setText(exampleText)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("NameError is thrown when an")
-                .bold { append("object could not be found") }
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("keyerror")) {//8
-            errorImage.setImageResource(R.drawable.ic_keyerror)
+                val tipText = SpannableStringBuilder()
+                    .bold { append("FIX: ") }
+                    .append(" 1. Understand the datatypes of both the values/variables\n")
+                    .append(" 2. Make the data types same as each other")
+
+                errorTextTip.setText(tipText)
+            } else if (errorText.contains("nameerror")) {//7
+                errorImage.setImageResource(R.drawable.ic_nameerror)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("You're trying to access an key which is")
-                .bold { append("not exisiting") }
-                .append("in the")
-                .bold { append("dictionary(dict).") }
-            errorTextExample.setText(exampleText)
-        } else if (errorText.contains("keyboardinterrupt")) {//9
-            errorImage.setImageResource(R.drawable.ic_valueerror)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("NameError is thrown when an")
+                    .bold { append("object could not be found") }
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("keyerror")) {//8
+                errorImage.setImageResource(R.drawable.ic_keyerror)
 
 
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("KeyboardInterrupt is thrown when the user hits")
-                .bold { append("the interrupt key") }
-                .append("(normally Control-C) during the execution of the program.")
-            errorTextExample.setText(exampleText)
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("You're trying to access an key which is")
+                    .bold { append("not exisiting") }
+                    .append("in the")
+                    .bold { append("dictionary(dict).") }
+                errorTextExample.setText(exampleText)
+            } else if (errorText.contains("keyboardinterrupt")) {//9
+                errorImage.setImageResource(R.drawable.ic_valueerror)
+
+
+                // Suppose id = 1111 and name = neil (just what you want).
+                val exampleText = SpannableStringBuilder()
+                    .append("KeyboardInterrupt is thrown when the user hits")
+                    .bold { append("the interrupt key") }
+                    .append("(normally Control-C) during the execution of the program.")
+                errorTextExample.setText(exampleText)
+            }
+        }catch ( ex: Exception){
         }
 
     }
