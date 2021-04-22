@@ -30,10 +30,6 @@ class MerakiApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        //if (BuildConfig.DEBUG) {
-        //    Timber.plant(Timber.DebugTree())
-        //}
-
         if(BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)

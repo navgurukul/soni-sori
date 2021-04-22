@@ -7,12 +7,11 @@ import kotlinx.android.synthetic.main.activity_score.*
 import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.ui.KeyboardActivity
 import timber.log.Timber
-import java.lang.String
 import java.util.concurrent.TimeUnit
 
 
 class ScoreActivity : AppCompatActivity() {
-    private lateinit var content : ArrayList<kotlin.String>
+    private lateinit var content : ArrayList<String>
     private lateinit var type : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +20,7 @@ class ScoreActivity : AppCompatActivity() {
         val intent = intent
         val wpm = intent.getIntExtra("wpm", 0)
         val timeTaken = intent.getLongExtra("time_taken", 0)
-        content = intent.getStringArrayListExtra("content") as ArrayList<kotlin.String>
+        content = intent.getStringArrayListExtra("content") as ArrayList<String>
         type = intent.getStringExtra("type") as String
 
         val noOfRightKey = intent.getIntExtra("noOfRightKey", 0)

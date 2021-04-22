@@ -9,19 +9,24 @@
     <application>
         <activity android:name=".features.home.room.detail.RoomDetailActivity"
             android:parentActivityName="org.merakilearn.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".features.media.MerakiAttachmentViewerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transparent" />
 
         <activity
             android:name=".features.reactions.EmojiReactionPickerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_emoji_reaction_picker" />
 
-        <activity android:name=".features.roomprofile.RoomProfileActivity" />
+        <activity android:name=".features.roomprofile.RoomProfileActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".features.media.BigImageViewerActivity" />
+        <activity android:name=".features.media.BigImageViewerActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
