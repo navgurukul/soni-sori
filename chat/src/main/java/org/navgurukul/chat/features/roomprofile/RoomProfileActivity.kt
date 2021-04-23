@@ -35,10 +35,6 @@ class RoomProfileActivity :
             }
         }
 
-        fun newIntent(context: Context):Intent{
-            return Intent(context,ChatBaseActivity::class.java)
-        }
-
     }
 
     private val sharedActionViewModel: RoomProfileSharedActionViewModel by viewModel()
