@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import com.airbnb.epoxy.EpoxyAttribute
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.utils.DebouncedClickListener
+import org.merakilearn.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

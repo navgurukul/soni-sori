@@ -18,8 +18,8 @@ import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.glide.GlideRequest
 import org.navgurukul.chat.core.glide.GlideRequests
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.utils.getColorFromRoomId
-import org.navgurukul.chat.core.utils.getColorFromUserId
+import org.merakilearn.core.utils.getColorFromRoomId
+import org.merakilearn.core.utils.getColorFromUserId
 
 /**
  * This helper centralise ways to retrieve avatar into ImageView or even generic Target<Drawable>

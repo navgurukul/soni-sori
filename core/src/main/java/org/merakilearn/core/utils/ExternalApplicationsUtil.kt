@@ -1,4 +1,4 @@
-package org.navgurukul.chat.core.utils
+package org.merakilearn.core.utils
 
 import android.content.ActivityNotFoundException
 import android.content.Context

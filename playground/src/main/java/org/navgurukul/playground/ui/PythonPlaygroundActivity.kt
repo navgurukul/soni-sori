@@ -27,6 +27,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.navigator.ChatModuleNavigator
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.core.utils.copyToClipboard
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 import java.io.File
@@ -396,6 +397,7 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             errorLayout.visibility = GONE
 
             findViewById<TextView>(R.id.copy_btn).setOnClickListener {
+
                 copyToClipboard(this, tvError.text.toString())
                 Toast.makeText(this, "Copied !!", Toast.LENGTH_SHORT).show()
             }
@@ -548,22 +550,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                 errorTextExample.setText(exampleText)
             }
 
-    }
-
-
-    // ==============================================================================================================
-    // Clipboard helper
-    // ==============================================================================================================
-
-    /**
-     * Copy a text to the clipboard, and display a Toast when done
-     *
-     * @param context the context
-     * @param text    the text to copy
-     */
-    fun copyToClipboard(context: Context, text: CharSequence) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("Meraki", text))
     }
 
 

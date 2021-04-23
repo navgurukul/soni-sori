@@ -23,7 +23,7 @@ import androidx.core.content.withStyledAttributes
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.EmojiCompatWrapper
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.utils.TextUtils
+import org.merakilearn.core.utils.TextUtils
 
 /**
  * An animated reaction button.

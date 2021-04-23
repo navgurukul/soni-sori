@@ -9,7 +9,7 @@ import org.matrix.android.sdk.api.session.content.ContentUploadStateTracker
 import org.matrix.android.sdk.api.session.room.send.SendState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.utils.TextUtils.formatFileSize
+import org.merakilearn.core.utils.TextUtils.formatFileSize
 import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 import org.navgurukul.commonui.error.ErrorFormatter
 
