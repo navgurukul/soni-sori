@@ -1,7 +1,5 @@
 package org.navgurukul.chat
 
-import android.content.Context
-import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.AttrRes
@@ -11,9 +9,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.navgurukul.chat.core.extensions.KEY_ARG
-import org.navgurukul.chat.features.roomprofile.RoomProfileActivity
-import org.navgurukul.chat.features.roomprofile.RoomProfileArgs
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.themes.ThemeUtils
 import timber.log.Timber
@@ -37,13 +32,6 @@ open class ChatBaseActivity: AppCompatActivity() {
             it.setDisplayShowHomeEnabled(displayBack)
             it.setDisplayHomeAsUpEnabled(displayBack)
             it.title = null
-        }
-    }
-
-    companion object {
-
-        fun newIntent(context: Context): Intent {
-            return Intent(context,ChatBaseActivity::class.java)
         }
     }
 
