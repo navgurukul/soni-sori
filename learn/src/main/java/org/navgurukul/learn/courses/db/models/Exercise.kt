@@ -36,6 +36,7 @@ data class Exercise(
     @Ignore
     var number: Int? = 0,
 
+    @SerializedName("courseName")
     var courseName: String? = ""
 ) : Serializable {
     data class ExerciseSlugDetail(

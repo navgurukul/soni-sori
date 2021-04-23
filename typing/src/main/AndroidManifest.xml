@@ -15,7 +15,7 @@
 
     <application>
         <activity android:name=".ui.KeyboardDialogActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="behind"
             android:theme="@style/AppTheme.Transparent"/>
         <activity
             android:name=".ui.KeyboardActivity"
