@@ -73,7 +73,7 @@
                 android:background="@drawable/enroll_course_type_background"
                 android:textAppearance="?textAppearanceEmphasized1"
                 android:textColor="?colorOnPrimary"/>
-            
+
             <View
                 android:id="@+id/enroll_top_corner"
                 android:layout_width="match_parent"
@@ -86,7 +86,11 @@
 
     <include
         android:id="@+id/class_detail"
-        layout="@layout/content_class_detail" />
+        layout="@layout/content_class_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="120dp"/>
 
     <ProgressBar
         android:id="@+id/progress_bar_button"
@@ -97,18 +101,40 @@
         android:indeterminate="true"
         android:visibility="gone"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/enroll"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginEnd="@dimen/spacing_3x"
+        android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/primary_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_3x"
         android:layout_marginBottom="@dimen/spacing_3x"
-        android:textAppearance="?textAppearanceHeadline6"
-        android:textAllCaps="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/enroll_to_class"
+        android:textAllCaps="false"
+        android:textAppearance="?textAppearanceHeadline6"
         android:textColor="@color/colorWhite" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/secondary_action"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:layout_marginBottom="@dimen/spacing_3x"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/drop_out"
+        android:textAllCaps="false"
+        android:textAppearance="?textAppearanceHeadline6" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

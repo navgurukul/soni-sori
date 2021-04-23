@@ -36,7 +36,9 @@ data class Classes(
     @SerializedName("type")
     val type: String,
     @SerializedName("video_id")
-    val videoId: String?
+    val videoId: String?,
+    @SerializedName("meet_link")
+    val meetLink: String
 ) {
     data class Facilitator(
         @SerializedName("name")
