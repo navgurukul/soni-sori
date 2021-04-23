@@ -1,4 +1,4 @@
-package org.merakilearn.core.utils
+package org.navgurukul.chat.core.utils
 
 import timber.log.Timber
 import java.io.File

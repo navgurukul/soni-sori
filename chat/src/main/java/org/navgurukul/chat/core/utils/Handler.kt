@@ -16,7 +16,7 @@
 
  */
 
-package org.merakilearn.core.utils
+package org.navgurukul.chat.core.utils
 
 import android.os.Handler
 import android.os.HandlerThread

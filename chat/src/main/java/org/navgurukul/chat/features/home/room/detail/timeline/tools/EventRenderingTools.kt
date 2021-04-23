@@ -12,8 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.navgurukul.chat.core.linkify.SaralLinkify
-import org.merakilearn.core.utils.EvenBetterLinkMovementMethod
-import org.merakilearn.core.utils.isValidUrl
+import org.navgurukul.chat.core.utils.EvenBetterLinkMovementMethod
+import org.navgurukul.chat.core.utils.isValidUrl
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.html.PillImageSpan
 

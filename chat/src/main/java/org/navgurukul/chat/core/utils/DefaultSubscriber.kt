@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.merakilearn.core.utils
+package org.navgurukul.chat.core.utils
 
 import io.reactivex.Completable
 import io.reactivex.Single

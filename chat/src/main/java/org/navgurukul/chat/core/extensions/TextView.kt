@@ -10,7 +10,7 @@ import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import org.navgurukul.chat.R
-import org.merakilearn.core.utils.copyToClipboard
+import org.navgurukul.chat.core.utils.copyToClipboard
 import org.navgurukul.commonui.themes.ThemeUtils
 
 /**

@@ -36,8 +36,8 @@ import org.matrix.android.sdk.api.session.room.timeline.*
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.UserPreferencesProvider
-import org.merakilearn.core.utils.isValidUrl
-import org.merakilearn.core.utils.subscribeLogError
+import org.navgurukul.chat.core.utils.isValidUrl
+import org.navgurukul.chat.core.utils.subscribeLogError
 import org.navgurukul.chat.features.command.CommandParser
 import org.navgurukul.chat.features.command.ParsedCommand
 import org.navgurukul.chat.features.home.room.TypingHelper

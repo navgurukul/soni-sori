@@ -22,7 +22,7 @@ import org.navgurukul.chat.core.extensions.KEY_ARG
 import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
-import org.merakilearn.core.utils.DimensionConverter
+import org.navgurukul.chat.core.utils.DimensionConverter
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
 
 @Parcelize

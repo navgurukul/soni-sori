@@ -21,7 +21,7 @@ import org.navgurukul.chat.core.error.ChatErrorFormatter
 import org.navgurukul.chat.core.pushers.PushersManager
 import org.navgurukul.chat.core.repo.*
 import org.navgurukul.chat.core.resources.*
-import org.merakilearn.core.utils.DimensionConverter
+import org.navgurukul.chat.core.utils.DimensionConverter
 import org.navgurukul.chat.features.crypto.KeyRequestHandler
 import org.navgurukul.chat.features.grouplist.SelectedGroupDataSource
 import org.navgurukul.chat.features.home.AvatarRenderer

@@ -57,8 +57,8 @@ import org.navgurukul.chat.core.dialogs.withColoredButton
 import org.navgurukul.chat.core.extensions.*
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.merakilearn.core.utils.*
-import org.merakilearn.core.utils.createUIHandler
+import org.navgurukul.chat.core.utils.*
+import org.navgurukul.chat.core.utils.createUIHandler
 import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView

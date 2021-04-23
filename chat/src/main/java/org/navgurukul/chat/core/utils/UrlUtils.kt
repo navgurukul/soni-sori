@@ -1,4 +1,4 @@
-package org.merakilearn.core.utils
+package org.navgurukul.chat.core.utils
 
 import java.net.URL
 

@@ -15,7 +15,8 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import org.merakilearn.core.R
+import org.navgurukul.chat.R
+import org.navgurukul.chat.features.notifications.NotificationUtils
 
 /**
  * Tells if the application ignores battery optimizations.
@@ -96,6 +97,18 @@ fun startNotificationSettingsIntent(activity: AppCompatActivity, requestCode: In
     activity.startActivityForResult(intent, requestCode)
 }
 
+/**
+ * Shows notification system settings for the given channel id.
+ */
+@TargetApi(Build.VERSION_CODES.O)
+fun startNotificationChannelSettingsIntent(fragment: Fragment, channelID: String) {
+    if (!NotificationUtils.supportNotificationChannels()) return
+    val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+        putExtra(Settings.EXTRA_APP_PACKAGE, fragment.context?.packageName)
+        putExtra(Settings.EXTRA_CHANNEL_ID, channelID)
+    }
+    fragment.startActivity(intent)
+}
 
 fun startAddGoogleAccountIntent(context: AppCompatActivity, requestCode: Int) {
     try {
