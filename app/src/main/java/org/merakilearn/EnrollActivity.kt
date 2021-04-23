@@ -170,7 +170,7 @@ class EnrollActivity : AppCompatActivity() {
             }else{
                 tvClassLanguage.text ="OTHER"
             }
-        } ?: kotlin.runCatching {
+        } ?: kotlin.run {
             tvClassLanguage.isVisible = false
         }
 
