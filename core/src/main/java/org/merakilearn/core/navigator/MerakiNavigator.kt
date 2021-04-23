@@ -67,10 +67,6 @@ class MerakiNavigator(
         startActivity(context, openRoomIntent(context, roomId), buildTask)
     }
 
-    fun openChatApp(activity: Activity) {
-        chatModuleNavigator.launchChatApp(activity)
-    }
-
 
     fun openDeepLink(context: Context, deepLink: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))

@@ -32,8 +32,4 @@ class ChatNavigatorContract(
     override fun launchIntentForRoomProfile(context: Context, roomId: String): Intent {
         return RoomProfileActivity.newIntent(context, roomId)
     }
-
-    override fun launchChatApp(activity: Activity): Intent {
-        return ChatBaseActivity.newIntent(activity)
-    }
 }

@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet_output.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.core.navigator.ChatModuleNavigator
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
@@ -49,7 +50,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     private lateinit var errorTextTip: TextView
     private lateinit var tvMentorHelp: TextView
     private lateinit var errorLayout: LinearLayout
-    private val navigator: MerakiNavigator by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -383,7 +383,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     }
 
     private fun createErrorUI() {
-        try {
             errorImage = findViewById(R.id.errorImage)
             errorTextExample = findViewById(R.id.errorTextExample)
             errorTextTip = findViewById(R.id.errorTextTip)
@@ -394,7 +393,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             errorImage.visibility = GONE
             errorTextExample.visibility = GONE
             errorTextTip.visibility = GONE
-            tvMentorHelp.visibility = GONE
             errorLayout.visibility = GONE
 
             findViewById<TextView>(R.id.copy_btn).setOnClickListener {
@@ -405,12 +403,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 onBackPressed()
-            }
-
-
-            findViewById<TextView>(R.id.tvMentorHelp).setOnClickListener {
-                Toast.makeText(this, "Mentor Help CLicked", Toast.LENGTH_SHORT).show()
-                navigator.openChatApp(this)
             }
 
             val errorText = tvError.text.toString().toLowerCase()
@@ -555,8 +547,6 @@ class PythonPlaygroundActivity : AppCompatActivity() {
                     .append("(normally Control-C) during the execution of the program.")
                 errorTextExample.setText(exampleText)
             }
-        }catch ( ex: Exception){
-        }
 
     }
 
