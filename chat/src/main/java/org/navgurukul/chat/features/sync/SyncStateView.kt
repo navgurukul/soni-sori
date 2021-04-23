@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import org.matrix.android.sdk.api.session.sync.SyncState
 import kotlinx.android.synthetic.main.view_sync_state.view.*
 import org.navgurukul.chat.R
-import org.merakilearn.core.utils.isAirplaneModeOn
+import org.navgurukul.chat.core.utils.isAirplaneModeOn
 
 class SyncStateView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {

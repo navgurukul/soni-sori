@@ -18,8 +18,8 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.glide.GlideRequest
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.merakilearn.core.utils.DimensionConverter
-import org.merakilearn.core.utils.isLocalFile
+import org.navgurukul.chat.core.utils.DimensionConverter
+import org.navgurukul.chat.core.utils.isLocalFile
 import kotlin.math.min
 
 

@@ -1,7 +1,5 @@
 package org.navgurukul.playground.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -9,7 +7,6 @@ import android.os.Bundle
 import android.text.*
 import android.text.style.CharacterStyle
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -23,16 +20,11 @@ import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet_output.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.core.navigator.ChatModuleNavigator
-import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.core.utils.copyToClipboard
+import org.navgurukul.chat.core.utils.copyToClipboard
 import org.navgurukul.playground.R
 import org.navgurukul.playground.custom.addTextAtCursorPosition
 import java.io.File
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class PythonPlaygroundActivity : AppCompatActivity() {
 

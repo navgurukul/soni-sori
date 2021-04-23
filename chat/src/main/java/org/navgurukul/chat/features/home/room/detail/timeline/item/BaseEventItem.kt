@@ -7,7 +7,7 @@ import androidx.annotation.IdRes
 import com.airbnb.epoxy.EpoxyAttribute
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-import org.merakilearn.core.utils.DimensionConverter
+import org.navgurukul.chat.core.utils.DimensionConverter
 
 /**
  * Children must override getViewType()

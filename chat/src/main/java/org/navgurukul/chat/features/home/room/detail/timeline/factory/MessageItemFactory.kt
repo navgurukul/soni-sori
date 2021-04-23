@@ -20,10 +20,10 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.resources.ColorProvider
-import org.merakilearn.core.utils.DebouncedClickListener
-import org.merakilearn.core.utils.DimensionConverter
-import org.merakilearn.core.utils.containsOnlyEmojis
-import org.merakilearn.core.utils.isLocalFile
+import org.navgurukul.chat.core.utils.DebouncedClickListener
+import org.navgurukul.chat.core.utils.DimensionConverter
+import org.navgurukul.chat.core.utils.containsOnlyEmojis
+import org.navgurukul.chat.core.utils.isLocalFile
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
 import org.navgurukul.chat.features.home.room.detail.timeline.item.*

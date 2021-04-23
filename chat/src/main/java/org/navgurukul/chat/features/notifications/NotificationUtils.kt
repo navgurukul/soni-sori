@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
-import org.merakilearn.core.utils.startNotificationChannelSettingsIntent
+import org.navgurukul.chat.core.utils.startNotificationChannelSettingsIntent
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.resources.StringProvider
 import timber.log.Timber

@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.intent.getMimeTypeFromUri
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.merakilearn.core.utils.shareMedia
+import org.navgurukul.chat.core.utils.shareMedia
 import org.navgurukul.chat.features.attachmentviewer.AttachmentCommands
 import org.navgurukul.chat.features.attachmentviewer.AttachmentViewerActivity
 import timber.log.Timber
