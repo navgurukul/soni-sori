@@ -22,7 +22,7 @@ import org.matrix.android.sdk.api.util.toMatrixItem
 import org.navgurukul.chat.core.date.SaralDateFormatter
 import org.navgurukul.chat.core.extensions.localDateTime
 import org.navgurukul.chat.core.resources.DateProvider
-import org.navgurukul.chat.core.utils.DebouncedClickListener
+import org.merakilearn.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.TypingHelper
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter

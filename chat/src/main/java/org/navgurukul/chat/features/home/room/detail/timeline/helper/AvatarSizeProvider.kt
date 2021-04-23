@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.helper
 
-import org.navgurukul.chat.core.utils.DimensionConverter
+import org.merakilearn.core.utils.DimensionConverter
 
 class AvatarSizeProvider(private val dimensionConverter: DimensionConverter) {
 

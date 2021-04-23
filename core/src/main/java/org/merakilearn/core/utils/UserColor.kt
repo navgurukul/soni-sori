@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.navgurukul.chat.core.utils
+package org.merakilearn.core.utils
 
 import androidx.annotation.ColorRes
 import org.navgurukul.chat.R

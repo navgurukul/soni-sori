@@ -3,7 +3,7 @@ package org.navgurukul.chat.features.home.room.detail
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.navgurukul.chat.core.utils.Debouncer
+import org.merakilearn.core.utils.Debouncer
 
 /**
  * Show or hide the jumpToBottomView, depending on the scrolling and if the timeline is displaying the more recent event

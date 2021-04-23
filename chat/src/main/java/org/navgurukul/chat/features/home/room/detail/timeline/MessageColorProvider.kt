@@ -4,7 +4,7 @@ import androidx.annotation.ColorInt
 import org.matrix.android.sdk.api.session.room.send.SendState
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.resources.ColorProvider
-import org.navgurukul.chat.core.utils.getColorFromUserId
+import org.merakilearn.core.utils.getColorFromUserId
 
 class MessageColorProvider(
     private val colorProvider: ColorProvider

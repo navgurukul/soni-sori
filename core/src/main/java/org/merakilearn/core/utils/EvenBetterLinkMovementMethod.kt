@@ -1,4 +1,4 @@
-package org.navgurukul.chat.core.utils
+package org.merakilearn.core.utils
 
 import android.text.Spanned
 import android.text.style.ClickableSpan

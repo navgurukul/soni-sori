@@ -46,8 +46,6 @@ import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.scope.lifecycleScope
-import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
@@ -59,8 +57,8 @@ import org.navgurukul.chat.core.dialogs.withColoredButton
 import org.navgurukul.chat.core.extensions.*
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
-import org.navgurukul.chat.core.utils.*
-import org.navgurukul.chat.core.utils.createUIHandler
+import org.merakilearn.core.utils.*
+import org.merakilearn.core.utils.createUIHandler
 import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView

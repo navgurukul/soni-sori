@@ -3,7 +3,7 @@ package org.navgurukul.chat.core.intent
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import org.navgurukul.chat.core.utils.getFileExtension
+import org.merakilearn.core.utils.getFileExtension
 import timber.log.Timber
 
 /**
