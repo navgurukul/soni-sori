@@ -12,6 +12,7 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
+import java.util.*
 
 class EnrollViewModel(
     private val classId: Int,
@@ -27,23 +28,29 @@ class EnrollViewModel(
         viewModelScope.launch {
             val classes = applicationRepo.fetchClassData(classId)
             classes?.let {
+
                 val primaryAction = if (isEnrolled) {
                     stringProvider.getString(R.string.join_class)
                 } else {
                     stringProvider.getString(R.string.enroll_to_class)
                 }
+
                 val secondaryAction = if (isEnrolled) {
                     stringProvider.getString(R.string.drop_out)
                 } else {
                     null
                 }
+
                 val teacherName =
                     classes.facilitator?.name ?: stringProvider.getString(R.string.unavailable)
                 val date = "${classes.startTime.toDate()}. (${classes.startTime.toDay()})"
                 val time = "${classes.startTime.toTime()} - ${classes.endTime.toTime()}"
                 val dateAndTiming =
                     stringProvider.getString(R.string.enroll_date_and_time, teacherName, date, time)
+
                 meetLink = classes.meetLink
+
+                val language = Locale(classes.lang).getDisplayLanguage(Locale.ENGLISH)
                 setState {
                     copy(
                         isLoading = false,
@@ -54,7 +61,8 @@ class EnrollViewModel(
                         details = dateAndTiming,
                         rules = classes.rules?.en,
                         title = classes.title,
-                        type = classes.sanitizedType()
+                        type = classes.sanitizedType(),
+                        language = language
                     )
                 }
             } ?: run {
@@ -138,5 +146,6 @@ data class EnrollViewState(
     val about: String? = null,
     val details: String? = null,
     val rules: String? = null,
-    val title: String? = null
+    val title: String? = null,
+    val language: String? = null
 ) : ViewState

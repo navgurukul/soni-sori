@@ -55,6 +55,7 @@
                 app:layout_collapseMode="none"
                 app:layout_collapseParallaxMultiplier="0.7" />
 
+
             <TextView
                 android:id="@+id/tvClassType"
                 android:layout_width="wrap_content"
@@ -73,6 +74,26 @@
                 android:background="@drawable/enroll_course_type_background"
                 android:textAppearance="?textAppearanceEmphasized1"
                 android:textColor="?colorOnPrimary"/>
+
+            <TextView
+                android:id="@+id/tvClassLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/enroll_course_type_background"
+                android:gravity="end"
+                android:layout_marginRight="@dimen/spacing_4x"
+                android:paddingStart="@dimen/spacing_4x"
+                android:paddingTop="@dimen/spacing_1x"
+                android:paddingEnd="@dimen/spacing_4x"
+                android:paddingBottom="@dimen/spacing_1x"
+                android:textAllCaps="true"
+                android:textAppearance="?textAppearanceEmphasized1"
+                android:textColor="?colorOnPrimary"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                tools:text="English" />
 
             <View
                 android:id="@+id/enroll_top_corner"
