@@ -142,7 +142,7 @@ class EnrollActivity : AppCompatActivity() {
             tvSpecialInstruction.isVisible = true
             tvSpecialInstructionTitle.isVisible = true
             tvSpecialInstruction.loadFromText(it)
-        } ?: kotlin.run {
+        } ?: run {
             tvSpecialInstruction.isVisible = false
             tvSpecialInstructionTitle.isVisible = false
         }
@@ -157,20 +157,14 @@ class EnrollActivity : AppCompatActivity() {
         it.secondaryAction?.let {
             secondary_action.isVisible = true
             secondary_action.text = it
-        } ?: kotlin.run {
+        } ?: run {
             secondary_action.isVisible = false
         }
 
         it.language?.let {
             tvClassLanguage.isVisible = true
-            if(it.toLowerCase().equals("hi")) {
-                tvClassLanguage.text = "HINDI"
-            }else if(it.toLowerCase().equals("en")) {
-                tvClassLanguage.text = "ENGLISH"
-            }else{
-                tvClassLanguage.text ="OTHER"
-            }
-        } ?: kotlin.run {
+            tvClassLanguage.text = it
+        } ?: run {
             tvClassLanguage.isVisible = false
         }
 
