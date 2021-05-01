@@ -34,6 +34,7 @@ class RoomProfileActivity :
                 putExtra(KEY_ARG, roomProfileArgs)
             }
         }
+
     }
 
     private val sharedActionViewModel: RoomProfileSharedActionViewModel by viewModel()

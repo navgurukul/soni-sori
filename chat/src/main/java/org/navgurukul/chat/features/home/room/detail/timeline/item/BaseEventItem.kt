@@ -2,16 +2,12 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 
 import android.view.View
 import android.view.ViewStub
-import android.widget.RelativeLayout
 import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
-import androidx.core.view.updateLayoutParams
 import com.airbnb.epoxy.EpoxyAttribute
-import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 import org.navgurukul.chat.core.utils.DimensionConverter
-import org.navgurukul.commonui.platform.CheckableView
 
 /**
  * Children must override getViewType()
