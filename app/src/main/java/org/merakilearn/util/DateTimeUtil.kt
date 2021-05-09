@@ -5,6 +5,7 @@ import org.merakilearn.R
 import org.navgurukul.commonui.resources.StringProvider
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 fun Date.toDay(): String {
     val outputFormat = SimpleDateFormat("EEEE", Locale.getDefault())
@@ -32,7 +33,25 @@ fun Date.relativeDay(stringProvider: StringProvider): String {
             stringProvider.getString(R.string.tomorrow)
         }
         else -> {
-            toDay().toLowerCase().capitalize()
+            toDay().toLowerCase(Locale.ENGLISH).capitalize(Locale.ENGLISH)
         }
     }
+}
+
+fun Long.toDisplayableInterval(stringProvider: StringProvider): String {
+    val days = TimeUnit.MILLISECONDS.toDays(this).toInt()
+    if (days > 0) {
+        return stringProvider.getQuantityString(R.plurals.days, days, days)
+    }
+    val hours = TimeUnit.MILLISECONDS.toHours(this).toInt()
+    if (hours > 0) {
+        return stringProvider.getQuantityString(R.plurals.hours, hours, hours)
+    }
+
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(this).toInt()
+    if (minutes > 0) {
+        return stringProvider.getQuantityString(R.plurals.minutes, minutes, minutes)
+    }
+
+    return stringProvider.getQuantityString(R.plurals.minutes, 0, 0)
 }

@@ -11,35 +11,35 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="?cornerRadius400"
-        android:foreground="?selectableItemBackground"
-        app:cardBackgroundColor="@color/upcoming_class_color_1">
+        app:strokeColor="@color/upcoming_class_border_color"
+        app:strokeWidth="?borderWidth"
+        app:rippleColor="@android:color/transparent"
+        app:cardBackgroundColor="@color/upcoming_class_background_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/ivDecoration"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_upcoming_class_decoration"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="77:52"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/upcoming_class_color_decoration_1" />
+                app:tint="@color/upcoming_class_color_decoration" />
 
             <TextView
                 android:id="@+id/tvClassTitle"
                 style="?textAppearanceEmphasized2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_3x"
                 android:layout_marginTop="@dimen/spacing_2x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_3x"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?textBrand"
@@ -56,57 +56,67 @@
                 android:layout_below="@+id/tvClassTitle"
                 android:layout_marginTop="@dimen/spacing_1x"
                 android:layout_marginEnd="@dimen/spacing_3x"
-                android:layout_marginBottom="@dimen/spacing_1x"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text='@{classes.title}'
                 android:textColor="?textSecondary"
-                app:layout_constraintBottom_toTopOf="@id/tvClassTiming"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/tvClassTitle"
                 app:layout_constraintTop_toBottomOf="@id/tvClassTitle"
-                app:layout_constraintVertical_bias="0.055"
                 tools:text="Study Basics Of Python" />
 
-            <TextView
-                android:id="@+id/tvClassDate"
-                style="?textAppearanceCaption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvClassTitle"
-                android:layout_marginTop="@dimen/spacing_1x"
-                android:layout_marginEnd="@dimen/spacing_2x"
-                android:layout_marginBottom="@dimen/spacing_1x"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?textSecondary"
-                app:layout_constraintBottom_toTopOf="@+id/tvClassTiming"
-                app:layout_constraintEnd_toEndOf="@id/tvClassDescription"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/tvClassDescription"
-                app:layout_constraintTop_toBottomOf="@id/tvClassDescription"
-                tools:text="I ma date date" />
 
             <TextView
                 android:id="@+id/tvClassTiming"
                 style="?textAppearanceCaption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvClassDate"
-                android:layout_marginEnd="@dimen/spacing_2x"
-                android:layout_marginTop="@dimen/spacing_2x"
-                android:layout_marginBottom="@dimen/spacing_1x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_1x"
+                android:layout_marginBottom="@dimen/spacing_2x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?textSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvClassDescription"
+                app:layout_constraintStart_toStartOf="@id/tvClassTitle"
+                tools:text="10:30 AM - 11:30 AM" />
+
+            <TextView
+                android:id="@+id/tvClassLanguage"
+                style="?textAppearanceCaption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_1x"
+                android:layout_marginBottom="@dimen/spacing_2x"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?textSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/tvClassDate"
-                tools:text="10:30 AM - 11:30 AM" />
+                app:layout_constraintTop_toBottomOf="@id/tvClassTiming"
+                app:layout_constraintStart_toStartOf="@id/tvClassTitle"
+                tools:text="English" />
+
+            <TextView
+                android:id="@+id/tvClassEnrolled"
+                style="?textAppearanceCaption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/spacing_half_x"
+                android:paddingEnd="@dimen/spacing_1x"
+                android:text="@string/enrolled_label"
+                android:layout_marginTop="?borderWidth"
+                android:textColor="?constructiveForeground"
+                android:background="@drawable/enrolled_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:drawablePadding="@dimen/spacing_1x"
+                app:drawableTint="@color/constructiveForeground"
+                app:drawableStartCompat="@drawable/ic_check_circle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

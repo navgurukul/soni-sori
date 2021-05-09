@@ -1,5 +1,6 @@
 package org.merakilearn.di
 
+import android.content.Context
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -14,15 +15,16 @@ import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.ClassesRepo
 import org.merakilearn.datasource.Config
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
-import org.merakilearn.ui.discover.DiscoverViewModel
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
+import org.merakilearn.util.AppUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -30,14 +32,18 @@ import java.util.concurrent.TimeUnit
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
-    viewModel { HomeViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { WelcomeViewModel(get(), get(), get(), get()) }
-    viewModel { DiscoverViewModel(get(), get(), get()) }
-    viewModel { (classId : Int, isEnrolled: Boolean) -> EnrollViewModel(classId = classId,
-        isEnrolled = isEnrolled,
-        stringProvider = get(),
-        applicationRepo = get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { (classId: Int, isEnrolled: Boolean) ->
+        EnrollViewModel(
+            classId = classId,
+            isEnrolled = isEnrolled,
+            stringProvider = get(),
+            colorProvider = get(),
+            classesRepo = get()
+        )
+    }
 }
 
 val factoryModule = module {
@@ -64,9 +70,16 @@ val networkModule = module {
         return logging
     }
 
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
+        okHttpClientBuilder.addInterceptor { chain ->
+            val chainBuilder = chain.request().newBuilder()
+            chainBuilder.addHeader("version-code", BuildConfig.VERSION_CODE.toString())
+            chainBuilder.addHeader("platform", "android")
+            chainBuilder.addHeader("Authorization", AppUtils.getAuthToken(context))
+            chainBuilder.build().let(chain::proceed)
+        }
         okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
         okHttpClientBuilder.readTimeout(5, TimeUnit.MINUTES)
 
@@ -86,7 +99,7 @@ val networkModule = module {
             .build()
     }
 
-    single { provideHttpClient() }
+    single { provideHttpClient(androidApplication()) }
     single { provideGson() }
     single { provideRetrofit(get(), get()) }
 
@@ -95,7 +108,15 @@ val networkModule = module {
 val repositoryModule = module {
     single { ApplicationRepo(get(), androidApplication(), get(), get()) }
     single { Config() }
-    single { UserRepo(get(), PreferenceManager.getDefaultSharedPreferences(androidApplication()), get(), get()) }
+    single { ClassesRepo(get()) }
+    single {
+        UserRepo(
+            get(),
+            PreferenceManager.getDefaultSharedPreferences(androidApplication()),
+            get(),
+            get()
+        )
+    }
 }
 
 val appModules =

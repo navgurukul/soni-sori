@@ -70,7 +70,6 @@ class UserRepo(
     suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
             val response = saralApi.initUserUpdateAsync(
-                getAuthToken(),
                 UserUpdate(user.name, referrer)
             )
             saveUserResponse(response.user)
@@ -81,7 +80,7 @@ class UserRepo(
         }
     }
 
-    private fun getAuthToken() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN, null)}"
+    fun getAuthToken() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN, null)}"
 
     private fun saveUserResponse(user: LoginResponse.User) {
         preferences.edit {
