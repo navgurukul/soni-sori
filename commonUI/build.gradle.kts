@@ -65,4 +65,6 @@ dependencies {
     // RXBinding
     implementation(RxJavaDependencies.rxBinding)
 
+    implementation(MiscellaneousDependencies.shimmer)
+
 }

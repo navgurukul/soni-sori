@@ -5,13 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_discover_enroll.*
 import kotlinx.android.synthetic.main.content_class_detail.*
@@ -19,7 +18,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.ui.common.toast
-import kotlin.math.abs
 
 @Parcelize
 data class EnrollActivityArgs(
@@ -51,6 +49,7 @@ class EnrollActivity : AppCompatActivity() {
 
     private var classId = 0
     private var isEnrolled = false
+    private var menuId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,11 +82,11 @@ class EnrollActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.viewState.observe(this, {
             updateState(it)
         })
 
-        viewModel.viewEvents.observe(this, Observer {
+        viewModel.viewEvents.observe(this, {
             when (it) {
                 is EnrollViewEvents.ShowToast -> toast(it.toastText)
                 is EnrollViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
@@ -97,16 +96,6 @@ class EnrollActivity : AppCompatActivity() {
         primary_action.setOnClickListener {
             viewModel.handle(EnrollViewActions.PrimaryAction)
         }
-
-        secondary_action.setOnClickListener {
-            viewModel.handle(EnrollViewActions.SecondaryAction)
-        }
-
-        app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val percentage: Double =
-                abs(verticalOffset).toDouble() / collapsingToolbarLayout.height
-            enroll_top_corner.isVisible = percentage <= 0.6
-        })
 
         initToolBar()
     }
@@ -154,13 +143,6 @@ class EnrollActivity : AppCompatActivity() {
             primary_action.isVisible = false
         }
 
-        it.secondaryAction?.let {
-            secondary_action.isVisible = true
-            secondary_action.text = it
-        } ?: run {
-            secondary_action.isVisible = false
-        }
-
         it.language?.let {
             tvClassLanguage.isVisible = true
             tvClassLanguage.text = it
@@ -169,8 +151,21 @@ class EnrollActivity : AppCompatActivity() {
         }
 
         it.title?.let {
-            collapsingToolbarLayout.title = it
+            tv_title.text = it
         }
+
+        it.primaryActionBackgroundColor?.let {
+            primary_action.setBackgroundColor(it)
+        }
+
+        menuId = it.menuId
+
+        invalidateOptionsMenu()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuId?.let { menuInflater.inflate(it ,menu) }
+        return super.onCreateOptionsMenu(menu)
     }
 
 
@@ -179,12 +174,16 @@ class EnrollActivity : AppCompatActivity() {
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeButtonEnabled(true)
+            it.setDisplayShowTitleEnabled(false);
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             navigateUp()
+        }
+        if (item.itemId == R.id.drop_out) {
+            viewModel.handle(EnrollViewActions.DropOut)
         }
         return super.onOptionsItemSelected(item)
     }

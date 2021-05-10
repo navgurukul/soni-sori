@@ -106,12 +106,11 @@ object AppUtils {
     }
 
 
-    fun getAuthToken(context: Context): String? {
+    fun getAuthToken(context: Context): String {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
         val token = preferenceManager.getString(KEY_AUTH_TOKEN, "")
         return "Bearer $token"
     }
-
 
     fun addFragmentToActivity(
         fragmentManager: FragmentManager, fragment: Fragment, frameId: Int, tag: String?

@@ -7,13 +7,13 @@ object Versions {
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
     const val markdown = "4.5.1"
-    const val kotlin = "1.4.20"
+    const val kotlin = "1.4.32"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.0"
     const val room = "2.2.5"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
-    const val coroutines = "1.3.7"
+    const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
 }
 
@@ -137,6 +137,7 @@ object MiscellaneousDependencies {
     const val alerter = "com.tapadoo.android:alerter:5.1.2"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
+    const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
 }
 
 object FirebaseDependencies {
@@ -169,7 +170,7 @@ object BuildConfigVersions {
     const val buildToolsVersion = "29.0.3"
     const val minSdkVersion = 21
     const val targetSdkVersion = 29
-    const val versionCode = 17
+    const val versionCode = 18
     const val versionName = "1.2.1"
     const val applicationId = "org.merakilearn"
 }

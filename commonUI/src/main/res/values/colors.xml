@@ -14,6 +14,7 @@
     <color name="textColorAlt">#665E5E</color>
     <color name="errorColor">#B00020</color>
     <color name="borderColor">#FDEAEA</color>
+    <color name="constructiveForeground">#7CC144</color>
 
     <color name="notification_accent_color">#368BD6</color>
 </resources>
