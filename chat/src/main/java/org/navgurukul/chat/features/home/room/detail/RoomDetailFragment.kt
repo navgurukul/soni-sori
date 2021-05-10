@@ -204,7 +204,7 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.OpenStickerPicker                -> openStickerPicker(it)
 //                is RoomDetailFragmentViewEvents.DisplayEnableIntegrationsWarning -> displayDisabledIntegrationDialog()
 //                is RoomDetailFragmentViewEvents.OpenIntegrationManager           -> openIntegrationManager()
-//                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
+                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
             }
         })
 
@@ -215,6 +215,21 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
         navigator.openDeepLink(requireContext(), event.deepLink)
+    }
+
+    private fun startOpenFileIntent(action: RoomDetailFragmentViewEvents.OpenFile) {
+        if (action.uri != null) {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndTypeAndNormalize(action.uri, action.mimeType)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                requireActivity().startActivity(intent)
+            } else {
+                requireActivity().toast(R.string.error_no_external_application_found)
+            }
+        }
     }
 
     private fun invalidateState(state: RoomDetailViewState) {
