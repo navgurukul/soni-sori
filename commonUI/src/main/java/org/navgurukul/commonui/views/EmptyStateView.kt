@@ -27,9 +27,9 @@ class EmptyStateView @JvmOverloads constructor(
                     emptyStateImage.setImageResource(R.drawable.illus_no_content)
                 }
                 State.ERROR -> {
-                    emptyStateDescription.text = context.getString(R.string.empty_state_no_content_description)
-                    emptyStateTitle.text = context.getString(R.string.empty_state_no_content_title)
-                    emptyStateImage.setImageResource(R.drawable.illus_no_content)
+                    emptyStateDescription.text = context.getString(R.string.empty_state_error_description)
+                    emptyStateTitle.text = context.getString(R.string.empty_state_error_title)
+                    emptyStateImage.setImageResource(R.drawable.illus_no_internet)
                 }
             }
         }
