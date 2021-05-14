@@ -50,7 +50,9 @@ fun<ResultType, RequestType> networkBoundResourceFlow(
     saveCallResult: (RequestType) -> Unit
 ): Flow<ResultType?> = flow {
     val dbSource = loadFromDb()
-    emit(dbSource)
+    if (dbSource != null && (dbSource as? Collection<*>)?.isNotEmpty() == true) {
+        emit(dbSource)
+    }
     if (shouldFetch(dbSource)) {
         try {
             val data = makeApiCallAsync()

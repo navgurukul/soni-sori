@@ -3,6 +3,7 @@ package org.merakilearn.core.navigator
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import java.io.File
 
 interface AppModuleNavigator {
     fun launchIntentForLauncherActivity(context: Context, clearNotification: Boolean): Intent
@@ -17,7 +18,7 @@ interface ChatModuleNavigator {
 
 interface PlaygroundModuleNavigator {
     fun launchPlaygroundActivity(context: Context, code: String): Intent
-    fun openPlaygroundWithFileContent(context: Context, fileName: String): Intent
+    fun openPlaygroundWithFileContent(context: Context, file: File): Intent
 }
 
 interface TypingAppModuleNavigator {

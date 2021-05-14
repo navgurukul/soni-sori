@@ -63,10 +63,10 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             parseCodeToUI(existingCode, code)
         }
 
-        if (intent.hasExtra(ARG_FILE_NAME) ) {
-            val fileName = intent.getStringExtra(ARG_FILE_NAME)!!
+        if (intent.hasExtra(ARG_FILE) ) {
+            val file: File = intent.getSerializableExtra(ARG_FILE) as File
             val existingCode = viewModel.getCachedCode()
-            val code = File(fileName).bufferedReader().readLine()
+            val code = file.bufferedReader().readLine()
             parseCodeToUI(existingCode, code)
         }
     }
@@ -388,16 +388,16 @@ class PythonPlaygroundActivity : AppCompatActivity() {
 
     companion object {
         private const val ARG_CODE = "arg_code"
-        private const val ARG_FILE_NAME = "arg_file_name"
+        private const val ARG_FILE = "arg_file"
         fun launch(code: String?, context: Context): Intent {
             val intent = Intent(context, PythonPlaygroundActivity::class.java)
             intent.putExtra(ARG_CODE, code)
             return intent
         }
 
-        fun launchWithFileContent(fileName: String, context: Context): Intent {
+        fun launchWithFileContent(file: File, context: Context): Intent {
             val intent = Intent(context, PythonPlaygroundActivity::class.java)
-            intent.putExtra(ARG_FILE_NAME, fileName)
+            intent.putExtra(ARG_FILE, file)
             return intent
         }
     }

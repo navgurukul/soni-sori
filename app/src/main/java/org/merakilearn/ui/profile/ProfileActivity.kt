@@ -180,7 +180,7 @@ class ProfileActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.share -> viewModel.handle(ProfileViewActions.ShareFile(file))
                 R.id.delete -> viewModel.handle(ProfileViewActions.DeleteFile(file))
-                R.id.copy -> merakiNavigator.openPlaygroundWithFileContent(this, file.name)
+                R.id.copy -> merakiNavigator.openPlaygroundWithFileContent(this, file)
             }
             true
         }

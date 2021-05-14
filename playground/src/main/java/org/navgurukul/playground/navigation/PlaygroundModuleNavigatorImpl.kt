@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import org.merakilearn.core.navigator.PlaygroundModuleNavigator
 import org.navgurukul.playground.ui.PythonPlaygroundActivity
+import java.io.File
 
 
 class PlaygroundModuleNavigatorImpl : PlaygroundModuleNavigator {
@@ -12,7 +13,7 @@ class PlaygroundModuleNavigatorImpl : PlaygroundModuleNavigator {
         return PythonPlaygroundActivity.launch(code, context)
     }
 
-    override fun openPlaygroundWithFileContent(context: Context, fileName: String): Intent {
-        return PythonPlaygroundActivity.launchWithFileContent(fileName, context)
+    override fun openPlaygroundWithFileContent(context: Context, file: File): Intent {
+        return PythonPlaygroundActivity.launchWithFileContent(file, context)
     }
 }
