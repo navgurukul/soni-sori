@@ -38,7 +38,7 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getPathways(LearnUtils.getAuthToken(application))
+            courseApi.getPathways()
         }, saveCallResult = { data ->
             data.pathways.forEach { pathway ->
                 pathway.courses.map {
@@ -62,42 +62,13 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
+            courseApi.getCoursesForPathway(pathwayId)
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
             }.toList()
             courseDao.insertCourses(data.courses)
         })
-    }
-
-    fun getCoursesData(forceUpdate: Boolean): LiveData<List<Course>?> {
-        val courseDao = database.courseDao()
-        return object : NetworkBoundResource<List<Course>, PathwayCourseContainer>() {
-            override suspend fun saveCallResult(data: PathwayCourseContainer) {
-                data.courses.map {
-                    it.pathwayId = data.id
-                }.toList()
-                courseDao.insertCourses(data.courses)
-            }
-
-            override fun shouldFetch(data: List<Course>?): Boolean {
-                return (forceUpdate && LearnUtils.isOnline(application))
-                        || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
-            }
-
-            override suspend fun makeApiCallAsync(): PathwayCourseContainer {
-                return courseApi.getDefaultPathwayCoursesAsync(LearnUtils.getAuthToken(application))
-            }
-
-            override suspend fun loadFromDb(): List<Course>? {
-                val data = courseDao.getAllCoursesDirect()
-                data?.forEachIndexed { index, course ->
-                    course.number = (index + 1)
-                }
-                return data
-            }
-        }.asLiveData()
     }
 
     fun getCoursesExerciseData(courseId: String): LiveData<List<Exercise>?> {

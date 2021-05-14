@@ -5,7 +5,6 @@ import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.model.PathwayContainer
 import org.navgurukul.learn.courses.network.model.PathwayCourseContainer
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -13,14 +12,13 @@ import retrofit2.http.Query
 interface SaralCoursesApi {
 
     @GET("/pathways")
-    suspend fun getPathways(@Header(value = "Authorization") token: String?, @Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE): PathwayContainer
+    suspend fun getPathways(@Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE): PathwayContainer
 
     @GET("/pathways/courses")
-    suspend fun getDefaultPathwayCoursesAsync(@Header(value = "Authorization") token: String?): PathwayCourseContainer
+    suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer
 
     @GET("/pathways/{pathway_id}/courses")
     suspend fun getCoursesForPathway(
-        @Header(value = "Authorization") token: String,
         @Path("pathway_id") pathway_id: Int
     ): PathwayCourseContainer
 
