@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
 import androidx.fragment.app.FragmentActivity
+import java.io.File
 import java.net.URL
 import java.util.*
 
@@ -44,10 +45,10 @@ class MerakiNavigator(
         )
     }
 
-    fun openPlaygroundWithFileContent(context: Context, fileName: String) {
+    fun openPlaygroundWithFileContent(context: Context, file: File) {
         startActivity(
             context,
-            playgroundModuleNavigator.openPlaygroundWithFileContent(context, fileName),
+            playgroundModuleNavigator.openPlaygroundWithFileContent(context, file),
             false
         )
     }
