@@ -3,6 +3,7 @@ package org.merakilearn.ui.profile
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
@@ -50,6 +51,12 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
+        tvPrivacyPolicy.setOnClickListener{
+            val uri: Uri = Uri.parse("https://www.merakilearn.org/privacy") // missing 'http://' will cause crashed
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
         viewModel.viewState.observe(this, Observer {
             it?.let { updateState(it) }
         })
@@ -88,6 +95,7 @@ class ProfileActivity : AppCompatActivity() {
         initSavedFile()
         initToolBar()
     }
+
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {
         val sendIntent: Intent = Intent().apply {
