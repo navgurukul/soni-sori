@@ -65,6 +65,7 @@
                     android:padding="@dimen/dimen_10_dp"
                     android:src="@drawable/ic_edit"
                     tools:ignore="ContentDescription" />
+
                 <TextView
                     android:id="@+id/tvAppVersion"
                     style="@style/text_view_profile"
@@ -110,6 +111,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_12x"
                 android:id="@+id/rlSavedFile">
 
                 <TextView
@@ -147,7 +149,9 @@
                     android:layout_marginTop="@dimen/spacing_2x"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/item_saved_file" />
+
             </RelativeLayout>
+
         </LinearLayout>
 
         <ProgressBar
@@ -160,6 +164,21 @@
             android:indeterminate="true"
             android:visibility="gone"
             app:elevation="2dp" />
+
+        <TextView
+            android:id="@+id/tvPrivacyPolicy"
+            android:textStyle=""
+            android:fontFamily="@font/n_extra_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:ellipsize="end"
+            android:gravity="center|bottom"
+            android:maxLines="1"
+            android:padding="@dimen/spacing_3x"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/spacing_4x"
+            android:text="@string/privacy_policy" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/updateProfile"

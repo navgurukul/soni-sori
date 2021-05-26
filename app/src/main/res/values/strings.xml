@@ -71,6 +71,7 @@
     <string name="enrolled_label">Enrolled</string>
     <string name="only_enrolled">Only Enrolled</string>
     <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
     <plurals name="days">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
