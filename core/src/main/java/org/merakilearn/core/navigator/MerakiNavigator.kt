@@ -3,11 +3,13 @@ package org.merakilearn.core.navigator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.TaskStackBuilder
 import androidx.fragment.app.FragmentActivity
 import java.io.File
 import java.net.URL
 import java.util.*
+
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
@@ -105,6 +107,12 @@ class MerakiNavigator(
         } else {
             context.startActivity(intent)
         }
+    }
+
+    fun openCustomTab(url: String, context: Context) {
+        val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+        val customTabsIntent: CustomTabsIntent = builder.build()
+        customTabsIntent.launchUrl(context, Uri.parse(url))
     }
 
     companion object {

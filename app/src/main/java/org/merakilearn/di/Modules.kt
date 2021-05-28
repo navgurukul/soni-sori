@@ -14,10 +14,7 @@ import org.merakilearn.BuildConfig
 import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.navigator.AppModuleNavigator
-import org.merakilearn.datasource.ApplicationRepo
-import org.merakilearn.datasource.ClassesRepo
-import org.merakilearn.datasource.Config
-import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.*
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.home.HomeViewModel
@@ -32,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { WelcomeViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
@@ -91,9 +88,9 @@ val networkModule = module {
     }
 
 
-    fun provideRetrofit(factory: Gson, client: OkHttpClient): Retrofit {
+    fun provideRetrofit(factory: Gson, client: OkHttpClient, settingsRepo: SettingsRepo): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.SERVER_URL)
+            .baseUrl(settingsRepo.serverBaseUrl)
             .addConverterFactory(GsonConverterFactory.create(factory))
             .client(client)
             .build()
@@ -101,7 +98,7 @@ val networkModule = module {
 
     single { provideHttpClient(androidApplication()) }
     single { provideGson() }
-    single { provideRetrofit(get(), get()) }
+    single { provideRetrofit(get(), get(), get()) }
 
 }
 
@@ -109,6 +106,7 @@ val repositoryModule = module {
     single { ApplicationRepo(get(), androidApplication(), get(), get()) }
     single { Config() }
     single { ClassesRepo(get()) }
+    single { SettingsRepo(get()) }
     single {
         UserRepo(
             get(),
