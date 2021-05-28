@@ -6,20 +6,25 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.*
+import org.merakilearn.OnBoardingActivity
+import org.merakilearn.OnBoardingActivityArgs
+import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.ui.adapter.SavedFileAdapter
@@ -52,16 +57,14 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         tvPrivacyPolicy.setOnClickListener{
-            val uri: Uri = Uri.parse("https://www.merakilearn.org/privacy") // missing 'http://' will cause crashed
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.viewState.observe(this, {
             it?.let { updateState(it) }
         })
 
-        viewModel.viewEvents.observe(this, Observer {
+        viewModel.viewEvents.observe(this, {
             when (it) {
                 is ProfileViewEvents.ShowToast -> {
                     toast(it.text)
@@ -75,7 +78,12 @@ class ProfileActivity : AppCompatActivity() {
                         clearNotification = true
                     )
                 )
-
+                is ProfileViewEvents.ShowUpdateServerDialog -> {
+                    showUpdateServerDialog(it.serverUrl)
+                }
+                is ProfileViewEvents.OpenUrl -> {
+                    merakiNavigator.openCustomTab(it.url, this)
+                }
             }
         })
 
@@ -92,8 +100,38 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.handle(ProfileViewActions.EditProfileClicked)
         }
 
+        mBinding.rlServerUrl.setOnClickListener {
+            viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
+        }
+
         initSavedFile()
         initToolBar()
+    }
+
+    private fun showUpdateServerDialog(serverUrl: String) {
+        val inputText = EditText(this)
+        val alert = MaterialAlertDialogBuilder(this)
+            .setTitle("Server Url")
+            .setView(inputText)
+            .setPositiveButton("OK") { _, _ ->
+                viewModel.handle(ProfileViewActions.UpdateServerUrl(inputText.text.toString()))
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNeutralButton("Reset") { _, _ ->
+                viewModel.handle(ProfileViewActions.ResetServerUrl)
+            }
+            .create()
+        alert.setOnShowListener {
+            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+            inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                marginEnd = margin
+                marginStart = margin
+            }
+            inputText.setText(serverUrl)
+        }
+        alert.show()
     }
 
 
@@ -163,6 +201,13 @@ class ProfileActivity : AppCompatActivity() {
                 .into(mBinding.ivProfile)
 
             mBinding.ivProfile.setTag(R.id.ivProfile, it.profilePic)
+        }
+
+        if (it.showServerUrl) {
+            mBinding.rlServerUrl.visibility = View.VISIBLE
+            mBinding.tvServerUrl.text = it.serverUrl
+        } else {
+            mBinding.rlServerUrl.visibility = View.GONE
         }
     }
 

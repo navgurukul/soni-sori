@@ -42,6 +42,7 @@ dependencies {
     //androidx
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.appcompat)
+    implementation(AndroidxDependencies.browser)
 
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)
