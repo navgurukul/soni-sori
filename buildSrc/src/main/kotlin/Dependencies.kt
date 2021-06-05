@@ -10,7 +10,7 @@ object Versions {
     const val kotlin = "1.4.32"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.0"
-    const val room = "2.2.5"
+    const val room = "2.3.0"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
@@ -156,8 +156,6 @@ object RetrofitDependencies {
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val logging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
     const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
-    const val converterGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-    const val gson = "com.google.code.gson:gson:2.8.6"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
 }
 

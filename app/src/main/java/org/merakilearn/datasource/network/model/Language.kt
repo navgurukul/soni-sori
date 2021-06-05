@@ -1,11 +1,13 @@
 package org.merakilearn.datasource.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Language(
-    @SerializedName("code")
+    @Json(name = "code")
     val code: String?,
-    @SerializedName("label")
+    @Json(name = "label")
     val label: String?
 )

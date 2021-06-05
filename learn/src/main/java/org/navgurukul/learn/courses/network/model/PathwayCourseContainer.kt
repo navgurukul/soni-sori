@@ -1,11 +1,13 @@
 package org.navgurukul.learn.courses.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import org.navgurukul.learn.courses.db.models.Course
 
+@JsonClass(generateAdapter = true)
 data class PathwayCourseContainer(
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int,
-    @SerializedName("courses")
+    @Json(name = "courses")
     val courses: List<Course>
 )

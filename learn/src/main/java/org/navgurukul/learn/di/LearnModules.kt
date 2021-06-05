@@ -2,11 +2,13 @@ package org.navgurukul.learn.di
 
 import android.app.Application
 import androidx.room.Room
+import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.MIGRATION_1_2
+import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
@@ -29,17 +31,18 @@ val apiModule = module {
 
 val databaseModule = module {
 
-    fun provideDatabase(application: Application): CoursesDatabase {
+    fun provideDatabase(application: Application, moshi: Moshi): CoursesDatabase {
         return Room.databaseBuilder(
             application.applicationContext,
             CoursesDatabase::class.java,
             "course.db"
         )
             .addMigrations(MIGRATION_1_2)
+            .addTypeConverter(Converters(moshi))
             .build()
     }
 
-    single { provideDatabase(androidApplication()) }
+    single { provideDatabase(androidApplication(), get()) }
     single { LearnPreferences(androidApplication()) }
 }
 

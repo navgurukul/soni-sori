@@ -4,39 +4,41 @@ package org.navgurukul.learn.courses.db.models
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 @Entity(tableName = "pathway_course")
+@JsonClass(generateAdapter = true)
 data class Course(
-    @SerializedName("created_at")
+    @Json(name = "created_at")
     var createdAt: String? = null,
-    @SerializedName("days_to_complete")
+    @Json(name = "days_to_complete")
     var daysToComplete: String? = null,
 
     @PrimaryKey(autoGenerate = false)
-    @SerializedName("id")
+    @Json(name = "id")
     var id: String = "",
-    @SerializedName("logo")
+    @Json(name = "logo")
     var logo: String? = null,
-    @SerializedName("name")
+    @Json(name = "name")
     var name: String = "",
-    @SerializedName("notes")
+    @Json(name = "notes")
     var notes: String? = null,
-    @SerializedName("pathwayId")
+    @Json(name = "pathwayId")
     var pathwayId: Int? = null,
-    @SerializedName("pathwayName")
+    @Json(name = "pathwayName")
     var pathwayName: String? = null,
-    @SerializedName("sequence_num")
+    @Json(name = "sequence_num")
     var sequenceNum: String? = null,
-    @SerializedName("short_description")
+    @Json(name = "short_description")
     var shortDescription: String? = null,
-    @SerializedName("type")
+    @Json(name = "type")
     var type: String? = null,
     @Ignore
-    @SerializedName("number")
+    @Json(name = "number")
     var number: Int? = null,
 
     @Ignore
-    @SerializedName("exercises")
+    @Json(name = "exercises")
     var exercises: List<Exercise?>? = listOf()
 )

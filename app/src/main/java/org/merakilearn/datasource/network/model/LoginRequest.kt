@@ -1,13 +1,15 @@
 package org.merakilearn.datasource.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
+@JsonClass(generateAdapter = true)
 data class LoginRequest(
-    @SerializedName("idToken")
+    @Json(name = "idToken")
     var idToken: String?,
-    @SerializedName("mode")
+    @Json(name = "mode")
     var mode: String = "android",
-    @SerializedName("id")
+    @Json(name = "id")
     var id: Int? = null
 ) : Serializable

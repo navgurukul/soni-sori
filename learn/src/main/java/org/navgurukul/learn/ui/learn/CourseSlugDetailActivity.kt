@@ -15,8 +15,7 @@ import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
@@ -149,11 +148,11 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initContentRV() {
         slugAdapter = ExerciseSlugAdapter {
-            if (it.type == ExerciseSlugAdapter.TYPE_PYTHON) {
-                val code = ExerciseSlugAdapter.parsePythonCode(it)
-                if (!code.isNullOrBlank())
-                    merakiNavigator.openPlayground(this, code)
-            } else if (it.type == ExerciseSlugAdapter.TYPE_TRY_TYPING || it.type == ExerciseSlugAdapter.TYPE_PRACTICE_TYPING) {
+            if (it is PythonExerciseSlugDetail) {
+                if (!it.value?.code.isNullOrBlank()) {
+                    merakiNavigator.openPlayground(this, it.value!!.code!!)
+                }
+            } else if (it is TypingExerciseSlugDetail) {
                 loadTypingTutor(it)
             }
         }
@@ -165,9 +164,9 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun loadTypingTutor(it: Exercise.ExerciseSlugDetail) {
+    private fun loadTypingTutor(it: TypingExerciseSlugDetail) {
         dynamicFeatureModuleManager.installModule("typing", {
-            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(it.value as ArrayList<String>, it.type!!))
+            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(ArrayList(it.value), it.type))
         })
     }
 
@@ -183,7 +182,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             })
     }
 
-    private fun parseDataForContent(it: List<Exercise>?): List<Exercise.ExerciseSlugDetail> {
+    private fun parseDataForContent(it: List<Exercise>?): List<ExerciseSlugDetail> {
         return it?.firstOrNull()?.content ?: return mutableListOf()
     }
 

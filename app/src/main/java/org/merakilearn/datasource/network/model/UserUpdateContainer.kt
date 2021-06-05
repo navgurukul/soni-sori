@@ -1,9 +1,11 @@
 package org.merakilearn.datasource.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class UserUpdateContainer(
-    @SerializedName("user")
+    @Json(name = "user")
     val user: LoginResponse.User
 )

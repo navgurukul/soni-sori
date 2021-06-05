@@ -1,28 +1,29 @@
 package org.navgurukul.learn.courses.db.typeadapters
 
+import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import org.navgurukul.learn.courses.db.models.Exercise
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import org.navgurukul.learn.courses.db.models.ExerciseSlugDetail
 import java.lang.reflect.Type
 
+@ProvidedTypeConverter
+class Converters(val moshi: Moshi) {
+    val type: Type = Types.newParameterizedType(
+        List::class.java,
+        ExerciseSlugDetail::class.java
+    )
+    private val adapter = moshi.adapter<List<ExerciseSlugDetail>>(type)
 
-class Converters {
-    companion object {
-        @TypeConverter
-        @JvmStatic
-        fun listToString(list: List<Exercise.ExerciseSlugDetail>): String? {
-            if (list.isNullOrEmpty()) return null
-            val listType: Type = object : TypeToken<List<Exercise.ExerciseSlugDetail?>?>() {}.type
-            return Gson().toJson(list, listType)
-        }
+    @TypeConverter
+    fun listToString(list: List<ExerciseSlugDetail>): String? {
+        if (list.isNullOrEmpty()) return null
+        return adapter.toJson(list)
+    }
 
-        @TypeConverter
-        @JvmStatic
-        fun stringToList(stringValue: String?): List<Exercise.ExerciseSlugDetail> {
-            if (stringValue.isNullOrEmpty()) return emptyList()
-            val listType: Type = object : TypeToken<List<Exercise.ExerciseSlugDetail?>?>() {}.type
-            return Gson().fromJson(stringValue, listType)
-        }
+    @TypeConverter
+    fun stringToList(stringValue: String?): List<ExerciseSlugDetail>? {
+        if (stringValue.isNullOrEmpty()) return emptyList()
+        return adapter.fromJson(stringValue)
     }
 }

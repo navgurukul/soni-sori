@@ -30,7 +30,7 @@ class HomeViewModel(
     private var onlyEnrolled: Boolean = false
 
     val supportedLanguages =
-        MutableLiveData<List<Language>>(config.getObjectifiedValue(Config.KEY_AVAILABLE_LANG))
+        MutableLiveData<List<Language>>(config.getObjectifiedList(Config.KEY_AVAILABLE_LANG))
 
     init {
         viewModelScope.launch {

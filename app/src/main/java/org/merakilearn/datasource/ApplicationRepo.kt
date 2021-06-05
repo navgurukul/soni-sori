@@ -25,7 +25,7 @@ class ApplicationRepo(
                 loginRequest.id = AppUtils.getFakeLoginResponseId(application)
             }
             val response = applicationApi.initLoginAsync(loginRequest)
-            authenticationRepository.login(response.user.chatId, response.user.chatPassword)
+            authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
             if (isFakeLogin)
                 AppUtils.resetFakeLogin(application)
             AppUtils.saveUserLoginResponse(response, application)
@@ -39,7 +39,7 @@ class ApplicationRepo(
     suspend fun performFakeSignUp(): LoginResponse? {
         return try {
             val response = applicationApi.initFakeSignUpAsync()
-            authenticationRepository.login(response.user.chatId, response.user.chatPassword)
+            authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
             AppUtils.saveFakeLoginResponse(response, application)
             response
         } catch (ex: Exception) {

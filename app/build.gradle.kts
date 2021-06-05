@@ -103,6 +103,10 @@ dependencies {
     implementation(AndroidxDependencies.lifecycleViewModelKtx)
     implementation(AndroidxDependencies.lifecycleLiveDataKtx)
 
+    //Moshi
+    implementation(RetrofitDependencies.moshiAdapter)
+    implementation(RetrofitDependencies.moshiConverter)
+    kapt(RetrofitDependencies.moshiKapt)
 
     // Room DB
     implementation(AndroidxDependencies.roomRuntime)
@@ -119,8 +123,6 @@ dependencies {
 
     // Retrofit
     implementation(RetrofitDependencies.retrofit)
-    implementation(RetrofitDependencies.gson)
-    implementation(RetrofitDependencies.converterGson)
     implementation(RetrofitDependencies.logging)
 
     //firebase

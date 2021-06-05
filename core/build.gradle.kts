@@ -48,7 +48,7 @@ dependencies {
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
-    implementation(RetrofitDependencies.gson)
+    implementation(RetrofitDependencies.moshiAdapter)
 
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
