@@ -1,58 +1,40 @@
 package org.navgurukul.learn.ui.learn.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemSlugDetailBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
-    DataBoundListAdapter<Exercise.ExerciseSlugDetail, ItemSlugDetailBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<Exercise.ExerciseSlugDetail>() {
+class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
+    DataBoundListAdapter<ExerciseSlugDetail, ItemSlugDetailBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<ExerciseSlugDetail>() {
             override fun areItemsTheSame(
-                oldItem: Exercise.ExerciseSlugDetail,
-                newItem: Exercise.ExerciseSlugDetail
+                oldItem: ExerciseSlugDetail,
+                newItem: ExerciseSlugDetail
             ): Boolean {
-                return false
+                return oldItem == newItem
             }
 
+            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
-                oldItem: Exercise.ExerciseSlugDetail,
-                newItem: Exercise.ExerciseSlugDetail
+                oldItem: ExerciseSlugDetail,
+                newItem: ExerciseSlugDetail
             ): Boolean {
-                return false
+                return oldItem == newItem
             }
         }
     ) {
-    companion object {
-        private const val TYPE_MD = "markdown"
-        const val TYPE_PYTHON = "python"
-        private const val TYPE_YOUTUBE_VIDEO = "youtube"
-        private const val TYPE_IMAGE = "image"
-        const val TYPE_TRY_TYPING = "trytyping"
-        const val TYPE_PRACTICE_TYPING = "practicetyping"
-        private const val TAG = "ExerciseSlugAdapter"
-
-        fun parsePythonCode(item: Exercise.ExerciseSlugDetail): String? {
-            val gson = Gson()
-            return try {
-                gson.fromJson(gson.toJson(item.value), PythonCode::class.java).code
-            } catch (ex: Exception) {
-                Log.e(TAG, "initPythonCodeView: ", ex)
-                null
-            }
-        }
-    }
 
     private val mCallback = callback
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemSlugDetailBinding {
@@ -64,52 +46,46 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
 
     override fun bind(
         holder: DataBoundViewHolder<ItemSlugDetailBinding>,
-        item: Exercise.ExerciseSlugDetail
+        item: ExerciseSlugDetail
     ) {
         val binding = holder.binding
         binding.imageViewPlay.setOnClickListener {
             mCallback.invoke(item)
         }
         binding.typing.setOnClickListener {
-            Log.d(TAG, "Type : "+item.type)
             mCallback.invoke(item)
         }
         binding.practiceTyping.setOnClickListener {
-            Log.d(TAG, "Type : "+item.type)
             mCallback.invoke(item)
         }
         bindItem(item, binding)
     }
 
     private fun bindItem(
-        item: Exercise.ExerciseSlugDetail,
+        item: ExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
-        Log.d(TAG, "Type : "+item.type)
-        when (item.type) {
-            TYPE_MD -> {
-                initMarkDownContent(item.value?.toString(), binding)
+        when (item) {
+            is MarkDownExerciseSlugDetail -> {
+                initMarkDownContent(item, binding)
             }
-            TYPE_PYTHON -> {
+            is PythonExerciseSlugDetail -> {
                 initPythonCodeView(item, binding)
             }
-            TYPE_YOUTUBE_VIDEO -> {
+            is YoutubeExerciseSlugDetail -> {
                 initYouTubeView(item, binding)
             }
-            TYPE_IMAGE -> {
+            is ImageExerciseSlugDetail -> {
                 initImageView(item, binding)
             }
-            TYPE_TRY_TYPING -> {
+            is TypingExerciseSlugDetail -> {
                 initTryTypingView(item, binding)
-            }
-            TYPE_PRACTICE_TYPING -> {
-                initPracticeTypingView(item, binding)
             }
         }
     }
 
     private fun initMarkDownContent(
-        value: String?,
+        item: MarkDownExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
@@ -121,38 +97,32 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.markDownContent.visibility = View.VISIBLE
 
         binding.markDownContent.apply {
-            //this.addStyleSheet(Github())
-           // this.loadMarkdown(value)
-            this.loadFromText(value)
+            this.loadFromText(item.value)
         }
     }
 
 
     private fun initPythonCodeView(
-        item: Exercise.ExerciseSlugDetail,
+        item: PythonExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
-        Log.d(TAG, "Value  : "+item.value)
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
         binding.markDownContent.visibility = View.VISIBLE
         binding.imageViewPlay.visibility = View.VISIBLE
-        val code = parsePythonCode(item)
         val content = StringBuilder()
-        content.append("```python").append("\n").append(code).append("\n").append("```")
+        content.append("```python").append("\n").append(item.value?.code).append("\n").append("```")
 
 
         binding.markDownContent.apply {
-            //this.addStyleSheet(Github())
-            // this.loadMarkdown(content.toString())
             this.loadFromText(content.toString())
         }
     }
 
 
-    private fun initYouTubeView(item: Exercise.ExerciseSlugDetail, binding: ItemSlugDetailBinding) {
+    private fun initYouTubeView(item: YoutubeExerciseSlugDetail, binding: ItemSlugDetailBinding) {
         binding.markDownContent.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
@@ -162,14 +132,14 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
 
         binding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer) {
-                item.value?.toString()?.let { youTubePlayer.loadVideo(it, 0f) }
+                item.value?.let { youTubePlayer.loadVideo(it, 0f) }
             }
         })
     }
 
 
     private fun initImageView(
-        item: Exercise.ExerciseSlugDetail,
+        item: ImageExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
@@ -178,44 +148,22 @@ class ExerciseSlugAdapter(callback: (Exercise.ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
-        val value = item.value
-        val gson = Gson()
-        try {
-            val url = gson.fromJson(gson.toJson(value), Image::class.java).url
-            Glide.with(binding.imageView.context).load(url).into(binding.imageView);
-        } catch (ex: Exception) {
-            Log.e(TAG, "initImageView: ", ex)
+        item.value?.let {
+            Glide.with(binding.imageView.context).load(it.url).into(binding.imageView);
         }
     }
 
     private fun initTryTypingView(
-        item: Exercise.ExerciseSlugDetail,
+        item: TypingExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
-        Log.d(TAG, "Value  : "+item.value)
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.markDownContent.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
-        binding.relStartTyping.visibility = View.VISIBLE
-        binding.relPracticeTyping.visibility = View.GONE
+
+        binding.relStartTyping.isVisible = item.type == ExerciseSlugDetail.TYPE_TRY_TYPING
+        binding.relPracticeTyping.isVisible = item.type == ExerciseSlugDetail.TYPE_PRACTICE_TYPING
     }
-
-    private fun initPracticeTypingView(
-            item: Exercise.ExerciseSlugDetail,
-            binding: ItemSlugDetailBinding
-    ) {
-        Log.d(TAG, "Value  : "+item.value)
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.markDownContent.visibility = View.VISIBLE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relStartTyping.visibility = View.GONE
-        binding.relPracticeTyping.visibility = View.VISIBLE
-    }
-
-    data class PythonCode(@SerializedName("code") val code: String?, @SerializedName("testCases") val testCases: Any?)
-
-    data class Image(@SerializedName("url") val url: String?)
 
 }

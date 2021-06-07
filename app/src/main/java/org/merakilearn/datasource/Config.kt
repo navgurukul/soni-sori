@@ -5,6 +5,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import org.merakilearn.R
 import org.merakilearn.core.extentions.objectify
+import org.merakilearn.core.extentions.objectifyToList
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -37,7 +38,9 @@ class Config {
             }
     }
 
-    inline fun <reified T> getObjectifiedValue(key: String): T = getValue<String>(key).objectify()
+    inline fun <reified T> getObjectifiedValue(key: String): T? = getValue<String>(key).objectify()
+
+    inline fun <reified T> getObjectifiedList(key: String): List<T>? = getValue<String>(key).objectifyToList()
 
     inline fun <reified T> getValue(key: String): T {
         return when (T::class) {

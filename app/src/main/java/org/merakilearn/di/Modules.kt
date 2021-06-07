@@ -2,8 +2,9 @@ package org.merakilearn.di
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,8 +23,10 @@ import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
 import org.merakilearn.util.AppUtils
+import org.navgurukul.learn.courses.db.models.*
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -83,21 +86,32 @@ val networkModule = module {
         return okHttpClientBuilder.build()
     }
 
-    fun provideGson(): Gson {
-        return GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").setLenient().create()
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(
+                PolymorphicJsonAdapterFactory.of(ExerciseSlugDetail::class.java, "type")
+                .withSubtype(ImageExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_IMAGE)
+                .withSubtype(MarkDownExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_MD)
+                .withSubtype(TypingExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_PRACTICE_TYPING)
+                .withSubtype(PythonExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_PYTHON)
+                .withSubtype(TypingExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_TRY_TYPING)
+                .withSubtype(YoutubeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_YOUTUBE_VIDEO)
+            )
+            .build()
     }
 
 
-    fun provideRetrofit(factory: Gson, client: OkHttpClient, settingsRepo: SettingsRepo): Retrofit {
+    fun provideRetrofit(factory: Moshi, client: OkHttpClient, settingsRepo: SettingsRepo): Retrofit {
         return Retrofit.Builder()
             .baseUrl(settingsRepo.serverBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create(factory))
+            .addConverterFactory(MoshiConverterFactory.create(factory))
             .client(client)
             .build()
     }
 
     single { provideHttpClient(androidApplication()) }
-    single { provideGson() }
+    single { provideMoshi() }
     single { provideRetrofit(get(), get(), get()) }
 
 }
@@ -112,7 +126,7 @@ val repositoryModule = module {
             get(),
             PreferenceManager.getDefaultSharedPreferences(androidApplication()),
             get(),
-            get()
+            get(),
         )
     }
 }

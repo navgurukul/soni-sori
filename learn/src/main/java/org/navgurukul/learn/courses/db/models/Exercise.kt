@@ -4,45 +4,40 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
 @Entity(tableName = "course_exercise")
+@JsonClass(generateAdapter = true)
 data class Exercise(
-    @SerializedName("content")
+    @Json(name = "content")
     var content: MutableList<ExerciseSlugDetail>? = mutableListOf(),
-    @SerializedName("course_id")
+    @Json(name = "course_id")
     var courseId: String? = "",
-    @SerializedName("github_link")
+    @Json(name = "github_link")
     var githubLink: String? = "",
-    @SerializedName("id")
+    @Json(name = "id")
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     var id: String = "",
-    @SerializedName("name")
+    @Json(name = "name")
     var name: String? = "",
-    @SerializedName("parent_exercise_id")
+    @Json(name = "parent_exercise_id")
     var parentExerciseId: String? = "",
-    @SerializedName("review_type")
+    @Json(name = "review_type")
     var reviewType: String? = "",
-    @SerializedName("sequence_num")
+    @Json(name = "sequence_num")
     var sequenceNum: String? = String(),
-    @SerializedName("slug")
+    @Json(name = "slug")
     var slug: String? = "",
-    @SerializedName("solution")
+    @Json(name = "solution")
     var solution: String? = String(),
-    @SerializedName("submission_type")
+    @Json(name = "submission_type")
     var submissionType: String? = String(),
     @Ignore
     var number: Int? = 0,
 
-    @SerializedName("courseName")
+    @Json(name = "courseName")
     var courseName: String? = ""
-) : Serializable {
-    data class ExerciseSlugDetail(
-        @SerializedName("type")
-        var type: String? = "",
-        @SerializedName("value")
-        var value: Any? = null
-    ) : Serializable
-}
+) : Serializable

@@ -37,7 +37,7 @@ class WelcomeViewModel(
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
                 if (loginResponse.is_first_time) {
-                    observeInitialSync(loginResponse.roomId)
+                    observeInitialSync(loginResponse.roomId!!)
                 } else {
                     _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
                 }
@@ -53,7 +53,7 @@ class WelcomeViewModel(
             val fakeUserLoginResponse = applicationRepo.performFakeSignUp()
             setState { copy(isLoading = false) }
             fakeUserLoginResponse?.let {
-                observeInitialSync(it.roomId)
+                observeInitialSync(it.roomId!!)
             } ?: run {
                 _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }

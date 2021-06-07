@@ -92,8 +92,9 @@ dependencies {
 
     // Retrofit
     implementation(RetrofitDependencies.retrofit)
-    implementation(RetrofitDependencies.gson)
-    implementation(RetrofitDependencies.converterGson)
+    implementation(RetrofitDependencies.moshiAdapter)
+    implementation(RetrofitDependencies.moshiConverter)
+    kapt(RetrofitDependencies.moshiKapt)
     implementation(RetrofitDependencies.logging)
 
 
