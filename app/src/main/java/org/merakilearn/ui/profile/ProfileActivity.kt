@@ -134,7 +134,6 @@ class ProfileActivity : AppCompatActivity() {
         alert.show()
     }
 
-
     private fun shareCode(it: ProfileViewEvents.ShareText) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -267,7 +266,6 @@ class ProfileActivity : AppCompatActivity() {
             NavUtils.navigateUpTo(this, upIntent)
         }
     }
-
 
     private fun showLogOutDialog() {
         AlertDialog.Builder(this).setMessage(getString(R.string.want_log_out))
