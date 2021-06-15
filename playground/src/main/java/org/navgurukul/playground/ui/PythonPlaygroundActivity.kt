@@ -39,8 +39,8 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     private lateinit var bottomSheet: View
     private lateinit var bottomSheetPeeklayout: LinearLayout
     private lateinit var errorImage: ImageView
-    private lateinit var errorTextExample: TextView
-    private lateinit var errorTextTip: TextView
+    public lateinit var errorTextExample: TextView
+    public lateinit var errorTextTip: TextView
     private lateinit var tvMentorHelp: TextView
     private lateinit var errorLayout: LinearLayout
 
@@ -76,6 +76,137 @@ class PythonPlaygroundActivity : AppCompatActivity() {
             parseCodeToUI(existingCode, code)
         }
     }
+
+    enum class ErrorUIEnum {
+        ImportError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
+                exampleText.setText(context.getString(R.string.importErrorExampleText))
+                tipText.setText(context.getString(R.string.importErrorTiptext))
+            }
+        },
+        ModuleNotFoundError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_modulenotfound)
+                exampleText.setText(context.getString(R.string.moduleNotFoundExampleText))
+                tipText.setText(context.getString(R.string.moduleNotFoundeTipText))
+            }
+        },
+        IndexError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_indexerror)
+                exampleText.setText(context.getString(R.string.indexErrorExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        StopIteration {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_stopiteration)
+                exampleText.setText(context.getString(R.string.stopIterationExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        ValueError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_valueerror)
+                exampleText.setText(context.getString(R.string.valueErrorExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        TypeError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_typeerror)
+                exampleText.setText(context.getString(R.string.typeErrorExampleText))
+                tipText.setText(context.getString(R.string.typeErrorTipText))
+            }
+        },
+        NameError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_nameerror)
+                exampleText.setText(context.getString(R.string.nameErrorExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        KeyError {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_keyerror)
+                exampleText.setText(context.getString(R.string.keyErrorExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        KeyboardInterrupt {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
+                exampleText.setText(context.getString(R.string.keyboardInterruptExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        },
+        default {
+            override fun apply(
+                context: Context,
+                errorImage: ImageView,
+                exampleText: TextView,
+                tipText: TextView
+            ) {
+                errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
+                exampleText.setText(context.getString(R.string.keyboardInterruptExampleText))
+                tipText.setText(context.getString(R.string.tipText))
+            }
+        };
+
+        abstract fun apply(
+            context: Context,
+            errorImage: ImageView,
+            exampleText: TextView,
+            tipText: TextView
+        )
+    }
+
 
     private fun parseCodeToUI(existingCode: String, code: String) {
         if (TextUtils.isEmpty(existingCode)) {
@@ -376,171 +507,72 @@ class PythonPlaygroundActivity : AppCompatActivity() {
     }
 
     private fun createErrorUI() {
-            errorImage = findViewById(R.id.errorImage)
-            errorTextExample = findViewById(R.id.errorTextExample)
-            errorTextTip = findViewById(R.id.errorTextTip)
-            tvMentorHelp = findViewById(R.id.tvMentorHelp)
-            errorLayout = findViewById(R.id.errorLayout)
+        errorImage = findViewById(R.id.errorImage)
+        errorTextExample = findViewById(R.id.errorTextExample)
+        errorTextTip = findViewById(R.id.errorTextTip)
+        tvMentorHelp = findViewById(R.id.tvMentorHelp)
+        errorLayout = findViewById(R.id.errorLayout)
 
+        findViewById<TextView>(R.id.copy_btn).setOnClickListener {
+            copyToClipboard(this, tvError.text.toString())
+            Toast.makeText(this, "Copied !!", Toast.LENGTH_SHORT).show()
+        }
 
-            errorImage.visibility = GONE
-            errorTextExample.visibility = GONE
-            errorTextTip.visibility = GONE
-            errorLayout.visibility = GONE
+        findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
+            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            onBackPressed()
+        }
 
-            findViewById<TextView>(R.id.copy_btn).setOnClickListener {
+        val errorText = tvError.text.toString()
 
-                copyToClipboard(this, tvError.text.toString())
-                Toast.makeText(this, "Copied !!", Toast.LENGTH_SHORT).show()
+        when {
+            errorText.matches(Regex("^.*ImportError:([a-zA-Z]+( [a-zA-Z]+)+).*'.*'\$")) -> { // 1
+                ErrorUIEnum.ImportError.apply(this, errorImage, errorTextExample, errorTextTip)
             }
-
-            findViewById<ImageView>(R.id.cancel_btn).setOnClickListener {
-                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                onBackPressed()
+            errorText.matches(Regex(" ^.*ModuleNotFoundError+.*:.*([a-zA-Z]+( [a-zA-Z]+)+).*'.*'\$")) -> { //2
+                ErrorUIEnum.ModuleNotFoundError.apply(
+                    this,
+                    errorImage,
+                    errorTextExample,
+                    errorTextTip
+                )
             }
-
-            val errorText = tvError.text.toString().toLowerCase()
-
-            if (errorText != "") {
-                errorImage.setImageResource(R.drawable.ic_keyboardinterrupt)
-                errorImage.visibility = VISIBLE
-                errorLayout.visibility = VISIBLE
-
-                errorTextExample.visibility = VISIBLE
-                errorTextExample.setText("Error occured")
-
-                errorTextTip.visibility = VISIBLE
-                val tipText = SpannableStringBuilder()
-                    .bold { append("FIX: ") }
-                    .append("How to fix this type of error will be given here in short.")
-                errorTextTip.setText(tipText)
+            errorText.matches(Regex("^.*IndexError+.*:.*([a-zA-Z]+( [a-zA-Z]+)+).*\$")) -> { //3
+                ErrorUIEnum.IndexError.apply(this, errorImage, errorTextExample, errorTextTip)
             }
-
-
-            if (errorText.contains("importerror")) { // 1
-                errorImage.setImageResource(R.drawable.ic_importerror)
-
-                /*var textParsed = ""
-            val urlMatcher = "\'([^\"]*)\'".toRegex()
-            Log.d("abhi_check", urlMatcher.find(errorText)?.value)
-            textParsed = urlMatcher.find(errorText)?.value.toString();
-
-            Log.d("abhi_check", "textParsed -> " + textParsed)
-            Log.d("abhi_check", textParsed.split("from").get(0))
-            Log.d("abhi_check", textParsed.split("from").get(1))
-
-
-            // Suppose id = 1111 and name = neil (just what you want).
-            val exampleText = SpannableStringBuilder()
-                .append("Couldn't find an object with name ")
-                .bold { append(textParsed.split("from").get(0)) }
-                .append("in the")
-                .bold { append(textParsed.split("from").get(1)) }
-                .append(" library to import")*/
-
-                val exampleText = SpannableStringBuilder()
-                    .append("Due to an ")
-                    .bold { append("Invalid or Incorrect path") }
-                    .append("after the import statement,specified module could not be imported")
-
-
-                val tipText = SpannableStringBuilder()
-                    .bold { append("FIX: ") }
-                    .append("Check whether the module you are trying to import exist")
-
-                errorTextExample.setText(exampleText)
-                errorTextTip.setText(tipText)
-
-            } else if (errorText.contains("modulenotfounderror")) { //2
-                errorImage.setImageResource(R.drawable.ic_modulenotfound)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("You're trying to import a module which is ")
-                    .bold { append("not exisiting ") }
-                    .append("in the ")
-                    .bold { append("library.") }
-
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("indexerror")) { //3
-                errorImage.setImageResource(R.drawable.ic_indexerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("You're trying to access an item at an ")
-                    .bold { append("invalid index.") }
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("stopiteration")) {//4
-                errorImage.setImageResource(R.drawable.ic_stopiterationnotext)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("You can't call the")
-                    .bold { append("next()") }
-                    .append("function beyond")
-                    .bold { append("iterator items") }
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("valueerror")) {//5
-                errorImage.setImageResource(R.drawable.ic_valueerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("ValueError is thrown when a function's")
-                    .bold { append("argument") }
-                    .append("is of an inappropriate type")
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("typerror")) {//6
-                errorImage.setImageResource(R.drawable.ic_typeerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("You can't do mathematical operations on two")
-                    .bold { append("different data types.") }
-                errorTextExample.setText(exampleText)
-
-
-                val tipText = SpannableStringBuilder()
-                    .bold { append("FIX: ") }
-                    .append(" 1. Understand the datatypes of both the values/variables\n")
-                    .append(" 2. Make the data types same as each other")
-
-                errorTextTip.setText(tipText)
-            } else if (errorText.contains("nameerror")) {//7
-                errorImage.setImageResource(R.drawable.ic_nameerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("NameError is thrown when an")
-                    .bold { append("object could not be found") }
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("keyerror")) {//8
-                errorImage.setImageResource(R.drawable.ic_keyerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("You're trying to access an key which is")
-                    .bold { append("not exisiting") }
-                    .append("in the")
-                    .bold { append("dictionary(dict).") }
-                errorTextExample.setText(exampleText)
-            } else if (errorText.contains("keyboardinterrupt")) {//9
-                errorImage.setImageResource(R.drawable.ic_valueerror)
-
-
-                // Suppose id = 1111 and name = neil (just what you want).
-                val exampleText = SpannableStringBuilder()
-                    .append("KeyboardInterrupt is thrown when the user hits")
-                    .bold { append("the interrupt key") }
-                    .append("(normally Control-C) during the execution of the program.")
-                errorTextExample.setText(exampleText)
+            errorText.matches(Regex("^.*StopIteration+.*:.*([a-zA-Z]+( [a-zA-Z]+)+).*\$")) -> {//4
+                ErrorUIEnum.StopIteration.apply(this, errorImage, errorTextExample, errorTextTip);
             }
+            errorText.matches(Regex("^.*ValueError+.*:.*([a-zA-Z]+( [a-zA-Z]+)+).*\$")) -> {//5
+                ErrorUIEnum.ValueError.apply(this, errorImage, errorTextExample, errorTextTip)
+            }
+            errorText.matches(Regex("^.*TypeError*r.*([a-zA-Z]+( [a-zA-Z]+)+).*\$")) -> {//6
+                ErrorUIEnum.TypeError.apply(this, errorImage, errorTextExample, errorTextTip)
+            }
+            errorText.matches(Regex("^.*NameError+.*:.*[a-zA-Z]+.*'.*'.*([a-zA-Z]+( [a-zA-Z]+)+)")) -> {//7
+                ErrorUIEnum.NameError.apply(this, errorImage, errorTextExample, errorTextTip);
+            }
+            errorText.matches(Regex("^.*KeyError+.*:.*\$")) -> {//8  //^.*KeyError+.*:.*$
+                ErrorUIEnum.KeyError.apply(this, errorImage, errorTextExample, errorTextTip)
+            }
+            errorText.matches(Regex("^.*[a-zA-Z]+.*:.*KeyboardInterrupt+\$")) -> {//9
+                ErrorUIEnum.KeyboardInterrupt.apply(
+                    this,
+                    errorImage,
+                    errorTextExample,
+                    errorTextTip
+                )
+            }
+            else -> {
+                ErrorUIEnum.default.apply(this, errorImage, errorTextExample, errorTextTip)
+            }
+        }
+
+    }
+
+
+    fun toFindRegexMatch(pattern: String, errorStackTrace: String) {
+
 
     }
 

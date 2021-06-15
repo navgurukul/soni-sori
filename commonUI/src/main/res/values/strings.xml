@@ -17,4 +17,22 @@
     <string name="empty_state_no_content_title">No Content</string>
     <string name="empty_state_error_description">Check your connection..\nseems like you’re not connected to the internet</string>
     <string name="empty_state_error_title">No Internet</string>
+
+
+    <!-- Error Screen UI Strings: Start-->
+    <string name="tipText"><b>FIX:</b> How to fix this type of error will be given here in short.</string>
+    <string name="exampleDefaultText"><b>Error Occured</b></string>
+    <string name="importErrorExampleText">Due to an <b>Invalid or Incorrect path</b> after the import statement,specified module could not be imported</string>
+    <string name="importErrorTiptext"><b>FIX:</b> Check whether the module you are trying to import exist </string>
+    <string name="moduleNotFoundExampleText"><b>FIX:</b> Check whether the module you are trying to import exist </string>
+    <string name="moduleNotFoundeTipText">You are trying to import a module which is <b>not exisiting </b> in the <b>library.</b></string>
+    <string name="indexErrorExampleText">You are trying to import a module which is <b>not exisiting </b> in the <b>library.</b></string>
+    <string name="stopIterationExampleText">You can\'t call the <b>next()</b> function beyond <b>iterator items</b></string>
+    <string name="valueErrorExampleText">ValueError is thrown when a function\'s <b>argument</b> is of an inappropriate type </string>
+    <string name="typeErrorExampleText">You can\'t do mathematical operations on two <b>different data types.</b> </string>
+    <string name="typeErrorTipText"><b>FIX: </b> 1. Understand the datatypes of both the values/variables\n 2. Make the data types same as each other</string>
+    <string name="nameErrorExampleText">NameError is thrown when an <b>object could not be found</b></string>
+    <string name="keyErrorExampleText">You\'re trying to access an key which is<b>not exisiting</b> in the <b>dictionary(dict).</b></string>
+    <string name="keyboardInterruptExampleText">KeyboardInterrupt is thrown when the user hits <b>the interrupt key</b> (normally Control-C) during the execution of the program.</string>
+    <!-- Error Screen UI Strings: End-->
 </resources>
