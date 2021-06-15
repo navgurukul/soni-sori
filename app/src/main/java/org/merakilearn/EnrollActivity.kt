@@ -2,13 +2,10 @@ package org.merakilearn
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.MenuItem
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
@@ -93,12 +90,16 @@ class EnrollActivity : AppCompatActivity() {
         viewModel.viewEvents.observe(this, Observer {
             when (it) {
                 is EnrollViewEvents.ShowToast -> toast(it.toastText)
-                is EnrollViewEvents.CloseScreen -> finish()
+                is EnrollViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
             }
         })
 
-        enroll.setOnClickListener {
-            viewModel.handle(EnrollViewActions.EnrollToClass)
+        primary_action.setOnClickListener {
+            viewModel.handle(EnrollViewActions.PrimaryAction)
+        }
+
+        secondary_action.setOnClickListener {
+            viewModel.handle(EnrollViewActions.SecondaryAction)
         }
 
         app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -141,16 +142,30 @@ class EnrollActivity : AppCompatActivity() {
             tvSpecialInstruction.isVisible = true
             tvSpecialInstructionTitle.isVisible = true
             tvSpecialInstruction.loadFromText(it)
-        } ?: kotlin.run {
+        } ?: run {
             tvSpecialInstruction.isVisible = false
             tvSpecialInstructionTitle.isVisible = false
         }
 
-        it.enrollButton?.let {
-            enroll.isVisible = true
-            enroll.text = it
+        it.primaryAction?.let {
+            primary_action.isVisible = true
+            primary_action.text = it
         } ?: kotlin.run {
-            enroll.isVisible = false
+            primary_action.isVisible = false
+        }
+
+        it.secondaryAction?.let {
+            secondary_action.isVisible = true
+            secondary_action.text = it
+        } ?: run {
+            secondary_action.isVisible = false
+        }
+
+        it.language?.let {
+            tvClassLanguage.isVisible = true
+            tvClassLanguage.text = it
+        } ?: run {
+            tvClassLanguage.isVisible = false
         }
 
         it.title?.let {
