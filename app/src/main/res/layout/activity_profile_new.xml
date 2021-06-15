@@ -46,18 +46,21 @@
                     android:layout_centerVertical="true"
                     android:padding="@dimen/dimen_10_dp"
                     android:drawableLeft="@drawable/ic_edit"
-                    android:text="   Edit Profile"
+                    android:text="  Edit Profile"
                     android:gravity="center"
                     android:layout_gravity="center"
+                    android:textColor="@color/sheetHandle"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvName"
                     style="@style/text_view_profile"
+                    android:fontFamily="@font/n_extra_bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
+                    android:textSize="@dimen/spacing_4x"
                     android:gravity="center"
                     tools:text="Neha Singh" />
 
@@ -69,7 +72,9 @@
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
                     android:gravity="center"
-                    tools:text="99999999999" />
+                    android:textSize="@dimen/spacing_4x"
+                    tools:text="99999999999"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvEmail"
@@ -79,6 +84,7 @@
                     android:layout_below="@+id/tvName"
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
+                    android:textSize="@dimen/spacing_4x"
                     android:gravity="center"
                     tools:text="nehasingh@xyz.com" />
 
@@ -91,6 +97,7 @@
                     android:layout_below="@+id/tvEmail"
                     android:layout_toStartOf="@+id/ivEdit"
                     android:layout_toEndOf="@+id/ivProfile"
+                    android:textSize="@dimen/spacing_4x"
                     android:gravity="center"
                     tools:text="AppVersion: 1.0" />
 
@@ -165,6 +172,7 @@
                     android:layout_below="@+id/tvSavedFile"
                     android:layout_marginTop="@dimen/spacing_2x"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
                     tools:listitem="@layout/item_saved_file" />
 
             </RelativeLayout>
