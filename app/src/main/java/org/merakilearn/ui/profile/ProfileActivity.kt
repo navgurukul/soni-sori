@@ -216,7 +216,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_2x)
         mBinding.recyclerview.layoutManager = GridLayoutManager(this, 2)
-        mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
+        //mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
         mBinding.recyclerview.adapter = adapter
 
         mBinding.tvViewAll.setOnClickListener {
