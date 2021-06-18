@@ -134,7 +134,6 @@ class ProfileActivity : AppCompatActivity() {
         alert.show()
     }
 
-
     private fun shareCode(it: ProfileViewEvents.ShareText) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -217,7 +216,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_2x)
         mBinding.recyclerview.layoutManager = GridLayoutManager(this, 2)
-        mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
+        //mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
         mBinding.recyclerview.adapter = adapter
 
         mBinding.tvViewAll.setOnClickListener {
@@ -267,7 +266,6 @@ class ProfileActivity : AppCompatActivity() {
             NavUtils.navigateUpTo(this, upIntent)
         }
     }
-
 
     private fun showLogOutDialog() {
         AlertDialog.Builder(this).setMessage(getString(R.string.want_log_out))

@@ -10,5 +10,6 @@
 
     <color name="avatar_border_color">#FFD31D</color>
     <color name="chip_selected_color">#FFFF0000</color>
+    <color name="outline_dark_color">#FBE482</color>
 
 </resources>
