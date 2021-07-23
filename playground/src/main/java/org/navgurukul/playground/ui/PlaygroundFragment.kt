@@ -45,7 +45,7 @@ class PlaygroundFragment : BaseFragment() {
             }
         })
 
-        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_playground), null, R.attr.textPrimary)
+        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_playground), R.attr.textPrimary)
     }
 
 }

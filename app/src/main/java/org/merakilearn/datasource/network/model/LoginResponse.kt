@@ -13,7 +13,7 @@ data class LoginResponse(
     @Json(name = "room_id")
     val roomId: String?,
     @Json(name = "is_first_time")
-    val is_first_time: Boolean
+    val is_first_time: Boolean = true
 ) {
     @JsonClass(generateAdapter = true)
     data class User(

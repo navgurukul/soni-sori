@@ -8,19 +8,17 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Pathway
-import org.navgurukul.learn.databinding.ItemPathwayBinding
+import org.navgurukul.learn.databinding.ItemLanguageBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
-class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
+class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +26,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
     }
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
-    private lateinit var adapter: PathwaySelectionAdapter
+    private lateinit var adapter: LanguageSelectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +44,10 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        adapter = PathwaySelectionAdapter {
-            viewModel.selectPathway(it)
+        tv_title.text = getString(R.string.select_language)
+
+        adapter = LanguageSelectionAdapter {
+            viewModel.selectLanguage(it)
         }
         recycler_view.adapter = adapter
         recycler_view.addItemDecoration(
@@ -66,7 +66,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
             })
 
         viewModel.viewState.observe(viewLifecycleOwner, {
-            adapter.submitList(it.pathways)
+            adapter.submitList(it.languages)
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -75,40 +75,31 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
     }
 }
 
-class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
-    DataBoundListAdapter<Pathway, ItemPathwayBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<Pathway>() {
-            override fun areItemsTheSame(oldItem: Pathway, newItem: Pathway): Boolean {
+class LanguageSelectionAdapter(val callback: (Language) -> Unit) :
+    DataBoundListAdapter<Language, ItemLanguageBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<Language>() {
+            override fun areItemsTheSame(oldItem: Language, newItem: Language): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Pathway, newItem: Pathway): Boolean {
+            override fun areContentsTheSame(oldItem: Language, newItem: Language): Boolean {
                 return oldItem == newItem
             }
         }
     ) {
-    override fun createBinding(parent: ViewGroup, viewType: Int): ItemPathwayBinding {
+    override fun createBinding(parent: ViewGroup, viewType: Int): ItemLanguageBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_pathway, parent, false
+            R.layout.item_language, parent, false
         )
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
+    override fun bind(holder: DataBoundViewHolder<ItemLanguageBinding>, item: Language) {
         val binding = holder.binding
-        binding.pathway = item
+        binding.language = item
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
-
-        val thumbnail = Glide.with(holder.itemView)
-            .load(R.drawable.ic_typing_icon)
-
-        Glide.with(binding.ivPathwayIcon)
-            .load(item.logo)
-            .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
-            .thumbnail(thumbnail)
-            .into(binding.ivPathwayIcon)
     }
 
 }

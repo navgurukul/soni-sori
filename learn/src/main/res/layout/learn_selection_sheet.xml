@@ -13,7 +13,7 @@
         android:id="@+id/handle_view"
         android:layout_width="@dimen/sheet_handle_width"
         android:layout_height="@dimen/sheet_handle_height"
-        android:layout_marginTop="@dimen/spacing_1x"
+        android:layout_marginTop="@dimen/spacing_2x"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/sheet_handle" />
 

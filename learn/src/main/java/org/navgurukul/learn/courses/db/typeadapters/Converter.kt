@@ -9,21 +9,38 @@ import java.lang.reflect.Type
 
 @ProvidedTypeConverter
 class Converters(val moshi: Moshi) {
-    val type: Type = Types.newParameterizedType(
+    private val exerciseDetailListType: Type = Types.newParameterizedType(
         List::class.java,
         ExerciseSlugDetail::class.java
     )
-    private val adapter = moshi.adapter<List<ExerciseSlugDetail>>(type)
+    private val stringListTYpe: Type = Types.newParameterizedType(
+        List::class.java,
+        String::class.java
+    )
+    private val exerciseAdapter = moshi.adapter<List<ExerciseSlugDetail>>(exerciseDetailListType)
+    private val stringAdapter = moshi.adapter<List<String>>(stringListTYpe)
 
     @TypeConverter
-    fun listToString(list: List<ExerciseSlugDetail>): String? {
+    fun exerciseDetailListToString(list: List<ExerciseSlugDetail>): String? {
         if (list.isNullOrEmpty()) return null
-        return adapter.toJson(list)
+        return exerciseAdapter.toJson(list)
     }
 
     @TypeConverter
-    fun stringToList(stringValue: String?): List<ExerciseSlugDetail>? {
+    fun stringToExerciseSlugDetailList(stringValue: String?): List<ExerciseSlugDetail>? {
         if (stringValue.isNullOrEmpty()) return emptyList()
-        return adapter.fromJson(stringValue)
+        return exerciseAdapter.fromJson(stringValue)
+    }
+
+    @TypeConverter
+    fun stringListToString(list: List<String>): String {
+        if (list.isNullOrEmpty()) return ""
+        return stringAdapter.toJson(list)
+    }
+
+    @TypeConverter
+    fun stringToStringList(stringValue: String?): List<String> {
+        if (stringValue.isNullOrEmpty()) return emptyList()
+        return stringAdapter.fromJson(stringValue) ?: emptyList()
     }
 }

@@ -33,4 +33,5 @@
     <dimen name="sheet_handle_width">60dp</dimen>
     <dimen name="sheet_handle_height">4dp</dimen>
     <dimen name="pathway_select_icon_size">40dp</dimen>
+    <dimen name="sheet_top_offset">100dp</dimen>
 </resources>

@@ -3,12 +3,11 @@ package org.navgurukul.learn.courses.db.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
-import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
-@Entity(tableName = "course_exercise")
+@Entity(tableName = "course_exercise", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
 data class Exercise(
     @Json(name = "content")
@@ -18,7 +17,6 @@ data class Exercise(
     @Json(name = "github_link")
     var githubLink: String? = "",
     @Json(name = "id")
-    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     var id: String = "",
     @Json(name = "name")
@@ -35,6 +33,7 @@ data class Exercise(
     var solution: String? = String(),
     @Json(name = "submission_type")
     var submissionType: String? = String(),
+    var lang: String = "en",
     @Ignore
     var number: Int? = 0,
 

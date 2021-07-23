@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 2
+const val DB_VERSION = 3
 
 @Dao
 interface PathwayDao {
@@ -36,7 +36,7 @@ interface CourseDao {
     fun insertCourse(course: Course?)
 
     @Query("select * from pathway_course where id= :id")
-    fun course(id: String): LiveData<Course>
+    fun course(id: String): Course?
 
     @Query("select * from pathway_course")
     fun getAllCoursesDirect(): List<Course>?
@@ -56,15 +56,15 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExerciseAsync(course: List<Exercise?>?)
 
-    @Query("select * from course_exercise where courseId = :courseId")
-    fun getAllExercisesForCourse(courseId: String): LiveData<List<Exercise>>
+    @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
+    fun getAllExercisesForCourse(courseId: String, lang: String): LiveData<List<Exercise>>
 
-    @Query("select * from course_exercise where id = :exerciseId")
-    fun getExerciseById(exerciseId: String): LiveData<List<Exercise>>
+    @Query("select * from course_exercise where id = :exerciseId and lang = :lang")
+    fun getExerciseById(exerciseId: String, lang: String): LiveData<List<Exercise>>
 
 
-    @Query("select * from course_exercise where courseId = :courseId")
-    fun getAllExercisesForCourseDirect(courseId: String): List<Exercise>
+    @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
+    fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<Exercise>
 }
 
 @Dao
@@ -79,6 +79,56 @@ interface CurrentStudyDao {
 val MIGRATION_1_2 = object: Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL,  `logo` TEXT, PRIMARY KEY(`id`))")
+    }
+
+}
+
+val MIGRATION_2_3 = object: Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        //create new table
+        database.execSQL("CREATE TABLE `new_course_exercise`(" +
+                " `content` TEXT," +
+                " `courseId` TEXT," +
+                " `githubLink` TEXT, " +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT," +
+                " `parentExerciseId` TEXT," +
+                " `reviewType` TEXT," +
+                " `sequenceNum` TEXT," +
+                " `slug` TEXT," +
+                " `solution` TEXT," +
+                " `submissionType` TEXT," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )")
+
+        //insert data from old table into new table
+        database.execSQL("INSERT INTO `new_course_exercise`(" +
+                " `content`," +
+                " `courseId`," +
+                " `githubLink`," +
+                " `id` ," +
+                " `name` ," +
+                " `parentExerciseId` ," +
+                " `reviewType` ," +
+                " `sequenceNum` ," +
+                " `slug` ," +
+                " `solution` ," +
+                " `submissionType` ," +
+                " 'lang' ," +
+                " `courseName` )" +
+                " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
+                " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`")
+
+        //drop old table
+        database.execSQL("DROP TABLE course_exercise")
+
+        //rename new table to the old table name
+        database.execSQL("ALTER TABLE new_course_exercise RENAME TO course_exercise")
+
+        // Pathway Course
+        database.execSQL("ALTER TABLE `pathway_course` ADD COLUMN `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'")
     }
 
 }

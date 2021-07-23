@@ -14,6 +14,7 @@ import org.koin.dsl.module
 import org.merakilearn.BuildConfig
 import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
+import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.*
 import org.merakilearn.datasource.network.SaralApi

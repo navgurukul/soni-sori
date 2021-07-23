@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.BuildConfig
 import org.merakilearn.R
-import org.merakilearn.datasource.Config
+import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
@@ -54,7 +54,8 @@ class ProfileViewModel(
             is ProfileViewActions.UpdateServerUrlClicked -> _viewEvents.setValue(ProfileViewEvents.ShowUpdateServerDialog(settingsRepo.serverBaseUrl))
             is ProfileViewActions.UpdateServerUrl -> updateServerUrl(action.serverUrl)
             ProfileViewActions.ResetServerUrl -> updateServerUrl(BuildConfig.SERVER_URL)
-            ProfileViewActions.PrivacyPolicyClicked -> _viewEvents.setValue(ProfileViewEvents.OpenUrl(config.getValue(Config.PRIVACY_POLICY)))
+            ProfileViewActions.PrivacyPolicyClicked -> _viewEvents.setValue(ProfileViewEvents.OpenUrl(config.getValue(
+                Config.PRIVACY_POLICY)))
         }
     }
 

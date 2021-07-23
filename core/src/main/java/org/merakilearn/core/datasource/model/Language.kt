@@ -1,4 +1,4 @@
-package org.merakilearn.datasource.network.model
+package org.merakilearn.core.datasource.model
 
 
 import com.squareup.moshi.Json

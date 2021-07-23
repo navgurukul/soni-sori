@@ -1,9 +1,9 @@
-package org.merakilearn.datasource
+package org.merakilearn.core.datasource
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import org.merakilearn.R
+import org.merakilearn.core.R
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.core.extentions.objectifyToList
 import timber.log.Timber
@@ -15,6 +15,7 @@ class Config {
 
     companion object {
         const val KEY_AVAILABLE_LANG = "available_lang"
+        const val COURSE_AVAILABLE_LANG = "course_available_lang"
         const val KEYBOARD_URL_KEY = "keyboard_purchase_url"
         const val PRIVACY_POLICY = "privacy_policy"
     }

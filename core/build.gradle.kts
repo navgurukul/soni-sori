@@ -2,6 +2,7 @@ plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinKapt)
 }
 
 android {
@@ -49,12 +50,18 @@ dependencies {
     implementation(KoinDependencies.koinViewModel)
 
     implementation(RetrofitDependencies.moshiAdapter)
+    kapt(RetrofitDependencies.moshiKapt)
 
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 
     //firebase
     implementation(FirebaseDependencies.messaging)
+    implementation(FirebaseDependencies.configKtx)
+    implementation(FirebaseDependencies.commonKtx)
+
+    //Logging
+    implementation(MiscellaneousDependencies.timber)
 
     testImplementation(TestDependencies.jUnit)
     androidTestImplementation(TestDependencies.androidxJUnit)

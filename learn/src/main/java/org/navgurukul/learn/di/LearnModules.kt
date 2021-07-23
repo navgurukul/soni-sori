@@ -8,6 +8,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.MIGRATION_1_2
+import org.navgurukul.learn.courses.db.MIGRATION_2_3
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -17,8 +18,8 @@ import org.navgurukul.learn.util.LearnPreferences
 import retrofit2.Retrofit
 
 val viewModelModule = module {
-    viewModel { LearnViewModel(get()) }
-    viewModel { LearnFragmentViewModel(get(), get()) }
+    viewModel { LearnViewModel(get(), get()) }
+    viewModel { LearnFragmentViewModel(get(), get(), get()) }
 }
 
 
@@ -38,6 +39,7 @@ val databaseModule = module {
             "course.db"
         )
             .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_2_3)
             .addTypeConverter(Converters(moshi))
             .build()
     }

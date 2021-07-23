@@ -146,6 +146,7 @@ object FirebaseDependencies {
     const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
     const val messaging = "com.google.firebase:firebase-messaging:20.2.4"
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
+    const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
     const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:17.5.0"
 }

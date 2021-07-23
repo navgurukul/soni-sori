@@ -67,7 +67,15 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable, KoinScopeCom
         configureToolbar(toolbar)
     }
 
-    override fun configure(title: String, subtitle: String?, @AttrRes colorRes: Int, showProfile: Boolean, onClickListener: View.OnClickListener?) {
+    override fun configure(
+        title: String,
+        @AttrRes colorRes: Int,
+        showProfile: Boolean,
+        subtitle: String?,
+        onClickListener: View.OnClickListener?,
+        action: String?,
+        actionOnClickListener: View.OnClickListener?
+    ) {
         throw RuntimeException("Set Title is not supported")
     }
 

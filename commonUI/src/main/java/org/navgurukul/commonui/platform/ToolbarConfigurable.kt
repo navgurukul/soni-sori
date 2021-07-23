@@ -10,9 +10,11 @@ interface ToolbarConfigurable {
 
     fun configure(
         title: String,
-        subtitle: String?,
         @AttrRes colorRes: Int,
         showProfile: Boolean = false,
-        onClickListener: View.OnClickListener? = null
+        subtitle: String? = null,
+        onClickListener: View.OnClickListener? = null,
+        action: String? = null,
+        actionOnClickListener: View.OnClickListener? = null
     )
 }

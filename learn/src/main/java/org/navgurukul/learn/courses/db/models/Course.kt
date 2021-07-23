@@ -1,6 +1,7 @@
 package org.navgurukul.learn.courses.db.models
 
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -34,6 +35,9 @@ data class Course(
     var shortDescription: String? = null,
     @Json(name = "type")
     var type: String? = null,
+    @Json(name = "lang_available")
+    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
+    var supportedLanguages: List<String> = listOf("en"),
     @Ignore
     @Json(name = "number")
     var number: Int? = null,

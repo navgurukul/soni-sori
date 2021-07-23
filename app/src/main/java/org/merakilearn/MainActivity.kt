@@ -118,10 +118,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun configure(
         title: String,
-        subtitle: String?,
         @AttrRes colorRes: Int,
         showProfile: Boolean,
-        onClickListener: View.OnClickListener?
+        subtitle: String?,
+        onClickListener: View.OnClickListener?,
+        action: String?,
+        actionOnClickListener: View.OnClickListener?
     ) {
         headerTitle.text = title
         headerTitle.setTextColor(getThemedColor(colorRes))
@@ -131,6 +133,18 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             headerSubtitle.isVisible = true
         } ?: run {
             headerSubtitle.isVisible = false
+        }
+
+        action?.let {
+            headerAction.text = action
+            headerAction.isVisible = true
+            actionOnClickListener?.let { listener ->
+                headerActionClickArea.setOnClickListener {
+                    listener.onClick(it)
+                }
+            }
+        } ?: run {
+            headerAction.isVisible = false
         }
 
         headerIv.isVisible = showProfile
