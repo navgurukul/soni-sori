@@ -6,7 +6,7 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import org.koin.android.ext.android.inject
-import org.merakilearn.datasource.Config
+import org.merakilearn.core.datasource.Config
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.utils.Utility

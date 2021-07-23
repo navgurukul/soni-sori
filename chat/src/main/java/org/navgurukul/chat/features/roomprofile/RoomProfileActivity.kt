@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -122,7 +123,16 @@ class RoomProfileActivity :
         configureToolbar(toolbar)
     }
 
-    override fun configure(title: String, subtitle: String?, colorRes: Int, showProfile: Boolean, onClickListener: View.OnClickListener?) {
+    override fun configure(
+        title: String,
+        @AttrRes colorRes: Int,
+        showProfile: Boolean,
+        subtitle: String?,
+        onClickListener: View.OnClickListener?,
+        action: String?,
+        actionOnClickListener: View.OnClickListener?
+    ) {
+        throw RuntimeException("Set Title is not supported")
     }
 
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="language"
+            type="org.merakilearn.core.datasource.model.Language" />
+    </data>
+
+        <TextView
+            android:id="@+id/tv_pathway_title"
+            style="?textAppearanceEmphasized2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{language.label}"
+            android:textColor="?textPrimary" />
+
+</layout>

@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.EnrollActivity
 import org.merakilearn.R
 import org.merakilearn.core.extentions.enableChildren
-import org.merakilearn.datasource.network.model.Language
+import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.skeleton.RecyclerViewSkeletonScreen
@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
         super.onResume()
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.app_name),
-            null,
             R.attr.colorPrimary,
             true
         )

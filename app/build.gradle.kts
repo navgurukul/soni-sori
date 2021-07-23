@@ -129,7 +129,6 @@ dependencies {
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
     implementation(FirebaseDependencies.messaging)
-    implementation(FirebaseDependencies.configKtx)
     implementation(FirebaseDependencies.dynamicLinksKtx)
     implementation(FirebaseDependencies.inAppMessagingKtx)
 

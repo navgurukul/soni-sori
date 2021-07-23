@@ -99,4 +99,5 @@
     <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="select_program">Select Program</string>
+    <string name="select_language">Select Language</string>
 </resources>

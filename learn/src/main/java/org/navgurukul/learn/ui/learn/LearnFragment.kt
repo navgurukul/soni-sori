@@ -45,7 +45,12 @@ class LearnFragment : Fragment() {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
             mCourseAdapter.submitList(it.courses)
-            configureToolbar(it.subtitle, it.pathways.isNotEmpty())
+            configureToolbar(
+                it.subtitle,
+                it.pathways.isNotEmpty(),
+                it.selectedLanguage,
+                it.languages.isNotEmpty()
+            )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
         })
 
@@ -63,23 +68,37 @@ class LearnFragment : Fragment() {
                         "OpenPathwaySelectionSheet"
                     )
                 }
-                else -> {
+                LearnFragmentViewEvents.OpenLanguageSelectionSheet -> {
+                    LearnLanguageSelectionSheet().show(
+                        parentFragmentManager,
+                        "OpenLanguageSelectionSheet"
+                    )
                 }
+                else -> {}
             }
         })
     }
 
-    private fun configureToolbar(subtitle: String? = null, attachClickListener: Boolean = false) {
+    private fun configureToolbar(
+        subtitle: String? = null, attachClickListener: Boolean = false,
+        selectedLanguage: String? = null, languageClickListener: Boolean = false
+    ) {
         (activity as? ToolbarConfigurable)?.let {
             it.configure(
                 getString(R.string.courses),
-                subtitle,
                 R.attr.textPrimary,
+                subtitle = subtitle,
                 onClickListener = if (attachClickListener) {
                     {
                         viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
                     }
-                } else null
+                } else null,
+                action = selectedLanguage,
+                actionOnClickListener = if (languageClickListener) {
+                    {
+                        viewModel.handle(LearnFragmentViewActions.LanguageSelectionClicked)
+                    }
+                } else null,
             )
         }
     }

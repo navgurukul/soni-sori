@@ -46,6 +46,29 @@
                 app:layout_constraintTop_toBottomOf="@id/headerTitle"
                 tools:text="Sample Subtitle" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headerAction"
+                style="?textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_4x"
+                android:drawableEnd="@drawable/ic_drop_down"
+                android:drawablePadding="@dimen/spacing_2x"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerTitle"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?textPrimary"
+                android:visibility="gone"
+                tools:text="Sample Action" />
+
+            <View
+                android:id="@+id/headerActionClickArea"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/headerAction"/>
+
             <ImageView
                 android:id="@+id/headerIv"
                 android:layout_width="@dimen/course_profile_pic"
