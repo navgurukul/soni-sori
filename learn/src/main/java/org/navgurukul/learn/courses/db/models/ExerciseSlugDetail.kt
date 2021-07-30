@@ -10,6 +10,8 @@ interface ExerciseSlugDetail : Serializable {
     companion object {
         const val TYPE_MD = "markdown"
         const val TYPE_PYTHON = "python"
+        const val TYPE_JS = "javascript"
+        const val TYPE_SOLUTION = "solution"
         const val TYPE_YOUTUBE_VIDEO = "youtube"
         const val TYPE_IMAGE = "image"
         const val TYPE_TRY_TYPING = "trytyping"
@@ -26,11 +28,11 @@ data class MarkDownExerciseSlugDetail(
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
-data class PythonExerciseSlugDetail(
+data class CodeExerciseSlugDetail(
     @Json(name = "type")
     override val type: String,
     @Json(name = "value")
-    var value: PythonCode? = null
+    var value: Code? = null
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
@@ -66,7 +68,7 @@ data class DefaultTypingExerciseSlugDetail(
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
-data class PythonCode(
+data class Code(
     @Json(name = "code") val code: String?,
     @Json(name = "testCases") val testCases: Any?
 )

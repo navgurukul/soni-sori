@@ -19,11 +19,8 @@ import org.navgurukul.learn.util.LearnPreferences
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
     private val learnPreferences: LearnPreferences,
-    config: Config
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
-
-    private val supportedLanguages: List<Language> = config.getObjectifiedList(Config.COURSE_AVAILABLE_LANG)!!
 
     init {
         setState { copy(loading = true) }
@@ -33,7 +30,6 @@ class LearnFragmentViewModel(
                     if (it.isNotEmpty()) {
                         setState {
                             val lastSelectedPathwayId = learnPreferences.lastSelectedPathWayId
-                            val selectedLanguage = learnPreferences.selectedLanguage
                             var currentPathwayIndex = currentPathwayIndex
                             var currentPathway = it[currentPathwayIndex]
                             it.forEachIndexed { index, pathway ->
@@ -46,14 +42,15 @@ class LearnFragmentViewModel(
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
                             }
+                            val selectedLanguage = currentPathway.supportedLanguages.find { it.code == learnPreferences.selectedLanguage }?.label ?:  currentPathway.supportedLanguages[0].label
                             copy(
                                 loading = courses.isEmpty(),
                                 pathways = it,
                                 courses = courses,
                                 currentPathwayIndex = currentPathwayIndex,
                                 subtitle = currentPathway.name,
-                                languages = supportedLanguages,
-                                selectedLanguage = supportedLanguages.find { it.code == selectedLanguage }!!.label
+                                languages =  currentPathway.supportedLanguages,
+                                selectedLanguage = selectedLanguage
                             )
                         }
                     } else {
@@ -73,11 +70,14 @@ class LearnFragmentViewModel(
     }
 
     fun selectPathway(pathway: Pathway) {
+        val selectedLanguage = pathway.supportedLanguages.find { it.code == learnPreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
         setState {
             copy(
                 currentPathwayIndex = pathways.indexOf(pathway),
                 subtitle = pathway.name,
-                loading = true
+                loading = true,
+                languages = pathway.supportedLanguages,
+                selectedLanguage = selectedLanguage
             )
         }
         learnPreferences.lastSelectedPathWayId = pathway.id

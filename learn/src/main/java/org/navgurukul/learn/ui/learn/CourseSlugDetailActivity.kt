@@ -148,7 +148,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initContentRV() {
         slugAdapter = ExerciseSlugAdapter {
-            if (it is PythonExerciseSlugDetail) {
+            if (it is CodeExerciseSlugDetail) {
                 if (!it.value?.code.isNullOrBlank()) {
                     merakiNavigator.openPlayground(this, it.value!!.code!!)
                 }
