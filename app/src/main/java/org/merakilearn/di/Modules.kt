@@ -1,6 +1,5 @@
 package org.merakilearn.di
 
-import android.content.Context
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -11,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.get
 import org.merakilearn.BuildConfig
 import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
@@ -23,7 +23,6 @@ import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
-import org.merakilearn.util.AppUtils
 import org.navgurukul.learn.courses.db.models.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -71,14 +70,15 @@ val networkModule = module {
         return logging
     }
 
-    fun provideHttpClient(context: Context): OkHttpClient {
+    fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
         okHttpClientBuilder.addInterceptor { chain ->
             val chainBuilder = chain.request().newBuilder()
+            val userRepo: UserRepo = get(UserRepo::class.java)
             chainBuilder.addHeader("version-code", BuildConfig.VERSION_CODE.toString())
             chainBuilder.addHeader("platform", "android")
-            chainBuilder.addHeader("Authorization", AppUtils.getAuthToken(context))
+            chainBuilder.addHeader("Authorization", userRepo.getAuthToken())
             chainBuilder.build().let(chain::proceed)
         }
         okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
@@ -113,14 +113,14 @@ val networkModule = module {
             .build()
     }
 
-    single { provideHttpClient(androidApplication()) }
+    single { provideHttpClient() }
     single { provideMoshi() }
     single { provideRetrofit(get(), get(), get()) }
 
 }
 
 val repositoryModule = module {
-    single { ApplicationRepo(get(), androidApplication(), get(), get()) }
+    single { ApplicationRepo(get(), androidApplication(), get(), get(), get()) }
     single { Config() }
     single { ClassesRepo(get()) }
     single { SettingsRepo(get()) }

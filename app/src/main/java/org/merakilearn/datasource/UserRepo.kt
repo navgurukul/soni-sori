@@ -28,6 +28,7 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER = "KEY_INSTALL_REFERRER"
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
+        private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
     }
 
     var installReferrerFetched: Boolean
@@ -48,8 +49,22 @@ class UserRepo(
             preferences.edit { putString(KEY_INSTALL_REFERRER, value) }
         }
 
-    private fun isFakeLogin(): Boolean {
+    fun isFakeLogin(): Boolean {
         return preferences.getBoolean(KEY_IS_FAKE_LOGIN, false)
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return preferences.getBoolean(KEY_USER_LOGIN, false)
+    }
+
+    fun getFakeLoginResponseId(): Int? {
+        val fakeUserLoginResponseString =
+            preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+        if (!fakeUserLoginResponseString.isNullOrEmpty()) {
+            val fakeUserLoginResponse: LoginResponse.User? = fakeUserLoginResponseString.objectify()
+            return fakeUserLoginResponse?.id?.toIntOrNull()
+        }
+        return 0
     }
 
     fun getCurrentUser(): LoginResponse.User? {
@@ -85,6 +100,33 @@ class UserRepo(
     private fun saveUserResponse(user: LoginResponse.User) {
         preferences.edit {
             putString(KEY_USER_RESPONSE, user.jsonify())
+        }
+    }
+
+    fun saveUserLoginResponse(
+        response: LoginResponse,
+    ) {
+        saveUserResponse(response.user)
+        preferences.edit {
+            putString(KEY_AUTH_TOKEN, response.token)
+            putBoolean(KEY_USER_LOGIN, true)
+        }
+    }
+
+    fun saveFakeLoginResponse(
+        response: LoginResponse,
+    ) {
+        preferences.edit {
+            putString(KEY_FAKE_USER_RESPONSE, response.user.jsonify())
+            putString(KEY_AUTH_TOKEN, response.token)
+            putBoolean(KEY_USER_LOGIN, true)
+            putBoolean(KEY_IS_FAKE_LOGIN, true)
+        }
+    }
+
+    fun resetFakeLogin() {
+        preferences.edit {
+            putBoolean(KEY_IS_FAKE_LOGIN, false)
         }
     }
 
