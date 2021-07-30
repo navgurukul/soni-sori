@@ -1,11 +1,13 @@
 package org.navgurukul.learn.courses.db.models
 
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.merakilearn.core.datasource.model.Language
 
 @Entity(tableName = "pathway")
 @JsonClass(generateAdapter = true)
@@ -26,4 +28,7 @@ data class Pathway @JvmOverloads constructor(
     val name: String,
     @Json(name = "logo")
     val logo: String?,
+    @Json(name = "lang_available")
+    @ColumnInfo(name = "supportedLanguages", defaultValue = "[{\"code\": \"en\", \"label\": \"English\"}]")
+    var supportedLanguages: List<Language> = listOf(Language("en", "English")),
 )

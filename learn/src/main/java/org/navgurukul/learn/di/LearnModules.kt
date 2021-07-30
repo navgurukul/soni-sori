@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.MIGRATION_1_2
 import org.navgurukul.learn.courses.db.MIGRATION_2_3
+import org.navgurukul.learn.courses.db.MIGRATION_3_4
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -19,7 +20,7 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LearnViewModel(get(), get()) }
-    viewModel { LearnFragmentViewModel(get(), get(), get()) }
+    viewModel { LearnFragmentViewModel(get(), get()) }
 }
 
 
@@ -40,6 +41,7 @@ val databaseModule = module {
         )
             .addMigrations(MIGRATION_1_2)
             .addMigrations(MIGRATION_2_3)
+            .addMigrations(MIGRATION_3_4)
             .addTypeConverter(Converters(moshi))
             .build()
     }

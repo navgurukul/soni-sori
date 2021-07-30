@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,8 +68,8 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
             is MarkDownExerciseSlugDetail -> {
                 initMarkDownContent(item, binding)
             }
-            is PythonExerciseSlugDetail -> {
-                initPythonCodeView(item, binding)
+            is CodeExerciseSlugDetail -> {
+                initCodeView(item, binding)
             }
             is YoutubeExerciseSlugDetail -> {
                 initYouTubeView(item, binding)
@@ -102,8 +101,8 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
     }
 
 
-    private fun initPythonCodeView(
-        item: PythonExerciseSlugDetail,
+    private fun initCodeView(
+        item: CodeExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
@@ -111,10 +110,21 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
         binding.markDownContent.visibility = View.VISIBLE
-        binding.imageViewPlay.visibility = View.VISIBLE
         val content = StringBuilder()
-        content.append("```python").append("\n").append(item.value?.code).append("\n").append("```")
-
+        when(item.type) {
+            ExerciseSlugDetail.TYPE_JS -> {
+                content.append("```javascript").append("\n").append(item.value?.code).append("\n").append("```")
+                binding.imageViewPlay.visibility = View.GONE
+            }
+            ExerciseSlugDetail.TYPE_PYTHON -> {
+                content.append("```python").append("\n").append(item.value?.code).append("\n").append("```")
+                binding.imageViewPlay.visibility = View.VISIBLE
+            }
+            else -> {
+                content.append("```").append("\n").append(item.value?.code).append("\n").append("```")
+                binding.imageViewPlay.visibility = View.GONE
+            }
+        }
 
         binding.markDownContent.apply {
             this.loadFromText(content.toString())
