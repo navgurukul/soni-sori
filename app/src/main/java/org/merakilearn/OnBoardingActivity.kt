@@ -12,10 +12,11 @@ import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
 import org.merakilearn.databinding.ActivityOnBoardingBinding
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.onboarding.LoginFragment
 import org.merakilearn.ui.onboarding.WelcomeFragment
-import org.merakilearn.util.AppUtils
 
 @Parcelize
 data class OnBoardingActivityArgs(
@@ -26,6 +27,7 @@ class OnBoardingActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityOnBoardingBinding
 
     private val appOpenDelegate: AppOpenDelegate by inject()
+    private val userRepo: UserRepo by inject()
 
     companion object {
 
@@ -75,18 +77,16 @@ class OnBoardingActivity : AppCompatActivity() {
     }
 
     private fun startDestinationActivity() {
-        if (AppUtils.isUserLoggedIn(this))
+        if (userRepo.isUserLoggedIn())
             MainActivity.launch(this)
         else
             showFragment(WelcomeFragment.newInstance(), WelcomeFragment.TAG)
     }
 
     private fun showFragment(fragment: Fragment, tag: String?) {
-        AppUtils.addFragmentToActivity(
-            supportFragmentManager,
-            fragment,
-            R.id.fragment_container_onboarding,
-            tag
-        )
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container_onboarding, fragment, tag)
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.commitAllowingStateLoss()
     }
 }

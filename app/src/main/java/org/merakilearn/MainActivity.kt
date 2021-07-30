@@ -19,9 +19,9 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.profile.ProfileActivity
-import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
 
     private val appOpenDelegate: AppOpenDelegate by inject()
+    private val userRepo: UserRepo by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         findViewById<ImageView>(R.id.headerIv).let {
-            AppUtils.getCurrentUser(this)?.let { currentUser ->
+            userRepo.getCurrentUser()?.let { currentUser ->
                 setUserThumbnail(it, currentUser)
             } ?: run {
                 OnBoardingActivity.restartApp(this@MainActivity, OnBoardingActivityArgs(true))
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .into(it)
 
         it.setOnClickListener {
-            if (AppUtils.isFakeLogin(this))
+            if (userRepo.isFakeLogin())
                 OnBoardingActivity.launchLoginFragment(this)
             else
                 ProfileActivity.launch(this)

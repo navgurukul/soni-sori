@@ -14,9 +14,10 @@ import androidx.core.view.isVisible
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_discover_enroll.*
 import kotlinx.android.synthetic.main.content_class_detail.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import org.merakilearn.util.AppUtils
+import org.merakilearn.datasource.UserRepo
 import org.navgurukul.learn.ui.common.toast
 
 @Parcelize
@@ -51,11 +52,13 @@ class EnrollActivity : AppCompatActivity() {
     private var isEnrolled = false
     private var menuId: Int? = null
 
+    private val userRepo: UserRepo by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discover_enroll)
 
-        if (AppUtils.isUserLoggedIn(this)) {
+        if (userRepo.isUserLoggedIn()) {
             if (intent.hasExtra(ENROLL_ACTIVITY_ARGS)) {
                 val enrollActivityArgs =
                     intent.getParcelableExtra<EnrollActivityArgs>(ENROLL_ACTIVITY_ARGS)

@@ -27,8 +27,8 @@ import org.merakilearn.OnBoardingActivityArgs
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.adapter.SavedFileAdapter
-import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
@@ -39,6 +39,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
+    private val userRepo: UserRepo by inject()
 
     companion object {
         fun launch(context: Context) {
@@ -51,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
 
-        if (!AppUtils.isUserLoggedIn(this) || AppUtils.isFakeLogin(this)) {
+        if (!userRepo.isUserLoggedIn() || userRepo.isFakeLogin()) {
             OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
             return
         }

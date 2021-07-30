@@ -7,7 +7,6 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.util.AppUtils
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -15,20 +14,21 @@ class ApplicationRepo(
     private val applicationApi: SaralApi,
     private val application: Application,
     private val courseDb: CoursesDatabase,
+    private val userRepo: UserRepo,
     private val authenticationRepository: AuthenticationRepository
 ) {
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
-            val isFakeLogin = AppUtils.isFakeLogin(application)
+            val isFakeLogin = userRepo.isFakeLogin()
             val loginRequest = LoginRequest(authToken)
             if (isFakeLogin) {
-                loginRequest.id = AppUtils.getFakeLoginResponseId(application)
+                loginRequest.id = userRepo.getFakeLoginResponseId()
             }
             val response = applicationApi.initLoginAsync(loginRequest)
             authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
             if (isFakeLogin)
-                AppUtils.resetFakeLogin(application)
-            AppUtils.saveUserLoginResponse(response, application)
+                userRepo.resetFakeLogin()
+            userRepo.saveUserLoginResponse(response)
             response
         } catch (ex: Exception) {
             ex.printStackTrace()
@@ -40,7 +40,7 @@ class ApplicationRepo(
         return try {
             val response = applicationApi.initFakeSignUpAsync()
             authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
-            AppUtils.saveFakeLoginResponse(response, application)
+            userRepo.saveFakeLoginResponse(response)
             response
         } catch (ex: Exception) {
             ex.printStackTrace()

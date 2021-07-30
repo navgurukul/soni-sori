@@ -170,7 +170,7 @@ object BuildConfigVersions {
     const val buildToolsVersion = "29.0.3"
     const val minSdkVersion = 21
     const val targetSdkVersion = 29
-    const val versionCode = 21
+    const val versionCode = 23
     const val versionName = "1.4.0"
     const val applicationId = "org.merakilearn"
 }
