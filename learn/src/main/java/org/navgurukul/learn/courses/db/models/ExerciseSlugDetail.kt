@@ -28,6 +28,12 @@ data class MarkDownExerciseSlugDetail(
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
+data class UnknownExerciseSlugDetail(
+    @Json(name = "type")
+    override val type: String = "unknown",
+) : ExerciseSlugDetail
+
+@JsonClass(generateAdapter = true)
 data class CodeExerciseSlugDetail(
     @Json(name = "type")
     override val type: String,

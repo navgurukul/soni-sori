@@ -100,6 +100,7 @@ val networkModule = module {
                 .withSubtype(CodeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_PYTHON)
                 .withSubtype(TypingExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_TRY_TYPING)
                 .withSubtype(YoutubeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_YOUTUBE_VIDEO)
+                .withDefaultValue(UnknownExerciseSlugDetail())
             )
             .build()
     }
