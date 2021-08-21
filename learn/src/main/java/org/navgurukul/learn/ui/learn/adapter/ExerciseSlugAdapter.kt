@@ -80,7 +80,19 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
             is TypingExerciseSlugDetail -> {
                 initTryTypingView(item, binding)
             }
+            is UnknownExerciseSlugDetail -> {
+                initUnknown(binding)
+            }
         }
+    }
+
+    private fun initUnknown(binding: ItemSlugDetailBinding) {
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
+        binding.markDownContent.visibility = View.GONE
     }
 
     private fun initMarkDownContent(
