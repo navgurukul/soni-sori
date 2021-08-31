@@ -46,6 +46,9 @@ class MerakiNavigator(
     fun openLauncherActivity(context: Context, clearNotification: Boolean) {
         startActivity(context, launcherIntent(context, clearNotification), false)
     }
+    fun openLearnFragment(context: FragmentActivity,clearNotification: Boolean,pathway_name:String){
+        appModuleNavigator.launchIntentForLearnActivity(context,clearNotification,pathway_name)
+    }
 
     fun openPlayground(context: Context, code: String) {
         startActivity(

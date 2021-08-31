@@ -15,8 +15,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import org.merakilearn.databinding.ActivityOnBoardingBinding
 import org.merakilearn.datasource.UserRepo
-import org.merakilearn.ui.onboarding.LoginFragment
-import org.merakilearn.ui.onboarding.WelcomeFragment
+import org.merakilearn.ui.onboarding.*
+import java.io.Serializable
 
 @Parcelize
 data class OnBoardingActivityArgs(
@@ -59,18 +59,47 @@ class OnBoardingActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
+        fun launchWelcomeFragment(context: FragmentActivity, ON_BOARDING_LANGUAGE: String){
+            val intent=Intent(context,OnBoardingActivity::class.java)
+            intent.putExtra(LAUNCH_WELCOME,true)
+            intent.putExtra(ON_BOARDING_LANGUAGE_KEY,ON_BOARDING_LANGUAGE)
+            context.startActivity(intent)
+
+        }
+
+        fun launchSelectCourseFragment(context: FragmentActivity, courseList: List<OnBoardPagesAdapter.PathwayData>, header:String) {
+
+            val intent=Intent(context,OnBoardingActivity::class.java)
+            intent.putExtra(LAUNCH_COURSES,true)
+            intent.putExtra(COURSES_LIST,courseList as Serializable)
+            intent.putExtra(SELECT_COURSE_HEADER,header)
+
+            context.startActivity(intent)
+
+        }
         private const val LAUNCH_LOGIN = "arg_launch_login"
+        const val LAUNCH_WELCOME="arg_launch_welcome"
+        const val LAUNCH_COURSES="arg_launch_select_course"
+        const val ON_BOARDING_LANGUAGE_KEY="language"
+        const val COURSES_LIST="courses"
+        const val SELECT_COURSE_HEADER="header"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
-        if (intent.hasExtra(LAUNCH_LOGIN) && intent.getBooleanExtra(LAUNCH_LOGIN, false)) {
+        if(intent.hasExtra(LAUNCH_COURSES) && intent.getBooleanExtra(LAUNCH_COURSES,false)){
+            showFragment(SelectCourseFragment.newInstance(intent.getSerializableExtra(COURSES_LIST)as List<OnBoardPagesAdapter.PathwayData>,intent.getStringExtra(SELECT_COURSE_HEADER)),SelectCourseFragment.TAG)
+        }
+        else if (intent.hasExtra(LAUNCH_LOGIN) && intent.getBooleanExtra(LAUNCH_LOGIN, false)) {
             showFragment(LoginFragment.newInstance(), LoginFragment.TAG)
-        } else {
+        }
+        else if (intent.hasExtra(LAUNCH_WELCOME) && intent.getBooleanExtra(LAUNCH_WELCOME,false)){
+            showFragment(OnBoardPagesFragment.newInstance(intent.getStringExtra(ON_BOARDING_LANGUAGE_KEY)),OnBoardPagesFragment.TAG)
+        }
+        else {
             startDestinationActivity()
         }
-
         intent.getParcelableExtra<OnBoardingActivityArgs>(KEY_ARG)?.let { args ->
             appOpenDelegate.onAppOpened(this, args.clearNotification)
         }
@@ -80,7 +109,7 @@ class OnBoardingActivity : AppCompatActivity() {
         if (userRepo.isUserLoggedIn())
             MainActivity.launch(this)
         else
-            showFragment(WelcomeFragment.newInstance(), WelcomeFragment.TAG)
+            showFragment(SelectLanguageFragment.newInstance(),SelectLanguageFragment.TAG)
     }
 
     private fun showFragment(fragment: Fragment, tag: String?) {

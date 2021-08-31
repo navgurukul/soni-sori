@@ -85,4 +85,23 @@
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
+
+
+    <string name="select_language_english">Please select the language you are comfortable to study in</string>
+    <string name="select_language_hindi">कृपया अपनी पढ़ाई के लिए पसंदीदा भाषा को चुने </string>
+    <string name="english">English</string>
+    <string name="hindi">"हिन्दी "</string>
+    <string name="skip_login_english">Skip Login</string>
+    <string name="skip_login_hindi">लॉगिन छोड़ें</string>
+    <string name="skip_english">Skip</string>
+    <string name="skip_hindi">छोड़े </string>
+    <string name="next_english">Next</string>
+    <string name="next_hindi">अगला</string>
+    <string name="continue_with_google_hindi">गूगल के साथ जारी रखें</string>
+    <string name="continue_with_google_english">Continue with Google</string>
+
+
+    <string name="learn_python_header_english">Learn Python</string>
+    <string name="learn_python_desc_english">Step into the world of tech with guidance from Python professionals</string>
+
 </resources>
