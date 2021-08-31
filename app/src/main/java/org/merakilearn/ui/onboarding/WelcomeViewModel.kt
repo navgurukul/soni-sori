@@ -76,7 +76,7 @@ class WelcomeViewModel(
                         if (activeSessionHolder.getSafeActiveSession()
                                 ?.hasAlreadySynced() == true
                         ) {
-                            _viewEvents.setValue(WelcomeViewEvents.OpenMerakiChat(roomId))
+                            _viewEvents.setValue(WelcomeViewEvents.OpenCourseSelection)
                         }
                     }
                 }
@@ -89,6 +89,7 @@ class WelcomeViewModel(
 sealed class WelcomeViewEvents : ViewEvents {
     class OpenMerakiChat(val roomId: String) : WelcomeViewEvents()
     object OpenHomeScreen: WelcomeViewEvents()
+    object OpenCourseSelection:WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
 }
 

@@ -10,7 +10,9 @@ import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -52,6 +54,14 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                     putExtra(KEY_ARG, args)
                 }
         }
+        fun launchLearnFragment(context: FragmentActivity, pathway_name:String){
+            val intent=Intent(context,MainActivity::class.java)
+            intent.putExtra(LAUNCH_LEARN,true)
+            intent.putExtra(PATHWAY_NAME,pathway_name)
+            context.startActivity(intent)
+        }
+        private const val LAUNCH_LEARN="arg_launch_learn"
+        private const val PATHWAY_NAME="pathway"
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -73,6 +83,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
 
+        if(intent.hasExtra(LAUNCH_LEARN) && intent.getBooleanExtra(LAUNCH_LEARN,false)){
+            val bundle= bundleOf(PATHWAY_NAME to intent.getStringExtra(PATHWAY_NAME))
+            navHostFragment.navController.navigate(R.id.navigation_learn,bundle)
+        }
         intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }

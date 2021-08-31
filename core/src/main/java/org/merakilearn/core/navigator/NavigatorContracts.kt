@@ -9,6 +9,8 @@ interface AppModuleNavigator {
     fun launchIntentForLauncherActivity(context: Context, clearNotification: Boolean): Intent
     fun launchIntentForHomeActivity(context: Context, clearNotification: Boolean): Intent
     fun launchIntentForOnBoardingActivity(context: Context, clearNotification: Boolean): Intent
+    fun launchIntentForLearnActivity(context: FragmentActivity,clearNotification: Boolean,pathway_name:String)
+
 }
 
 interface ChatModuleNavigator {
