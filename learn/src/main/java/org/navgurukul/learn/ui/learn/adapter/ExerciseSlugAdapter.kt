@@ -65,8 +65,8 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding: ItemSlugDetailBinding
     ) {
         when (item) {
-            is MarkDownExerciseSlugDetail -> {
-                initMarkDownContent(item, binding)
+            is TextExerciseSlugDetail -> {
+                initTextContent(item, binding)
             }
             is CodeExerciseSlugDetail -> {
                 initCodeView(item, binding)
@@ -92,11 +92,11 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
-        binding.markDownContent.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
     }
 
-    private fun initMarkDownContent(
-        item: MarkDownExerciseSlugDetail,
+    private fun initTextContent(
+        item: TextExerciseSlugDetail,
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
@@ -105,10 +105,10 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
 
-        binding.markDownContent.visibility = View.VISIBLE
+        binding.textContent.visibility = View.VISIBLE
 
-        binding.markDownContent.apply {
-            this.loadFromText(item.value)
+        binding.textContent.apply {
+            this.text = (item.value)
         }
     }
 
@@ -121,9 +121,9 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageView.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
-        binding.markDownContent.visibility = View.VISIBLE
+        binding.textContent.visibility = View.VISIBLE
         val content = StringBuilder()
-        when(item.type) {
+        when(item.component) {
             ExerciseSlugDetail.TYPE_JS -> {
                 content.append("```javascript").append("\n").append(item.value?.code).append("\n").append("```")
                 binding.imageViewPlay.visibility = View.GONE
@@ -138,14 +138,14 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
             }
         }
 
-        binding.markDownContent.apply {
-            this.loadFromText(content.toString())
-        }
+//        binding.textContent.apply {
+//            this.loadFromText(content.toString())
+//        }
     }
 
 
     private fun initYouTubeView(item: YoutubeExerciseSlugDetail, binding: ItemSlugDetailBinding) {
-        binding.markDownContent.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
         binding.imageView.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
@@ -165,13 +165,13 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding: ItemSlugDetailBinding
     ) {
         binding.youtubeView.visibility = View.GONE
-        binding.markDownContent.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
         binding.imageView.visibility = View.VISIBLE
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
-        item.value?.let {
-            Glide.with(binding.imageView.context).load(it.url).into(binding.imageView);
+        item.value?.let { url ->
+            Glide.with(binding.imageView.context).load(url).into(binding.imageView);
         }
     }
 
@@ -181,11 +181,11 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
     ) {
         binding.youtubeView.visibility = View.GONE
         binding.imageView.visibility = View.GONE
-        binding.markDownContent.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
 
-        binding.relStartTyping.isVisible = item.type == ExerciseSlugDetail.TYPE_TRY_TYPING
-        binding.relPracticeTyping.isVisible = item.type == ExerciseSlugDetail.TYPE_PRACTICE_TYPING
+        binding.relStartTyping.isVisible = item.component == ExerciseSlugDetail.TYPE_TRY_TYPING
+        binding.relPracticeTyping.isVisible = item.component == ExerciseSlugDetail.TYPE_PRACTICE_TYPING
     }
 
 }
