@@ -27,13 +27,11 @@
             android:layout_height="wrap_content"
             >
 
-            <es.dmoral.markdownview.MarkdownView
-                android:id="@+id/markDownContent"
+            <TextView
+                android:id="@+id/textContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_2x"
-                android:clickable="true"
-                android:focusable="true"
                 android:padding="@dimen/spacing_2x"
                 android:visibility="gone" />
 
@@ -41,7 +39,7 @@
                 android:id="@+id/imageViewPlay"
                 android:layout_width="@dimen/dimen_code_play_button_height"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/markDownContent"
+                android:layout_below="@+id/textContent"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/spacing_1x"
                 android:drawableEnd="@drawable/ic_play"
@@ -61,7 +59,7 @@
                 android:id="@+id/relStartTyping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/markDownContent"
+                android:layout_below="@+id/textContent"
                 android:visibility="gone"
                 android:background="@drawable/hint_box_drawable">
 
@@ -112,7 +110,7 @@
                 android:id="@+id/relPracticeTyping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/markDownContent"
+                android:layout_below="@+id/textContent"
                 android:visibility="gone"
                 android:background="@drawable/hint_box_drawable">
 
