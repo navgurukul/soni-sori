@@ -1,190 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.KeyboardActivity">
+    tools:context=".keyboard.KeyboardActivity">
 
-    <RelativeLayout
-        android:id="@+id/rel_top"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_back"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:paddingStart="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_1x"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:minWidth="0dp"
+        app:icon="@drawable/ic_back"
+        app:iconTint="?textPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_back"
-            android:layout_width="20dp"
-            android:layout_height="15dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:background="@drawable/ic_back"
-            android:focusable="false" />
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/green_seekbar_progress_drawable"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintEnd_toStartOf="@id/btn_settings"
+        app:layout_constraintStart_toEndOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="@id/btn_back" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btn_settings"
-            android:layout_toRightOf="@+id/btn_back">
-
-            <SeekBar
-                android:id="@+id/progress"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/green_seekbar_progress_drawable" />
-
-            <TextView
-                android:id="@+id/txt_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/progress"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="15dp"
-                android:text="00/3:00"
-                android:textColor="@color/timer_text_color"
-                android:textSize="10sp" />
-        </RelativeLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_settings"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="12dp"
-            android:background="@drawable/ic_settings" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_display_container"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_settings"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_below="@+id/rel_top"
-        android:layout_above="@+id/ll_keypad"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal">
+        android:paddingEnd="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_1x"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:minWidth="0dp"
+        app:icon="@drawable/ic_settings"
+        app:iconGravity="end"
+        app:iconTint="?textPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_timer"
+        style="?textAppearanceCaption2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_1x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:textColor="@color/timer_text_color"
+        app:layout_constraintEnd_toEndOf="@id/progressBar"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        tools:text="00/3:00" />
 
-    <RelativeLayout
-        android:id="@+id/ll_keypad"
-        android:layout_width="619dp"
-        android:layout_height="233dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal">
+    <org.navgurukul.typingguru.keyboard.CourseKeysView
+        android:id="@+id/course_keys_view"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/spacing_4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="223dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:scrollbars="vertical">
 
-            <RelativeLayout
-                android:id="@+id/keyboard_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rounded_rectangle">
+    <org.navgurukul.typingguru.keyboard.KeyboardView
+        android:id="@+id/keyboard_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_3x"
+        android:layout_marginTop="@dimen/spacing_6x"
+        app:layout_constraintTop_toBottomOf="@id/course_keys_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-                <include
-                    android:id="@+id/row1"
-                    layout="@layout/layout_row1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp" />
 
-                <include
-                    android:id="@+id/row2"
-                    layout="@layout/layout_row2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/row1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="10dp" />
-
-                <include
-                    android:id="@+id/row3"
-                    layout="@layout/layout_row3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/row2"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="10dp" />
-
-                <include
-                    android:id="@+id/row4"
-                    layout="@layout/layout_row4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/row3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="10dp" />
-
-                <include
-                    android:id="@+id/row5"
-                    layout="@layout/layout_row5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/row4"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="10dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/img_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="47dp"
-            android:src="@drawable/hand_img_q"
-            android:tag="asdfgzxcvbqwert" />
-
-        <ImageView
-            android:id="@+id/img_left2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="26dp"
-            android:src="@drawable/hand_img_tab"
-            android:tag="tab"
-            android:visibility="invisible"/>
-
-        <ImageView
-            android:id="@+id/img_left3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="70dp"
-            android:src="@drawable/hand_img_4"
-            android:tag="12345"
-            android:visibility="invisible"/>
-
-        <ImageView
-            android:id="@+id/img_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="110dp"
-            android:src="@drawable/hand_img_k"
-            android:tag="hjkl;nm,.yuiop/67890" />
-    </RelativeLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

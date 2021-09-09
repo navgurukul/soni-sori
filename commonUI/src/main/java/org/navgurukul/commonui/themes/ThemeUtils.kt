@@ -38,6 +38,21 @@ object ThemeUtils {
         }
     }
 
+    fun getUnit(c: Context, @AttrRes attribute: Int): Int {
+        val tv = getAttribute(c, attribute)
+        return tv?.data?.let {
+            TypedValue.complexToDimensionPixelSize(
+                it,
+                c.resources.displayMetrics
+            )
+        } ?: 0
+    }
+
+    fun getFontStyle(c: Context, @AttrRes attribute: Int): Int {
+        val tv = getAttribute(c, attribute)
+        return tv?.resourceId ?: 0
+    }
+
     fun getAttribute(c: Context, @AttrRes attribute: Int): TypedValue? {
         try {
             val typedValue = TypedValue()
@@ -96,4 +111,6 @@ object ThemeUtils {
 }
 
 fun Context.getThemedColor(@AttrRes attribute: Int) = ThemeUtils.getColor(this, attribute)
+fun Context.getThemedUnit(@AttrRes attribute: Int) = ThemeUtils.getUnit(this, attribute)
+fun Context.getThemedFontStyle(@AttrRes attribute: Int) = ThemeUtils.getFontStyle(this, attribute)
 

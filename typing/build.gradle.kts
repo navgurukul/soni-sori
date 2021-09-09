@@ -30,9 +30,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":commonUI"))
     implementation(project(":app"))
     implementation(project(":core"))
-    implementation(project(":commonUI"))
 
     kapt(MiscellaneousDependencies.AutoService)
     implementation(MiscellaneousDependencies.AutoService)

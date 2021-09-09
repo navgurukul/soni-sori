@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.core.navigator.TypingAppModuleNavigator
+import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -40,7 +40,7 @@ class PlaygroundFragment : BaseFragment() {
             when (it) {
                 PlaygroundViewEvents.HideLoading -> dismissLoadingDialog()
                 PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext(), "")
-                PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), TypingAppModuleNavigator.Mode.Playground)
+                PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
                 PlaygroundViewEvents.ShowLoading -> showLoading(getString(R.string.installing_module_message))
             }
         })

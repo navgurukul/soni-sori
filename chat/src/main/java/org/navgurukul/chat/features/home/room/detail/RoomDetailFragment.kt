@@ -46,12 +46,11 @@ import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.scope.lifecycleScope
-import org.koin.androidx.scope.scope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.Scope
+import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.dialogs.ConfirmationDialogBuilder
@@ -104,7 +103,7 @@ class RoomDetailFragment : BaseFragment(),
     override val scope: Scope by lazy { fragmentScope() }
 
     private lateinit var layoutManager: LinearLayoutManager
-    private val roomDetailArgs: RoomDetailArgs by args()
+    private val roomDetailArgs: RoomDetailArgs by fragmentArgs()
 
     private val timelineEventController: TimelineEventController by inject(parameters = { parametersOf(scope)})
 

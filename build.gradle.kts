@@ -2,7 +2,6 @@
 buildscript {
     repositories {
         google()
-        jcenter()
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
@@ -30,6 +29,8 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
+        jcenter()
         // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
         maven {
             url = uri("https://jitpack.io")
@@ -40,8 +41,7 @@ allprojects {
         maven {
             url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
         }
-        google()
-        jcenter()
+
     }
 }
 

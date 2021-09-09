@@ -2,7 +2,9 @@ package org.merakilearn.core.navigator
 
 import android.content.Context
 import android.content.Intent
+import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
+import kotlinx.android.parcel.Parcelize
 import java.io.File
 
 interface AppModuleNavigator {
@@ -21,10 +23,13 @@ interface PlaygroundModuleNavigator {
     fun openPlaygroundWithFileContent(context: Context, file: File): Intent
 }
 
+sealed class Mode: Parcelable {
+    @Parcelize
+    object Playground : Mode()
+    @Parcelize
+    data class Course(val content: List<String>, val code: String) : Mode()
+}
+
 interface TypingAppModuleNavigator {
-    sealed class Mode {
-        object Playground : Mode()
-        data class Course(val content: ArrayList<String>, val code: String) : Mode()
-    }
     fun launchTypingApp(activity: FragmentActivity, mode : Mode)
 }

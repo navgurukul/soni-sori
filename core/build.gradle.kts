@@ -49,6 +49,10 @@ dependencies {
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
+    // Kotlin
+    implementation(KotlinDependencies.coroutinesCore)
+    implementation(KotlinDependencies.coroutinesAndroid)
+
     implementation(RetrofitDependencies.moshiAdapter)
     kapt(RetrofitDependencies.moshiKapt)
 
