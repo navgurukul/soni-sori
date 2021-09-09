@@ -14,4 +14,7 @@
     <color name="run_background">#D63447</color>
     <color name="row_color">#F4F4F4</color>
     <color name="errorColor_70">#B3B00020</color>
+
+    <color name="colorBlockQuoteBackgroundDark">#FFC107</color>
+    <color name="colorBlockQuoteBackground">#FFE69C</color>
 </resources>
