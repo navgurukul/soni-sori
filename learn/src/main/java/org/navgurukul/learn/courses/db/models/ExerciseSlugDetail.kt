@@ -9,6 +9,9 @@ interface ExerciseSlugDetail : Serializable {
 
     companion object {
         const val COMPONENT_TEXT = "text"
+        const val COMPONENT_LINK = "link"
+        const val COMPONENT_CODE = "code"
+        const val COMPONENT_BLOCK_QUOTE = "blockquote"
         const val TYPE_PYTHON = "python"
         const val TYPE_JS = "javascript"
         const val TYPE_SOLUTION = "solution"
@@ -28,6 +31,24 @@ data class TextExerciseSlugDetail(
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
+data class BlockQuoteExerciseSlugDetail(
+    @Json(name = "component")
+    override val component: String,
+    @Json(name = "value")
+    var value: String?
+) : ExerciseSlugDetail
+
+@JsonClass(generateAdapter = true)
+data class LinkExerciseSlugDetail(
+    @Json(name = "component")
+    override val component: String,
+    @Json(name = "text")
+    var value: String?,
+    @Json(name = "href")
+    var link: String?,
+) : ExerciseSlugDetail
+
+@JsonClass(generateAdapter = true)
 data class UnknownExerciseSlugDetail(
     @Json(name = "component")
     override val component: String = "unknown",
@@ -37,8 +58,8 @@ data class UnknownExerciseSlugDetail(
 data class CodeExerciseSlugDetail(
     @Json(name = "component")
     override val component: String,
-    @Json(name = "value")
-    var value: Code? = null
+    @Json(name = "text") val code: String?,
+    @Json(name = "type") val codeTypes: CodeType
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)
@@ -73,8 +94,6 @@ data class DefaultTypingExerciseSlugDetail(
     var value: Any? = null
 ) : ExerciseSlugDetail
 
-@JsonClass(generateAdapter = true)
-data class Code(
-    @Json(name = "code") val code: String?,
-    @Json(name = "testCases") val testCases: Any?
-)
+enum class CodeType {
+    python, javascript
+}

@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import kotlinx.android.synthetic.main.item_slug_detail.view.*
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemSlugDetailBinding
@@ -57,6 +60,9 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.practiceTyping.setOnClickListener {
             mCallback.invoke(item)
         }
+        binding.textContent.setOnClickListener{
+            mCallback.invoke(item)
+        }
         bindItem(item, binding)
     }
 
@@ -70,6 +76,9 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
             }
             is CodeExerciseSlugDetail -> {
                 initCodeView(item, binding)
+            }
+            is LinkExerciseSlugDetail -> {
+                initLinkView(item, binding)
             }
             is YoutubeExerciseSlugDetail -> {
                 initYouTubeView(item, binding)
@@ -93,6 +102,7 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
         binding.textContent.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
     }
 
     private fun initTextContent(
@@ -104,11 +114,57 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
 
-        binding.textContent.visibility = View.VISIBLE
+        item.value?.let {
+            binding.textContent.visibility = View.VISIBLE
 
-        binding.textContent.apply {
-            this.text = (item.value)
+            binding.textContent.apply {
+                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            }
+        }
+    }
+
+    private fun initBlockQuoteView(
+        item: BlockQuoteExerciseSlugDetail,
+        binding: ItemSlugDetailBinding
+    ) {
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
+
+        item.value?.let {
+            binding.blockQuoteLayout.visibility = View.VISIBLE
+
+            binding.blockQuoteLayout.blockQuoteText.apply {
+                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            }
+        }
+    }
+
+    private fun initLinkView(
+        item: LinkExerciseSlugDetail,
+        binding: ItemSlugDetailBinding
+    ) {
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relStartTyping.visibility = View.GONE
+        binding.relPracticeTyping.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
+
+        item.value?.let {
+            binding.textContent.visibility = View.VISIBLE
+
+            binding.textContent.apply {
+                this.isClickable = true
+                this.isFocusable = true
+                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            }
+
         }
     }
 
@@ -121,26 +177,27 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageView.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
+
         binding.textContent.visibility = View.VISIBLE
+
         val content = StringBuilder()
-        when(item.component) {
-            ExerciseSlugDetail.TYPE_JS -> {
-                content.append("```javascript").append("\n").append(item.value?.code).append("\n").append("```")
+        when(item.codeTypes) {
+            CodeType.javascript -> {
+                content.append("javascript").append("\n").append(item.code).append("\n")
                 binding.imageViewPlay.visibility = View.GONE
             }
-            ExerciseSlugDetail.TYPE_PYTHON -> {
-                content.append("```python").append("\n").append(item.value?.code).append("\n").append("```")
+            CodeType.python -> {
+                content.append("python").append("\n").append(item.code).append("\n")
                 binding.imageViewPlay.visibility = View.VISIBLE
             }
             else -> {
-                content.append("```").append("\n").append(item.value?.code).append("\n").append("```")
+                content.append(item.code).append("\n")
                 binding.imageViewPlay.visibility = View.GONE
             }
         }
 
-//        binding.textContent.apply {
-//            this.loadFromText(content.toString())
-//        }
+        binding.textContent.text = HtmlCompat.fromHtml(content.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 
 
@@ -150,6 +207,8 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
+
         binding.youtubeView.visibility = View.VISIBLE
 
         binding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
@@ -170,6 +229,8 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageViewPlay.visibility = View.GONE
         binding.relStartTyping.visibility = View.GONE
         binding.relPracticeTyping.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
+
         item.value?.let { url ->
             Glide.with(binding.imageView.context).load(url).into(binding.imageView);
         }
@@ -183,6 +244,7 @@ class ExerciseSlugAdapter(callback: (ExerciseSlugDetail) -> Unit) :
         binding.imageView.visibility = View.GONE
         binding.textContent.visibility = View.GONE
         binding.imageViewPlay.visibility = View.GONE
+        binding.blockQuoteLayout.visibility = View.GONE
 
         binding.relStartTyping.isVisible = item.component == ExerciseSlugDetail.TYPE_TRY_TYPING
         binding.relPracticeTyping.isVisible = item.component == ExerciseSlugDetail.TYPE_PRACTICE_TYPING

@@ -150,11 +150,15 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private fun initContentRV() {
         slugAdapter = ExerciseSlugAdapter {
             if (it is CodeExerciseSlugDetail) {
-                if (!it.value?.code.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this, it.value!!.code!!)
+                if (!it.code.isNullOrBlank()) {
+                    merakiNavigator.openPlayground(this, it.code)
                 }
             } else if (it is TypingExerciseSlugDetail) {
                 loadTypingTutor(it)
+            }else if(it is LinkExerciseSlugDetail){
+                it.link?.let {url ->
+                    merakiNavigator.openCustomTab(url, this)
+                }
             }
         }
         val layoutManager =
