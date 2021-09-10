@@ -71,7 +71,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
         } else {
             currentKeyState = CourseKeyState.INCORRECT
             inCorrectKeys += 1
-            _viewEvents.setValue(KeyboardViewEvent.ShakeKey)
+            _viewEvents.setValue(KeyboardViewEvent.ShakeKey(key.toLowerCase()))
         }
 
         if (activeKeyIndex == courseKeys.size - 1) {
@@ -103,9 +103,9 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
         if (!timerStarted) {
             timerStarted = true
             tickerFlow(1_000L, maxTime)
-                .onEach {
+                .onEach { tickerState ->
 
-                    when (it) {
+                    when (tickerState) {
                         TickerState.End -> {
                             super.viewState.value?.let {
                                 _viewEvents.setValue(
@@ -123,9 +123,9 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                                 SimpleDateFormat(
                                     "mm:ss",
                                     Locale.ENGLISH
-                                ).format(SECONDS.toMillis(it.value))
+                                ).format(SECONDS.toMillis(tickerState.value))
                             setState {
-                                copy(currentProgress = it.value.toInt(), timerText = timeText)
+                                copy(currentProgress = tickerState.value.toInt(), timerText = timeText)
                             }
                         }
                     }
@@ -172,7 +172,7 @@ sealed class KeyboardViewAction {
 }
 
 sealed class KeyboardViewEvent : ViewEvents {
-    object ShakeKey : KeyboardViewEvent()
+    data class ShakeKey(val key: Char) : KeyboardViewEvent()
     data class OpenScoreActivity(
         val rightKeys: Int,
         val wrongKeys: Int,

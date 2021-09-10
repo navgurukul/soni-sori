@@ -7,11 +7,13 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.commonui.themes.getThemedUnit
 import org.navgurukul.typingguru.R
 import org.navgurukul.commonui.R as commonR
@@ -71,6 +73,7 @@ class KeyboardView @JvmOverloads constructor(
 
     private val ridgeColor = ContextCompat.getColor(context, R.color.accuracy_color)
     private val keyBackgroundColorNeutral = ContextCompat.getColor(context, R.color.key_background)
+    private val keyBackgroundColorIncorrect = context.getThemedColor(commonR.attr.colorError)
     private val keyBackgroundColorActive = ContextCompat.getColor(context, R.color.current_text)
 
     private val leftHandRestingDrawable =
@@ -80,11 +83,6 @@ class KeyboardView @JvmOverloads constructor(
 
     private var leftHandDrawable: Drawable? = null
     private var rightHandDrawable: Drawable? = null
-
-    private val originalHandImageHeight =
-        context.resources.getDimensionPixelSize(R.dimen.hand_image_height)
-    private val originalHandImageWidth =
-        context.resources.getDimensionPixelSize(R.dimen.hand_image_width)
 
     private val backgroundPaint = Paint().apply {
         color =
@@ -195,6 +193,9 @@ class KeyboardView @JvmOverloads constructor(
 
     var activeKey: String? = null
         set(value) {
+            if (field == value) {
+                return
+            }
             field = value
             val key = keyMap[value] ?: return
             leftHandDrawable =
@@ -203,6 +204,15 @@ class KeyboardView @JvmOverloads constructor(
             rightHandDrawable =
                 key.rightHandImage?.let { AppCompatResources.getDrawable(context, it) }
                     ?: rightHandRestingDrawable
+            invalidate()
+        }
+
+    var incorrectKey: String? = null
+        set(value) {
+            if (field == value) {
+                return
+            }
+            field = value
             invalidate()
         }
 
@@ -265,8 +275,9 @@ class KeyboardView @JvmOverloads constructor(
             var currentX = marginStart + horizontalSpacing
             for (key in keyRow) {
                 val isActive = activeKey == key.label
+                val isIncorrect = incorrectKey == key.label
                 backgroundPaint.color =
-                    if (isActive) keyBackgroundColorActive else keyBackgroundColorNeutral
+                    if (isActive) keyBackgroundColorActive else if (isIncorrect) keyBackgroundColorIncorrect else keyBackgroundColorNeutral
                 val keyWidth = keySize * key.widthMultiplier
                 currentX += (key.startMargin * keySize).toInt()
 
@@ -292,7 +303,8 @@ class KeyboardView @JvmOverloads constructor(
 
                 textPaint.textSize = if (key.smallSize) smallTextSize else defaultTextSize
                 textPaint.textAlign = key.textAlign
-                textPaint.color = if (isActive) textActiveColor else textNeutralColor
+                textPaint.color =
+                    if (isActive || isIncorrect) textActiveColor else textNeutralColor
                 val centerX = when (key.textAlign) {
                     Paint.Align.LEFT -> rectF.left + keyTextSpacing
                     Paint.Align.CENTER -> rectF.centerX()
@@ -338,7 +350,7 @@ class KeyboardView @JvmOverloads constructor(
                     (keySize * MAX_ROWS) + ((MAX_ROWS - 1) * keySpacing) + (2 * verticalSpacing)
                 currentWidth = maxWidth
 
-                marginTop = (maxWidth - currentHeight) / 2
+                marginTop = (maxHeight - currentHeight) / 2
                 marginStart = 0
             }
             else -> {

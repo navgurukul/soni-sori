@@ -20,7 +20,10 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.button.MaterialButton;
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
@@ -53,6 +56,8 @@ class KeyboardActivity : BaseActivity() {
         )
     })
 
+    private var incorrectKeyJob: Job? = null
+
     private val audioManager: AudioManager? by lazy { getSystemService(Context.AUDIO_SERVICE) as? AudioManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +77,15 @@ class KeyboardActivity : BaseActivity() {
 
         viewModel.viewEvents.observe(this, {
             when (it) {
-                KeyboardViewEvent.ShakeKey -> {
+                is KeyboardViewEvent.ShakeKey -> {
                     course_keys_view.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
+                    keyboard_view.incorrectKey = it.key.toString()
+                    incorrectKeyJob?.cancel()
+                    incorrectKeyJob = lifecycleScope.launch {
+                        delay(500)
+                        keyboard_view.incorrectKey = null
+                    }
                 }
                 is KeyboardViewEvent.OpenScoreActivity -> {
                     Toast.makeText(this, "Lesson completed", Toast.LENGTH_SHORT).show()
