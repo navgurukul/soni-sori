@@ -29,9 +29,11 @@
     <dimen name="dimen_100_dp">100dp</dimen>
     <dimen name="dimen_slider_layout">100dp</dimen>
     <dimen name="dimen_youtube_view_height">250dp</dimen>
-    <dimen name="dimen_code_play_button_height">80dp</dimen>
+    <dimen name="dimen_code_play_button_height">120dp</dimen>
+    <dimen name="dimen_code_play_button_width">40dp</dimen>
     <dimen name="sheet_handle_width">60dp</dimen>
     <dimen name="sheet_handle_height">4dp</dimen>
     <dimen name="pathway_select_icon_size">40dp</dimen>
     <dimen name="sheet_top_offset">100dp</dimen>
+    <dimen name="button_round_radius">8dp</dimen>
 </resources>
