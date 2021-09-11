@@ -18,7 +18,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
-import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
+import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 
@@ -41,7 +41,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
-    private lateinit var slugAdapter: ExerciseSlugAdapter
+    private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
     private val dynamicFeatureModuleManager: DynamicFeatureModuleManager by inject()
@@ -147,14 +147,17 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun initContentRV() {
-        slugAdapter = ExerciseSlugAdapter {
-            if (it is CodeExerciseSlugDetail) {
-                if (!it.code.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this, it.code)
+        contentAdapter = ExerciseContentAdapter {
+            if (it is CodeBaseCourseContent) {
+                if (!it.value.isNullOrBlank()) {
+                    merakiNavigator.openPlayground(this, it.value)
                 }
-            } else if (it is TypingExerciseSlugDetail) {
-                loadTypingTutor(it)
-            }else if(it is LinkExerciseSlugDetail){
+            } else if (it is BannerCourseContent) {
+//                loadTypingTutor(it)
+                it.action?.url?.let {url ->
+                    merakiNavigator.openCustomTab(url, this)
+                }
+            }else if(it is LinkBaseCourseContent){
                 it.link?.let {url ->
                     merakiNavigator.openCustomTab(url, this)
                 }
@@ -163,16 +166,16 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
-        mBinding.recyclerViewSlug.adapter = slugAdapter
+        mBinding.recyclerViewSlug.adapter = contentAdapter
         fetchSlugContent(currentStudy.exerciseId, false)
 
     }
 
-    private fun loadTypingTutor(it: TypingExerciseSlugDetail) {
-        dynamicFeatureModuleManager.installModule("typing", {
-            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(ArrayList(it.value), it.component))
-        })
-    }
+//    private fun loadTypingTutor(it: BannerCourseContent) {
+//        dynamicFeatureModuleManager.installModule("typing", {
+//            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(ArrayList(it.value), it.component))
+//        })
+//    }
 
     private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
@@ -181,12 +184,12 @@ class CourseSlugDetailActivity : AppCompatActivity() {
                 mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty()) {
                     val data = parseDataForContent(it)
-                    slugAdapter.submitList(data)
+                    contentAdapter.submitList(data)
                 }
             })
     }
 
-    private fun parseDataForContent(it: List<Exercise>?): List<ExerciseSlugDetail> {
+    private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
         return it?.firstOrNull()?.content ?: return mutableListOf()
     }
 

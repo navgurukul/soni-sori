@@ -35,44 +35,45 @@
                 android:layout_margin="@dimen/spacing_2x"
                 android:padding="@dimen/spacing_2x"
                 android:visibility="gone"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 tools:text="@string/dialog_title_error"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/imageViewPlay"
-                android:layout_width="@dimen/dimen_code_play_button_height"
+            <TextView
+                android:id="@+id/titleContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textContent"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/spacing_1x"
-                android:drawableEnd="@drawable/ic_play"
-                android:gravity="center"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:paddingStart="@dimen/spacing_2x"
-                android:paddingEnd="@dimen/spacing_2x"
-                android:text="@string/run"
-                android:textColor="@color/colorWhite"
-                app:backgroundTint="@color/run_background"
-                app:cornerRadius="0dp"
+                android:layout_margin="@dimen/spacing_2x"
+                android:padding="@dimen/spacing_2x"
                 android:visibility="gone"
                 tools:visibility="visible"
-                app:drawableTint="@color/colorWhite" />
+                tools:text="@string/dialog_title_error"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <org.navgurukul.learn.ui.common.DecorationView
+                android:id="@+id/decorContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_2x"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="@string/dialog_title_error"/>
 
             <RelativeLayout
-                android:id="@+id/relStartTyping"
+                android:id="@+id/relBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textContent"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:background="@drawable/hint_box_drawable">
 
                 <TextView
-                    android:id="@+id/txt_lbl_keyboard_hint"
+                    android:id="@+id/bannerTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginHorizontal="@dimen/dimen_16_dp"
+                    android:layout_marginTop="@dimen/dimen_16_dp"
                     android:fontFamily="@font/nunito"
                     android:text="Kya aapke pas extrenal keyboard hai?"
                     android:textColor="@color/primaryColor"
@@ -80,25 +81,24 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_lbl_start"
+                    android:id="@+id/bannerBody"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_lbl_keyboard_hint"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/bannerTitle"
+                    android:layout_marginHorizontal="@dimen/dimen_16_dp"
+                    android:layout_marginTop="@dimen/dimen_16_dp"
                     android:fontFamily="@font/nunito"
                     android:text="Aap typing abhi start kar sakte hai"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textColor="?textPrimary"
+                    android:textSize="14sp"/>
 
                 <Button
-                    android:id="@+id/typing"
+                    android:id="@+id/bannerButton"
                     android:layout_width="158dp"
                     android:layout_height="45dp"
-                    android:layout_below="@+id/txt_lbl_start"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_below="@+id/bannerBody"
+                    android:layout_marginHorizontal="@dimen/dimen_16_dp"
+                    android:layout_marginTop="@dimen/dimen_16_dp"
                     android:layout_marginBottom="19dp"
                     android:background="@drawable/primary_btn_selector"
                     android:fontFamily="@font/nunito"
@@ -110,56 +110,53 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relPracticeTyping"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/codeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textContent"
+                android:paddingBottom="@dimen/dimen_16_dp"
                 android:visibility="gone"
-                android:background="@drawable/hint_box_drawable">
+                tools:visibility="gone"
+                android:background="#101210">
 
                 <TextView
-                    android:id="@+id/txt_lbl_keyboard_hint2"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/codeTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="11dp"
-                    android:fontFamily="@font/nunito"
-                    android:text="Kya aapke pas extrenal keyboard hai?"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txt_lbl_start2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_lbl_keyboard_hint2"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunito"
-                    android:text="Aap typing abhi start kar sakte hai"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/practiceTyping"
-                    android:layout_width="158dp"
-                    android:layout_height="45dp"
-                    android:layout_below="@+id/txt_lbl_start2"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="19dp"
-                    android:background="@drawable/primary_btn_selector"
-                    android:fontFamily="@font/nunito"
-                    android:text="Practice Typing"
-                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="#343A33"
+                    android:padding="@dimen/dimen_16_dp"
                     android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    tools:text="Hi Title"/>
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/codeBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/codeTitle"
+                    android:layout_margin="@dimen/dimen_16_dp"
+                    tools:text="Hi Body"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/imageViewPlay"
+                    android:layout_width="@dimen/dimen_code_play_button_height"
+                    android:layout_height="@dimen/dimen_code_play_button_width"
+                    app:layout_constraintTop_toBottomOf="@id/codeBody"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/spacing_4x"
+                    android:layout_marginEnd="@dimen/spacing_4x"
+                    android:gravity="center"
+                    android:text="@string/run_code"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/round_button_rad_8_dp"
+                    app:backgroundTint="@color/run_background"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
 
