@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 4
+const val DB_VERSION = 5
 
 @Dao
 interface PathwayDao {
@@ -137,6 +137,32 @@ val MIGRATION_3_4 = object: Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Pathway
         database.execSQL("ALTER TABLE `pathway` ADD COLUMN `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]'")
+    }
+
+}
+
+val MIGRATION_4_5 = object: Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        //drop old table
+        database.execSQL("DROP TABLE course_exercise")
+
+        //create new table
+        database.execSQL("CREATE TABLE `course_exercise`(" +
+                " `content` TEXT," +
+                " `courseId` TEXT," +
+                " `githubLink` TEXT, " +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT," +
+                " `parentExerciseId` TEXT," +
+                " `reviewType` TEXT," +
+                " `sequenceNum` TEXT," +
+                " `slug` TEXT," +
+                " `solution` TEXT," +
+                " `submissionType` TEXT," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )")
     }
 
 }

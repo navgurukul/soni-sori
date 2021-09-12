@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
@@ -10,7 +11,7 @@ import org.navgurukul.learn.courses.db.models.Decoration
 import org.navgurukul.learn.courses.db.models.DecorationType
 
 class DecorationView
-constructor(
+@JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -34,11 +35,17 @@ constructor(
 
         when(decor.type){
             DecorationType.bullet -> {
+                decorView.visibility = View.VISIBLE
                 decorView.text = "\u2022"
                 content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
             DecorationType.number -> {
+                decorView.visibility = View.VISIBLE
                 decorView.text = "${decor.value}."
+                content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            }
+            else -> {
+                decorView.visibility = View.GONE
                 content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
         }

@@ -13,7 +13,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
@@ -98,7 +97,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fetchSlugContent(currentStudy.exerciseId, true)
+            fetchExerciseContent(currentStudy.exerciseId, true)
             mBinding.swipeContainer.isRefreshing = false
         }
     }
@@ -167,7 +166,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
-        fetchSlugContent(currentStudy.exerciseId, false)
+        fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
 
@@ -177,7 +176,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 //        })
 //    }
 
-    private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
+    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
             .observe(this, {

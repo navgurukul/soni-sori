@@ -19,4 +19,6 @@
     <color name="colorBlockQuoteBackground">#FFE69C</color>
 
     <color name="contentBannerBackground">#E9F5E9</color>
+    <color name="code_title_background">#343A33</color>
+    <color name="code_background">#101210</color>
 </resources>
