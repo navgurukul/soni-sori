@@ -99,7 +99,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fetchSlugContent(currentStudy.exerciseId, true)
+            fetchExerciseContent(currentStudy.exerciseId, true)
             mBinding.swipeContainer.isRefreshing = false
         }
     }
@@ -168,7 +168,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
-        fetchSlugContent(currentStudy.exerciseId, false)
+        fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
 
@@ -178,7 +178,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 //        })
 //    }
 
-    private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
+    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
             .observe(this, {
