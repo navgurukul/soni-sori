@@ -99,6 +99,7 @@ val networkModule = module {
                 .withSubtype(CodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_CODE)
                 .withSubtype(BlockQuoteBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BLOCK_QUOTE)
                 .withSubtype(HeaderBaseCourseContent::class.java, BaseCourseContent.COMPONENT_HEADER)
+                .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
                 .withSubtype(BannerCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
                 .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
                 .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_UNKNOWN)

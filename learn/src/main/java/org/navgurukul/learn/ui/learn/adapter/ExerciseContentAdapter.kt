@@ -93,6 +93,9 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
             is HeaderBaseCourseContent -> {
                 initHeaderView(item, binding)
             }
+            is TableBaseCourseContent -> {
+//                initTableView(item, binding)
+            }
             is UnknownBaseCourseContent -> {
                 initUnknown(binding)
             }

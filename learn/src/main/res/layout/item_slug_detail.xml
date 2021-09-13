@@ -53,6 +53,7 @@
                 android:id="@+id/titleContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_2x"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:textColor="?textPrimary"
@@ -74,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textContent"
+                android:layout_marginVertical="@dimen/spacing_2x"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:background="@drawable/hint_box_drawable">
@@ -178,6 +180,18 @@
             android:layout_marginVertical="@dimen/spacing_2x"
             android:layout_marginHorizontal="@dimen/spacing_4x"
             android:visibility="gone" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flow_wrapMode="aligned"/>
+
+        </HorizontalScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/blockQuoteLayout"

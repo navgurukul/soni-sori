@@ -14,6 +14,7 @@ interface BaseCourseContent : Serializable {
         const val COMPONENT_CODE = "code"
         const val COMPONENT_BLOCK_QUOTE = "blockquote"
         const val COMPONENT_HEADER = "header"
+        const val COMPONENT_TABLE = "table"
         const val TYPE_PYTHON = "python"
         const val TYPE_JS = "javascript"
         const val TYPE_SOLUTION = "solution"
@@ -40,6 +41,16 @@ data class HeaderBaseCourseContent(
         override val component: String,
         @Json(name = "value")
         val value: String?,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+) : BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class TableBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        val value: List<TableColumn>?,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -140,6 +151,14 @@ data class BannerAction(
         val url: String?,
         @Json(name = "label")
         var label: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class TableColumn(
+        @Json(name = "header")
+        val header: String?,
+        @Json(name = "items")
+        var items: List<String>?
 )
 
 enum class CodeType {
