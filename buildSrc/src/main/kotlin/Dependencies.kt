@@ -136,7 +136,7 @@ object MiscellaneousDependencies {
     const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:8.10.23"
     const val photoView = "com.github.chrisbanes:PhotoView:2.0.0"
     const val alerter = "com.tapadoo.android:alerter:5.1.2"
-    const val timber = "com.jakewharton.timber:timber:4.7.1"
+    const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
 }
