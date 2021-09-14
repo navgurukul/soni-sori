@@ -27,7 +27,7 @@ sealed class Mode: Parcelable {
     @Parcelize
     object Playground : Mode()
     @Parcelize
-    data class Course(val content: List<String>, val code: String) : Mode()
+    data class Course(val content: List<Char>, val code: String) : Mode()
 }
 
 interface TypingAppModuleNavigator {

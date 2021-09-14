@@ -12,7 +12,6 @@ import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewState
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit.*
 import kotlin.collections.ArrayList
@@ -21,7 +20,7 @@ enum class CourseKeyState {
     CORRECT, INCORRECT, NEUTRAL
 }
 
-data class CourseKey(val label: String, val state: CourseKeyState) {
+data class CourseKey(val label: Char, val state: CourseKeyState) {
     override fun equals(other: Any?): Boolean {
         return other is CourseKey && label == other.label
     }
@@ -35,7 +34,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
-    private val maxTime = MINUTES.toSeconds(1)
+    private val maxTime = MINUTES.toSeconds(3)
 
     companion object {
         const val MAX_ALLOWED_KEYS = 8
@@ -65,13 +64,13 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
         var correctKeys = viewState.correctKeys
         var inCorrectKeys = viewState.inCorrectKeys
         val currentKeyState: CourseKeyState
-        if (key.toLowerCase() == courseKeys[activeKeyIndex].label.toCharArray().first()) {
+        if (key.lowercaseChar() == courseKeys[activeKeyIndex].label) {
             currentKeyState = CourseKeyState.CORRECT
             correctKeys += 1
         } else {
             currentKeyState = CourseKeyState.INCORRECT
             inCorrectKeys += 1
-            _viewEvents.setValue(KeyboardViewEvent.ShakeKey(key.toLowerCase()))
+            _viewEvents.setValue(KeyboardViewEvent.ShakeKey(key.lowercaseChar()))
         }
 
         if (activeKeyIndex == courseKeys.size - 1) {
@@ -137,17 +136,17 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
 
     private fun generateCourseKeys() = when (keyboardActivityArgs.mode) {
         is Mode.Course -> {
-            generateRandomWordList(keyboardActivityArgs.mode.content)
+            generateRandomWordList(keyboardActivityArgs.mode.content.distinct())
         }
         Mode.Playground -> {
-            generateRandomWordList(('a'..'z').toList().map { it.toString() })
+            generateRandomWordList(('a'..'z').toList().map { it })
         }
     }.map {
         CourseKey(it, CourseKeyState.NEUTRAL)
     }
 
-    private fun generateRandomWordList(list: List<String>): ArrayList<String> {
-        return ArrayList<String>().apply {
+    private fun generateRandomWordList(list: List<Char>): ArrayList<Char> {
+        return ArrayList<Char>().apply {
             val r = Random()
             repeat(MAX_ALLOWED_KEYS) {
                 add(list[r.nextInt(list.size)])

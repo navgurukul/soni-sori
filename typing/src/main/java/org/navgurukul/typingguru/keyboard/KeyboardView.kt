@@ -38,6 +38,7 @@ class KeyboardView @JvmOverloads constructor(
 
     data class Key(
         val label: String,
+        val value: Char,
         val widthMultiplier: Float = 1f,
         val startMargin: Float = 0f,
         val smallSize: Boolean = false,
@@ -114,84 +115,85 @@ class KeyboardView @JvmOverloads constructor(
 
     private val keys: List<List<Key>> = listOf(
         listOf(
-            Key("`"),
-            Key("1", leftHandImage = R.drawable.img_left_hand_1),
-            Key("2", leftHandImage = R.drawable.img_left_hand_2),
-            Key("3", leftHandImage = R.drawable.img_left_hand_3),
-            Key("4", leftHandImage = R.drawable.img_left_hand_4),
-            Key("5", leftHandImage = R.drawable.img_left_hand_5),
-            Key("6", rightHandImage = R.drawable.img_right_hand_6),
-            Key("7", rightHandImage = R.drawable.img_right_hand_7),
-            Key("8", rightHandImage = R.drawable.img_right_hand_8),
-            Key("9", rightHandImage = R.drawable.img_right_hand_9),
-            Key("0", rightHandImage = R.drawable.img_right_hand_0),
-            Key("-"),
-            Key("="),
-            Key("backspace", 1.54f, smallSize = true, textAlign = Paint.Align.RIGHT)
+            Key("`", '`'),
+            Key("1", '1', leftHandImage = R.drawable.img_left_hand_1),
+            Key("2", '2', leftHandImage = R.drawable.img_left_hand_2),
+            Key("3", '3', leftHandImage = R.drawable.img_left_hand_3),
+            Key("4", '4', leftHandImage = R.drawable.img_left_hand_4),
+            Key("5", '5', leftHandImage = R.drawable.img_left_hand_5),
+            Key("6", '6', rightHandImage = R.drawable.img_right_hand_6),
+            Key("7", '7', rightHandImage = R.drawable.img_right_hand_7),
+            Key("8", '8', rightHandImage = R.drawable.img_right_hand_8),
+            Key("9", '9', rightHandImage = R.drawable.img_right_hand_9),
+            Key("0", '0', rightHandImage = R.drawable.img_right_hand_0),
+            Key("-", '-'),
+            Key("=", '='),
+            Key("backspace", '\u0000', 1.54f, smallSize = true, textAlign = Paint.Align.RIGHT)
         ),
         listOf(
             Key(
                 "tab",
+                '\t',
                 1.54f,
                 smallSize = true,
                 textAlign = Paint.Align.LEFT,
                 leftHandImage = R.drawable.img_left_hand_tab
             ),
-            Key("q", leftHandImage = R.drawable.img_left_hand_q),
-            Key("w", leftHandImage = R.drawable.img_left_hand_w),
-            Key("e", leftHandImage = R.drawable.img_left_hand_e),
-            Key("r", leftHandImage = R.drawable.img_left_hand_r),
-            Key("t", leftHandImage = R.drawable.img_left_hand_t),
-            Key("y", rightHandImage = R.drawable.img_right_hand_y),
-            Key("u", rightHandImage = R.drawable.img_right_hand_u),
-            Key("i", rightHandImage = R.drawable.img_right_hand_i),
-            Key("o", rightHandImage = R.drawable.img_right_hand_o),
-            Key("p", rightHandImage = R.drawable.img_right_hand_p),
-            Key("["),
-            Key("]"),
-            Key("\\")
+            Key("q", 'q', leftHandImage = R.drawable.img_left_hand_q),
+            Key("w", 'w', leftHandImage = R.drawable.img_left_hand_w),
+            Key("e", 'e', leftHandImage = R.drawable.img_left_hand_e),
+            Key("r", 'r', leftHandImage = R.drawable.img_left_hand_r),
+            Key("t", 't', leftHandImage = R.drawable.img_left_hand_t),
+            Key("y", 'y', rightHandImage = R.drawable.img_right_hand_y),
+            Key("u", 'u', rightHandImage = R.drawable.img_right_hand_u),
+            Key("i", 'i', rightHandImage = R.drawable.img_right_hand_i),
+            Key("o", 'o', rightHandImage = R.drawable.img_right_hand_o),
+            Key("p", 'p', rightHandImage = R.drawable.img_right_hand_p),
+            Key("[" ,'['),
+            Key("]", ']'),
+            Key("\\" ,'\\')
         ),
         listOf(
-            Key("caps lock", 1.82f, smallSize = true, textAlign = Paint.Align.LEFT),
-            Key("a", leftHandImage = R.drawable.img_left_hand_a),
-            Key("s", leftHandImage = R.drawable.img_left_hand_s),
-            Key("d", leftHandImage = R.drawable.img_left_hand_d),
-            Key("f", ridge = true, leftHandImage = R.drawable.img_left_hand_f),
-            Key("g", leftHandImage = R.drawable.img_left_hand_g),
-            Key("h", rightHandImage = R.drawable.img_right_hand_h),
-            Key("j", ridge = true, rightHandImage = R.drawable.img_right_hand_j),
-            Key("k", rightHandImage = R.drawable.img_right_hand_k),
-            Key("l", rightHandImage = R.drawable.img_right_hand_l),
-            Key(";", rightHandImage = R.drawable.img_right_hand_colon),
-            Key("'"),
-            Key("enter", 1.82f, smallSize = true, textAlign = Paint.Align.RIGHT)
+            Key("caps lock",  '\u0000',1.82f, smallSize = true, textAlign = Paint.Align.LEFT),
+            Key("a", 'a', leftHandImage = R.drawable.img_left_hand_a),
+            Key("s", 's', leftHandImage = R.drawable.img_left_hand_s),
+            Key("d", 'd', leftHandImage = R.drawable.img_left_hand_d),
+            Key("f", 'f', ridge = true, leftHandImage = R.drawable.img_left_hand_f),
+            Key("g", 'g', leftHandImage = R.drawable.img_left_hand_g),
+            Key("h", 'h', rightHandImage = R.drawable.img_right_hand_h),
+            Key("j", 'j', ridge = true, rightHandImage = R.drawable.img_right_hand_j),
+            Key("k", 'k', rightHandImage = R.drawable.img_right_hand_k),
+            Key("l", 'l', rightHandImage = R.drawable.img_right_hand_l),
+            Key(";", ';', rightHandImage = R.drawable.img_right_hand_colon),
+            Key("'", '\''),
+            Key("enter", '\n', 1.82f, smallSize = true, textAlign = Paint.Align.RIGHT)
         ),
         listOf(
-            Key("shift", 2.35f, smallSize = true, textAlign = Paint.Align.LEFT),
-            Key("z", leftHandImage = R.drawable.img_left_hand_z),
-            Key("x", leftHandImage = R.drawable.img_left_hand_x),
-            Key("c", leftHandImage = R.drawable.img_left_hand_c),
-            Key("v", leftHandImage = R.drawable.img_left_hand_v),
-            Key("b", leftHandImage = R.drawable.img_left_hand_b),
-            Key("n", rightHandImage = R.drawable.img_right_hand_n),
-            Key("m", rightHandImage = R.drawable.img_right_hand_m),
-            Key(",", rightHandImage = R.drawable.img_right_hand_comma),
-            Key(".", rightHandImage = R.drawable.img_right_hand_dot),
-            Key("/", rightHandImage = R.drawable.img_right_hand_slash),
-            Key("shift", 2.35f, smallSize = true, textAlign = Paint.Align.RIGHT)
+            Key("shift", '\u0000', 2.35f, smallSize = true, textAlign = Paint.Align.LEFT),
+            Key("z", 'z', leftHandImage = R.drawable.img_left_hand_z),
+            Key("x", 'x', leftHandImage = R.drawable.img_left_hand_x),
+            Key("c", 'c', leftHandImage = R.drawable.img_left_hand_c),
+            Key("v", 'v', leftHandImage = R.drawable.img_left_hand_v),
+            Key("b", 'b', leftHandImage = R.drawable.img_left_hand_b),
+            Key("n", 'n', rightHandImage = R.drawable.img_right_hand_n),
+            Key("m", 'm', rightHandImage = R.drawable.img_right_hand_m),
+            Key(",", ',', rightHandImage = R.drawable.img_right_hand_comma),
+            Key(".", '.', rightHandImage = R.drawable.img_right_hand_dot),
+            Key("/", '/', rightHandImage = R.drawable.img_right_hand_slash),
+            Key("shift", '\u0000', 2.35f, smallSize = true, textAlign = Paint.Align.RIGHT)
         ),
-        listOf(Key("space", 6.64f, 4.2f, smallSize = true))
+        listOf(Key("space", ' ',6.64f, 4.2f, smallSize = true))
     )
 
-    private val keyMap = hashMapOf<String, Key>().apply {
+    private val keyMap = hashMapOf<Char, Key>().apply {
         this@KeyboardView.keys.forEach { keyList ->
             keyList.forEach {
-                put(it.label, it)
+                put(it.value, it)
             }
         }
     }
 
-    var activeKey: String? = null
+    var activeKey: Char? = null
         set(value) {
             if (field == value) {
                 return
@@ -207,7 +209,7 @@ class KeyboardView @JvmOverloads constructor(
             invalidate()
         }
 
-    var incorrectKey: String? = null
+    var incorrectKey: Char? = null
         set(value) {
             if (field == value) {
                 return
@@ -274,8 +276,8 @@ class KeyboardView @JvmOverloads constructor(
         for (keyRow in keys) {
             var currentX = marginStart + horizontalSpacing
             for (key in keyRow) {
-                val isActive = activeKey == key.label
-                val isIncorrect = incorrectKey == key.label
+                val isActive = activeKey == key.value
+                val isIncorrect = incorrectKey == key.value
                 backgroundPaint.color =
                     if (isActive) keyBackgroundColorActive else if (isIncorrect) keyBackgroundColorIncorrect else keyBackgroundColorNeutral
                 val keyWidth = keySize * key.widthMultiplier

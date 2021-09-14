@@ -80,7 +80,7 @@ class KeyboardActivity : BaseActivity() {
                 is KeyboardViewEvent.ShakeKey -> {
                     course_keys_view.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
-                    keyboard_view.incorrectKey = it.key.toString()
+                    keyboard_view.incorrectKey = it.key
                     incorrectKeyJob?.cancel()
                     incorrectKeyJob = lifecycleScope.launch {
                         delay(500)

@@ -91,7 +91,7 @@ class CourseKeysView @JvmOverloads constructor(
 
         for (key in keyList) {
             addView(AppCompatTextView(context).apply {
-                text = key.label
+                text = key.label.toString()
                 TextViewCompat.setTextAppearance(
                     this,
                     context.getThemedFontStyle(commonR.attr.textAppearanceEmphasized2)

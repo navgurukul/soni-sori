@@ -130,7 +130,7 @@ class MerakiNavigator(
     /**
      * Returns a list of packages that support Custom Tabs.
      */
-    fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo> {
+    private fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo> {
         val pm = context.packageManager
         // Get default VIEW intent handler.
         val activityIntent = Intent()

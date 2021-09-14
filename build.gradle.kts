@@ -4,7 +4,6 @@ buildscript {
         google()
         maven(url = uri("https://plugins.gradle.org/m2/"))
         maven(url = uri("https://chaquo.com/maven"))
-        maven(url = uri("https://dl.bintray.com/amulyakhare/maven"))
     }
     dependencies {
         classpath(Classpath.gradle)
