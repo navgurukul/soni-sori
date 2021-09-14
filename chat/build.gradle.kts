@@ -67,8 +67,8 @@ dependencies {
     kapt(DaggerDependencies.assistedInjectProcessor)
 
     //Matrix
-    implementation(files("lib/matrix-sdk-android-release.aar"))
-    implementation(files("lib/matrix-sdk-android-rx-release.aar"))
+    compileOnly(files("lib/matrix-sdk-android-release.aar"))
+    compileOnly(files("lib/matrix-sdk-android-rx-release.aar"))
 
     //Glide
     implementation(GlideDependencies.glide)
