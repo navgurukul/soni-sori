@@ -5,11 +5,15 @@ import androidx.core.content.edit
 
 class TypingGuruPreferenceManager(private val sharedPreferences: SharedPreferences) {
 
+    companion object {
+        const val IS_SHOWN = "isShown"
+    }
+
     fun setWebViewDisplayStatus(isShown: Boolean) {
-        sharedPreferences.edit { putBoolean("isShown", isShown) }
+        sharedPreferences.edit { putBoolean(IS_SHOWN, isShown) }
     }
 
     fun iWebViewShown(): Boolean {
-        return sharedPreferences.getBoolean("isShown", false)
+        return sharedPreferences.getBoolean(IS_SHOWN, false)
     }
 }
