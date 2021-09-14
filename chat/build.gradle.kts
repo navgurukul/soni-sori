@@ -11,16 +11,13 @@ kapt {
 }
 
 android {
-    compileSdkVersion(BuildConfigVersions.compileSdkVersion)
-    buildToolsVersion(BuildConfigVersions.buildToolsVersion)
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(BuildConfigVersions.minSdkVersion)
-        targetSdkVersion(BuildConfigVersions.targetSdkVersion)
-        versionCode(BuildConfigVersions.versionCode)
-        versionName(BuildConfigVersions.versionName)
+        minSdk = BuildConfigVersions.minSdkVersion
+        targetSdk = BuildConfigVersions.targetSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {

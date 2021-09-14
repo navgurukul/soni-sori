@@ -1,5 +1,4 @@
 import com.android.build.gradle.api.ApkVariantOutput
-import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import de.undercouch.gradle.tasks.download.Download
 
@@ -13,22 +12,21 @@ plugins {
 }
 
 android {
-    compileSdkVersion(BuildConfigVersions.compileSdkVersion)
-    buildToolsVersion(BuildConfigVersions.buildToolsVersion)
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
         applicationId = BuildConfigVersions.applicationId
-        minSdkVersion(BuildConfigVersions.minSdkVersion)
-        targetSdkVersion(BuildConfigVersions.targetSdkVersion)
+        minSdk = BuildConfigVersions.minSdkVersion
+        targetSdk = BuildConfigVersions.targetSdkVersion
         versionCode = BuildConfigVersions.versionCode
         versionName = BuildConfigVersions.versionName
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         getByName("release") {
-            minifyEnabled(true)
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
         }
@@ -61,7 +59,7 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
     // This specifies the dynamic features.
-    dynamicFeatures =  hashSetOf(":typing")
+    dynamicFeatures.add(":typing")
 }
 
 dependencies {
@@ -154,32 +152,32 @@ tasks.register<Download>("downloadBundleTools") {
     dest(File(buildDir, "bundletool-all.jar"))
 }
 
-android.applicationVariants.all(object : Action<ApplicationVariant> {
-    override fun execute(variant: ApplicationVariant) {
-        variant.outputs.forEach { output: BaseVariantOutput? ->
-            (output as? ApkVariantOutput)?.let { apkOutput: ApkVariantOutput ->
-                val bundleToolJar = File(buildDir, "bundletool-all.jar")
-                var filePath = apkOutput.outputFile.absolutePath
-                filePath = filePath.replaceAfterLast(".", "aab")
-                filePath = filePath.replace("build/outputs/apk/", "build/outputs/bundle/")
-                var outputPath = filePath.replace("build/outputs/bundle/", "build/outputs/apks/")
-                outputPath = outputPath.replaceAfterLast(".", "apks")
+android.applicationVariants.all {
+    outputs.forEach { output: BaseVariantOutput? ->
+        (output as? ApkVariantOutput)?.let { apkOutput: ApkVariantOutput ->
+            val bundleToolJar = File(buildDir, "bundletool-all.jar")
+            var filePath = apkOutput.outputFile.absolutePath
+            filePath = filePath.replaceAfterLast(".", "aab")
+            filePath = filePath.replace("build/outputs/apk/", "build/outputs/bundle/")
+            var outputPath = filePath.replace("build/outputs/bundle/", "build/outputs/apks/")
+            outputPath = outputPath.replaceAfterLast(".", "apks")
 
-                val signingInfo = android.signingConfigs.find { it.name == variant.name }
+            val signingInfo = android.signingConfigs.find { it.name == this.name }
 
-                tasks.register<JavaExec>("buildApks${variant.name.capitalize()}") {
-                    classpath = files(bundleToolJar)
-                    val argsList =  arrayListOf(
-                        "build-apks",
-                        "--overwrite",
-                        "--local-testing",
-                        "--bundle",
-                        filePath,
-                        "--output",
-                        outputPath
-                    ).apply {
-                        if (signingInfo != null) {
-                            addAll(arrayListOf(
+            tasks.register<JavaExec>("buildApks${this.name.capitalize()}") {
+                classpath = files(bundleToolJar)
+                val argsList = arrayListOf(
+                    "build-apks",
+                    "--overwrite",
+                    "--local-testing",
+                    "--bundle",
+                    filePath,
+                    "--output",
+                    outputPath
+                ).apply {
+                    if (signingInfo != null) {
+                        addAll(
+                            arrayListOf(
                                 "--ks",
                                 signingInfo.storeFile!!.absolutePath,
                                 "--ks-pass",
@@ -188,24 +186,24 @@ android.applicationVariants.all(object : Action<ApplicationVariant> {
                                 signingInfo.keyAlias!!,
                                 "--key-pass",
                                 "pass:${signingInfo.keyPassword!!}"
-                            ))
-                        }
+                            )
+                        )
                     }
-
-                    args = argsList
-
-                    if (!bundleToolJar.exists()) {
-                        dependsOn("downloadBundleTools")
-                    }
-                    dependsOn("bundle${variant.name.capitalize()}")
                 }
 
-                tasks.register<JavaExec>("installApkSplitsForTest${variant.name.capitalize()}") {
-                    classpath = files(bundleToolJar)
-                    args = listOf("install-apks", "--apks", outputPath)
-                    dependsOn("buildApks${variant.name.capitalize()}")
+                args = argsList
+
+                if (!bundleToolJar.exists()) {
+                    dependsOn("downloadBundleTools")
                 }
+                dependsOn("bundle${this.name.capitalize()}")
+            }
+
+            tasks.register<JavaExec>("installApkSplitsForTest${this.name.capitalize()}") {
+                classpath = files(bundleToolJar)
+                args = listOf("install-apks", "--apks", outputPath)
+                dependsOn("buildApks${this.name.capitalize()}")
             }
         }
     }
-})
+}
