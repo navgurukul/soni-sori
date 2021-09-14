@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 
@@ -27,6 +28,7 @@ sealed class Mode: Parcelable {
     @Parcelize
     object Playground : Mode()
     @Parcelize
+    @JsonClass(generateAdapter = true)
     data class Course(val content: List<Char>, val code: String) : Mode()
 }
 

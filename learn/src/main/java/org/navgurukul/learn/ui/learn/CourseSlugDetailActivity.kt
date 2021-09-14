@@ -166,9 +166,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun loadTypingTutor(it: TypingExerciseSlugDetail) {
-        dynamicFeatureModuleManager.installModule("typing", {
-            merakiNavigator.launchTypingApp(this, Mode.Course(it.value, it.type))
-        })
+        merakiNavigator.launchTypingApp(this, Mode.Course(it.value, it.type))
     }
 
     private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {

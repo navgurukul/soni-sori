@@ -38,10 +38,8 @@ class PlaygroundFragment : BaseFragment() {
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                PlaygroundViewEvents.HideLoading -> dismissLoadingDialog()
                 PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext(), "")
                 PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
-                PlaygroundViewEvents.ShowLoading -> showLoading(getString(R.string.installing_module_message))
             }
         })
 

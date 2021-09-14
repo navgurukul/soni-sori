@@ -213,7 +213,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
-        navigator.openDeepLink(requireContext(), event.deepLink)
+        navigator.openDeepLink(requireActivity(), event.deepLink)
     }
 
     private fun startOpenFileIntent(action: RoomDetailFragmentViewEvents.OpenFile) {
