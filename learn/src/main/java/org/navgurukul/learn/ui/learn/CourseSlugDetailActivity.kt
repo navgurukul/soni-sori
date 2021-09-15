@@ -154,7 +154,10 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             } else if (it is BannerCourseContent) {
 //                loadTypingTutor(it)
                 it.action?.url?.let {url ->
-                    merakiNavigator.openCustomTab(url, this)
+                    if(url.contains(MerakiNavigator.MERAKI_DEEP_LINK_URL))
+                        merakiNavigator.openDeepLink(this, url)
+                    else
+                        merakiNavigator.openCustomTab(url, this)
                 }
             }else if(it is LinkBaseCourseContent){
                 it.link?.let {url ->

@@ -19,7 +19,7 @@ interface BaseCourseContent : Serializable {
         const val TYPE_JS = "javascript"
         const val TYPE_SOLUTION = "solution"
         const val COMPONENT_YOUTUBE_VIDEO = "youtube"
-        const val COMPONENT_YOUTUBE_UNKNOWN = "unknown"
+        const val COMPONENT_UNKNOWN = "unknown"
         const val COMPONENT_IMAGE = "image"
         const val COMPONENT_BANNER = "banner"
     }
@@ -41,6 +41,8 @@ data class HeaderBaseCourseContent(
         override val component: String,
         @Json(name = "value")
         val value: String?,
+        @Json(name = "variant")
+        val variant: Int?,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -69,7 +71,7 @@ data class BlockQuoteBaseCourseContent(
 data class LinkBaseCourseContent(
         @Json(name = "component")
         override val component: String,
-        @Json(name = "text")
+        @Json(name = "value")
         val value: String?,
         @Json(name = "href")
         val link: String?,
@@ -91,7 +93,7 @@ data class UnknownBaseCourseContent(
 data class CodeBaseCourseContent(
         @Json(name = "component")
         override val component: String,
-        @Json(name = "text")
+        @Json(name = "value")
         val value: String?,
         @Json(name = "title")
         val title: String? = null,
@@ -166,5 +168,5 @@ enum class CodeType {
 }
 
 enum class DecorationType {
-    number, bullet, bold
+    number, bullet
 }

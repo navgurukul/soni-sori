@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.android.synthetic.main.item_slug_detail.view.*
@@ -85,7 +86,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
                 initImageView(item, binding)
             }
             is BannerCourseContent -> {
-                initTryTypingView(item, binding)
+                initBannerView(item, binding)
             }
             is BlockQuoteBaseCourseContent -> {
                 initBlockQuoteView(item, binding)
@@ -94,7 +95,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
                 initHeaderView(item, binding)
             }
             is TableBaseCourseContent -> {
-//                initTableView(item, binding)
+                initTableView(item, binding)
             }
             is UnknownBaseCourseContent -> {
                 initUnknown(binding)
@@ -113,6 +114,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.codeLayout.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
     }
 
     private fun initTextContent(
@@ -127,6 +129,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.codeLayout.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         binding.decorContent.visibility = View.GONE
         binding.textContent.visibility = View.GONE
@@ -163,6 +166,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         item.value?.let {
             binding.blockQuoteLayout.visibility = View.VISIBLE
@@ -171,6 +175,45 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
                 this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
         }
+    }
+
+    private fun initTableView(
+            item: TableBaseCourseContent,
+            binding: ItemSlugDetailBinding
+    ) {
+        binding.youtubeView.visibility = View.GONE
+        binding.imageView.visibility = View.GONE
+        binding.imageViewPlay.visibility = View.GONE
+        binding.relBanner.visibility = View.GONE
+        binding.textContent.visibility = View.GONE
+        binding.codeLayout.visibility = View.GONE
+        binding.decorContent.visibility = View.GONE
+        binding.titleContent.visibility = View.GONE
+        binding.linkContent.visibility = View.GONE
+
+        item.value?.let {
+            if(it.isNotEmpty()) {
+                val tableView = binding.tableLayout
+                val noOfRows = it[0].items?.size?.plus(1) ?: 0
+                val tableAdapter = TableAdapter(noOfRows, getFlattenedTableList(it))
+
+                tableView.layoutManager = GridLayoutManager(binding.tableLayout.context, noOfRows
+                        , GridLayoutManager.HORIZONTAL, false)
+                tableView.adapter = tableAdapter
+                tableView.addItemDecoration(ListSpacingDecoration(tableView.context, R.dimen.table_margin_offset))
+
+                tableAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun getFlattenedTableList(list: List<TableColumn>): List<String> {
+        val flatList = ArrayList<String>()
+        for(item in list){
+            flatList.add(item.header ?: "")
+            item.items?.let { flatList.addAll(it) }
+        }
+        return flatList
     }
 
     private fun initHeaderView(
@@ -185,6 +228,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.codeLayout.visibility = View.GONE
         binding.decorContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         item.value?.let {
             binding.titleContent.visibility = View.VISIBLE
@@ -208,6 +252,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.textContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         item.value?.let {
             binding.linkContent.visibility = View.VISIBLE
@@ -234,6 +279,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         binding.codeLayout.visibility = View.VISIBLE
 
@@ -270,6 +316,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         binding.youtubeView.visibility = View.VISIBLE
 
@@ -294,6 +341,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         binding.imageView.visibility = View.VISIBLE
 
@@ -303,7 +351,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.imageView.contentDescription = item.alt
     }
 
-    private fun initTryTypingView(
+    private fun initBannerView(
             item: BannerCourseContent,
             binding: ItemSlugDetailBinding
     ) {
@@ -316,6 +364,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.decorContent.visibility = View.GONE
         binding.titleContent.visibility = View.GONE
         binding.linkContent.visibility = View.GONE
+        binding.tableLayout.visibility = View.GONE
 
         binding.relBanner.visibility = View.VISIBLE
 

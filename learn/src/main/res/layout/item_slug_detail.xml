@@ -17,6 +17,7 @@
             android:id="@+id/youtube_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_youtube_view_height"
+            android:layout_marginVertical="@dimen/spacing_2x"
             android:visibility="gone"
             app:autoPlay="false"
             app:showFullScreenButton="true" />
@@ -181,17 +182,13 @@
             android:layout_marginHorizontal="@dimen/spacing_4x"
             android:visibility="gone" />
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.constraintlayout.helper.widget.Flow
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:flow_wrapMode="aligned"/>
-
-        </HorizontalScrollView>
+                android:layout_marginVertical="@dimen/spacing_2x"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/blockQuoteLayout"
