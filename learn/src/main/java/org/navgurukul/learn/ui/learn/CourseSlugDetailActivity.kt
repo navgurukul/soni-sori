@@ -148,22 +148,26 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter {
+        contentAdapter = ExerciseContentAdapter({
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     merakiNavigator.openPlayground(this, it.value)
                 }
-            } else if (it is BannerCourseContent) {
-//                loadTypingTutor(it)
-                it.action?.url?.let {url ->
-                    merakiNavigator.openCustomTab(url, this)
-                }
-            }else if(it is LinkBaseCourseContent){
-                it.link?.let {url ->
+            } else if (it is LinkBaseCourseContent) {
+                it.link?.let { url ->
                     merakiNavigator.openCustomTab(url, this)
                 }
             }
+        }) {
+            it?.let { action ->
+                action.url?.let { url ->
+                    merakiNavigator.openDeepLink(this, url, action.data)
+                }
+            }
+
         }
+
+
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
@@ -171,12 +175,6 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
-
-//    private fun loadTypingTutor(it: BannerCourseContent) {
-//        dynamicFeatureModuleManager.installModule("typing", {
-//            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(ArrayList(it.value), it.component))
-//        })
-//    }
 
     private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE

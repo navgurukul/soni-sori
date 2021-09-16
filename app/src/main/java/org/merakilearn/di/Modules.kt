@@ -102,7 +102,7 @@ val networkModule = module {
                 .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
                 .withSubtype(BannerCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
                 .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
-                .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_UNKNOWN)
+                .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)
                 .withDefaultValue(UnknownBaseCourseContent())
             )
             .build()

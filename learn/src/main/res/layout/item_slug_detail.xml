@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_youtube_view_height"
             android:visibility="gone"
+            android:layout_marginVertical="@dimen/spacing_2x"
             app:autoPlay="false"
             app:showFullScreenButton="true" />
 
@@ -105,8 +106,8 @@
                     android:textSize="14sp"/>
 
                 <Button
-                    android:id="@+id/bannerButton"
-                    android:layout_width="158dp"
+                    android:id="@+id/bannerButton1"
+                    android:layout_width="150dp"
                     android:layout_height="45dp"
                     android:layout_below="@+id/bannerBody"
                     android:layout_marginHorizontal="@dimen/dimen_16_dp"
@@ -119,6 +120,24 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/bannerButton2"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/bannerBody"
+                    android:layout_marginHorizontal="@dimen/dimen_16_dp"
+                    android:layout_marginTop="@dimen/dimen_16_dp"
+                    android:layout_marginBottom="19dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/primary_btn_selector"
+                    android:fontFamily="@font/nunito"
+                    android:text="Try Typing"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -181,17 +200,13 @@
             android:layout_marginHorizontal="@dimen/spacing_4x"
             android:visibility="gone" />
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:flow_wrapMode="aligned"/>
-
-        </HorizontalScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/spacing_2x"
+            android:layout_marginHorizontal="@dimen/spacing_4x"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/blockQuoteLayout"
