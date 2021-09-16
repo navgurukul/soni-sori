@@ -133,8 +133,8 @@ data class BannerCourseContent(
         var value: String?,
         @Json(name = "title")
         var title: String?,
-        @Json(name = "action")
-        var action: BannerAction?,
+        @Json(name = "actions")
+        var actions: List<BannerAction>?,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -152,7 +152,9 @@ data class BannerAction(
         @Json(name = "url")
         val url: String?,
         @Json(name = "label")
-        var label: String?
+        var label: String?,
+        @Json(name = "data")
+        var data: String?
 )
 
 @JsonClass(generateAdapter = true)

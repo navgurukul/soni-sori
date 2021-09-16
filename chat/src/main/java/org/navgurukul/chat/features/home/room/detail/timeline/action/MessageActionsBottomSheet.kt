@@ -14,13 +14,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.bottom_sheet_generic_list.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
+import org.merakilearn.core.extentions.KEY_ARG
+import org.merakilearn.core.extentions.fragmentArgs
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.extensions.KEY_ARG
-import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
 import org.navgurukul.chat.core.utils.DimensionConverter
@@ -39,7 +38,7 @@ data class TimelineEventFragmentArgs(
 class MessageActionsBottomSheet : BottomSheetDialogFragment(),
     MessageActionsController.MessageActionsControllerListener {
 
-    private val timelineEventFragmentArgs: TimelineEventFragmentArgs by args()
+    private val timelineEventFragmentArgs: TimelineEventFragmentArgs by fragmentArgs()
 
     private val messageActionsController: MessageActionsController by inject()
 

@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.fragmentArgs
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.animations.AppBarStateChangeListener
 import org.navgurukul.chat.core.animations.MerakiItemAppBarStateChangeListener
@@ -41,7 +42,7 @@ class RoomProfileFragment: BaseFragment(),
     private val roomProfileController: RoomProfileController by inject()
     private val avatarRenderer: AvatarRenderer by inject()
 
-    private val roomProfileArgs: RoomProfileArgs by args()
+    private val roomProfileArgs: RoomProfileArgs by fragmentArgs()
     private val roomProfileSharedActionViewModel: RoomProfileSharedActionViewModel by sharedViewModel()
     private val roomListQuickActionsSharedActionViewModel: RoomListQuickActionsSharedActionViewModel by sharedViewModel()
     private val roomProfileViewModel: RoomProfileViewModel by viewModel(parameters = { parametersOf(RoomProfileViewState(roomProfileArgs.roomId))})

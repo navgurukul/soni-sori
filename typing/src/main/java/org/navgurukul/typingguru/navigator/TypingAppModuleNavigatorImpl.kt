@@ -5,24 +5,24 @@ import androidx.fragment.app.FragmentActivity
 import com.google.auto.service.AutoService
 import org.koin.core.context.loadKoinModules
 import org.koin.java.KoinJavaComponent.inject
+import org.merakilearn.core.navigator.Mode
 import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.typingguru.di.typingModule
-import org.navgurukul.typingguru.ui.KeyboardActivity
-import org.navgurukul.typingguru.ui.KeyboardDialogActivity
+import org.navgurukul.typingguru.keyboard.KeyboardActivity
+import org.navgurukul.typingguru.keyboard.dialog.KeyboardDialogActivity
 import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
-import org.navgurukul.typingguru.utils.Utility
 
 @AutoService(TypingAppModuleNavigator::class)
 class TypingAppModuleNavigatorImpl : TypingAppModuleNavigator {
 
-    override fun launchTypingApp(activity: FragmentActivity, mode : TypingAppModuleNavigator.Mode) {
+    override fun launchTypingApp(activity: FragmentActivity, mode : Mode) {
         loadKoinModules(typingModule)
         val typingManager: TypingGuruPreferenceManager by inject(TypingGuruPreferenceManager::class.java)
-        val utility: Utility by inject(Utility::class.java)
         if (typingManager.iWebViewShown()) {
-            activity.startActivity(KeyboardActivity.newIntent(activity, mode, utility))
+            activity.startActivity(KeyboardActivity.newIntent(activity, mode))
         } else {
-            activity.startActivity(KeyboardDialogActivity.newIntent(activity, mode, utility),
+            activity.startActivity(
+                KeyboardDialogActivity.newIntent(activity, mode),
                 ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
         }
 

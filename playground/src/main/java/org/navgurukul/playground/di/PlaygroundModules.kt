@@ -14,7 +14,7 @@ import org.navgurukul.playground.ui.PythonPlaygroundViewModel
 
 val viewModelModules = module {
     viewModel { PythonPlaygroundViewModel(get()) }
-    viewModel { PlaygroundViewModel(get(), get()) }
+    viewModel { PlaygroundViewModel(get()) }
 }
 
 val repoModules = module {

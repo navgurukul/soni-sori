@@ -13,6 +13,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.core.navigator.Mode
+import org.merakilearn.core.navigator.TypingAppModuleNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
@@ -26,8 +28,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     companion object {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
         fun start(
-            context: Context,
-            currentStudy: CurrentStudy
+                context: Context,
+                currentStudy: CurrentStudy
         ) {
             val intent = Intent(context, CourseSlugDetailActivity::class.java)
             intent.putExtra(ARG_KEY_CURRENT_STUDY, currentStudy)
@@ -79,19 +81,19 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private fun fetchExerciseDataAndShow(exerciseId: String, courseId: String) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, courseId, true)
-            .observe(this, Observer {
-                mBinding.progressBar.visibility = View.GONE
-                if (null != it && it.isNotEmpty()) {
-                    currentStudy = CurrentStudy(
-                        courseId = courseId,
-                        courseName = it.firstOrNull()?.courseName,
-                        exerciseSlugName = it.firstOrNull()?.slug!!,
-                        exerciseName = it.firstOrNull()?.name,
-                        exerciseId = exerciseId
-                    )
-                    renderUI()
-                }
-            })
+                .observe(this, Observer {
+                    mBinding.progressBar.visibility = View.GONE
+                    if (null != it && it.isNotEmpty()) {
+                        currentStudy = CurrentStudy(
+                                courseId = courseId,
+                                courseName = it.firstOrNull()?.courseName,
+                                exerciseSlugName = it.firstOrNull()?.slug!!,
+                                exerciseName = it.firstOrNull()?.name,
+                                exerciseId = exerciseId
+                        )
+                        renderUI()
+                    }
+                })
     }
 
 
@@ -146,49 +148,44 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter {
+        contentAdapter = ExerciseContentAdapter({
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     merakiNavigator.openPlayground(this, it.value)
                 }
-            } else if (it is BannerCourseContent) {
-//                loadTypingTutor(it)
-                it.action?.url?.let {url ->
-                    if(url.contains(MerakiNavigator.MERAKI_DEEP_LINK_URL))
-                        merakiNavigator.openDeepLink(this, url)
-                    else
-                        merakiNavigator.openCustomTab(url, this)
-                }
-            }else if(it is LinkBaseCourseContent){
-                it.link?.let {url ->
+            } else if (it is LinkBaseCourseContent) {
+                it.link?.let { url ->
                     merakiNavigator.openCustomTab(url, this)
                 }
             }
+        }) {
+            it?.let { action ->
+                action.url?.let { url ->
+                    merakiNavigator.openDeepLink(this, url, action.data)
+                }
+            }
+
         }
+
+
         val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
         fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
 
-//    private fun loadTypingTutor(it: BannerCourseContent) {
-//        dynamicFeatureModuleManager.installModule("typing", {
-//            merakiNavigator.launchTypingApp(this, TypingAppModuleNavigator.Mode.Course(ArrayList(it.value), it.component))
-//        })
-//    }
-
     private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
-            .observe(this, {
-                mBinding.progressBar.visibility = View.GONE
-                if (null != it && it.isNotEmpty()) {
-                    val data = parseDataForContent(it)
-                    contentAdapter.submitList(data)
-                }
-            })
+                .observe(this, {
+                    mBinding.progressBar.visibility = View.GONE
+                    if (null != it && it.isNotEmpty()) {
+                        val data = parseDataForContent(it)
+                        contentAdapter.submitList(data)
+                    }
+                })
     }
 
     private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
@@ -199,20 +196,20 @@ class CourseSlugDetailActivity : AppCompatActivity() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank()) {
                 start(
-                    this,
-                    CurrentStudy(
-                        courseId = currentStudy.courseId,
-                        courseName = currentStudy.courseName,
-                        exerciseSlugName = it.first.slug!!,
-                        exerciseName = it.first.name,
-                        exerciseId = it.first.id
-                    )
+                        this,
+                        CurrentStudy(
+                                courseId = currentStudy.courseId,
+                                courseName = currentStudy.courseName,
+                                exerciseSlugName = it.first.slug!!,
+                                exerciseName = it.first.name,
+                                exerciseId = it.first.id
+                        )
                 )
                 finish()
             }
         }
         val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
         mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
         fetchAndSetMasterData()

@@ -3,13 +3,13 @@ object Versions {
     const val arrow_version = "0.8.2"
     const val daggerAssistedInject = "0.5.0"
     const val daggerVersion = "2.25.4"
-    const val moshi_version = "1.11.0"
+    const val moshi_version = "1.12.0"
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
     const val markdown = "4.5.1"
-    const val kotlin = "1.4.32"
+    const val kotlin = "1.5.21"
     const val lifecycle_extensions = "2.2.0"
-    const val koin = "2.2.0"
+    const val koin = "2.2.3"
     const val room = "2.3.0"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
@@ -99,8 +99,8 @@ object GMSDependencies {
 }
 
 object KoinDependencies {
-    const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
-    const val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+    const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
+    const val koinViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
 }
 
 object GlideDependencies {
@@ -136,7 +136,7 @@ object MiscellaneousDependencies {
     const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:8.10.23"
     const val photoView = "com.github.chrisbanes:PhotoView:2.0.0"
     const val alerter = "com.tapadoo.android:alerter:5.1.2"
-    const val timber = "com.jakewharton.timber:timber:4.7.1"
+    const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
 }
@@ -176,7 +176,7 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:4.1.2"
+    const val gradle = "com.android.tools.build:gradle:7.0.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
     // Newer versions may be available: please check here:

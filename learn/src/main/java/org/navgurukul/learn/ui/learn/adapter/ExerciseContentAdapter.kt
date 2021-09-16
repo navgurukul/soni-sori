@@ -2,6 +2,8 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
+import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,27 +22,28 @@ import org.navgurukul.learn.databinding.ItemSlugDetailBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
-    DataBoundListAdapter<BaseCourseContent, ItemSlugDetailBinding>(
-            mDiffCallback = object : DiffUtil.ItemCallback<BaseCourseContent>() {
-                override fun areItemsTheSame(
-                        oldItem: BaseCourseContent,
-                        newItem: BaseCourseContent
-                ): Boolean {
-                    return oldItem == newItem
-                }
+class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit, urlCallback: (BannerAction?) -> Unit) :
+        DataBoundListAdapter<BaseCourseContent, ItemSlugDetailBinding>(
+                mDiffCallback = object : DiffUtil.ItemCallback<BaseCourseContent>() {
+                    override fun areItemsTheSame(
+                            oldItem: BaseCourseContent,
+                            newItem: BaseCourseContent
+                    ): Boolean {
+                        return oldItem == newItem
+                    }
 
-                @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(
-                        oldItem: BaseCourseContent,
-                        newItem: BaseCourseContent
-                ): Boolean {
-                    return oldItem == newItem
+                    @SuppressLint("DiffUtilEquals")
+                    override fun areContentsTheSame(
+                            oldItem: BaseCourseContent,
+                            newItem: BaseCourseContent
+                    ): Boolean {
+                        return oldItem == newItem
+                    }
                 }
-            }
-    ) {
+        ) {
 
     private val mCallback = callback
+    private val mUrlCallback = urlCallback
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemSlugDetailBinding {
         return DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -56,10 +59,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.imageViewPlay.setOnClickListener {
             mCallback.invoke(item)
         }
-        binding.bannerButton.setOnClickListener {
-            mCallback.invoke(item)
-        }
-        binding.linkContent.setOnClickListener{
+        binding.linkContent.setOnClickListener {
             mCallback.invoke(item)
         }
         bindItem(item, binding)
@@ -192,13 +192,12 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.linkContent.visibility = View.GONE
 
         item.value?.let {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 val tableView = binding.tableLayout
                 val noOfRows = it[0].items?.size?.plus(1) ?: 0
                 val tableAdapter = TableAdapter(noOfRows, getFlattenedTableList(it))
 
-                tableView.layoutManager = GridLayoutManager(binding.tableLayout.context, noOfRows
-                        , GridLayoutManager.HORIZONTAL, false)
+                tableView.layoutManager = GridLayoutManager(binding.tableLayout.context, noOfRows, GridLayoutManager.HORIZONTAL, false)
                 tableView.adapter = tableAdapter
                 tableView.addItemDecoration(ListSpacingDecoration(tableView.context, R.dimen.table_margin_offset))
 
@@ -209,7 +208,7 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
 
     private fun getFlattenedTableList(list: List<TableColumn>): List<String> {
         val flatList = ArrayList<String>()
-        for(item in list){
+        for (item in list) {
             flatList.add(item.header ?: "")
             item.items?.let { flatList.addAll(it) }
         }
@@ -234,7 +233,14 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
             binding.titleContent.visibility = View.VISIBLE
 
             binding.titleContent.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+//                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val str = "<span style=\"background-color:#f3f402;\">" + it + "</span>";
+                    this.setText(HtmlCompat.fromHtml(str, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                } else {
+                    val str = "<font color='#f3f402'>" + it + "</font>";
+                    this.setText(Html.fromHtml(str));
+                }
             }
         }
     }
@@ -284,12 +290,12 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
         binding.codeLayout.visibility = View.VISIBLE
 
         binding.codeTitle.visibility = View.GONE
-        item.title?.let{
+        item.title?.let {
             binding.codeTitle.visibility = View.VISIBLE
             binding.codeTitle.text = it
         }
 
-        when(item.codeTypes) {
+        when (item.codeTypes) {
             CodeType.javascript -> {
                 binding.imageViewPlay.visibility = View.GONE
             }
@@ -368,9 +374,32 @@ class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit) :
 
         binding.relBanner.visibility = View.VISIBLE
 
-        binding.bannerButton.text = item.action?.label
+        item.actions?.let {
+            setActionButtons(binding, it)
+        }
         binding.bannerTitle.text = item.title
         binding.bannerBody.text = item.value
+
+    }
+
+    private fun setActionButtons(binding: ItemSlugDetailBinding, actions: List<BannerAction>) {
+        actions.forEachIndexed { index, element ->
+            if (index == 0) {
+                binding.bannerButton2.visibility = View.GONE
+
+                binding.bannerButton1.visibility = View.VISIBLE
+                binding.bannerButton1.text = element.label
+                binding.bannerButton1.setOnClickListener {
+                    mUrlCallback.invoke(element)
+                }
+            } else {
+                binding.bannerButton2.visibility = View.VISIBLE
+                binding.bannerButton2.text = element.label
+                binding.bannerButton2.setOnClickListener {
+                    mUrlCallback.invoke(element)
+                }
+            }
+        }
     }
 
 }
