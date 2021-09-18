@@ -12,13 +12,13 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.navgurukul.commonui.platform.*
 import org.navgurukul.commonui.resources.StringProvider
-import org.navgurukul.playground.repo.PlaygroundRepository
+import org.navgurukul.playground.repo.PythonRepository
 import java.io.File
 import java.io.IOException
 import kotlin.math.min
 
 class ProfileViewModel(
-    private val playgroundRepository: PlaygroundRepository,
+    private val pythonRepository: PythonRepository,
     private val stringProvider: StringProvider,
     private val userRepo: UserRepo,
     private val settingsRepo: SettingsRepo,
@@ -86,7 +86,7 @@ class ProfileViewModel(
 
     private suspend fun updateFiles(expanded: Boolean = false) {
         var showAllButtonText: String? = null
-        val savedFiles = playgroundRepository.fetchSavedFiles().toMutableList().let {
+        val savedFiles = pythonRepository.fetchSavedFiles().toMutableList().let {
             if (it.size > 4) {
                 showAllButtonText = stringProvider.getString(if (expanded) R.string.collapse else R.string.view_all)
             }
@@ -132,7 +132,7 @@ class ProfileViewModel(
 
     private fun deleteFile(file: File) {
         viewModelScope.launch {
-            playgroundRepository.deleteFile(file)
+            pythonRepository.deleteFile(file)
             updateFiles(viewState.value!!.filedExpanded)
         }
     }

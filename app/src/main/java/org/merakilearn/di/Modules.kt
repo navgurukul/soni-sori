@@ -22,6 +22,7 @@ import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.WelcomeViewModel
+import org.merakilearn.ui.playground.PlaygroundViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
 import org.navgurukul.learn.courses.db.models.*
 import retrofit2.Retrofit
@@ -35,6 +36,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { WelcomeViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { PlaygroundViewModel(get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,
@@ -125,6 +127,7 @@ val repositoryModule = module {
     single { Config() }
     single { ClassesRepo(get()) }
     single { SettingsRepo(get()) }
+    single { PlaygroundRepo() }
     single {
         UserRepo(
             get(),
