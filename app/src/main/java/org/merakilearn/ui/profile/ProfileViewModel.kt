@@ -38,7 +38,6 @@ class ProfileViewModel(
         viewModelScope.launch {
             updateFiles()
         }
-
     }
 
     fun handle(action: ProfileViewActions) {
