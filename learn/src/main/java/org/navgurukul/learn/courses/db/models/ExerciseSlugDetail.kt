@@ -62,7 +62,7 @@ data class TypingExerciseSlugDetail(
     @Json(name = "type")
     override val type: String,
     @Json(name = "value")
-    var value: List<String>
+    var value: List<Char>
 ) : ExerciseSlugDetail
 
 @JsonClass(generateAdapter = true)

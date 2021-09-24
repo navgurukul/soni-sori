@@ -2,16 +2,8 @@
 buildscript {
     repositories {
         google()
-        jcenter()
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-        maven {
-            url = uri("https://chaquo.com/maven")
-        }
-        maven {
-            url = uri("http://dl.bintray.com/amulyakhare/maven")
-        }
+        maven(url = uri("https://plugins.gradle.org/m2/"))
+        maven(url = uri("https://chaquo.com/maven"))
     }
     dependencies {
         classpath(Classpath.gradle)
@@ -30,18 +22,13 @@ buildscript {
 
 allprojects {
     repositories {
-        // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
-        maven {
-            url = uri("https://jitpack.io")
-        }
-        maven {
-            url = uri("http://dl.bintray.com/amulyakhare/maven")
-        }
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
         google()
+        mavenCentral()
         jcenter()
+        // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
+        maven(url = uri("https://jitpack.io"))
+        maven(url = uri("https://dl.bintray.com/amulyakhare/maven"))
+        maven(url = uri("https://oss.sonatype.org/content/repositories/snapshots/"))
     }
 }
 

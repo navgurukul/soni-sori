@@ -8,13 +8,12 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_generic_list_with_title.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
+import org.merakilearn.core.extentions.KEY_ARG
+import org.merakilearn.core.extentions.fragmentArgs
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.extensions.KEY_ARG
-import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
 import org.navgurukul.chat.features.home.room.detail.timeline.action.EventSharedAction
@@ -28,7 +27,7 @@ import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInform
 class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
     ViewReactionsEpoxyController.Listener {
 
-    private val args: TimelineEventFragmentArgs by args()
+    private val args: TimelineEventFragmentArgs by fragmentArgs()
 
     private val viewModel: ViewReactionsViewModel by viewModel(parameters = { parametersOf(DisplayReactionsViewState(args.eventId, args.roomId)) })
 

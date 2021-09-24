@@ -13,11 +13,11 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.fragmentArgs
+import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
-import org.navgurukul.chat.core.extensions.toBundle
 
 @Parcelize
 data class RoomListActionsArgs(
@@ -40,7 +40,7 @@ class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
     private val sharedActionViewModel: RoomListQuickActionsSharedActionViewModel by sharedViewModel()
     private val roomListActionsEpoxyController: RoomListQuickActionsEpoxyController by inject()
 
-    private val roomListActionsArgs: RoomListActionsArgs by args()
+    private val roomListActionsArgs: RoomListActionsArgs by fragmentArgs()
     private val viewModel: RoomListQuickActionsViewModel by viewModel(parameters = {
         parametersOf(
             RoomListQuickActionsState(roomListActionsArgs.roomId, roomListActionsArgs.mode)

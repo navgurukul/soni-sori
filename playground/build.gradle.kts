@@ -6,18 +6,18 @@ plugins {
 }
 
 android {
-    compileSdkVersion(BuildConfigVersions.compileSdkVersion)
-    buildToolsVersion(BuildConfigVersions.buildToolsVersion)
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(BuildConfigVersions.minSdkVersion)
-        targetSdkVersion(BuildConfigVersions.targetSdkVersion)
-        versionCode(BuildConfigVersions.versionCode)
-        versionName(BuildConfigVersions.versionName)
+        minSdk = BuildConfigVersions.minSdkVersion
+        targetSdk = BuildConfigVersions.targetSdkVersion
 
-        ndk.abiFilters("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        ndk {
+            abiFilters.clear()
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+        }
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     kotlinOptions {

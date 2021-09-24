@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.fragment_room_setting_generic.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.extensions.args
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
 import org.navgurukul.chat.features.home.AvatarRenderer
@@ -28,7 +28,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     private val roomMemberListController: RoomMemberListController by inject()
     private val avatarRenderer: AvatarRenderer by inject()
 
-    private val roomProfileArgs: RoomProfileArgs by args()
+    private val roomProfileArgs: RoomProfileArgs by fragmentArgs()
 
     private val viewModel: RoomMemberListViewModel by viewModel(parameters = { parametersOf(RoomMemberListViewState(roomProfileArgs.roomId))})
     private val navigator: MerakiNavigator by inject()
