@@ -2,7 +2,6 @@ package org.merakilearn.ui.onboarding
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -22,35 +22,33 @@ import kotlinx.android.synthetic.main.on_board_pages_fragment.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.OnBoardingActivity
+import org.merakilearn.OnBoardingActivityArgs
 import org.merakilearn.R
-import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.datasource.network.model.OnBoardingPageData
+import org.merakilearn.datasource.network.model.PathwayData
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.learn.ui.common.toast
-import timber.log.Timber
 
 class OnBoardPagesFragment : BaseFragment() {
 
     companion object{
-        fun newInstance(LANGUAGE: String) =OnBoardPagesFragment().apply {
-            arguments= Bundle().apply {
-                putString(LANGUAGE_KEY,LANGUAGE)
-            }
+        fun newInstance(args:OnBoardingActivityArgs) =OnBoardPagesFragment().apply{
+            language=args.language_key
         }
         const val TAG="OnBoardPagesFragment"
         private const val RC_SIGN_IN=9001
-        private const val LANGUAGE_KEY="language_key"
     }
     private lateinit var onBoardPagesAdapter: OnBoardPagesAdapter
-    lateinit var list:List<OnBoardPagesAdapter.OnBoardingPageData>
+    lateinit var list:List<OnBoardingPageData>
 
     private val viewModel:WelcomeViewModel by viewModel()
 
     private val navigator: MerakiNavigator by inject()
 
-    lateinit var LANGUAGE:String
+    lateinit var language:String
 
-    private lateinit var pathwayList: List<OnBoardPagesAdapter.PathwayData>
+    private lateinit var pathwayList: List<PathwayData>
     private lateinit var selectCourseHeader:String
 
     private val googleSignInClient: GoogleSignInClient by lazy {
@@ -63,6 +61,7 @@ class OnBoardPagesFragment : BaseFragment() {
     override fun getLayoutResId(): Int= R.layout.on_board_pages_fragment
 
     override fun onAttach(context: Context) {
+
         super.onAttach(context)
         activity?.let {
             if ((Build.VERSION.SDK_INT>= Build.VERSION_CODES.M)){
@@ -72,21 +71,19 @@ class OnBoardPagesFragment : BaseFragment() {
                 it.window.statusBarColor = ContextCompat.getColor(it, R.color.primaryDarkColor)
             }
         }
-        LANGUAGE= arguments?.getString(LANGUAGE_KEY).toString()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        setItems()
-        setIndicator()
-        setCurrentIndicator(0)
         skip_login.setOnClickListener{
             viewModel.handle(WelcomeViewActions.InitiateFakeSignUp)
         }
         login_with_google.setOnClickListener{
             signInWithGoogle()
         }
+
+        viewModel.handle(WelcomeViewActions.RetrieveDataFromConfig(language))
 
         viewModel.viewState.observe(viewLifecycleOwner){
             progress_bar_button.visibility=if(it.isLoading) View.VISIBLE else View.GONE
@@ -103,14 +100,53 @@ class OnBoardPagesFragment : BaseFragment() {
                 is WelcomeViewEvents.OpenMerakiChat->openMerakiChat(it.roomId)
                 is WelcomeViewEvents.OpenCourseSelection->openCourseSelection(pathwayList)
                 is WelcomeViewEvents.OpenHomeScreen->openHomeScreen()
+                is WelcomeViewEvents.DisplayData -> displayData(it.data)
             }
         }
     }
 
+        private fun displayData(data: OnBoardingPageData?){
 
 
-    private fun openCourseSelection(courseList: List<OnBoardPagesAdapter.PathwayData>) {
-        OnBoardingActivity.launchSelectCourseFragment(requireActivity(),courseList,selectCourseHeader)
+            next.text=data?.next_text
+            skip.text=data?.skip_text
+            login_with_google.text=data?.login_with_google_text
+            skip_login.text=data?.skip_login_text
+            onBoardPagesAdapter= data?.let {
+                OnBoardPagesAdapter(it.onBoardingDataList,requireContext())
+            }!!
+
+            viewPager2.adapter=onBoardPagesAdapter
+
+            pathwayList=data.onBoardingPathwayList
+            selectCourseHeader=data.select_course_header
+            viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    setCurrentIndicator(position)
+                }
+            })
+            viewPager2.isUserInputEnabled=false
+
+            (viewPager2.getChildAt(0) as RecyclerView).overScrollMode= RecyclerView.OVER_SCROLL_NEVER
+
+            skip.setOnClickListener {
+                viewPager2.currentItem=onBoardPagesAdapter.itemCount
+            }
+
+            next.setOnClickListener{
+                viewPager2.currentItem+=1
+            }
+
+            setIndicator()
+            setCurrentIndicator(0)
+
+        }
+
+    private fun openCourseSelection(courseList: List<PathwayData>) {
+
+        OnBoardingActivity.launchSelectCourseFragment(requireActivity(),
+            selectCourseHeader,courseList)
         requireActivity().finish()
     }
     private fun openHomeScreen(){
@@ -137,58 +173,13 @@ class OnBoardPagesFragment : BaseFragment() {
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>?) {
-        try {
+
             val account=completedTask?.getResult(ApiException::class.java)
             account?.idToken?.let {
                 viewModel.handle(WelcomeViewActions.LoginWithAuthToken(it))
             }?:run{
                 toast(getString(R.string.unable_to_sign))
             }
-        }catch (e: ApiException){
-            Timber.e(e,"Google Sign Failed")
-            toast(getString(R.string.unable_to_sign))
-        }
-
-    }
-
-
-
-
-    private fun setItems() {
-        next.setTextColor(Color.parseColor("#48A145"))
-
-        val config= Config()
-        config.initialise()
-        val res=config.getObjectifiedValue<OnBoardPagesAdapter.OnBoardingPageData>(LANGUAGE)
-        next.text=res?.next_text
-        skip.text=res?.skip_text
-        login_with_google.text=res?.login_with_google_text
-        skip_login.text=res?.skip_login_text
-        onBoardPagesAdapter= res?.let {
-            OnBoardPagesAdapter(it.onBoardingDataList)
-        }!!
-        viewPager2.adapter=onBoardPagesAdapter
-
-        viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                setCurrentIndicator(position)
-            }
-        })
-        viewPager2.isUserInputEnabled=false
-
-        (viewPager2.getChildAt(0) as RecyclerView).overScrollMode= RecyclerView.OVER_SCROLL_NEVER
-        skip.setOnClickListener {
-            viewPager2.currentItem=onBoardPagesAdapter.itemCount
-        }
-
-        next.setOnClickListener{
-            viewPager2.currentItem+=1
-        }
-
-        pathwayList=res.onBoardingPathwayList
-        selectCourseHeader=res.select_course_header
-
 
     }
 
@@ -199,7 +190,8 @@ class OnBoardPagesFragment : BaseFragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        layoutParams.setMargins(5,5,5,5)
+
+        layoutParams.setMargins(resources.getDimensionPixelSize(R.dimen.on_boarding_indicator_margin))
 
         for(i in indicators.indices){
             indicators[i]= ImageView(requireContext())

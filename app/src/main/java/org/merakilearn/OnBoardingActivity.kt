@@ -8,19 +8,23 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import org.merakilearn.databinding.ActivityOnBoardingBinding
 import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.PathwayData
 import org.merakilearn.ui.onboarding.*
-import java.io.Serializable
 
 @Parcelize
 data class OnBoardingActivityArgs(
-    val clearNotification: Boolean
+    val clearNotification: Boolean,
+    var language_key:String="",
+    var courses_list:List<PathwayData> =listOf(),
+    var select_course_header:String=""
+
 ) : Parcelable
 
 class OnBoardingActivity : AppCompatActivity() {
@@ -35,8 +39,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
         fun newIntent(context: Context, clearNotification: Boolean = false): Intent {
             val args = OnBoardingActivityArgs(
-                clearNotification = clearNotification
-            )
+                clearNotification = clearNotification)
 
             return Intent(context, OnBoardingActivity::class.java)
                 .apply {
@@ -59,43 +62,49 @@ class OnBoardingActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        fun launchWelcomeFragment(context: FragmentActivity, ON_BOARDING_LANGUAGE: String){
+        fun launchWelcomeFragment(context: FragmentActivity, select_language_args:SelectLanguageFragmentArgs){
             val intent=Intent(context,OnBoardingActivity::class.java)
+
+            val args=OnBoardingActivityArgs(clearNotification = true, language_key = select_language_args.language)
+
+            intent.putExtra(KEY_ARG,args)
             intent.putExtra(LAUNCH_WELCOME,true)
-            intent.putExtra(ON_BOARDING_LANGUAGE_KEY,ON_BOARDING_LANGUAGE)
             context.startActivity(intent)
 
         }
 
-        fun launchSelectCourseFragment(context: FragmentActivity, courseList: List<OnBoardPagesAdapter.PathwayData>, header:String) {
+        fun launchSelectCourseFragment(context: FragmentActivity, header:String, courseList:List<PathwayData>) {
 
             val intent=Intent(context,OnBoardingActivity::class.java)
-            intent.putExtra(LAUNCH_COURSES,true)
-            intent.putExtra(COURSES_LIST,courseList as Serializable)
-            intent.putExtra(SELECT_COURSE_HEADER,header)
 
+            val args=OnBoardingActivityArgs(clearNotification = true, courses_list = courseList,select_course_header = header)
+
+            intent.putExtra(LAUNCH_COURSES,true)
+            intent.putExtra(KEY_ARG,args)
             context.startActivity(intent)
 
         }
         private const val LAUNCH_LOGIN = "arg_launch_login"
-        const val LAUNCH_WELCOME="arg_launch_welcome"
-        const val LAUNCH_COURSES="arg_launch_select_course"
-        const val ON_BOARDING_LANGUAGE_KEY="language"
-        const val COURSES_LIST="courses"
-        const val SELECT_COURSE_HEADER="header"
+        private const val LAUNCH_WELCOME="arg_launch_welcome"
+        private const val LAUNCH_COURSES="arg_launch_select_course"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
         if(intent.hasExtra(LAUNCH_COURSES) && intent.getBooleanExtra(LAUNCH_COURSES,false)){
-            showFragment(SelectCourseFragment.newInstance(intent.getSerializableExtra(COURSES_LIST)as List<OnBoardPagesAdapter.PathwayData>,intent.getStringExtra(SELECT_COURSE_HEADER)),SelectCourseFragment.TAG)
+            intent.getParcelableExtra<OnBoardingActivityArgs>(KEY_ARG)?.let{args->
+
+                showFragment(SelectCourseFragment.newInstance(SelectCourseFragmentArgs(args.select_course_header,args.courses_list)),SelectCourseFragment.TAG)
+            }
         }
         else if (intent.hasExtra(LAUNCH_LOGIN) && intent.getBooleanExtra(LAUNCH_LOGIN, false)) {
             showFragment(LoginFragment.newInstance(), LoginFragment.TAG)
         }
         else if (intent.hasExtra(LAUNCH_WELCOME) && intent.getBooleanExtra(LAUNCH_WELCOME,false)){
-            showFragment(OnBoardPagesFragment.newInstance(intent.getStringExtra(ON_BOARDING_LANGUAGE_KEY)),OnBoardPagesFragment.TAG)
+            intent.getParcelableExtra<OnBoardingActivityArgs>(KEY_ARG)?.let{args->
+                showFragment(OnBoardPagesFragment.newInstance(args),OnBoardPagesFragment.TAG)
+            }
         }
         else {
             startDestinationActivity()

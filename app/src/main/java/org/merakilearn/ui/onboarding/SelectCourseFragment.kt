@@ -1,60 +1,89 @@
 package org.merakilearn.ui.onboarding
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.material.card.MaterialCardView
+import com.squareup.moshi.JsonClass
+import kotlinx.android.synthetic.main.course_card.view.*
 import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.datasource.network.model.PathwayData
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
-import java.io.Serializable
 
+
+@JsonClass(generateAdapter = true)
+data class SelectCourseFragmentArgs(
+    val header: String,
+    val courses_list: List<PathwayData>
+)
 class SelectCourseFragment:BaseFragment() {
 
     private val navigator: MerakiNavigator by inject()
 
     companion object{
-        fun newInstance(courses_list: List<OnBoardPagesAdapter.PathwayData>, header:String)=SelectCourseFragment().apply {
-            arguments= Bundle().apply {
-                putString("header",header)
-                putSerializable("courses",courses_list as Serializable)
-            }
+        fun newInstance(args:SelectCourseFragmentArgs)=SelectCourseFragment().apply{
+            this.args=args;
         }
         const val TAG="SelectCourseFragment"
     }
+
+    private  lateinit var args: SelectCourseFragmentArgs
+    private val viewModel:WelcomeViewModel by viewModel()
     override fun getLayoutResId(): Int = R.layout.select_course_fragment
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.handle(args.let { WelcomeViewActions.SetPathWayData(it) })
 
-        val courses=arguments?.getSerializable("courses") as List<OnBoardPagesAdapter.PathwayData>
-        setCards(courses)
+        viewModel.viewEvents.observe(viewLifecycleOwner){
+            when(it){
+                is WelcomeViewEvents.ViewPathWayData -> setCards(it.args)
+            }
+        }
     }
 
-    private fun setCards(courses_list: List<OnBoardPagesAdapter.PathwayData>) {
+    private fun setCards(args: SelectCourseFragmentArgs) {
 
-        select_course_heading.text=arguments?.getString("header")
-
-        include0.findViewById<TextView>(R.id.course_text).text=courses_list[0].name
+        select_course_heading.text= args.header
 
 
-        include1.findViewById<TextView>(R.id.course_text).text=courses_list[1].name
+        for (pathway in args.courses_list){
+
+            val customView=layoutInflater.inflate(R.layout.course_card,null)
+
+            val layoutParams:LinearLayout.LayoutParams=LinearLayout.LayoutParams(
+                resources.getDimensionPixelSize(R.dimen.course_card_width),
+                resources.getDimensionPixelSize(R.dimen.course_card_height)
+            )
+            customView.layoutParams=layoutParams
+            customView.id=View.generateViewId()
+            customView.findViewById<TextView>(R.id.course_text).text=pathway.name
+
+            val thumbnail=GlideApp.with(requireContext())
+                .load(R.drawable.python_logo)
 
 
-        include2.findViewById<TextView>(R.id.course_text).text=courses_list[2].name
+            GlideApp.with(requireContext())
+                .load(pathway.logo)
+                .thumbnail(thumbnail)
+                .into(customView.findViewById(R.id.logo))
+            constraint_layout.addView(customView)
+            flow_constraint.addView(customView)
 
+            customView.setOnClickListener{
+                navigator.openLearnFragment(requireActivity(),true,pathway.name)
+                requireActivity().finish()
+            }
 
-        include0.setOnClickListener{
-            navigator.openLearnFragment(requireActivity(),true,courses_list[0].name)
-            requireActivity().finish()
-        }
-        include1.setOnClickListener{
-            navigator.openLearnFragment(requireActivity(),true,courses_list[1].name)
-            requireActivity().finish()
-        }
-        include2.setOnClickListener{
-            navigator.openLearnFragment(requireActivity(),true,courses_list[2].name)
-            requireActivity().finish()
         }
     }
 

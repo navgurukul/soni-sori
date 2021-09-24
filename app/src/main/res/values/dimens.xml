@@ -13,4 +13,8 @@
     <dimen name="min_height_rv_other_courses">200dp</dimen>
     <dimen name="bottom_bar_height">68dp</dimen>
     <dimen name="chip_border_width">1dp</dimen>
+
+    <dimen name="on_boarding_indicator_margin">5dp</dimen>
+    <dimen name="course_card_width">156dp</dimen>
+    <dimen name="course_card_height">92dp</dimen>
 </resources>

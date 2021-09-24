@@ -3,7 +3,6 @@
     <color name="splashBackground">#91C642</color>
     <color name="backgroundColorHome">#EEF7FE</color>
     <color name="nav_bar_unselected">#9C9C9C</color>
-
     <color name="upcoming_class_background_color">#FFF4DD</color>
     <color name="upcoming_class_border_color">#FFDE98</color>
     <color name="upcoming_class_color_decoration">#FAE2B0</color>
@@ -11,4 +10,6 @@
     <color name="avatar_border_color">#FFD31D</color>
     <color name="chip_selected_color">#FFFF0000</color>
 
+    <color name="on_boarding_green_color">#48A145</color>
+    <color name="on_boarding_text_view_black_color">#2E2E2E</color>
 </resources>

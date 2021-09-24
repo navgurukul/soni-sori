@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             userRepo.getCurrentUser()?.let { currentUser ->
                 setUserThumbnail(it, currentUser)
             } ?: run {
-                OnBoardingActivity.restartApp(this@MainActivity, OnBoardingActivityArgs(true))
+                OnBoardingActivity.restartApp(this@MainActivity, OnBoardingActivityArgs(true,"",listOf(),""))
             }
         }
     }

@@ -7,6 +7,9 @@ import org.merakilearn.OnBoardingActivity
 import org.merakilearn.R
 import org.navgurukul.commonui.platform.BaseFragment
 
+data class SelectLanguageFragmentArgs(
+    val language:String)
+
 class SelectLanguageFragment : BaseFragment() {
     companion object {
         fun newInstance()=SelectLanguageFragment()
@@ -19,13 +22,12 @@ class SelectLanguageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         english.setOnClickListener{
-            OnBoardingActivity.launchWelcomeFragment(requireActivity(), ON_BOARDING_ENGLISH)
+            OnBoardingActivity.launchWelcomeFragment(requireActivity(), SelectLanguageFragmentArgs(language = ON_BOARDING_ENGLISH))
             requireActivity().finish()
         }
         hindi.setOnClickListener{
-            OnBoardingActivity.launchWelcomeFragment(requireActivity(), ON_BOARDING_HINDI)
+            OnBoardingActivity.launchWelcomeFragment(requireActivity(), SelectLanguageFragmentArgs(language = ON_BOARDING_HINDI))
             requireActivity().finish()
         }
     }
-
 }
