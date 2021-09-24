@@ -14,7 +14,7 @@
 
         <path
             android:pathData="M0 0V8H8V0"
-            android:fillColor="#48A145"
+            android:fillColor="@color/on_boarding_green_color"
             />
 
     </group>

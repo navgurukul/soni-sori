@@ -1,84 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
-    <FrameLayout
+    android:layout_marginTop="68dp"
+    android:background="@android:color/white"
+    android:id="@+id/constraint_layout"
+    android:layout_marginEnd="20dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginBottom="67dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/select_course_heading"
+        style="@style/text_view_home_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_margin="@dimen/dimen_100_dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_constraint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="67dp"
-        android:background="@drawable/bg_select_course"
+        android:layout_height="0dp"
+        android:background="@drawable/ic_bg__2_"
+        android:orientation="horizontal"
+        app:flow_horizontalGap="20dp"
+        app:flow_verticalGap="24dp"
+        app:flow_verticalStyle="packed"
+        app:flow_wrapMode="chain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/select_course_heading"
-                style="@style/choose_learning_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="96dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/vector_select_course"
-                app:layout_constraintTop_toBottomOf="@+id/select_course_heading">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <include
-                        android:id="@+id/include1"
-                        android:layout_width="156dp"
-                        android:layout_height="92dp"
-                        layout="@layout/course_card"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <include
-                        android:id="@+id/include0"
-                        layout="@layout/course_card"
-                        android:layout_width="156dp"
-                        android:layout_height="92dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <include
-                        android:id="@+id/include2"
-                        android:layout_width="156dp"
-                        android:layout_height="92dp"
-                        android:layout_marginTop="20dp"
-                        layout="@layout/course_card"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/include1"
-                        app:layout_constraintStart_toEndOf="@+id/include0"
-                        app:layout_constraintTop_toBottomOf="@+id/include0"
-                        app:layout_constraintVertical_bias="0.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </FrameLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+    </androidx.constraintlayout.helper.widget.Flow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    app:constraint_referenced_ids="include0,include1,include2"-->

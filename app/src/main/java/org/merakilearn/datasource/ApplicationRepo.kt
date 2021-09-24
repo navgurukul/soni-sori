@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.OnBoardingPageData
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -34,6 +36,21 @@ class ApplicationRepo(
             ex.printStackTrace()
             null
         }
+    }
+
+    fun retrieveDataFromConfig(language:String): OnBoardingPageData? {
+
+            val config= Config()
+            config.initialise()
+            val res=config.getObjectifiedValue<OnBoardingPageData>(language)
+            if(res==null)
+                retrieveDataFromApi()
+
+            return res
+    }
+    fun retrieveDataFromApi(): OnBoardingPageData?{
+
+        return null
     }
 
     suspend fun performFakeSignUp(): LoginResponse? {

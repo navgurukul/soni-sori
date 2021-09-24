@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.network.model.OnBoardingPageData
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -26,9 +27,30 @@ class WelcomeViewModel(
         when (action) {
             is WelcomeViewActions.InitiateFakeSignUp -> handleFakeSignUp()
             is WelcomeViewActions.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
+            is WelcomeViewActions.RetrieveDataFromConfig ->getDataFromConfig(action.language)
+            is WelcomeViewActions.SetPathWayData->  intialisePathWayData(action.args)
+
         }
     }
 
+    private fun intialisePathWayData(args: SelectCourseFragmentArgs) {
+        viewModelScope.launch{
+            _viewEvents.setValue(WelcomeViewEvents.ViewPathWayData(args))
+        }
+    }
+
+    private fun getDataFromConfig(language:String){
+
+        viewModelScope.launch {
+            val data=applicationRepo.retrieveDataFromConfig(language)
+            if(data!=null){
+                _viewEvents.setValue(WelcomeViewEvents.DisplayData(data))
+            }
+            else{
+                _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_update)))
+            }
+        }
+    }
     private fun loginWithAuthToken(authToken: String) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
@@ -91,12 +113,17 @@ sealed class WelcomeViewEvents : ViewEvents {
     object OpenHomeScreen: WelcomeViewEvents()
     object OpenCourseSelection:WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
+    class DisplayData( val data: OnBoardingPageData?):WelcomeViewEvents()
+    class ViewPathWayData(val args:SelectCourseFragmentArgs):WelcomeViewEvents()
+
 }
 
 sealed class WelcomeViewActions : ViewModelAction {
     data class LoginWithAuthToken(val authToken: String) : WelcomeViewActions()
 
     object InitiateFakeSignUp : WelcomeViewActions()
+    data class RetrieveDataFromConfig(val language: String):WelcomeViewActions()
+    data class SetPathWayData(val args:SelectCourseFragmentArgs):WelcomeViewActions()
 }
 
 data class WelcomeViewState(
