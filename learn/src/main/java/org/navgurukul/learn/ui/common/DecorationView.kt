@@ -18,35 +18,29 @@ class DecorationView
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     lateinit var decorView: TextView
-    lateinit var content: TextView
-
 
     init {
         if(!isInEditMode) {
             inflate(context, R.layout.decoration_view, this)
 
             decorView = findViewById(R.id.decorStyle)
-            content = findViewById(R.id.decorText)
 
         }
     }
 
-    fun setDecoratedText(text: String, decor: Decoration){
+    fun setDecor(decor: Decoration){
 
         when(decor.type){
             DecorationType.bullet -> {
                 decorView.visibility = View.VISIBLE
                 decorView.text = "\u2022"
-                content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
             DecorationType.number -> {
                 decorView.visibility = View.VISIBLE
                 decorView.text = "${decor.value}."
-                content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
             else -> {
                 decorView.visibility = View.GONE
-                content.text  = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
         }
 

@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_table_body.view.*
 import kotlinx.android.synthetic.main.item_table_content.view.*
 import kotlinx.android.synthetic.main.item_table_header.view.*
 import org.navgurukul.commonui.platform.BaseViewHolder
 import org.navgurukul.learn.R
+import org.navgurukul.learn.databinding.ItemTableBodyBinding
 import org.navgurukul.learn.databinding.ItemTableContentBinding
 import org.navgurukul.learn.databinding.ItemTableHeaderBinding
 
@@ -18,8 +20,8 @@ class TableAdapter(val noOfRows: Int, val dataList: List<String>): RecyclerView.
         val inflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
-            R.layout.item_table_content -> {
-                val bindedItemView = DataBindingUtil.inflate<ItemTableContentBinding>(inflater, viewType, parent, false)
+            R.layout.item_table_body -> {
+                val bindedItemView = DataBindingUtil.inflate<ItemTableBodyBinding>(inflater, viewType, parent, false)
                 TableContentViewHolder(bindedItemView)
             }
             R.layout.item_table_header  -> {
@@ -33,7 +35,7 @@ class TableAdapter(val noOfRows: Int, val dataList: List<String>): RecyclerView.
     class UnsupportedViewHolder constructor(itemView: View) :
         BaseViewHolder<String>(itemView)
 
-    class TableContentViewHolder constructor(bindedItemView: ItemTableContentBinding): BaseViewHolder<String>(bindedItemView.root){
+    class TableContentViewHolder constructor(bindedItemView: ItemTableBodyBinding): BaseViewHolder<String>(bindedItemView.root){
         override fun onBind(model: String) {
             super.onBind(model)
             itemView.textValue.text = model
@@ -51,7 +53,7 @@ class TableAdapter(val noOfRows: Int, val dataList: List<String>): RecyclerView.
         if(position % noOfRows == 0)
             return R.layout.item_table_header
         else
-            return R.layout.item_table_content
+            return R.layout.item_table_body
 
     }
 

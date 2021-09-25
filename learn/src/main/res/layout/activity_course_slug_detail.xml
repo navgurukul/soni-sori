@@ -43,7 +43,7 @@
                 android:layout_below="@+id/slideComponent"
                 android:layout_marginTop="@dimen/dimen_5_dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_slug_detail" />
+                tools:listitem="@layout/item_base_course_content" />
 
             <include
                 android:id="@+id/progressBar"

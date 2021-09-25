@@ -1,395 +1,124 @@
 package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
-import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import kotlinx.android.synthetic.main.item_slug_detail.view.*
-import org.navgurukul.commonui.resources.StringProvider
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.databinding.ItemSlugDetailBinding
-import org.navgurukul.learn.ui.common.DataBoundListAdapter
+import org.navgurukul.learn.databinding.*
+import org.navgurukul.learn.ui.learn.viewholder.*
 
 
-class ExerciseContentAdapter(callback: (BaseCourseContent) -> Unit, urlCallback: (BannerAction?) -> Unit) :
-    DataBoundListAdapter<BaseCourseContent, ItemSlugDetailBinding>(
-            mDiffCallback = object : DiffUtil.ItemCallback<BaseCourseContent>() {
-                override fun areItemsTheSame(
-                        oldItem: BaseCourseContent,
-                        newItem: BaseCourseContent
-                ): Boolean {
-                    return oldItem == newItem
-                }
-
-                @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(
-                        oldItem: BaseCourseContent,
-                        newItem: BaseCourseContent
-                ): Boolean {
-                    return oldItem == newItem
-                }
-            }
+class ExerciseContentAdapter(
+    callback: (BaseCourseContent) -> Unit,
+    urlCallback: (BannerAction?) -> Unit
+) :
+    ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
+        ContentDiffCallback()
     ) {
 
     private val mCallback = callback
     private val mUrlCallback = urlCallback
-    override fun createBinding(parent: ViewGroup, viewType: Int): ItemSlugDetailBinding {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.item_slug_detail, parent, false
+
+    class ContentDiffCallback : DiffUtil.ItemCallback<BaseCourseContent>() {
+        override fun areItemsTheSame(
+            oldItem: BaseCourseContent,
+            newItem: BaseCourseContent
+        ): Boolean {
+            return oldItem == newItem
+        }
+
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(
+            oldItem: BaseCourseContent,
+            newItem: BaseCourseContent
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseCourseViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val bindedItemView = DataBindingUtil.inflate<ItemBaseCourseContentBinding>(
+            inflater,
+            R.layout.item_base_course_content,
+            parent,
+            false
         )
+
+        return when (viewType) {
+            R.layout.item_table_content -> TableCourseViewHolder(bindedItemView)
+            R.layout.item_text_content -> TextCourseViewHolder(bindedItemView)
+            R.layout.item_image_content -> ImageCourseViewHolder(bindedItemView)
+            R.layout.item_header_content -> HeaderCourseViewHolder(bindedItemView)
+            R.layout.item_youtube_content -> YoutubeCourseViewHolder(bindedItemView)
+            R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(bindedItemView)
+            R.layout.item_code_content -> CodeCourseViewHolder(bindedItemView)
+            R.layout.item_banner_content -> BannerCourseViewHolder(bindedItemView)
+            R.layout.item_link_content -> LinkCourseViewHolder(bindedItemView)
+            else -> UnknownCourseViewHolder(bindedItemView)
+
+        }
     }
 
-    override fun bind(
-            holder: DataBoundViewHolder<ItemSlugDetailBinding>,
-            item: BaseCourseContent
+    override fun onBindViewHolder(
+        holder: BaseCourseViewHolder,
+        position: Int
     ) {
-        val binding = holder.binding
-        binding.imageViewPlay.setOnClickListener {
-            mCallback.invoke(item)
-        }
-        binding.linkContent.setOnClickListener{
-            mCallback.invoke(item)
-        }
-        bindItem(item, binding)
-    }
+        when (getItemViewType(position)) {
+            R.layout.item_table_content ->
+                (holder as TableCourseViewHolder).bindView(getItem(position) as TableBaseCourseContent)
 
-    private fun bindItem(
-            item: BaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        when (item) {
-            is TextBaseCourseContent -> {
-                initTextContent(item, binding)
-            }
-            is CodeBaseCourseContent -> {
-                initCodeView(item, binding)
-            }
-            is LinkBaseCourseContent -> {
-                initLinkView(item, binding)
-            }
-            is YoutubeBaseCourseContent -> {
-                initYouTubeView(item, binding)
-            }
-            is ImageBaseCourseContent -> {
-                initImageView(item, binding)
-            }
-            is BannerCourseContent -> {
-                initBannerView(item, binding)
-            }
-            is BlockQuoteBaseCourseContent -> {
-                initBlockQuoteView(item, binding)
-            }
-            is HeaderBaseCourseContent -> {
-                initHeaderView(item, binding)
-            }
-            is TableBaseCourseContent -> {
-                initTableView(item, binding)
-            }
-            is UnknownBaseCourseContent -> {
-                initUnknown(binding)
-            }
-        }
-    }
+            R.layout.item_text_content ->
+                (holder as TextCourseViewHolder).bindView(getItem(position) as TextBaseCourseContent)
 
-    private fun initUnknown(binding: ItemSlugDetailBinding) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-    }
+            R.layout.item_image_content ->
+                (holder as ImageCourseViewHolder).bindView(getItem(position) as ImageBaseCourseContent)
 
-    private fun initTextContent(
-            item: TextBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
+            R.layout.item_header_content ->
+                (holder as HeaderCourseViewHolder).bindView(getItem(position) as HeaderBaseCourseContent)
 
-        binding.decorContent.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
+            R.layout.item_youtube_content ->
+                (holder as YoutubeCourseViewHolder).bindView(getItem(position) as YoutubeBaseCourseContent)
 
-        item.value?.let { text ->
+            R.layout.item_block_quote_content ->
+                (holder as BlockQuoteCourseViewHolder).bindView(getItem(position) as BlockQuoteBaseCourseContent)
 
-            item.decoration?.let {
-                binding.decorContent.visibility = View.VISIBLE
-                binding.decorContent.setDecoratedText(text, it)
-            } ?: setTextContent(binding.textContent, text)
+            R.layout.item_code_content ->
+                (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent, mCallback)
 
-        }
+            R.layout.item_banner_content ->
+                (holder as BannerCourseViewHolder).bindView(getItem(position) as BannerBaseCourseContent, mUrlCallback)
 
-    }
+            R.layout.item_link_content ->
+                (holder as LinkCourseViewHolder).bindView(getItem(position) as LinkBaseCourseContent, mCallback)
 
-    private fun setTextContent(textContent: TextView, text: String) {
-        textContent.visibility = View.VISIBLE
-
-        textContent.apply {
-            this.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
-        }
-    }
-
-    private fun initBlockQuoteView(
-            item: BlockQuoteBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        item.value?.let {
-            binding.blockQuoteLayout.visibility = View.VISIBLE
-
-            binding.blockQuoteLayout.blockQuoteText.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            }
-        }
-    }
-
-    private fun initHeaderView(
-            item: HeaderBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        item.value?.let {
-            binding.titleContent.visibility = View.VISIBLE
-
-            binding.titleContent.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            }
-        }
-    }
-
-    private fun initLinkView(
-            item: LinkBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-
-        item.value?.let {
-            binding.linkContent.visibility = View.VISIBLE
-
-            binding.linkContent.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
-                this.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
-            }
+            R.layout.item_base_course_content ->
+                (holder as UnknownCourseViewHolder).bindView(getItem(position) as UnknownBaseCourseContent)
 
         }
     }
 
-
-    private fun initCodeView(
-            item: CodeBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        binding.codeLayout.visibility = View.VISIBLE
-
-        binding.codeTitle.visibility = View.GONE
-        item.title?.let{
-            binding.codeTitle.visibility = View.VISIBLE
-            binding.codeTitle.text = it
-        }
-
-        when(item.codeTypes) {
-            CodeType.javascript -> {
-                binding.imageViewPlay.visibility = View.GONE
-            }
-            CodeType.python -> {
-                binding.imageViewPlay.visibility = View.VISIBLE
-            }
-            else -> {
-                binding.imageViewPlay.visibility = View.GONE
-            }
-        }
-
-        binding.codeBody.text = HtmlCompat.fromHtml(item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
-    }
-
-
-    private fun initYouTubeView(item: YoutubeBaseCourseContent, binding: ItemSlugDetailBinding) {
-        binding.textContent.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        binding.youtubeView.visibility = View.VISIBLE
-
-        binding.youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer) {
-                item.value?.let { youTubePlayer.cueVideo(it, 0f) }
-            }
-        })
-    }
-
-
-    private fun initImageView(
-            item: ImageBaseCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        binding.imageView.visibility = View.VISIBLE
-
-        item.value?.let { url ->
-            Glide.with(binding.imageView.context).load(url).into(binding.imageView);
-        }
-        binding.imageView.contentDescription = item.alt
-    }
-
-    private fun initTableView(
-        item: TableBaseCourseContent,
-        binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.relBanner.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-
-        item.value?.let {
-            if(it.isNotEmpty()) {
-                val tableView = binding.tableLayout
-                val noOfRows = it[0].items?.size?.plus(1) ?: 0
-                val tableAdapter = TableAdapter(noOfRows, getFlattenedTableList(it))
-
-                tableView.layoutManager = GridLayoutManager(binding.tableLayout.context, noOfRows
-                    , GridLayoutManager.HORIZONTAL, false)
-                tableView.adapter = tableAdapter
-                tableView.addItemDecoration(ListSpacingDecoration(tableView.context, R.dimen.table_margin_offset))
-
-                tableAdapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun getFlattenedTableList(list: List<TableColumn>): List<String> {
-        val flatList = ArrayList<String>()
-        for(item in list){
-            flatList.add(item.header ?: "")
-            item.items?.let { flatList.addAll(it) }
-        }
-        return flatList
-    }
-
-    private fun initBannerView(
-            item: BannerCourseContent,
-            binding: ItemSlugDetailBinding
-    ) {
-        binding.youtubeView.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-        binding.textContent.visibility = View.GONE
-        binding.imageViewPlay.visibility = View.GONE
-        binding.blockQuoteLayout.visibility = View.GONE
-        binding.codeLayout.visibility = View.GONE
-        binding.decorContent.visibility = View.GONE
-        binding.titleContent.visibility = View.GONE
-        binding.linkContent.visibility = View.GONE
-        binding.tableLayout.visibility = View.GONE
-
-        binding.relBanner.visibility = View.VISIBLE
-
-        item.actions?.let {
-            setActionButtons(binding, it)
-        }
-        binding.bannerTitle.text = item.title
-        binding.bannerBody.text = item.value
-    }
-
-    private fun setActionButtons(binding: ItemSlugDetailBinding, actions: List<BannerAction>) {
-        actions.forEachIndexed { index, element ->
-            if (index == 0) {
-                binding.bannerButton2.visibility = View.GONE
-
-                binding.bannerButton1.visibility = View.VISIBLE
-                binding.bannerButton1.text = element.label
-                binding.bannerButton1.setOnClickListener {
-                    mUrlCallback.invoke(element)
-                }
-            } else {
-                binding.bannerButton2.visibility = View.VISIBLE
-                binding.bannerButton2.text = element.label
-                binding.bannerButton2.setOnClickListener {
-                    mUrlCallback.invoke(element)
-                }
-            }
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is TableBaseCourseContent -> R.layout.item_table_content
+            is ImageBaseCourseContent -> R.layout.item_image_content
+            is HeaderBaseCourseContent -> R.layout.item_header_content
+            is TextBaseCourseContent -> R.layout.item_text_content
+            is YoutubeBaseCourseContent -> R.layout.item_youtube_content
+            is BlockQuoteBaseCourseContent -> R.layout.item_block_quote_content
+            is CodeBaseCourseContent -> R.layout.item_code_content
+            is BannerBaseCourseContent -> R.layout.item_banner_content
+            is LinkBaseCourseContent -> R.layout.item_link_content
+            else -> R.layout.item_base_course_content
         }
     }
 }

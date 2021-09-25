@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/layoutBannerContent"
-    android:layout_marginVertical="@dimen/spacing_2x"
-    android:visibility="gone"
     tools:visibility="visible"
     android:background="@drawable/hint_box_drawable">
 
@@ -14,8 +14,12 @@
             android:id="@+id/bannerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dimen_16_dp"
-            android:layout_marginTop="@dimen/dimen_16_dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginHorizontal="@dimen/spacing_4x"
+            android:layout_marginTop="@dimen/spacing_4x"
             android:fontFamily="@font/nunito"
             android:text="Kya aapke pas extrenal keyboard hai?"
             android:textColor="@color/primaryColor"
@@ -26,9 +30,11 @@
             android:id="@+id/bannerBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bannerTitle"
-            android:layout_marginHorizontal="@dimen/dimen_16_dp"
-            android:layout_marginTop="@dimen/dimen_16_dp"
+            app:layout_constraintTop_toBottomOf="@id/bannerTitle"
+            app:layout_constraintStart_toStartOf="@id/bannerTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginTop="@dimen/spacing_4x"
             android:fontFamily="@font/nunito"
             android:text="Aap typing abhi start kar sakte hai"
             android:textColor="?textPrimary"
@@ -37,11 +43,15 @@
         <Button
             android:id="@+id/bannerButton1"
             android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_below="@+id/bannerBody"
-            android:layout_marginHorizontal="@dimen/dimen_16_dp"
-            android:layout_marginTop="@dimen/dimen_16_dp"
-            android:layout_marginBottom="19dp"
+            android:layout_height="wrap_content"
+            android:minHeight="45dp"
+            app:layout_constraintTop_toBottomOf="@id/bannerBody"
+            app:layout_constraintStart_toStartOf="@id/bannerBody"
+            app:layout_constraintEnd_toStartOf="@id/bannerButton2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:layout_marginBottom="@dimen/spacing_5x"
             android:background="@drawable/primary_btn_selector"
             android:fontFamily="@font/nunito"
             android:text="Try Typing"
@@ -53,12 +63,15 @@
         <Button
             android:id="@+id/bannerButton2"
             android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_below="@+id/bannerBody"
-            android:layout_marginHorizontal="@dimen/dimen_16_dp"
-            android:layout_marginTop="@dimen/dimen_16_dp"
-            android:layout_marginBottom="19dp"
-            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:minHeight="45dp"
+            app:layout_constraintTop_toBottomOf="@id/bannerBody"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            android:layout_marginBottom="@dimen/spacing_5x"
             android:background="@drawable/primary_btn_selector"
             android:fontFamily="@font/nunito"
             android:text="Try Typing"
@@ -66,7 +79,9 @@
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

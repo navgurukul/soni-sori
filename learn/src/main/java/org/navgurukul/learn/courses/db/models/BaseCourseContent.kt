@@ -126,7 +126,7 @@ data class ImageBaseCourseContent(
 ) : BaseCourseContent
 
 @JsonClass(generateAdapter = true)
-data class BannerCourseContent(
+data class BannerBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
