@@ -148,7 +148,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter({
+        contentAdapter = ExerciseContentAdapter(this, {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     merakiNavigator.openPlayground(this, it.value)

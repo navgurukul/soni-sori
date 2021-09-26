@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_layout_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_2x"
+    android:layout_marginVertical="@dimen/spacing_2x"
+    android:background="@color/colorWhite"
+    android:paddingHorizontal="@dimen/spacing_2x">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/base_layout_content"
-        android:layout_width="match_parent"
+    <org.navgurukul.learn.ui.common.DecorationView
+        android:id="@+id/decorContent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_2x"
-        android:background="@color/colorWhite"
-        android:paddingHorizontal="@dimen/spacing_2x"
-        android:layout_marginVertical="@dimen/spacing_2x">
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/dialog_title_error"
+        tools:visibility="visible" />
 
-        <org.navgurukul.learn.ui.common.DecorationView
-            android:id="@+id/decorContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/placeholder_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="@string/dialog_title_error"/>
+    <ViewStub
+        android:id="@+id/view_stub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/decorContent"
+        app:layout_constraintTop_toTopOf="@id/decorContent" />
 
-        <androidx.constraintlayout.widget.Placeholder
-            android:id="@+id/placeholder_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@id/decorContent"
-            app:layout_constraintStart_toEndOf="@id/decorContent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

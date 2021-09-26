@@ -1,20 +1,20 @@
 package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.databinding.*
 import org.navgurukul.learn.ui.learn.viewholder.*
 
 
 class ExerciseContentAdapter(
+    context: Context,
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit
 ) :
@@ -22,8 +22,10 @@ class ExerciseContentAdapter(
         ContentDiffCallback()
     ) {
 
+    private val inflater = LayoutInflater.from(context)
     private val mCallback = callback
     private val mUrlCallback = urlCallback
+    private val glideRequests: RequestManager by lazy { Glide.with(context) }
 
     class ContentDiffCallback : DiffUtil.ItemCallback<BaseCourseContent>() {
         override fun areItemsTheSame(
@@ -46,25 +48,22 @@ class ExerciseContentAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseCourseViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val bindedItemView = DataBindingUtil.inflate<ItemBaseCourseContentBinding>(
-            inflater,
-            R.layout.item_base_course_content,
+
+        val itemView = inflater.inflate(R.layout.item_base_course_content,
             parent,
-            false
-        )
+            false)
 
         return when (viewType) {
-            R.layout.item_table_content -> TableCourseViewHolder(bindedItemView)
-            R.layout.item_text_content -> TextCourseViewHolder(bindedItemView)
-            R.layout.item_image_content -> ImageCourseViewHolder(bindedItemView)
-            R.layout.item_header_content -> HeaderCourseViewHolder(bindedItemView)
-            R.layout.item_youtube_content -> YoutubeCourseViewHolder(bindedItemView)
-            R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(bindedItemView)
-            R.layout.item_code_content -> CodeCourseViewHolder(bindedItemView)
-            R.layout.item_banner_content -> BannerCourseViewHolder(bindedItemView)
-            R.layout.item_link_content -> LinkCourseViewHolder(bindedItemView)
-            else -> UnknownCourseViewHolder(bindedItemView)
+            R.layout.item_table_content -> TableCourseViewHolder(itemView)
+            R.layout.item_text_content -> TextCourseViewHolder(itemView)
+            R.layout.item_image_content -> ImageCourseViewHolder(itemView, glideRequests)
+            R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
+            R.layout.item_youtube_content -> YoutubeCourseViewHolder(itemView)
+            R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(itemView)
+            R.layout.item_code_content -> CodeCourseViewHolder(itemView)
+            R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
+            R.layout.item_link_content -> LinkCourseViewHolder(itemView)
+            else -> UnknownCourseViewHolder(itemView)
 
         }
     }

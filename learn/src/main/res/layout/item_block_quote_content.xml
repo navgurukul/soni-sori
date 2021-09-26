@@ -1,35 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/blockQuoteLayout"
+    android:id="@+id/blockQuoteText"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBlockQuoteBackground"
-    tools:visibility="visible">
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="@dimen/dimen_2_dp"
-        android:layout_height="0dp"
-        android:background="@color/colorBlockQuoteBackgroundDark"
-        app:layout_constraintBottom_toBottomOf="@id/blockQuoteText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/blockQuoteText" />
-
-    <TextView
-        android:id="@+id/blockQuoteText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen_10_dp"
-        android:paddingVertical="@dimen/spacing_2x"
-        android:textColor="?textPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/view"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/empty_state_error_description" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    android:background="@drawable/block_quote_indicator"
+    android:paddingHorizontal="@dimen/spacing_3x"
+    android:paddingVertical="@dimen/spacing_2x"
+    android:textColor="?textPrimary"
+    tools:text="@string/empty_state_error_description" />

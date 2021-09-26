@@ -33,11 +33,11 @@ class DecorationView
         when(decor.type){
             DecorationType.bullet -> {
                 decorView.visibility = View.VISIBLE
-                decorView.text = "\u2022"
+                decorView.text = "\u2022\t\t"
             }
             DecorationType.number -> {
                 decorView.visibility = View.VISIBLE
-                decorView.text = "${decor.value}."
+                decorView.text = "${decor.value}.\t\t"
             }
             else -> {
                 decorView.visibility = View.GONE

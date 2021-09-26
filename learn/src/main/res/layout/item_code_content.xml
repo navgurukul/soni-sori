@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/code_background"
-    android:paddingBottom="@dimen/dimen_16_dp"
-    tools:visibility="visible">
+    android:paddingBottom="@dimen/dimen_16_dp">
 
     <TextView
         android:id="@+id/codeTitle"
@@ -51,4 +48,3 @@
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
