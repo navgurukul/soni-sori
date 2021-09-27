@@ -28,23 +28,27 @@
         app:layout_constraintTop_toBottomOf="@id/codeTitle"
         tools:text="Hi Body" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageViewPlay"
-        android:layout_width="@dimen/dimen_code_play_button_height"
-        android:layout_height="@dimen/dimen_code_play_button_width"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/dimen_code_play_button_width"
+        android:minHeight="@dimen/dimen_code_play_button_height"
         android:layout_marginTop="@dimen/spacing_4x"
         android:layout_marginEnd="@dimen/spacing_4x"
-        android:background="@drawable/round_button_rad_8_dp"
         android:gravity="center"
+        android:fontFamily="@font/nunito"
         android:text="@string/run_code"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
-        android:visibility="gone"
+        app:cornerRadius="@dimen/button_round_radius"
         app:backgroundTint="@color/run_background"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/codeBody"
+        app:layout_constraintHorizontal_bias="1"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
