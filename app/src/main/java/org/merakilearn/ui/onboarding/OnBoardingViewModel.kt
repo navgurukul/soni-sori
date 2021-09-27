@@ -109,7 +109,6 @@ class OnBoardingViewModel(
 }
 
 sealed class WelcomeViewEvents : ViewEvents {
-    class OpenMerakiChat() : WelcomeViewEvents()
     object OpenHomeScreen: WelcomeViewEvents()
     object OpenCourseSelection:WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
