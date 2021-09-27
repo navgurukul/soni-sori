@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import com.squareup.moshi.JsonClass
 import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.android.ext.android.inject
@@ -32,7 +33,7 @@ class SelectCourseFragment:BaseFragment() {
     }
 
     private  lateinit var args: SelectCourseFragmentArgs
-    private val viewModel:WelcomeViewModel by viewModel()
+    private val viewModel:OnBoardingViewModel by viewModel()
     override fun getLayoutResId(): Int = R.layout.select_course_fragment
 
 
@@ -65,7 +66,7 @@ class SelectCourseFragment:BaseFragment() {
             customView.findViewById<TextView>(R.id.course_text).text=pathway.name
 
             val thumbnail=GlideApp.with(requireContext())
-                .load(R.drawable.python_logo)
+                .load(DefaultLogos.valueOf(pathway.resource).id)
 
 
             GlideApp.with(requireContext())
@@ -81,6 +82,11 @@ class SelectCourseFragment:BaseFragment() {
             }
 
         }
+    }
+    enum class DefaultLogos(@DrawableRes val id:Int){
+        PYTHON(R.drawable.python_logo),
+        TYPING(R.drawable.ic_icon_typing),
+        ENGLISH(R.drawable.ic_icon_language)
     }
 
 }

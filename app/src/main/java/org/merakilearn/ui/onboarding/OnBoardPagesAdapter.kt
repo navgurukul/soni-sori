@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestListener
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.navgurukul.chat.core.glide.GlideApp
@@ -29,7 +27,7 @@ class OnBoardPagesAdapter(private val list: List<OnBoardingData>,private val con
 
 
         val thumbnail=GlideApp.with(context)
-            .load(Images.values()[position])
+            .load(Images.valueOf(list[position].resource).id)
 
         GlideApp.with(context)
             .load(list[position].image)
@@ -51,7 +49,7 @@ class OnBoardPagesAdapter(private val list: List<OnBoardingData>,private val con
     enum class Images(@DrawableRes val id:Int){
         PYTHON(R.drawable.on_boarding_learn_python),
         INTERVIEW(R.drawable.on_boarding_job_interview),
-        INTERACTIVE_CLASSES(R.drawable.on_boarding_book_lover)
+        INTERACTIVE(R.drawable.on_boarding_book_lover)
     }
 
 

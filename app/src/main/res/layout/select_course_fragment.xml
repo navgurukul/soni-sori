@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="68dp"
+    android:layout_marginTop="@dimen/dimen_75_dp"
     android:background="@android:color/white"
     android:id="@+id/constraint_layout"
-    android:layout_marginEnd="20dp"
-    android:layout_marginStart="20dp"
-    android:layout_marginBottom="67dp"
+    android:layout_marginEnd="@dimen/dimen_20_dp"
+    android:layout_marginStart="@dimen/dimen_20_dp"
+    android:layout_marginBottom="@dimen/dimen_75_dp"
     android:layout_height="match_parent">
 
     <TextView
@@ -17,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:elevation="@dimen/dimen_2_dp"
         android:layout_margin="@dimen/dimen_100_dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +28,8 @@
         android:layout_height="0dp"
         android:background="@drawable/ic_bg__2_"
         android:orientation="horizontal"
-        app:flow_horizontalGap="20dp"
-        app:flow_verticalGap="24dp"
+        app:flow_horizontalGap="@dimen/dimen_20_dp"
+        app:flow_verticalGap="@dimen/dimen_25_dp"
         app:flow_verticalStyle="packed"
         app:flow_wrapMode="chain"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,5 +40,3 @@
     </androidx.constraintlayout.helper.widget.Flow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    app:constraint_referenced_ids="include0,include1,include2"-->
