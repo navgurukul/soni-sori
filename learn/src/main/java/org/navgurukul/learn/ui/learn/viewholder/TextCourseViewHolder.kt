@@ -21,9 +21,7 @@ class TextCourseViewHolder(itemView: View) :
     fun bindView(item: TextBaseCourseContent) {
         super.bind(item)
 
-        item.value?.let { text ->
-            setTextContent(textView, text)
-        }
+        setTextContent(textView, item.value)
     }
 
     private fun setTextContent(textContent: TextView, text: String) {

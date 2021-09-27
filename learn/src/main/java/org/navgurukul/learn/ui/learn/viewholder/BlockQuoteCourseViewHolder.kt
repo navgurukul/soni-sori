@@ -21,12 +21,7 @@ class BlockQuoteCourseViewHolder(itemView: View) :
     fun bindView(item: BlockQuoteBaseCourseContent) {
         super.bind(item)
 
-        item.value?.let {
-
-            blockQuoteText.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            }
-        }
+        blockQuoteText.text = HtmlCompat.fromHtml(item.value, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
     }
 }

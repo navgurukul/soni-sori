@@ -22,9 +22,8 @@ class ImageCourseViewHolder(itemView: View, private val glideRequest: RequestMan
     fun bindView(item: ImageBaseCourseContent) {
         super.bind(item)
 
-        item.value?.let { url ->
-            glideRequest.load(url).into(imageView);
-        }
+        glideRequest.load(item.value).into(imageView);
+
         imageView.contentDescription = item.alt
 
     }

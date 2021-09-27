@@ -51,8 +51,8 @@ class CodeCourseViewHolder(itemView: View) :
         }
 
         codeBody.text = HtmlCompat.fromHtml(
-            item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
+            item.value,
+            HtmlCompat.FROM_HTML_MODE_COMPACT
         )
 
     }

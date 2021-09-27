@@ -22,7 +22,7 @@ class YoutubeCourseViewHolder(itemView: View) :
         super.bind(item)
         youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                item.value?.let { youTubePlayer.cueVideo(it, 0f) }
+                youTubePlayer.cueVideo(item.value, 0f)
             }
         })
 

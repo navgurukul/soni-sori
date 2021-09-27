@@ -30,7 +30,7 @@ data class TextBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: String?,
+        val value: String,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -40,7 +40,7 @@ data class HeaderBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: String?,
+        val value: String,
         @Json(name = "variant")
         val variant: Int?,
         @Json(name = "decoration")
@@ -52,7 +52,7 @@ data class TableBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: List<TableColumn>?,
+        val value: List<TableColumn>,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -62,7 +62,7 @@ data class BlockQuoteBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: String?,
+        val value: String,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -72,9 +72,9 @@ data class LinkBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: String?,
+        val value: String,
         @Json(name = "href")
-        val link: String?,
+        val link: String,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -94,7 +94,7 @@ data class CodeBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        val value: String?,
+        val value: String,
         @Json(name = "title")
         val title: String? = null,
         @Json(name = "type")
@@ -108,7 +108,7 @@ data class YoutubeBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String? = null,
+        var value: String,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -118,7 +118,7 @@ data class ImageBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String? = null,
+        var value: String,
         @Json(name = "alt")
         var alt: String? = null,
         @Json(name = "decoration")
@@ -130,7 +130,7 @@ data class BannerBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String?,
+        var value: String,
         @Json(name = "title")
         var title: String?,
         @Json(name = "actions")

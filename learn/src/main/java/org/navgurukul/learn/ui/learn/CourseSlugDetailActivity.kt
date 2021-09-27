@@ -149,13 +149,11 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private fun initContentRV() {
         contentAdapter = ExerciseContentAdapter(this, {
             if (it is CodeBaseCourseContent) {
-                if (!it.value.isNullOrBlank()) {
+                if (it.value.isNotBlank()) {
                     merakiNavigator.openPlayground(this, it.value)
                 }
             } else if (it is LinkBaseCourseContent) {
-                it.link?.let { url ->
-                    merakiNavigator.openCustomTab(url, this)
-                }
+                merakiNavigator.openCustomTab(it.link, this)
             }
         }) {
             it?.let { action ->

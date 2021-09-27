@@ -24,27 +24,25 @@ class TableCourseViewHolder(itemView: View) :
     fun bindView(item: TableBaseCourseContent) {
         super.bind(item)
 
-        item.value?.let {
+        if (item.value.isNotEmpty()) {
+            val noOfRows = item.value[0].items?.size?.plus(1) ?: 0
+            val tableAdapter = TableAdapter(noOfRows, getFlattenedTableList(item.value))
 
-            if (it.isNotEmpty()) {
-                val noOfRows = it[0].items?.size?.plus(1) ?: 0
-                val tableAdapter = TableAdapter(noOfRows, getFlattenedTableList(it))
-
-                tableView.layoutManager = GridLayoutManager(
-                    tableView.context, noOfRows, GridLayoutManager.HORIZONTAL, false
+            tableView.layoutManager = GridLayoutManager(
+                tableView.context, noOfRows, GridLayoutManager.HORIZONTAL, false
+            )
+            tableView.adapter = tableAdapter
+            tableView.addItemDecoration(
+                ListSpacingDecoration(
+                    tableView.context,
+                    R.dimen.table_margin_offset
                 )
-                tableView.adapter = tableAdapter
-                tableView.addItemDecoration(
-                    ListSpacingDecoration(
-                        tableView.context,
-                        R.dimen.table_margin_offset
-                    )
-                )
+            )
 
-                tableAdapter.notifyDataSetChanged()
-            }
+            tableAdapter.notifyDataSetChanged()
         }
     }
+
 
     private fun getFlattenedTableList(list: List<TableColumn>): List<String> {
         val flatList = ArrayList<String>()

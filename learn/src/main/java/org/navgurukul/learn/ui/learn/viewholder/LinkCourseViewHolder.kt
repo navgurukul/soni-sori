@@ -23,15 +23,12 @@ class LinkCourseViewHolder(itemView: View) :
     fun bindView(item: LinkBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 
-        item.value?.let {
+        linkContent.apply {
+            this.text = HtmlCompat.fromHtml(item.value, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            this.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-            linkContent.apply {
-                this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
-                this.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-
-                this.setOnClickListener {
-                    callback.invoke(item)
-                }
+            this.setOnClickListener {
+                callback.invoke(item)
             }
 
         }
