@@ -1,4 +1,4 @@
-package org.navgurukul.learn.ui.learn.adapter
+package org.navgurukul.commonui.platform
 
 import android.content.Context
 import android.graphics.Rect

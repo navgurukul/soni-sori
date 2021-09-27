@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.TableBaseCourseContent
 import org.navgurukul.learn.courses.db.models.TableColumn
-import org.navgurukul.learn.ui.learn.adapter.ListSpacingDecoration
+import org.navgurukul.commonui.platform.ListSpacingDecoration
 import org.navgurukul.learn.ui.learn.adapter.TableAdapter
 
 class TableCourseViewHolder(itemView: View) :
