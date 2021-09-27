@@ -50,6 +50,7 @@ class ApplicationRepo(
     }
     fun retrieveDataFromApi(): OnBoardingPageData?{
 
+        val res=
         return null
     }
 

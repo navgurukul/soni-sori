@@ -1,14 +1,10 @@
 package org.merakilearn.ui.onboarding
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.google.android.material.card.MaterialCardView
 import com.squareup.moshi.JsonClass
-import kotlinx.android.synthetic.main.course_card.view.*
 import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -80,7 +76,7 @@ class SelectCourseFragment:BaseFragment() {
             flow_constraint.addView(customView)
 
             customView.setOnClickListener{
-                navigator.openLearnFragment(requireActivity(),true,pathway.name)
+                navigator.openLearnFragment(requireActivity(),true,pathway.id)
                 requireActivity().finish()
             }
 

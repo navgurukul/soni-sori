@@ -5,7 +5,7 @@ import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class PathwayData(
-    val id: String,
+    val id: Int,
     val logo: String,
     val name: String
 ) : Serializable
