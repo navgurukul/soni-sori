@@ -12,6 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="@dimen/spacing_2x"
+        android:layout_marginStart="@dimen/dimen_2_dp"
         android:textColor="?textPrimary"
         tools:text="\u2022"
         tools:visibility="visible"/>

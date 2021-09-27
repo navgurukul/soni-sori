@@ -11,6 +11,13 @@ class TextCourseViewHolder(itemView: View) :
 
     private val textView: TextView = populateStub(R.layout.item_text_content)
 
+    override val horizontalMargin: Int
+        get() = textView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: TextBaseCourseContent) {
         super.bind(item)
 

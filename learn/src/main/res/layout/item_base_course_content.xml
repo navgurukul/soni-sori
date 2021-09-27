@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/base_layout_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_2x"
-    android:layout_marginVertical="@dimen/spacing_2x"
-    android:background="@color/colorWhite"
-    android:paddingHorizontal="@dimen/spacing_2x">
+    android:layout_height="wrap_content">
 
     <org.navgurukul.learn.ui.common.DecorationView
         android:id="@+id/decorContent"

@@ -12,6 +12,13 @@ class ImageCourseViewHolder(itemView: View, private val glideRequest: RequestMan
 
     private val imageView: ImageView = populateStub(R.layout.item_image_content)
 
+    override val horizontalMargin: Int
+        get() = imageView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: ImageBaseCourseContent) {
         super.bind(item)
 

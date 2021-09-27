@@ -13,8 +13,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.core.navigator.Mode
-import org.merakilearn.core.navigator.TypingAppModuleNavigator
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
@@ -172,6 +171,9 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
+        mBinding.recyclerViewSlug.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+        )
         fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
@@ -189,7 +191,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
-        return it?.firstOrNull()?.content ?: return mutableListOf()
+        return it?.firstOrNull()?.content ?: return listOf()
     }
 
     private fun initRecyclerViewSlidingPanel() {

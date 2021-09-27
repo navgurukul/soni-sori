@@ -17,6 +17,13 @@ class BannerCourseViewHolder(itemView: View) :
     private val bannerButton2: Button = layoutBannerContent.findViewById(R.id.bannerButton2)
     private val bannerButton1: Button = layoutBannerContent.findViewById(R.id.bannerButton1)
 
+    override val horizontalMargin: Int
+        get() = layoutBannerContent.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: BannerBaseCourseContent, urlCallback: (BannerAction?) -> Unit) {
         super.bind(item)
 

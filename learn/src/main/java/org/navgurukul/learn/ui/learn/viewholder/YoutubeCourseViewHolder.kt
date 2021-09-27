@@ -11,6 +11,13 @@ class YoutubeCourseViewHolder(itemView: View) :
     BaseCourseViewHolder(itemView) {
     private val youtubeView: YouTubePlayerView = populateStub(R.layout.item_youtube_content)
 
+    override val horizontalMargin: Int
+        get() = youtubeView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: YoutubeBaseCourseContent) {
         super.bind(item)
         youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {

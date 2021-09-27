@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.common
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -34,10 +35,12 @@ class DecorationView
             DecorationType.bullet -> {
                 decorView.visibility = View.VISIBLE
                 decorView.text = "\u2022\t\t"
+                decorView.setTypeface(null, Typeface.BOLD)
             }
             DecorationType.number -> {
                 decorView.visibility = View.VISIBLE
                 decorView.text = "${decor.value}.\t\t"
+                decorView.setTypeface(null, Typeface.NORMAL);
             }
             else -> {
                 decorView.visibility = View.GONE

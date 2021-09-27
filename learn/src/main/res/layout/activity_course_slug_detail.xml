@@ -42,6 +42,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/slideComponent"
                 android:layout_marginTop="@dimen/dimen_5_dp"
+                android:paddingTop="@dimen/spacing_2x"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_base_course_content" />
 

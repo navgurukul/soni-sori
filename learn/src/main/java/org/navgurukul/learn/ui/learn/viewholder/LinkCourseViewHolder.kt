@@ -13,6 +13,13 @@ class LinkCourseViewHolder(itemView: View) :
 
     private val linkContent: TextView = populateStub(R.layout.item_link_content)
 
+    override val horizontalMargin: Int
+        get() = linkContent.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: LinkBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 

@@ -14,6 +14,13 @@ class TableCourseViewHolder(itemView: View) :
 
     private val tableView: RecyclerView = populateStub(R.layout.item_table_content)
 
+    override val horizontalMargin: Int
+        get() = tableView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: TableBaseCourseContent) {
         super.bind(item)
 

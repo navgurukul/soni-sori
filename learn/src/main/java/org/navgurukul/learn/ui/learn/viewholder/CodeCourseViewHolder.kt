@@ -19,6 +19,13 @@ class CodeCourseViewHolder(itemView: View) :
     private val codeBody: TextView = codeLayout.findViewById(R.id.codeBody)
     private val imageViewPlay: AppCompatButton = codeLayout.findViewById(R.id.imageViewPlay)
 
+    override val horizontalMargin: Int
+        get() = 0
+
+    init {
+        super.setHorizontalMargin(horizontalMargin)
+    }
+
     fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 
