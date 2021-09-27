@@ -69,6 +69,9 @@ class LearnFragmentViewModel(
         }
     }
 
+    fun setPreferenceForCourse(pathway_id:Int){
+        learnPreferences.lastSelectedPathWayId=pathway_id;
+    }
     fun selectPathway(pathway: Pathway) {
         val selectedLanguage = pathway.supportedLanguages.find { it.code == learnPreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
         setState {

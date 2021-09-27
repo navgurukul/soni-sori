@@ -35,4 +35,5 @@ interface SaralApi {
     suspend fun fetchClassDataAsync(
         @Path(value = "classId") classId: Int?
     ): Classes
+
 }

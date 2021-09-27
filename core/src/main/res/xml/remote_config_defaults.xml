@@ -49,17 +49,17 @@
             ],
             "onBoardingPathwayList":[
             {
-            "id": " ",
+            "id": 60,
             "logo": " ",
             "name": "Python"
             },
             {
-            "id": " ",
+            "id": 62,
             "logo": " ",
             "name": "Spoken English"
             },
             {
-            "id": " ",
+            "id": 61,
             "logo": " ",
             "name": "Typing Guru"
             }
@@ -94,17 +94,17 @@
             ],
             "onBoardingPathwayList":[
             {
-            "id": " ",
+            "id": 60,
             "logo": " ",
             "name": "पायथन"
             },
             {
-            "id": " ",
+            "id": 62,
             "logo": " ",
             "name": "अंग्रेजी बोलवचन"
             },
             {
-            "id": " ",
+            "id": 61,
             "logo": " ",
             "name": "टाइपिंग गुरु"
             }

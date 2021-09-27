@@ -54,14 +54,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                     putExtra(KEY_ARG, args)
                 }
         }
-        fun launchLearnFragment(context: FragmentActivity, pathway_name:String){
+        fun launchLearnFragment(context: FragmentActivity, pathway_id:Int){
             val intent=Intent(context,MainActivity::class.java)
             intent.putExtra(LAUNCH_LEARN,true)
-            intent.putExtra(PATHWAY_NAME,pathway_name)
+
+            intent.putExtra(PATHWAY_ID,pathway_id)
+
             context.startActivity(intent)
         }
         private const val LAUNCH_LEARN="arg_launch_learn"
-        private const val PATHWAY_NAME="pathway"
+        private const val PATHWAY_ID="PATHWAY_ID"
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         nav_view.setupWithNavController(navHostFragment.navController)
 
         if(intent.hasExtra(LAUNCH_LEARN) && intent.getBooleanExtra(LAUNCH_LEARN,false)){
-            val bundle= bundleOf(PATHWAY_NAME to intent.getStringExtra(PATHWAY_NAME))
+            val bundle= bundleOf(PATHWAY_ID to intent.getIntExtra(PATHWAY_ID,60))
             navHostFragment.navController.navigate(R.id.navigation_learn,bundle)
         }
         intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->

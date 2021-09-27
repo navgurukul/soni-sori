@@ -30,9 +30,9 @@ class AppModuleNavigationContract: AppModuleNavigator {
     override fun launchIntentForLearnActivity(
         context: FragmentActivity,
         clearNotification: Boolean,
-        pathway_name: String
+        pathway_id: Int
     ) {
-        MainActivity.launchLearnFragment(context,pathway_name)
+        MainActivity.launchLearnFragment(context,pathway_id)
 
     }
 }
