@@ -66,12 +66,12 @@
         <item name="android:background">@drawable/google_sign_in_bg</item>
         <item name="android:textColor">@color/on_boarding_green_color</item>
         <item name="android:drawableStart">@drawable/google_icon</item>
-        <item name="android:paddingStart">70dp</item>
-        <item name="android:paddingEnd">70dp</item>
+        <item name="android:paddingStart">@dimen/dimen_75_dp</item>
+        <item name="android:paddingEnd">@dimen/dimen_75_dp</item>
         <item name="singleLine">true</item>
         <item name="fontFamily">@font/nunito</item>
         <item name="textAllCaps">false</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">@dimen/dimen_5_dp</item>
     </style>
 
 

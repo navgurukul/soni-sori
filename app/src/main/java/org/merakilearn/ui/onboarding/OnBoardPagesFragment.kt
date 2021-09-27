@@ -42,7 +42,7 @@ class OnBoardPagesFragment : BaseFragment() {
     private lateinit var onBoardPagesAdapter: OnBoardPagesAdapter
     lateinit var list:List<OnBoardingPageData>
 
-    private val viewModel:WelcomeViewModel by viewModel()
+    private val viewModel:OnBoardingViewModel by viewModel()
 
     private val navigator: MerakiNavigator by inject()
 
@@ -97,7 +97,6 @@ class OnBoardPagesFragment : BaseFragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner){
             when(it){
                 is WelcomeViewEvents.ShowToast-> toast(it.toastText)
-                is WelcomeViewEvents.OpenMerakiChat->openMerakiChat(it.roomId)
                 is WelcomeViewEvents.OpenCourseSelection->openCourseSelection(pathwayList)
                 is WelcomeViewEvents.OpenHomeScreen->openHomeScreen()
                 is WelcomeViewEvents.DisplayData -> displayData(it.data)
@@ -151,10 +150,6 @@ class OnBoardPagesFragment : BaseFragment() {
     }
     private fun openHomeScreen(){
         navigator.openHome(requireContext(),true)
-        requireActivity().finish()
-    }
-    private fun openMerakiChat(roomId:String){
-        navigator.openRoom(requireContext(),roomId,true)
         requireActivity().finish()
     }
 

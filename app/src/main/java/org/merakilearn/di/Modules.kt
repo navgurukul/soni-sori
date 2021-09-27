@@ -21,7 +21,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
-import org.merakilearn.ui.onboarding.WelcomeViewModel
+import org.merakilearn.ui.onboarding.OnBoardingViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
 import org.navgurukul.learn.courses.db.models.*
 import retrofit2.Retrofit
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
-    viewModel { WelcomeViewModel(get(), get(), get(), get()) }
+    viewModel { OnBoardingViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(

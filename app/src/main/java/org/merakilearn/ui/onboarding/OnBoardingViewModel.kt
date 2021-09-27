@@ -16,7 +16,7 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 
-class WelcomeViewModel(
+class OnBoardingViewModel(
     private val applicationRepo: ApplicationRepo,
     private val stringProvider: StringProvider,
     private val activeSessionHolder: ActiveSessionHolder,
@@ -59,7 +59,7 @@ class WelcomeViewModel(
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
                 if (loginResponse.is_first_time) {
-                    observeInitialSync(loginResponse.roomId!!)
+                    observeInitialSync()
                 } else {
                     _viewEvents.setValue(WelcomeViewEvents.OpenHomeScreen)
                 }
@@ -75,14 +75,14 @@ class WelcomeViewModel(
             val fakeUserLoginResponse = applicationRepo.performFakeSignUp()
             setState { copy(isLoading = false) }
             fakeUserLoginResponse?.let {
-                observeInitialSync(it.roomId!!)
+                observeInitialSync()
             } ?: run {
                 _viewEvents.setValue(WelcomeViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }
         }
     }
 
-    private fun observeInitialSync(roomId: String) {
+    private fun observeInitialSync() {
         val session = activeSessionHolder.getSafeActiveSession() ?: return
 
         session.getInitialSyncProgressStatus()
@@ -109,7 +109,7 @@ class WelcomeViewModel(
 }
 
 sealed class WelcomeViewEvents : ViewEvents {
-    class OpenMerakiChat(val roomId: String) : WelcomeViewEvents()
+    class OpenMerakiChat() : WelcomeViewEvents()
     object OpenHomeScreen: WelcomeViewEvents()
     object OpenCourseSelection:WelcomeViewEvents()
     class ShowToast(val toastText: String) : WelcomeViewEvents()
