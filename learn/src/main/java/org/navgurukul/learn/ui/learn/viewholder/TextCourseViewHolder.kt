@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -29,6 +30,7 @@ class TextCourseViewHolder(itemView: View) :
     private fun setTextContent(textContent: TextView, text: String) {
         textContent.apply {
             this.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            this.setMovementMethod(LinkMovementMethod.getInstance())
         }
     }
 }

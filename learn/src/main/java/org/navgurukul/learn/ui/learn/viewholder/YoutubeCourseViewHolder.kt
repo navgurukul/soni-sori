@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
+import android.content.res.Resources
 import android.view.View
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -11,11 +12,14 @@ class YoutubeCourseViewHolder(itemView: View) :
     BaseCourseViewHolder(itemView) {
     private val youtubeView: YouTubePlayerView = populateStub(R.layout.item_youtube_content)
 
+    val childLayoutParams = youtubeView.layoutParams
+
     override val horizontalMargin: Int
-        get() = youtubeView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = 0
 
     init {
         super.setHorizontalMargin(horizontalMargin)
+        setViewHeight(1.33)
     }
 
     fun bindView(item: YoutubeBaseCourseContent) {
@@ -26,6 +30,10 @@ class YoutubeCourseViewHolder(itemView: View) :
             }
         })
 
+    }
+
+    fun setViewHeight(widthHeightRatio: Double) {
+        childLayoutParams.height = (Resources.getSystem().getDisplayMetrics().widthPixels/widthHeightRatio).toInt()
     }
 
 }

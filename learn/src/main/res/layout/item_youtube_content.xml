@@ -3,7 +3,7 @@
 
 <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView android:id="@+id/youtube_view"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_youtube_view_height"
+    android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     android:layout_marginVertical="@dimen/spacing_2x"

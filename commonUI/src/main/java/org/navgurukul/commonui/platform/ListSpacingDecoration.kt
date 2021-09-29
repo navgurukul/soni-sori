@@ -11,17 +11,24 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 class ListSpacingDecoration : ItemDecoration {
     private var orientation = -1
     private var spanCount = -1
-    private var spacing: Int
-    private var halfSpacing: Int
+    private var spacingVertical: Int
+    private var spacingHorizontal: Int
+    private var halfSpacingVertical: Int
+    private var halfSpacingHorizontal: Int
 
-    constructor(context: Context, @DimenRes spacingDimen: Int) {
-        spacing = context.getResources().getDimensionPixelSize(spacingDimen)
-        halfSpacing = spacing / 2
+    constructor(context: Context, @DimenRes spacingDimenVertical: Int, @DimenRes spacingDimenHorizontal: Int) {
+        spacingVertical = context.getResources().getDimensionPixelSize(spacingDimenVertical)
+        spacingHorizontal = context.getResources().getDimensionPixelSize(spacingDimenHorizontal)
+
+        halfSpacingVertical = spacingVertical / 2
+        halfSpacingHorizontal = spacingHorizontal / 2
     }
 
-    constructor(spacingPx: Int) {
-        spacing = spacingPx
-        halfSpacing = spacing / 2
+    constructor(spacingPxVertical: Int, spacingPxHorizontal: Int) {
+        spacingVertical = spacingPxVertical
+        halfSpacingVertical = spacingVertical / 2
+        spacingHorizontal = spacingPxHorizontal
+        halfSpacingHorizontal = spacingHorizontal / 2
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -42,21 +49,21 @@ class ListSpacingDecoration : ItemDecoration {
     }
 
     protected fun setSpacings(outRect: Rect, parent: RecyclerView, childCount: Int, childIndex: Int, itemSpanSize: Int, spanIndex: Int) {
-        outRect.top = halfSpacing
-        outRect.bottom = halfSpacing
-        outRect.left = halfSpacing
-        outRect.right = halfSpacing
+        outRect.top = halfSpacingVertical
+        outRect.bottom = halfSpacingVertical
+        outRect.left = halfSpacingHorizontal
+        outRect.right = halfSpacingHorizontal
         if (isTopEdge(parent, childCount, childIndex, itemSpanSize, spanIndex)) {
-            outRect.top = spacing
+            outRect.top = 0
         }
         if (isLeftEdge(parent, childCount, childIndex, itemSpanSize, spanIndex)) {
-            outRect.left = spacing
+            outRect.left = 0
         }
         if (isRightEdge(parent, childCount, childIndex, itemSpanSize, spanIndex)) {
-            outRect.right = spacing
+            outRect.right = 0
         }
         if (isBottomEdge(parent, childCount, childIndex, itemSpanSize, spanIndex)) {
-            outRect.bottom = spacing
+            outRect.bottom = 0
         }
     }
 

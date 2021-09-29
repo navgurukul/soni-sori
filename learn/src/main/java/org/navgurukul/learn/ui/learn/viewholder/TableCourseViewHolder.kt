@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
@@ -12,13 +13,25 @@ import org.navgurukul.learn.ui.learn.adapter.TableAdapter
 class TableCourseViewHolder(itemView: View) :
     BaseCourseViewHolder(itemView) {
 
-    private val tableView: RecyclerView = populateStub(R.layout.item_table_content)
+    private val layout: ConstraintLayout = populateStub(R.layout.item_table_content)
+    private val tableView: RecyclerView = layout.findViewById(R.id.tableLayout)
+    private val fadedView: View = layout.findViewById(R.id.fadedView)
 
     override val horizontalMargin: Int
         get() = tableView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
 
     init {
         super.setHorizontalMargin(horizontalMargin)
+        tableView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollHorizontally(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fadedView.visibility = View.GONE
+                }else{
+                    fadedView.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     fun bindView(item: TableBaseCourseContent) {
@@ -37,7 +50,8 @@ class TableCourseViewHolder(itemView: View) :
                 tableView.addItemDecoration(
                     ListSpacingDecoration(
                         tableView.context,
-                        R.dimen.table_margin_offset
+                        R.dimen.table_margin_vertical_spacing,
+                        R.dimen.table_margin_horizontal_spacing
                     )
                 )
 

@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.RequestManager
@@ -12,11 +13,14 @@ class ImageCourseViewHolder(itemView: View, private val glideRequest: RequestMan
 
     private val imageView: ImageView = populateStub(R.layout.item_image_content)
 
+    val childLayoutParams = imageView.layoutParams
+
     override val horizontalMargin: Int
-        get() = imageView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = 0
 
     init {
         super.setHorizontalMargin(horizontalMargin)
+//        setViewHeight(1.5)
     }
 
     fun bindView(item: ImageBaseCourseContent) {
@@ -29,5 +33,8 @@ class ImageCourseViewHolder(itemView: View, private val glideRequest: RequestMan
 
     }
 
+    fun setViewHeight(widthHeightRatio: Double) {
+        childLayoutParams.height = (Resources.getSystem().getDisplayMetrics().widthPixels/widthHeightRatio).toInt()
+    }
 }
 
