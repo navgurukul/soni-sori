@@ -7,10 +7,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tableLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_course_content_margin"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View

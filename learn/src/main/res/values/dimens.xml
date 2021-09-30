@@ -38,4 +38,5 @@
     <dimen name="button_round_radius">8dp</dimen>
     <dimen name="table_margin_vertical_spacing">10dp</dimen>
     <dimen name="table_margin_horizontal_spacing">36dp</dimen>
+    <dimen name="dimen_course_content_margin">16dp</dimen>
 </resources>

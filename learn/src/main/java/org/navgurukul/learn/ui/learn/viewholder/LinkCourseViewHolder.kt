@@ -14,7 +14,7 @@ class LinkCourseViewHolder(itemView: View) :
     private val linkContent: TextView = populateStub(R.layout.item_link_content)
 
     override val horizontalMargin: Int
-        get() = linkContent.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = linkContent.context.resources.getDimensionPixelOffset(R.dimen.dimen_course_content_margin)
 
     init {
         super.setHorizontalMargin(horizontalMargin)
