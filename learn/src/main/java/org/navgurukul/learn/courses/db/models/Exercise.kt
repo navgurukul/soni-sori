@@ -24,8 +24,20 @@ data class Exercise(
     var lang: String = "en",
 
     @Json(name = "courseName")
-    var courseName: String?
+    var courseName: String?,
+    @Json(name = "type")
+    var exerciseType: ExerciseType?,
+    @Json(name = "progress")
+    var exerciseProgress: ExerciseProgress?
 ) : Serializable {
     @Ignore
     var number: Int? = 0
+}
+
+enum class ExerciseType{
+CODE, TEXT, QUESTION
+}
+
+enum class ExerciseProgress{
+NOT_STARTED, IN_PROGRESS, COMPLETED
 }

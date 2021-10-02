@@ -34,16 +34,5 @@
             android:layout_toEndOf="@+id/backButton"
             android:text="@{title}" />
 
-
-        <ImageView
-            android:id="@+id/ivOption"
-            android:layout_width="@dimen/course_profile_pic"
-            android:layout_height="@dimen/course_profile_pic"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/dimen_10_dp"
-            android:src="@drawable/ic_option"
-            tools:ignore="ContentDescription" />
-
     </RelativeLayout>
 </layout>

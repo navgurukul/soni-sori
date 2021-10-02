@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".ui.learn.CourseSlugDetailActivity"
+            android:name=".ui.learn.ExerciseActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <intent-filter android:autoVerify="true">

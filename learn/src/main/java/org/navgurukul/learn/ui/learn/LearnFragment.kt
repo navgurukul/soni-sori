@@ -59,7 +59,7 @@ class LearnFragment : Fragment() {
                     CourseDetailActivity.start(requireContext(), it.courseId, it.courseName)
                 }
                 is LearnFragmentViewEvents.OpenCourseSlugActivity -> {
-                    CourseSlugDetailActivity.start(requireContext(), it.currentStudy)
+                    ExerciseActivity.start(requireContext(), it.currentStudy)
                 }
                 LearnFragmentViewEvents.OpenPathwaySelectionSheet -> {
                     LearnFragmentPathwaySelectionSheet().show(

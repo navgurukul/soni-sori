@@ -108,7 +108,7 @@ class CourseDetailActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank())
-                CourseSlugDetailActivity.start(
+                ExerciseActivity.start(
                     this,
                     CurrentStudy(
                         courseId, courseName, it.first.slug!!, it.first.name, it.first.id

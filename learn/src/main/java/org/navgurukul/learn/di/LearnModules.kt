@@ -14,6 +14,7 @@ import org.navgurukul.learn.courses.db.MIGRATION_4_5
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.ui.learn.ExerciseViewModel
 import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnViewModel
 import retrofit2.Retrofit
@@ -21,6 +22,7 @@ import retrofit2.Retrofit
 val viewModelModule = module {
     viewModel { LearnViewModel(get(), get()) }
     viewModel { LearnFragmentViewModel(get(), get()) }
+    viewModel { ExerciseViewModel(get(), get()) }
 }
 
 

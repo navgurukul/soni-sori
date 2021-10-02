@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="org.navgurukul.learn.ui.learn.LearnViewModel" />
+
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/component_exercise_detail_header" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewCourseDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            android:layout_marginTop="@dimen/dimen_5_dp"
+            android:layout_marginBottom="@dimen/navigation_bar_height"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_course_exercise" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

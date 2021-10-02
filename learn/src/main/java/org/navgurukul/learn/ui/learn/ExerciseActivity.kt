@@ -16,13 +16,13 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
+import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 
-class CourseSlugDetailActivity : AppCompatActivity() {
+class ExerciseActivity : AppCompatActivity() {
 
     companion object {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
@@ -30,14 +30,14 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             context: Context,
             currentStudy: CurrentStudy
         ) {
-            val intent = Intent(context, CourseSlugDetailActivity::class.java)
+            val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_CURRENT_STUDY, currentStudy)
             context.startActivity(intent)
         }
     }
 
     private lateinit var currentStudy: CurrentStudy
-    private lateinit var mBinding: ActivityCourseSlugDetailBinding
+    private lateinit var mBinding: ActivityExerciseBinding
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
@@ -48,7 +48,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_course_slug_detail)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
         if (LearnUtils.isUserLoggedIn(this)) {
             parseIntentData()
@@ -78,10 +78,8 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchExerciseDataAndShow(exerciseId: String, courseId: String) {
-        mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, courseId, true)
             .observe(this, Observer {
-                mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty()) {
                     currentStudy = CurrentStudy(
                         courseId = courseId,
@@ -95,99 +93,18 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             })
     }
 
-
-    private fun initSwipeRefresh() {
-        mBinding.swipeContainer.setOnRefreshListener {
-            fetchExerciseContent(currentStudy.exerciseId, true)
-            mBinding.swipeContainer.isRefreshing = false
-        }
-    }
-
     private fun initUIElement() {
         mBinding.header.backButton.setOnClickListener {
             moveToPreviousPage()
         }
-        mBinding.header.ivOption.setOnClickListener {
-            initOptionClickListener()
-        }
-    }
-
-
-    private fun initOptionClickListener() {
-        if (isPanelVisible) {
-            isPanelVisible = false
-            hidePanel()
-        } else {
-            isPanelVisible = true
-            showPanel()
-        }
-    }
-
-    private fun showPanel() {
-        mBinding.slideComponent.slide.visibility = View.VISIBLE
-        mBinding.slideComponent.slide.openPane()
-        initRecyclerViewSlidingPanel()
-        mBinding.recyclerViewSlug.visibility = View.GONE
-    }
-
-    private fun hidePanel() {
-        mBinding.slideComponent.slide.visibility = View.GONE
-        mBinding.slideComponent.slide.closePane()
-        mBinding.recyclerViewSlug.visibility = View.VISIBLE
     }
 
 
     private fun renderUI() {
-        mBinding.header.title = currentStudy.exerciseName
+        mBinding.header.title = currentStudy.courseName
         initUIElement()
         initRecyclerViewSlidingPanel()
-        initContentRV()
         saveCourseExercise()
-        initSwipeRefresh()
-    }
-
-    private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter(this, {
-            if (it is CodeBaseCourseContent) {
-                if (!it.value.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this, it.value)
-                }
-            } else if (it is LinkBaseCourseContent) {
-                it.link?.let { url ->
-                    merakiNavigator.openCustomTab(url, this)
-                }
-            }
-        }) {
-            it?.let { action ->
-                action.url?.let { url ->
-                    merakiNavigator.openDeepLink(this, url, action.data)
-                }
-            }
-
-        }
-
-
-        val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mBinding.recyclerViewSlug.layoutManager = layoutManager
-        mBinding.recyclerViewSlug.adapter = contentAdapter
-        mBinding.recyclerViewSlug.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
-        )
-        fetchExerciseContent(currentStudy.exerciseId, false)
-
-    }
-
-    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
-        mBinding.progressBar.visibility = View.VISIBLE
-        viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
-            .observe(this, {
-                mBinding.progressBar.visibility = View.GONE
-                if (null != it && it.isNotEmpty()) {
-                    val data = parseDataForContent(it)
-                    contentAdapter.submitList(data)
-                }
-            })
     }
 
     private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
@@ -211,17 +128,15 @@ class CourseSlugDetailActivity : AppCompatActivity() {
             }
         }
         val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mBinding.slideComponent.recyclerviewCourseDetail.layoutManager = layoutManager
-        mBinding.slideComponent.recyclerviewCourseDetail.adapter = mAdapter
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        mBinding.recyclerviewCourseDetail.layoutManager = layoutManager
+        mBinding.recyclerviewCourseDetail.adapter = mAdapter
         fetchAndSetMasterData()
     }
 
     private fun fetchAndSetMasterData() {
         viewModel.fetchCourseExerciseData(currentStudy.courseId).observe(this, Observer {
-            mBinding.progressBar.visibility = View.VISIBLE
             if (null != it && it.isNotEmpty()) {
-                mBinding.progressBar.visibility = View.GONE
                 masterData = it as MutableList<Exercise>
                 mAdapter.submitList(masterData)
             }

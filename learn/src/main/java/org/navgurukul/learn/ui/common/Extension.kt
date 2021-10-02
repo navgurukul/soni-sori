@@ -1,13 +1,17 @@
 package org.navgurukul.learn.ui.common
 
 import android.app.Activity
+import android.content.res.Resources
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import com.amulyakhare.textdrawable.TextDrawable
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.ExerciseProgress
+import org.navgurukul.learn.courses.db.models.ExerciseType
 
 
 fun Activity.toast(text: String) {
@@ -25,19 +29,22 @@ fun Activity.toolbarColor(): Int {
     )
 }
 
-@BindingAdapter("imageUrl")
-fun setImageUrl(imageView: ImageView, url: String?) {
-    if (url == null) {
+@BindingAdapter(value = ["exerciseType","exerciseProgress"])
+fun setImageUrl(imageView: ImageView, type: ExerciseType?, progress: ExerciseProgress) {
+    if (type == null) {
         imageView.setImageDrawable(ContextCompat.getDrawable(imageView.context,R.drawable.ic_learn))
     } else {
-        val drawable = TextDrawable.builder()
-            .beginConfig()
-            .fontSize(14).toUpperCase().textColor(ContextCompat.getColor(imageView.context,R.color.colorNumber))
-            .width(30)
-            .bold()
-            .height(30)
-            .endConfig()
-            .buildRound(url.toString(),ContextCompat.getColor(imageView.context,R.color.colorNumberBackground))
-        imageView.setImageDrawable(drawable)
+        val layoutId = when(type){
+            ExerciseType.TEXT -> {
+                when (progress) {
+                    ExerciseProgress.COMPLETED -> R.drawable.ic_exercise_complete
+                    ExerciseProgress.IN_PROGRESS -> R.drawable.ic_exercise_in_progress
+                    ExerciseProgress.NOT_STARTED -> R.drawable.ic_exercise_not_started
+                    else -> R.drawable.ic_exercise_not_started
+                }
+            }
+            else -> R.drawable.ic_exercise_not_started
+        }
+        imageView.setBackgroundResource(layoutId)
     }
 }
