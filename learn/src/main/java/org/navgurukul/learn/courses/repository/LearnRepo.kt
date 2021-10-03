@@ -6,10 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
@@ -62,7 +59,7 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getCoursesForPathway(pathwayId)
+            courseApi.getCoursesForPathway(pathwayId, "json")
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id

@@ -19,10 +19,14 @@ interface SaralCoursesApi {
 
     @GET("pathways/{pathway_id}/courses")
     suspend fun getCoursesForPathway(
-        @Path("pathway_id") pathway_id: Int
+        @Path("pathway_id") pathway_id: Int,
+        @Query("courseType") courseType: String
     ): PathwayCourseContainer
 
     @GET("courses/{course_id}/exercises")
-    suspend fun getExercisesAsync(@Path("course_id") course_id: String, @Query("lang") language: String): CourseExerciseContainer
+    suspend fun getExercisesAsync(
+        @Path("course_id") course_id: String,
+        @Query("lang") language: String,
+    ): CourseExerciseContainer
 
 }

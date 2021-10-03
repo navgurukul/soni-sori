@@ -46,3 +46,7 @@ data class Course(
     @Json(name = "exercises")
     var exercises: List<Exercise?>? = listOf()
 )
+
+enum class CourseType{
+    json, markdown
+}

@@ -10,7 +10,7 @@ object Versions {
     const val kotlin = "1.5.21"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
-    const val room = "2.3.0"
+    const val room = "2.4.0-alpha03"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
