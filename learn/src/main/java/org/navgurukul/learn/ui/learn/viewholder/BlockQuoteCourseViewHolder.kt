@@ -12,7 +12,7 @@ class BlockQuoteCourseViewHolder(itemView: View) :
     private val blockQuoteText: TextView = populateStub(R.layout.item_block_quote_content)
 
     override val horizontalMargin: Int
-        get() = blockQuoteText.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = blockQuoteText.context.resources.getDimensionPixelOffset(R.dimen.dimen_course_content_margin)
 
     init {
         super.setHorizontalMargin(horizontalMargin)

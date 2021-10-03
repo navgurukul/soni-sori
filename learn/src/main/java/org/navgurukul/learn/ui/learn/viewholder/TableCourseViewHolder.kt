@@ -18,7 +18,7 @@ class TableCourseViewHolder(itemView: View) :
     private val fadedView: View = layout.findViewById(R.id.fadedView)
 
     override val horizontalMargin: Int
-        get() = tableView.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = 0
 
     init {
         super.setHorizontalMargin(horizontalMargin)

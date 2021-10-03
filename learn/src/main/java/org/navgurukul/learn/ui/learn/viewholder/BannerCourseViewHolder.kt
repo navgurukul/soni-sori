@@ -18,7 +18,7 @@ class BannerCourseViewHolder(itemView: View) :
     private val bannerButton1: Button = layoutBannerContent.findViewById(R.id.bannerButton1)
 
     override val horizontalMargin: Int
-        get() = layoutBannerContent.context.resources.getDimensionPixelOffset(R.dimen.spacing_4x)
+        get() = layoutBannerContent.context.resources.getDimensionPixelOffset(R.dimen.dimen_course_content_margin)
 
     init {
         super.setHorizontalMargin(horizontalMargin)
