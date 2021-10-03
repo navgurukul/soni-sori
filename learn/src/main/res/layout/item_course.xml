@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="@dimen/pathway_logo_size"
+            android:layout_height="@dimen/pathway_logo_size"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,14 +29,14 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="@dimen/pathway_circle_border_size"
+            android:layout_height="@dimen/pathway_circle_border_size"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:max="100"
             android:padding="1dp"
-            android:progress="60"
-            android:progressDrawable="@drawable/circle_progress_bar"
+            android:progress="0"
+            android:progressDrawable="@drawable/circle_progress"
             android:secondaryProgress="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -57,6 +57,5 @@
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

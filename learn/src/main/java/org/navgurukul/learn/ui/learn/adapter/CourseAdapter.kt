@@ -36,17 +36,19 @@ class CourseAdapter(val callback: (Course) -> Unit) :
         binding.course = item
 
         val thumbnail = Glide.with(holder.itemView)
-            .load(R.drawable.ic_typing_icon)
-
+            .load(R.drawable.course_placeholder)
         Glide.with(binding.ivLogo)
             .load(item.logo)
+//            .apply(RequestOptions().override(binding.ivLogo.resources.getDimensionPixelSize(R.dimen.pathway_circle_border_size)))
             .thumbnail(thumbnail)
             .into(binding.ivLogo)
 
+        // TODO set progress from the object
+        binding.progressBar.progress = 60
         binding.tvName.text = item.name
+
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
     }
-
 }
