@@ -47,15 +47,19 @@ class ExerciseFragment: Fragment() {
     private val currentCourseArgs: CurrentStudyArgs by fragmentArgs()
 
     companion object {
-        private const val ARG_KEY_COURSE_ID = "arg_course_id"
-        private const val ARG_KEY_COURSE_NAME = "arg_course_name"
+        private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
+//        private const val ARG_KEY_COURSE_ID = "arg_course_id"
+//        private const val ARG_KEY_COURSE_NAME = "arg_course_name"
 
-        fun start(context: Context, courseId: String, courseName: String) {
-            val intent = Intent(context, CourseDetailActivity::class.java)
-            intent.putExtra(ARG_KEY_COURSE_ID, courseId)
-            intent.putExtra(ARG_KEY_COURSE_NAME, courseName)
-            context.startActivity(intent)
+        fun newInstance(currentStudy: CurrentStudy): ExerciseFragment {
+            val frag =  ExerciseFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(ARG_KEY_CURRENT_STUDY, currentStudy)
+            frag.arguments = bundle
+            return frag
+
         }
+        const val TAG = "ExerciseFragment"
     }
 
     override fun onCreateView(

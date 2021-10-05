@@ -57,7 +57,7 @@ class CourseDetailActivity : AppCompatActivity() {
     private fun renderUI() {
         initToolBar()
         initExpandableToolBar()
-        initRecyclerView()
+//        initRecyclerView()
         fetchData()
     }
 
@@ -105,22 +105,22 @@ class CourseDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun initRecyclerView() {
-        mAdapter = CourseExerciseAdapter {
-            if (!it.first.slug.isNullOrBlank())
-                ExerciseActivity.start(
-                    this,
-                    CurrentStudy(
-                        courseId, courseName, it.first.slug!!, it.first.name, it.first.id
-                    )
-                )
-            finish()
-        }
-        val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mBinding.contentCourseDetail.recyclerviewCourseDetail.layoutManager = layoutManager
-        mBinding.contentCourseDetail.recyclerviewCourseDetail.adapter = mAdapter
-    }
+//    private fun initRecyclerView() {
+//        mAdapter = CourseExerciseAdapter {
+//            if (!it.first.slug.isNullOrBlank())
+//                ExerciseActivity.start(
+//                    this,
+//                    CurrentStudy(
+//                        courseId, courseName, it.first.slug!!, it.first.name, it.first.id
+//                    )
+//                )
+//            finish()
+//        }
+//        val layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        mBinding.contentCourseDetail.recyclerviewCourseDetail.layoutManager = layoutManager
+//        mBinding.contentCourseDetail.recyclerviewCourseDetail.adapter = mAdapter
+//    }
 
 
     private fun fetchData() {

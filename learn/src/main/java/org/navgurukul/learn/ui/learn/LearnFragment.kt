@@ -56,7 +56,7 @@ class LearnFragment : Fragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
-                    CourseDetailActivity.start(requireContext(), it.courseId, it.courseName)
+                    ExerciseActivity.start(requireContext(), it.courseId, it.courseName)
                 }
                 is LearnFragmentViewEvents.OpenCourseSlugActivity -> {
                     ExerciseActivity.start(requireContext(), it.currentStudy)

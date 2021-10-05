@@ -22,7 +22,7 @@
             layout="@layout/component_exercise_detail_header" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewCourseDetail"
+            android:id="@+id/recyclerviewCourseExerciseList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
@@ -33,6 +33,21 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             tools:listitem="@layout/item_course_exercise" />
+
+        <FrameLayout
+            android:id="@+id/exerciseContentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/recyclerviewCourseExerciseList"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <include
+            android:id="@+id/progressBar"
+            layout="@layout/component_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
