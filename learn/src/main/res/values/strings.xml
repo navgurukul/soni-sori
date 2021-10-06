@@ -101,4 +101,5 @@
     <string name="run_code">Run Code</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
+    <string name="error_loading_data">Some error occured while fetching data. Please try again</string>
 </resources>

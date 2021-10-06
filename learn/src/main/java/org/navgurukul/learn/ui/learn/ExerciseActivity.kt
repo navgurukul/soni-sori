@@ -20,6 +20,7 @@ import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import org.navgurukul.learn.ui.common.toast
 
 
 class ExerciseActivity : AppCompatActivity() {
@@ -30,14 +31,14 @@ class ExerciseActivity : AppCompatActivity() {
         private const val ARG_KEY_CURRENT_STUDY = "arg_course_name"
 
         fun start(context: Context, courseId: String, courseName: String) {
-            val intent = Intent(context, CourseDetailActivity::class.java)
+            val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_COURSE_ID, courseId)
             intent.putExtra(ARG_KEY_COURSE_NAME, courseName)
             context.startActivity(intent)
         }
 
         fun start(context: Context, courseStudy: CurrentStudy) {
-            val intent = Intent(context, CourseDetailActivity::class.java)
+            val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_CURRENT_STUDY, courseStudy)
             context.startActivity(intent)
         }
@@ -49,7 +50,7 @@ class ExerciseActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityExerciseBinding
     private var isPanelVisible = false
-    private val viewModel: LearnViewModel by viewModel()
+    private val viewModel: ExerciseActivityViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
@@ -65,6 +66,39 @@ class ExerciseActivity : AppCompatActivity() {
         } else
             merakiNavigator.restartApp(this, true)
 
+
+        viewModel.viewEvents.observe(this, Observer {
+            when (it) {
+                is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowToast -> toast(it.toastText)
+                is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowExerciseList -> updateExerciseListOnScreen(
+                    it.exerciseList
+                )
+                is ExerciseActivityViewModel.ExerciseActivityViewEvents.SetCourseAndRenderUI -> setCurrentCourseDataAndRenderUI(
+                    it.courseList
+                )
+            }
+        })
+
+        viewModel.viewState.observe(this, Observer {
+            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+        })
+
+    }
+
+    private fun updateExerciseListOnScreen(courseList: List<Exercise>) {
+        if (courseList.isNotEmpty()) {
+            masterData = courseList as MutableList<Exercise>
+            mAdapter.submitList(courseList)
+        }
+    }
+
+    private fun setCurrentCourseDataAndRenderUI(courseList: List<Course>) {
+        if (courseList.isNotEmpty()) {
+            mBinding.progressBar.visibility = View.GONE
+            courseId = courseList.firstOrNull()?.id.toString()
+            courseName = courseList.firstOrNull()?.name.toString()
+            renderUI()
+        }
     }
 
     private fun parseIntentData() {
@@ -74,42 +108,31 @@ class ExerciseActivity : AppCompatActivity() {
             courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
             courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
             renderUI()
-        }
-        else if(intent.hasExtra(ARG_KEY_CURRENT_STUDY)){
+        } else if(intent.hasExtra(ARG_KEY_CURRENT_STUDY)){
             currentStudy = intent.getParcelableExtra(ARG_KEY_CURRENT_STUDY)!!
+
+            currentStudy.courseName?.let{
+                courseName = it
+            }
+            courseId = currentStudy.courseId
+
             renderUI()
             launchExerciseFragment(currentStudy)
+        } else {
+            val action: String? = intent?.action
+            val data: Uri? = intent?.data
+            val uriString = data.toString()
+            if (action == Intent.ACTION_VIEW) {
+                if (uriString.contains("/course/")) {
+                    fetchClassDataAndShow(uriString.split("/").last())
+                }
+            }
         }
-//        else {
-//            val action: String? = intent?.action
-//            val data: Uri? = intent?.data
-//            val uriString = data.toString()
-//            if (action == Intent.ACTION_VIEW) {
-//                if (uriString.contains("/exercise/")) {
-//                    val courseId = data?.pathSegments?.get(1)
-//                    val exerciseId = uriString.split("/").last()
-//                    fetchExerciseDataAndShow(exerciseId, courseId.toString())
-//                }
-//            } else {
-//                renderUI()
-//            }
-//        }
     }
 
-    private fun fetchExerciseDataAndShow(exerciseId: String, courseId: String) {
-        viewModel.fetchExerciseSlug(exerciseId, courseId, true)
-            .observe(this, Observer {
-                if (null != it && it.isNotEmpty()) {
-                    currentStudy = CurrentStudy(
-                        courseId = courseId,
-                        courseName = it.firstOrNull()?.courseName,
-                        exerciseSlugName = it.firstOrNull()?.slug!!,
-                        exerciseName = it.firstOrNull()?.name,
-                        exerciseId = exerciseId
-                    )
-                    renderUI()
-                }
-            })
+    private fun fetchClassDataAndShow(last: String) {
+        courseId = last
+        viewModel.handle(ExerciseActivityViewModel.ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse(courseId))
     }
 
     private fun initUIElement() {
@@ -127,18 +150,7 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        mBinding.progressBar.visibility = View.VISIBLE
-        viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
-            if (null != it && it.isNotEmpty()) {
-                mBinding.progressBar.visibility = View.GONE
-                masterData = it as MutableList<Exercise>
-                mAdapter.submitList(it)
-            }
-        })
-    }
-
-    private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
-        return it?.firstOrNull()?.content ?: return listOf()
+        viewModel.handle(ExerciseActivityViewModel.ExerciseActivityViewActions.FetchCourseExercises(courseId))
     }
 
     private fun initRecyclerViewExerciseList() {
@@ -146,8 +158,8 @@ class ExerciseActivity : AppCompatActivity() {
             if (!it.first.slug.isNullOrBlank()) {
                 launchExerciseFragment(
                     CurrentStudy(
-                        courseId = currentStudy.courseId,
-                        courseName = currentStudy.courseName,
+                        courseId = courseId,
+                        courseName = courseName,
                         exerciseSlugName = it.first.slug!!,
                         exerciseName = it.first.name,
                         exerciseId = it.first.id
@@ -159,7 +171,7 @@ class ExerciseActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         mBinding.recyclerviewCourseExerciseList.layoutManager = layoutManager
         mBinding.recyclerviewCourseExerciseList.adapter = mAdapter
-        fetchAndSetMasterData()
+        fetchData()
     }
 
     private fun launchExerciseFragment(currentStudy: CurrentStudy) {
@@ -169,15 +181,6 @@ class ExerciseActivity : AppCompatActivity() {
             ExerciseFragment.newInstance(currentStudy), ExerciseFragment.TAG)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    private fun fetchAndSetMasterData() {
-        viewModel.fetchCourseExerciseData(currentStudy.courseId).observe(this, Observer {
-            if (null != it && it.isNotEmpty()) {
-                masterData = it as MutableList<Exercise>
-                mAdapter.submitList(masterData)
-            }
-        })
     }
 
 }

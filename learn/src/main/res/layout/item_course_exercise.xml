@@ -15,7 +15,7 @@
         android:layout_width="@dimen/dimen_30_dp"
         android:layout_height="@dimen/dimen_30_dp"
         android:padding="@dimen/dimen_2_dp"
-        tools:src="@drawable/ic_exercise_complete"
+        tools:src="@drawable/ic_type_text_selected"
         app:exerciseType="@{exercise.exerciseType}"
         app:exerciseProgress="@{exercise.exerciseProgress}"
         tools:ignore="ContentDescription" />

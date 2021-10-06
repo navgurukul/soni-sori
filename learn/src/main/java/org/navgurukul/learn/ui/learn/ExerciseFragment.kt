@@ -1,50 +1,31 @@
 package org.navgurukul.learn.ui.learn
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
-import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
-import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 
-class ExerciseFragment: Fragment() {
+class ExerciseFragment : Fragment() {
 
-    private val viewModel: ExerciseViewModel by viewModel()
+    private val fragmentViewModel: ExerciseFragmentViewModel by viewModel()
     private lateinit var currentStudy: CurrentStudy
     private lateinit var mBinding: FragmentExerciseBinding
-    private var isPanelVisible = false
-    private lateinit var mAdapter: CourseExerciseAdapter
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
-
-    @Parcelize
-    data class CurrentStudyArgs(
-        val currentStudy: CurrentStudy
-    ) : Parcelable
-
-    private val currentCourseArgs: CurrentStudyArgs by fragmentArgs()
 
     companion object {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
@@ -52,13 +33,14 @@ class ExerciseFragment: Fragment() {
 //        private const val ARG_KEY_COURSE_NAME = "arg_course_name"
 
         fun newInstance(currentStudy: CurrentStudy): ExerciseFragment {
-            val frag =  ExerciseFragment()
+            val frag = ExerciseFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_KEY_CURRENT_STUDY, currentStudy)
             frag.arguments = bundle
             return frag
 
         }
+
         const val TAG = "ExerciseFragment"
     }
 
@@ -69,31 +51,38 @@ class ExerciseFragment: Fragment() {
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise, container, false)
         return mBinding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parseIntentData()
+
+        fragmentViewModel.viewEvents.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is ExerciseFragmentViewModel.ExerciseFragmentViewEvents.ShowToast -> toast(it.toastText)
+                is ExerciseFragmentViewModel.ExerciseFragmentViewEvents.ShowExercise -> renderExerciseOnScreen(
+                    it.exerciseList
+                )
+            }
+        })
+
+        fragmentViewModel.viewState.observe(viewLifecycleOwner, Observer {
+            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+        })
+    }
+
+    private fun renderExerciseOnScreen(list: List<Exercise>) {
+        if (list.isNotEmpty()) {
+            val data = parseDataForContent(list)
+            contentAdapter.submitList(data)
+        }
     }
 
     private fun parseIntentData() {
-        currentStudy = currentCourseArgs.currentStudy
-        renderUI()
-       /*
-        if (inten.hasExtra(CourseSlugDetailActivity.ARG_KEY_CURRENT_STUDY)) {
-            currentStudy = intent.getSerializableExtra(CourseSlugDetailActivity.ARG_KEY_CURRENT_STUDY) as CurrentStudy
+        if (arguments?.containsKey(ARG_KEY_CURRENT_STUDY) ?: false) {
+            currentStudy = requireArguments().getParcelable<CurrentStudy>(ARG_KEY_CURRENT_STUDY)!!
             renderUI()
-        } else {
-            val action: String? = intent?.action
-            val data: Uri? = intent?.data
-            val uriString = data.toString()
-            if (action == Intent.ACTION_VIEW) {
-                if (uriString.contains("/exercise/")) {
-                    val courseId = data?.pathSegments?.get(1)
-                    val exerciseId = uriString.split("/").last()
-                    fetchExerciseDataAndShow(exerciseId, courseId.toString())
-                }
-            } else {
-                renderUI()
-            }
         }
-        */
     }
 
     private fun renderUI() {
@@ -143,19 +132,25 @@ class ExerciseFragment: Fragment() {
     }
 
     private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
-//        mBinding.progressBar.visibility = View.VISIBLE
-//        viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
-//            .observe(this, {
-//                mBinding.progressBar.visibility = View.GONE
-//                if (null != it && it.isNotEmpty()) {
-//                    val data = parseDataForContent(it)
-//                    contentAdapter.submitList(data)
-//                }
-//            })
+        fragmentViewModel.handle(
+            ExerciseFragmentViewModel.ExerciseFragmentViewActions.FetchExerciseFragmentSlug(
+                exerciseId,
+                currentStudy.courseId,
+                forceUpdate
+            )
+        )
+    }
+
+    private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
+        return it?.firstOrNull()?.content ?: return listOf()
     }
 
     private fun saveCourseExercise() {
-//        viewModel.saveCourseExerciseCurrent(currentStudy)
+        fragmentViewModel.handle(
+            ExerciseFragmentViewModel.ExerciseFragmentViewActions.SaveCourseExerciseFragmentCurrent(
+                currentStudy
+            )
+        )
     }
 
 
