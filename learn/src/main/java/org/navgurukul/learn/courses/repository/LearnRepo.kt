@@ -60,7 +60,7 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getCoursesForPathway(pathwayId)
+            courseApi.getCoursesForPathway(pathwayId, "json")
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
