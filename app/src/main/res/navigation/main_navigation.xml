@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_playground"
-        android:name="org.navgurukul.playground.ui.PlaygroundFragment"
+        android:name="org.merakilearn.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"
         tools:layout="@layout/fragment_playground" />
 </navigation>
