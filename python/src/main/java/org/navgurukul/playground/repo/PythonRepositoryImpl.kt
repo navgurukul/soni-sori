@@ -1,10 +1,21 @@
 package org.navgurukul.playground.repo
 
-import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.core.content.edit
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.navgurukul.playground.repo.PythonRepositoryImpl.PythonOutputInterface
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -14,26 +25,89 @@ import java.util.*
 
 class PythonRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
-    private val application: Application
-) :
-    PythonRepository {
+    private val context: Context
+) : PythonRepository {
+
     companion object {
         const val KEY_PREF_CODE_BACKUP = "Playground.CodeBackup"
         const val DIRECTORY_NAME = "Python"
     }
 
-    override fun cacheCode(code: String) {
-        sharedPreferences.edit().putString(KEY_PREF_CODE_BACKUP, code).apply()
+    init {
+        if (!Python.isStarted()) {
+            Python.start(AndroidPlatform(context))
+        }
     }
 
-    override fun getCachedCode(): String {
-        return sharedPreferences.getString(KEY_PREF_CODE_BACKUP, "") ?: ""
+    private val py = Python.getInstance()
+    private val sys: PyObject = py.getModule("sys")
+    private val console: PyObject = py.getModule("chaquopy.utils.console")
+    private val realStdout = sys["stdout"]
+    private val realStdErr = sys["stderr"]
+
+    private val _inputFlow = MutableSharedFlow<PythonInput>(
+        extraBufferCapacity = 50,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    private val _outputFlow = MutableSharedFlow<PythonOutput>(
+        extraBufferCapacity = 50,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    private val _errorFlow = MutableSharedFlow<PythonError>(
+        extraBufferCapacity = 50,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    override val inputFlow = _inputFlow.asSharedFlow()
+    override val outputFlow = _outputFlow.asSharedFlow()
+    override val errorFlow = _errorFlow.asSharedFlow()
+
+    private val pythonInput =
+        PythonInputInterface { isBlocking ->
+            if (!_inputFlow.tryEmit(PythonInput(currentTag, isBlocking))) {
+                GlobalScope.launch {
+                    _inputFlow.emit(PythonInput(currentTag, isBlocking))
+                }
+            }
+        }
+
+    private var currentTag: Any = Unit
+
+    private val stdin: PyObject = console.callAttr("ConsoleInputStream", pythonInput)
+    private val stdout: PyObject = console.callAttr("ConsoleOutputStream", PythonOutputInterface {
+        Log.d("abcd", "output is $it")
+        if (!_outputFlow.tryEmit(PythonOutput(currentTag, it))) {
+            GlobalScope.launch {
+                _outputFlow.tryEmit(PythonOutput(currentTag, it))
+            }
+        }
+    }, "output", realStdout)
+
+    private val stderr: PyObject = console.callAttr("ConsoleOutputStream", PythonErrorInterface {
+        Log.d("abcd", "error is $it")
+        if (!_errorFlow.tryEmit(PythonError(currentTag, it))) {
+            GlobalScope.launch {
+                _errorFlow.tryEmit(PythonError(currentTag, it))
+            }
+        }
+    }, "error", realStdErr)
+
+    init {
+        sys["stdin"] = stdin
+        sys["stdout"] = stdout
+        sys["stderr"] = stderr
     }
+
+    override var cachedCode: String?
+        get() = sharedPreferences.getString(KEY_PREF_CODE_BACKUP, null)
+        set(value) = sharedPreferences.edit { putString(KEY_PREF_CODE_BACKUP, value) }
 
     override fun saveCode(code: String, fileName: String) {
         try {
             val directory = File(
-                application.applicationContext?.getExternalFilesDir(null),
+                context.getExternalFilesDir(null),
                 DIRECTORY_NAME
             ).also {
                 it.mkdirs()
@@ -51,30 +125,46 @@ class PythonRepositoryImpl(
     }
 
     override suspend fun fetchSavedFiles(): Array<File> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val directory = File(
-                    application.applicationContext?.getExternalFilesDir(null),
-                    DIRECTORY_NAME
-                ).also {
-                    it.mkdirs()
-                }
-                directory.listFiles() ?: emptyArray()
+        return withContext(Dispatchers.IO) {
+            val directory = File(
+                context.getExternalFilesDir(null),
+                DIRECTORY_NAME
+            ).also {
+                it.mkdirs()
             }
-        } catch (ex: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            emptyArray()
+            directory.listFiles() ?: emptyArray()
         }
     }
 
-    override suspend fun deleteFile(file: File): Boolean {
-        return try {
-            withContext(Dispatchers.IO) {
-                file.delete()
+    override suspend fun deleteFile(file: File): Boolean =
+        withContext(Dispatchers.IO) { file.delete() }
+
+    fun interface PythonOutputInterface {
+        fun output(output: String)
+    }
+
+    fun interface PythonErrorInterface {
+        fun error(output: String)
+    }
+
+    fun interface PythonInputInterface {
+        fun onInputState(isBlocking: Boolean)
+    }
+
+    override suspend fun onInput(input: String): Unit = withContext(Dispatchers.IO) {
+        Log.d("abcd", "inout is $input")
+        stdin.callAttr("on_input", "$input \n")
+    }
+
+    override suspend fun runCode(code: String, tag: Any): String? {
+        currentTag = tag
+        return withContext(Dispatchers.IO) {
+            val stackTrace = py.getModule("chaquopy.main").callAttr("main", code).toString()
+
+            if (stackTrace.isNotEmpty()) {
+                return@withContext stackTrace
             }
-        } catch (ex: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            false
+            return@withContext null
         }
     }
 }
