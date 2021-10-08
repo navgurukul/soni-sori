@@ -28,23 +28,3 @@ fun Activity.toolbarColor(): Int {
         R.color.colorBlack
     )
 }
-
-@BindingAdapter(value = ["exerciseType","exerciseProgress"])
-fun setImageUrl(imageView: ImageView, type: ExerciseType?, progress: ExerciseProgress?) {
-    if (type == null) {
-        imageView.setImageDrawable(ContextCompat.getDrawable(imageView.context,R.drawable.ic_type_text_notstarted))
-    } else {
-        val layoutId = when(type){
-            ExerciseType.TEXT -> {
-                when (progress) {
-                    ExerciseProgress.COMPLETED -> R.drawable.ic_type_text_complete
-                    ExerciseProgress.IN_PROGRESS -> R.drawable.ic_type_text_selected
-                    ExerciseProgress.NOT_STARTED -> R.drawable.ic_type_text_notstarted
-                    else -> R.drawable.ic_type_text_notstarted
-                }
-            }
-            else -> R.drawable.ic_type_text_notstarted
-        }
-        imageView.setBackgroundResource(layoutId)
-    }
-}

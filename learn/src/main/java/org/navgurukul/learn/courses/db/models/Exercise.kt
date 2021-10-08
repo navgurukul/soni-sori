@@ -26,7 +26,7 @@ data class Exercise(
     @Json(name = "courseName")
     var courseName: String?,
     @Json(name = "type")
-    var exerciseType: ExerciseType?,
+    var exerciseType: ExerciseType = ExerciseType.TEXT,
     @Json(name = "progress")
     var exerciseProgress: ExerciseProgress?
 ) : Serializable {

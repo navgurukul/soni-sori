@@ -1,9 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -14,6 +11,7 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.LearnPreferences
@@ -27,6 +25,7 @@ class ExerciseActivityViewModel(
     ExerciseActivityViewState()
 ) {
 
+    private var currentCourseExerciseList: List<Exercise>? = null
     private var fetchCourseExerciseJob: Job? = null
     private var fetchCourseExerciseWithCourseJob: Job? = null
     private val selectedLanguage = learnPreferences.selectedLanguage
@@ -44,7 +43,67 @@ class ExerciseActivityViewModel(
             is ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse -> fetchCourseExerciseDataWithCourse(
                 action.courseId,
             )
+            is ExerciseActivityViewActions.ExerciseListItemSelected -> onExerciseListItemSelected(
+                action.selectedStudy,
+            )
+            is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted(
+                action.currentStudy,
+            )
+            is ExerciseActivityViewActions.NextNavigationClicked -> onNextListItemRequested(
+                action.currentStudy
+            )
+            is ExerciseActivityViewActions.PrevNavigationClicked -> onPrevListItemRequested(
+                action.currentStudy
+            )
         }
+    }
+
+    private fun onNextListItemRequested(currentStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+            val currentStudyIndex = list.indexOfFirst {
+                it.id == currentStudy.exerciseId
+            }
+            if (currentStudyIndex < list.size - 1) {
+                val nextExercise = list[currentStudyIndex + 1]
+                val nextStudy = CurrentStudy(
+                    courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
+                )
+                onExerciseListItemSelected(
+                    nextStudy
+                )
+            }
+        }
+    }
+
+    private fun onPrevListItemRequested(currentStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+            val currentStudyIndex = list.indexOfFirst {
+                it.id == currentStudy.exerciseId
+            }
+            if (currentStudyIndex > 1) {
+                val nextExercise = list[currentStudyIndex - 1]
+                val nextStudy = CurrentStudy(
+                    courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
+                )
+                onExerciseListItemSelected(
+                    nextStudy
+                )
+            }
+        }
+    }
+
+    private fun onExerciseListItemSelected(selectedStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+             val index = list.indexOfFirst { selectedStudy.exerciseId == it.id }
+            val isFirst = if(index == 0) true else false
+            val isLast = if(index == list.size - 1) true else false
+            _viewEvents.postValue(ExerciseActivityViewEvents.ShowExerciseFragment(selectedStudy, isFirst, isLast))
+        }
+//        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsSelected(selectedStudy))
+    }
+
+    private fun onExerciseMarkedCompleted(currentStudy: CurrentStudy) {
+        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsCompleted(currentStudy))
     }
 
     fun fetchCourseExerciseData(courseId: String){
@@ -54,6 +113,7 @@ class ExerciseActivityViewModel(
             val response =
                 learnRepo.getCoursesExerciseData(courseId, selectedLanguage)
                     .collect {
+                        currentCourseExerciseList = it
                         val list = it
 
                         setState { copy(isLoading = false) }
@@ -103,6 +163,10 @@ class ExerciseActivityViewModel(
     sealed class ExerciseActivityViewEvents : ViewEvents {
         class SetCourseAndRenderUI(val courseList: List<Course>) : ExerciseActivityViewEvents()
         class ShowExerciseList(val exerciseList: List<Exercise>) : ExerciseActivityViewEvents()
+        class ShowExerciseFragment(val currentStudy: CurrentStudy, val isFirst: Boolean, val isLast: Boolean)
+            : ExerciseActivityViewEvents()
+        class MarkExerciseAsSelected(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
+        class MarkExerciseAsCompleted(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
         class ShowToast(val toastText: String) : ExerciseActivityViewEvents()
     }
 
@@ -113,6 +177,22 @@ class ExerciseActivityViewModel(
 
         data class FetchCourseExercises(
             val courseId: String,
+        ) : ExerciseActivityViewActions()
+
+        data class PrevNavigationClicked(
+            val currentStudy: CurrentStudy,
+        ) : ExerciseActivityViewActions()
+
+        data class NextNavigationClicked(
+            val currentStudy: CurrentStudy,
+        ) : ExerciseActivityViewActions()
+
+        data class ExerciseListItemSelected(
+            val selectedStudy: CurrentStudy,
+        ) : ExerciseActivityViewActions()
+
+        data class ExerciseMarkedCompleted(
+            val currentStudy: CurrentStudy,
         ) : ExerciseActivityViewActions()
 
     }

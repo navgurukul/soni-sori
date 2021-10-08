@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -27,7 +28,10 @@ class ExerciseFragment : Fragment() {
             currentStudy.exerciseId
         )
     })
+    private lateinit var navigationClickListener: ExerciseNavigationClickListener
     private lateinit var currentStudy: CurrentStudy
+    private var isFirst: Boolean = false
+    private var isLast: Boolean = false
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
@@ -35,16 +39,17 @@ class ExerciseFragment : Fragment() {
 
     companion object {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
-//        private const val ARG_KEY_COURSE_ID = "arg_course_id"
-//        private const val ARG_KEY_COURSE_NAME = "arg_course_name"
+        private const val ARG_KEY_IS_FIRST_IN_LIST = "arg_is_first"
+        private const val ARG_KEY_IS_LAST_IN_LIST = "arg_is_last"
 
-        fun newInstance(currentStudy: CurrentStudy): ExerciseFragment {
+        fun newInstance(currentStudy: CurrentStudy, isFirst: Boolean = false , isLast: Boolean = false): ExerciseFragment {
             val frag = ExerciseFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_KEY_CURRENT_STUDY, currentStudy)
+            bundle.putBoolean(ARG_KEY_IS_FIRST_IN_LIST, isFirst)
+            bundle.putBoolean(ARG_KEY_IS_LAST_IN_LIST, isLast)
             frag.arguments = bundle
             return frag
-
         }
 
         const val TAG = "ExerciseFragment"
@@ -88,6 +93,12 @@ class ExerciseFragment : Fragment() {
         if (arguments?.containsKey(ARG_KEY_CURRENT_STUDY) ?: false) {
             currentStudy = requireArguments().getParcelable<CurrentStudy>(ARG_KEY_CURRENT_STUDY)!!
             renderUI()
+        }
+        if (arguments?.containsKey(ARG_KEY_IS_FIRST_IN_LIST) ?: false) {
+            isFirst = requireArguments().getBoolean(ARG_KEY_IS_FIRST_IN_LIST)
+        }
+        if (arguments?.containsKey(ARG_KEY_IS_LAST_IN_LIST) ?: false) {
+            isLast = requireArguments().getBoolean(ARG_KEY_IS_LAST_IN_LIST)
         }
     }
 
@@ -133,6 +144,32 @@ class ExerciseFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    mBinding.bottomNavigationExercise.visibility = View.VISIBLE
+                    mBinding.recyclerViewSlug.removeOnScrollListener(this)
+                    mBinding.bottomNavigationExercise.setView(false, isFirst, isLast)
+
+                    mBinding.bottomNavigationExercise.setMarkAction {
+                        navigationClickListener.onMarkCompleteClick()
+
+                        mBinding.bottomNavigationExercise.setView(true, isFirst, isLast)
+                    }
+                    mBinding.bottomNavigationExercise.setNavigationActions(
+                        {
+                            navigationClickListener.onPrevClick()
+                        },
+                        {
+                            navigationClickListener.onNextClick()
+                        }
+                    )
+                }
+            }
+        }
+        mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
+
     }
 
     private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
@@ -155,6 +192,16 @@ class ExerciseFragment : Fragment() {
                 currentStudy
             )
         )
+    }
+
+    fun setNavigationClickListener(exerciseNavigationListener: ExerciseNavigationClickListener) {
+        this.navigationClickListener = exerciseNavigationListener
+    }
+
+    interface ExerciseNavigationClickListener {
+        fun onPrevClick()
+        fun onNextClick()
+        fun onMarkCompleteClick()
     }
 
 }

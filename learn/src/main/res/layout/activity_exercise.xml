@@ -17,29 +17,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/component_exercise_detail_header" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarExercise"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/light_gradient_toolbar_background"
+            app:elevation="@dimen/dimen_0_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/exerciseToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvExerciseTitle"
+                        style="@style/text_view_course_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        tools:text="JS Operators" />
+
+            </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewCourseExerciseList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="false"
             app:layout_constraintTop_toBottomOf="@+id/header"
             android:layout_marginTop="@dimen/dimen_5_dp"
-            android:layout_marginBottom="@dimen/navigation_bar_height"
+            android:layout_marginBottom="@dimen/spacing_6x"
             android:layout_marginStart="@dimen/dimen_course_content_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             tools:listitem="@layout/item_course_exercise" />
 
-        <FrameLayout
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/exerciseContentContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/recyclerviewCourseExerciseList"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@id/appBarExercise"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <include
@@ -52,7 +72,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

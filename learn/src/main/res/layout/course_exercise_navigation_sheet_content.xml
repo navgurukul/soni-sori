@@ -6,7 +6,7 @@
     android:background="@color/contentBannerBackground">
 
     <ImageView
-        android:id="@+id/navigate_prev"
+        android:id="@+id/navigatePrev"
         android:layout_width="@dimen/dimen_20_dp"
         android:layout_height="@dimen/dimen_25_dp"
         android:src="@drawable/ic_arrow_right"
@@ -17,21 +17,24 @@
         android:layout_marginStart="@dimen/spacing_3x"
         app:tint="@color/primaryColor" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMarkCompleted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:text="@string/mark_as_completed"
-        android:textColor="@color/primaryColor"
-        android:drawablePadding="@dimen/spacing_2x"
-        app:drawableEndCompat="@drawable/ic_check"
-        app:drawableTint="@color/primaryColor" />
+        app:icon="@drawable/ic_check"
+        app:iconTint="@color/primaryColor"
+        app:iconGravity="end"
+        android:textSize="14sp"
+        android:textColor="@color/primaryColor" />
 
     <ImageView
-        android:id="@+id/navigate_next"
+        android:id="@+id/navigateNext"
         android:layout_width="@dimen/dimen_20_dp"
         android:layout_height="@dimen/dimen_25_dp"
         android:src="@drawable/ic_arrow_right"

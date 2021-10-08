@@ -57,7 +57,7 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
 
                     setState { copy(isLoading = false) }
 
-                    if(list != null){
+                    if(list.isNotEmpty()){
                         _viewEvents.setValue(ExerciseFragmentViewEvents.ShowExercise(list))
                     }else {
                         _viewEvents.setValue(ExerciseFragmentViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data)))

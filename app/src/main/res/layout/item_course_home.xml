@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/ivSequence"
+                    android:id="@+id/iv_exercise_type_progress"
                     style="?textAppearanceEmphasized2"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/ivArrow"
-                    android:layout_toEndOf="@+id/ivSequence"
+                    android:layout_toEndOf="@+id/iv_exercise_type_progress"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{course.name}"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvCourseTitle"
                     android:layout_toStartOf="@+id/ivArrow"
-                    android:layout_toEndOf="@+id/ivSequence"
+                    android:layout_toEndOf="@+id/iv_exercise_type_progress"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:textColor="?textSecondary"
