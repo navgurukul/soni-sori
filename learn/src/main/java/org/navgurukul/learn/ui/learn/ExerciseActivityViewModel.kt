@@ -4,6 +4,8 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -20,11 +22,19 @@ class ExerciseActivityViewModel(
     private val learnRepo: LearnRepo,
     private val learnPreferences: LearnPreferences,
     private val stringProvider: StringProvider,
+    private val courseId: String,
 ) : BaseViewModel<ExerciseActivityViewModel.ExerciseActivityViewEvents, ExerciseActivityViewModel.ExerciseActivityViewState>(
     ExerciseActivityViewState()
 ) {
 
+    private var fetchCourseExerciseJob: Job? = null
+    private var fetchCourseExerciseWithCourseJob: Job? = null
     private val selectedLanguage = learnPreferences.selectedLanguage
+
+    init {
+        fetchCourseExerciseData(courseId)
+        fetchCourseExerciseDataWithCourse(courseId)
+    }
 
     fun handle(action: ExerciseActivityViewActions) {
         when (action) {
@@ -38,48 +48,55 @@ class ExerciseActivityViewModel(
     }
 
     fun fetchCourseExerciseData(courseId: String){
-        viewModelScope.launch {
+        fetchCourseExerciseJob?.cancel()
+        fetchCourseExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
             val response =
                 learnRepo.getCoursesExerciseData(courseId, selectedLanguage)
-            val list = response.value
+                    .collect {
+                        val list = it
 
-            setState { copy(isLoading = false) }
+                        setState { copy(isLoading = false) }
 
-            if (list != null) {
-                _viewEvents.postValue(ExerciseActivityViewEvents.ShowExerciseList(list))
-            } else {
-                _viewEvents.postValue(
-                    ExerciseActivityViewEvents.ShowToast(
-                        stringProvider.getString(
-                            R.string.error_loading_data
-                        )
-                    )
-                )
-            }
+                        if (list != null) {
+                            _viewEvents.postValue(ExerciseActivityViewEvents.ShowExerciseList(list))
+                        } else {
+                            _viewEvents.postValue(
+                                ExerciseActivityViewEvents.ShowToast(
+                                    stringProvider.getString(
+                                        R.string.error_loading_data
+                                    )
+                                )
+                            )
+                        }
+                    }
         }
     }
 
     fun fetchCourseExerciseDataWithCourse(courseId: String){
-        viewModelScope.launch {
+        fetchCourseExerciseWithCourseJob?.cancel()
+        fetchCourseExerciseWithCourseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
             val response =
                 learnRepo.fetchCourseExerciseDataWithCourse(courseId, selectedLanguage)
-            val list = response.value
+                    .collect {
+                        val list = it
 
-            setState { copy(isLoading = false) }
+                        setState { copy(isLoading = false) }
 
-            if (list != null) {
-                _viewEvents.postValue(ExerciseActivityViewEvents.SetCourseAndRenderUI(list))
-            } else {
-                _viewEvents.postValue(
-                    ExerciseActivityViewEvents.ShowToast(
-                        stringProvider.getString(
-                            R.string.error_loading_data
-                        )
-                    )
-                )
-            }
+                        if (list != null) {
+                            _viewEvents.postValue(ExerciseActivityViewEvents.SetCourseAndRenderUI(list))
+                        } else {
+                            _viewEvents.postValue(
+                                ExerciseActivityViewEvents.ShowToast(
+                                    stringProvider.getString(
+                                        R.string.error_loading_data
+                                    )
+                                )
+                            )
+                        }
+                }
+
         }
     }
 

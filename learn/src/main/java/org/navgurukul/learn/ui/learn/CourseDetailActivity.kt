@@ -82,14 +82,14 @@ class CourseDetailActivity : AppCompatActivity() {
     private fun fetchClassDataAndShow(last: String) {
         courseId = last
         mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
-        viewModel.fetchCourseExerciseDataWithCourse(courseId).observe(this, Observer {
-            if (null != it && it.isNotEmpty()) {
-                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
-                courseId = it.firstOrNull()?.id.toString()
-                courseName = it.firstOrNull()?.name.toString()
-                renderUI()
-            }
-        })
+//        viewModel.fetchCourseExerciseDataWithCourse(courseId).observe(this, Observer {
+//            if (null != it && it.isNotEmpty()) {
+//                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+//                courseId = it.firstOrNull()?.id.toString()
+//                courseName = it.firstOrNull()?.name.toString()
+//                renderUI()
+//            }
+//        })
     }
 
     private fun initToolBar() {
@@ -125,13 +125,13 @@ class CourseDetailActivity : AppCompatActivity() {
 
     private fun fetchData() {
         mBinding.contentCourseDetail.progressBar.visibility = View.VISIBLE
-        viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
-            if (null != it && it.isNotEmpty()) {
-                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
-                masterData = it as MutableList<Exercise>
-                mAdapter.submitList(it)
-            }
-        })
+//        viewModel.fetchCourseExerciseData(courseId).observe(this, Observer {
+//            if (null != it && it.isNotEmpty()) {
+//                mBinding.contentCourseDetail.progressBar.visibility = View.GONE
+//                masterData = it as MutableList<Exercise>
+//                mAdapter.submitList(it)
+//            }
+//        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

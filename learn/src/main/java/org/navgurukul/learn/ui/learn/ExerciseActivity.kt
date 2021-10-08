@@ -20,6 +20,9 @@ import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import org.koin.core.parameter.parametersOf
+import org.navgurukul.commonui.platform.ListSpacingDecoration
+import org.navgurukul.learn.R
 import org.navgurukul.learn.ui.common.toast
 
 
@@ -50,7 +53,11 @@ class ExerciseActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityExerciseBinding
     private var isPanelVisible = false
-    private val viewModel: ExerciseActivityViewModel by viewModel()
+    private val viewModel: ExerciseActivityViewModel by viewModel(
+        parameters = { parametersOf(
+            courseId
+        )}
+    )
     private lateinit var mAdapter: CourseExerciseAdapter
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
@@ -146,7 +153,7 @@ class ExerciseActivity : AppCompatActivity() {
         mBinding.header.title = courseName
         initUIElement()
         initRecyclerViewExerciseList()
-        fetchData()
+//        fetchData()
     }
 
     private fun fetchData() {
@@ -171,15 +178,26 @@ class ExerciseActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         mBinding.recyclerviewCourseExerciseList.layoutManager = layoutManager
         mBinding.recyclerviewCourseExerciseList.adapter = mAdapter
-        fetchData()
+        mBinding.recyclerviewCourseExerciseList.addItemDecoration(
+            ListSpacingDecoration(
+                mBinding.recyclerviewCourseExerciseList.context,
+                R.dimen.dimen_0_dp,
+            R.dimen.dimen_course_content_margin
+        )
+        )
     }
 
     private fun launchExerciseFragment(currentStudy: CurrentStudy) {
         val manager: FragmentManager = supportFragmentManager
         val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.setCustomAnimations(
+            R.anim.slide_in_to_left,
+            R.anim.slide_out_from_right,
+            R.anim.slide_in_to_left,
+            R.anim.slide_out_from_right
+        )
         transaction.replace(org.navgurukul.learn.R.id.exerciseContentContainer,
             ExerciseFragment.newInstance(currentStudy), ExerciseFragment.TAG)
-        transaction.addToBackStack(null)
         transaction.commit()
     }
 

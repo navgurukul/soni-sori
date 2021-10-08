@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -68,7 +69,7 @@ class LearnRepo(
         })
     }
 
-    fun getCoursesExerciseData(courseId: String, language: String): LiveData<List<Exercise>?> {
+    fun getCoursesExerciseData(courseId: String, language: String): Flow<List<Exercise>?> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
         return object : NetworkBoundResource<List<Exercise>, CourseExerciseContainer>() {
@@ -102,7 +103,7 @@ class LearnRepo(
                 parseData(data)
                 return data
             }
-        }.asLiveData()
+        }.asLiveData().asFlow()
     }
 
 
@@ -117,7 +118,7 @@ class LearnRepo(
         courseId: String,
         forceUpdate: Boolean,
         language: String
-    ): LiveData<List<Exercise>> {
+    ): Flow<List<Exercise>> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
@@ -139,11 +140,11 @@ class LearnRepo(
             }
         }
 
-        return exerciseDao.getExerciseById(exerciseId, lang)
+        return exerciseDao.getExerciseById(exerciseId, lang).asFlow()
     }
 
 
-    fun fetchCourseExerciseDataWithCourse(courseId: String, language: String): LiveData<List<Course>?> {
+    fun fetchCourseExerciseDataWithCourse(courseId: String, language: String): Flow<List<Course>?> {
         val courseDao = database.courseDao()
         val exerciseDao = database.exerciseDao()
         return object : NetworkBoundResource<List<Course>, CourseExerciseContainer>() {
@@ -171,7 +172,7 @@ class LearnRepo(
             override suspend fun loadFromDb(): List<Course> {
                 return courseDao.getCourseById(courseId)
             }
-        }.asLiveData()
+        }.asLiveData().asFlow()
     }
 
     suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {

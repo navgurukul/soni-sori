@@ -1,8 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -17,12 +17,19 @@ import org.navgurukul.learn.util.LearnPreferences
 
 class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
                                 private val learnPreferences: LearnPreferences,
-                                private val stringProvider: StringProvider,)
+                                private val stringProvider: StringProvider,
+                                private val courseId: String,
+                                private val exerciseId: String,)
     : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
     ExerciseFragmentViewState()
 ){
 
+    private var fetchExerciseJob: Job? = null
     private val selectedLanguage = learnPreferences.selectedLanguage
+
+    init {
+        fetchExerciseSlug(exerciseId, courseId)
+    }
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
@@ -30,12 +37,14 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
             is ExerciseFragmentViewActions.FetchExerciseFragmentSlug -> fetchExerciseSlug(action.exerciseId, action.courseId, action.forceUpdate)
         }
     }
+
     fun fetchExerciseSlug(
         exerciseId: String,
         courseId: String,
-        forceUpdate: Boolean,
+        forceUpdate: Boolean = false,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        fetchExerciseJob?.cancel()
+        fetchExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
             val response =
                 learnRepo.getExerciseSlugData(
@@ -43,16 +52,17 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
                     courseId,
                     forceUpdate,
                     selectedLanguage
-                )
-            val list = response.value
+                ).collect {
+                    val list = it
 
-            setState { copy(isLoading = false) }
+                    setState { copy(isLoading = false) }
 
-            if(list != null){
-                _viewEvents.postValue(ExerciseFragmentViewEvents.ShowExercise(list))
-            }else {
-                _viewEvents.postValue(ExerciseFragmentViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data)))
-            }
+                    if(list != null){
+                        _viewEvents.setValue(ExerciseFragmentViewEvents.ShowExercise(list))
+                    }else {
+                        _viewEvents.setValue(ExerciseFragmentViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data)))
+                    }
+                }
         }
     }
 

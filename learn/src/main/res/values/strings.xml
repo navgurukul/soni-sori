@@ -102,4 +102,5 @@
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occured while fetching data. Please try again</string>
+    <string name="mark_as_completed">Mark as completed</string>
 </resources>
