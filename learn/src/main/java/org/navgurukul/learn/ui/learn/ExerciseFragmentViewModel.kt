@@ -35,7 +35,7 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
         when (action) {
             is ExerciseFragmentViewActions.ScreenRendered -> saveCourseExerciseCurrent(action.currentStudy)
             is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.currentStudy)
-            is ExerciseFragmentViewActions.FetchExerciseFragmentSlug -> fetchExerciseSlug(action.exerciseId, action.courseId, action.forceUpdate)
+            is ExerciseFragmentViewActions.PulledDownToRefresh -> fetchExerciseSlug(action.exerciseId, action.courseId, action.forceUpdate)
         }
     }
 
@@ -91,9 +91,9 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
     sealed class ExerciseFragmentViewActions : ViewModelAction {
         data class ScreenRendered(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
         data class MarkCompleteClicked(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
-        data class FetchExerciseFragmentSlug(val exerciseId: String,
-                                             val courseId: String,
-                                             val forceUpdate: Boolean,) : ExerciseFragmentViewActions()
+        data class PulledDownToRefresh(val exerciseId: String,
+                                       val courseId: String,
+                                       val forceUpdate: Boolean,) : ExerciseFragmentViewActions()
 
     }
 

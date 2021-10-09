@@ -11,6 +11,7 @@ import org.navgurukul.learn.courses.db.MIGRATION_1_2
 import org.navgurukul.learn.courses.db.MIGRATION_2_3
 import org.navgurukul.learn.courses.db.MIGRATION_3_4
 import org.navgurukul.learn.courses.db.MIGRATION_4_5
+import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -25,7 +26,7 @@ val viewModelModule = module {
     viewModel { LearnFragmentViewModel(get(), get()) }
     viewModel { (courseId: String, exerciseId: String) -> ExerciseFragmentViewModel(get(), get(), get(),
     courseId, exerciseId) }
-    viewModel { (courseId: String) -> ExerciseActivityViewModel(get(), get(), get(), courseId) }
+    viewModel { (courseId: String, currentStudy: CurrentStudy?) -> ExerciseActivityViewModel(get(), get(), get(), courseId, currentStudy) }
 }
 
 

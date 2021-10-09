@@ -57,7 +57,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     private val viewModel: ExerciseActivityViewModel by viewModel(
         parameters = {
             parametersOf(
-                courseId
+                courseId,
+                currentStudy
             )
         }
     )
@@ -88,9 +89,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                     it.courseList
                 )
                 is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowExerciseFragment -> launchExerciseFragment(
-                        it.currentStudy,
-                        it.isFirst,
-                        it.isLast
+                    it.currentStudy,
+                    it.isFirst,
+                    it.isLast,
+                    it.isCompleted
                 )
 //                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsSelected -> markExerciseSelected(
 //                        it.currentStudy
@@ -99,7 +101,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 //                        it.currentStudy
 //                )
                 is ExerciseActivityViewModel.ExerciseActivityViewEvents.UpdateList -> updateExerciseListOnScreen(
-                        it.exerciseList
+                    it.exerciseList
                 )
             }
         })
@@ -108,26 +110,6 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
         })
 
-    }
-
-    private fun markExerciseCompleted(currentStudy: CurrentStudy) {
-        val newList = mAdapter.currentList.toMutableList()
-
-        newList.find {
-            currentStudy.exerciseId == it.id
-        }?.exerciseProgress = ExerciseProgress.COMPLETED
-
-        mAdapter.submitList(newList)
-    }
-
-    private fun markExerciseSelected(currentStudy: CurrentStudy) {
-        val newList = mAdapter.currentList.toMutableList()
-
-        newList.find {
-            currentStudy.exerciseId == it.id
-        }?.exerciseProgress = ExerciseProgress.IN_PROGRESS
-
-        mAdapter.submitList(newList)
     }
 
     private fun updateExerciseListOnScreen(courseList: List<Exercise>) {
@@ -154,6 +136,12 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
             courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
             renderUI()
+            viewModel.handle(
+                ExerciseActivityViewModel.ExerciseActivityViewActions.FirstTimeLaunch(
+                    courseId,
+                    courseName
+                )
+            )
         } else if (intent.hasExtra(ARG_KEY_CURRENT_STUDY)) {
             currentStudy = intent.getParcelableExtra(ARG_KEY_CURRENT_STUDY)!!
 
@@ -165,6 +153,12 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 courseId = it.courseId
                 renderUI()
                 launchExerciseFragment(it)
+//                viewModel.handle(
+//                    ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
+//                        null,
+//                        selectedStudy = it
+//                    )
+//                )
             }
         } else {
             val action: String? = intent?.action
@@ -172,13 +166,13 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             val uriString = data.toString()
             if (action == Intent.ACTION_VIEW) {
                 if (uriString.contains("/course/")) {
-                    fetchClassDataAndShow(uriString.split("/").last())
+                    fetchClassData(uriString.split("/").last())
                 }
             }
         }
     }
 
-    private fun fetchClassDataAndShow(last: String) {
+    private fun fetchClassData(last: String) {
         courseId = last
         viewModel.handle(
             ExerciseActivityViewModel.ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse(
@@ -195,11 +189,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     }
 
     private fun renderUI() {
-        if(this::courseName.isInitialized)
+        if (this::courseName.isInitialized)
             mBinding.tvExerciseTitle.text = courseName
         initToolbar()
         initRecyclerViewExerciseList()
-//        fetchData()
     }
 
     private fun fetchData() {
@@ -213,17 +206,19 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     private fun initRecyclerViewExerciseList() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank()) {
-                    viewModel.handle(ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
+                viewModel.handle(
+                    ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
                         currentStudy,
                         CurrentStudy(
                             courseId = courseId,
-                            courseName = if(this::courseName.isInitialized)
+                            courseName = if (this::courseName.isInitialized)
                                 courseName else "",
                             exerciseSlugName = it.first.slug!!,
                             exerciseName = it.first.name,
                             exerciseId = it.first.id
                         )
-                    ))
+                    )
+                )
 
             }
         }
@@ -242,18 +237,20 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         )
     }
 
-    private fun launchExerciseFragment(currentStudy: CurrentStudy, isFirst: Boolean = false , isLast: Boolean = false) {
+    private fun launchExerciseFragment(
+        currentStudy: CurrentStudy,
+        isFirst: Boolean = false,
+        isLast: Boolean = false,
+        isCompleted: Boolean = false
+    ) {
         this.currentStudy = currentStudy
 
         val manager: FragmentManager = supportFragmentManager
         val transaction: FragmentTransaction = manager.beginTransaction()
         transaction.setCustomAnimations(
-            R.anim.slide_in_to_left,
-            R.anim.slide_out_from_right,
-            R.anim.slide_in_to_left,
-            R.anim.slide_out_from_right
+            android.R.anim.slide_in_left, android.R.anim.slide_out_right
         )
-        val exerciseFrag = ExerciseFragment.newInstance(currentStudy, isFirst, isLast)
+        val exerciseFrag = ExerciseFragment.newInstance(currentStudy, isFirst, isLast, isCompleted)
         exerciseFrag.setNavigationClickListener(this)
 
         transaction.replace(

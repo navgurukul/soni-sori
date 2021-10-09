@@ -32,6 +32,7 @@ class ExerciseFragment : Fragment() {
     private lateinit var currentStudy: CurrentStudy
     private var isFirst: Boolean = false
     private var isLast: Boolean = false
+    private var isCompleted: Boolean = false
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
@@ -50,13 +51,16 @@ class ExerciseFragment : Fragment() {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
         private const val ARG_KEY_IS_FIRST_IN_LIST = "arg_is_first"
         private const val ARG_KEY_IS_LAST_IN_LIST = "arg_is_last"
+        private const val ARG_KEY_IS_COMPLETED = "arg_is_completed"
 
-        fun newInstance(currentStudy: CurrentStudy, isFirst: Boolean = false , isLast: Boolean = false): ExerciseFragment {
+        fun newInstance(currentStudy: CurrentStudy, isFirst: Boolean = false , isLast: Boolean = false
+        ,isCompleted: Boolean): ExerciseFragment {
             val frag = ExerciseFragment()
             val bundle = Bundle()
             bundle.putParcelable(ARG_KEY_CURRENT_STUDY, currentStudy)
             bundle.putBoolean(ARG_KEY_IS_FIRST_IN_LIST, isFirst)
             bundle.putBoolean(ARG_KEY_IS_LAST_IN_LIST, isLast)
+            bundle.putBoolean(ARG_KEY_IS_COMPLETED, isCompleted)
             frag.arguments = bundle
             return frag
         }
@@ -116,6 +120,9 @@ class ExerciseFragment : Fragment() {
         if (arguments?.containsKey(ARG_KEY_IS_LAST_IN_LIST) ?: false) {
             isLast = requireArguments().getBoolean(ARG_KEY_IS_LAST_IN_LIST)
         }
+        if (arguments?.containsKey(ARG_KEY_IS_COMPLETED) ?: false) {
+            isCompleted = requireArguments().getBoolean(ARG_KEY_IS_COMPLETED)
+        }
     }
 
     private fun renderUI() {
@@ -127,7 +134,7 @@ class ExerciseFragment : Fragment() {
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fetchExerciseContent(currentStudy.exerciseId, true)
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh(currentStudy.exerciseId, currentStudy.courseId,true))
             mBinding.swipeContainer.isRefreshing = false
         }
     }
@@ -167,19 +174,21 @@ class ExerciseFragment : Fragment() {
         val adapter = recyclerView.getAdapter()
         return if (layoutManager == null || adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
     }
+
     private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
         mBinding.bottomNavigationExercise.visibility = View.VISIBLE
         scrollListener?.let {
             mBinding.recyclerViewSlug.removeOnScrollListener(it)
         }
-        mBinding.bottomNavigationExercise.setView(false, isFirst, isLast)
+        mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
 
         mBinding.bottomNavigationExercise.setMarkAction {
             fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(currentStudy))
 
             navigationClickListener.onMarkCompleteClick()
 
-            mBinding.bottomNavigationExercise.setView(true, isFirst, isLast)
+            isCompleted = true
+            mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
         }
 
         mBinding.bottomNavigationExercise.setNavigationActions(
@@ -192,15 +201,15 @@ class ExerciseFragment : Fragment() {
         )
     }
 
-    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
-        fragmentViewModel.handle(
-            ExerciseFragmentViewModel.ExerciseFragmentViewActions.FetchExerciseFragmentSlug(
-                exerciseId,
-                currentStudy.courseId,
-                forceUpdate
-            )
-        )
-    }
+//    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
+//        fragmentViewModel.handle(
+//            ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh(
+//                exerciseId,
+//                currentStudy.courseId,
+//                forceUpdate
+//            )
+//        )
+//    }
 
     private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
         return it?.firstOrNull()?.content ?: return listOf()
