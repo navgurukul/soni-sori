@@ -1,6 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,7 +24,7 @@ class ExerciseActivityViewModel(
     private val learnPreferences: LearnPreferences,
     private val stringProvider: StringProvider,
     private val courseId: String,
-    private val currentStudy: CurrentStudy ?= null
+    private val currentStudy: CurrentStudy? = null
 ) : BaseViewModel<ExerciseActivityViewModel.ExerciseActivityViewEvents, ExerciseActivityViewModel.ExerciseActivityViewState>(
     ExerciseActivityViewState()
 ) {
@@ -41,19 +43,19 @@ class ExerciseActivityViewModel(
         when (action) {
             is ExerciseActivityViewActions.FetchCourseExercises -> fetchCourseExerciseData(
                 action.courseId,
- currentStudy,
+                currentStudy,
             )
             is ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse -> fetchCourseExerciseDataWithCourse(
                 action.courseId,
- currentStudy,
+                currentStudy,
             )
             is ExerciseActivityViewActions.ExerciseListItemSelected -> {
                 onExerciseListItemSelected(
                     action.selectedStudy,
                 )
-//                markExerciseSelected(action.selectedStudy)
+                markExerciseSelected(action.selectedStudy)
 //
-//                action.currentStudy?.let { markExerciseUnselected(it) }
+                action.currentStudy?.let { markExerciseUnselected(it) }
             }
             is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted(
                 action.currentStudy,
@@ -71,10 +73,14 @@ class ExerciseActivityViewModel(
     }
 
     private fun showFirstExerciseOfCourse(courseId: String, courseName: String? = null) {
-        if(!currentCourseExerciseList.isNullOrEmpty()) {
+        if (!currentCourseExerciseList.isNullOrEmpty()) {
             val firstItem = currentCourseExerciseList!![0]
-            onExerciseListItemSelected(CurrentStudy(courseId, firstItem.courseName,
-                firstItem.slug, firstItem.name, firstItem.id))
+            onExerciseListItemSelected(
+                CurrentStudy(
+                    courseId, firstItem.courseName,
+                    firstItem.slug, firstItem.name, firstItem.id
+                )
+            )
         }
     }
 
@@ -86,7 +92,7 @@ class ExerciseActivityViewModel(
                 currenStudy.exerciseId == it.id
             }
             currentExercise?.let {
-                if(it.exerciseProgress == ExerciseProgress.IN_PROGRESS){
+                if (it.exerciseProgress == ExerciseProgress.IN_PROGRESS) {
                     it.exerciseProgress = ExerciseProgress.NOT_STARTED
                 }
                 onExerciseListUpdated(updatedList)
@@ -97,7 +103,7 @@ class ExerciseActivityViewModel(
 
     private fun onExerciseListUpdated(updatedList: MutableList<Exercise>) {
         currentCourseExerciseList = updatedList
-        _viewEvents.postValue(ExerciseActivityViewEvents.UpdateList(updatedList))
+        _viewEvents.setValue(ExerciseActivityViewEvents.UpdateList(updatedList))
     }
 
     private fun onNextListItemRequested(currentStudy: CurrentStudy) {
@@ -108,10 +114,15 @@ class ExerciseActivityViewModel(
             if (currentStudyIndex < list.size - 1) {
                 val nextExercise = list[currentStudyIndex + 1]
                 val nextStudy = CurrentStudy(
-                    courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
+                    courseId,
+                    nextExercise.courseName,
+                    nextExercise.slug,
+                    nextExercise.name,
+                    nextExercise.id
                 )
                 onExerciseListItemSelected(nextStudy)
-//                markExerciseUnselected(currentStudy)
+                markExerciseSelected(nextStudy)
+                markExerciseUnselected(currentStudy)
             }
         }
     }
@@ -124,21 +135,36 @@ class ExerciseActivityViewModel(
             if (currentStudyIndex > 0) {
                 val nextExercise = list[currentStudyIndex - 1]
                 val nextStudy = CurrentStudy(
-                    courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
+                    courseId,
+                    nextExercise.courseName,
+                    nextExercise.slug,
+                    nextExercise.name,
+                    nextExercise.id
                 )
                 onExerciseListItemSelected(nextStudy)
-//                markExerciseUnselected(currentStudy)
+                markExerciseSelected(nextStudy)
+                markExerciseUnselected(currentStudy)
             }
         }
     }
 
     private fun onExerciseListItemSelected(selectedStudy: CurrentStudy) {
-        currentCourseExerciseList?.let { list ->
-             val index = list.indexOfFirst { selectedStudy.exerciseId == it.id }
-            val isFirst = if(index == 0) true else false
-            val isLast = if(index == list.size - 1) true else false
-            val isCompleted = if(list[index].exerciseProgress == ExerciseProgress.COMPLETED) true else false
-            _viewEvents.postValue(ExerciseActivityViewEvents.ShowExerciseFragment(selectedStudy, isFirst, isLast, isCompleted))
+        CoroutineScope(Dispatchers.Main).launch {
+            currentCourseExerciseList?.let { list ->
+                val index = list.indexOfFirst { selectedStudy.exerciseId == it.id }
+                val isFirst = if (index == 0) true else false
+                val isLast = if (index == list.size - 1) true else false
+                val isCompleted =
+                    if (list[index].exerciseProgress == ExerciseProgress.COMPLETED) true else false
+                _viewEvents.setValue(
+                    ExerciseActivityViewEvents.ShowExerciseFragment(
+                        selectedStudy,
+                        isFirst,
+                        isLast,
+                        isCompleted
+                    )
+                )
+            }
         }
     }
 
@@ -165,16 +191,15 @@ class ExerciseActivityViewModel(
                 selectedStudy.exerciseId == it.id
             }
             currentExercise?.let {
-                if(it.exerciseProgress != ExerciseProgress.COMPLETED){
+                if (it.exerciseProgress != ExerciseProgress.COMPLETED) {
                     it.exerciseProgress = ExerciseProgress.IN_PROGRESS
                 }
                 onExerciseListUpdated(updatedList)
             }
         }
-//        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsSelected(selectedStudy))
     }
 
-    fun fetchCourseExerciseData(courseId: String, currentStudy: CurrentStudy?){
+    fun fetchCourseExerciseData(courseId: String, currentStudy: CurrentStudy?) {
         fetchCourseExerciseJob?.cancel()
         fetchCourseExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
@@ -201,7 +226,7 @@ class ExerciseActivityViewModel(
         }
     }
 
-    fun fetchCourseExerciseDataWithCourse(courseId: String, currentStudy: CurrentStudy?){
+    fun fetchCourseExerciseDataWithCourse(courseId: String, currentStudy: CurrentStudy?) {
         fetchCourseExerciseWithCourseJob?.cancel()
         fetchCourseExerciseWithCourseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
@@ -213,7 +238,11 @@ class ExerciseActivityViewModel(
                         setState { copy(isLoading = false) }
 
                         if (list != null) {
-                            _viewEvents.postValue(ExerciseActivityViewEvents.SetCourseAndRenderUI(list))
+                            _viewEvents.postValue(
+                                ExerciseActivityViewEvents.SetCourseAndRenderUI(
+                                    list
+                                )
+                            )
                         } else {
                             _viewEvents.postValue(
                                 ExerciseActivityViewEvents.ShowToast(
@@ -226,8 +255,8 @@ class ExerciseActivityViewModel(
 
                         currentStudy?.let {
                             onExerciseListItemSelected(selectedStudy = it)
-                        }?: showFirstExerciseOfCourse(courseId)
-                }
+                        } ?: showFirstExerciseOfCourse(courseId)
+                    }
 
         }
     }
@@ -235,9 +264,13 @@ class ExerciseActivityViewModel(
     sealed class ExerciseActivityViewEvents : ViewEvents {
         class SetCourseAndRenderUI(val courseList: List<Course>) : ExerciseActivityViewEvents()
         class ShowExerciseList(val exerciseList: List<Exercise>) : ExerciseActivityViewEvents()
-        class ShowExerciseFragment(val currentStudy: CurrentStudy, val isFirst: Boolean, val isLast: Boolean
-        , val isCompleted: Boolean)
-            : ExerciseActivityViewEvents()
+        class ShowExerciseFragment(
+            val currentStudy: CurrentStudy,
+            val isFirst: Boolean,
+            val isLast: Boolean,
+            val isCompleted: Boolean
+        ) : ExerciseActivityViewEvents()
+
         class MarkExerciseAsSelected(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
         class MarkExerciseAsCompleted(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
         class UpdateList(val exerciseList: List<Exercise>) : ExerciseActivityViewEvents()
@@ -270,8 +303,8 @@ class ExerciseActivityViewModel(
             val currentStudy: CurrentStudy,
         ) : ExerciseActivityViewActions()
 
-        data class FirstTimeLaunch(val courseId: String, val courseName: String)
-            : ExerciseActivityViewActions()
+        data class FirstTimeLaunch(val courseId: String, val courseName: String) :
+            ExerciseActivityViewActions()
 
     }
 
