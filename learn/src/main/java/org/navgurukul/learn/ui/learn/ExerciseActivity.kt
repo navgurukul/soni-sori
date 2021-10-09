@@ -92,11 +92,14 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                         it.isFirst,
                         it.isLast
                 )
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsSelected -> markExerciseSelected(
-                        it.currentStudy
-                )
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsCompleted -> markExerciseCompleted(
-                        it.currentStudy
+//                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsSelected -> markExerciseSelected(
+//                        it.currentStudy
+//                )
+//                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsCompleted -> markExerciseCompleted(
+//                        it.currentStudy
+//                )
+                is ExerciseActivityViewModel.ExerciseActivityViewEvents.UpdateList -> updateExerciseListOnScreen(
+                        it.exerciseList
                 )
             }
         })
@@ -192,7 +195,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     }
 
     private fun renderUI() {
-        mBinding.tvExerciseTitle.text = courseName
+        if(this::courseName.isInitialized)
+            mBinding.tvExerciseTitle.text = courseName
         initToolbar()
         initRecyclerViewExerciseList()
 //        fetchData()
@@ -209,11 +213,12 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     private fun initRecyclerViewExerciseList() {
         mAdapter = CourseExerciseAdapter {
             if (!it.first.slug.isNullOrBlank()) {
-
                     viewModel.handle(ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
+                        currentStudy,
                         CurrentStudy(
                             courseId = courseId,
-                            courseName = courseName,
+                            courseName = if(this::courseName.isInitialized)
+                                courseName else "",
                             exerciseSlugName = it.first.slug!!,
                             exerciseName = it.first.name,
                             exerciseId = it.first.id

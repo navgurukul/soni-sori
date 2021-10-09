@@ -28,11 +28,11 @@ class LearnViewModel(private val learnRepo: LearnRepo, corePreferences: CorePref
         emitSource(learnRepo.getExerciseSlugData(exerciseId, courseId, forceUpdate, selectedLanguage))
     }
 
-    fun saveCourseExerciseCurrent(
-        currentStudy: CurrentStudy
-    ) {
-        viewModelScope.launch {
-            learnRepo.saveCourseExerciseCurrent(currentStudy)
-        }
-    }
+//    fun saveCourseExerciseCurrent(
+//        currentStudy: CurrentStudy
+//    ) {
+//        viewModelScope.launch {
+//            learnRepo.saveCourseExerciseCurrent(currentStudy)
+//        }
+//    }
 }

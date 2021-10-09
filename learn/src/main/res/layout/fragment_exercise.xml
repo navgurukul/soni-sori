@@ -4,7 +4,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
@@ -22,6 +23,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dimen_5_dp"
                     android:paddingTop="@dimen/spacing_2x"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_base_course_content" />
 

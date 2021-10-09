@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
 const val DB_VERSION = 5
@@ -65,6 +62,9 @@ interface ExerciseDao {
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
     fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<Exercise>
+
+    @Query("Update course_exercise set exerciseProgress = :exerciseProgress where id = :exerciseId")
+    suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 }
 
 @Dao

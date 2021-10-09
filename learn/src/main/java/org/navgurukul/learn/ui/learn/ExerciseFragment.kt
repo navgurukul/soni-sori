@@ -37,6 +37,15 @@ class ExerciseFragment : Fragment() {
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
 
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                showExerciseNavigationBar(this)
+            }
+        }
+    }
+
     companion object {
         private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
         private const val ARG_KEY_IS_FIRST_IN_LIST = "arg_is_first"
@@ -86,6 +95,13 @@ class ExerciseFragment : Fragment() {
         if (list.isNotEmpty()) {
             val data = parseDataForContent(list)
             contentAdapter.submitList(data)
+
+            mBinding.recyclerViewSlug.postDelayed( {
+                if(isRecyclerScrollable(mBinding.recyclerViewSlug))
+                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
+                else
+                    showExerciseNavigationBar()
+            }, 200)
         }
     }
 
@@ -144,32 +160,36 @@ class ExerciseFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
-        val scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mBinding.bottomNavigationExercise.visibility = View.VISIBLE
-                    mBinding.recyclerViewSlug.removeOnScrollListener(this)
-                    mBinding.bottomNavigationExercise.setView(false, isFirst, isLast)
+    }
 
-                    mBinding.bottomNavigationExercise.setMarkAction {
-                        navigationClickListener.onMarkCompleteClick()
-
-                        mBinding.bottomNavigationExercise.setView(true, isFirst, isLast)
-                    }
-                    mBinding.bottomNavigationExercise.setNavigationActions(
-                        {
-                            navigationClickListener.onPrevClick()
-                        },
-                        {
-                            navigationClickListener.onNextClick()
-                        }
-                    )
-                }
-            }
+    fun isRecyclerScrollable(recyclerView: RecyclerView): Boolean {
+        val layoutManager = recyclerView.getLayoutManager() as LinearLayoutManager
+        val adapter = recyclerView.getAdapter()
+        return if (layoutManager == null || adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
+    }
+    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
+        mBinding.bottomNavigationExercise.visibility = View.VISIBLE
+        scrollListener?.let {
+            mBinding.recyclerViewSlug.removeOnScrollListener(it)
         }
-        mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
+        mBinding.bottomNavigationExercise.setView(false, isFirst, isLast)
 
+        mBinding.bottomNavigationExercise.setMarkAction {
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(currentStudy))
+
+            navigationClickListener.onMarkCompleteClick()
+
+            mBinding.bottomNavigationExercise.setView(true, isFirst, isLast)
+        }
+
+        mBinding.bottomNavigationExercise.setNavigationActions(
+            {
+                navigationClickListener.onPrevClick()
+            },
+            {
+                navigationClickListener.onNextClick()
+            }
+        )
     }
 
     private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
@@ -188,7 +208,7 @@ class ExerciseFragment : Fragment() {
 
     private fun saveCourseExercise() {
         fragmentViewModel.handle(
-            ExerciseFragmentViewModel.ExerciseFragmentViewActions.SaveCourseExerciseFragmentCurrent(
+            ExerciseFragmentViewModel.ExerciseFragmentViewActions.ScreenRendered(
                 currentStudy
             )
         )

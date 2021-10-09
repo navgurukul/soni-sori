@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -13,6 +14,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.ExerciseProgress
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.LearnPreferences
 
@@ -43,9 +45,14 @@ class ExerciseActivityViewModel(
             is ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse -> fetchCourseExerciseDataWithCourse(
                 action.courseId,
             )
-            is ExerciseActivityViewActions.ExerciseListItemSelected -> onExerciseListItemSelected(
-                action.selectedStudy,
-            )
+            is ExerciseActivityViewActions.ExerciseListItemSelected -> {
+                onExerciseListItemSelected(
+                    action.selectedStudy,
+                )
+//                markExerciseSelected(action.selectedStudy)
+//
+//                action.currentStudy?.let { markExerciseUnselected(it) }
+            }
             is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted(
                 action.currentStudy,
             )
@@ -58,6 +65,28 @@ class ExerciseActivityViewModel(
         }
     }
 
+    private fun markExerciseUnselected(currenStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+            val updatedList = list.toMutableList()
+
+            val currentExercise = updatedList.find {
+                currenStudy.exerciseId == it.id
+            }
+            currentExercise?.let {
+                if(it.exerciseProgress == ExerciseProgress.IN_PROGRESS){
+                    it.exerciseProgress = ExerciseProgress.NOT_STARTED
+                }
+                onExerciseListUpdated(updatedList)
+            }
+        }
+
+    }
+
+    private fun onExerciseListUpdated(updatedList: MutableList<Exercise>) {
+        currentCourseExerciseList = updatedList
+        _viewEvents.postValue(ExerciseActivityViewEvents.UpdateList(updatedList))
+    }
+
     private fun onNextListItemRequested(currentStudy: CurrentStudy) {
         currentCourseExerciseList?.let { list ->
             val currentStudyIndex = list.indexOfFirst {
@@ -68,9 +97,8 @@ class ExerciseActivityViewModel(
                 val nextStudy = CurrentStudy(
                     courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
                 )
-                onExerciseListItemSelected(
-                    nextStudy
-                )
+                onExerciseListItemSelected(nextStudy)
+//                markExerciseUnselected(currentStudy)
             }
         }
     }
@@ -85,9 +113,8 @@ class ExerciseActivityViewModel(
                 val nextStudy = CurrentStudy(
                     courseId, nextExercise.courseName, nextExercise.slug, nextExercise.name, nextExercise.id
                 )
-                onExerciseListItemSelected(
-                    nextStudy
-                )
+                onExerciseListItemSelected(nextStudy)
+//                markExerciseUnselected(currentStudy)
             }
         }
     }
@@ -99,11 +126,38 @@ class ExerciseActivityViewModel(
             val isLast = if(index == list.size - 1) true else false
             _viewEvents.postValue(ExerciseActivityViewEvents.ShowExerciseFragment(selectedStudy, isFirst, isLast))
         }
-//        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsSelected(selectedStudy))
     }
 
-    private fun onExerciseMarkedCompleted(currentStudy: CurrentStudy) {
-        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsCompleted(currentStudy))
+    private fun onExerciseMarkedCompleted(completedStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+            val updatedList = list.toMutableList()
+
+            val completedExercise = updatedList.find {
+                completedStudy.exerciseId == it.id
+            }
+            completedExercise?.let {
+                it.exerciseProgress = ExerciseProgress.COMPLETED
+
+                onExerciseListUpdated(updatedList)
+            }
+        }
+    }
+
+    private fun markExerciseSelected(selectedStudy: CurrentStudy) {
+        currentCourseExerciseList?.let { list ->
+            val updatedList = list.toMutableList()
+
+            val currentExercise = updatedList.find {
+                selectedStudy.exerciseId == it.id
+            }
+            currentExercise?.let {
+                if(it.exerciseProgress != ExerciseProgress.COMPLETED){
+                    it.exerciseProgress = ExerciseProgress.IN_PROGRESS
+                }
+                onExerciseListUpdated(updatedList)
+            }
+        }
+//        _viewEvents.postValue(ExerciseActivityViewEvents.MarkExerciseAsSelected(selectedStudy))
     }
 
     fun fetchCourseExerciseData(courseId: String){
@@ -167,6 +221,7 @@ class ExerciseActivityViewModel(
             : ExerciseActivityViewEvents()
         class MarkExerciseAsSelected(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
         class MarkExerciseAsCompleted(val currentStudy: CurrentStudy) : ExerciseActivityViewEvents()
+        class UpdateList(val exerciseList: List<Exercise>) : ExerciseActivityViewEvents()
         class ShowToast(val toastText: String) : ExerciseActivityViewEvents()
     }
 
@@ -188,6 +243,7 @@ class ExerciseActivityViewModel(
         ) : ExerciseActivityViewActions()
 
         data class ExerciseListItemSelected(
+            val currentStudy: CurrentStudy?,
             val selectedStudy: CurrentStudy,
         ) : ExerciseActivityViewActions()
 

@@ -33,7 +33,8 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
-            is ExerciseFragmentViewActions.SaveCourseExerciseFragmentCurrent -> saveCourseExerciseCurrent(action.currentStudy)
+            is ExerciseFragmentViewActions.ScreenRendered -> saveCourseExerciseCurrent(action.currentStudy)
+            is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.currentStudy)
             is ExerciseFragmentViewActions.FetchExerciseFragmentSlug -> fetchExerciseSlug(action.exerciseId, action.courseId, action.forceUpdate)
         }
     }
@@ -74,13 +75,22 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
         }
     }
 
+    fun markCourseExerciseCompleted(
+        currentStudy: CurrentStudy
+    ) {
+        viewModelScope.launch {
+            learnRepo.markCourseExerciseCompleted(currentStudy)
+        }
+    }
+
     sealed class ExerciseFragmentViewEvents : ViewEvents {
         class ShowExercise(val exerciseList: List<Exercise>) : ExerciseFragmentViewEvents()
         class ShowToast(val toastText: String) : ExerciseFragmentViewEvents()
     }
 
     sealed class ExerciseFragmentViewActions : ViewModelAction {
-        data class SaveCourseExerciseFragmentCurrent(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
+        data class ScreenRendered(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
+        data class MarkCompleteClicked(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
         data class FetchExerciseFragmentSlug(val exerciseId: String,
                                              val courseId: String,
                                              val forceUpdate: Boolean,) : ExerciseFragmentViewActions()

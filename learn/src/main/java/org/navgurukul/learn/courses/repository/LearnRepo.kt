@@ -180,6 +180,11 @@ class LearnRepo(
         currentStudyDao.saveCourseExerciseCurrent(currentStudy)
     }
 
+    suspend fun markCourseExerciseCompleted(currentStudy: CurrentStudy) {
+        val exerciseDao = database.exerciseDao()
+        exerciseDao.markCourseExerciseCompleted(ExerciseProgress.COMPLETED.name, currentStudy.exerciseId)
+    }
+
     suspend fun fetchCurrentStudyForCourse(courseId: String): List<CurrentStudy> {
         val currentStudyDao = database.currentStudyDao()
         return currentStudyDao.getCurrentStudyForCourse(courseId)
