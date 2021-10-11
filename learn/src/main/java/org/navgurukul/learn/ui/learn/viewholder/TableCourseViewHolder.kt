@@ -16,22 +16,22 @@ class TableCourseViewHolder(itemView: View) :
     private val layout: ConstraintLayout = populateStub(R.layout.item_table_content)
     private val tableView: RecyclerView = layout.findViewById(R.id.tableLayout)
     private val fadedView: View = layout.findViewById(R.id.fadedView)
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (!recyclerView.canScrollHorizontally(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                fadedView.visibility = View.GONE
+            }else{
+                fadedView.visibility = View.VISIBLE
+            }
+        }
+    }
 
     override val horizontalMargin: Int
         get() = 0
 
     init {
         super.setHorizontalMargin(horizontalMargin)
-        tableView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollHorizontally(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    fadedView.visibility = View.GONE
-                }else{
-                    fadedView.visibility = View.VISIBLE
-                }
-            }
-        })
     }
 
     fun bindView(item: TableBaseCourseContent) {
@@ -56,6 +56,17 @@ class TableCourseViewHolder(itemView: View) :
                 )
 
                 tableAdapter.notifyDataSetChanged()
+
+                tableView.postDelayed({
+                    if(!tableView.canScrollHorizontally(1)) {
+                        fadedView.visibility = View.GONE
+                        tableView.removeOnScrollListener(scrollListener)
+                    }
+                    else {
+                        fadedView.visibility = View.VISIBLE
+                        tableView.addOnScrollListener(scrollListener)
+                    }
+                }, 200)
             }
         }
     }

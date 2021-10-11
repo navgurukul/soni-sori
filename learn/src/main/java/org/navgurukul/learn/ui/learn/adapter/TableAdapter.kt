@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_table_body.view.*
@@ -36,14 +37,14 @@ class TableAdapter(val noOfRows: Int, val dataList: List<String>): RecyclerView.
     class TableContentViewHolder constructor(bindedItemView: ItemTableBodyBinding): BaseViewHolder<String>(bindedItemView.root){
         override fun onBind(model: String) {
             super.onBind(model)
-            itemView.textValue.text = model
+            itemView.textValue.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
     }
 
     class TableHeaderViewHolder constructor(bindedItemView: ItemTableHeaderBinding): BaseViewHolder<String>(bindedItemView.root){
         override fun onBind(model: String) {
             super.onBind(model)
-            itemView.textHeader.text = model
+            itemView.textHeader.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
     }
 

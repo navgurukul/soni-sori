@@ -166,7 +166,7 @@ data class TableColumn(
 )
 
 enum class CodeType {
-    python, javascript
+    python, javascript, other
 }
 
 enum class DecorationType {

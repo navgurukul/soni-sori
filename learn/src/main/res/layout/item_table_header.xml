@@ -15,7 +15,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textStyle="bold"
-            android:textColor="?textPrimary"/>
+            android:textColor="@color/colorWhite"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
