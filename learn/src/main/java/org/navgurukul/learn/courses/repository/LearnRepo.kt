@@ -60,7 +60,7 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getCoursesForPathway(pathwayId, "json")
+            courseApi.getCoursesForPathway(pathwayId)
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
@@ -74,14 +74,15 @@ class LearnRepo(
         val courseDao = database.courseDao()
         return object : NetworkBoundResource<List<Exercise>, CourseExerciseContainer>() {
             override suspend fun saveCallResult(data: CourseExerciseContainer) {
-                val course = data.course ?: return
-                val lang = if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.exercises?.map {
-                    it?.apply {
+                val course = data.course
+                val lang =
+                    if (language in course.supportedLanguages) language else course.supportedLanguages[0]
+                val mappedData = course.exercises.map {
+                    it.apply {
                         this.courseId = courseId
                         this.lang = lang
                     }
-                }?.toList()
+                }.toList()
                 exerciseDao.insertExercise(mappedData)
             }
 
@@ -113,12 +114,12 @@ class LearnRepo(
         }
     }
 
-    suspend fun getExerciseSlugData(
+    suspend fun getExerciseContents(
         exerciseId: String,
         courseId: String,
         forceUpdate: Boolean,
         language: String
-    ): Flow<List<Exercise>> {
+    ): Flow<Exercise?> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
@@ -128,13 +129,14 @@ class LearnRepo(
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
                 val result = courseApi.getExercisesAsync(courseId, lang)
-                val mappedData = result.course?.exercises?.map {
-                    it?.apply {
-                        this.courseId = courseId
-                        this.courseName = result.course?.name
-                        this.lang = course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] } ?: language
-                    }
-                }?.toList()
+                val mappedData = result.course.exercises.map {
+                    it.courseId = courseId
+                    it.courseName = result.course.name
+                    it.lang =
+                        course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                            ?: language
+                    it
+                }.toList()
                 exerciseDao.insertExerciseAsync(mappedData)
             } catch (ex: Exception) {
             }
@@ -144,35 +146,35 @@ class LearnRepo(
     }
 
 
-    fun fetchCourseExerciseDataWithCourse(courseId: String, language: String): Flow<List<Course>?> {
+    fun fetchCourseExerciseDataWithCourse(courseId: String, language: String): Flow<Course?> {
         val courseDao = database.courseDao()
         val exerciseDao = database.exerciseDao()
-        return object : NetworkBoundResource<List<Course>, CourseExerciseContainer>() {
-            override suspend fun saveCallResult(data: CourseExerciseContainer) {
-                val course = data.course ?: return
-                val lang = if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.exercises?.map {
-                    it?.apply {
+        return networkBoundResourceFlow(
+            loadFromDb = {
+                val course = courseDao.getCourseById(courseId)
+                val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
+                if (exercises.isNotEmpty()) {
+                    course.copy(exercises = exercises)
+                } else {
+                    null
+                }
+            },
+            shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.exercises.isEmpty()) },
+            makeApiCallAsync = { courseApi.getExercisesAsync(courseId, language) },
+            saveCallResult = { courseExerciseContainer ->
+                val course = courseExerciseContainer.course
+                val lang =
+                    if (language in course.supportedLanguages) language else course.supportedLanguages[0]
+                val mappedData = course.exercises.map {
+                    it.apply {
                         this.courseId = courseId
                         this.lang = lang
                     }
-                }?.toList()
+                }.toList()
                 courseDao.insertCourse(course)
                 exerciseDao.insertExercise(mappedData)
             }
-
-            override fun shouldFetch(data: List<Course>?): Boolean {
-                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
-            }
-
-            override suspend fun makeApiCallAsync(): CourseExerciseContainer {
-                return courseApi.getExercisesAsync(courseId, language)
-            }
-
-            override suspend fun loadFromDb(): List<Course> {
-                return courseDao.getCourseById(courseId)
-            }
-        }.asLiveData().asFlow()
+        )
     }
 
     suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
@@ -182,10 +184,13 @@ class LearnRepo(
 
     suspend fun markCourseExerciseCompleted(currentStudy: CurrentStudy) {
         val exerciseDao = database.exerciseDao()
-        exerciseDao.markCourseExerciseCompleted(ExerciseProgress.COMPLETED.name, currentStudy.exerciseId)
+        exerciseDao.markCourseExerciseCompleted(
+            ExerciseProgress.COMPLETED.name,
+            currentStudy.exerciseId
+        )
     }
 
-    suspend fun fetchCurrentStudyForCourse(courseId: String): List<CurrentStudy> {
+    suspend fun fetchCurrentStudyForCourse(courseId: String): CurrentStudy? {
         val currentStudyDao = database.currentStudyDao()
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }

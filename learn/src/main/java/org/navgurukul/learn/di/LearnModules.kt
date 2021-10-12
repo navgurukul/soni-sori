@@ -6,27 +6,19 @@ import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.MIGRATION_1_2
-import org.navgurukul.learn.courses.db.MIGRATION_2_3
-import org.navgurukul.learn.courses.db.MIGRATION_3_4
-import org.navgurukul.learn.courses.db.MIGRATION_4_5
-import org.navgurukul.learn.courses.db.models.CurrentStudy
+import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.ui.learn.ExerciseActivityViewModel
-import org.navgurukul.learn.ui.learn.ExerciseFragmentViewModel
-import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
-import org.navgurukul.learn.ui.learn.LearnViewModel
+import org.navgurukul.learn.ui.learn.*
+import org.navgurukul.learn.util.LearnPreferences
 import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LearnViewModel(get(), get()) }
     viewModel { LearnFragmentViewModel(get(), get()) }
-    viewModel { (courseId: String, exerciseId: String) -> ExerciseFragmentViewModel(get(), get(), get(),
-    courseId, exerciseId) }
-    viewModel { (courseId: String, currentStudy: CurrentStudy?) -> ExerciseActivityViewModel(get(), get(), get(), courseId, currentStudy) }
+    viewModel { (args: ExerciseFragmentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
+    viewModel { (courseId: String) -> ExerciseActivityViewModel(get(), get(), get(), courseId) }
 }
 
 

@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_height="match_parent">
 
             <RelativeLayout
@@ -21,7 +18,7 @@
                     android:id="@+id/recycler_view_slug"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dimen_5_dp"
+                    android:layout_marginTop="@dimen/spacing_1x"
                     android:paddingTop="@dimen/spacing_2x"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -37,14 +34,13 @@
             </RelativeLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet
-            android:id="@+id/bottomNavigationExercise"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_anchor="@id/swipe_container"
-            app:layout_anchorGravity="bottom"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!--        <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet-->
+<!--            android:id="@+id/bottomNavigationExercise"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            tools:visibility="visible"-->
+<!--            app:layout_anchor="@id/swipe_container"-->
+<!--            app:layout_anchorGravity="bottom"-->
+<!--            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>-->
 </layout>

@@ -20,6 +20,7 @@ data class Exercise(
     @Json(name = "name")
     val name: String = "",
     @Json(name = "slug")
+    //TODO remove this and other non used fields
     var slug: String?,
     var lang: String = "en",
 

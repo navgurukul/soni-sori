@@ -13,65 +13,86 @@
         <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarExercise"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/light_gradient_toolbar_background"
-            app:elevation="@dimen/dimen_0_dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/light_gradient_toolbar_background"
+            app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/exerciseToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_back"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="@dimen/mtrl_min_touch_target_size"
+                        app:iconTint="?textPrimary"
+                        app:iconPadding="0dp"
+                        app:iconGravity="textStart"
+                        app:icon="@drawable/ic_arrow_left"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvExerciseTitle"
-                        style="@style/text_view_course_category"
+                        style="?textAppearanceEmphasized1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:textColor="?textPrimary"
+                        app:layout_constraintBottom_toBottomOf="@id/button_back"
+                        app:layout_constraintStart_toEndOf="@id/button_back"
+                        app:layout_constraintTop_toTopOf="@id/button_back"
                         tools:text="JS Operators" />
 
-            </androidx.appcompat.widget.Toolbar>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerviewCourseExerciseList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        android:layout_marginBottom="@dimen/spacing_2x"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_back"
+                        tools:listitem="@layout/item_course_exercise" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewCourseExerciseList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            android:layout_marginTop="@dimen/dimen_5_dp"
-            android:layout_marginBottom="@dimen/spacing_6x"
-            android:layout_marginStart="@dimen/dimen_course_content_margin"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_course_exercise" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/exerciseContentContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintTop_toBottomOf="@id/appBarExercise"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <include
             android:id="@+id/progressBar"
             layout="@layout/component_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
             android:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

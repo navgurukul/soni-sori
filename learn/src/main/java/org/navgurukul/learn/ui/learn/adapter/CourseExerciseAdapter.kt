@@ -14,7 +14,7 @@ import org.navgurukul.learn.databinding.ItemCourseExerciseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class CourseExerciseAdapter(callback: (Pair<Exercise, ItemCourseExerciseBinding>) -> Unit) :
+class CourseExerciseAdapter(callback: (Exercise) -> Unit) :
 
     DataBoundListAdapter<Exercise, ItemCourseExerciseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Exercise>() {
@@ -39,12 +39,12 @@ class CourseExerciseAdapter(callback: (Pair<Exercise, ItemCourseExerciseBinding>
         val binding = holder.binding
         binding.exercise = item
         binding.root.setOnClickListener {
-            mCallback.invoke(Pair(item, binding))
+            mCallback.invoke(item)
         }
         setImageUrl(binding.ivExerciseTypeProgress, item.exerciseType, item.exerciseProgress)
     }
 
-    fun setImageUrl(imageView: ImageView, type: ExerciseType?, progress: ExerciseProgress?) {
+    private fun setImageUrl(imageView: ImageView, type: ExerciseType?, progress: ExerciseProgress?) {
         if (type == null) {
             imageView.setImageDrawable(ContextCompat.getDrawable(imageView.context,R.drawable.ic_type_text_notstarted))
         } else {

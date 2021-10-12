@@ -1,17 +1,21 @@
 package org.navgurukul.learn.ui.learn
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.fragmentArgs
+import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
@@ -20,49 +24,52 @@ import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 
+@Parcelize
+data class ExerciseFragmentArgs(
+    val isFirst: Boolean,
+    val isLast: Boolean,
+    val isCompleted: Boolean,
+    val courseId: String,
+    val exerciseId: String
+) : Parcelable
+
 class ExerciseFragment : Fragment() {
 
+    private val args: ExerciseFragmentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
-        parametersOf(
-            currentStudy.courseId,
-            currentStudy.exerciseId
-        )
+        parametersOf(args)
     })
     private lateinit var navigationClickListener: ExerciseNavigationClickListener
-    private lateinit var currentStudy: CurrentStudy
-    private var isFirst: Boolean = false
-    private var isLast: Boolean = false
-    private var isCompleted: Boolean = false
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
-    private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                showExerciseNavigationBar(this)
+//                showExerciseNavigationBar(this)
             }
         }
     }
 
     companion object {
-        private const val ARG_KEY_CURRENT_STUDY = "arg_current_study"
-        private const val ARG_KEY_IS_FIRST_IN_LIST = "arg_is_first"
-        private const val ARG_KEY_IS_LAST_IN_LIST = "arg_is_last"
-        private const val ARG_KEY_IS_COMPLETED = "arg_is_completed"
-
-        fun newInstance(currentStudy: CurrentStudy, isFirst: Boolean = false , isLast: Boolean = false
-        ,isCompleted: Boolean): ExerciseFragment {
-            val frag = ExerciseFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(ARG_KEY_CURRENT_STUDY, currentStudy)
-            bundle.putBoolean(ARG_KEY_IS_FIRST_IN_LIST, isFirst)
-            bundle.putBoolean(ARG_KEY_IS_LAST_IN_LIST, isLast)
-            bundle.putBoolean(ARG_KEY_IS_COMPLETED, isCompleted)
-            frag.arguments = bundle
-            return frag
+        fun newInstance(
+            isFirst: Boolean,
+            isLast: Boolean,
+            isCompleted: Boolean,
+            courseId: String,
+            exerciseId: String
+        ): ExerciseFragment {
+            return ExerciseFragment().apply {
+                arguments = ExerciseFragmentArgs(
+                    isFirst,
+                    isLast,
+                    isCompleted,
+                    courseId,
+                    exerciseId
+                ).toBundle()
+            }
         }
 
         const val TAG = "ExerciseFragment"
@@ -79,62 +86,32 @@ class ExerciseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parseIntentData()
 
-        fragmentViewModel.viewEvents.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is ExerciseFragmentViewModel.ExerciseFragmentViewEvents.ShowToast -> toast(it.toastText)
-                is ExerciseFragmentViewModel.ExerciseFragmentViewEvents.ShowExercise -> renderExerciseOnScreen(
-                    it.exerciseList
-                )
             }
         })
 
-        fragmentViewModel.viewState.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            contentAdapter.submitList(it.exerciseList)
         })
-    }
 
-    private fun renderExerciseOnScreen(list: List<Exercise>) {
-        if (list.isNotEmpty()) {
-            val data = parseDataForContent(list)
-            contentAdapter.submitList(data)
+//        mBinding.recyclerViewSlug.postDelayed( {
+//                if(isRecyclerScrollable(mBinding.recyclerViewSlug))
+//                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
+//                else
+//                    showExerciseNavigationBar()
+//            }, 200)
 
-            mBinding.recyclerViewSlug.postDelayed( {
-                if(isRecyclerScrollable(mBinding.recyclerViewSlug))
-                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
-                else
-                    showExerciseNavigationBar()
-            }, 200)
-        }
-    }
-
-    private fun parseIntentData() {
-        if (arguments?.containsKey(ARG_KEY_CURRENT_STUDY) ?: false) {
-            currentStudy = requireArguments().getParcelable<CurrentStudy>(ARG_KEY_CURRENT_STUDY)!!
-            renderUI()
-        }
-        if (arguments?.containsKey(ARG_KEY_IS_FIRST_IN_LIST) ?: false) {
-            isFirst = requireArguments().getBoolean(ARG_KEY_IS_FIRST_IN_LIST)
-        }
-        if (arguments?.containsKey(ARG_KEY_IS_LAST_IN_LIST) ?: false) {
-            isLast = requireArguments().getBoolean(ARG_KEY_IS_LAST_IN_LIST)
-        }
-        if (arguments?.containsKey(ARG_KEY_IS_COMPLETED) ?: false) {
-            isCompleted = requireArguments().getBoolean(ARG_KEY_IS_COMPLETED)
-        }
-    }
-
-    private fun renderUI() {
         initContentRV()
-        saveCourseExercise()
         initSwipeRefresh()
     }
 
-
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh(currentStudy.exerciseId, currentStudy.courseId,true))
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh)
             mBinding.swipeContainer.isRefreshing = false
         }
     }
@@ -170,36 +147,36 @@ class ExerciseFragment : Fragment() {
     }
 
     fun isRecyclerScrollable(recyclerView: RecyclerView): Boolean {
-        val layoutManager = recyclerView.getLayoutManager() as LinearLayoutManager
-        val adapter = recyclerView.getAdapter()
-        return if (layoutManager == null || adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val adapter = recyclerView.adapter
+        return if (adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
     }
 
-    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
-        mBinding.bottomNavigationExercise.visibility = View.VISIBLE
-        scrollListener?.let {
-            mBinding.recyclerViewSlug.removeOnScrollListener(it)
-        }
-        mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
-
-        mBinding.bottomNavigationExercise.setMarkAction {
-            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(currentStudy))
-
-            navigationClickListener.onMarkCompleteClick()
-
-            isCompleted = true
-            mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
-        }
-
-        mBinding.bottomNavigationExercise.setNavigationActions(
-            {
-                navigationClickListener.onPrevClick()
-            },
-            {
-                navigationClickListener.onNextClick()
-            }
-        )
-    }
+//    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
+//        mBinding.bottomNavigationExercise.visibility = View.VISIBLE
+//        scrollListener?.let {
+//            mBinding.recyclerViewSlug.removeOnScrollListener(it)
+//        }
+//        mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
+//
+//        mBinding.bottomNavigationExercise.setMarkAction {
+//            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(currentStudy))
+//
+//            navigationClickListener.onMarkCompleteClick()
+//
+//            isCompleted = true
+//            mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
+//        }
+//
+//        mBinding.bottomNavigationExercise.setNavigationActions(
+//            {
+//                navigationClickListener.onPrevClick()
+//            },
+//            {
+//                navigationClickListener.onNextClick()
+//            }
+//        )
+//    }
 
 //    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
 //        fragmentViewModel.handle(
@@ -211,20 +188,11 @@ class ExerciseFragment : Fragment() {
 //        )
 //    }
 
-    private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
-        return it?.firstOrNull()?.content ?: return listOf()
-    }
-
-    private fun saveCourseExercise() {
-        fragmentViewModel.handle(
-            ExerciseFragmentViewModel.ExerciseFragmentViewActions.ScreenRendered(
-                currentStudy
-            )
-        )
-    }
-
-    fun setNavigationClickListener(exerciseNavigationListener: ExerciseNavigationClickListener) {
-        this.navigationClickListener = exerciseNavigationListener
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ExerciseNavigationClickListener) {
+            this.navigationClickListener = context
+        }
     }
 
     interface ExerciseNavigationClickListener {

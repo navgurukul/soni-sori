@@ -10,36 +10,40 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.LearnPreferences
 
-class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
-                                private val learnPreferences: LearnPreferences,
-                                private val stringProvider: StringProvider,
-                                private val courseId: String,
-                                private val exerciseId: String,)
-    : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
+class ExerciseFragmentViewModel(
+    private val learnRepo: LearnRepo,
+    learnPreferences: LearnPreferences,
+    private val stringProvider: StringProvider,
+    private val args: ExerciseFragmentArgs
+) : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
     ExerciseFragmentViewState()
-){
+) {
 
     private var fetchExerciseJob: Job? = null
     private val selectedLanguage = learnPreferences.selectedLanguage
 
     init {
-        fetchExerciseSlug(exerciseId, courseId)
+        fetchExerciseContent(args.exerciseId, args.courseId)
     }
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
             is ExerciseFragmentViewActions.ScreenRendered -> saveCourseExerciseCurrent(action.currentStudy)
             is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.currentStudy)
-            is ExerciseFragmentViewActions.PulledDownToRefresh -> fetchExerciseSlug(action.exerciseId, action.courseId, action.forceUpdate)
+            is ExerciseFragmentViewActions.PulledDownToRefresh -> fetchExerciseContent(
+                args.exerciseId,
+                args.courseId,
+                true
+            )
         }
     }
 
-    fun fetchExerciseSlug(
+    private fun fetchExerciseContent(
         exerciseId: String,
         courseId: String,
         forceUpdate: Boolean = false,
@@ -47,27 +51,32 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
         fetchExerciseJob?.cancel()
         fetchExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val response =
-                learnRepo.getExerciseSlugData(
-                    exerciseId,
-                    courseId,
-                    forceUpdate,
-                    selectedLanguage
-                ).collect {
-                    val list = it
+            learnRepo.getExerciseContents(
+                exerciseId,
+                courseId,
+                forceUpdate,
+                selectedLanguage
+            ).collect {
+                val list = it
 
-                    setState { copy(isLoading = false) }
+                setState { copy(isLoading = false) }
 
-                    if(list.isNotEmpty()){
-                        _viewEvents.setValue(ExerciseFragmentViewEvents.ShowExercise(list))
-                    }else {
-                        _viewEvents.setValue(ExerciseFragmentViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data)))
-                    }
+                if (list != null && list.content?.isNotEmpty() == true) {
+                    setState { copy(exerciseList = it.content!!) }
+                } else {
+                    _viewEvents.setValue(
+                        ExerciseFragmentViewEvents.ShowToast(
+                            stringProvider.getString(
+                                R.string.error_loading_data
+                            )
+                        )
+                    )
                 }
+            }
         }
     }
 
-    fun saveCourseExerciseCurrent(
+    private fun saveCourseExerciseCurrent(
         currentStudy: CurrentStudy
     ) {
         viewModelScope.launch {
@@ -75,7 +84,7 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
         }
     }
 
-    fun markCourseExerciseCompleted(
+    private fun markCourseExerciseCompleted(
         currentStudy: CurrentStudy
     ) {
         viewModelScope.launch {
@@ -84,21 +93,21 @@ class ExerciseFragmentViewModel(private val learnRepo: LearnRepo,
     }
 
     sealed class ExerciseFragmentViewEvents : ViewEvents {
-        class ShowExercise(val exerciseList: List<Exercise>) : ExerciseFragmentViewEvents()
         class ShowToast(val toastText: String) : ExerciseFragmentViewEvents()
     }
 
     sealed class ExerciseFragmentViewActions : ViewModelAction {
         data class ScreenRendered(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
-        data class MarkCompleteClicked(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
-        data class PulledDownToRefresh(val exerciseId: String,
-                                       val courseId: String,
-                                       val forceUpdate: Boolean,) : ExerciseFragmentViewActions()
+        data class MarkCompleteClicked(val currentStudy: CurrentStudy) :
+            ExerciseFragmentViewActions()
+
+        object PulledDownToRefresh : ExerciseFragmentViewActions()
 
     }
 
     data class ExerciseFragmentViewState(
         val isLoading: Boolean = false,
+        val exerciseList: List<BaseCourseContent> = listOf()
     ) : ViewState
 
 }

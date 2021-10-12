@@ -39,7 +39,7 @@ interface CourseDao {
     fun getAllCoursesDirect(): List<Course>?
 
     @Query("select * from pathway_course where id=:courseId")
-    fun getCourseById(courseId: String): List<Course>
+    suspend fun getCourseById(courseId: String): Course
 
     @Query("select * from pathway_course where pathwayId=:pathwayId")
     fun getCoursesByPathwayId(pathwayId: Int): List<Course>
@@ -54,10 +54,10 @@ interface ExerciseDao {
     suspend fun insertExerciseAsync(course: List<Exercise?>?)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    fun getAllExercisesForCourse(courseId: String, lang: String): LiveData<List<Exercise>>
+    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<Exercise>
 
     @Query("select * from course_exercise where id = :exerciseId and lang = :lang")
-    fun getExerciseById(exerciseId: String, lang: String): LiveData<List<Exercise>>
+    fun getExerciseById(exerciseId: String, lang: String): LiveData<Exercise>
 
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
@@ -73,7 +73,7 @@ interface CurrentStudyDao {
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
-    suspend fun getCurrentStudyForCourse(courseId: String?): List<CurrentStudy>
+    suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
 }
 
 val MIGRATION_1_2 = object: Migration(1, 2) {

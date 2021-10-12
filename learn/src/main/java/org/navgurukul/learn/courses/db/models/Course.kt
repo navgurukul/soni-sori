@@ -30,7 +30,7 @@ data class Course(
 
     @Ignore
     @Json(name = "exercises")
-    var exercises: List<Exercise?> = listOf()
+    val exercises: List<Exercise> = listOf()
 }
 
 enum class CourseType{

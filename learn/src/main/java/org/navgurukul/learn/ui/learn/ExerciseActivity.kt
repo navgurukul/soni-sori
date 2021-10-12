@@ -4,223 +4,94 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
-import org.merakilearn.core.navigator.MerakiNavigator
-import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.databinding.ActivityExerciseBinding
-import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
-import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
-import org.navgurukul.learn.util.LearnUtils
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ListSpacingDecoration
 import org.navgurukul.learn.R
+import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.ui.common.toast
+import org.navgurukul.learn.ui.learn.ExerciseNavigation.*
+import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+import org.navgurukul.learn.util.LearnUtils
 
 
 class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigationClickListener {
 
     companion object {
         private const val ARG_KEY_COURSE_ID = "arg_course_id"
-        private const val ARG_KEY_COURSE_NAME = "arg_course_name"
-        private const val ARG_KEY_CURRENT_STUDY = "arg_course_name"
 
-        fun start(context: Context, courseId: String, courseName: String) {
+        fun start(context: Context, courseId: String) {
             val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_COURSE_ID, courseId)
-            intent.putExtra(ARG_KEY_COURSE_NAME, courseName)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, courseStudy: CurrentStudy) {
-            val intent = Intent(context, ExerciseActivity::class.java)
-            intent.putExtra(ARG_KEY_CURRENT_STUDY, courseStudy)
             context.startActivity(intent)
         }
     }
 
-    private lateinit var courseId: String
-    private lateinit var courseName: String
-    private var currentStudy: CurrentStudy? = null
-
-    private lateinit var mBinding: ActivityExerciseBinding
-    private var isPanelVisible = false
-    private val viewModel: ExerciseActivityViewModel by viewModel(
-        parameters = {
-            parametersOf(
-                courseId,
-                currentStudy
-            )
+    private val courseId: String by lazy {
+        intent.getStringExtra(ARG_KEY_COURSE_ID) ?: run {
+            val action: String? = intent?.action
+            val data: Uri? = intent?.data
+            val uriString = data.toString()
+            if (action == Intent.ACTION_VIEW && uriString.contains("/course/")) {
+                uriString.split("/").last()
+            } else {
+                ""
+            }
         }
+    }
+    private lateinit var mBinding: ActivityExerciseBinding
+    private val viewModel: ExerciseActivityViewModel by viewModel(
+        parameters = { parametersOf(courseId) }
     )
     private lateinit var mAdapter: CourseExerciseAdapter
-    private lateinit var contentAdapter: ExerciseContentAdapter
-    private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
-    private val dynamicFeatureModuleManager: DynamicFeatureModuleManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding =
-            DataBindingUtil.setContentView(this, org.navgurukul.learn.R.layout.activity_exercise)
+            DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
-        if (LearnUtils.isUserLoggedIn(this)) {
-            parseIntentData()
-        } else
+        if (!LearnUtils.isUserLoggedIn(this)) {
             merakiNavigator.restartApp(this, true)
+        }
 
+        setSupportActionBar(mBinding.exerciseToolbar)
+        mBinding.buttonBack.setOnClickListener { finish() }
+        initRecyclerViewExerciseList()
 
-        viewModel.viewEvents.observe(this, Observer {
+        viewModel.viewEvents.observe(this, {
             when (it) {
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowToast -> toast(it.toastText)
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowExerciseList -> updateExerciseListOnScreen(
-                    it.exerciseList
-                )
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.SetCourseAndRenderUI -> setCurrentCourseDataAndRenderUI(
-                    it.courseList
-                )
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.ShowExerciseFragment -> launchExerciseFragment(
-                    it.currentStudy,
+                is ExerciseActivityViewEvents.ShowToast -> toast(it.toastText)
+                is ExerciseActivityViewEvents.ShowExerciseFragment -> launchExerciseFragment(
                     it.isFirst,
                     it.isLast,
-                    it.isCompleted
-                )
-//                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsSelected -> markExerciseSelected(
-//                        it.currentStudy
-//                )
-//                is ExerciseActivityViewModel.ExerciseActivityViewEvents.MarkExerciseAsCompleted -> markExerciseCompleted(
-//                        it.currentStudy
-//                )
-                is ExerciseActivityViewModel.ExerciseActivityViewEvents.UpdateList -> updateExerciseListOnScreen(
-                    it.exerciseList
+                    it.isCompleted,
+                    it.courseId,
+                    it.exerciseId,
+                    it.navigation
                 )
             }
         })
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.viewState.observe(this, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mAdapter.submitList(it.exerciseList)
+            mBinding.tvExerciseTitle.text = it.title
         })
 
-    }
 
-    private fun updateExerciseListOnScreen(courseList: List<Exercise>) {
-        if (courseList.isNotEmpty()) {
-            masterData = courseList as MutableList<Exercise>
-            mAdapter.submitList(courseList)
-        }
-    }
-
-    private fun setCurrentCourseDataAndRenderUI(courseList: List<Course>) {
-        if (courseList.isNotEmpty()) {
-            mBinding.progressBar.visibility = View.GONE
-            courseId = courseList.firstOrNull()?.id.toString()
-            courseName = courseList.firstOrNull()?.name.toString()
-            renderUI()
-        }
-    }
-
-    private fun parseIntentData() {
-        if (intent.hasExtra(ARG_KEY_COURSE_ID) && intent.hasExtra(
-                ARG_KEY_COURSE_NAME
-            )
-        ) {
-            courseId = intent.getStringExtra(ARG_KEY_COURSE_ID)!!
-            courseName = intent.getStringExtra(ARG_KEY_COURSE_NAME)!!
-            renderUI()
-            viewModel.handle(
-                ExerciseActivityViewModel.ExerciseActivityViewActions.FirstTimeLaunch(
-                    courseId,
-                    courseName
-                )
-            )
-        } else if (intent.hasExtra(ARG_KEY_CURRENT_STUDY)) {
-            currentStudy = intent.getParcelableExtra(ARG_KEY_CURRENT_STUDY)!!
-
-            currentStudy?.courseName?.let {
-                courseName = it
-            }
-
-            currentStudy?.let {
-                courseId = it.courseId
-                renderUI()
-                launchExerciseFragment(it)
-//                viewModel.handle(
-//                    ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
-//                        null,
-//                        selectedStudy = it
-//                    )
-//                )
-            }
-        } else {
-            val action: String? = intent?.action
-            val data: Uri? = intent?.data
-            val uriString = data.toString()
-            if (action == Intent.ACTION_VIEW) {
-                if (uriString.contains("/course/")) {
-                    fetchClassData(uriString.split("/").last())
-                }
-            }
-        }
-    }
-
-    private fun fetchClassData(last: String) {
-        courseId = last
-        viewModel.handle(
-            ExerciseActivityViewModel.ExerciseActivityViewActions.FetchCourseExerciseDataWithCourse(
-                courseId
-            )
-        )
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(mBinding.exerciseToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
-    }
-
-    private fun renderUI() {
-        if (this::courseName.isInitialized)
-            mBinding.tvExerciseTitle.text = courseName
-        initToolbar()
-        initRecyclerViewExerciseList()
-    }
-
-    private fun fetchData() {
-        viewModel.handle(
-            ExerciseActivityViewModel.ExerciseActivityViewActions.FetchCourseExercises(
-                courseId
-            )
-        )
     }
 
     private fun initRecyclerViewExerciseList() {
         mAdapter = CourseExerciseAdapter {
-            if (!it.first.slug.isNullOrBlank()) {
-                viewModel.handle(
-                    ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseListItemSelected(
-                        currentStudy,
-                        CurrentStudy(
-                            courseId = courseId,
-                            courseName = if (this::courseName.isInitialized)
-                                courseName else "",
-                            exerciseSlugName = it.first.slug!!,
-                            exerciseName = it.first.name,
-                            exerciseId = it.first.id
-                        )
-                    )
-                )
-
-            }
+            viewModel.handle(ExerciseActivityViewActions.ExerciseListItemSelected(it.id))
         }
 
         val layoutManager =
@@ -238,64 +109,40 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     }
 
     private fun launchExerciseFragment(
-        currentStudy: CurrentStudy,
         isFirst: Boolean = false,
         isLast: Boolean = false,
-        isCompleted: Boolean = false
+        isCompleted: Boolean = false,
+        courseId: String,
+        exerciseId: String,
+        navigation: ExerciseNavigation?
     ) {
-        this.currentStudy = currentStudy
-
-        val manager: FragmentManager = supportFragmentManager
-        val transaction: FragmentTransaction = manager.beginTransaction()
-        transaction.setCustomAnimations(
-            android.R.anim.slide_in_left, android.R.anim.slide_out_right
-        )
-        val exerciseFrag = ExerciseFragment.newInstance(currentStudy, isFirst, isLast, isCompleted)
-        exerciseFrag.setNavigationClickListener(this)
-
-        transaction.replace(
-            org.navgurukul.learn.R.id.exerciseContentContainer,
-            exerciseFrag, ExerciseFragment.TAG
-        )
-        transaction.commit()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
+        supportFragmentManager.commit {
+            val enter = when (navigation) {
+                PREV -> android.R.anim.slide_in_left
+                //TODO test this after adding bottom nav bar and update animation
+                NEXT -> android.R.anim.slide_in_left
+                null -> android.R.anim.fade_in
+            }
+            setCustomAnimations(
+                enter, 0
+            )
+            replace(
+                R.id.exerciseContentContainer,
+                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
+                ExerciseFragment.TAG
+            )
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onPrevClick() {
-        currentStudy?.let {
-            viewModel.handle(
-                ExerciseActivityViewModel.ExerciseActivityViewActions.PrevNavigationClicked(
-                    it
-                )
-            )
-        }
+        viewModel.handle(ExerciseActivityViewActions.PrevNavigationClicked)
     }
 
     override fun onNextClick() {
-        currentStudy?.let {
-            viewModel.handle(
-                ExerciseActivityViewModel.ExerciseActivityViewActions.NextNavigationClicked(
-                    it
-                )
-            )
-        }
+        viewModel.handle(ExerciseActivityViewActions.NextNavigationClicked)
     }
 
     override fun onMarkCompleteClick() {
-        currentStudy?.let {
-            viewModel.handle(
-                ExerciseActivityViewModel.ExerciseActivityViewActions.ExerciseMarkedCompleted(
-                    it
-                )
-            )
-        }
+        viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
     }
 }

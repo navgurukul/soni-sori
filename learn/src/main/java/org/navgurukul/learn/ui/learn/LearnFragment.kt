@@ -56,10 +56,7 @@ class LearnFragment : Fragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
-                    ExerciseActivity.start(requireContext(), it.courseId, it.courseName)
-                }
-                is LearnFragmentViewEvents.OpenCourseSlugActivity -> {
-                    ExerciseActivity.start(requireContext(), it.currentStudy)
+                    ExerciseActivity.start(requireContext(), it.courseId)
                 }
                 LearnFragmentViewEvents.OpenPathwaySelectionSheet -> {
                     LearnFragmentPathwaySelectionSheet().show(

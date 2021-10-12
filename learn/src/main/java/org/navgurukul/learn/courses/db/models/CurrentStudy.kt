@@ -4,15 +4,12 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 
 @Parcelize
 @Entity(tableName = "user_current_study")
 data class CurrentStudy(
     @PrimaryKey(autoGenerate = false)
     var courseId: String,
-    var courseName: String?,
-    var exerciseSlugName: String?,
-    var exerciseName: String?,
+    //TODO update migration
     var exerciseId: String
 ) : Parcelable
