@@ -33,8 +33,7 @@ class ExerciseFragmentViewModel(
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
-            is ExerciseFragmentViewActions.ScreenRendered -> saveCourseExerciseCurrent(action.currentStudy)
-            is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.currentStudy)
+            is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.exerciseId)
             is ExerciseFragmentViewActions.PulledDownToRefresh -> fetchExerciseContent(
                 args.exerciseId,
                 args.courseId,
@@ -85,10 +84,10 @@ class ExerciseFragmentViewModel(
     }
 
     private fun markCourseExerciseCompleted(
-        currentStudy: CurrentStudy
+        exerciseId: String
     ) {
         viewModelScope.launch {
-            learnRepo.markCourseExerciseCompleted(currentStudy)
+            learnRepo.markCourseExerciseCompleted(exerciseId)
         }
     }
 
@@ -97,8 +96,7 @@ class ExerciseFragmentViewModel(
     }
 
     sealed class ExerciseFragmentViewActions : ViewModelAction {
-        data class ScreenRendered(val currentStudy: CurrentStudy) : ExerciseFragmentViewActions()
-        data class MarkCompleteClicked(val currentStudy: CurrentStudy) :
+        data class MarkCompleteClicked(val exerciseId: String) :
             ExerciseFragmentViewActions()
 
         object PulledDownToRefresh : ExerciseFragmentViewActions()

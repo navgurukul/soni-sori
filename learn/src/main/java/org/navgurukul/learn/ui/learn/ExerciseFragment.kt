@@ -23,12 +23,13 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
+import org.navgurukul.learn.util.animateVisibility
 
 @Parcelize
 data class ExerciseFragmentArgs(
     val isFirst: Boolean,
     val isLast: Boolean,
-    val isCompleted: Boolean,
+    var isCompleted: Boolean,
     val courseId: String,
     val exerciseId: String
 ) : Parcelable
@@ -48,7 +49,7 @@ class ExerciseFragment : Fragment() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                showExerciseNavigationBar(this)
+                showExerciseNavigationBar(this)
             }
         }
     }
@@ -98,13 +99,16 @@ class ExerciseFragment : Fragment() {
             contentAdapter.submitList(it.exerciseList)
         })
 
-//        mBinding.recyclerViewSlug.postDelayed( {
-//                if(isRecyclerScrollable(mBinding.recyclerViewSlug))
-//                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
-//                else
-//                    showExerciseNavigationBar()
-//            }, 200)
-
+        if(args.isCompleted)
+            showExerciseNavigationBar()
+        else {
+            mBinding.recyclerViewSlug.postDelayed({
+                if (isRecyclerScrollable(mBinding.recyclerViewSlug))
+                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
+                else
+                    showExerciseNavigationBar()
+            }, 200)
+        }
         initContentRV()
         initSwipeRefresh()
     }
@@ -152,41 +156,32 @@ class ExerciseFragment : Fragment() {
         return if (adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
     }
 
-//    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
-//        mBinding.bottomNavigationExercise.visibility = View.VISIBLE
-//        scrollListener?.let {
-//            mBinding.recyclerViewSlug.removeOnScrollListener(it)
-//        }
-//        mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
-//
-//        mBinding.bottomNavigationExercise.setMarkAction {
-//            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(currentStudy))
-//
-//            navigationClickListener.onMarkCompleteClick()
-//
-//            isCompleted = true
-//            mBinding.bottomNavigationExercise.setView(isCompleted, isFirst, isLast)
-//        }
-//
-//        mBinding.bottomNavigationExercise.setNavigationActions(
-//            {
-//                navigationClickListener.onPrevClick()
-//            },
-//            {
-//                navigationClickListener.onNextClick()
-//            }
-//        )
-//    }
+    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
+        mBinding.bottomNavigationExercise.animateVisibility(true)
 
-//    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
-//        fragmentViewModel.handle(
-//            ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh(
-//                exerciseId,
-//                currentStudy.courseId,
-//                forceUpdate
-//            )
-//        )
-//    }
+        scrollListener?.let {
+            mBinding.recyclerViewSlug.removeOnScrollListener(it)
+        }
+        mBinding.bottomNavigationExercise.setView(args.isCompleted, args.isFirst, args.isLast)
+
+        mBinding.bottomNavigationExercise.setMarkAction {
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(args.exerciseId))
+
+            navigationClickListener.onMarkCompleteClick()
+
+            args.isCompleted = true
+            mBinding.bottomNavigationExercise.setView(args.isCompleted, args.isFirst, args.isLast)
+        }
+
+        mBinding.bottomNavigationExercise.setNavigationActions(
+            {
+                navigationClickListener.onPrevClick()
+            },
+            {
+                navigationClickListener.onNextClick()
+            }
+        )
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
