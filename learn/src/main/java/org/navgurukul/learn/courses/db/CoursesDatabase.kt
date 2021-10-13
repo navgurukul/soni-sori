@@ -149,20 +149,25 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
 
         //create new table
         database.execSQL("CREATE TABLE `course_exercise`(" +
-                " `content` TEXT," +
-                " `courseId` TEXT," +
-                " `githubLink` TEXT, " +
+                " `content` TEXT NOT NULL," +
+                " `courseId` TEXT NOT NULL," +
                 " `id` TEXT NOT NULL," +
-                " `name` TEXT," +
-                " `parentExerciseId` TEXT," +
-                " `reviewType` TEXT," +
-                " `sequenceNum` TEXT," +
+                " `name` TEXT NOT NULL," +
                 " `slug` TEXT," +
-                " `solution` TEXT," +
-                " `submissionType` TEXT," +
                 " `lang` TEXT NOT NULL," +
                 " `courseName` TEXT," +
-                " PRIMARY KEY(`id`, `lang`) )")
+                " PRIMARY KEY(`id`, `lang`) )"
+        )
+
+        database.execSQL("ALTER TABLE `pathway_course`(" +
+                "DROP COLUMN 'created_at'," +
+                "DROP COLUMN 'logo'," +
+                "DROP COLUMN 'notes'," +
+                "DROP COLUMN 'pathwayName'," +
+                "DROP COLUMN 'sequence_num'," +
+                "DROP COLUMN 'type'," +
+                "DROP COLUMN 'days_to_complete')"
+        )
     }
 
 }

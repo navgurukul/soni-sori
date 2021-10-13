@@ -11,28 +11,16 @@ import java.io.Serializable
 @JsonClass(generateAdapter = true)
 data class Exercise(
     @Json(name = "content")
-    var content: List<BaseCourseContent>?,
+    val content: List<BaseCourseContent>,
     @Json(name = "course_id")
-    var courseId: String?,
-    @Json(name = "github_link")
-    var githubLink: String?,
+    var courseId: String = "",
     @Json(name = "id")
     @ColumnInfo(name = "id")
-    var id: String,
+    val id: String = "",
     @Json(name = "name")
-    var name: String?,
-    @Json(name = "parent_exercise_id")
-    var parentExerciseId: String?,
-    @Json(name = "review_type")
-    var reviewType: String?,
-    @Json(name = "sequence_num")
-    var sequenceNum: String?,
+    val name: String = "",
     @Json(name = "slug")
     var slug: String?,
-    @Json(name = "solution")
-    var solution: String?,
-    @Json(name = "submission_type")
-    var submissionType: String?,
     var lang: String = "en",
 
     @Json(name = "courseName")
