@@ -3,6 +3,7 @@ package org.navgurukul.learn.courses.network
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 @Deprecated("Use networkBoundResourceFlow instead")
@@ -55,13 +56,11 @@ fun <ResultType, RequestType> networkBoundResourceFlow(
         emit(dbSource)
     }
     if (shouldFetch(dbSource)) {
-        try {
-            val data = makeApiCallAsync()
-            withContext(Dispatchers.IO) { saveCallResult(data) }
-            emit(loadFromDb())
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(null)
-        }
+        val data = makeApiCallAsync()
+        withContext(Dispatchers.IO) { saveCallResult(data) }
+        emit(loadFromDb())
     }
+}.catch { e ->
+    e.printStackTrace()
+    emit(null)
 }
