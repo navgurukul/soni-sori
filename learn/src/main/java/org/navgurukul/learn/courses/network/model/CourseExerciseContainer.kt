@@ -8,5 +8,5 @@ import org.navgurukul.learn.courses.db.models.Course
 @JsonClass(generateAdapter = true)
 data class CourseExerciseContainer(
     @Json(name = "course")
-    var course: Course? = Course()
+    val course: Course
 )

@@ -9,7 +9,7 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="backgroundColor">#ffffff</color>
-    <color name="textColor">#000000</color>
+    <color name="textColor">#2E2E2E</color>
     <color name="textColorContrast">#FF61708B</color>
     <color name="textColorAlt">#665E5E</color>
     <color name="errorColor">#B00020</color>

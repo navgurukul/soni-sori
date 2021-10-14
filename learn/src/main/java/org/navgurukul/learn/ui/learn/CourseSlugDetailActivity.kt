@@ -13,13 +13,12 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.core.navigator.Mode
-import org.merakilearn.core.navigator.TypingAppModuleNavigator
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ActivityCourseSlugDetailBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
-import org.navgurukul.learn.ui.learn.adapter.ExerciseSlugAdapter
+import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 
@@ -42,7 +41,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     private var isPanelVisible = false
     private val viewModel: LearnViewModel by viewModel()
     private lateinit var mAdapter: CourseExerciseAdapter
-    private lateinit var slugAdapter: ExerciseSlugAdapter
+    private lateinit var contentAdapter: ExerciseContentAdapter
     private var masterData: MutableList<Exercise> = mutableListOf()
     private val merakiNavigator: MerakiNavigator by inject()
     private val dynamicFeatureModuleManager: DynamicFeatureModuleManager by inject()
@@ -99,7 +98,7 @@ class CourseSlugDetailActivity : AppCompatActivity() {
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fetchSlugContent(currentStudy.exerciseId, true)
+            fetchExerciseContent(currentStudy.exerciseId, true)
             mBinding.swipeContainer.isRefreshing = false
         }
     }
@@ -148,41 +147,51 @@ class CourseSlugDetailActivity : AppCompatActivity() {
     }
 
     private fun initContentRV() {
-        slugAdapter = ExerciseSlugAdapter {
-            if (it is CodeExerciseSlugDetail) {
-                if (!it.value?.code.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this, it.value!!.code!!)
+        contentAdapter = ExerciseContentAdapter(this, {
+            if (it is CodeBaseCourseContent) {
+                if (!it.value.isNullOrBlank()) {
+                    merakiNavigator.openPlayground(this, it.value)
                 }
-            } else if (it is TypingExerciseSlugDetail) {
-                loadTypingTutor(it)
+            } else if (it is LinkBaseCourseContent) {
+                it.link?.let { url ->
+                    merakiNavigator.openCustomTab(url, this)
+                }
             }
+        }) {
+            it?.let { action ->
+                action.url?.let { url ->
+                    merakiNavigator.openDeepLink(this, url, action.data)
+                }
+            }
+
         }
+
+
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewSlug.layoutManager = layoutManager
-        mBinding.recyclerViewSlug.adapter = slugAdapter
-        fetchSlugContent(currentStudy.exerciseId, false)
+        mBinding.recyclerViewSlug.adapter = contentAdapter
+        mBinding.recyclerViewSlug.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+        )
+        fetchExerciseContent(currentStudy.exerciseId, false)
 
     }
 
-    private fun loadTypingTutor(it: TypingExerciseSlugDetail) {
-        merakiNavigator.launchTypingApp(this, Mode.Course(it.value, it.type))
-    }
-
-    private fun fetchSlugContent(exerciseId: String, forceUpdate: Boolean) {
+    private fun fetchExerciseContent(exerciseId: String, forceUpdate: Boolean) {
         mBinding.progressBar.visibility = View.VISIBLE
         viewModel.fetchExerciseSlug(exerciseId, currentStudy.courseId, forceUpdate)
             .observe(this, {
                 mBinding.progressBar.visibility = View.GONE
                 if (null != it && it.isNotEmpty()) {
                     val data = parseDataForContent(it)
-                    slugAdapter.submitList(data)
+                    contentAdapter.submitList(data)
                 }
             })
     }
 
-    private fun parseDataForContent(it: List<Exercise>?): List<ExerciseSlugDetail> {
-        return it?.firstOrNull()?.content ?: return mutableListOf()
+    private fun parseDataForContent(it: List<Exercise>?): List<BaseCourseContent> {
+        return it?.firstOrNull()?.content ?: return listOf()
     }
 
     private fun initRecyclerViewSlidingPanel() {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blockQuoteText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/block_quote_indicator"
+    android:paddingHorizontal="@dimen/spacing_3x"
+    android:paddingVertical="@dimen/spacing_2x"
+    android:textColor="?textPrimary"
+    tools:text="@string/empty_state_error_description" />

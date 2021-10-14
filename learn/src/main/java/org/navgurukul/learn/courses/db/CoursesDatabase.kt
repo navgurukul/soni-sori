@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 4
+const val DB_VERSION = 5
 
 @Dao
 interface PathwayDao {
@@ -137,6 +137,37 @@ val MIGRATION_3_4 = object: Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Pathway
         database.execSQL("ALTER TABLE `pathway` ADD COLUMN `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]'")
+    }
+
+}
+
+val MIGRATION_4_5 = object: Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        //drop old table
+        database.execSQL("DROP TABLE course_exercise")
+
+        //create new table
+        database.execSQL("CREATE TABLE `course_exercise`(" +
+                " `content` TEXT NOT NULL," +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `slug` TEXT," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )"
+        )
+
+        database.execSQL("ALTER TABLE `pathway_course`(" +
+                "DROP COLUMN 'created_at'," +
+                "DROP COLUMN 'logo'," +
+                "DROP COLUMN 'notes'," +
+                "DROP COLUMN 'pathwayName'," +
+                "DROP COLUMN 'sequence_num'," +
+                "DROP COLUMN 'type'," +
+                "DROP COLUMN 'days_to_complete')"
+        )
     }
 
 }
