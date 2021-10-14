@@ -13,16 +13,16 @@ import com.squareup.moshi.JsonClass
 data class Course(
     @PrimaryKey(autoGenerate = false)
     @Json(name = "id")
-    val id: String = "",
+    var id: String = "",
     @Json(name = "name")
-    val name: String,
+    var name: String,
     @Json(name = "pathwayId")
     var pathwayId: Int? = null,
     @Json(name = "short_description")
-    val shortDescription: String,
+    var shortDescription: String,
     @Json(name = "lang_available")
     @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
-    val supportedLanguages: List<String> = listOf("en"),
+    var supportedLanguages: List<String> = listOf("en"),
 ){
     @Ignore
     @Json(name = "number")
@@ -30,7 +30,7 @@ data class Course(
 
     @Ignore
     @Json(name = "exercises")
-    val exercises: List<Exercise> = listOf()
+    var exercises: List<Exercise> = listOf()
 }
 
 enum class CourseType{

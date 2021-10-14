@@ -154,7 +154,7 @@ class LearnRepo(
                 val course = courseDao.getCourseById(courseId)
                 val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
                 if (exercises.isNotEmpty()) {
-                    course.copy(exercises = exercises)
+                    course.apply { this.exercises = exercises }
                 } else {
                     null
                 }
