@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 5
+const val DB_VERSION = 6
 
 @Dao
 interface PathwayDao {
@@ -171,6 +171,31 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
     }
 
 }
+
+
+val MIGRATION_5_6 = object: Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("ALTER TABLE `course_exercise` " +
+                "DROP COLUMN 'slug'"
+        )
+
+        database.execSQL("ALTER TABLE `course_exercise` (" +
+                "ADD COLUMN 'type' TEXT NOT NULL DEFAULT 'TEXT'," +
+                "ADD COLUMN 'progress' TEXT)"
+        )
+                database.execSQL("ALTER TABLE `pathway_course` (" +
+                "DROP COLUMN 'courseName'," +
+                "DROP COLUMN 'exerciseSlugName'," +
+                "DROP COLUMN 'exerciseName')"
+        )
+
+
+    }
+
+}
+
+
 
 
 // When ever we do any change in local db need to write migration script here.
