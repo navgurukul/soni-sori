@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_4x">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="240dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_8x"
+        android:contentDescription="@null"
         android:src="@drawable/on_boarding_book_lover"
+        app:layout_constraintBottom_toTopOf="@id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/header"
-        style="@style/TextAppearance.AppCompat.Headline5"
+        style="?textAppearanceHeadline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_30_dp"
-        android:padding="@dimen/dimen_5_dp"
-        android:textStyle="bold"
-        android:textColor="@color/on_boarding_text_view_black_color"
+        android:layout_marginBottom="@dimen/spacing_4x"
         android:text="@string/learn_python_header_english"
+        android:textAlignment="center"
+        android:textColor="?textPrimary"
+        app:layout_constraintBottom_toTopOf="@id/desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
 
     <TextView
         android:id="@+id/desc"
-        style="@style/TextAppearance.AppCompat.Subtitle1"
+        style="?textAppearanceBody2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_10_dp"
-        android:textAlignment="center"
-        android:fontFamily="@font/nunito"
-        android:padding="@dimen/dimen_5_dp"
         android:text="@string/learn_python_desc_english"
+        android:textAlignment="center"
+        android:textColor="?textPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />

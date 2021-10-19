@@ -2,88 +2,77 @@ package org.merakilearn.ui.onboarding
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import com.squareup.moshi.JsonClass
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.select_course_fragment.*
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
-import org.merakilearn.core.navigator.MerakiNavigator
-import org.merakilearn.datasource.network.model.PathwayData
+import org.merakilearn.datasource.network.model.OnBoardingData
+import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
 
+class SelectCourseFragment : BaseFragment() {
 
-@JsonClass(generateAdapter = true)
-data class SelectCourseFragmentArgs(
-    val header: String,
-    val courses_list: List<PathwayData>
-)
-class SelectCourseFragment:BaseFragment() {
-
-    private val navigator: MerakiNavigator by inject()
-
-    companion object{
-        fun newInstance(args:SelectCourseFragmentArgs)=SelectCourseFragment().apply{
-            this.args=args;
-        }
-        const val TAG="SelectCourseFragment"
+    companion object {
+        fun newInstance() = SelectCourseFragment()
+        val TAG = SelectCourseFragment::class.java.name
     }
 
-    private  lateinit var args: SelectCourseFragmentArgs
-    private val viewModel:OnBoardingViewModel by viewModel()
-    override fun getLayoutResId(): Int = R.layout.select_course_fragment
+    private val viewModel: OnBoardingViewModel by sharedViewModel()
 
+    override fun getLayoutResId(): Int = R.layout.select_course_fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.handle(args.let { WelcomeViewActions.SetPathWayData(it) })
 
-        viewModel.viewEvents.observe(viewLifecycleOwner){
-            when(it){
-                is WelcomeViewEvents.ViewPathWayData -> setCards(it.args)
+        viewModel.viewState.observe(viewLifecycleOwner, {
+            if (it.onBoardingData != null && it.onBoardingTranslations != null) {
+                setCards(it.onBoardingData, it.onBoardingTranslations)
             }
-        }
+        })
     }
 
-    private fun setCards(args: SelectCourseFragmentArgs) {
+    private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
 
-        select_course_heading.text= args.header
+        select_course_heading.text = translations.selectCourseHeader
+
+        val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+        val width = (resources.displayMetrics.widthPixels - (padding * 2) - padding) / 2
+        onBoardingData.onBoardingPathwayList.forEachIndexed { index, pathway ->
 
 
-        for (pathway in args.courses_list){
+            val customView = layoutInflater.inflate(R.layout.course_card, constraint_layout, false)
+            customView.id = View.generateViewId()
 
-            val customView=layoutInflater.inflate(R.layout.course_card,null)
+            customView.findViewById<TextView>(R.id.course_text).text =
+                translations.onBoardingPathwayListNames[index]
 
-            val layoutParams:LinearLayout.LayoutParams=LinearLayout.LayoutParams(
-                resources.getDimensionPixelSize(R.dimen.course_card_width),
-                resources.getDimensionPixelSize(R.dimen.course_card_height)
+            val imageView = customView.findViewById<ImageView>(R.id.logo)
+            pathway.image.remote?.let {
+                GlideApp.with(requireContext())
+                    .load(it)
+                    .into(imageView)
+            } ?: run {
+                imageView.setImageResource(DefaultLogos.valueOf(pathway.image.local!!).id)
+            }
+
+            constraint_layout.addView(
+                customView,
+                ConstraintLayout.LayoutParams(width, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             )
-            customView.layoutParams=layoutParams
-            customView.id=View.generateViewId()
-            customView.findViewById<TextView>(R.id.course_text).text=pathway.name
+            flow_constraint.referencedIds += customView.id
 
-            val thumbnail=GlideApp.with(requireContext())
-                .load(DefaultLogos.valueOf(pathway.resource).id)
-
-
-            GlideApp.with(requireContext())
-                .load(pathway.logo)
-                .thumbnail(thumbnail)
-                .into(customView.findViewById(R.id.logo))
-            constraint_layout.addView(customView)
-            flow_constraint.addView(customView)
-
-            customView.setOnClickListener{
-                navigator.openLearnFragment(requireActivity(),true,pathway.id)
-                requireActivity().finish()
+            customView.setOnClickListener {
+                viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
             }
 
         }
     }
-    enum class DefaultLogos(@DrawableRes val id:Int){
+
+    enum class DefaultLogos(@DrawableRes val id: Int) {
         PYTHON(R.drawable.python_logo),
         TYPING(R.drawable.ic_icon_typing),
         ENGLISH(R.drawable.ic_icon_language)

@@ -23,104 +23,99 @@
         <value>https://www.merakilearn.org/privacy</value>
     </entry>
     <entry>
-        <key>OnBoarding_English</key>
+        <key>on_boarding_data</key>
         <value>{
-            "skip_text":"Skip",
-            "next_text":"Next",
-            "skip_login_text":"Skip Login",
-            "login_with_google_text":"Continue with Google",
-            "select_course_header":"Please choose a learning to begin!",
-            "onBoardingDataList":[
-            {
-            "image": "",
-            "resource":"PYTHON",
-            "header": "Learn Python",
-            "description": "Step into the world of tech with guidance from Python professionals"
-            },
-            {
-            "image": "",
-            "resource":"INTERVIEW",
-            "header": "Ace Interviews with Confidence",
-            "description": "With our Spoken English and typing courses"
-            },
-            {
-            "image": "",
-            "resource":"INTERACTIVE",
-            "header": "Interactive Classes + Self Study",
-            "description": "No boring lectures or learning alone. Learn along with the Meraki community"
-            }
-            ],
-            "onBoardingPathwayList":[
-            {
-            "id": 60,
-            "resource":"PYTHON",
-            "logo": " ",
-            "name": "Python"
-            },
-            {
-            "id": 62,
-            "resource":"ENGLISH",
-            "logo": " ",
-            "name": "Spoken English"
-            },
-            {
-            "id": 61,
-            "resource":"TYPING",
-            "logo": " ",
-            "name": "Typing Guru"
-            }
-            ]
-            }</value>
-    </entry>
-    <entry>
-        <key>OnBoarding_Hindi</key>
-        <value>
-            {
-            "skip_text":"छोड़े",
-            "next_text":"अगला",
-            "skip_login_text":"लॉगिन छोड़ें",
-            "login_with_google_text":"गूगल के साथ जारी रखें",
-            "select_course_header":"Please choose a learning to begin!",
-            "onBoardingDataList":[
-            {
-            "image": "",
-            "resource":"PYTHON",
-            "header": "पायथन सीखें",
-            "description": "पायथन पेशेवरों के मार्गदर्शन के साथ तकनीक की दुनिया में कदम रखें"
-            },
-            {
-            "image": "",
-            "resource":"INTERACTIVE",
-            "header": "इंटरएक्टिव क्लासेस + सेल्फ स्टडी",
-            "description": "कोई उबाऊ व्याख्यान या अकेले सीखना नहीं ब्लकि Meraki समुदाय के साथ सीखें"
-            },
-            {
-            "image": "",
-            "resource":"INTERVIEW",
-            "header": "विश्वास के साथ सफल साक्षात्कार दें",
-            "description": "हमारे अंग्रेजी बोलवचन एवं टाइपिंग पाठ्यक्रम के साथ"
-            }
-            ],
-            "onBoardingPathwayList":[
-            {
-            "id": 60,
-            "resource":"PYTHON",
-            "logo": " ",
-            "name": "पायथन"
-            },
-            {
-            "id": 62,
-            "resource":"ENGLISH",
-            "logo": " ",
-            "name": "अंग्रेजी बोलवचन"
-            },
-            {
-            "id": 61,
-            "resource":"TYPING",
-            "logo": " ",
-            "name": "टाइपिंग गुरु"
-            }
-            ]
+            "on_boarding_translations": {
+                "en":{
+                    "skip_text":"Skip",
+                    "next_text":"Next",
+                    "skip_login_text":"Skip Login",
+                    "login_with_google_text":"Continue with Google",
+                    "select_course_header":"Please choose a learning to begin!",
+                    "on_boarding_data_list_texts":[
+                        {
+                            "header":"Learn Python",
+                            "description":"Step into the world of tech with guidance from Python professionals"
+                        },
+                        {
+                            "header":"Ace Interviews with Confidence",
+                            "description":"With our Spoken English and typing courses"
+                        },
+                        {
+                            "header":"Interactive Classes + Self Study",
+                            "description":"No boring lectures or learning alone. Learn along with the Meraki community"
+                        }
+                    ],
+                    "on_boarding_pathway_list_names":[
+                        "Python",
+                        "Spoken English",
+                        "Typing Guru"
+                    ]
+                },
+                "hi":{
+                    "skip_text":"छोड़े",
+                    "next_text":"अगला",
+                    "skip_login_text":"लॉगिन छोड़ें",
+                    "login_with_google_text":"गूगल के साथ जारी रखें",
+                    "select_course_header":"शुरू करने के लिए कृपया एक पाठ्यक्रम चुनें!",
+                    "on_boarding_data_list_texts":[
+                        {
+                            "header":"पायथन सीखें",
+                            "description":"पायथन पेशेवरों के मार्गदर्शन के साथ तकनीक की दुनिया में कदम रखें"
+                        },
+                        {
+                            "header":"इंटरएक्टिव क्लासेस + सेल्फ स्टडी",
+                            "description":"कोई उबाऊ व्याख्यान या अकेले सीखना नहीं ब्लकि Meraki समुदाय के साथ सीखें"
+                        },
+                        {
+                            "header":"विश्वास के साथ सफल साक्षात्कार दें",
+                            "description":"हमारे अंग्रेजी बोलवचन एवं टाइपिंग पाठ्यक्रम के साथ"
+                        }
+                    ],
+                    "on_boarding_pathway_list_names":[
+                        "पायथन",
+                        "अंग्रेजी बोलवचन",
+                        "टाइपिंग गुरु"
+                    ]
+                    }
+                },
+                "on_boarding_pages_list": [
+                    {
+                        "image":{
+                            "local": "PYTHON"
+                        }
+                    },
+                    {
+                        "image":{
+                            "local": "INTERACTIVE"
+                        }
+                    },
+                    {
+                        "image":{
+                            "local": "INTERVIEW"
+                        }
+                    }
+                    ],
+                "on_boarding_pathway_list": [
+                    {
+                        "id":60,
+                        "image":{
+                            "local": "PYTHON"
+                        }
+                    },
+                    {
+                        "id":62,
+                        "image":{
+                            "local": "ENGLISH"
+                        }
+                    },
+                    {
+                        "id":61,
+                        "image":{
+                            "local": "TYPING"
+                        }
+                    }
+                    ]
             }
         </value>
     </entry>

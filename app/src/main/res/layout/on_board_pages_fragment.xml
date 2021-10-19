@@ -1,103 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:padding="@dimen/spacing_4x">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/skip"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/skip"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_30_dp"
-        android:layout_marginBottom="@dimen/dimen_25_dp"
-        android:fontFamily="@font/nunito"
-        android:foreground="?attr/selectableItemBackground"
-        android:padding="@dimen/dimen_2_dp"
-        android:text="@string/skip_english"
+        android:textAllCaps="false"
+        android:textColor="?textSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/skip_english" />
 
-    <LinearLayout
-        android:id="@+id/indicator_layout"
-        android:layout_width="wrap_content"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_25_dp"
-        android:orientation="horizontal"
+        android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next"
-        app:layout_constraintStart_toEndOf="@+id/skip"/>
+        app:layout_constraintEnd_toStartOf="@id/next"
+        app:layout_constraintStart_toEndOf="@id/skip"
+        app:tabBackground="@drawable/tab_pager_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dimen_30_dp"
-        android:layout_marginBottom="@dimen/dimen_20_dp"
-        android:fontFamily="@font/nunito"
-        android:foreground="?attr/selectableItemBackground"
-        android:padding="@dimen/dimen_2_dp"
-        android:text="@string/next_english"
-        android:textColor="@color/on_boarding_green_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/login_button_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_10_dp"
-        android:layout_marginEnd="@dimen/dimen_10_dp"
-        android:layout_marginBottom="@dimen/dimen_20_dp"
-        android:orientation="vertical"
-        android:visibility="gone"
+        android:textAllCaps="false"
+        android:textColor="?textBrand"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        tools:text="@string/next_english" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_with_google"
-            style="@style/google_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/continue_with_google_english" />
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/nav_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="next, tab_layout, skip" />
 
-        <TextView
-            android:id="@+id/skip_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dimen_5_dp"
-            android:fontFamily="@font/nunito"
-            android:foreground="?attr/selectableItemBackground"
-            android:text="@string/skip_login_english"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_bar_button"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="@dimen/dimen_progress_bar"
-        android:layout_height="@dimen/dimen_progress_bar"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:elevation="@dimen/dimen_2_dp"
-        android:indeterminate="true"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/login_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/skip"
+        app:constraint_referenced_ids="skip_login, login_with_google" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_with_google"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_2x"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/continue_with_google_english"
+        android:textAllCaps="false"
+        android:textColor="?textBrand"
+        app:icon="@drawable/google_icon"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/spacing_4x"
+        app:iconTint="@android:color/transparent"
+        app:iconTintMode="add"
+        app:layout_constraintBottom_toTopOf="@id/skip_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:strokeColor="?colorPrimary" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skip_login"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/skip_login_english"
+        android:textAllCaps="false"
+        android:textColor="?textSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

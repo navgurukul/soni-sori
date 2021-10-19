@@ -2,17 +2,16 @@ package org.merakilearn.datasource
 
 import android.app.Application
 import androidx.preference.PreferenceManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.datasource.network.model.OnBoardingPageData
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
-class ApplicationRepo(
+class LoginRepository(
     private val applicationApi: SaralApi,
     private val application: Application,
     private val courseDb: CoursesDatabase,
@@ -28,30 +27,15 @@ class ApplicationRepo(
             }
             val response = applicationApi.initLoginAsync(loginRequest)
             authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
-            if (isFakeLogin)
+            if (isFakeLogin) {
                 userRepo.resetFakeLogin()
+            }
             userRepo.saveUserLoginResponse(response)
             response
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            FirebaseCrashlytics.getInstance().recordException(ex)
             null
         }
-    }
-
-    fun retrieveDataFromConfig(language:String): OnBoardingPageData? {
-
-            val config= Config()
-            config.initialise()
-            val res=config.getObjectifiedValue<OnBoardingPageData>(language)
-            if(res==null)
-                retrieveDataFromApi()
-
-            return res
-    }
-    fun retrieveDataFromApi(): OnBoardingPageData?{
-
-        val res=
-        return null
     }
 
     suspend fun performFakeSignUp(): LoginResponse? {
@@ -61,7 +45,7 @@ class ApplicationRepo(
             userRepo.saveFakeLoginResponse(response)
             response
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            FirebaseCrashlytics.getInstance().recordException(ex)
             null
         }
     }
@@ -74,7 +58,7 @@ class ApplicationRepo(
                 authenticationRepository.logout()
             }
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            FirebaseCrashlytics.getInstance().recordException(ex)
             false
         }
     }

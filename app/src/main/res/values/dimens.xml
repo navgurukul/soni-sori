@@ -18,4 +18,6 @@
     <dimen name="course_card_width">156dp</dimen>
     <dimen name="course_card_height">92dp</dimen>
     <dimen name="dimen_350_dp">350dp</dimen>
+    <dimen name="minimum_button_height">56dp</dimen>
+    <dimen name="indicator_size">4dp</dimen>
 </resources>

@@ -15,8 +15,6 @@ import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
-import org.navgurukul.learn.util.LearnPreferences
-
 
 class LearnFragment : Fragment() {
 
@@ -37,10 +35,6 @@ class LearnFragment : Fragment() {
         initRecyclerView()
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-
-        if(arguments?.getInt("PATHWAY_ID")!=null) {
-            viewModel.setPreferenceForCourse(arguments?.getInt("PATHWAY_ID")!!)
-        }
 
         initSwipeRefresh()
 

@@ -21,8 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.OnBoardingActivity
-import org.merakilearn.OnBoardingActivityArgs
+import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
@@ -52,11 +51,11 @@ class ProfileActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
 
         if (!userRepo.isUserLoggedIn() || userRepo.isFakeLogin()) {
-            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
+            OnBoardingActivity.restartApp(this, true)
             return
         }
 
-        tvPrivacyPolicy.setOnClickListener{
+        tvPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
@@ -74,9 +73,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 is ProfileViewEvents.ShareText -> shareCode(it)
                 ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(
-                    this, OnBoardingActivityArgs(
-                        clearNotification = true
-                    )
+                    this, clearNotification = true
                 )
                 is ProfileViewEvents.ShowUpdateServerDialog -> {
                     showUpdateServerDialog(it.serverUrl)
@@ -184,7 +181,8 @@ class ProfileActivity : AppCompatActivity() {
 
         //Update profile image only when it changes
         if (mBinding.ivProfile.getTag(R.id.ivProfile) == null ||
-            mBinding.ivProfile.getTag(R.id.ivProfile)!= it.profilePic) {
+            mBinding.ivProfile.getTag(R.id.ivProfile) != it.profilePic
+        ) {
             val requestOptions = RequestOptions()
                 .centerCrop()
                 .transform(CircleCrop())

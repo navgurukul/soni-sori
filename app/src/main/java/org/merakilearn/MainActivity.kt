@@ -21,8 +21,11 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.core.extentions.activityArgs
+import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.ui.profile.ProfileActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -30,51 +33,45 @@ import org.navgurukul.commonui.themes.getThemedColor
 
 @Parcelize
 data class MainActivityArgs(
-    val clearNotification: Boolean
+    val clearNotification: Boolean = false,
+    val selectedPathwayId: Int? = null
 ) : Parcelable
 
 class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     companion object {
-        const val KEY_ARG = "MainActivity:args"
-
-        fun launch(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
+        fun launch(context: Context, selectedPathwayId: Int? = null) {
+            val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
             context.startActivity(intent)
-            (context as Activity).finish()
         }
 
-        fun newIntent(context: Context, clearNotification: Boolean = false): Intent {
+        fun newIntent(
+            context: Context,
+            clearNotification: Boolean = false,
+            selectedPathwayId: Int? = null
+        ): Intent {
             val args = MainActivityArgs(
-                clearNotification = clearNotification
+                clearNotification = clearNotification,
+                selectedPathwayId = selectedPathwayId
             )
 
             return Intent(context, MainActivity::class.java)
                 .apply {
-                    putExtra(KEY_ARG, args)
+                    putExtras(args.toBundle()!!)
                 }
         }
-        fun launchLearnFragment(context: FragmentActivity, pathway_id:Int){
-            val intent=Intent(context,MainActivity::class.java)
-            intent.putExtra(LAUNCH_LEARN,true)
-
-            intent.putExtra(PATHWAY_ID,pathway_id)
-
-            context.startActivity(intent)
-        }
-        private const val LAUNCH_LEARN="arg_launch_learn"
-        private const val PATHWAY_ID="PATHWAY_ID"
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
+        mainActivityArgs.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
     }
 
 
     private val appOpenDelegate: AppOpenDelegate by inject()
+    private val mainActivityArgs: MainActivityArgs by activityArgs()
     private val userRepo: UserRepo by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,11 +82,11 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
 
-        if(intent.hasExtra(LAUNCH_LEARN) && intent.getBooleanExtra(LAUNCH_LEARN,false)){
-            val bundle= bundleOf(PATHWAY_ID to intent.getIntExtra(PATHWAY_ID,60))
-            navHostFragment.navController.navigate(R.id.navigation_learn,bundle)
+        if (mainActivityArgs.selectedPathwayId != null) {
+            navHostFragment.navController.navigate(R.id.navigation_learn)
         }
-        intent.getParcelableExtra<MainActivityArgs>(KEY_ARG)?.let { args ->
+
+        mainActivityArgs.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
 
@@ -97,7 +94,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             userRepo.getCurrentUser()?.let { currentUser ->
                 setUserThumbnail(it, currentUser)
             } ?: run {
-                OnBoardingActivity.restartApp(this@MainActivity, OnBoardingActivityArgs(true,"",listOf(),""))
+                OnBoardingActivity.restartApp(this@MainActivity)
             }
         }
     }
@@ -123,7 +120,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         it.setOnClickListener {
             if (userRepo.isFakeLogin())
-                OnBoardingActivity.launchLoginFragment(this)
+                OnBoardingActivity.showLoginScreen(this)
             else
                 ProfileActivity.launch(this)
         }

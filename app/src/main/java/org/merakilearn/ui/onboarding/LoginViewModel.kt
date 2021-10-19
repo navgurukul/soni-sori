@@ -2,18 +2,18 @@ package org.merakilearn.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import org.merakilearn.datasource.ApplicationRepo
+import org.merakilearn.datasource.LoginRepository
 
 class LoginViewModel(
-    private val applicationRepo: ApplicationRepo
+    private val loginRepository: LoginRepository
 ) : ViewModel() {
 
     fun initLoginServer(authToken: String?) = liveData {
-        emit(applicationRepo.loginWithAuthToken(authToken))
+        emit(loginRepository.loginWithAuthToken(authToken))
     }
 
     fun logOut() = liveData {
-        emit(applicationRepo.logOut())
+        emit(loginRepository.logOut())
     }
 
 }
