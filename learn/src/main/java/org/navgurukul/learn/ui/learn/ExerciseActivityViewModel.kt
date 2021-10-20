@@ -46,7 +46,7 @@ class ExerciseActivityViewModel(
                         setState {
                             copy(
                                 isLoading = false,
-                                title = course.name,
+                                currentCourseTitle = course.name,
                                 exerciseList = course.exercises
                             )
                         }
@@ -79,6 +79,9 @@ class ExerciseActivityViewModel(
             currentCourse.exercises[currentStudyIndex - 1]
         } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.exercises.size - 1) {
             currentCourse.exercises[currentStudyIndex + 1]
+        }  else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.exercises.size - 1) {
+            setState { copy(isCourseCompleted = true, nextCourseTitle = "nextCourseTitle") }
+            null
         } else {
             null
         }
@@ -159,7 +162,9 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
 
 data class ExerciseActivityViewState(
     val isLoading: Boolean = false,
-    val title: String = "",
+    val isCourseCompleted: Boolean = false,
+    val currentCourseTitle: String = "",
+    val nextCourseTitle: String = "",
     val exerciseList: List<Exercise> = listOf()
 ) : ViewState
 

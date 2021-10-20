@@ -18,64 +18,57 @@ class CourseExerciseNavigationBottomSheet
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    lateinit var btnMarkAsCompleted: MaterialButton
-    lateinit var btnNext: ImageView
-    lateinit var btnPrev: ImageView
+    lateinit var btnNext: MaterialButton
+    lateinit var btnPrev: MaterialButton
+    lateinit var btnMain: MaterialButton
 
     init {
-        if(!isInEditMode) {
+        if (!isInEditMode) {
             inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
 
-            btnMarkAsCompleted = findViewById(R.id.btnMarkCompleted)
             btnNext = findViewById(R.id.navigateNext)
             btnPrev = findViewById(R.id.navigatePrev)
+            btnMain = findViewById(R.id.btnMain)
 
         }
     }
 
-        companion object {
-            const val TAG = "ModalBottomSheet"
-        }
-
-    fun setMarkAction(markAction: () -> Unit){
-        btnMarkAsCompleted.setOnClickListener{
-            markAction.invoke()
-        }
+    companion object {
+        const val TAG = "ModalBottomSheet"
     }
 
-    fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit){
-        btnPrev.setOnClickListener{
+    fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit) {
+        btnPrev.setOnClickListener {
             prevAction.invoke()
         }
 
-        btnNext.setOnClickListener{
+        btnNext.setOnClickListener {
             nextAction.invoke()
         }
     }
 
-    fun setView(isMarkedCompleted: Boolean, isFirstItem: Boolean, isLastItem: Boolean){
+    fun setView(isFirstItem: Boolean) {
 
-        if(isMarkedCompleted) {
-            btnMarkAsCompleted.visibility = View.GONE
+        if (isFirstItem)
+            btnPrev.visibility = View.GONE
+        else
+            btnPrev.visibility = View.VISIBLE
 
-            if(isFirstItem)
-                btnPrev.visibility = View.GONE
-            else
-                btnPrev.visibility = View.VISIBLE
+    }
 
-            if(isLastItem)
-                btnNext.visibility = View.GONE
-            else
-                btnNext.visibility = View.VISIBLE
+    fun setMainButton(btnText: String, btnAction: () -> Unit, isOnlyMainBtnVisible: Boolean) {
+        btnMain.visibility = View.VISIBLE
+
+        btnMain.text = btnText
+
+        btnMain.setOnClickListener {
+            btnAction.invoke()
         }
-        else {
-            btnMarkAsCompleted.visibility = View.VISIBLE
 
+        if (isOnlyMainBtnVisible) {
             btnPrev.visibility = View.GONE
             btnNext.visibility = View.GONE
         }
-
-
     }
 
 

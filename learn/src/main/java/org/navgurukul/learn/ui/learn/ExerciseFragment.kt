@@ -1,15 +1,16 @@
 package org.navgurukul.learn.ui.learn
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,15 +45,6 @@ class ExerciseFragment : Fragment() {
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
-
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                showExerciseNavigationBar(this)
-            }
-        }
-    }
 
     companion object {
         fun newInstance(
@@ -96,27 +88,54 @@ class ExerciseFragment : Fragment() {
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
-            contentAdapter.submitList(it.exerciseList)
+            showErrorScreen(it.isError)
+
+            if(!it.isError)
+                contentAdapter.submitList(it.exerciseList)
         })
 
-        if(args.isCompleted)
-            showExerciseNavigationBar()
-        else {
-            mBinding.recyclerViewSlug.postDelayed({
-                if (isRecyclerScrollable(mBinding.recyclerViewSlug))
-                    mBinding.recyclerViewSlug.addOnScrollListener(scrollListener)
-                else
-                    showExerciseNavigationBar()
-            }, 200)
-        }
+        setIsCompletedView(args.isCompleted)
+
+        showExerciseNavigationBar()
+
         initContentRV()
-        initSwipeRefresh()
+        initScreenRefresh()
+
+        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        mBinding.btnMarkCompleted.setOnClickListener {
+            markCompletedClicked()
+        }
     }
 
-    private fun initSwipeRefresh() {
+    private fun showErrorScreen(isError: Boolean) {
+        if(isError) {
+            mBinding.errorLayout.root.visibility = View.VISIBLE
+            mBinding.contentLayout.visibility = View.GONE
+        }else{
+            mBinding.errorLayout.root.visibility = View.GONE
+            mBinding.contentLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setIsCompletedView(isCompleted: Boolean) {
+        if(isCompleted){
+            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
+            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
+        }else{
+            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
+            mBinding.btnMarkCompleted.icon = null
+        }
+
+    }
+
+    private fun initScreenRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
-            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.PulledDownToRefresh)
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.RequestContentRefresh)
             mBinding.swipeContainer.isRefreshing = false
+        }
+
+        mBinding.errorLayout.btnRefresh.setOnClickListener{
+            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.RequestContentRefresh)
         }
     }
 
@@ -150,29 +169,21 @@ class ExerciseFragment : Fragment() {
 
     }
 
-    fun isRecyclerScrollable(recyclerView: RecyclerView): Boolean {
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-        val adapter = recyclerView.adapter
-        return if (adapter == null) false else layoutManager.findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1
+    private fun markCompletedClicked() {
+        fragmentViewModel.handle(
+            ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(
+                args.exerciseId
+            )
+        )
+
+        navigationClickListener.onMarkCompleteClick()
+        args.isCompleted = true
+        setIsCompletedView(true)
     }
 
-    private fun showExerciseNavigationBar(scrollListener: RecyclerView.OnScrollListener ?= null) {
+    private fun showExerciseNavigationBar() {
         mBinding.bottomNavigationExercise.animateVisibility(true)
-
-        scrollListener?.let {
-            mBinding.recyclerViewSlug.removeOnScrollListener(it)
-        }
-        mBinding.bottomNavigationExercise.setView(args.isCompleted, args.isFirst, args.isLast)
-
-        mBinding.bottomNavigationExercise.setMarkAction {
-            fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(args.exerciseId))
-
-            navigationClickListener.onMarkCompleteClick()
-
-            args.isCompleted = true
-            mBinding.bottomNavigationExercise.setView(args.isCompleted, args.isFirst, args.isLast)
-        }
-
+        mBinding.bottomNavigationExercise.setView(args.isFirst)
         mBinding.bottomNavigationExercise.setNavigationActions(
             {
                 navigationClickListener.onPrevClick()

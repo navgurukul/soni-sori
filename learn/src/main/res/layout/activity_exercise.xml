@@ -51,7 +51,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvExerciseTitle"
+                        android:id="@+id/tvCourseTitle"
                         style="?textAppearanceEmphasized1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -93,6 +93,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
+
+        <include
+            android:id="@+id/courseCompletedView"
+            layout="@layout/course_completion_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

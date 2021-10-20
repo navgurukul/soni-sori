@@ -153,7 +153,6 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
                 " `courseId` TEXT NOT NULL," +
                 " `id` TEXT NOT NULL," +
                 " `name` TEXT NOT NULL," +
-                " `slug` TEXT," +
                 " `lang` TEXT NOT NULL," +
                 " `courseName` TEXT," +
                 " PRIMARY KEY(`id`, `lang`) )"
@@ -175,10 +174,6 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
 
 val MIGRATION_5_6 = object: Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
-
-        database.execSQL("ALTER TABLE `course_exercise` " +
-                "DROP COLUMN 'slug'"
-        )
 
         database.execSQL("ALTER TABLE `course_exercise` (" +
                 "ADD COLUMN 'type' TEXT NOT NULL DEFAULT 'TEXT'," +

@@ -34,7 +34,7 @@ class ExerciseFragmentViewModel(
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
             is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.exerciseId)
-            is ExerciseFragmentViewActions.PulledDownToRefresh -> fetchExerciseContent(
+            is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
                 args.exerciseId,
                 args.courseId,
                 true
@@ -60,8 +60,9 @@ class ExerciseFragmentViewModel(
 
                 setState { copy(isLoading = false) }
 
-                if (list != null && list.content?.isNotEmpty() == true) {
-                    setState { copy(exerciseList = it.content!!) }
+                if (list != null && list.content.isNotEmpty() == true) {
+                    setState { copy(isError = false) }
+                    setState { copy(exerciseList = it.content) }
                 } else {
                     _viewEvents.setValue(
                         ExerciseFragmentViewEvents.ShowToast(
@@ -70,6 +71,8 @@ class ExerciseFragmentViewModel(
                             )
                         )
                     )
+
+                    setState { copy(isError = true) }
                 }
             }
         }
@@ -99,12 +102,13 @@ class ExerciseFragmentViewModel(
         data class MarkCompleteClicked(val exerciseId: String) :
             ExerciseFragmentViewActions()
 
-        object PulledDownToRefresh : ExerciseFragmentViewActions()
+        object RequestContentRefresh : ExerciseFragmentViewActions()
 
     }
 
     data class ExerciseFragmentViewState(
         val isLoading: Boolean = false,
+        val isError: Boolean = false,
         val exerciseList: List<BaseCourseContent> = listOf()
     ) : ViewState
 

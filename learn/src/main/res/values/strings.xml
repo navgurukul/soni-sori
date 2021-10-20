@@ -101,6 +101,13 @@
     <string name="run_code">Run Code</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
-    <string name="error_loading_data">Some error occured while fetching data. Please try again</string>
+    <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>
     <string name="mark_as_completed">Mark as completed</string>
+    <string name="reading_completed">Reading Completed</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="content_error_message">Oops! The content fell off the scoop. Don’t forget check your internet connection</string>
+    <string name="refresh_content">Refresh Content</string>
+    <string name="next_course_message">Next Up: %1s</string>
+    <string name="course_completed_message">%1s Completed!</string>
 </resources>

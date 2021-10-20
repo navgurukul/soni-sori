@@ -82,10 +82,46 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
         viewModel.viewState.observe(this, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
-            mAdapter.submitList(it.exerciseList)
-            mBinding.tvExerciseTitle.text = it.title
+
+            showCompletionScreen(it.isCourseCompleted, it.nextCourseTitle, it.currentCourseTitle)
+
+            if (!it.isCourseCompleted) {
+                mAdapter.submitList(it.exerciseList)
+                mBinding.tvCourseTitle.text = it.currentCourseTitle
+            }
         })
 
+
+    }
+
+    private fun showCompletionScreen(
+        courseCompleted: Boolean,
+        nextCourseTitle: String,
+        currentCourseTitle: String
+    ) {
+        if (courseCompleted) {
+            mBinding.courseCompletedView.root.visibility = View.VISIBLE
+            mBinding.appBarExercise.visibility = View.GONE
+            mBinding.exerciseContentContainer.visibility = View.GONE
+
+            mBinding.courseCompletedView.tvCompletedCourseMsg.text =
+                getString(R.string.course_completed_message, currentCourseTitle)
+            mBinding.courseCompletedView.bottomNavigationLayout.setMainButton(
+                getString(
+                    R.string.next_course_message,
+                    nextCourseTitle
+                ),
+                {
+                    setResult(RESULT_OK)
+                    finish()
+                }, true
+            )
+
+        } else {
+            mBinding.courseCompletedView.root.visibility = View.GONE
+            mBinding.appBarExercise.visibility = View.VISIBLE
+            mBinding.exerciseContentContainer.visibility = View.VISIBLE
+        }
 
     }
 

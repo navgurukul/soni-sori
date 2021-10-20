@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvCompletedCourseMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_11x"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/spacing_1x"
+            android:textColor="@color/textColor"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Intro Completed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ivTV"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_11x"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:src="@drawable/ic_course_complete"
+            android:layout_below="@id/tvCompletedCourseMsg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCompletedCourseMsg"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationLayout"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet
+            android:id="@+id/bottomNavigationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

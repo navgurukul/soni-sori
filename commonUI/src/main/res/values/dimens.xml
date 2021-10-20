@@ -9,6 +9,7 @@
     <dimen name="spacing_6x">24dp</dimen>
     <dimen name="spacing_8x">32dp</dimen>
     <dimen name="spacing_10x">36dp</dimen>
+    <dimen name="spacing_11x">44dp</dimen>
     <dimen name="spacing_12x">48dp</dimen>
 
     <dimen name="actionBarSize">64dp</dimen>
