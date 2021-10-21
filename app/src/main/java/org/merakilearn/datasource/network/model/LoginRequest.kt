@@ -7,9 +7,11 @@ import java.io.Serializable
 @JsonClass(generateAdapter = true)
 data class LoginRequest(
     @Json(name = "idToken")
-    var idToken: String?,
+    val idToken: String?,
     @Json(name = "mode")
-    var mode: String = "android",
+    val mode: String = "android",
     @Json(name = "id")
-    var id: Int? = null
+    val id: Int? = null,
+    @Json(name = "language")
+    val language: String
 ) : Serializable

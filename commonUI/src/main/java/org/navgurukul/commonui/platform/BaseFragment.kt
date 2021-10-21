@@ -42,7 +42,7 @@ abstract class BaseFragment : Fragment() {
     @LayoutRes
     abstract fun getLayoutResId(): Int
 
-    open fun showLoading(message: CharSequence?) {
+    open fun showLoading(message: CharSequence? = null) {
         showLoadingDialog(message)
     }
 

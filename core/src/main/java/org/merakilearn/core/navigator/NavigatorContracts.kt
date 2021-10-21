@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
 import java.io.File
 
 interface AppModuleNavigator {
-    fun launchIntentForLauncherActivity(context: Context, clearNotification: Boolean): Intent
     fun launchIntentForHomeActivity(context: Context, clearNotification: Boolean): Intent
     fun launchIntentForOnBoardingActivity(context: Context, clearNotification: Boolean): Intent
 }

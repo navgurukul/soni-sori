@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/spacing_6x">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_select_language_bg" />
+
+    <TextView
+        android:id="@+id/info_english"
+        style="?textAppearanceHeadline6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/select_language_english"
+        android:textAlignment="center"
+        android:textColor="?textPrimary"
+        app:layout_constraintBottom_toTopOf="@id/info_hindi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/info_hindi"
+        style="?textAppearanceHeadline6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:text="@string/select_language_hindi"
+        android:textAlignment="center"
+        android:textColor="?textPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/btn_english"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_english" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_english"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_8x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:elevation="2dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minHeight="@dimen/minimum_button_height"
+        android:text="@string/english"
+        android:textAllCaps="false"
+        android:textAppearance="?textAppearanceBody2"
+        android:textColor="?textPrimary"
+        app:backgroundTint="@color/colorWhite"
+        app:cornerRadius="?cornerRadius400"
+        app:layout_constraintBottom_toTopOf="@+id/btn_hindi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_hindi"
+        app:strokeColor="@color/colorGrey"
+        app:strokeWidth="?borderWidth" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_hindi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:elevation="2dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minHeight="@dimen/minimum_button_height"
+        android:text="@string/hindi"
+        android:textAppearance="?textAppearanceBody2"
+        android:textColor="?textPrimary"
+        app:backgroundTint="@color/colorWhite"
+        app:cornerRadius="?cornerRadius400"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_english"
+        app:strokeColor="@color/colorGrey"
+        app:strokeWidth="?borderWidth" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

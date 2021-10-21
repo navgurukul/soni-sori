@@ -16,7 +16,6 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 
-
 class LearnFragment : Fragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()

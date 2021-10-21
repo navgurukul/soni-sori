@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.datasource.model.Language
+import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -14,11 +14,10 @@ import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.util.LearnPreferences
 
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
-    private val learnPreferences: LearnPreferences,
+    private val corePreferences: CorePreferences,
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
 
@@ -29,7 +28,7 @@ class LearnFragmentViewModel(
                 it?.let {
                     if (it.isNotEmpty()) {
                         setState {
-                            val lastSelectedPathwayId = learnPreferences.lastSelectedPathWayId
+                            val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
                             var currentPathwayIndex = currentPathwayIndex
                             var currentPathway = it[currentPathwayIndex]
                             it.forEachIndexed { index, pathway ->
@@ -42,7 +41,7 @@ class LearnFragmentViewModel(
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
                             }
-                            val selectedLanguage = currentPathway.supportedLanguages.find { it.code == learnPreferences.selectedLanguage }?.label ?:  currentPathway.supportedLanguages[0].label
+                            val selectedLanguage = currentPathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?:  currentPathway.supportedLanguages[0].label
                             copy(
                                 loading = courses.isEmpty(),
                                 pathways = it,
@@ -70,7 +69,7 @@ class LearnFragmentViewModel(
     }
 
     fun selectPathway(pathway: Pathway) {
-        val selectedLanguage = pathway.supportedLanguages.find { it.code == learnPreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
+        val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
         setState {
             copy(
                 currentPathwayIndex = pathways.indexOf(pathway),
@@ -80,7 +79,7 @@ class LearnFragmentViewModel(
                 selectedLanguage = selectedLanguage
             )
         }
-        learnPreferences.lastSelectedPathWayId = pathway.id
+        corePreferences.lastSelectedPathWayId = pathway.id
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
         refreshCourses(pathway, false)
     }
@@ -91,7 +90,7 @@ class LearnFragmentViewModel(
                 selectedLanguage = language.label
             )
         }
-        learnPreferences.selectedLanguage = language.code!!
+        corePreferences.selectedLanguage = language.code!!
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
     }
 

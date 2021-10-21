@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.util.LearnPreferences
 
-class LearnViewModel(private val learnRepo: LearnRepo, private val learnPreferences: LearnPreferences) : ViewModel() {
+class LearnViewModel(private val learnRepo: LearnRepo, corePreferences: CorePreferences) : ViewModel() {
 
-    private val selectedLanguage = learnPreferences.selectedLanguage
+    private val selectedLanguage = corePreferences.selectedLanguage
 
     fun fetchCourseExerciseData(courseId: String) = liveData {
         emitSource(learnRepo.getCoursesExerciseData(courseId, selectedLanguage))
