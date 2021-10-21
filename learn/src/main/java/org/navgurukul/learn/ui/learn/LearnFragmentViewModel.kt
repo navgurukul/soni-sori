@@ -21,6 +21,8 @@ class LearnFragmentViewModel(
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
 
+    var coursesList: List<Course>? = null
+
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
@@ -38,6 +40,8 @@ class LearnFragmentViewModel(
                                 }
                             }
                             val courses = currentPathway.courses
+                            coursesList = courses
+
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
                             }
@@ -64,7 +68,10 @@ class LearnFragmentViewModel(
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
-                it?.let { setState { copy(courses = it, loading = false, logo = pathway.logo) } }
+                it?.let {
+                    coursesList = it
+                    setState { copy(courses = it, loading = false, logo = pathway.logo) }
+                }
             }
         }
     }
@@ -126,6 +133,21 @@ class LearnFragmentViewModel(
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
             }
+            is LearnFragmentViewActions.NextCourseClicked -> {
+                launchNextCourse(actions.currentCourseId)
+            }
+        }
+    }
+
+    private fun launchNextCourse(currentCourseId: String) {
+        val currentCourseIndex = coursesList?.indexOfFirst { it.id == currentCourseId }
+
+        currentCourseIndex?.let { index ->
+            if(index > 0 && index < coursesList?.size?.minus(1)?:0){
+                coursesList?.let {
+                    selectCourse(it[currentCourseIndex + 1])
+                }
+            }
         }
     }
 }
@@ -154,4 +176,5 @@ sealed class LearnFragmentViewActions : ViewModelAction {
     object ToolbarClicked : LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
+    class NextCourseClicked(val currentCourseId: String) : LearnFragmentViewActions()
 }

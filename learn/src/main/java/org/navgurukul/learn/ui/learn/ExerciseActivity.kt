@@ -26,10 +26,13 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
     companion object {
         private const val ARG_KEY_COURSE_ID = "arg_course_id"
+        private var courseNavigationClickListener: CourseNavigationClickListener? = null
 
-        fun start(context: Context, courseId: String) {
+        fun start(context: Context, courseId: String, courseNavigationClickListener: CourseNavigationClickListener ?= null) {
             val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_COURSE_ID, courseId)
+
+            courseNavigationClickListener?.let { this.courseNavigationClickListener = it }
             context.startActivity(intent)
         }
     }
@@ -112,9 +115,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                     nextCourseTitle
                 ),
                 {
-                    setResult(RESULT_OK)
+                    courseNavigationClickListener?.onNextCourseClicked(courseId)
                     finish()
-                }, true
+                },
+                true
             )
 
         } else {
@@ -180,5 +184,9 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
     override fun onMarkCompleteClick() {
         viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
+    }
+
+    interface CourseNavigationClickListener{
+        fun onNextCourseClicked(currentCourseId: String)
     }
 }

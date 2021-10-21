@@ -23,41 +23,42 @@
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/contentLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_slug"
+                    <LinearLayout
+                        android:id="@+id/contentLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/spacing_1x"
-                        android:paddingTop="@dimen/spacing_2x"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_base_course_content" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMarkCompleted"
-                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/mark_as_completed"
-                        android:textColor="@color/primaryColor"
-                        android:layout_marginTop="@dimen/spacing_5x"
-                        android:layout_marginBottom="@dimen/spacing_5x"
-                        android:textAllCaps="false"
-                        android:textSize="14sp"
-                        app:icon="@drawable/ic_check"
-                        app:iconGravity="end"
-                        app:iconTint="@color/primaryColor" />
-                </LinearLayout>
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_slug"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/spacing_1x"
+                            android:paddingTop="@dimen/spacing_2x"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_base_course_content" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMarkCompleted"
+                            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/spacing_5x"
+                            android:layout_marginBottom="@dimen/spacing_5x"
+                            android:text="@string/mark_as_completed"
+                            android:textAllCaps="false"
+                            android:textColor="@color/primaryColor"
+                            android:textSize="14sp"
+                            app:icon="@drawable/ic_check"
+                            app:iconGravity="end"
+                            app:iconTint="@color/primaryColor" />
+                    </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
+
                 <include
                     android:id="@+id/progressBar"
                     layout="@layout/component_progress_bar"
