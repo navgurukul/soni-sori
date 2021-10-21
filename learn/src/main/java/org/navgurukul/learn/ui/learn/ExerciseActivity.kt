@@ -26,13 +26,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
     companion object {
         private const val ARG_KEY_COURSE_ID = "arg_course_id"
-        private var courseNavigationClickListener: CourseNavigationClickListener? = null
 
-        fun start(context: Context, courseId: String, courseNavigationClickListener: CourseNavigationClickListener ?= null) {
+        fun start(context: Context, courseId: String) {
             val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_COURSE_ID, courseId)
-
-            courseNavigationClickListener?.let { this.courseNavigationClickListener = it }
             context.startActivity(intent)
         }
     }
@@ -67,19 +64,34 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
         setSupportActionBar(mBinding.exerciseToolbar)
         mBinding.buttonBack.setOnClickListener { finish() }
+
+        mBinding.bottomNavigationExercise.setNavigationActions(
+            {
+                viewModel.handle(ExerciseActivityViewActions.PrevNavigationClicked)
+            },
+            {
+                viewModel.handle(ExerciseActivityViewActions.NextNavigationClicked)
+            }
+        )
+
         initRecyclerViewExerciseList()
+
 
         viewModel.viewEvents.observe(this, {
             when (it) {
                 is ExerciseActivityViewEvents.ShowToast -> toast(it.toastText)
-                is ExerciseActivityViewEvents.ShowExerciseFragment -> launchExerciseFragment(
-                    it.isFirst,
-                    it.isLast,
-                    it.isCompleted,
-                    it.courseId,
-                    it.exerciseId,
-                    it.navigation
-                )
+                is ExerciseActivityViewEvents.ShowExerciseFragment -> {
+                    launchExerciseFragment(
+                        it.isFirst,
+                        it.isLast,
+                        it.isCompleted,
+                        it.courseId,
+                        it.exerciseId,
+                        it.navigation
+                    )
+
+                    setExerciseNavigationBarView(it.isFirst)
+                }
             }
         })
 
@@ -94,7 +106,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             }
         })
 
+    }
 
+    private fun setExerciseNavigationBarView(isFirst: Boolean) {
+        mBinding.bottomNavigationExercise.setView(isFirst)
     }
 
     private fun showCompletionScreen(
@@ -115,8 +130,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                     nextCourseTitle
                 ),
                 {
-                    courseNavigationClickListener?.onNextCourseClicked(courseId)
-                    finish()
+                    viewModel.handle(ExerciseActivityViewActions.OnNextCourseClicked)
                 },
                 true
             )
@@ -174,19 +188,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         }
     }
 
-    override fun onPrevClick() {
-        viewModel.handle(ExerciseActivityViewActions.PrevNavigationClicked)
-    }
-
-    override fun onNextClick() {
-        viewModel.handle(ExerciseActivityViewActions.NextNavigationClicked)
-    }
-
     override fun onMarkCompleteClick() {
         viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
     }
 
-    interface CourseNavigationClickListener{
-        fun onNextCourseClicked(currentCourseId: String)
-    }
 }

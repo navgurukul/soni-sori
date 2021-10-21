@@ -16,7 +16,7 @@ import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 
-class LearnFragment : Fragment(), ExerciseActivity.CourseNavigationClickListener {
+class LearnFragment : Fragment(){
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
@@ -56,7 +56,7 @@ class LearnFragment : Fragment(), ExerciseActivity.CourseNavigationClickListener
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
-                    ExerciseActivity.start(requireContext(), it.courseId, this)
+                    ExerciseActivity.start(requireContext(), it.courseId)
                 }
                 LearnFragmentViewEvents.OpenPathwaySelectionSheet -> {
                     LearnFragmentPathwaySelectionSheet().show(
@@ -119,7 +119,4 @@ class LearnFragment : Fragment(), ExerciseActivity.CourseNavigationClickListener
         )
     }
 
-    override fun onNextCourseClicked(currentCourseId: String) {
-        viewModel.handle(LearnFragmentViewActions.NextCourseClicked(currentCourseId))
-    }
 }

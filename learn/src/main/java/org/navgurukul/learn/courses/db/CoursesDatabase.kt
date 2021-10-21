@@ -158,15 +158,28 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
                 " PRIMARY KEY(`id`, `lang`) )"
         )
 
-        database.execSQL("ALTER TABLE `pathway_course`(" +
-                "DROP COLUMN 'created_at'," +
-                "DROP COLUMN 'logo'," +
-                "DROP COLUMN 'notes'," +
-                "DROP COLUMN 'pathwayName'," +
-                "DROP COLUMN 'sequence_num'," +
-                "DROP COLUMN 'type'," +
-                "DROP COLUMN 'days_to_complete')"
+        //drop old table
+        database.execSQL("DROP TABLE pathway_course")
+
+        //create new table
+        database.execSQL("CREATE TABLE `pathway_course`(" +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `shortDescription` TEXT NOT NULL," +
+                " `pathwayId` INTEGER," +
+                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'" +
+                " PRIMARY KEY(`id`, `lang`) )"
         )
+//
+//        database.execSQL("ALTER TABLE `pathway_course`(" +
+//                "DROP COLUMN 'created_at'," +
+//                "DROP COLUMN 'logo'," +
+//                "DROP COLUMN 'notes'," +
+//                "DROP COLUMN 'pathwayName'," +
+//                "DROP COLUMN 'sequence_num'," +
+//                "DROP COLUMN 'type'," +
+//                "DROP COLUMN 'days_to_complete')"
+//        )
     }
 
 }
@@ -179,11 +192,11 @@ val MIGRATION_5_6 = object: Migration(5, 6) {
                 "ADD COLUMN 'type' TEXT NOT NULL DEFAULT 'TEXT'," +
                 "ADD COLUMN 'progress' TEXT)"
         )
-                database.execSQL("ALTER TABLE `pathway_course` (" +
-                "DROP COLUMN 'courseName'," +
-                "DROP COLUMN 'exerciseSlugName'," +
-                "DROP COLUMN 'exerciseName')"
-        )
+//                database.execSQL("ALTER TABLE `pathway_course` (" +
+//                "DROP COLUMN 'courseName'," +
+//                "DROP COLUMN 'exerciseSlugName'," +
+//                "DROP COLUMN 'exerciseName')"
+//        )
 
 
     }

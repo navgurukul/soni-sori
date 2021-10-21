@@ -101,5 +101,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet
+            android:id="@+id/bottomNavigationExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:visibility="visible" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

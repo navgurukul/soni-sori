@@ -96,8 +96,6 @@ class ExerciseFragment : Fragment() {
 
         setIsCompletedView(args.isCompleted)
 
-        showExerciseNavigationBar()
-
         initContentRV()
         initScreenRefresh()
 
@@ -181,19 +179,6 @@ class ExerciseFragment : Fragment() {
         setIsCompletedView(true)
     }
 
-    private fun showExerciseNavigationBar() {
-        mBinding.bottomNavigationExercise.animateVisibility(true)
-        mBinding.bottomNavigationExercise.setView(args.isFirst)
-        mBinding.bottomNavigationExercise.setNavigationActions(
-            {
-                navigationClickListener.onPrevClick()
-            },
-            {
-                navigationClickListener.onNextClick()
-            }
-        )
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is ExerciseNavigationClickListener) {
@@ -202,8 +187,6 @@ class ExerciseFragment : Fragment() {
     }
 
     interface ExerciseNavigationClickListener {
-        fun onPrevClick()
-        fun onNextClick()
         fun onMarkCompleteClick()
     }
 

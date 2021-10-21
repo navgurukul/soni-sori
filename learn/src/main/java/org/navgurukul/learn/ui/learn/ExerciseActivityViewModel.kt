@@ -28,6 +28,7 @@ class ExerciseActivityViewModel(
 ) {
 
     private lateinit var currentCourse: Course
+    private lateinit var courseList: List<Course>
     private val selectedLanguage = learnPreferences.selectedLanguage
     private var currentStudy: CurrentStudy? = null
 
@@ -58,6 +59,8 @@ class ExerciseActivityViewModel(
                     }
                 }
         }
+
+//        courseList = learnRepo.
     }
 
     fun handle(action: ExerciseActivityViewActions) {
@@ -68,7 +71,11 @@ class ExerciseActivityViewModel(
             is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted()
             is ExerciseActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
             is ExerciseActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
+            is ExerciseActivityViewActions.OnNextCourseClicked -> navigateToNextCourse()
         }
+    }
+
+    private fun navigateToNextCourse() {
     }
 
     private fun navigate(navigation: ExerciseNavigation) {
@@ -169,6 +176,7 @@ data class ExerciseActivityViewState(
 ) : ViewState
 
 sealed class ExerciseActivityViewActions : ViewModelAction {
+    object OnNextCourseClicked : ExerciseActivityViewActions()
     object PrevNavigationClicked : ExerciseActivityViewActions()
     object NextNavigationClicked : ExerciseActivityViewActions()
     data class ExerciseListItemSelected(val exerciseId: String) : ExerciseActivityViewActions()
