@@ -76,50 +76,54 @@ interface CurrentStudyDao {
     suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
 }
 
-val MIGRATION_1_2 = object: Migration(1, 2) {
+val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL,  `logo` TEXT, PRIMARY KEY(`id`))")
     }
 
 }
 
-val MIGRATION_2_3 = object: Migration(2, 3) {
+val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         //create new table
-        database.execSQL("CREATE TABLE `new_course_exercise`(" +
-                " `content` TEXT," +
-                " `courseId` TEXT," +
-                " `githubLink` TEXT, " +
-                " `id` TEXT NOT NULL," +
-                " `name` TEXT," +
-                " `parentExerciseId` TEXT," +
-                " `reviewType` TEXT," +
-                " `sequenceNum` TEXT," +
-                " `slug` TEXT," +
-                " `solution` TEXT," +
-                " `submissionType` TEXT," +
-                " `lang` TEXT NOT NULL," +
-                " `courseName` TEXT," +
-                " PRIMARY KEY(`id`, `lang`) )")
+        database.execSQL(
+            "CREATE TABLE `new_course_exercise`(" +
+                    " `content` TEXT," +
+                    " `courseId` TEXT," +
+                    " `githubLink` TEXT, " +
+                    " `id` TEXT NOT NULL," +
+                    " `name` TEXT," +
+                    " `parentExerciseId` TEXT," +
+                    " `reviewType` TEXT," +
+                    " `sequenceNum` TEXT," +
+                    " `slug` TEXT," +
+                    " `solution` TEXT," +
+                    " `submissionType` TEXT," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " PRIMARY KEY(`id`, `lang`) )"
+        )
 
         //insert data from old table into new table
-        database.execSQL("INSERT INTO `new_course_exercise`(" +
-                " `content`," +
-                " `courseId`," +
-                " `githubLink`," +
-                " `id` ," +
-                " `name` ," +
-                " `parentExerciseId` ," +
-                " `reviewType` ," +
-                " `sequenceNum` ," +
-                " `slug` ," +
-                " `solution` ," +
-                " `submissionType` ," +
-                " 'lang' ," +
-                " `courseName` )" +
-                " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
-                " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`")
+        database.execSQL(
+            "INSERT INTO `new_course_exercise`(" +
+                    " `content`," +
+                    " `courseId`," +
+                    " `githubLink`," +
+                    " `id` ," +
+                    " `name` ," +
+                    " `parentExerciseId` ," +
+                    " `reviewType` ," +
+                    " `sequenceNum` ," +
+                    " `slug` ," +
+                    " `solution` ," +
+                    " `submissionType` ," +
+                    " 'lang' ," +
+                    " `courseName` )" +
+                    " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
+                    " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`"
+        )
 
         //drop old table
         database.execSQL("DROP TABLE course_exercise")
@@ -133,7 +137,7 @@ val MIGRATION_2_3 = object: Migration(2, 3) {
 
 }
 
-val MIGRATION_3_4 = object: Migration(3, 4) {
+val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Pathway
         database.execSQL("ALTER TABLE `pathway` ADD COLUMN `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]'")
@@ -141,34 +145,36 @@ val MIGRATION_3_4 = object: Migration(3, 4) {
 
 }
 
-val MIGRATION_4_5 = object: Migration(4, 5) {
+val MIGRATION_4_5 = object : Migration(4, 5) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         //drop old table
         database.execSQL("DROP TABLE course_exercise")
 
         //create new table
-        database.execSQL("CREATE TABLE `course_exercise`(" +
-                " `content` TEXT NOT NULL," +
-                " `courseId` TEXT NOT NULL," +
-                " `id` TEXT NOT NULL," +
-                " `name` TEXT NOT NULL," +
-                " `lang` TEXT NOT NULL," +
-                " `courseName` TEXT," +
-                " PRIMARY KEY(`id`, `lang`) )"
+        database.execSQL(
+            "CREATE TABLE `course_exercise`(" +
+                    " `content` TEXT NOT NULL," +
+                    " `courseId` TEXT NOT NULL," +
+                    " `id` TEXT NOT NULL," +
+                    " `name` TEXT NOT NULL," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " PRIMARY KEY(`id`, `lang`) )"
         )
 
         //drop old table
         database.execSQL("DROP TABLE pathway_course")
 
         //create new table
-        database.execSQL("CREATE TABLE `pathway_course`(" +
-                " `id` TEXT NOT NULL," +
-                " `name` TEXT NOT NULL," +
-                " `shortDescription` TEXT NOT NULL," +
-                " `pathwayId` INTEGER," +
-                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'" +
-                " PRIMARY KEY(`id`, `lang`) )"
+        database.execSQL(
+            "CREATE TABLE `pathway_course`(" +
+                    " `id` TEXT NOT NULL," +
+                    " `name` TEXT NOT NULL," +
+                    " `shortDescription` TEXT NOT NULL," +
+                    " `pathwayId` INTEGER," +
+                    " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'," +
+                    " PRIMARY KEY(`id`) )"
         )
 //
 //        database.execSQL("ALTER TABLE `pathway_course`(" +
@@ -185,25 +191,31 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
 }
 
 
-val MIGRATION_5_6 = object: Migration(5, 6) {
+val MIGRATION_5_6 = object : Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
-        database.execSQL("ALTER TABLE `course_exercise` (" +
-                "ADD COLUMN 'type' TEXT NOT NULL DEFAULT 'TEXT'," +
-                "ADD COLUMN 'progress' TEXT)"
+        database.execSQL(
+            "ALTER TABLE `course_exercise`" +
+                    "ADD COLUMN 'exerciseType' TEXT NOT NULL DEFAULT 'TEXT'"
         )
-//                database.execSQL("ALTER TABLE `pathway_course` (" +
-//                "DROP COLUMN 'courseName'," +
-//                "DROP COLUMN 'exerciseSlugName'," +
-//                "DROP COLUMN 'exerciseName')"
-//        )
+        database.execSQL(
+            "ALTER TABLE `course_exercise`" +
+                    "ADD COLUMN 'exerciseProgress' TEXT"
+        )
 
+        database.execSQL("DROP TABLE user_current_study")
+
+        //create new table
+        database.execSQL(
+            "CREATE TABLE `user_current_study`(" +
+                    " `courseId` TEXT NOT NULL," +
+                    " `exerciseId` TEXT NOT NULL," +
+                    " PRIMARY KEY(`courseId`) )"
+        )
 
     }
 
 }
-
-
 
 
 // When ever we do any change in local db need to write migration script here.
