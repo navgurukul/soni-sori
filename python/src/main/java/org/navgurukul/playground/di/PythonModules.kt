@@ -9,10 +9,11 @@ import org.merakilearn.core.navigator.PlaygroundModuleNavigator
 import org.navgurukul.playground.navigation.PythonModuleNavigatorImpl
 import org.navgurukul.playground.repo.PythonRepository
 import org.navgurukul.playground.repo.PythonRepositoryImpl
-import org.navgurukul.playground.ui.PythonPlaygroundViewModel
+import org.navgurukul.playground.editor.PythonEditorArgs
+import org.navgurukul.playground.editor.PythonEditorViewModel
 
 val viewModelModules = module {
-    viewModel { PythonPlaygroundViewModel(get()) }
+    viewModel { (args: PythonEditorArgs, errorColor: Int) -> PythonEditorViewModel(args, get(), get(), errorColor) }
 }
 
 val repoModules = module {

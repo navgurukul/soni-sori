@@ -1,183 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PythonPlaygroundActivity">
+    android:orientation="vertical"
+    tools:context=".editor.PythonEditorActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolBar"
+            android:minHeight="?actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/editor_background_dark"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent"/>
 
-        <org.navgurukul.playground.custom.LineNumberedEditText
-            android:id="@+id/etCode"
-            style="@style/Code"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="top"
-            android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"
-            android:paddingBottom="32dp"
-            android:scrollbars="horizontal|vertical"
-            android:textColor="@color/editor_text_on_dark"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <requestFocus />
-        </org.navgurukul.playground.custom.LineNumberedEditText>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@android:color/white"
-            android:orientation="horizontal">
-
-            <HorizontalScrollView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/controlTab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:text="@string/tab"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlBracketOpen"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/bracket_open"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlBracketClose"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/bracket_close"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlDoubleQuotes"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/control_double_quotes"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlSingleQuotes"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/control_single_quotes"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlCurlyOpen"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/curly_brace_open"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:id="@+id/controlCurlyClose"
-                        android:layout_width="@dimen/width_control"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:onClick="onClickControl"
-                        android:text="@string/curly_brace_close"
-                        android:textColor="@android:color/black" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:drawableEnd="@drawable/ic_play"
-                android:gravity="center"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="12dp"
-                android:text="@string/run"
-                android:textColor="@color/run_text"
-                app:backgroundTint="@color/run_background"
-                app:cornerRadius="0dp"
-                app:drawableTint="@color/run_text" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/height_top_buffer"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.PythonPlaygroundActivity">
-
-        <include layout="@layout/bottom_sheet_output" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

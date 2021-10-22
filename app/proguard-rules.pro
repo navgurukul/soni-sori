@@ -30,4 +30,4 @@
 -keep class com.chaquo.python.android.* {*;}
 -keepclassmembers class com.chaquo.python.android.* {*;}
 
--keepclassmembers class org.navgurukul.playground.ui.PythonPlaygroundViewModel {*;}
+-keepclassmembers class org.navgurukul.playground.repo.PythonRepositoryImpl {*;}

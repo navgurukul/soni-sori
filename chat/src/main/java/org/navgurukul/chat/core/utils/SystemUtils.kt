@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import org.merakilearn.core.extentions.toast
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.notifications.NotificationUtils
 
@@ -151,14 +152,4 @@ fun startImportTextFromFileIntent(fragment: Fragment, requestCode: Int) {
     } else {
         fragment.activity?.toast(R.string.error_no_external_application_found)
     }
-}
-
-// Not in KTX anymore
-fun Context.toast(resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
-}
-
-// Not in KTX anymore
-fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

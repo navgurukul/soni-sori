@@ -51,6 +51,9 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.Scope
 import org.merakilearn.core.extentions.fragmentArgs
+import org.merakilearn.core.extentions.hideKeyboard
+import org.merakilearn.core.extentions.showKeyboard
+import org.merakilearn.core.extentions.toast
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.dialogs.ConfirmationDialogBuilder

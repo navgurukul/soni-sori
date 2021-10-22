@@ -6,7 +6,9 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
+import org.navgurukul.commonui.themes.getThemedUnit
 import org.navgurukul.playground.R
+import java.lang.Integer.max
 
 
 /**
@@ -18,54 +20,52 @@ class LineNumberedEditText(
     attrs: AttributeSet?
 ) : androidx.appcompat.widget.AppCompatEditText(context, attrs) {
 
-    private val _rect: Rect = Rect()
-    private val lpaint: Paint = Paint()
+    private val paint: Paint = Paint()
 
     /** the gap between the line number and the left margin of the text  */
-    private val lineNumberMarginGap = 12
-
-    /**
-     * the difference between line text size and the normal text size.
-     * line text size is preferabl smaller than the normal text size
-     */
-    val LINE_NUMBER_TEXTSIZE_GAP = 2
+    private val lineNumberHorizontalMargin =
+        context.resources.getDimensionPixelSize(R.dimen.spacing_1x)
+    private val lineWidth = context.getThemedUnit(R.attr.borderWidth)
 
     init {
-        lpaint.isAntiAlias = true
-        lpaint.style = Paint.Style.FILL
-        lpaint.color = ContextCompat.getColor(context, R.color.editor_line_number)
-        lpaint.textSize = textSize - LINE_NUMBER_TEXTSIZE_GAP
+        paint.isAntiAlias = true
+        paint.style = Paint.Style.FILL
+        paint.color = ContextCompat.getColor(context, R.color.editor_line_number)
+        paint.textSize = textSize
     }
 
-
-    var lineNumberTextColor: Int
-        get() = lpaint.color
-        set(textColor) {
-            lpaint.color = textColor
-        }
-
-    /** whether to set the lines visible or not	 */
-    var isLineNumberVisible = true
+    override fun setTextSize(size: Float) {
+        super.setTextSize(size)
+        paint.textSize = textSize
+    }
 
     override fun onDraw(canvas: Canvas) {
-        if (isLineNumberVisible) {
-
-//set the size in case it changed after the last update
-            lpaint.textSize = textSize - LINE_NUMBER_TEXTSIZE_GAP
-            var baseLine = baseline
-            var t = ""
-            for (i in 0 until lineCount) {
-                t = "" + (i + 1)
-                canvas.drawText(t, _rect.left.toFloat(), baseLine.toFloat(), lpaint)
-                baseLine += lineHeight
-            }
-
-// set padding again, adjusting only the left padding
-            setPadding(
-                lpaint.measureText(t).toInt() + lineNumberMarginGap, paddingTop,
-                paddingRight, paddingBottom
+        var baseLine = baseline
+        var lineNumber = ""
+        for (i in 0 until lineCount) {
+            lineNumber = (i + 1).toString()
+            canvas.drawText(
+                lineNumber,
+                lineNumberHorizontalMargin.toFloat(),
+                baseLine.toFloat(),
+                paint
             )
+            baseLine += lineHeight
         }
+
+        val leftPadding =
+            paint.measureText(lineNumber).toInt() + (lineNumberHorizontalMargin * 2)
+
+        paint.strokeWidth = lineWidth.toFloat()
+        canvas.drawLine(
+            leftPadding.toFloat(), 0f, (leftPadding + lineWidth).toFloat(),
+            baseLine.coerceAtLeast(height).toFloat(), paint
+        )
+
+        setPadding(
+            leftPadding + lineWidth + lineNumberHorizontalMargin, paddingTop,
+            paddingRight, paddingBottom
+        )
         super.onDraw(canvas)
     }
 

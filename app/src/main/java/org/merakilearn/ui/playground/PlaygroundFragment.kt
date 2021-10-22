@@ -38,7 +38,7 @@ class PlaygroundFragment : BaseFragment() {
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext(), "")
+                PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext())
                 PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
             }
         })
