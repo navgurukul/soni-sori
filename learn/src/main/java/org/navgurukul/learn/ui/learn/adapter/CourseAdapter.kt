@@ -13,14 +13,20 @@ import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class CourseAdapter(val callback: (Course) -> Unit) :
 
-    DataBoundListAdapter<Course, ItemCourseBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<Course>() {
-            override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
-                return oldItem == newItem
+    DataBoundListAdapter<CourseContainer, ItemCourseBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<CourseContainer>() {
+            override fun areItemsTheSame(
+                oldItem: CourseContainer,
+                newItem: CourseContainer
+            ): Boolean {
+                return oldItem.course == newItem.course
             }
 
-            override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(
+                oldItem: CourseContainer,
+                newItem: CourseContainer
+            ): Boolean {
+                return oldItem.course == newItem.course
             }
         }
     ) {
@@ -31,6 +37,9 @@ class CourseAdapter(val callback: (Course) -> Unit) :
         )
     }
 
+    fun submitList(list: List<Course>, logo: String?) {
+        submitList(list.map { CourseContainer(it, logo) })
+    }
 
     override fun getItemViewType(position: Int): Int {
 
@@ -38,9 +47,9 @@ class CourseAdapter(val callback: (Course) -> Unit) :
         return super.getItemViewType(position)
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemCourseBinding>, item: Course) {
+    override fun bind(holder: DataBoundViewHolder<ItemCourseBinding>, item: CourseContainer) {
         val binding = holder.binding
-        binding.course = item
+        binding.course = item.course
 
         val thumbnail = Glide.with(holder.itemView)
             .load(R.drawable.course_placeholder)
@@ -51,10 +60,12 @@ class CourseAdapter(val callback: (Course) -> Unit) :
 
         // TODO set progress from the object
         binding.progressBar.progress = 100
-        binding.tvName.text = item.name
+        binding.tvName.text = item.course.name
 
         binding.root.setOnClickListener {
-            callback.invoke(item)
+            callback.invoke(item.course)
         }
     }
 }
+
+data class CourseContainer(val course: Course, val logo: String?)

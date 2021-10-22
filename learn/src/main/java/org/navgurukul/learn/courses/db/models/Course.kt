@@ -13,9 +13,7 @@ import com.squareup.moshi.JsonClass
 data class Course(
     @PrimaryKey(autoGenerate = false)
     @Json(name = "id")
-    var id: String = "",
-    @Json(name = "logo")
-    var logo: String? = null,
+    val id: String = "",
     @Json(name = "name")
     val name: String,
     @Json(name = "pathwayId")

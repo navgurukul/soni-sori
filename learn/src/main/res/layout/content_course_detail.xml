@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="org.navgurukul.learn.ui.learn.LearnViewModel" />
 
-        <import type="android.view.View" />
 
+        <import type="android.view.View" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -30,24 +31,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerviewCourseDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:topLeftRadius="1dip"
                     android:layout_marginTop="@dimen/dimen_5_dp"
                     android:layout_marginBottom="@dimen/navigation_bar_height"
-                    android:topLeftRadius="1dip"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_course_exercise" />
-
             </RelativeLayout>
 
             <include
                 android:id="@+id/progressBar"
-                layout="@layout/component_progress_bar" />
-
+                layout="@layout/component_progress_bar"
+                />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </layout>
