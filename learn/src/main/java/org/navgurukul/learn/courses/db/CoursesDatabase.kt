@@ -176,16 +176,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
                     " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'," +
                     " PRIMARY KEY(`id`) )"
         )
-//
-//        database.execSQL("ALTER TABLE `pathway_course`(" +
-//                "DROP COLUMN 'created_at'," +
-//                "DROP COLUMN 'logo'," +
-//                "DROP COLUMN 'notes'," +
-//                "DROP COLUMN 'pathwayName'," +
-//                "DROP COLUMN 'sequence_num'," +
-//                "DROP COLUMN 'type'," +
-//                "DROP COLUMN 'days_to_complete')"
-//        )
+
     }
 
 }

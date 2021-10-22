@@ -22,13 +22,14 @@ class ExerciseActivityViewModel(
     private val learnRepo: LearnRepo,
     learnPreferences: LearnPreferences,
     private val stringProvider: StringProvider,
-    private val courseId: String,
+    private var courseId: String,
+    private val pathwayId: Int,
 ) : BaseViewModel<ExerciseActivityViewEvents, ExerciseActivityViewState>(
     ExerciseActivityViewState()
 ) {
 
     private lateinit var currentCourse: Course
-    private lateinit var courseList: List<Course>
+    private var coursesList: List<Course>? = null
     private val selectedLanguage = learnPreferences.selectedLanguage
     private var currentStudy: CurrentStudy? = null
 
@@ -43,24 +44,36 @@ class ExerciseActivityViewModel(
                             ExerciseActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
                         )
                     } else {
-                        currentCourse = course
-                        setState {
-                            copy(
-                                isLoading = false,
-                                currentCourseTitle = course.name,
-                                exerciseList = course.exercises
-                            )
-                        }
-
-                        val exerciseId = withContext(Dispatchers.IO) {
-                            learnRepo.fetchCurrentStudyForCourse(courseId)
-                        }?.exerciseId ?: currentCourse.exercises.first().id
-                        onExerciseListItemSelected(exerciseId)
+                        launchLastSelectedExerciseOfCourse(course)
                     }
                 }
+
+            learnRepo.getCoursesDataByPathway(pathwayId, false).collect {
+                coursesList = it
+            }
         }
 
 //        courseList = learnRepo.
+    }
+
+    suspend fun launchLastSelectedExerciseOfCourse(course: Course?) {
+        course?.let {
+            currentCourse = it
+
+            setState {
+                copy(
+                    isLoading = false,
+                    currentCourseTitle = currentCourse.name,
+                    exerciseList = currentCourse.exercises,
+                    isCourseCompleted = false
+                )
+            }
+
+            val exerciseId = withContext(Dispatchers.IO) {
+                learnRepo.fetchCurrentStudyForCourse(course.id)
+            }?.exerciseId ?: currentCourse.exercises.first().id
+            onExerciseListItemSelected(exerciseId)
+        }
     }
 
     fun handle(action: ExerciseActivityViewActions) {
@@ -71,11 +84,8 @@ class ExerciseActivityViewModel(
             is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted()
             is ExerciseActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
             is ExerciseActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
-            is ExerciseActivityViewActions.OnNextCourseClicked -> navigateToNextCourse()
+            is ExerciseActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
         }
-    }
-
-    private fun navigateToNextCourse() {
     }
 
     private fun navigate(navigation: ExerciseNavigation) {
@@ -86,8 +96,13 @@ class ExerciseActivityViewModel(
             currentCourse.exercises[currentStudyIndex - 1]
         } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.exercises.size - 1) {
             currentCourse.exercises[currentStudyIndex + 1]
-        }  else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.exercises.size - 1) {
-            setState { copy(isCourseCompleted = true, nextCourseTitle = "nextCourseTitle") }
+        } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.exercises.size - 1) {
+            setState {
+                copy(
+                    isCourseCompleted = true,
+                    nextCourseTitle = getNextCourse(currentCourse.id)?.name ?: ""
+                )
+            }
             null
         } else {
             null
@@ -100,7 +115,7 @@ class ExerciseActivityViewModel(
         exerciseId: String,
         navigation: ExerciseNavigation? = null
     ) {
-        currentStudy = CurrentStudy(courseId, exerciseId).apply {
+        currentStudy = CurrentStudy(currentCourse.id, exerciseId).apply {
             viewModelScope.launch(Dispatchers.IO) {
                 learnRepo.saveCourseExerciseCurrent(this@apply)
             }
@@ -114,7 +129,7 @@ class ExerciseActivityViewModel(
             currentCourse.exercises[index].exerciseProgress == ExerciseProgress.COMPLETED
         _viewEvents.setValue(
             ExerciseActivityViewEvents.ShowExerciseFragment(
-                isFirst, isLast, isCompleted, courseId, exerciseId, navigation
+                isFirst, isLast, isCompleted, currentCourse.id, exerciseId, navigation
             )
         )
     }
@@ -131,6 +146,35 @@ class ExerciseActivityViewModel(
 
             setState { copy(exerciseList = updatedList) }
         }
+    }
+
+    private fun launchNextCourse(currentCourseId: String) {
+        //course without exercise details
+        var nextCourse = getNextCourse(currentCourseId)
+        nextCourse?.let {
+//            setState { copy(isCourseCompleted = false) }
+            viewModelScope.launch {
+                learnRepo.fetchCourseExerciseDataWithCourse(it.id, selectedLanguage).collect {
+                    //course with exercise details
+                    nextCourse = it
+                    launchLastSelectedExerciseOfCourse(nextCourse)
+                }
+            }
+        }
+
+    }
+
+    private fun getNextCourse(currentCourseId: String): Course? {
+        val currentCourseIndex = coursesList?.indexOfFirst { it.id == currentCourseId }
+
+        currentCourseIndex?.let { index ->
+            if (index > 0 && index < coursesList?.size?.minus(1) ?: 0) {
+                coursesList?.let {
+                    return it[currentCourseIndex + 1]
+                }
+            }
+        }
+        return null
     }
 
     private fun markExerciseSelected(exerciseId: String) {
@@ -172,7 +216,7 @@ data class ExerciseActivityViewState(
     val isCourseCompleted: Boolean = false,
     val currentCourseTitle: String = "",
     val nextCourseTitle: String = "",
-    val exerciseList: List<Exercise> = listOf()
+    val exerciseList: List<Exercise> = listOf(),
 ) : ViewState
 
 sealed class ExerciseActivityViewActions : ViewModelAction {

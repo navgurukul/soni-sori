@@ -21,8 +21,6 @@ class LearnFragmentViewModel(
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
 
-    var coursesList: List<Course>? = null
-
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
@@ -40,7 +38,6 @@ class LearnFragmentViewModel(
                                 }
                             }
                             val courses = currentPathway.courses
-                            coursesList = courses
 
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
@@ -69,7 +66,6 @@ class LearnFragmentViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    coursesList = it
                     setState { copy(courses = it, loading = false, logo = pathway.logo) }
                 }
             }
@@ -108,9 +104,11 @@ class LearnFragmentViewModel(
                 if (it.isNotEmpty()) {
                     _viewEvents.postValue(LearnFragmentViewEvents.OpenCourseSlugActivity(it.first()))
                 } else {
-                    _viewEvents.postValue(
-                        LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name)
-                    )
+                    course.pathwayId?.let {
+                        _viewEvents.postValue(
+                            LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name, it)
+                        )
+                    }
                 }
             }
         }
@@ -133,21 +131,6 @@ class LearnFragmentViewModel(
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
             }
-            is LearnFragmentViewActions.NextCourseClicked -> {
-                launchNextCourse(actions.currentCourseId)
-            }
-        }
-    }
-
-    private fun launchNextCourse(currentCourseId: String) {
-        val currentCourseIndex = coursesList?.indexOfFirst { it.id == currentCourseId }
-
-        currentCourseIndex?.let { index ->
-            if(index > 0 && index < coursesList?.size?.minus(1)?:0){
-                coursesList?.let {
-                    selectCourse(it[currentCourseIndex + 1])
-                }
-            }
         }
     }
 }
@@ -168,7 +151,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     object DismissSelectionSheet : LearnFragmentViewEvents()
     class OpenCourseSlugActivity(val currentStudy: CurrentStudy) : LearnFragmentViewEvents()
-    class OpenCourseDetailActivity(val courseId: String, val courseName: String) :
+    class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
 }
 
@@ -176,5 +159,4 @@ sealed class LearnFragmentViewActions : ViewModelAction {
     object ToolbarClicked : LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
-    class NextCourseClicked(val currentCourseId: String) : LearnFragmentViewActions()
 }

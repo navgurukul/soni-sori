@@ -42,7 +42,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/spacing_5x"
-                        android:layout_marginBottom="@dimen/spacing_5x"
                         android:text="@string/mark_as_completed"
                         android:textAllCaps="false"
                         android:textColor="@color/primaryColor"

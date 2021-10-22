@@ -17,7 +17,6 @@ import org.navgurukul.commonui.platform.ListSpacingDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.learn.ExerciseNavigation.*
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.util.LearnUtils
 
@@ -26,10 +25,12 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
 
     companion object {
         private const val ARG_KEY_COURSE_ID = "arg_course_id"
+        private const val ARG_KEY_PATHWAY_ID = "arg_pathway_id"
 
-        fun start(context: Context, courseId: String) {
+        fun start(context: Context, courseId: String, pathwayId: Int) {
             val intent = Intent(context, ExerciseActivity::class.java)
             intent.putExtra(ARG_KEY_COURSE_ID, courseId)
+            intent.putExtra(ARG_KEY_PATHWAY_ID, pathwayId)
             context.startActivity(intent)
         }
     }
@@ -46,9 +47,14 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             }
         }
     }
+
+    private val pathwayId: Int by lazy {
+        intent.getIntExtra(ARG_KEY_PATHWAY_ID, 0)
+    }
+
     private lateinit var mBinding: ActivityExerciseBinding
     private val viewModel: ExerciseActivityViewModel by viewModel(
-        parameters = { parametersOf(courseId) }
+        parameters = { parametersOf(courseId, pathwayId) }
     )
     private lateinit var mAdapter: CourseExerciseAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -90,7 +96,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                         it.navigation
                     )
 
-                    setExerciseNavigationBarView(it.isFirst)
+                    setExerciseNavigationBarView(true, it.isFirst)
                 }
             }
         })
@@ -104,12 +110,18 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 mAdapter.submitList(it.exerciseList)
                 mBinding.tvCourseTitle.text = it.currentCourseTitle
             }
+
         })
 
     }
 
-    private fun setExerciseNavigationBarView(isFirst: Boolean) {
-        mBinding.bottomNavigationExercise.setView(isFirst)
+    private fun setExerciseNavigationBarView(isVisibile: Boolean, isFirst: Boolean = false) {
+        if(isVisibile) {
+            mBinding.bottomNavigationExercise.visibility = View.VISIBLE
+            mBinding.bottomNavigationExercise.setView(isFirst)
+        }else{
+            mBinding.bottomNavigationExercise.visibility = View.GONE
+        }
     }
 
     private fun showCompletionScreen(
@@ -134,7 +146,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 },
                 true
             )
-
+            setExerciseNavigationBarView(false)
         } else {
             mBinding.courseCompletedView.root.visibility = View.GONE
             mBinding.appBarExercise.visibility = View.VISIBLE
@@ -172,9 +184,9 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     ) {
         supportFragmentManager.commit {
             val enter = when (navigation) {
-                PREV -> android.R.anim.slide_in_left
+                ExerciseNavigation.PREV -> android.R.anim.slide_in_left
                 //TODO test this after adding bottom nav bar and update animation
-                NEXT -> android.R.anim.slide_in_left
+                ExerciseNavigation.NEXT -> android.R.anim.slide_in_left
                 null -> android.R.anim.fade_in
             }
             setCustomAnimations(
