@@ -9,12 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
+import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 
 class LearnFragment : Fragment() {
 
@@ -43,7 +43,7 @@ class LearnFragment : Fragment() {
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
-            mCourseAdapter.submitList(it.courses)
+            mCourseAdapter.submitList(it.courses, it.logo)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),
@@ -73,7 +73,8 @@ class LearnFragment : Fragment() {
                         "OpenLanguageSelectionSheet"
                     )
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
     }
@@ -117,11 +118,7 @@ class LearnFragment : Fragment() {
         mBinding.recyclerviewCourse.layoutManager = layoutManager
         mBinding.recyclerviewCourse.adapter = mCourseAdapter
         mBinding.recyclerviewCourse.addItemDecoration(
-            SpaceItemDecoration(
-                requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
-                ), 0
-            )
+            DotItemDecoration(requireContext())
         )
     }
 }

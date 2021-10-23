@@ -4,88 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="course"
             type="org.navgurukul.learn.courses.db.models.Course" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <androidx.cardview.widget.CardView
-        android:id="@+id/course_item_card_view"
-        style="@style/course_item_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="@dimen/pathway_logo_size"
+            android:layout_height="@dimen/pathway_logo_size"
+            app:layout_constraintBottom_toBottomOf="@id/progressBar"
+            app:layout_constraintLeft_toLeftOf="@id/progressBar"
+            app:layout_constraintRight_toRightOf="@id/progressBar"
+            app:layout_constraintTop_toTopOf="@id/progressBar"
+            tools:ignore="ContentDescription" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/ivSequence"
-                style="?textAppearanceEmphasized2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:gravity="center"
-                android:background="@drawable/oval_number_background"
-                android:layout_marginEnd="@dimen/spacing_3x"
-                android:textColor="@color/colorNumber"
-                tools:text="1"
-                android:text="@{``+course.number}"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/tvCourseTitle"
-                style="?textAppearanceEmphasized2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/ivArrow"
-                android:layout_toEndOf="@+id/ivSequence"
-                android:text="@{course.name}"
-                android:maxLines="2"
-                android:ellipsize="end"
-                tools:text="Introduction To Python" />
-
-            <TextView
-                android:id="@+id/tvCourseDescription"
-                style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvCourseTitle"
-                android:layout_toStartOf="@+id/ivArrow"
-                android:layout_toEndOf="@+id/ivSequence"
-                android:text="@{course.shortDescription}"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:textColor="?textSecondary"
-                android:layout_marginTop="@dimen/spacing_2x"
-                tools:text="Study all the basics of python" />
-
-            <ImageView
-                android:id="@+id/ivArrow"
-                android:layout_width="@dimen/dimen_20_dp"
-                android:layout_height="@dimen/dimen_20_dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dimen_10_dp"
-                app:tint="?textSecondary"
-                android:src="@drawable/ic_arrow_right"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-        <include
-            android:visibility="gone"
-            android:id="@+id/componentStatus"
-            layout="@layout/component_course_status"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="18dp"
-            android:layout_alignParentEnd="true"
-            android:elevation="@dimen/dimen_5_dp" />
-<!--        This is code for progress status which is not required for but it may be require in further release so for now I have hidden it.-->
-    </RelativeLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:max="100"
+            android:progress="20"
+            app:trackThickness="3dp"
+            app:trackColor="#CDCDCD"
+            app:indicatorInset="0dp"
+            app:indicatorSize="@dimen/pathway_circle_border_size"
+            app:indicatorColor="@color/green_progress_color"
+            android:secondaryProgress="100"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvName"
+            style="?textAppearanceBody2"
+            android:textColor="?textPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

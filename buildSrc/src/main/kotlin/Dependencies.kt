@@ -79,7 +79,7 @@ object AndroidxDependencies {
 }
 
 object MaterialDesignDependencies {
-    const val materialDesign = "com.google.android.material:material:1.2.0"
+    const val materialDesign = "com.google.android.material:material:1.4.0"
 }
 
 object OkReplayDependencies {
