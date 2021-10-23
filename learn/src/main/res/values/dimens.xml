@@ -34,11 +34,13 @@
     <dimen name="sheet_handle_width">60dp</dimen>
     <dimen name="sheet_handle_height">4dp</dimen>
     <dimen name="pathway_select_icon_size">40dp</dimen>
-    <dimen name="pathway_logo_size">44dp</dimen>
-    <dimen name="pathway_circle_border_size">124dp</dimen>
+    <dimen name="pathway_logo_size">32dp</dimen>
+    <dimen name="pathway_circle_border_size">64dp</dimen>
     <dimen name="sheet_top_offset">100dp</dimen>
     <dimen name="button_round_radius">8dp</dimen>
     <dimen name="table_margin_vertical_spacing">10dp</dimen>
     <dimen name="table_margin_horizontal_spacing">36dp</dimen>
     <dimen name="dimen_course_content_margin">16dp</dimen>
+    <dimen name="dot_item_box_size">48dp</dimen>
+    <dimen name="dot_radius">2dp</dimen>
 </resources>

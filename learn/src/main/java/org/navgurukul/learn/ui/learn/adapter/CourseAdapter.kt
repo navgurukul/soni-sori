@@ -52,7 +52,7 @@ class CourseAdapter(val callback: (Course) -> Unit) :
         binding.course = item.course
 
         val thumbnail = Glide.with(holder.itemView)
-            .load(R.drawable.course_placeholder)
+            .load(R.drawable.ic_lock)
         Glide.with(binding.ivLogo)
             .load(item.logo)
             .thumbnail(thumbnail)

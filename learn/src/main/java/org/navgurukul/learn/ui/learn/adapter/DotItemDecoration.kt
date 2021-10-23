@@ -1,17 +1,29 @@
 package org.navgurukul.learn.ui.learn.adapter
 
+import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import org.navgurukul.learn.R
 
 
-class DotItemDecoration : RecyclerView.ItemDecoration() {
+class DotItemDecoration(val context: Context) : RecyclerView.ItemDecoration() {
 
-    private val cy1Padding = 80;
-    private val cy2Padding = 160;
+    companion object {
+        const val NUMBER_DOTS = 2
+    }
+
+    private val dotRadius = context.resources.getDimensionPixelSize(R.dimen.dot_radius)
+    private val dotPadding = context.resources.getDimensionPixelSize(R.dimen.spacing_2x)
+    private val verticalPadding = context.resources.getDimensionPixelSize(R.dimen.spacing_4x)
+    private val color = ContextCompat.getColor(context, R.color.green_progress_color)
+    private val paint =  Paint().apply {
+        color = this@DotItemDecoration.color
+        style = Paint.Style.FILL
+    }
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -19,7 +31,7 @@ class DotItemDecoration : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.bottom = 200
+        outRect.bottom = (verticalPadding * 2) + (dotPadding) + (dotRadius * 2 * NUMBER_DOTS)
     }
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
@@ -29,16 +41,14 @@ class DotItemDecoration : RecyclerView.ItemDecoration() {
 
             //skip last item
             if (position != state.itemCount - 1) {
-                val mPaint = Paint()
-                mPaint.color = Color.rgb(72, 161, 69)
-                mPaint.style = Paint.Style.FILL
 
                 val cx: Float = (view.right / 2).toFloat() // center of x
-                val cy1: Float = (view.bottom + cy1Padding).toFloat()
-                val cy2: Float = (view.bottom + cy2Padding).toFloat()
+                var cy: Float = (view.bottom + verticalPadding + dotRadius).toFloat()
 
-                c.drawCircle(cx, cy1, 13F, mPaint)
-                c.drawCircle(cx, cy2, 13F, mPaint)
+                repeat(NUMBER_DOTS) {
+                    c.drawCircle(cx, cy, dotRadius.toFloat(), paint)
+                    cy += dotPadding + dotRadius
+                }
             }
         }
     }

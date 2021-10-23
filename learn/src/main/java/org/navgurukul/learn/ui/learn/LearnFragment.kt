@@ -118,7 +118,7 @@ class LearnFragment : Fragment() {
         mBinding.recyclerviewCourse.layoutManager = layoutManager
         mBinding.recyclerviewCourse.adapter = mCourseAdapter
         mBinding.recyclerviewCourse.addItemDecoration(
-            DotItemDecoration()
+            DotItemDecoration(requireContext())
         )
     }
 }
