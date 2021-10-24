@@ -10,9 +10,6 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import com.amulyakhare.textdrawable.TextDrawable
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.ExerciseProgress
-import org.navgurukul.learn.courses.db.models.ExerciseType
-
 
 fun Activity.toast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()

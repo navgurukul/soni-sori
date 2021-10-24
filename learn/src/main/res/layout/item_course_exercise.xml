@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/iv_exercise_type_progress"
-        android:layout_width="@dimen/dimen_30_dp"
-        android:layout_height="@dimen/dimen_30_dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:padding="@dimen/dimen_2_dp"
         tools:src="@drawable/ic_type_text_selected"
         tools:ignore="ContentDescription" />

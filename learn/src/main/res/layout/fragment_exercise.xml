@@ -44,8 +44,8 @@
                         android:layout_marginTop="@dimen/spacing_5x"
                         android:text="@string/mark_as_completed"
                         android:textAllCaps="false"
-                        android:textColor="@color/primaryColor"
-                        android:textSize="14sp"
+                        android:textColor="?textBrand"
+                        android:textAppearance="?textAppearanceBody2"
                         app:icon="@drawable/ic_check"
                         app:iconGravity="end"
                         app:iconTint="@color/primaryColor" />

@@ -187,10 +187,6 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
 
         database.execSQL(
             "ALTER TABLE `course_exercise`" +
-                    "ADD COLUMN 'exerciseType' TEXT NOT NULL DEFAULT 'TEXT'"
-        )
-        database.execSQL(
-            "ALTER TABLE `course_exercise`" +
                     "ADD COLUMN 'exerciseProgress' TEXT"
         )
 

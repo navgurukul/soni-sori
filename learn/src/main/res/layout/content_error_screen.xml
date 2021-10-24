@@ -33,7 +33,7 @@
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/primaryColor"
-            android:textSize="@dimen/textSizeDefault" />
+            android:textAppearance="?textAppearanceBody2" />
 
     </LinearLayout>
 </layout>

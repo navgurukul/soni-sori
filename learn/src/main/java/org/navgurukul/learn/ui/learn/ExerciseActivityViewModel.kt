@@ -48,12 +48,17 @@ class ExerciseActivityViewModel(
                     }
                 }
 
+        }
+
+        getCourseList()
+    }
+
+    private fun getCourseList() {
+        viewModelScope.launch {
             learnRepo.getCoursesDataByPathway(pathwayId, false).collect {
                 coursesList = it
             }
         }
-
-//        courseList = learnRepo.
     }
 
     suspend fun launchLastSelectedExerciseOfCourse(course: Course?) {

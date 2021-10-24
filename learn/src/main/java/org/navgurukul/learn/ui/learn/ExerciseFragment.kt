@@ -24,7 +24,6 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
-import org.navgurukul.learn.util.animateVisibility
 
 @Parcelize
 data class ExerciseFragmentArgs(

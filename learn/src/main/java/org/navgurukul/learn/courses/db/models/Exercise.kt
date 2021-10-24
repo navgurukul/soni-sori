@@ -22,17 +22,11 @@ data class Exercise(
     var lang: String = "en",
     @Json(name = "courseName")
     var courseName: String?,
-    @Json(name = "type")
-    var exerciseType: ExerciseType = ExerciseType.TEXT,
     @Json(name = "progress")
     var exerciseProgress: ExerciseProgress?
 ) : Serializable {
     @Ignore
     var number: Int? = 0
-}
-
-enum class ExerciseType{
-CODE, TEXT, QUESTION
 }
 
 enum class ExerciseProgress{

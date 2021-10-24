@@ -10,6 +10,5 @@ import kotlinx.android.parcel.Parcelize
 data class CurrentStudy(
     @PrimaryKey(autoGenerate = false)
     var courseId: String,
-    //TODO update migration
     var exerciseId: String
 ) : Parcelable
