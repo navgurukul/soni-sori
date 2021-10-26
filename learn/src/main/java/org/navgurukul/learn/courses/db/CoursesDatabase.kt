@@ -88,38 +88,38 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 
         //create new table
         database.execSQL("CREATE TABLE `new_course_exercise`(" +
-                    " `content` TEXT," +
-                    " `courseId` TEXT," +
-                    " `githubLink` TEXT, " +
-                    " `id` TEXT NOT NULL," +
-                    " `name` TEXT," +
-                    " `parentExerciseId` TEXT," +
-                    " `reviewType` TEXT," +
-                    " `sequenceNum` TEXT," +
-                    " `slug` TEXT," +
-                    " `solution` TEXT," +
-                    " `submissionType` TEXT," +
-                    " `lang` TEXT NOT NULL," +
-                    " `courseName` TEXT," +
-                    " PRIMARY KEY(`id`, `lang`) )")
+                " `content` TEXT," +
+                " `courseId` TEXT," +
+                " `githubLink` TEXT, " +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT," +
+                " `parentExerciseId` TEXT," +
+                " `reviewType` TEXT," +
+                " `sequenceNum` TEXT," +
+                " `slug` TEXT," +
+                " `solution` TEXT," +
+                " `submissionType` TEXT," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )")
 
         //insert data from old table into new table
         database.execSQL("INSERT INTO `new_course_exercise`(" +
-                    " `content`," +
-                    " `courseId`," +
-                    " `githubLink`," +
-                    " `id` ," +
-                    " `name` ," +
-                    " `parentExerciseId` ," +
-                    " `reviewType` ," +
-                    " `sequenceNum` ," +
-                    " `slug` ," +
-                    " `solution` ," +
-                    " `submissionType` ," +
-                    " 'lang' ," +
-                    " `courseName` )" +
-                    " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
-                    " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`")
+                " `content`," +
+                " `courseId`," +
+                " `githubLink`," +
+                " `id` ," +
+                " `name` ," +
+                " `parentExerciseId` ," +
+                " `reviewType` ," +
+                " `sequenceNum` ," +
+                " `slug` ," +
+                " `solution` ," +
+                " `submissionType` ," +
+                " 'lang' ," +
+                " `courseName` )" +
+                " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
+                " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`")
 
         //drop old table
         database.execSQL("DROP TABLE course_exercise")
@@ -149,13 +149,13 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
 
         //create new table
         database.execSQL("CREATE TABLE `course_exercise`(" +
-                    " `content` TEXT NOT NULL," +
-                    " `courseId` TEXT NOT NULL," +
-                    " `id` TEXT NOT NULL," +
-                    " `name` TEXT NOT NULL," +
-                    " `lang` TEXT NOT NULL," +
-                    " `courseName` TEXT," +
-                    " PRIMARY KEY(`id`, `lang`) )"
+                " `content` TEXT NOT NULL," +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )"
         )
 
         //drop old table
@@ -163,12 +163,12 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
 
         //create new table
         database.execSQL("CREATE TABLE `pathway_course`(" +
-                    " `id` TEXT NOT NULL," +
-                    " `name` TEXT NOT NULL," +
-                    " `shortDescription` TEXT NOT NULL," +
-                    " `pathwayId` INTEGER," +
-                    " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'," +
-                    " PRIMARY KEY(`id`) )"
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `shortDescription` TEXT NOT NULL," +
+                " `pathwayId` INTEGER," +
+                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'," +
+                " PRIMARY KEY(`id`) )"
         )
 
     }
