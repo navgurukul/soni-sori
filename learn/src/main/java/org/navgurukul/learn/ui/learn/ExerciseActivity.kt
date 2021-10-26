@@ -167,9 +167,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         mBinding.recyclerviewCourseExerciseList.itemAnimator = null
         mBinding.recyclerviewCourseExerciseList.addItemDecoration(
             ListSpacingDecoration(
-                mBinding.recyclerviewCourseExerciseList.context,
-                R.dimen.dimen_0_dp,
-                R.dimen.dimen_course_content_margin
+                0,
+                16
             )
         )
     }
