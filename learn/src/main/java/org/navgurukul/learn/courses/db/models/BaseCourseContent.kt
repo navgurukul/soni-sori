@@ -135,6 +135,8 @@ data class BannerBaseCourseContent(
         var title: String?,
         @Json(name = "actions")
         var actions: List<BannerAction>?,
+        @Json(name = "image")
+        var image: String? = "ic_class_nudge",
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -154,7 +156,9 @@ data class BannerAction(
         @Json(name = "label")
         var label: String?,
         @Json(name = "data")
-        var data: String?
+        var data: String?,
+        @Json(name = "type")
+        var variant: MerakiButtonType? = MerakiButtonType.primary,
 )
 
 @JsonClass(generateAdapter = true)
@@ -171,4 +175,8 @@ enum class CodeType {
 
 enum class DecorationType {
     number, bullet
+}
+
+enum class MerakiButtonType {
+    primary, secondary
 }
