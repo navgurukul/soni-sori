@@ -87,8 +87,7 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         //create new table
-        database.execSQL(
-            "CREATE TABLE `new_course_exercise`(" +
+        database.execSQL("CREATE TABLE `new_course_exercise`(" +
                     " `content` TEXT," +
                     " `courseId` TEXT," +
                     " `githubLink` TEXT, " +
@@ -102,12 +101,10 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                     " `submissionType` TEXT," +
                     " `lang` TEXT NOT NULL," +
                     " `courseName` TEXT," +
-                    " PRIMARY KEY(`id`, `lang`) )"
-        )
+                    " PRIMARY KEY(`id`, `lang`) )")
 
         //insert data from old table into new table
-        database.execSQL(
-            "INSERT INTO `new_course_exercise`(" +
+        database.execSQL("INSERT INTO `new_course_exercise`(" +
                     " `content`," +
                     " `courseId`," +
                     " `githubLink`," +
@@ -122,8 +119,7 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                     " 'lang' ," +
                     " `courseName` )" +
                     " SELECT `content`, `courseId`, `githubLink`, `id`, `name`, `parentExerciseId`, `reviewType`, `sequenceNum`," +
-                    " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`"
-        )
+                    " `slug`, `solution`, `submissionType`, 'en', `courseName`  FROM `course_exercise`")
 
         //drop old table
         database.execSQL("DROP TABLE course_exercise")
@@ -152,8 +148,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         database.execSQL("DROP TABLE course_exercise")
 
         //create new table
-        database.execSQL(
-            "CREATE TABLE `course_exercise`(" +
+        database.execSQL("CREATE TABLE `course_exercise`(" +
                     " `content` TEXT NOT NULL," +
                     " `courseId` TEXT NOT NULL," +
                     " `id` TEXT NOT NULL," +
@@ -167,8 +162,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         database.execSQL("DROP TABLE pathway_course")
 
         //create new table
-        database.execSQL(
-            "CREATE TABLE `pathway_course`(" +
+        database.execSQL("CREATE TABLE `pathway_course`(" +
                     " `id` TEXT NOT NULL," +
                     " `name` TEXT NOT NULL," +
                     " `shortDescription` TEXT NOT NULL," +
