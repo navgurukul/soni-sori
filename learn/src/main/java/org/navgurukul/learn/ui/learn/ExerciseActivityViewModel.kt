@@ -16,11 +16,11 @@ import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Exercise
 import org.navgurukul.learn.courses.db.models.ExerciseProgress
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.util.LearnPreferences
+import org.merakilearn.core.utils.CorePreferences
 
 class ExerciseActivityViewModel(
     private val learnRepo: LearnRepo,
-    learnPreferences: LearnPreferences,
+    corePreferences: CorePreferences,
     private val stringProvider: StringProvider,
     private var courseId: String,
     private val pathwayId: Int,
@@ -30,7 +30,7 @@ class ExerciseActivityViewModel(
 
     private lateinit var currentCourse: Course
     private var coursesList: List<Course>? = null
-    private val selectedLanguage = learnPreferences.selectedLanguage
+    private val selectedLanguage = corePreferences.selectedLanguage
     private var currentStudy: CurrentStudy? = null
 
     init {

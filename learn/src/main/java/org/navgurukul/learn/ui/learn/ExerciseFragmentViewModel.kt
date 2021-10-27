@@ -13,11 +13,11 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.util.LearnPreferences
+import org.merakilearn.core.utils.CorePreferences
 
 class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,
-    learnPreferences: LearnPreferences,
+    corePreferences: CorePreferences,
     private val stringProvider: StringProvider,
     private val args: ExerciseFragmentArgs
 ) : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
@@ -25,7 +25,7 @@ class ExerciseFragmentViewModel(
 ) {
 
     private var fetchExerciseJob: Job? = null
-    private val selectedLanguage = learnPreferences.selectedLanguage
+    private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
         fetchExerciseContent(args.exerciseId, args.courseId)

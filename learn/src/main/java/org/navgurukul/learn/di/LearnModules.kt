@@ -11,7 +11,6 @@ import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.*
-import org.navgurukul.learn.util.LearnPreferences
 import retrofit2.Retrofit
 
 val viewModelModule = module {

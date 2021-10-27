@@ -168,7 +168,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         mBinding.recyclerviewCourseExerciseList.addItemDecoration(
             ListSpacingDecoration(
                 0,
-                16
+                resources.getDimensionPixelSize(R.dimen.dimen_course_content_margin)
             )
         )
     }

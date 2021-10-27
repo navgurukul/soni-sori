@@ -99,18 +99,10 @@ class LearnFragmentViewModel(
     }
 
     fun selectCourse(course: Course) {
-        viewModelScope.launch(Dispatchers.Default) {
-            learnRepo.fetchCurrentStudyForCourse(course.id).let {
-                if (it.isNotEmpty()) {
-                    _viewEvents.postValue(LearnFragmentViewEvents.OpenCourseSlugActivity(it.first()))
-                } else {
-                    course.pathwayId?.let {
-                        _viewEvents.postValue(
-                            LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name, it)
-                        )
-                    }
-                }
-            }
+        course.pathwayId?.let {
+            _viewEvents.postValue(
+                LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name, it)
+            )
         }
     }
 
@@ -150,7 +142,6 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     object DismissSelectionSheet : LearnFragmentViewEvents()
-    class OpenCourseSlugActivity(val currentStudy: CurrentStudy) : LearnFragmentViewEvents()
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
 }
