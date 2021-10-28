@@ -35,7 +35,12 @@ class BannerCourseViewHolder(itemView: View) :
         }
         bannerTitle.text = item.title
         bannerBody.text = item.value
-        bannerImage.setImageResource(ResourceResolver.getDrawableId(bannerImage.context, item.image))
+
+        item.image?.let {
+            bannerImage.visibility = View.VISIBLE
+            bannerImage.setImageResource(ResourceResolver.getDrawableId(bannerImage.context, it))
+        }?.run{ bannerImage.visibility = View.GONE }
+
     }
 
     private fun setActionButtons(
@@ -47,15 +52,9 @@ class BannerCourseViewHolder(itemView: View) :
                 bannerButton2.visibility = View.GONE
                 bannerButton1.visibility = View.VISIBLE
                 bannerButton1.setData(element, urlCallback)
-                element.variant?.let {
-                    bannerButton1.setVariant(it)
-                }
             } else {
                 bannerButton2.visibility = View.VISIBLE
                 bannerButton2.setData(element, urlCallback)
-                element.variant?.let {
-                    bannerButton2.setVariant(it)
-                }
             }
         }
     }
