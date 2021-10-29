@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -36,8 +37,18 @@ class ExerciseActivityViewModel(
     init {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            learnRepo.fetchCourseExerciseDataWithCourse(courseId, selectedLanguage)
-                .collect { course ->
+            learnRepo.fetchCourseExerciseDataWithCourse(courseId, pathwayId, selectedLanguage)
+                .combine(
+                    learnRepo.getCoursesDataByPathway(
+                        pathwayId,
+                        false
+                    )
+                ) { course, courseList ->
+                    course to courseList
+                }
+                .collect {
+                    val course = it.first
+                    coursesList = it.second
                     if (course == null) {
                         setState { copy(isLoading = false) }
                         _viewEvents.postValue(
@@ -50,18 +61,9 @@ class ExerciseActivityViewModel(
 
         }
 
-        getCourseList()
     }
 
-    private fun getCourseList() {
-        viewModelScope.launch {
-            learnRepo.getCoursesDataByPathway(pathwayId, false).collect {
-                coursesList = it
-            }
-        }
-    }
-
-    suspend fun launchLastSelectedExerciseOfCourse(course: Course?) {
+    private suspend fun launchLastSelectedExerciseOfCourse(course: Course?) {
         course?.let {
             currentCourse = it
 
@@ -97,23 +99,30 @@ class ExerciseActivityViewModel(
         val currentStudyIndex = currentCourse.exercises.indexOfFirst {
             it.id == currentStudy?.exerciseId
         }
-        val nextExercise = if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
-            currentCourse.exercises[currentStudyIndex - 1]
+        if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
+            onExerciseListItemSelected(
+                currentCourse.exercises[currentStudyIndex - 1].id,
+                navigation
+            )
         } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.exercises.size - 1) {
-            currentCourse.exercises[currentStudyIndex + 1]
+            onExerciseListItemSelected(
+                currentCourse.exercises[currentStudyIndex + 1].id,
+                navigation
+            )
         } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.exercises.size - 1) {
+            val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
+                stringProvider.getString(
+                    R.string.next_course_message,
+                    it.name
+                )
+            } ?: stringProvider.getString(R.string.finish)
             setState {
                 copy(
                     isCourseCompleted = true,
-                    nextCourseTitle = getNextCourse(currentCourse.id)?.name ?: ""
+                    nextCourseTitle = nextActionTitle
                 )
             }
-            null
-        } else {
-            null
         }
-
-        nextExercise?.let { onExerciseListItemSelected(nextExercise.id, navigation) }
     }
 
     private fun onExerciseListItemSelected(
@@ -155,39 +164,42 @@ class ExerciseActivityViewModel(
 
     private fun launchNextCourse(currentCourseId: String) {
         //course without exercise details
-        var nextCourse = getNextCourse(currentCourseId)
-        nextCourse?.let {
-//            setState { copy(isCourseCompleted = false) }
+        getNextCourse(currentCourseId)?.let {
             viewModelScope.launch {
-                learnRepo.fetchCourseExerciseDataWithCourse(it.id, selectedLanguage).collect {
-                    //course with exercise details
-                    nextCourse = it
-                    launchLastSelectedExerciseOfCourse(nextCourse)
-                }
+                learnRepo.fetchCourseExerciseDataWithCourse(it.id, pathwayId, selectedLanguage)
+                    .collect {
+                        //course with exercise details
+                        launchLastSelectedExerciseOfCourse(it)
+                    }
             }
+        } ?: run {
+            _viewEvents.postValue(
+                ExerciseActivityViewEvents.FinishActivity
+            )
         }
 
     }
 
     private fun getNextCourse(currentCourseId: String): Course? {
-        val currentCourseIndex = coursesList?.indexOfFirst { it.id == currentCourseId }
+        val coursesList = coursesList ?: return null
+        val currentCourseIndex = coursesList.indexOfFirst { it.id == currentCourseId }
 
-        currentCourseIndex?.let { index ->
-            if (index > 0 && index < coursesList?.size?.minus(1) ?: 0) {
-                coursesList?.let {
-                    return it[currentCourseIndex + 1]
-                }
+        currentCourseIndex.let { index ->
+            if (index >= 0 && index < coursesList.size.minus(1)) {
+                return coursesList[currentCourseIndex + 1]
             }
         }
         return null
     }
 
     private fun markExerciseSelected(exerciseId: String) {
+        var selectedIndex = 0
         currentCourse.exercises.toMutableList().let {
-            it.forEach { exercise ->
+            it.forEachIndexed { index, exercise ->
                 if (exercise.id == exerciseId) {
                     if (exercise.exerciseProgress != ExerciseProgress.COMPLETED) {
                         exercise.exerciseProgress = ExerciseProgress.IN_PROGRESS
+                        selectedIndex = index
                     }
                 } else {
                     if (exercise.exerciseProgress == ExerciseProgress.IN_PROGRESS) {
@@ -196,7 +208,7 @@ class ExerciseActivityViewModel(
                 }
             }
 
-            setState { copy(exerciseList = it) }
+            setState { copy(exerciseList = it, currentExerciseIndex = selectedIndex) }
         }
     }
 }
@@ -213,6 +225,7 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
         val navigation: ExerciseNavigation?
     ) : ExerciseActivityViewEvents()
 
+    object FinishActivity : ExerciseActivityViewEvents()
     class ShowToast(val toastText: String) : ExerciseActivityViewEvents()
 }
 
@@ -221,6 +234,7 @@ data class ExerciseActivityViewState(
     val isCourseCompleted: Boolean = false,
     val currentCourseTitle: String = "",
     val nextCourseTitle: String = "",
+    val currentExerciseIndex: Int = 0,
     val exerciseList: List<Exercise> = listOf(),
 ) : ViewState
 

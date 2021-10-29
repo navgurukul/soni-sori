@@ -25,14 +25,6 @@ data class Course(
     var supportedLanguages: List<String> = listOf("en"),
 ){
     @Ignore
-    @Json(name = "number")
-    var number: Int? = null
-
-    @Ignore
     @Json(name = "exercises")
     var exercises: List<Exercise> = listOf()
-}
-
-enum class CourseType{
-    json, markdown
 }

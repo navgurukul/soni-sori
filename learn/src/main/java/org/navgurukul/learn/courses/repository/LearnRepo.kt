@@ -25,13 +25,7 @@ class LearnRepo(
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
             val data = pathwayDao.getAllPathways()
-            data.map {
-                it.courses = courseDao.getCoursesByPathwayId(it.id).apply {
-                    forEachIndexed { index, course ->
-                        course.number = (index + 1)
-                    }
-                }
-            }
+            data.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
             data
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
@@ -42,6 +36,7 @@ class LearnRepo(
                 pathway.courses.map {
                     it.pathwayId = pathway.id
                 }
+                courseDao.deleteAllCourses()
                 courseDao.insertCourses(pathway.courses)
             }
             pathwayDao.insertPathways(data.pathways)
@@ -52,11 +47,7 @@ class LearnRepo(
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
-            val data = courseDao.getCoursesByPathwayId(pathwayId)
-            data.forEachIndexed { index, course ->
-                course.number = (index + 1)
-            }
-            data
+            courseDao.getCoursesByPathwayId(pathwayId)
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
@@ -65,6 +56,7 @@ class LearnRepo(
             data.courses.map {
                 it.pathwayId = data.id
             }.toList()
+            courseDao.deleteAllCourses()
             courseDao.insertCourses(data.courses)
         })
     }
@@ -146,7 +138,7 @@ class LearnRepo(
     }
 
 
-    fun fetchCourseExerciseDataWithCourse(courseId: String, language: String): Flow<Course?> {
+    fun fetchCourseExerciseDataWithCourse(courseId: String, pathwayId: Int, language: String): Flow<Course?> {
         val courseDao = database.courseDao()
         val exerciseDao = database.exerciseDao()
         return networkBoundResourceFlow(
@@ -162,7 +154,9 @@ class LearnRepo(
             shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.exercises.isEmpty()) },
             makeApiCallAsync = { courseApi.getExercisesAsync(courseId, language) },
             saveCallResult = { courseExerciseContainer ->
-                val course = courseExerciseContainer.course
+                val course = courseExerciseContainer.course.apply {
+                    this.pathwayId = pathwayId
+                }
                 val lang =
                     if (language in course.supportedLanguages) language else course.supportedLanguages[0]
                 val mappedData = course.exercises.map {

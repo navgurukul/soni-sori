@@ -43,6 +43,10 @@ interface CourseDao {
 
     @Query("select * from pathway_course where pathwayId=:pathwayId")
     fun getCoursesByPathwayId(pathwayId: Int): List<Course>
+
+    @Query("DELETE FROM pathway_course")
+    fun deleteAllCourses()
+
 }
 
 @Dao

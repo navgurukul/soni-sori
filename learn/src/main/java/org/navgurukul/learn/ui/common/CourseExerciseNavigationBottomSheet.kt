@@ -18,23 +18,16 @@ class CourseExerciseNavigationBottomSheet
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    lateinit var btnNext: MaterialButton
-    lateinit var btnPrev: MaterialButton
-    lateinit var btnMain: MaterialButton
+    private val btnNext: MaterialButton
+    private val btnPrev: MaterialButton
+    private val btnMain: MaterialButton
 
     init {
-        if (!isInEditMode) {
-            inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
+        inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
 
-            btnNext = findViewById(R.id.navigateNext)
-            btnPrev = findViewById(R.id.navigatePrev)
-            btnMain = findViewById(R.id.btnMain)
-
-        }
-    }
-
-    companion object {
-        const val TAG = "ModalBottomSheet"
+        btnNext = findViewById(R.id.navigateNext)
+        btnPrev = findViewById(R.id.navigatePrev)
+        btnMain = findViewById(R.id.btnMain)
     }
 
     fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit) {
@@ -47,16 +40,18 @@ class CourseExerciseNavigationBottomSheet
         }
     }
 
-    fun setView(isFirstItem: Boolean) {
-
-        if (isFirstItem)
+    fun updateNavButtons(isFirstItem: Boolean) {
+        btnMain.visibility = View.GONE
+        btnNext.visibility = View.VISIBLE
+        if (isFirstItem) {
             btnPrev.visibility = View.GONE
-        else
+        } else {
             btnPrev.visibility = View.VISIBLE
+        }
 
     }
 
-    fun setMainButton(btnText: String, btnAction: () -> Unit, isOnlyMainBtnVisible: Boolean) {
+    fun setMainButton(btnText: String, btnAction: () -> Unit) {
         btnMain.visibility = View.VISIBLE
 
         btnMain.text = btnText
@@ -65,11 +60,7 @@ class CourseExerciseNavigationBottomSheet
             btnAction.invoke()
         }
 
-        if (isOnlyMainBtnVisible) {
-            btnPrev.visibility = View.GONE
-            btnNext.visibility = View.GONE
-        }
+        btnPrev.visibility = View.GONE
+        btnNext.visibility = View.GONE
     }
-
-
 }

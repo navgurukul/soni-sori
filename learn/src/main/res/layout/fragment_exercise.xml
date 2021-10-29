@@ -12,12 +12,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite">
+            android:layout_height="match_parent">
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:overScrollMode="never"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
@@ -32,6 +32,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/spacing_1x"
                         android:paddingTop="@dimen/spacing_2x"
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 

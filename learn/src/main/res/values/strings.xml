@@ -110,4 +110,5 @@
     <string name="refresh_content">Refresh Content</string>
     <string name="next_course_message">Next Up: %1s</string>
     <string name="course_completed_message">%1s Completed!</string>
+    <string name="finish">Finish</string>
 </resources>

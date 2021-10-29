@@ -4,14 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.KEY_ARG
+import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ListSpacingDecoration
 import org.navgurukul.learn.R
@@ -20,41 +24,36 @@ import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.util.LearnUtils
 
+@Parcelize
+data class ExerciseActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
 
 class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigationClickListener {
 
     companion object {
-        private const val ARG_KEY_COURSE_ID = "arg_course_id"
-        private const val ARG_KEY_PATHWAY_ID = "arg_pathway_id"
-
         fun start(context: Context, courseId: String, pathwayId: Int) {
-            val intent = Intent(context, ExerciseActivity::class.java)
-            intent.putExtra(ARG_KEY_COURSE_ID, courseId)
-            intent.putExtra(ARG_KEY_PATHWAY_ID, pathwayId)
+            val intent = Intent(context, ExerciseActivity::class.java).apply {
+                putExtras(ExerciseActivityArgs(courseId, pathwayId).toBundle()!!)
+            }
             context.startActivity(intent)
         }
+
+        const val PATHWAY_URL_INDEX = 1
+        const val COURSE_URL_INDEX = 3
     }
 
-    private val courseId: String by lazy {
-        intent.getStringExtra(ARG_KEY_COURSE_ID) ?: run {
-            val action: String? = intent?.action
-            val data: Uri? = intent?.data
-            val uriString = data.toString()
-            if (action == Intent.ACTION_VIEW && uriString.contains("/course/")) {
-                uriString.split("/").last()
-            } else {
-                ""
-            }
+    private val args: ExerciseActivityArgs by lazy {
+        intent.getParcelableExtra(KEY_ARG) ?: run {
+            val data: Uri = intent.data!!
+            val paths = data.pathSegments
+            val courseId = paths[COURSE_URL_INDEX]
+            val pathwayId = paths[PATHWAY_URL_INDEX].toInt()
+            ExerciseActivityArgs(courseId, pathwayId)
         }
-    }
-
-    private val pathwayId: Int by lazy {
-        intent.getIntExtra(ARG_KEY_PATHWAY_ID, 0)
     }
 
     private lateinit var mBinding: ActivityExerciseBinding
     private val viewModel: ExerciseActivityViewModel by viewModel(
-        parameters = { parametersOf(courseId, pathwayId) }
+        parameters = { parametersOf(args.courseId, args.pathwayId) }
     )
     private lateinit var mAdapter: CourseExerciseAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -96,63 +95,44 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                         it.navigation
                     )
 
-                    setExerciseNavigationBarView(true, it.isFirst)
+                    mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
+                ExerciseActivityViewEvents.FinishActivity -> finish()
             }
         })
 
         viewModel.viewState.observe(this, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
-            showCompletionScreen(it.isCourseCompleted, it.nextCourseTitle, it.currentCourseTitle)
-
             if (!it.isCourseCompleted) {
-                mAdapter.submitList(it.exerciseList)
+                mAdapter.submitList(it.exerciseList) {
+                    mBinding.recyclerviewCourseExerciseList.scrollToPosition(it.currentExerciseIndex)
+                }
                 mBinding.tvCourseTitle.text = it.currentCourseTitle
+
+                mBinding.courseCompletedView.root.visibility = View.GONE
+                mBinding.appBarExercise.visibility = View.VISIBLE
+                mBinding.exerciseContentContainer.visibility = View.VISIBLE
+            } else {
+                showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
-
         })
-
-    }
-
-    private fun setExerciseNavigationBarView(isVisibile: Boolean, isFirst: Boolean = false) {
-        if(isVisibile) {
-            mBinding.bottomNavigationExercise.visibility = View.VISIBLE
-            mBinding.bottomNavigationExercise.setView(isFirst)
-        }else{
-            mBinding.bottomNavigationExercise.visibility = View.GONE
-        }
     }
 
     private fun showCompletionScreen(
-        courseCompleted: Boolean,
         nextCourseTitle: String,
         currentCourseTitle: String
     ) {
-        if (courseCompleted) {
-            mBinding.courseCompletedView.root.visibility = View.VISIBLE
-            mBinding.appBarExercise.visibility = View.GONE
-            mBinding.exerciseContentContainer.visibility = View.GONE
+        mBinding.courseCompletedView.root.visibility = View.VISIBLE
+        mBinding.appBarExercise.visibility = View.GONE
+        mBinding.exerciseContentContainer.visibility = View.GONE
 
-            mBinding.courseCompletedView.tvCompletedCourseMsg.text =
-                getString(R.string.course_completed_message, currentCourseTitle)
-            mBinding.courseCompletedView.bottomNavigationLayout.setMainButton(
-                getString(
-                    R.string.next_course_message,
-                    nextCourseTitle
-                ),
-                {
-                    viewModel.handle(ExerciseActivityViewActions.OnNextCourseClicked)
-                },
-                true
-            )
-            setExerciseNavigationBarView(false)
-        } else {
-            mBinding.courseCompletedView.root.visibility = View.GONE
-            mBinding.appBarExercise.visibility = View.VISIBLE
-            mBinding.exerciseContentContainer.visibility = View.VISIBLE
+        mBinding.courseCompletedView.tvCompletedCourseMsg.text =
+            getString(R.string.course_completed_message, currentCourseTitle)
+
+        mBinding.bottomNavigationExercise.setMainButton(nextCourseTitle) {
+            viewModel.handle(ExerciseActivityViewActions.OnNextCourseClicked)
         }
-
     }
 
     private fun initRecyclerViewExerciseList() {
@@ -184,8 +164,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         supportFragmentManager.commit {
             val enter = when (navigation) {
                 ExerciseNavigation.PREV -> android.R.anim.slide_in_left
-                //TODO test this after adding bottom nav bar and update animation
-                ExerciseNavigation.NEXT -> android.R.anim.slide_in_left
+                ExerciseNavigation.NEXT -> R.anim.slide_in_to_left
                 null -> android.R.anim.fade_in
             }
             setCustomAnimations(
