@@ -14,8 +14,8 @@
         android:layout_marginHorizontal="@dimen/spacing_4x"
         android:layout_marginTop="@dimen/spacing_4x"
         android:fontFamily="@font/nunito"
-        android:textColor="@color/primaryColor"
-        android:textSize="14sp"
+        android:textColor="?textPrimary"
+        android:textAppearance="?textAppearanceBody2"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="@id/bannerTitle"
         app:layout_constraintTop_toBottomOf="@id/bannerTitle"
         android:layout_marginTop="@dimen/spacing_4x"
-        tools:src="@drawable/ic_arrow_right"/>
+        tools:src="@drawable/ic_class_nudge"/>
 
     <TextView
         android:id="@+id/bannerBody"
@@ -56,12 +56,7 @@
         app:layout_constraintHorizontal_bias="0"
         android:layout_marginTop="@dimen/spacing_4x"
         android:layout_marginEnd="@dimen/spacing_4x"
-        android:layout_marginBottom="@dimen/spacing_4x"
-        app:cornerRadius="@dimen/button_round_radius"
-        android:textStyle="bold"
-        android:textAppearance="?textAppearanceBody2"
-        tools:textColor="@color/colorWhite"
-        tools:text="Try Typing 1" />
+        android:layout_marginBottom="@dimen/spacing_4x"/>
 
     <org.navgurukul.learn.ui.common.MerakiButton
         android:id="@+id/bannerButton2"
@@ -74,11 +69,6 @@
         app:layout_constraintTop_toBottomOf="@id/bannerBody"
         android:layout_marginTop="@dimen/spacing_4x"
         android:layout_marginBottom="@dimen/spacing_4x"
-        app:cornerRadius="@dimen/button_round_radius"
-        android:fontFamily="@font/nunito"
-        android:textStyle="bold"
-        android:textAppearance="?textAppearanceBody2"
-        tools:text="Try Typing 2"
         android:visibility="gone"
         tools:visibility="visible"/>
 

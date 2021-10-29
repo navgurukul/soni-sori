@@ -2,10 +2,12 @@ package org.navgurukul.learn.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButton.ICON_GRAVITY_END
 import org.navgurukul.commonui.resources.ResourceResolver
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BannerAction
@@ -15,17 +17,17 @@ class MerakiButton @JvmOverloads constructor(
     context: Context,
     attributes: AttributeSet? = null,
     defaultStyleAttr: Int = 0,
-) : MaterialButton(context, attributes, defaultStyleAttr) {
+) : FrameLayout(context, attributes, defaultStyleAttr) {
 
-    private var merakiButton: MerakiButton
+    private var merakiButton: MaterialButton
 
     init {
-        inflate(context, R.layout.layout_meraki_button, null)
+        inflate(context, R.layout.layout_meraki_button, this)
         merakiButton = findViewById(R.id.merakiButton)
     }
 
     fun setData(element:BannerAction, action: (BannerAction) -> Unit){
-        merakiButton.text = element.label?:""
+        merakiButton.text = element.label?:"Default"
 
         merakiButton.setOnClickListener {
             action.invoke(element)
@@ -35,6 +37,7 @@ class MerakiButton @JvmOverloads constructor(
             merakiButton.icon = ResourcesCompat.getDrawable(
                 resources,
                 ResourceResolver.getDrawableId(merakiButton.context, it),
+//                R.drawable.ic_arrow_right,
                 null
             )
 
@@ -48,11 +51,16 @@ class MerakiButton @JvmOverloads constructor(
 
     fun setVariant(variant: MerakiButtonType){
         if(variant == MerakiButtonType.secondary){
-            merakiButton.backgroundTintList = null
+            merakiButton.background = null
+//            merakiButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+//            merakiButton.backgroundTintList = ContextCompat.getColorStateList(context, android.R.color.transparent)
+//            merakiButton.strokeColor = ContextCompat.getColorStateList(context, android.R.color.transparent)
+//            merakiButton.strokeWidth = 0
             merakiButton.setIconTintResource(R.color.primaryColor)
             merakiButton.setTextColor(ContextCompat.getColor(context, R.color.primaryColor))
         }else{
             merakiButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primaryColor))
+            merakiButton.setIconTintResource(R.color.colorWhite)
             merakiButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
         }
     }

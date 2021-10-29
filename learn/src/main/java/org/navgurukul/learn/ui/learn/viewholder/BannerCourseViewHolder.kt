@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import org.navgurukul.commonui.resources.ResourceResolver
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BannerAction
@@ -33,13 +34,16 @@ class BannerCourseViewHolder(itemView: View) :
         item.actions?.let {
             setActionButtons(it, urlCallback)
         }
-        bannerTitle.text = item.title
-        bannerBody.text = item.value
+        bannerTitle.text = HtmlCompat.fromHtml(item.title?:"", HtmlCompat.FROM_HTML_MODE_COMPACT)
+        bannerBody.text = HtmlCompat.fromHtml(item.value?:"", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         item.image?.let {
             bannerImage.visibility = View.VISIBLE
-            bannerImage.setImageResource(ResourceResolver.getDrawableId(bannerImage.context, it))
-        }?.run{ bannerImage.visibility = View.GONE }
+//            bannerImage.setImageResource(ResourceResolver.getDrawableId(bannerImage.context, it))
+            bannerImage.setImageResource(R.drawable.ic_class_nudge)
+        }?.run{
+            bannerImage.visibility = View.GONE
+        }
 
     }
 
