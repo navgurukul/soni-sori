@@ -4,17 +4,20 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.merakilearn.BuildConfig
 import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.navgurukul.commonui.platform.*
+import org.navgurukul.commonui.platform.BaseViewModel
+import org.navgurukul.commonui.platform.ViewEvents
+import org.navgurukul.commonui.platform.ViewModelAction
+import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.repo.PythonRepository
 import java.io.File
 import java.io.IOException
+import java.net.URLDecoder
 import kotlin.math.min
 
 class ProfileViewModel(
@@ -23,16 +26,14 @@ class ProfileViewModel(
     private val userRepo: UserRepo,
     private val settingsRepo: SettingsRepo,
     private val config: Config
-) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState(serverUrl = settingsRepo.serverBaseUrl)) {
+) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState()) {
 
     private val user: LoginResponse.User
 
     init {
-        val appVersionText =
-            stringProvider.getString(R.string.app_version, BuildConfig.VERSION_NAME)
         user = userRepo.getCurrentUser()!!
         setState {
-            copy(appVersionText = appVersionText, userName = user.name, userEmail = user.email, profilePic = user.profilePicture)
+            copy(userName = user.name, userEmail = user.email, profilePic = user.profilePicture)
         }
 
         viewModelScope.launch {
@@ -51,24 +52,22 @@ class ProfileViewModel(
                 copy(showEditProfileLayout = true, showUpdateProfile = true)
             }
             is ProfileViewActions.ShareFile -> shareFile(action.file)
-            is ProfileViewActions.UpdateServerUrlClicked -> _viewEvents.setValue(ProfileViewEvents.ShowUpdateServerDialog(settingsRepo.serverBaseUrl))
-            is ProfileViewActions.UpdateServerUrl -> updateServerUrl(action.serverUrl)
-            ProfileViewActions.ResetServerUrl -> updateServerUrl(BuildConfig.SERVER_URL)
-            ProfileViewActions.PrivacyPolicyClicked -> _viewEvents.setValue(ProfileViewEvents.OpenUrl(config.getValue(
-                Config.PRIVACY_POLICY)))
+
+            is ProfileViewActions.ExploreOpportunityClicked -> openURL()
         }
     }
+    private fun openURL(){
 
-    private fun updateServerUrl(serverUrl: String) {
-        if (!serverUrl.startsWith("http") || !serverUrl.startsWith("https")) {
-            _viewEvents.setValue(ProfileViewEvents.ShowToast("A url should start with http or https"))
-            return
-        }
-        settingsRepo.serverBaseUrl = serverUrl
-        setState {
-            copy(serverUrl = serverUrl)
-        }
-        _viewEvents.setValue(ProfileViewEvents.ShowToast("Server url set to $serverUrl. Please restart app"))
+        val decodeReferrer= URLDecoder.decode(userRepo.installReferrer,"UTF-8")
+        val pattern = Regex("[^partner_id:]\\d+")
+        var url=config.getValue<String>(Config.OPPORTUNITY_URL)
+
+        val value= pattern.find(decodeReferrer,0)?.value
+
+        if(value!=null)
+            url= "$url?partner_id=$value"
+
+        _viewEvents.setValue(ProfileViewEvents.OpenUrl(url))
     }
 
     private fun shareFile(file: File) {
@@ -150,7 +149,6 @@ class ProfileViewModel(
 
 data class ProfileViewState(
     val savedFiles: List<File> = emptyList(),
-    val appVersionText: String? = null,
     val userName: String? = null,
     val userEmail: String? = null,
     val profilePic: String? = null,
@@ -159,15 +157,12 @@ data class ProfileViewState(
     val showProgressBar: Boolean = false,
     val showUpdateProfile: Boolean = false,
     val showEditProfileLayout: Boolean = false,
-    val showServerUrl: Boolean = BuildConfig.DEBUG,
-    val serverUrl: String
 ) : ViewState
 
 sealed class ProfileViewEvents : ViewEvents {
     class ShowToast(val text: String, val finishActivity: Boolean = false) : ProfileViewEvents()
     class ShareText(val text: String) : ProfileViewEvents()
     class OpenUrl(val url: String) : ProfileViewEvents()
-    class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
     object RestartApp : ProfileViewEvents()
 }
 
@@ -178,8 +173,5 @@ sealed class ProfileViewActions : ViewModelAction {
     class DeleteFile(val file: File) : ProfileViewActions()
     class ShareFile(val file: File) : ProfileViewActions()
     class UpdateProfile(val userName: String, val email: String) : ProfileViewActions()
-    object UpdateServerUrlClicked : ProfileViewActions()
-    class UpdateServerUrl(val serverUrl: String) : ProfileViewActions()
-    object ResetServerUrl : ProfileViewActions()
-    object PrivacyPolicyClicked : ProfileViewActions()
+    object ExploreOpportunityClicked:ProfileViewActions()
 }

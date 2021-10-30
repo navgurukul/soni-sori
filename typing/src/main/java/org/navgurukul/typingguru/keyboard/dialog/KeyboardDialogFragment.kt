@@ -1,6 +1,7 @@
 package org.navgurukul.typingguru.keyboard.dialog
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -84,6 +85,10 @@ class KeyboardDialogFragment : BaseDialogFragment() {
         view.findViewById<View>(R.id.btn_purchase).setOnClickListener {
             viewModel.handle(KeyboardDialogViewActions.BuyButtonClicked)
         }
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        requireActivity().finish()
     }
 
     override fun shouldInstallDynamicModule(): Boolean = true

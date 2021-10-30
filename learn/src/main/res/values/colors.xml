@@ -14,6 +14,7 @@
     <color name="run_background">#343A33</color>
     <color name="row_color">#F4F4F4</color>
     <color name="errorColor_70">#B3B00020</color>
+    <color name="colorGrey_100">#818181</color>
     <color name="green_progress_color">#48A145</color>
 
     <color name="colorBlockQuoteBackgroundDark">#FFC107</color>

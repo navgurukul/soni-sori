@@ -5,28 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.adapter.SavedFileAdapter
+import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
@@ -55,9 +51,6 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        tvPrivacyPolicy.setOnClickListener {
-            viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
-        }
 
         viewModel.viewState.observe(this, {
             it?.let { updateState(it) }
@@ -75,14 +68,15 @@ class ProfileActivity : AppCompatActivity() {
                 ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(
                     this, clearNotification = true
                 )
-                is ProfileViewEvents.ShowUpdateServerDialog -> {
-                    showUpdateServerDialog(it.serverUrl)
-                }
                 is ProfileViewEvents.OpenUrl -> {
                     merakiNavigator.openCustomTab(it.url, this)
                 }
             }
         })
+
+        explore_opportunity.setOnClickListener{
+            viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
+        }
 
         mBinding.updateProfile.setOnClickListener {
             viewModel.handle(
@@ -97,38 +91,9 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.handle(ProfileViewActions.EditProfileClicked)
         }
 
-        mBinding.rlServerUrl.setOnClickListener {
-            viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
-        }
 
         initSavedFile()
         initToolBar()
-    }
-
-    private fun showUpdateServerDialog(serverUrl: String) {
-        val inputText = EditText(this)
-        val alert = MaterialAlertDialogBuilder(this)
-            .setTitle("Server Url")
-            .setView(inputText)
-            .setPositiveButton("OK") { _, _ ->
-                viewModel.handle(ProfileViewActions.UpdateServerUrl(inputText.text.toString()))
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setNeutralButton("Reset") { _, _ ->
-                viewModel.handle(ProfileViewActions.ResetServerUrl)
-            }
-            .create()
-        alert.setOnShowListener {
-            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
-            inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                marginEnd = margin
-                marginStart = margin
-            }
-            inputText.setText(serverUrl)
-        }
-        alert.show()
     }
 
 
@@ -146,7 +111,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateState(it: ProfileViewState) {
-        mBinding.tvAppVersion.text = it.appVersionText
         it.userName?.let {
             mBinding.tvName.text = it
             mBinding.etName.setText(it)
@@ -160,9 +124,9 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         if (it.savedFiles.isEmpty()) {
-            mBinding.rlSavedFile.visibility = View.GONE
+            mBinding.tvSavedFile.visibility = View.GONE
         } else {
-            mBinding.rlSavedFile.visibility = View.VISIBLE
+            mBinding.tvSavedFile.visibility = View.VISIBLE
             val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
             adapter.submitList(it.savedFiles)
         }
@@ -199,13 +163,6 @@ class ProfileActivity : AppCompatActivity() {
                 .into(mBinding.ivProfile)
 
             mBinding.ivProfile.setTag(R.id.ivProfile, it.profilePic)
-        }
-
-        if (it.showServerUrl) {
-            mBinding.rlServerUrl.visibility = View.VISIBLE
-            mBinding.tvServerUrl.text = it.serverUrl
-        } else {
-            mBinding.rlServerUrl.visibility = View.GONE
         }
     }
 

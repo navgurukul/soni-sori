@@ -23,6 +23,10 @@
         <value>https://www.merakilearn.org/privacy</value>
     </entry>
     <entry>
+        <key>opportunity_url</key>
+        <value>https://www.merakilearn.org/opportunities</value>
+    </entry>
+    <entry>
         <key>on_boarding_data</key>
         <value>{
             "on_boarding_translations": {
