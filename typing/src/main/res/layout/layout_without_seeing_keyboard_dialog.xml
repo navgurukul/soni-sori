@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/info_dialog_background">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_4x"
+        android:src="@drawable/without_seeing_image"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        style="?textAppearanceHeadline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_4x"
+        android:textAlignment="center"
+        android:text="@string/without_seeing_keyboard_message" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_4x"
+        android:text="@string/Continue"
+        android:textAllCaps="false"
+        android:textAppearance="?textAppearanceButton"
+        app:cornerRadius="@dimen/spacing_2x" />
+</LinearLayout>

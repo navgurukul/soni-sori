@@ -101,6 +101,7 @@ class KeyboardActivity : BaseActivity() {
                     startActivity(intent)
                     finish()
                 }
+                is KeyboardViewEvent.OpenWithoutSeeingKeyboardDialog -> showWithoutSeeingDialog()
             }
         })
 
@@ -127,6 +128,31 @@ class KeyboardActivity : BaseActivity() {
         viewModel.handle(KeyboardViewAction.OnKeyInput(event.displayLabel))
 
         return super.onKeyUp(keyCode, event)
+    }
+
+    private fun showWithoutSeeingDialog(){
+        val alertLayout:View= layoutInflater.inflate(R.layout.layout_without_seeing_keyboard_dialog,null)
+
+        val builder:AlertDialog.Builder=AlertDialog.Builder(this)
+        builder.setView(alertLayout)
+        builder.setCancelable(false)
+
+        val btAlertDialog:AlertDialog=builder.create()
+        btAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnContinue:View=alertLayout.findViewById(R.id.btn_continue)
+
+        btnContinue.setOnClickListener{
+            btAlertDialog.dismiss()
+            hideSystemUI()
+            eye_toggle.visibility=View.VISIBLE
+        }
+
+        btAlertDialog.show()
+        btAlertDialog.setWidthPercent(50)
+
+
     }
 
     private fun showInfoDialog() {

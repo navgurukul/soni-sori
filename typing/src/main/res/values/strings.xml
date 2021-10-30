@@ -19,4 +19,6 @@
     <string name="accuracy_with_percentage">%d %%</string>
     <string name="celebration_text">Hurray!  You got it right!</string>
     <string name="get_keyboard">Get Keyboard</string>
+    <string name="without_seeing_keyboard_message">Well done! Now, let’s try the same exercise by typing without looking at the keyboard</string>
+    <string name="Continue">Continue</string>
 </resources>
