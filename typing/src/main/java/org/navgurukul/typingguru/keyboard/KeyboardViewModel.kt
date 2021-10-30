@@ -19,6 +19,9 @@ import kotlin.collections.ArrayList
 enum class CourseKeyState {
     CORRECT, INCORRECT, NEUTRAL
 }
+enum class KeyboardExerciseLevel{
+    SEEING_KEYBOARD, WITHOUT_SEEING_KEYBOARD
+}
 
 data class CourseKey(val label: Char, val state: CourseKeyState) {
     override fun equals(other: Any?): Boolean {
@@ -34,7 +37,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
-    private val maxTime = MINUTES.toSeconds(3)
+    private val maxTime = MINUTES.toSeconds(1)
 
     companion object {
         const val MAX_ALLOWED_KEYS = 8
@@ -106,25 +109,37 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
 
                     when (tickerState) {
                         TickerState.End -> {
-                            super.viewState.value?.let {
-                                _viewEvents.setValue(
-                                    KeyboardViewEvent.OpenScoreActivity(
-                                        it.correctKeys,
-                                        it.inCorrectKeys,
-                                        SECONDS.toMillis(it.maxProgress.toLong()),
-                                        keyboardActivityArgs.mode
+
+                            if(viewState.level==KeyboardExerciseLevel.SEEING_KEYBOARD){
+                                timerStarted=false
+                                setState {
+                                    copy(level=KeyboardExerciseLevel.WITHOUT_SEEING_KEYBOARD)
+                                }
+                                _viewEvents.setValue(KeyboardViewEvent.OpenWithoutSeeingKeyboardDialog)
+
+                            }
+                            if(viewState.level==KeyboardExerciseLevel.WITHOUT_SEEING_KEYBOARD) {
+                                super.viewState.value?.let {
+                                    _viewEvents.setValue(
+                                        KeyboardViewEvent.OpenScoreActivity(
+                                            it.correctKeys,
+                                            it.inCorrectKeys,
+                                            SECONDS.toMillis(it.maxProgress.toLong()*2),
+                                            keyboardActivityArgs.mode
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                         is TickerState.Progress -> {
-                            val timeText =
-                                SimpleDateFormat(
-                                    "mm:ss",
-                                    Locale.ENGLISH
-                                ).format(SECONDS.toMillis(tickerState.value))
+                            val timer=SimpleDateFormat("- mm:ss",Locale.ENGLISH)
+                            timer.timeZone=TimeZone.getTimeZone("IST")
+
+                            val timerText=timer.format(SECONDS.toMillis(tickerState.value))
+                            val progress= maxTime-tickerState.value
+
                             setState {
-                                copy(currentProgress = tickerState.value.toInt(), timerText = timeText)
+                                copy(currentProgress = progress.toInt(), timerText = timerText)
                             }
                         }
                     }
@@ -163,7 +178,8 @@ data class KeyboardViewState(
     val inCorrectKeys: Int = 0,
     val currentProgress: Int = 0,
     val maxProgress: Int = 0,
-    val timerText: String = "00:00"
+    val timerText: String = "00:00",
+    val level:KeyboardExerciseLevel=KeyboardExerciseLevel.SEEING_KEYBOARD
 ) : ViewState
 
 sealed class KeyboardViewAction {
@@ -178,4 +194,6 @@ sealed class KeyboardViewEvent : ViewEvents {
         val timeTaken: Long,
         val mode: Mode
     ) : KeyboardViewEvent()
+
+    object OpenWithoutSeeingKeyboardDialog:KeyboardViewEvent()
 }

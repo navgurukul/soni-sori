@@ -53,6 +53,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry" />
 
+    <ImageView
+        android:id="@+id/eye_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_2x"
+        android:visibility="gone"
+        android:src="@drawable/without_seeing_eye_toggle"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toStartOf="@+id/txt_timer"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txt_timer"
         style="?textAppearanceCaption2"
@@ -61,8 +72,10 @@
         android:layout_marginTop="@dimen/spacing_1x"
         android:layout_marginEnd="@dimen/spacing_4x"
         android:textColor="@color/timer_text_color"
-        app:layout_constraintEnd_toEndOf="@id/progressBar"
-        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="00/3:00" />
 
     <org.navgurukul.typingguru.keyboard.CourseKeysView
