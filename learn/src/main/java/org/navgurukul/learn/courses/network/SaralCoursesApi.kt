@@ -12,7 +12,10 @@ import retrofit2.http.Query
 interface SaralCoursesApi {
 
     @GET("pathways")
-    suspend fun getPathways(@Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE): PathwayContainer
+    suspend fun getPathways(
+        @Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE,
+        @Query("courseType") coursetype: String = "json",
+    ): PathwayContainer
 
     @GET("pathways/courses")
     suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer
@@ -20,13 +23,13 @@ interface SaralCoursesApi {
     @GET("pathways/{pathway_id}/courses")
     suspend fun getCoursesForPathway(
         @Path("pathway_id") pathway_id: Int,
-        @Query("courseType") courseType: String
+        @Query("courseType") coursetype: String = "json",
     ): PathwayCourseContainer
 
     @GET("courses/{course_id}/exercises")
     suspend fun getExercisesAsync(
         @Path("course_id") course_id: String,
-        @Query("lang") language: String,
+        @Query("lang") language: String
     ): CourseExerciseContainer
 
 }

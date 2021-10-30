@@ -19,13 +19,16 @@ data class Exercise(
     val id: String = "",
     @Json(name = "name")
     val name: String = "",
-    @Json(name = "slug")
-    var slug: String?,
     var lang: String = "en",
-
     @Json(name = "courseName")
-    var courseName: String?
+    var courseName: String?,
+    @Json(name = "progress")
+    var exerciseProgress: ExerciseProgress?
 ) : Serializable {
     @Ignore
     var number: Int? = 0
+}
+
+enum class ExerciseProgress{
+NOT_STARTED, IN_PROGRESS, COMPLETED
 }

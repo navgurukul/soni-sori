@@ -38,6 +38,7 @@ class LearnFragmentViewModel(
                                 }
                             }
                             val courses = currentPathway.courses
+
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
                             }
@@ -64,7 +65,9 @@ class LearnFragmentViewModel(
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
-                it?.let { setState { copy(courses = it, loading = false, logo = pathway.logo) } }
+                it?.let {
+                    setState { copy(courses = it, loading = false, logo = pathway.logo) }
+                }
             }
         }
     }
@@ -96,16 +99,10 @@ class LearnFragmentViewModel(
     }
 
     fun selectCourse(course: Course) {
-        viewModelScope.launch(Dispatchers.Default) {
-            learnRepo.fetchCurrentStudyForCourse(course.id).let {
-                if (it.isNotEmpty()) {
-                    _viewEvents.postValue(LearnFragmentViewEvents.OpenCourseSlugActivity(it.first()))
-                } else {
-                    _viewEvents.postValue(
-                        LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name)
-                    )
-                }
-            }
+        course.pathwayId?.let {
+            _viewEvents.postValue(
+                LearnFragmentViewEvents.OpenCourseDetailActivity(course.id, course.name, it)
+            )
         }
     }
 
@@ -145,8 +142,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     object DismissSelectionSheet : LearnFragmentViewEvents()
-    class OpenCourseSlugActivity(val currentStudy: CurrentStudy) : LearnFragmentViewEvents()
-    class OpenCourseDetailActivity(val courseId: String, val courseName: String) :
+    class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
 }
 

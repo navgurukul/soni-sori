@@ -20,7 +20,6 @@
     <dimen name="dimen_10_dp">10dp</dimen>
     <dimen name="dimen_25_dp">25dp</dimen>
 
-    <dimen name="dimen_30_dp">30dp</dimen>
     <dimen name="dimen_40_dp">40dp</dimen>
     <dimen name="dimen_50_dp">50dp</dimen>
     <dimen name="dimen_55_dp">50dp</dimen>
@@ -43,4 +42,6 @@
     <dimen name="dimen_course_content_margin">16dp</dimen>
     <dimen name="dot_item_box_size">48dp</dimen>
     <dimen name="dot_radius">2dp</dimen>
+    <dimen name="bottom_sheet_navigation_height">48dp</dimen>
+    <dimen name="dimen_0_dp">0dp</dimen>
 </resources>

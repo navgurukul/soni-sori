@@ -15,24 +15,16 @@ data class Course(
     @Json(name = "id")
     val id: String = "",
     @Json(name = "name")
-    val name: String,
+    var name: String,
     @Json(name = "pathwayId")
     var pathwayId: Int? = null,
     @Json(name = "short_description")
-    val shortDescription: String,
+    var shortDescription: String,
     @Json(name = "lang_available")
     @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
-    val supportedLanguages: List<String> = listOf("en"),
+    var supportedLanguages: List<String> = listOf("en"),
 ){
     @Ignore
-    @Json(name = "number")
-    var number: Int? = null
-
-    @Ignore
     @Json(name = "exercises")
-    var exercises: List<Exercise?> = listOf()
-}
-
-enum class CourseType{
-    json, markdown
+    var exercises: List<Exercise> = listOf()
 }

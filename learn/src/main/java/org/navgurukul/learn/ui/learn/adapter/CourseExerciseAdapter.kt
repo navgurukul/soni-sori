@@ -2,15 +2,18 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.ExerciseProgress
 import org.navgurukul.learn.databinding.ItemCourseExerciseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class CourseExerciseAdapter(callback: (Pair<Exercise, ItemCourseExerciseBinding>) -> Unit) :
+class CourseExerciseAdapter(callback: (Exercise) -> Unit) :
 
     DataBoundListAdapter<Exercise, ItemCourseExerciseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Exercise>() {
@@ -35,8 +38,20 @@ class CourseExerciseAdapter(callback: (Pair<Exercise, ItemCourseExerciseBinding>
         val binding = holder.binding
         binding.exercise = item
         binding.root.setOnClickListener {
-            mCallback.invoke(Pair(item, binding))
+            mCallback.invoke(item)
         }
+        setImageUrl(binding.ivExerciseTypeProgress, item.exerciseProgress)
+    }
+
+    private fun setImageUrl(imageView: ImageView, progress: ExerciseProgress?) {
+        val layoutId =
+            when (progress) {
+                ExerciseProgress.COMPLETED -> R.drawable.ic_type_text_complete
+                ExerciseProgress.IN_PROGRESS -> R.drawable.ic_type_text_selected
+                ExerciseProgress.NOT_STARTED -> R.drawable.ic_type_text_notstarted
+                else -> R.drawable.ic_type_text_notstarted
+            }
+        imageView.setBackgroundResource(layoutId)
     }
 
 }

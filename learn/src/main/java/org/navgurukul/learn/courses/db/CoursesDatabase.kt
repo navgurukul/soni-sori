@@ -4,13 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.Exercise
-import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 5
+const val DB_VERSION = 6
 
 @Dao
 interface PathwayDao {
@@ -42,10 +39,14 @@ interface CourseDao {
     fun getAllCoursesDirect(): List<Course>?
 
     @Query("select * from pathway_course where id=:courseId")
-    fun getCourseById(courseId: String): List<Course>
+    suspend fun getCourseById(courseId: String): Course
 
     @Query("select * from pathway_course where pathwayId=:pathwayId")
     fun getCoursesByPathwayId(pathwayId: Int): List<Course>
+
+    @Query("DELETE FROM pathway_course")
+    fun deleteAllCourses()
+
 }
 
 @Dao
@@ -57,14 +58,17 @@ interface ExerciseDao {
     suspend fun insertExerciseAsync(course: List<Exercise?>?)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    fun getAllExercisesForCourse(courseId: String, lang: String): LiveData<List<Exercise>>
+    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<Exercise>
 
     @Query("select * from course_exercise where id = :exerciseId and lang = :lang")
-    fun getExerciseById(exerciseId: String, lang: String): LiveData<List<Exercise>>
+    fun getExerciseById(exerciseId: String, lang: String): LiveData<Exercise>
 
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
     fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<Exercise>
+
+    @Query("Update course_exercise set exerciseProgress = :exerciseProgress where id = :exerciseId")
+    suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 }
 
 @Dao
@@ -73,17 +77,17 @@ interface CurrentStudyDao {
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
-    suspend fun getCurrentStudyForCourse(courseId: String?): List<CurrentStudy>
+    suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
 }
 
-val MIGRATION_1_2 = object: Migration(1, 2) {
+val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL,  `logo` TEXT, PRIMARY KEY(`id`))")
     }
 
 }
 
-val MIGRATION_2_3 = object: Migration(2, 3) {
+val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         //create new table
@@ -133,7 +137,7 @@ val MIGRATION_2_3 = object: Migration(2, 3) {
 
 }
 
-val MIGRATION_3_4 = object: Migration(3, 4) {
+val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Pathway
         database.execSQL("ALTER TABLE `pathway` ADD COLUMN `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]'")
@@ -141,7 +145,7 @@ val MIGRATION_3_4 = object: Migration(3, 4) {
 
 }
 
-val MIGRATION_4_5 = object: Migration(4, 5) {
+val MIGRATION_4_5 = object : Migration(4, 5) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         //drop old table
@@ -153,21 +157,47 @@ val MIGRATION_4_5 = object: Migration(4, 5) {
                 " `courseId` TEXT NOT NULL," +
                 " `id` TEXT NOT NULL," +
                 " `name` TEXT NOT NULL," +
-                " `slug` TEXT," +
                 " `lang` TEXT NOT NULL," +
                 " `courseName` TEXT," +
                 " PRIMARY KEY(`id`, `lang`) )"
         )
 
-        database.execSQL("ALTER TABLE `pathway_course`(" +
-                "DROP COLUMN 'created_at'," +
-                "DROP COLUMN 'logo'," +
-                "DROP COLUMN 'notes'," +
-                "DROP COLUMN 'pathwayName'," +
-                "DROP COLUMN 'sequence_num'," +
-                "DROP COLUMN 'type'," +
-                "DROP COLUMN 'days_to_complete')"
+        //drop old table
+        database.execSQL("DROP TABLE pathway_course")
+
+        //create new table
+        database.execSQL("CREATE TABLE `pathway_course`(" +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `shortDescription` TEXT NOT NULL," +
+                " `pathwayId` INTEGER," +
+                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]'," +
+                " PRIMARY KEY(`id`) )"
         )
+
+    }
+
+}
+
+
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL(
+            "ALTER TABLE `course_exercise`" +
+                    "ADD COLUMN 'exerciseProgress' TEXT"
+        )
+
+        database.execSQL("DROP TABLE user_current_study")
+
+        //create new table
+        database.execSQL(
+            "CREATE TABLE `user_current_study`(" +
+                    " `courseId` TEXT NOT NULL," +
+                    " `exerciseId` TEXT NOT NULL," +
+                    " PRIMARY KEY(`courseId`) )"
+        )
+
     }
 
 }

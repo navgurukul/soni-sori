@@ -3,8 +3,10 @@ package org.navgurukul.learn.courses.network
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
+@Deprecated("Use networkBoundResourceFlow instead")
 abstract class NetworkBoundResource<ResultType, RequestType> {
     private val result = MutableLiveData<ResultType?>()
 
@@ -43,24 +45,22 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
 }
 
-fun<ResultType, RequestType> networkBoundResourceFlow(
-    loadFromDb: () -> ResultType?,
+fun <ResultType, RequestType> networkBoundResourceFlow(
+    loadFromDb: suspend () -> ResultType?,
     shouldFetch: (ResultType?) -> Boolean,
     makeApiCallAsync: suspend () -> RequestType,
     saveCallResult: (RequestType) -> Unit
 ): Flow<ResultType?> = flow {
-    val dbSource = loadFromDb()
-    if (dbSource != null && (dbSource as? Collection<*>)?.isNotEmpty() == true) {
+    val dbSource = withContext(Dispatchers.IO) { loadFromDb() }
+    if (dbSource != null && (dbSource !is Collection<*> || (dbSource as Collection<*>).isNotEmpty())) {
         emit(dbSource)
     }
     if (shouldFetch(dbSource)) {
-        try {
-            val data = makeApiCallAsync()
-            saveCallResult(data)
-            emit(loadFromDb())
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(null)
-        }
+        val data = makeApiCallAsync()
+        withContext(Dispatchers.IO) { saveCallResult(data) }
+        emit(loadFromDb())
     }
+}.catch { e ->
+    e.printStackTrace()
+    emit(null)
 }
