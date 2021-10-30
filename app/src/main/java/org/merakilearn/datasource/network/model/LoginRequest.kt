@@ -12,6 +12,6 @@ data class LoginRequest(
     val mode: String = "android",
     @Json(name = "id")
     val id: Int? = null,
-    @Json(name = "language")
+    @Json(name = "lang")
     val language: String
 ) : Serializable
