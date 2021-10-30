@@ -9,6 +9,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.merakilearn.core.datasource.model.Language
 
+private val DEFAULT_SUPPORTED_LANGUAGES = listOf(Language("en", "English"))
+
 @Entity(tableName = "pathway")
 @JsonClass(generateAdapter = true)
 data class Pathway @JvmOverloads constructor(
@@ -29,6 +31,13 @@ data class Pathway @JvmOverloads constructor(
     @Json(name = "logo")
     val logo: String?,
     @Json(name = "lang_available")
-    @ColumnInfo(name = "supportedLanguages", defaultValue = "[{\"code\": \"en\", \"label\": \"English\"}]")
-    var supportedLanguages: List<Language> = listOf(Language("en", "English")),
-)
+    @ColumnInfo(
+        name = "supportedLanguages",
+        defaultValue = "[{\"code\": \"en\", \"label\": \"English\"}]"
+    )
+    var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES
+) {
+    @Ignore
+    val supportedLanguages =
+        if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES
+}
