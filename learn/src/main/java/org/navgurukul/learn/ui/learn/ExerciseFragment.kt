@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -140,7 +141,7 @@ class ExerciseFragment : Fragment() {
         contentAdapter = ExerciseContentAdapter(this.requireContext(), {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this.requireContext(), it.value)
+                    merakiNavigator.openPlayground(this.requireContext(), HtmlCompat.fromHtml(it.value, HtmlCompat.FROM_HTML_MODE_COMPACT).toString())
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->

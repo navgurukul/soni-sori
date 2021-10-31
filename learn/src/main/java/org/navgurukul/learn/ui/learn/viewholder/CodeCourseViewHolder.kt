@@ -29,10 +29,11 @@ class CodeCourseViewHolder(itemView: View) :
     fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 
-        codeTitle.visibility = View.GONE
-        item.title?.let {
+        if (item.title.isNullOrBlank()) {
+            codeTitle.visibility = View.GONE
+        } else {
             codeTitle.visibility = View.VISIBLE
-            codeTitle.text = it
+            codeTitle.text = item.title
         }
 
         when (item.codeTypes) {
