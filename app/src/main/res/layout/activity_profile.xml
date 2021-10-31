@@ -9,8 +9,7 @@
 
         <include
             android:id="@+id/idHeader"
-            layout="@layout/component_header_profile"
-            android:background="@color/colorWhite" />
+            layout="@layout/component_header_profile"/>
 
 
         <ImageView
@@ -19,30 +18,32 @@
             android:layout_height="@dimen/dimen_100_dp"
             android:layout_below="@id/idHeader"
             android:layout_marginStart="@dimen/spacing_2x"
+            android:layout_marginBottom="@dimen/spacing_2x"
             android:background="@drawable/avatar_background_border"
             android:padding="@dimen/spacing_1x"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvName"
-            style="@style/text_view_profile"
+            style="?textAppearanceBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/idHeader"
+            android:layout_marginStart="@dimen/spacing_2x"
             android:layout_marginTop="@dimen/spacing_2x"
             android:layout_toEndOf="@id/ivProfile"
-            android:gravity="center_vertical"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="Neha Singh" />
 
         <TextView
             android:id="@+id/tvEmail"
-            style="@style/text_view_profile"
+            style="?textAppearanceBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvName"
+            android:layout_marginStart="@dimen/spacing_2x"
             android:layout_toEndOf="@id/ivProfile"
-            android:textSize="14sp"
             tools:text="nehasingh@xyz.com" />
 
         <com.google.android.material.button.MaterialButton
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvEmail"
             android:layout_toEndOf="@+id/ivProfile"
+            android:layout_marginStart="@dimen/spacing_2x"
             android:minWidth="@dimen/spacing_2x"
             android:minHeight="@dimen/spacing_2x"
             android:text="@string/edit"
@@ -63,8 +65,11 @@
             android:id="@+id/llProfileEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivEdit"
-            android:layout_margin="@dimen/spacing_3x"
+            android:layout_below="@id/ivProfile"
+            android:layout_marginStart="@dimen/spacing_3x"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:layout_marginEnd="@dimen/spacing_3x"
+            android:layout_marginBottom="@dimen/spacing_3x"
             android:orientation="vertical"
             android:visibility="gone"
             tools:layout_editor_absoluteX="10dp">
@@ -100,18 +105,21 @@
             android:layout_marginTop="@dimen/spacing_2x"
             android:fontFamily="@font/n_extra_bold"
             android:text="@string/opportunities"
-            android:textColor="@color/colorGrey_100" />
+            android:textColor="@color/colorGrey_100"/>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/opportunity"
-            android:layout_margin="@dimen/spacing_3x"
+            android:layout_marginStart="@dimen/spacing_3x"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:layout_marginEnd="@dimen/spacing_3x"
+            android:layout_marginBottom="@dimen/spacing_3x"
             android:layout_toStartOf="@+id/image"
             android:fontFamily="@font/nunito"
             android:text="@string/opportunities_desc"
-            android:textColor="@color/on_boarding_text_view_black_color"/>
+            android:textColor="?attr/textColorAlertDialogListItem" />
 
         <ImageView
             android:id="@+id/image"
@@ -138,47 +146,44 @@
             android:text="@string/explore_opportunities"
             android:textAllCaps="false"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/dimen_10_dp"
+            app:cornerRadius="@dimen/spacing_3x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/tvSavedFile"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/explore_opportunity"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:paddingStart="@dimen/spacing_4x"
-            android:paddingEnd="@dimen/spacing_4x"
+            android:layout_marginTop="@dimen/spacing_1x"
             android:text="@string/files_saved"
-            android:layout_below="@id/explore_opportunity"
-            android:textColor="#D63447"
+            android:textAllCaps="false"
             tools:text="Files Saved" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/tvViewAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:paddingStart="@dimen/spacing_4x"
-            android:paddingEnd="@dimen/spacing_4x"
-            android:text="@string/view_all"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:layout_below="@id/explore_opportunity"
-            android:textColor="#D63447" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/spacing_1x"
+            android:layout_marginEnd="@dimen/spacing_3x"
+            android:textAllCaps="false"
+            android:text="@string/view_all" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvSavedFile"
             android:layout_above="@id/updateProfile"
+            android:layout_below="@id/tvSavedFile"
+            android:layout_marginTop="@dimen/spacing_2x"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/item_saved_file" />
 
@@ -194,15 +199,58 @@
             android:visibility="gone"
             app:elevation="2dp"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <LinearLayout
+            android:id="@+id/rlServerUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvPrivacyPolicy"
+            android:layout_marginBottom="@dimen/spacing_2x"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvServerUrlLabel"
+                style="?textAppearanceEmphasized1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:text="@string/server_url_label"
+                android:textColor="?textPrimary" />
+
+            <TextView
+                android:id="@+id/tvServerUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_1x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?textSecondary" />
+
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tvPrivacyPolicy"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/n_extra_bold"
+            android:text="@string/privacy_policy"
+            android:textColor="?textPrimary"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/updateProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorRed"
-            android:padding="@dimen/dimen_10_dp"
+            android:background="?colorPrimary"
             android:text="@string/update_profile"
-            android:textColor="@color/colorWhite"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 </layout>

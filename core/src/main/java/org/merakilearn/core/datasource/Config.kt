@@ -14,6 +14,7 @@ class Config {
     val remoteConfig = Firebase.remoteConfig
 
     companion object {
+        const val PRIVACY_POLICY="privacy_policy"
         const val KEY_AVAILABLE_LANG = "available_lang"
         const val ON_BOARDING_DATA = "on_boarding_data"
         const val KEYBOARD_URL_KEY = "keyboard_purchase_url"
