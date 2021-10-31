@@ -20,4 +20,5 @@
     <dimen name="dimen_350_dp">350dp</dimen>
     <dimen name="minimum_button_height">56dp</dimen>
     <dimen name="indicator_size">4dp</dimen>
+    <dimen name="profile_avatar_large_size">80dp</dimen>
 </resources>

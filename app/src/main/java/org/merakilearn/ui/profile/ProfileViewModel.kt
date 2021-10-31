@@ -10,11 +10,15 @@ import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.navgurukul.commonui.platform.*
+import org.navgurukul.commonui.platform.BaseViewModel
+import org.navgurukul.commonui.platform.ViewEvents
+import org.navgurukul.commonui.platform.ViewModelAction
+import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.repo.PythonRepository
 import java.io.File
 import java.io.IOException
+import java.net.URLDecoder
 import kotlin.math.min
 
 class ProfileViewModel(
@@ -25,14 +29,23 @@ class ProfileViewModel(
     private val config: Config
 ) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState(serverUrl = settingsRepo.serverBaseUrl)) {
 
+    companion object {
+        const val PARTNER_ID = "partner_id"
+    }
+
+
     private val user: LoginResponse.User
 
     init {
-        val appVersionText =
-            stringProvider.getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        val appVersionText = BuildConfig.VERSION_NAME
         user = userRepo.getCurrentUser()!!
         setState {
-            copy(appVersionText = appVersionText, userName = user.name, userEmail = user.email, profilePic = user.profilePicture)
+            copy(
+                appVersionText = appVersionText,
+                userName = user.name,
+                userEmail = user.email,
+                profilePic = user.profilePicture
+            )
         }
 
         viewModelScope.launch {
@@ -51,11 +64,21 @@ class ProfileViewModel(
                 copy(showEditProfileLayout = true, showUpdateProfile = true)
             }
             is ProfileViewActions.ShareFile -> shareFile(action.file)
-            is ProfileViewActions.UpdateServerUrlClicked -> _viewEvents.setValue(ProfileViewEvents.ShowUpdateServerDialog(settingsRepo.serverBaseUrl))
+            is ProfileViewActions.UpdateServerUrlClicked -> _viewEvents.setValue(
+                ProfileViewEvents.ShowUpdateServerDialog(
+                    settingsRepo.serverBaseUrl
+                )
+            )
             is ProfileViewActions.UpdateServerUrl -> updateServerUrl(action.serverUrl)
             ProfileViewActions.ResetServerUrl -> updateServerUrl(BuildConfig.SERVER_URL)
-            ProfileViewActions.PrivacyPolicyClicked -> _viewEvents.setValue(ProfileViewEvents.OpenUrl(config.getValue(
-                Config.PRIVACY_POLICY)))
+            ProfileViewActions.PrivacyPolicyClicked -> _viewEvents.setValue(
+                ProfileViewEvents.OpenUrl(
+                    config.getValue(
+                        Config.PRIVACY_POLICY
+                    )
+                )
+            )
+            is ProfileViewActions.ExploreOpportunityClicked -> openURL()
         }
     }
 
@@ -69,6 +92,20 @@ class ProfileViewModel(
             copy(serverUrl = serverUrl)
         }
         _viewEvents.setValue(ProfileViewEvents.ShowToast("Server url set to $serverUrl. Please restart app"))
+    }
+
+    private fun openURL() {
+        val decodeReferrer = URLDecoder.decode(userRepo.installReferrer ?: "", "UTF-8")
+        val pattern = Regex("[^$PARTNER_ID:]\\d+")
+        var url = config.getValue<String>(Config.OPPORTUNITY_URL)
+
+        val value = pattern.find(decodeReferrer, 0)?.value
+
+        if (value != null) {
+            url = "$url?$PARTNER_ID=$value"
+        }
+
+        _viewEvents.setValue(ProfileViewEvents.OpenUrl(url))
     }
 
     private fun shareFile(file: File) {
@@ -88,7 +125,8 @@ class ProfileViewModel(
         var showAllButtonText: String? = null
         val savedFiles = pythonRepository.fetchSavedFiles().toMutableList().let {
             if (it.size > 4) {
-                showAllButtonText = stringProvider.getString(if (expanded) R.string.collapse else R.string.view_all)
+                showAllButtonText =
+                    stringProvider.getString(if (expanded) R.string.collapse else R.string.view_all)
             }
             if (expanded) it else it.subList(0, min(it.size, 4))
         }
@@ -178,6 +216,7 @@ sealed class ProfileViewActions : ViewModelAction {
     class DeleteFile(val file: File) : ProfileViewActions()
     class ShareFile(val file: File) : ProfileViewActions()
     class UpdateProfile(val userName: String, val email: String) : ProfileViewActions()
+    object ExploreOpportunityClicked : ProfileViewActions()
     object UpdateServerUrlClicked : ProfileViewActions()
     class UpdateServerUrl(val serverUrl: String) : ProfileViewActions()
     object ResetServerUrl : ProfileViewActions()

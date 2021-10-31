@@ -21,12 +21,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.adapter.SavedFileAdapter
+import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
@@ -55,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        tvPrivacyPolicy.setOnClickListener {
+        btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
@@ -71,18 +71,22 @@ class ProfileActivity : AppCompatActivity() {
                         navigateUp()
                     }
                 }
+                is ProfileViewEvents.ShowUpdateServerDialog -> {
+                    showUpdateServerDialog(it.serverUrl)
+                }
                 is ProfileViewEvents.ShareText -> shareCode(it)
                 ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(
                     this, clearNotification = true
                 )
-                is ProfileViewEvents.ShowUpdateServerDialog -> {
-                    showUpdateServerDialog(it.serverUrl)
-                }
                 is ProfileViewEvents.OpenUrl -> {
                     merakiNavigator.openCustomTab(it.url, this)
                 }
             }
         })
+
+        explore_opportunity.setOnClickListener{
+            viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
+        }
 
         mBinding.updateProfile.setOnClickListener {
             viewModel.handle(
@@ -93,12 +97,12 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
-        mBinding.ivEdit.setOnClickListener {
-            viewModel.handle(ProfileViewActions.EditProfileClicked)
+        mBinding.serverUrlValue.setOnClickListener {
+            viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
         }
 
-        mBinding.rlServerUrl.setOnClickListener {
-            viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
+        mBinding.btnEdit.setOnClickListener {
+            viewModel.handle(ProfileViewActions.EditProfileClicked)
         }
 
         initSavedFile()
@@ -131,7 +135,6 @@ class ProfileActivity : AppCompatActivity() {
         alert.show()
     }
 
-
     private fun shareCode(it: ProfileViewEvents.ShareText) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -146,7 +149,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateState(it: ProfileViewState) {
-        mBinding.tvAppVersion.text = it.appVersionText
+        mBinding.appVersionValue.text = it.appVersionText
+
         it.userName?.let {
             mBinding.tvName.text = it
             mBinding.etName.setText(it)
@@ -160,9 +164,9 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         if (it.savedFiles.isEmpty()) {
-            mBinding.rlSavedFile.visibility = View.GONE
+            mBinding.tvSavedFile.visibility = View.GONE
         } else {
-            mBinding.rlSavedFile.visibility = View.VISIBLE
+            mBinding.tvSavedFile.visibility = View.VISIBLE
             val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
             adapter.submitList(it.savedFiles)
         }
@@ -175,7 +179,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         mBinding.updateProfile.isVisible = it.showUpdateProfile
-        mBinding.llProfileEdit.isVisible = it.showEditProfileLayout
+        mBinding.groupProfileEdit.isVisible = it.showEditProfileLayout
         mBinding.updateProfile.isVisible = it.showUpdateProfile
         mBinding.progressBarButton.isVisible = it.showProgressBar
 
@@ -202,10 +206,10 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         if (it.showServerUrl) {
-            mBinding.rlServerUrl.visibility = View.VISIBLE
-            mBinding.tvServerUrl.text = it.serverUrl
+            mBinding.groupServerUrl.visibility = View.VISIBLE
+            mBinding.serverUrlValue.text = it.serverUrl
         } else {
-            mBinding.rlServerUrl.visibility = View.GONE
+            mBinding.groupServerUrl.visibility = View.GONE
         }
     }
 
