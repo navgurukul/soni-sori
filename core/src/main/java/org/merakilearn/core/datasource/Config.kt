@@ -18,7 +18,7 @@ class Config {
         const val ON_BOARDING_DATA = "on_boarding_data"
         const val KEYBOARD_URL_KEY = "keyboard_purchase_url"
         const val OPPORTUNITY_URL="opportunity_url"
-
+        const val PRIVACY_POLICY = "privacy_policy"
     }
 
     /**

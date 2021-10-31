@@ -3,206 +3,300 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <include
-            android:id="@+id/idHeader"
-            layout="@layout/component_header_profile"
-            android:background="@color/colorWhite" />
-
-
-        <ImageView
-            android:id="@+id/ivProfile"
-            android:layout_width="@dimen/dimen_100_dp"
-            android:layout_height="@dimen/dimen_100_dp"
-            android:layout_below="@id/idHeader"
-            android:layout_marginStart="@dimen/spacing_2x"
-            android:background="@drawable/avatar_background_border"
-            android:padding="@dimen/spacing_1x"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/tvName"
-            style="@style/text_view_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/idHeader"
-            android:layout_marginTop="@dimen/spacing_2x"
-            android:layout_toEndOf="@id/ivProfile"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
-            tools:text="Neha Singh" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            style="@style/text_view_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvName"
-            android:layout_toEndOf="@id/ivProfile"
-            android:textSize="14sp"
-            tools:text="nehasingh@xyz.com" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ivEdit"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvEmail"
-            android:layout_toEndOf="@+id/ivProfile"
-            android:minWidth="@dimen/spacing_2x"
-            android:minHeight="@dimen/spacing_2x"
-            android:text="@string/edit"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:id="@+id/llProfileEdit"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ivEdit"
-            android:layout_margin="@dimen/spacing_3x"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:layout_editor_absoluteX="10dp">
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/idHeader"
+                layout="@layout/component_header_profile"
+                android:background="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="@dimen/profile_avatar_large_size"
+                android:layout_height="@dimen/profile_avatar_large_size"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:padding="@dimen/spacing_half_x"
+                android:background="@drawable/avatar_background_border"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idHeader"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvName"
+                style="?textAppearanceEmphasized1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:text="?textPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivProfile"
+                app:layout_constraintTop_toTopOf="@id/ivProfile"
+                tools:text="Neha Singh" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_1x"
+                android:text="?textPrimary"
+                app:layout_constraintEnd_toEndOf="@id/tvName"
+                app:layout_constraintStart_toStartOf="@id/tvName"
+                app:layout_constraintTop_toBottomOf="@id/tvName"
+                tools:text="nehasingh@xyz.com" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_2x"
+                android:minWidth="0dp"
+                android:text="@string/edit"
+                android:textAppearance="?textAppearanceEmphasized2"
+                app:layout_constraintStart_toEndOf="@+id/ivProfile"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupProfileEdit"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:constraint_referenced_ids="etName, etEmail" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10_dp"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_1x"
                 android:hint="@string/name"
-                android:padding="@dimen/dimen_10_dp" />
+                android:padding="@dimen/spacing_2x"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnEdit" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etEmail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10_dp"
+                android:layout_marginTop="@dimen/spacing_2x"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:hint="@string/email"
                 android:inputType="none"
-                android:padding="@dimen/dimen_10_dp" />
+                android:padding="@dimen/spacing_2x"
+                app:layout_constraintEnd_toEndOf="@id/etName"
+                app:layout_constraintStart_toStartOf="@id/etName"
+                app:layout_constraintTop_toBottomOf="@id/etName" />
 
-        </LinearLayout>
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/profileBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="etEmail, btnEdit, ivProfile" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupServerUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="serverUrlTitle, serverUrlValue" />
+
+            <TextView
+                android:id="@+id/serverUrlTitle"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/server_url_label"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profileBarrier" />
+
+            <TextView
+                android:id="@+id/serverUrlValue"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:textColor="?textPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/serverUrlTitle"
+                tools:text="https://api.merakilearn.org" />
+
+            <TextView
+                android:id="@+id/appVersionTitle"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/app_version"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
+
+            <TextView
+                android:id="@+id/appVersionValue"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:textColor="?textPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appVersionTitle"
+                tools:text="1.4.0" />
+
+            <TextView
+                android:id="@+id/opportunityTitle"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/opportunities"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appVersionValue" />
+
+            <TextView
+                android:id="@+id/opportunityDescription"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/opportunities_desc"
+                android:textColor="?textPrimary"
+                app:layout_constraintEnd_toStartOf="@id/opportunityImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/opportunityTitle" />
+
+            <ImageView
+                android:id="@+id/opportunityImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_4x"
+                android:src="@drawable/profile_presents"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/opportunityDescription" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/explore_opportunity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/explore_opportunities"
+                android:textAllCaps="false"
+                android:textAppearance="?textAppearanceEmphasized2"
+                app:cornerRadius="?cornerRadius400"
+                app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
 
 
-        <TextView
-            android:id="@+id/opportunity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/llProfileEdit"
-            android:layout_marginStart="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_2x"
-            android:fontFamily="@font/n_extra_bold"
-            android:text="@string/opportunities"
-            android:textColor="@color/colorGrey_100" />
+            <TextView
+                android:id="@+id/tvSavedFile"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_8x"
+                android:text="@string/files_saved"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/explore_opportunity"
+                tools:text="Files Saved" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/opportunity"
-            android:layout_margin="@dimen/spacing_3x"
-            android:layout_toStartOf="@+id/image"
-            android:fontFamily="@font/nunito"
-            android:text="@string/opportunities_desc"
-            android:textColor="@color/on_boarding_text_view_black_color"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tvViewAll"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:text="@string/view_all"
+                android:textAllCaps="false"
+                android:textColor="?textBrand"
+                app:layout_constraintBottom_toBottomOf="@id/tvSavedFile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvSavedFile" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/opportunity"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/spacing_2x"
-            android:layout_marginEnd="@dimen/spacing_2x"
-            android:layout_marginBottom="@dimen/spacing_2x"
-            android:src="@drawable/profile_presents" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/spacing_4x"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/bottomBarrier"
+                app:layout_constraintTop_toBottomOf="@id/tvSavedFile"
+                tools:listitem="@layout/item_saved_file" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/explore_opportunity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image"
-            android:layout_marginStart="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:layout_marginBottom="@dimen/spacing_3x"
-            android:fontFamily="@font/nunito"
-            android:minHeight="@dimen/minimum_button_height"
-            android:text="@string/explore_opportunities"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/dimen_10_dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <ProgressBar
+                android:id="@+id/progress_bar_button"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/dimen_progress_bar"
+                android:layout_height="@dimen/dimen_progress_bar"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/bottomBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="updateProfile, btnPrivacyPolicy" />
 
-        <TextView
-            android:id="@+id/tvSavedFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:paddingStart="@dimen/spacing_4x"
-            android:paddingEnd="@dimen/spacing_4x"
-            android:text="@string/files_saved"
-            android:layout_below="@id/explore_opportunity"
-            android:textColor="#D63447"
-            tools:text="Files Saved" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/updateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/update_profile"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/tvViewAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:paddingStart="@dimen/spacing_4x"
-            android:paddingEnd="@dimen/spacing_4x"
-            android:text="@string/view_all"
-            android:layout_below="@id/explore_opportunity"
-            android:textColor="#D63447" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrivacyPolicy"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"
+                android:textAllCaps="false"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvSavedFile"
-            android:layout_above="@id/updateProfile"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_saved_file" />
-
-
-        <ProgressBar
-            android:id="@+id/progress_bar_button"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="@dimen/dimen_progress_bar"
-            android:layout_height="@dimen/dimen_progress_bar"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:elevation="2dp"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/updateProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorRed"
-            android:padding="@dimen/dimen_10_dp"
-            android:text="@string/update_profile"
-            android:textColor="@color/colorWhite"
-            android:visibility="gone" />
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

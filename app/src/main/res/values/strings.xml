@@ -53,7 +53,7 @@
     <string name="please_connect">Please connect your account to update</string>
     <string name="update_profile">Update Profile</string>
     <string name="email_already_used">This email is already linked with another account</string>
-    <string name="app_version">App Version: %1$s</string>
+    <string name="app_version">App Version</string>
     <string name="connect_with_email">Connect with Email</string>
     <string name="skip_login">Don\'t want to login? <u>Skip Login</u></string>
     <string name="create_new_account">Create New Account</string>
