@@ -7,8 +7,13 @@ import android.content.res.Configuration
 import android.util.LruCache
 import androidx.annotation.*
 
-class ResourceResolver private constructor(private val enableCache: Boolean) {
+class ResourceResolver constructor(private val enableCache: Boolean) {
     private val resourceCache: LruCache<String, Int> by lazy { LruCache<String, Int>(CACHE_SIZE) }
+
+    private val CACHE_SIZE =
+        1000 //our cache is just String->Int mapping 1000 entry shouldn't take much memory
+
+    private var instance = this
 
     @AnyRes
     fun getResourceIdByName(context: Context, type: String, resourceName: String?): Int {
@@ -30,54 +35,27 @@ class ResourceResolver private constructor(private val enableCache: Boolean) {
         resourceCache.evictAll()
     }
 
-    companion object {
-        private const val CACHE_SIZE =
-            1000 //our cache is just String->Int mapping 1000 entry shouldn't take much memory
+    @StyleRes
+    fun getStyleId(context: Context, stringName: String?) =
+        instance.getResourceIdByName(context, "style", stringName)
 
-        private lateinit var instance: ResourceResolver
+    @DrawableRes
+    fun getDrawableId(context: Context, drawableName: String?) =
+        instance.getResourceIdByName(context, "drawable", drawableName)
 
-        @JvmStatic
-        fun init(app: Application, enableCache: Boolean) {
-            instance = ResourceResolver(enableCache)
-            app.registerComponentCallbacks(object : ComponentCallbacks {
-                override fun onLowMemory() {
-                    instance.clearCache()
-                }
+    @ColorRes
+    fun getColorId(context: Context, colorName: String?) =
+        instance.getResourceIdByName(context, "color", colorName)
 
-                override fun onConfigurationChanged(newConfig: Configuration?) {
-                    instance.clearCache()
-                }
-            })
-        }
+    @StringRes
+    fun getStringId(context: Context, stringName: String?) =
+        instance.getResourceIdByName(context, "string", stringName)
 
-        @JvmStatic
-        @StyleRes
-        fun getStyleId(context: Context, stringName: String?) =
-            instance.getResourceIdByName(context, "style", stringName)
+    @DimenRes
+    fun getDimenId(context: Context, dimenName: String?) =
+        instance.getResourceIdByName(context, "dimen", dimenName)
 
-        @JvmStatic
-        @DrawableRes
-        fun getDrawableId(context: Context, drawableName: String?) =
-            instance.getResourceIdByName(context, "drawable", drawableName)
-
-        @JvmStatic
-        @ColorRes
-        fun getColorId(context: Context, colorName: String?) =
-            instance.getResourceIdByName(context, "color", colorName)
-
-        @JvmStatic
-        @StringRes
-        fun getStringId(context: Context, stringName: String?) =
-            instance.getResourceIdByName(context, "string", stringName)
-
-        @JvmStatic
-        @DimenRes
-        fun getDimenId(context: Context, dimenName: String?) =
-            instance.getResourceIdByName(context, "dimen", dimenName)
-
-        @JvmStatic
-        @AnyRes
-        fun getResourceId(context: Context, type: String, resourceName: String?) =
-            instance.getResourceIdByName(context, type, resourceName)
-    }
+    @AnyRes
+    fun getResourceId(context: Context, type: String, resourceName: String?) =
+        instance.getResourceIdByName(context, type, resourceName)
 }

@@ -36,13 +36,12 @@ class MerakiButton @JvmOverloads constructor(
         element.icon?.let {
             merakiButton.icon = ResourcesCompat.getDrawable(
                 resources,
-                ResourceResolver.getDrawableId(merakiButton.context, it),
-//                R.drawable.ic_arrow_right,
+                ResourceResolver(true).getDrawableId(merakiButton.context, it),
                 null
             )
-
             merakiButton.iconGravity = ICON_GRAVITY_END
-        }?.run { merakiButton.icon = null }
+
+        }?:run { merakiButton.icon = null }
 
         element.variant?.let {
             setVariant(it)
@@ -52,10 +51,6 @@ class MerakiButton @JvmOverloads constructor(
     fun setVariant(variant: MerakiButtonType){
         if(variant == MerakiButtonType.secondary){
             merakiButton.background = null
-//            merakiButton.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-//            merakiButton.backgroundTintList = ContextCompat.getColorStateList(context, android.R.color.transparent)
-//            merakiButton.strokeColor = ContextCompat.getColorStateList(context, android.R.color.transparent)
-//            merakiButton.strokeWidth = 0
             merakiButton.setIconTintResource(R.color.primaryColor)
             merakiButton.setTextColor(ContextCompat.getColor(context, R.color.primaryColor))
         }else{

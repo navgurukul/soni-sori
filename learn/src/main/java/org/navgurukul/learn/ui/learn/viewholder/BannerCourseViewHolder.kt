@@ -39,9 +39,8 @@ class BannerCourseViewHolder(itemView: View) :
 
         item.image?.let {
             bannerImage.visibility = View.VISIBLE
-//            bannerImage.setImageResource(ResourceResolver.getDrawableId(bannerImage.context, it))
-            bannerImage.setImageResource(R.drawable.ic_class_nudge)
-        }?.run{
+            bannerImage.setImageResource(ResourceResolver(true).getDrawableId(bannerImage.context, it))
+        }?:run{
             bannerImage.visibility = View.GONE
         }
 
