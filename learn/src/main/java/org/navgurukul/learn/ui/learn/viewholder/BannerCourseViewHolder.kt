@@ -34,8 +34,13 @@ class BannerCourseViewHolder(itemView: View) :
         item.actions?.let {
             setActionButtons(it, urlCallback)
         }
-        bannerTitle.text = HtmlCompat.fromHtml(item.title?:"", HtmlCompat.FROM_HTML_MODE_COMPACT)
-        bannerBody.text = HtmlCompat.fromHtml(item.value?:"", HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+        if(!item.title.isNullOrEmpty()){
+            bannerTitle.visibility = View.VISIBLE
+            bannerTitle.text = HtmlCompat.fromHtml(item.title!!, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        }else{ bannerTitle.visibility = View.GONE }
+
+        bannerBody.text = HtmlCompat.fromHtml(item.value, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         item.image?.let {
             bannerImage.visibility = View.VISIBLE

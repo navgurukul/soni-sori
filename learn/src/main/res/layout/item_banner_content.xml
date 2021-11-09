@@ -27,9 +27,10 @@
         android:id="@+id/bannerImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/bannerTitle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bannerTitle"
         android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginStart="@dimen/spacing_4x"
         tools:src="@drawable/ic_class_nudge"/>
 
     <TextView

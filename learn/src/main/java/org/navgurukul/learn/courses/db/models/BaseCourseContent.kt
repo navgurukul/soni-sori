@@ -130,7 +130,7 @@ data class BannerBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String?,
+        var value: String,
         @Json(name = "title")
         var title: String?,
         @Json(name = "actions")
