@@ -4,7 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
+import com.google.android.material.button.MaterialButton
 import org.navgurukul.commonui.resources.ResourceResolver
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BannerAction
@@ -59,12 +61,32 @@ class BannerCourseViewHolder(itemView: View) :
             if (index == 0) {
                 bannerButton2.visibility = View.GONE
                 bannerButton1.visibility = View.VISIBLE
-                bannerButton1.setData(element, urlCallback)
+                setData(bannerButton1, element, urlCallback)
             } else {
                 bannerButton2.visibility = View.VISIBLE
-                bannerButton2.setData(element, urlCallback)
+                setData(bannerButton2, element, urlCallback)
             }
         }
+    }
+
+    fun setData(merakiButton:MerakiButton, element:BannerAction, action: (BannerAction) -> Unit){
+        merakiButton.text = element.label?:"Default"
+
+        merakiButton.setOnClickListener {
+            action.invoke(element)
+        }
+
+        element.icon?.let {
+            merakiButton.icon = ResourcesCompat.getDrawable(
+                merakiButton.context.resources,
+                ResourceResolver(true).getDrawableId(merakiButton.context, it),
+                null
+            )
+            merakiButton.iconGravity = MaterialButton.ICON_GRAVITY_END
+
+        }?:run { merakiButton.icon = null }
+
+        merakiButton.variant = element.variant
     }
 
 }

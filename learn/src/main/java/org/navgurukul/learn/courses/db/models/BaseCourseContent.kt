@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.db.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.navgurukul.learn.ui.common.MerakiButtonType
 import java.io.Serializable
 
 interface BaseCourseContent : Serializable {
@@ -136,7 +137,7 @@ data class BannerBaseCourseContent(
         @Json(name = "actions")
         var actions: List<BannerAction>?,
         @Json(name = "image")
-        var image: String? = "ic_class_nudge",
+        var image: String?,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -158,9 +159,9 @@ data class BannerAction(
         @Json(name = "data")
         var data: String?,
         @Json(name = "icon")
-        var icon: String? = "ic_arrow_right",
-        @Json(name = "type")
-        var variant: MerakiButtonType = MerakiButtonType.secondary,
+        var icon: String?,
+        @Json(name = "variant")
+        var variant: MerakiButtonType,
 )
 
 @JsonClass(generateAdapter = true)
@@ -177,8 +178,4 @@ enum class CodeType {
 
 enum class DecorationType {
     number, bullet
-}
-
-enum class MerakiButtonType {
-    primary, secondary
 }

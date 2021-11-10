@@ -63,6 +63,12 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="buttonTextAppearanceStyle" parent="@style/TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Popup Menu -->
     <style name="PopupMenu" parent="@style/Widget.MaterialComponents.PopupMenu">
         <item name="android:textSize">16sp</item>
