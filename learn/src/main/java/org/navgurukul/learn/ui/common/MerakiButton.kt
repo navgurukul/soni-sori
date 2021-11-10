@@ -24,7 +24,6 @@ class MerakiButton @JvmOverloads constructor(
 
     init {
         merakiButton = this
-        merakiButton.minHeight = 45
         merakiButton.setTextAppearance(context, R.style.buttonTextAppearanceStyle)
     }
 
