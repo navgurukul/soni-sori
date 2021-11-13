@@ -153,7 +153,7 @@ class PythonRepositoryImpl(
 
     override suspend fun onInput(input: String): Unit = withContext(Dispatchers.IO) {
         Log.d("abcd", "inout is $input")
-        stdin.callAttr("on_input", "$input \n")
+        stdin.callAttr("on_input", "$input\n")
     }
 
     override suspend fun runCode(code: String, tag: Any): String? {
