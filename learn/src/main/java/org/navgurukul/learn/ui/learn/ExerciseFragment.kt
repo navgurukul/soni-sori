@@ -12,6 +12,7 @@ import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,10 +38,15 @@ data class ExerciseFragmentArgs(
 
 class ExerciseFragment : Fragment() {
 
+//    public static var start = 0L
     private val args: ExerciseFragmentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
+
+
+//    val end = System.currentTimeMillis() - start;
+//    System.out.println("Execution time: " + end + "ms");
     private lateinit var navigationClickListener: ExerciseNavigationClickListener
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
@@ -74,10 +80,15 @@ class ExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise, container, false)
+
+//        start = System.currentTimeMillis();
+
         return mBinding.root
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+
         super.onViewCreated(view, savedInstanceState)
 
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -94,15 +105,17 @@ class ExerciseFragment : Fragment() {
                 contentAdapter.submitList(it.exerciseList)
         })
 
-        setIsCompletedView(args.isCompleted)
+//        setIsCompletedView(args.isCompleted)
 
         initContentRV()
         initScreenRefresh()
 
-        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        mBinding.btnMarkCompleted.setOnClickListener {
-            markCompletedClicked()
-        }
+//        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+//        mBinding.btnMarkCompleted.setOnClickListener {
+//            markCompletedClicked()
+//        }
+
+
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -115,16 +128,16 @@ class ExerciseFragment : Fragment() {
         }
     }
 
-    private fun setIsCompletedView(isCompleted: Boolean) {
-        if(isCompleted){
-            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
-            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
-        }else{
-            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
-            mBinding.btnMarkCompleted.icon = null
-        }
-
-    }
+//    private fun setIsCompletedView(isCompleted: Boolean) {
+//        if(isCompleted){
+//            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
+//            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
+//        }else{
+//            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
+//            mBinding.btnMarkCompleted.icon = null
+//        }
+//
+//    }
 
     private fun initScreenRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
@@ -176,7 +189,7 @@ class ExerciseFragment : Fragment() {
 
         navigationClickListener.onMarkCompleteClick()
         args.isCompleted = true
-        setIsCompletedView(true)
+//        setIsCompletedView(true)
     }
 
     override fun onAttach(context: Context) {
