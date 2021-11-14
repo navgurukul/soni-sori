@@ -37,7 +37,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             context.startActivity(intent)
         }
 
-        const val PATHWAY_URL_INDEX = 1
+        const val  PATHWAY_URL_INDEX = 1
         const val COURSE_URL_INDEX = 3
     }
 
@@ -168,7 +168,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 null -> android.R.anim.fade_in
             }
             setCustomAnimations(
-                enter, 0
+                enter,0
             )
             replace(
                 R.id.exerciseContentContainer,
