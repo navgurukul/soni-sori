@@ -25,7 +25,6 @@ class CourseExerciseNavigationBottomSheet
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    lateinit var mBinding: FragmentExerciseBinding
 
     private val btnNext: MaterialButton
     private val btnPrev: MaterialButton

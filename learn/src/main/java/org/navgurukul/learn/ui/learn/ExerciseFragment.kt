@@ -105,15 +105,15 @@ class ExerciseFragment : Fragment() {
                 contentAdapter.submitList(it.exerciseList)
         })
 
-//        setIsCompletedView(args.isCompleted)
+        setIsCompletedView(args.isCompleted)
 
         initContentRV()
         initScreenRefresh()
 
-//        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-//        mBinding.btnMarkCompleted.setOnClickListener {
-//            markCompletedClicked()
-//        }
+        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        mBinding.btnMarkCompleted.setOnClickListener {
+            markCompletedClicked()
+        }
 
 
     }
@@ -128,16 +128,16 @@ class ExerciseFragment : Fragment() {
         }
     }
 
-//    private fun setIsCompletedView(isCompleted: Boolean) {
-//        if(isCompleted){
-//            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
-//            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
-//        }else{
-//            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
-//            mBinding.btnMarkCompleted.icon = null
-//        }
-//
-//    }
+    private fun setIsCompletedView(isCompleted: Boolean) {
+        if(isCompleted){
+            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
+            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
+        }else{
+            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
+            mBinding.btnMarkCompleted.icon = null
+        }
+
+    }
 
     private fun initScreenRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
@@ -189,7 +189,7 @@ class ExerciseFragment : Fragment() {
 
         navigationClickListener.onMarkCompleteClick()
         args.isCompleted = true
-//        setIsCompletedView(true)
+        setIsCompletedView(true)
     }
 
     override fun onAttach(context: Context) {
