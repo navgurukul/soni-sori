@@ -2,8 +2,10 @@ package org.navgurukul.learn.ui.common
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,8 +14,10 @@ import kotlinx.android.synthetic.main.time_next_warning.view.*
 import kotlinx.android.synthetic.main.time_prev_warning.*
 import kotlinx.android.synthetic.main.time_prev_warning.view.*
 import org.navgurukul.learn.R
+import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.learn.ExerciseFragment
+import java.time.Instant
 
 
 class CourseExerciseNavigationBottomSheet
@@ -30,6 +34,9 @@ class CourseExerciseNavigationBottomSheet
     private val btnPrev: MaterialButton
     private val btnMain: MaterialButton
 
+
+
+
     init {
         inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
 
@@ -41,10 +48,16 @@ class CourseExerciseNavigationBottomSheet
 
 
 
+    fun timeChecker(){
+      val start = System.currentTimeMillis()
+        val end = System.currentTimeMillis() - start
+    }
+
+
 
     fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit) {
          val start = System.currentTimeMillis();
-//            val end = System.currentTimeMillis() -start;
+//            val end = System.currentTimeMillis() -start
 
 
 
@@ -68,7 +81,7 @@ class CourseExerciseNavigationBottomSheet
         }
 
             btnNext.setOnClickListener{
-                val end = System.currentTimeMillis() -start;
+                val end = System.currentTimeMillis() - start;
                 Log.d("dhanshri", "endTime    "+end)
                 Log.d("dhanshri", "btnNextCheck    "+end)
                 if (end < 5000){
@@ -91,9 +104,6 @@ class CourseExerciseNavigationBottomSheet
                     Log.d("dhanshri", "elseCondition    "+end)
                     nextAction.invoke()
                 }
-
-
-
         }
     }
 
