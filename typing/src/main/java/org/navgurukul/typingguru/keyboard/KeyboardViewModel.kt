@@ -1,10 +1,7 @@
 package org.navgurukul.typingguru.keyboard
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.isActive
 import org.merakilearn.core.extentions.TickerState
 import org.merakilearn.core.extentions.tickerFlow
 import org.merakilearn.core.navigator.Mode
@@ -34,7 +31,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
-    private val maxTime = MINUTES.toSeconds(3)
+    private val maxTime = MINUTES.toSeconds(1)
 
     companion object {
         const val MAX_ALLOWED_KEYS = 8
@@ -118,13 +115,17 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                             }
                         }
                         is TickerState.Progress -> {
-                            val timeText =
+                            val timer =
                                 SimpleDateFormat(
                                     "mm:ss",
                                     Locale.ENGLISH
-                                ).format(SECONDS.toMillis(tickerState.value))
+                                )
+                                timer.timeZone = TimeZone.getTimeZone("IST")
+
+                                val timerText=timer.format(SECONDS.toMillis(tickerState.value))
+                            val progress = maxTime-tickerState.value
                             setState {
-                                copy(currentProgress = tickerState.value.toInt(), timerText = timeText)
+                                copy(currentProgress = progress.toInt(), timerText = timerText)
                             }
                         }
                     }
@@ -178,4 +179,5 @@ sealed class KeyboardViewEvent : ViewEvents {
         val timeTaken: Long,
         val mode: Mode
     ) : KeyboardViewEvent()
+
 }
