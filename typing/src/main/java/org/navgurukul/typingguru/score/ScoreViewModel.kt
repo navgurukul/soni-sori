@@ -15,10 +15,6 @@ class ScoreViewModel(scoreActivityArgs: ScoreActivityArgs, stringProvider: Strin
     init {
         val accuracy =
             (scoreActivityArgs.rightKeys.toDouble() / (scoreActivityArgs.rightKeys + scoreActivityArgs.wrongKeys)) * 100
-//        val ms = SimpleDateFormat(
-//            "mm:ss",
-//            Locale.ENGLISH
-//        ).format(scoreActivityArgs.timeTaken)
 
         val timer = SimpleDateFormat("mm:ss", Locale.ENGLISH)
         timer.timeZone = TimeZone.getTimeZone("IST")
