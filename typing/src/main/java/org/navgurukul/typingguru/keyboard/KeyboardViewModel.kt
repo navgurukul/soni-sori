@@ -123,11 +123,11 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                                     "mm:ss",
                                     Locale.ENGLISH
                                 )
-                                        timer.timeZone = TimeZone.getTimeZone("IST")
-                                                val timerText= timer.format(SECONDS.toMillis(tickerState.value))
+                            timer.timeZone = TimeZone.getTimeZone("IST")
+                            val timeText= timer.format(SECONDS.toMillis(tickerState.value))
                             val progress = maxTime-tickerState.value
                             setState {
-                                copy(currentProgress = progress.toInt(), timerText = timerText)
+                                copy(currentProgress = progress.toInt(), timerText = timeText)
                             }
                         }
                     }

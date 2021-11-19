@@ -18,8 +18,8 @@ class ScoreViewModel(scoreActivityArgs: ScoreActivityArgs, stringProvider: Strin
 
         val timer = SimpleDateFormat("mm:ss", Locale.ENGLISH)
         timer.timeZone = TimeZone.getTimeZone("IST")
-
         val ms = timer.format(scoreActivityArgs.timeTaken)
+
         val wpm =
             (((scoreActivityArgs.rightKeys + scoreActivityArgs.wrongKeys) / 5) / (TimeUnit.MILLISECONDS.toMinutes(scoreActivityArgs.timeTaken))).toInt()
         setState {
