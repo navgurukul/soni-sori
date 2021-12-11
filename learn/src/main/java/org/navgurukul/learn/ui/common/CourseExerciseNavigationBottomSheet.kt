@@ -14,10 +14,7 @@ import kotlinx.android.synthetic.main.time_next_warning.view.*
 import kotlinx.android.synthetic.main.time_prev_warning.*
 import kotlinx.android.synthetic.main.time_prev_warning.view.*
 import org.navgurukul.learn.R
-import org.navgurukul.learn.databinding.ActivityExerciseBinding
-import org.navgurukul.learn.databinding.FragmentExerciseBinding
-import org.navgurukul.learn.ui.learn.ExerciseFragment
-import java.time.Instant
+
 
 
 class CourseExerciseNavigationBottomSheet
@@ -46,17 +43,8 @@ class CourseExerciseNavigationBottomSheet
 
     }
 
-
-
-    fun timeChecker(){
-      val start = System.currentTimeMillis()
-        val end = System.currentTimeMillis() - start
-    }
-
-
-
     fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit) {
-         val start = System.currentTimeMillis();
+         val start = System.currentTimeMillis()
 //            val end = System.currentTimeMillis() -start
 
 
@@ -74,6 +62,7 @@ class CourseExerciseNavigationBottomSheet
             }
 
             mAlertDialog.nextBtnBack.setOnClickListener {
+                mAlertDialog.dismiss()
                 prevAction.invoke()
             }
 //            prevAction.invoke()
@@ -81,7 +70,7 @@ class CourseExerciseNavigationBottomSheet
         }
 
             btnNext.setOnClickListener{
-                val end = System.currentTimeMillis() - start;
+                val end = System.currentTimeMillis() - start
                 Log.d("dhanshri", "endTime    "+end)
                 Log.d("dhanshri", "btnNextCheck    "+end)
                 if (end < 5000){
@@ -98,6 +87,7 @@ class CourseExerciseNavigationBottomSheet
                     }
 
                     mDialogView.nextBtn.setOnClickListener {
+                        mAlertDialog.dismiss()
                         nextAction.invoke()
                     }
                 } else{

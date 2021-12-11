@@ -67,7 +67,6 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             merakiNavigator.restartApp(this, true)
         }
 
-
         // I dont use this
         setSupportActionBar(mBinding.exerciseToolbar)
         mBinding.buttonBack.setOnClickListener { finish() }
@@ -119,7 +118,9 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
         })
+
     }
+
 
     private fun showCompletionScreen(
         nextCourseTitle: String,

@@ -12,7 +12,6 @@ import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.button.MaterialButton
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -186,7 +185,6 @@ class ExerciseFragment : Fragment() {
                 args.exerciseId
             )
         )
-
         navigationClickListener.onMarkCompleteClick()
         args.isCompleted = true
         setIsCompletedView(true)
