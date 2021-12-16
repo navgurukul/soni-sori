@@ -37,7 +37,6 @@ data class Pathway @JvmOverloads constructor(
     )
     var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES
 ) {
-    @Ignore
-    val supportedLanguages =
-        if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES
+    val supportedLanguages: List<Language>
+        get() = if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES
 }

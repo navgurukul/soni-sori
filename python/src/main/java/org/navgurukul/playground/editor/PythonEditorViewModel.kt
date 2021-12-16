@@ -124,7 +124,7 @@ class PythonEditorViewModel(
     private fun runCode() {
         val viewState = viewState.value!!
         viewModelScope.launch {
-            setState { copy(codeResponse = CodeResponseModel.Loading) }
+            setState { copy(codeResponse = CodeResponseModel.Output("")) }
             val error = pythonRepository.runCode(viewState.code, this@PythonEditorViewModel)
             if (error != null) {
                 updateError(error)
@@ -187,6 +187,5 @@ data class PythonEditorViewState(
 ) : ViewState
 
 sealed class CodeResponseModel {
-    object Loading : CodeResponseModel()
     data class Output(val output: CharSequence) : CodeResponseModel()
 }

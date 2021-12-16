@@ -32,25 +32,31 @@
                 app:layout_constraintTop_toBottomOf="@id/idHeader"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tvName"
                 style="?textAppearanceEmphasized1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_4x"
                 android:text="?textPrimary"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:background="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ivProfile"
                 app:layout_constraintTop_toTopOf="@id/ivProfile"
                 tools:text="Neha Singh" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tvEmail"
                 style="?textAppearanceBody2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_1x"
                 android:text="?textPrimary"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:background="@null"
                 app:layout_constraintEnd_toEndOf="@id/tvName"
                 app:layout_constraintStart_toStartOf="@id/tvName"
                 app:layout_constraintTop_toBottomOf="@id/tvName"
@@ -69,47 +75,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupProfileEdit"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                app:constraint_referenced_ids="etName, etEmail" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_4x"
-                android:layout_marginTop="@dimen/spacing_1x"
-                android:hint="@string/name"
-                android:padding="@dimen/spacing_2x"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnEdit" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_2x"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="@string/email"
-                android:inputType="none"
-                android:padding="@dimen/spacing_2x"
-                app:layout_constraintEnd_toEndOf="@id/etName"
-                app:layout_constraintStart_toStartOf="@id/etName"
-                app:layout_constraintTop_toBottomOf="@id/etName" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/profileBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="etEmail, btnEdit, ivProfile" />
-
-            <androidx.constraintlayout.widget.Group
                 android:id="@+id/groupServerUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,7 +91,7 @@
                 android:text="@string/server_url_label"
                 android:textColor="?textSecondary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileBarrier" />
+                app:layout_constraintTop_toBottomOf="@id/btnEdit" />
 
             <TextView
                 android:id="@+id/serverUrlValue"
@@ -250,7 +215,7 @@
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/spacing_4x"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/bottomBarrier"
+                app:layout_constraintBottom_toTopOf="@id/btnPrivacyPolicy"
                 app:layout_constraintTop_toBottomOf="@id/tvSavedFile"
                 tools:listitem="@layout/item_saved_file" />
 
@@ -267,23 +232,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/bottomBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="top"
-                app:constraint_referenced_ids="updateProfile, btnPrivacyPolicy" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/updateProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="@string/update_profile"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPrivacyPolicy"

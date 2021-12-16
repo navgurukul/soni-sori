@@ -142,13 +142,13 @@ object MiscellaneousDependencies {
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
     const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
     const val messaging = "com.google.firebase:firebase-messaging:20.2.4"
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:17.5.0"
+    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
 }
 
 object RetrofitDependencies {
@@ -166,12 +166,11 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 29
-    const val buildToolsVersion = "29.0.3"
+    const val compileSdkVersion = 30
     const val minSdkVersion = 21
-    const val targetSdkVersion = 29
-    const val versionCode = 24
-    const val versionName = "1.4.0"
+    const val targetSdkVersion = 30
+    const val versionCode = 30
+    const val versionName = "1.5.0"
     const val applicationId = "org.merakilearn"
 }
 
@@ -181,7 +180,7 @@ object Classpath {
 
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:8.0.1"
+    const val python = "com.chaquo.python:gradle:10.0.1"
     const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
