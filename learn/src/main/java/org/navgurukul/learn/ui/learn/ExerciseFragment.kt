@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,8 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
+import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
@@ -90,7 +90,7 @@ class ExerciseFragment : Fragment() {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
 
-            if(!it.isError)
+            if (!it.isError)
                 contentAdapter.submitList(it.exerciseList)
         })
 
@@ -106,20 +106,21 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun showErrorScreen(isError: Boolean) {
-        if(isError) {
+        if (isError) {
             mBinding.errorLayout.root.visibility = View.VISIBLE
             mBinding.contentLayout.visibility = View.GONE
-        }else{
+        } else {
             mBinding.errorLayout.root.visibility = View.GONE
             mBinding.contentLayout.visibility = View.VISIBLE
         }
     }
 
     private fun setIsCompletedView(isCompleted: Boolean) {
-        if(isCompleted){
+        if (isCompleted) {
             mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
-            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
-        }else{
+            mBinding.btnMarkCompleted.icon =
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
+        } else {
             mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
             mBinding.btnMarkCompleted.icon = null
         }
@@ -132,7 +133,7 @@ class ExerciseFragment : Fragment() {
             mBinding.swipeContainer.isRefreshing = false
         }
 
-        mBinding.errorLayout.btnRefresh.setOnClickListener{
+        mBinding.errorLayout.btnRefresh.setOnClickListener {
             fragmentViewModel.handle(ExerciseFragmentViewModel.ExerciseFragmentViewActions.RequestContentRefresh)
         }
     }
@@ -141,7 +142,8 @@ class ExerciseFragment : Fragment() {
         contentAdapter = ExerciseContentAdapter(this.requireContext(), {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    merakiNavigator.openPlayground(this.requireContext(), HtmlCompat.fromHtml(it.value, HtmlCompat.FROM_HTML_MODE_COMPACT).toString())
+                    val fromHtml = it.value.replace("<br>", "\n").replace("&emsp;", " ")
+                    merakiNavigator.openPlayground(this.requireContext(), fromHtml)
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->
@@ -154,7 +156,6 @@ class ExerciseFragment : Fragment() {
                     merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
-
         }
 
         val layoutManager =
