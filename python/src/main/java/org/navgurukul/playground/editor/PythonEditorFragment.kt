@@ -76,9 +76,6 @@ class PythonEditorFragment : BaseFragment() {
             }
 
             when (it.codeResponse) {
-                CodeResponseModel.Loading -> {
-                    showLoading(getString(R.string.executing_code))
-                }
                 is CodeResponseModel.Output -> showOutput(it.codeResponse.output)
                 null -> {
                     sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -242,7 +239,6 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showOutput(output: CharSequence) {
-        dismissLoadingDialog()
         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         tvOutput.isVisible = true
         tvOutput.text = output

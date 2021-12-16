@@ -2,7 +2,7 @@ package org.navgurukul.playground.repo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
+import androidx.annotation.Keep
 import androidx.core.content.edit
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
@@ -23,6 +23,7 @@ import java.io.OutputStreamWriter
 import java.util.*
 
 
+@Keep
 class PythonRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
     private val context: Context
@@ -77,7 +78,6 @@ class PythonRepositoryImpl(
 
     private val stdin: PyObject = console.callAttr("ConsoleInputStream", pythonInput)
     private val stdout: PyObject = console.callAttr("ConsoleOutputStream", PythonOutputInterface {
-        Log.d("abcd", "output is $it")
         if (!_outputFlow.tryEmit(PythonOutput(currentTag, it))) {
             GlobalScope.launch {
                 _outputFlow.tryEmit(PythonOutput(currentTag, it))
@@ -86,7 +86,6 @@ class PythonRepositoryImpl(
     }, "output", realStdout)
 
     private val stderr: PyObject = console.callAttr("ConsoleOutputStream", PythonErrorInterface {
-        Log.d("abcd", "error is $it")
         if (!_errorFlow.tryEmit(PythonError(currentTag, it))) {
             GlobalScope.launch {
                 _errorFlow.tryEmit(PythonError(currentTag, it))
@@ -139,20 +138,25 @@ class PythonRepositoryImpl(
     override suspend fun deleteFile(file: File): Boolean =
         withContext(Dispatchers.IO) { file.delete() }
 
+    @Keep
     fun interface PythonOutputInterface {
+        @Keep
         fun output(output: String)
     }
 
+    @Keep
     fun interface PythonErrorInterface {
+        @Keep
         fun error(output: String)
     }
 
+    @Keep
     fun interface PythonInputInterface {
+        @Keep
         fun onInputState(isBlocking: Boolean)
     }
 
     override suspend fun onInput(input: String): Unit = withContext(Dispatchers.IO) {
-        Log.d("abcd", "inout is $input")
         stdin.callAttr("on_input", "$input\n")
     }
 

@@ -37,7 +37,7 @@ class WebViewActivity : BaseActivity() {
         }
 
         viewModel.viewState.observe(this, {
-            webview.loadUrl(it.url)
+            it?.url?.let { url -> webview.loadUrl(url) }
         })
     }
 
