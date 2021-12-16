@@ -34,7 +34,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
-    private val maxTime = MINUTES.toSeconds(1)
+    private val maxTime = MINUTES.toSeconds(2)
 
     companion object {
         const val MAX_ALLOWED_KEYS = 8
