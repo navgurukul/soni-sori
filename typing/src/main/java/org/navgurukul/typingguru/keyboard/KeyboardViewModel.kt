@@ -34,7 +34,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
-    private val maxTime = MINUTES.toSeconds(3)
+    private val maxTime = MINUTES.toSeconds(2)
 
     companion object {
         const val MAX_ALLOWED_KEYS = 8
@@ -118,13 +118,16 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                             }
                         }
                         is TickerState.Progress -> {
-                            val timeText =
+                            val timer =
                                 SimpleDateFormat(
                                     "mm:ss",
                                     Locale.ENGLISH
-                                ).format(SECONDS.toMillis(tickerState.value))
+                                )
+                            timer.timeZone = TimeZone.getTimeZone("IST")
+                            val timeText= timer.format(SECONDS.toMillis(tickerState.value))
+                            val progress = maxTime-tickerState.value
                             setState {
-                                copy(currentProgress = tickerState.value.toInt(), timerText = timeText)
+                                copy(currentProgress = progress.toInt(), timerText = timeText)
                             }
                         }
                     }
