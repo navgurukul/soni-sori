@@ -33,3 +33,5 @@ interface SaralCoursesApi {
     ): CourseExerciseContainer
 
 }
+//courses/{course_id}/exercises
+//http://0420-103-152-180-22.ngrok.io/courses/101/exercises
