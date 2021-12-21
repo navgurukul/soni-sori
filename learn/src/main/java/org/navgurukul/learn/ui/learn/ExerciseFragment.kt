@@ -141,7 +141,7 @@ class ExerciseFragment : Fragment() {
         contentAdapter = ExerciseContentAdapter(this.requireContext(), {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    val fromHtml = it.value.replace("<br>", "\n").replace("&nbsp;", " ")
+                    val fromHtml = it.value.replace("<br>", "\n").replace("&nbsp;", " ").replace("&emsp;"," ")
                     merakiNavigator.openPlayground(this.requireContext(), fromHtml)
                 }
             } else if (it is LinkBaseCourseContent) {
