@@ -73,14 +73,13 @@ class CourseExerciseNavigationBottomSheet
                 val end = System.currentTimeMillis() - start
                 Log.d("dhanshri", "endTime    "+end)
                 Log.d("dhanshri", "btnNextCheck    "+end)
-                if (end < 5000){
-                    Log.d("dhanshri", "ifCondition    "+end)
 
-                    val mDialogView = LayoutInflater.from(context).inflate(R.layout.time_next_warning,null)
-                    val mBuilder = AlertDialog.Builder(context)
+
+                val mDialogView = LayoutInflater.from(context).inflate(R.layout.time_next_warning,null)
+                val mBuilder = AlertDialog.Builder(context)
                         .setView(mDialogView)
 
-                    val mAlertDialog = mBuilder.show()
+                val mAlertDialog = mBuilder.show()
 
                     mDialogView.btnStay.setOnClickListener{
                         mAlertDialog.dismiss()
@@ -90,11 +89,8 @@ class CourseExerciseNavigationBottomSheet
                         mAlertDialog.dismiss()
                         nextAction.invoke()
                     }
-                } else{
-                    Log.d("dhanshri", "elseCondition    "+end)
-                    nextAction.invoke()
-                }
-        }
+
+        } 
     }
 
     fun updateNavButtons(isFirstItem: Boolean) {
