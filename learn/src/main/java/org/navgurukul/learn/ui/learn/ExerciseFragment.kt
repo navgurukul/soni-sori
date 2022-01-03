@@ -43,9 +43,6 @@ class ExerciseFragment : Fragment() {
         parametersOf(args)
     })
 
-
-//    val end = System.currentTimeMillis() - start;
-//    System.out.println("Execution time: " + end + "ms");
     private lateinit var navigationClickListener: ExerciseNavigationClickListener
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter

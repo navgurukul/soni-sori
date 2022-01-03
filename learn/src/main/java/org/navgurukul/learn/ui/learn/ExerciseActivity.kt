@@ -118,7 +118,6 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
         })
-
     }
 
 

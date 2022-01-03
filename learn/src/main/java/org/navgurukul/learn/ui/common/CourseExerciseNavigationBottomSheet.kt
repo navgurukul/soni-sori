@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.time_next_warning.view.*
 import kotlinx.android.synthetic.main.time_prev_warning.*
 import kotlinx.android.synthetic.main.time_prev_warning.view.*
 import org.navgurukul.learn.R
-
+import org.navgurukul.learn.databinding.ActivityExerciseBinding
 
 
 class CourseExerciseNavigationBottomSheet
@@ -92,7 +92,6 @@ class CourseExerciseNavigationBottomSheet
 
         } 
     }
-
     fun updateNavButtons(isFirstItem: Boolean) {
         btnMain.visibility = View.GONE
         btnNext.visibility = View.VISIBLE
