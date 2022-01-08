@@ -52,20 +52,20 @@ interface CourseDao {
 @Dao
 interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExercise(course: List<Exercise?>?)
+    fun insertExercise(course: List<CourseExerciseContent?>?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExerciseAsync(course: List<Exercise?>?)
+    suspend fun insertExerciseAsync(course: List<CourseExerciseContent?>?)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<Exercise>
+    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<CourseExerciseContent>
 
     @Query("select * from course_exercise where id = :exerciseId and lang = :lang")
-    fun getExerciseById(exerciseId: String, lang: String): LiveData<Exercise>
+    fun getExerciseById(exerciseId: String, lang: String): LiveData<CourseExerciseContent>
 
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<Exercise>
+    fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<CourseExerciseContent>
 
     @Query("Update course_exercise set exerciseProgress = :exerciseProgress where id = :exerciseId")
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
@@ -205,7 +205,7 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, Exercise::class, CurrentStudy::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class],
     version = DB_VERSION,
     exportSchema = false
 )

@@ -1,7 +1,6 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -61,15 +60,15 @@ class LearnRepo(
         })
     }
 
-    fun getCoursesExerciseData(courseId: String, language: String): Flow<List<Exercise>?> {
+    fun getCoursesExerciseData(courseId: String, language: String): Flow<List<CourseExerciseContent>?> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
-        return object : NetworkBoundResource<List<Exercise>, CourseExerciseContainer>() {
+        return object : NetworkBoundResource<List<CourseExerciseContent>, CourseExerciseContainer>() {
             override suspend fun saveCallResult(data: CourseExerciseContainer) {
                 val course = data.course
                 val lang =
                     if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.exercises.map {
+                val mappedData = course.courseContents.map {
                     it.apply {
                         this.courseId = courseId
                         this.lang = lang
@@ -78,7 +77,7 @@ class LearnRepo(
                 exerciseDao.insertExercise(mappedData)
             }
 
-            override fun shouldFetch(data: List<Exercise>?): Boolean {
+            override fun shouldFetch(data: List<CourseExerciseContent>?): Boolean {
                 return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
             }
 
@@ -87,7 +86,7 @@ class LearnRepo(
                 return courseApi.getExercisesAsync(courseId, language)
             }
 
-            override suspend fun loadFromDb(): List<Exercise> {
+            override suspend fun loadFromDb(): List<CourseExerciseContent> {
                 val course = courseDao.course(courseId)
                 val lang: String = course?.let {
                     if (language in course.supportedLanguages) language else course.supportedLanguages[0]
@@ -100,7 +99,7 @@ class LearnRepo(
     }
 
 
-    private fun parseData(data: List<Exercise>) {
+    private fun parseData(data: List<CourseExerciseContent>) {
         data.forEachIndexed { index, exercise ->
             exercise.number = (index + 1)
         }
@@ -111,7 +110,7 @@ class LearnRepo(
         courseId: String,
         forceUpdate: Boolean,
         language: String
-    ): Flow<Exercise?> {
+    ): Flow<CourseExerciseContent?> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
@@ -121,7 +120,7 @@ class LearnRepo(
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
                 val result = courseApi.getExercisesAsync(courseId, lang)
-                val mappedData = result.course.exercises.map {
+                val mappedData = result.course.courseContents.map {
                     it.courseId = courseId
                     it.courseName = result.course.name
                     it.lang =
@@ -146,12 +145,12 @@ class LearnRepo(
                 val course = courseDao.getCourseById(courseId)
                 val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
                 if (exercises.isNotEmpty()) {
-                    course.apply { this.exercises = exercises }
+                    course.apply { this.courseContents = exercises }
                 } else {
                     null
                 }
             },
-            shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.exercises.isEmpty()) },
+            shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
             makeApiCallAsync = { courseApi.getExercisesAsync(courseId, language) },
             saveCallResult = { courseExerciseContainer ->
                 val course = courseExerciseContainer.course.apply {
@@ -159,7 +158,7 @@ class LearnRepo(
                 }
                 val lang =
                     if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.exercises.map {
+                val mappedData = course.courseContents.map {
                     it.apply {
                         this.courseId = courseId
                         this.lang = lang

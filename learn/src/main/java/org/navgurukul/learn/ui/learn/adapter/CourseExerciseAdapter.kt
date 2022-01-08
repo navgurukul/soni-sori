@@ -3,25 +3,24 @@ package org.navgurukul.learn.ui.learn.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Exercise
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
 import org.navgurukul.learn.courses.db.models.ExerciseProgress
 import org.navgurukul.learn.databinding.ItemCourseExerciseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class CourseExerciseAdapter(callback: (Exercise) -> Unit) :
+class CourseExerciseAdapter(callback: (CourseExerciseContent) -> Unit) :
 
-    DataBoundListAdapter<Exercise, ItemCourseExerciseBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<Exercise>() {
-            override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
+    DataBoundListAdapter<CourseExerciseContent, ItemCourseExerciseBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<CourseExerciseContent>() {
+            override fun areItemsTheSame(oldItem: CourseExerciseContent, newItem: CourseExerciseContent): Boolean {
                 return false
             }
 
-            override fun areContentsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
+            override fun areContentsTheSame(oldItem: CourseExerciseContent, newItem: CourseExerciseContent): Boolean {
                 return false
             }
         }
@@ -34,7 +33,7 @@ class CourseExerciseAdapter(callback: (Exercise) -> Unit) :
         )
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemCourseExerciseBinding>, item: Exercise) {
+    override fun bind(holder: DataBoundViewHolder<ItemCourseExerciseBinding>, item: CourseExerciseContent) {
         val binding = holder.binding
         binding.exercise = item
         binding.root.setOnClickListener {

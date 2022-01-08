@@ -7,7 +7,7 @@
 
         <variable
             name="exercise"
-            type="org.navgurukul.learn.courses.db.models.Exercise" />
+            type="org.navgurukul.learn.courses.db.models.CourseExerciseContent" />
     </data>
 
     <ImageView

@@ -105,7 +105,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             if (!it.isCourseCompleted) {
-                mAdapter.submitList(it.exerciseList) {
+                mAdapter.submitList(it.courseExerciseContentList) {
                     mBinding.recyclerviewCourseExerciseList.scrollToPosition(it.currentExerciseIndex)
                 }
                 mBinding.tvCourseTitle.text = it.currentCourseTitle

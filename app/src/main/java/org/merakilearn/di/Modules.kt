@@ -110,6 +110,11 @@ val networkModule = module {
                 .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)
                 .withDefaultValue(UnknownBaseCourseContent())
             )
+            .add(
+                PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "type")
+                    .withSubtype(CourseExerciseContent::class.java, CourseContentType.EXERCISE.name)
+                    .withSubtype(CourseClassContent::class.java, CourseContentType.CLASS.name)
+            )
             .build()
     }
 

@@ -5,26 +5,27 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.io.Serializable
 
 @Entity(tableName = "course_exercise", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
-data class Exercise(
+data class CourseExerciseContent(
     @Json(name = "content")
     val content: List<BaseCourseContent>,
     @Json(name = "course_id")
-    var courseId: String = "",
+    override var courseId: String = "",
     @Json(name = "id")
     @ColumnInfo(name = "id")
-    val id: String = "",
+    override val id: String = "",
     @Json(name = "name")
     val name: String = "",
-    var lang: String = "en",
+    override var lang: String = "en",
     @Json(name = "courseName")
-    var courseName: String?,
+    override var courseName: String?,
     @Json(name = "progress")
-    var exerciseProgress: ExerciseProgress?
-) : Serializable {
+    var exerciseProgress: ExerciseProgress?,
+    override var sequenceNumber: Int,
+    override var contentContentType: CourseContentType
+) : CourseContents {
     @Ignore
     var number: Int? = 0
 }
