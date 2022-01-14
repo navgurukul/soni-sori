@@ -76,6 +76,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 viewModel.handle(ExerciseActivityViewActions.PrevNavigationClicked)
             },
             {
+                viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
                 viewModel.handle(ExerciseActivityViewActions.NextNavigationClicked)
             }
         )
