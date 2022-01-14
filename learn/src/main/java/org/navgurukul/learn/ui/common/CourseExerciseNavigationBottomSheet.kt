@@ -1,24 +1,16 @@
 package org.navgurukul.learn.ui.common
 
-import android.app.AlertDialog
+
 import android.content.Context
-import android.os.Bundle
 import android.util.AttributeSet
-import android.util.Log
-import android.view.ContextMenu
-import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
-import kotlinx.android.synthetic.main.time_next_warning.view.*
-import kotlinx.android.synthetic.main.time_prev_warning.*
-import kotlinx.android.synthetic.main.time_prev_warning.view.*
 import org.navgurukul.learn.R
-import org.navgurukul.learn.databinding.ActivityExerciseBinding
+
 
 
 class CourseExerciseNavigationBottomSheet
-
 
 @JvmOverloads constructor(
     context: Context,
@@ -32,8 +24,6 @@ class CourseExerciseNavigationBottomSheet
     private val btnMain: MaterialButton
 
 
-
-
     init {
         inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
 
@@ -44,53 +34,14 @@ class CourseExerciseNavigationBottomSheet
     }
 
     fun setNavigationActions(prevAction: () -> Unit, nextAction: () -> Unit) {
-         val start = System.currentTimeMillis()
-//            val end = System.currentTimeMillis() -start
-
-
 
         btnPrev.setOnClickListener {
-
-            val mDialogView= LayoutInflater.from(context).inflate(R.layout.time_prev_warning, null)
-            val mBuilder = AlertDialog.Builder(context)
-                .setView(mDialogView)
-
-            val mAlertDialog = mBuilder.show()
-
-            mDialogView.btnStayBack.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-
-            mAlertDialog.nextBtnBack.setOnClickListener {
-                mAlertDialog.dismiss()
-                prevAction.invoke()
-            }
-//            prevAction.invoke()
-
+            prevAction.invoke()
+        }
+        btnNext.setOnClickListener {
+            nextAction.invoke()
         }
 
-            btnNext.setOnClickListener{
-                val end = System.currentTimeMillis() - start
-                Log.d("dhanshri", "endTime    "+end)
-                Log.d("dhanshri", "btnNextCheck    "+end)
-
-
-                val mDialogView = LayoutInflater.from(context).inflate(R.layout.time_next_warning,null)
-                val mBuilder = AlertDialog.Builder(context)
-                        .setView(mDialogView)
-
-                val mAlertDialog = mBuilder.show()
-
-                    mDialogView.btnStay.setOnClickListener{
-                        mAlertDialog.dismiss()
-                    }
-
-                    mDialogView.nextBtn.setOnClickListener {
-                        mAlertDialog.dismiss()
-                        nextAction.invoke()
-                    }
-
-        } 
     }
     fun updateNavButtons(isFirstItem: Boolean) {
         btnMain.visibility = View.GONE
