@@ -77,8 +77,6 @@ class ExerciseFragment : Fragment() {
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise, container, false)
 
-//        start = System.currentTimeMillis();
-
         return mBinding.root
 
     }
@@ -101,17 +99,8 @@ class ExerciseFragment : Fragment() {
                 contentAdapter.submitList(it.exerciseList)
         })
 
-        setIsCompletedView(args.isCompleted)
-
         initContentRV()
         initScreenRefresh()
-
-        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        mBinding.btnMarkCompleted.setOnClickListener {
-            markCompletedClicked()
-        }
-
-
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -122,17 +111,6 @@ class ExerciseFragment : Fragment() {
             mBinding.errorLayout.root.visibility = View.GONE
             mBinding.contentLayout.visibility = View.VISIBLE
         }
-    }
-
-    private fun setIsCompletedView(isCompleted: Boolean) {
-        if(isCompleted){
-            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
-            mBinding.btnMarkCompleted.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
-        }else{
-            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
-            mBinding.btnMarkCompleted.icon = null
-        }
-
     }
 
     private fun initScreenRefresh() {
@@ -174,24 +152,6 @@ class ExerciseFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
-    }
-
-    private fun markCompletedClicked() {
-        fragmentViewModel.handle(
-            ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(
-                args.exerciseId
-            )
-        )
-        navigationClickListener.onMarkCompleteClick()
-        args.isCompleted = true
-        setIsCompletedView(true)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is ExerciseNavigationClickListener) {
-            this.navigationClickListener = context
-        }
     }
 
     interface ExerciseNavigationClickListener {

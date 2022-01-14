@@ -36,20 +36,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMarkCompleted"
-                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/spacing_5x"
-                        android:text="@string/mark_as_completed"
-                        android:textAllCaps="false"
-                        android:textColor="?textBrand"
-                        android:textAppearance="?textAppearanceBody2"
-                        app:icon="@drawable/ic_check"
-                        app:iconGravity="end"
-                        app:iconTint="@color/primaryColor" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
