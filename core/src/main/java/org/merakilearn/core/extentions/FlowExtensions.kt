@@ -17,10 +17,10 @@ fun tickerFlow(
 ) = flow {
     delay(initialDelayMs)
 
-    var counter = count
-    while (counter >= start && currentCoroutineContext().isActive) {
+    var counter = start
+    while (counter <= count && currentCoroutineContext().isActive) {
         emit(TickerState.Progress(counter))
-        counter -= 1
+        counter += 1
 
         delay(periodMs)
     }
