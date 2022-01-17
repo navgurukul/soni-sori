@@ -175,5 +175,4 @@ sealed class KeyboardViewEvent : ViewEvents {
         val timeTaken: Long,
         val mode: Mode
     ) : KeyboardViewEvent()
-
 }
