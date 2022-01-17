@@ -9,7 +9,6 @@ import com.google.android.material.button.MaterialButton
 import org.navgurukul.learn.R
 
 
-
 class CourseExerciseNavigationBottomSheet
 
 @JvmOverloads constructor(
@@ -18,11 +17,9 @@ class CourseExerciseNavigationBottomSheet
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-
     private val btnNext: MaterialButton
     private val btnPrev: MaterialButton
     private val btnMain: MaterialButton
-
 
     init {
         inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
@@ -53,7 +50,6 @@ class CourseExerciseNavigationBottomSheet
         }
 
     }
-
     fun setMainButton(btnText: String, btnAction: () -> Unit) {
         btnMain.visibility = View.VISIBLE
 
