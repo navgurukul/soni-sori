@@ -8,19 +8,24 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
+import org.navgurukul.learn.util.BrowserRedirectHelper
 
 class LearnFragment : Fragment(){
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
     private lateinit var mBinding: FragmentLearnBinding
+    private val merakiNavigator: MerakiNavigator by inject()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +56,10 @@ class LearnFragment : Fragment(){
                 it.languages.isNotEmpty()
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
+            mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
+
+            if(it.showTakeTestButton)
+                setupTestButton()
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -74,6 +83,15 @@ class LearnFragment : Fragment(){
                 }
             }
         })
+    }
+
+    private fun setupTestButton() {
+        mBinding.buttonTakeTest.setOnClickListener {
+            merakiNavigator.openCustomTab(
+                BrowserRedirectHelper.getRedirectUrl(requireContext(), "admission").toString(),
+                requireContext()
+            )
+        }
     }
 
     private fun configureToolbar(

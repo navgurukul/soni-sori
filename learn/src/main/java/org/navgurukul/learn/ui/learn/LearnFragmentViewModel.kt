@@ -51,7 +51,8 @@ class LearnFragmentViewModel(
                                 subtitle = currentPathway.name,
                                 languages =  currentPathway.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
-                                logo = currentPathway.logo
+                                logo = currentPathway.logo,
+                                showTakeTestButton = currentPathway.id == 67
                             )
                         }
                     } else {
@@ -66,7 +67,8 @@ class LearnFragmentViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo) }
+                    setState { copy(courses = it, loading = false, logo = pathway.logo,
+                        showTakeTestButton = pathway.id == 67) }
                 }
             }
         }
@@ -135,7 +137,8 @@ data class LearnFragmentViewState(
     val courses: List<Course> = arrayListOf(),
     val selectedLanguage: String? = null,
     val languages: List<Language> = arrayListOf(),
-    val logo: String? = null
+    val logo: String? = null,
+    val showTakeTestButton: Boolean = false
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
