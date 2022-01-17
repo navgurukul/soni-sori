@@ -115,16 +115,13 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                             }
                         }
                         is TickerState.Progress -> {
-                            val timer =
+                            val timeText =
                                 SimpleDateFormat(
                                     "mm:ss",
                                     Locale.ENGLISH
-                                )
-                            timer.timeZone = TimeZone.getTimeZone("IST")
-                            val timerText=timer.format(SECONDS.toMillis(tickerState.value))
-                            val progress = maxTime-tickerState.value
+                                ).format(SECONDS.toMillis(tickerState.value))
                             setState {
-                                copy(currentProgress = progress.toInt(), timerText = timerText)
+                                copy(currentProgress = tickerState.value.toInt(), timerText = timeText)
                             }
                         }
                     }
