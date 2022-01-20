@@ -25,4 +25,5 @@
     <color name="code_background">#101210</color>
     <color name="contentScreenBackground">#E5E5E5</color>
     <color name="textGrey">#818181</color>
+    <color name="dotGrey"> #949494</color>
 </resources>
