@@ -78,14 +78,6 @@ class ExerciseFragmentViewModel(
         }
     }
 
-    private fun saveCourseExerciseCurrent(
-        currentStudy: CurrentStudy
-    ) {
-        viewModelScope.launch {
-            learnRepo.saveCourseExerciseCurrent(currentStudy)
-        }
-    }
-
     private fun markCourseExerciseCompleted(
         exerciseId: String
     ) {

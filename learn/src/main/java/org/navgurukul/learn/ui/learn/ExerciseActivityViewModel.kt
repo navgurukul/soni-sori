@@ -85,6 +85,7 @@ class ExerciseActivityViewModel(
 
     fun handle(action: ExerciseActivityViewActions) {
         when (action) {
+            is ExerciseActivityViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(currentStudy?.exerciseId)
             is ExerciseActivityViewActions.ExerciseListItemSelected -> onExerciseListItemSelected(
                 action.exerciseId
             )
@@ -124,6 +125,13 @@ class ExerciseActivityViewModel(
             }
         }
     }
+    private fun saveCourseExerciseCurrent(
+        currentStudy: CurrentStudy
+    ) {
+        viewModelScope.launch {
+            learnRepo.saveCourseExerciseCurrent(currentStudy)
+        }
+    }
 
     private fun onExerciseListItemSelected(
         exerciseId: String,
@@ -146,6 +154,15 @@ class ExerciseActivityViewModel(
                 isFirst, isLast, isCompleted, currentCourse.id, exerciseId, navigation
             )
         )
+    }
+    private fun markCourseExerciseCompleted(
+        exerciseId: String?
+    ) {
+        exerciseId?.let {
+            viewModelScope.launch {
+                learnRepo.markCourseExerciseCompleted(it)
+            }
+        }
     }
 
     private fun onExerciseMarkedCompleted() {
@@ -239,6 +256,7 @@ data class ExerciseActivityViewState(
 ) : ViewState
 
 sealed class ExerciseActivityViewActions : ViewModelAction {
+    object MarkCompleteClicked : ExerciseActivityViewActions()
     object OnNextCourseClicked : ExerciseActivityViewActions()
     object PrevNavigationClicked : ExerciseActivityViewActions()
     object NextNavigationClicked : ExerciseActivityViewActions()
