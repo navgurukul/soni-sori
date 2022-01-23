@@ -93,7 +93,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textAskOverviewCompletion"
                     android:layout_marginHorizontal="@dimen/spacing_4x"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:text="Yes, let’s take the test"
+                    tools:text="Yes, let’s take the test"
                     android:padding="@dimen/spacing_4x"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="@dimen/spacing_4x"

@@ -13,6 +13,7 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnFragmentViewModel(
@@ -52,7 +53,7 @@ class LearnFragmentViewModel(
                                 languages =  currentPathway.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
                                 logo = currentPathway.logo,
-                                showTakeTestButton = currentPathway.id == 67
+                                showTakeTestButton = if(currentPathway.cta == null) false else true
                             )
                         }
                     } else {
@@ -68,7 +69,7 @@ class LearnFragmentViewModel(
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
                     setState { copy(courses = it, loading = false, logo = pathway.logo,
-                        showTakeTestButton = pathway.id == 67) }
+                        showTakeTestButton = if(pathway.cta == null) false else true) }
                 }
             }
         }
@@ -125,6 +126,10 @@ class LearnFragmentViewModel(
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
             }
+            LearnFragmentViewActions.PathwayCtaClicked -> {
+                val currentState = viewState.value!!
+                _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
+            }
         }
     }
 }
@@ -147,10 +152,12 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object DismissSelectionSheet : LearnFragmentViewEvents()
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
+    data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object ToolbarClicked : LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
+    object PathwayCtaClicked : LearnFragmentViewActions()
 }

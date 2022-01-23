@@ -100,9 +100,6 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
-        if (item.id == 67) {
-            binding.tvResidentialProgram.visibility = View.VISIBLE
-        }
         val thumbnail = Glide.with(holder.itemView)
             .load(R.drawable.ic_typing_icon)
         Glide.with(binding.ivPathwayIcon)

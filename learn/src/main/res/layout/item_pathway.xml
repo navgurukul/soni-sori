@@ -15,17 +15,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_4x">
 
-        <TextView
-            android:id="@+id/tv_residential_program"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?textAppearancePopupMenuHeader"
-            android:text="@string/residential_program_text"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/spacing_4x"
-            app:layout_constraintBottom_toTopOf="@+id/iv_pathway_icon"
-            app:layout_constraintStart_toStartOf="parent"/>
-
         <ImageView
             android:id="@+id/iv_pathway_icon"
             android:layout_width="@dimen/pathway_select_icon_size"

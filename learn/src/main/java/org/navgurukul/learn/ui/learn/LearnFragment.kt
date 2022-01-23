@@ -14,6 +14,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -59,7 +60,7 @@ class LearnFragment : Fragment(){
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
             if(it.showTakeTestButton)
-                setupTestButton()
+                setupTestButton(it.pathways[it.currentPathwayIndex].cta!!)
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -79,18 +80,29 @@ class LearnFragment : Fragment(){
                         "OpenLanguageSelectionSheet"
                     )
                 }
+                is LearnFragmentViewEvents.OpenUrl -> {
+                    it.cta?.let{ cta ->
+                        //TODO: check if deep link else
+                        merakiNavigator.openDeepLink(
+                            requireActivity(),
+                            cta.link
+                        )
+                        merakiNavigator.openCustomTab(
+                            BrowserRedirectHelper.getRedirectUrl(requireContext(), "admission").toString(),
+                            requireContext()
+                        )
+                    }
+                }
                 else -> {
                 }
             }
         })
     }
 
-    private fun setupTestButton() {
+    private fun setupTestButton(cta: PathwayCTA) {
+        mBinding.buttonTakeTest.text = cta.value
         mBinding.buttonTakeTest.setOnClickListener {
-            merakiNavigator.openCustomTab(
-                BrowserRedirectHelper.getRedirectUrl(requireContext(), "admission").toString(),
-                requireContext()
-            )
+            viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
         }
     }
 
