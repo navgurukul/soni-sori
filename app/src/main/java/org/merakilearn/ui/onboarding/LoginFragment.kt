@@ -60,12 +60,12 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initGoogleSignInOption()
-        mBinding.tvLogin.setOnClickListener {
+        mBinding.tvlogin.setOnClickListener {
             showConfirmation()
         }
 
-        mBinding.tvCreateAccount.setOnClickListener {
-            signIn()
+        mBinding.skipLogin.setOnClickListener {
+            MainActivity.launch(requireContext())
         }
     }
 
