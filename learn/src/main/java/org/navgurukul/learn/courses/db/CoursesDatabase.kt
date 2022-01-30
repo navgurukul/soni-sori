@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 6
+const val DB_VERSION = 7
 
 @Dao
 interface PathwayDao {

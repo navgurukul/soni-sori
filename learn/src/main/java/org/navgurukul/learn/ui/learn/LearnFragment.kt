@@ -60,7 +60,7 @@ class LearnFragment : Fragment(){
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
             if(it.showTakeTestButton)
-                setupTestButton(it.pathways[it.currentPathwayIndex].cta!!)
+                showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -82,15 +82,16 @@ class LearnFragment : Fragment(){
                 }
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let{ cta ->
-                        //TODO: check if deep link else
-                        merakiNavigator.openDeepLink(
-                            requireActivity(),
-                            cta.link
-                        )
-                        merakiNavigator.openCustomTab(
-                            BrowserRedirectHelper.getRedirectUrl(requireContext(), "admission").toString(),
-                            requireContext()
-                        )
+                        if(cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))
+                            merakiNavigator.openCustomTab(
+                                BrowserRedirectHelper.getRedirectUrl(requireContext(), cta.url).toString(),
+                                requireContext()
+                            )
+                        else
+                            merakiNavigator.openDeepLink(
+                                requireActivity(),
+                                cta.url
+                            )
                     }
                 }
                 else -> {
@@ -99,7 +100,7 @@ class LearnFragment : Fragment(){
         })
     }
 
-    private fun setupTestButton(cta: PathwayCTA) {
+    private fun showTestButton(cta: PathwayCTA) {
         mBinding.buttonTakeTest.text = cta.value
         mBinding.buttonTakeTest.setOnClickListener {
             viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)

@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.db.typeadapters
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import org.merakilearn.core.datasource.model.Language
@@ -23,13 +24,14 @@ class Converters(val moshi: Moshi) {
         List::class.java,
         Language::class.java
     )
-    private val pathwayCtaType: Type = Types.newParameterizedType(
-        PathwayCTA::class.java
-    )
+//    private val pathwayCtaType: Type = Types.newParameterizedType(
+//        String::class.java,
+//        PathwayCTA::class.java,
+//    )
     private val exerciseAdapter = moshi.adapter<List<BaseCourseContent>>(exerciseDetailListType)
     private val stringAdapter = moshi.adapter<List<String>>(stringListType)
     private val languageAdapter = moshi.adapter<List<Language>>(languageListType)
-    private val pathwayCtaAdapter = moshi.adapter<PathwayCTA>(pathwayCtaType)
+    private val pathwayCtaAdapter: JsonAdapter<PathwayCTA> = moshi.adapter<PathwayCTA>(PathwayCTA::class.java)
 
     @TypeConverter
     fun exerciseDetailListToString(list: List<BaseCourseContent>): String? {

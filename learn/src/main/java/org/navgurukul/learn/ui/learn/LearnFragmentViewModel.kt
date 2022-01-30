@@ -53,7 +53,7 @@ class LearnFragmentViewModel(
                                 languages =  currentPathway.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
                                 logo = currentPathway.logo,
-                                showTakeTestButton = if(currentPathway.cta == null) false else true
+                                showTakeTestButton = if(currentPathway.cta?.url?.isBlank()?:true) false else true
                             )
                         }
                     } else {
@@ -69,7 +69,7 @@ class LearnFragmentViewModel(
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
                     setState { copy(courses = it, loading = false, logo = pathway.logo,
-                        showTakeTestButton = if(pathway.cta == null) false else true) }
+                        showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
         }
