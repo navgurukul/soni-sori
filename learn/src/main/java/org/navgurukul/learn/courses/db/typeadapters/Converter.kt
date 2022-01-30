@@ -2,10 +2,12 @@ package org.navgurukul.learn.courses.db.typeadapters
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.PathwayCTA
 import java.lang.reflect.Type
 
 @ProvidedTypeConverter
@@ -22,9 +24,14 @@ class Converters(val moshi: Moshi) {
         List::class.java,
         Language::class.java
     )
+//    private val pathwayCtaType: Type = Types.newParameterizedType(
+//        String::class.java,
+//        PathwayCTA::class.java,
+//    )
     private val exerciseAdapter = moshi.adapter<List<BaseCourseContent>>(exerciseDetailListType)
     private val stringAdapter = moshi.adapter<List<String>>(stringListType)
     private val languageAdapter = moshi.adapter<List<Language>>(languageListType)
+    private val pathwayCtaAdapter: JsonAdapter<PathwayCTA> = moshi.adapter<PathwayCTA>(PathwayCTA::class.java)
 
     @TypeConverter
     fun exerciseDetailListToString(list: List<BaseCourseContent>): String? {
@@ -60,5 +67,17 @@ class Converters(val moshi: Moshi) {
     fun stringToStringList(stringValue: String?): List<String> {
         if (stringValue.isNullOrEmpty()) return emptyList()
         return stringAdapter.fromJson(stringValue) ?: emptyList()
+    }
+
+    @TypeConverter
+    fun pathwayCtaToString(cta: PathwayCTA?): String {
+        cta?.let { return pathwayCtaAdapter.toJson(cta) }
+        return ""
+    }
+
+    @TypeConverter
+    fun stringToPathwayCta(stringValue: String?): PathwayCTA {
+        if (stringValue.isNullOrEmpty()) return PathwayCTA("","")
+        return pathwayCtaAdapter.fromJson(stringValue) ?: PathwayCTA("","")
     }
 }

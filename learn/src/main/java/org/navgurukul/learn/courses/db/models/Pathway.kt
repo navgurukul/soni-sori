@@ -35,8 +35,15 @@ data class Pathway @JvmOverloads constructor(
         name = "supportedLanguages",
         defaultValue = "[{\"code\": \"en\", \"label\": \"English\"}]"
     )
-    var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES
+    var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES,
+    val cta: PathwayCTA?
 ) {
     val supportedLanguages: List<Language>
         get() = if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES
 }
+
+@JsonClass(generateAdapter = true)
+data class PathwayCTA(
+    val value: String,
+    val url: String
+)

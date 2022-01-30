@@ -13,6 +13,7 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnFragmentViewModel(
@@ -51,7 +52,8 @@ class LearnFragmentViewModel(
                                 subtitle = currentPathway.name,
                                 languages =  currentPathway.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
-                                logo = currentPathway.logo
+                                logo = currentPathway.logo,
+                                showTakeTestButton = if(currentPathway.cta?.url?.isBlank()?:true) false else true
                             )
                         }
                     } else {
@@ -66,7 +68,8 @@ class LearnFragmentViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo) }
+                    setState { copy(courses = it, loading = false, logo = pathway.logo,
+                        showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
         }
@@ -123,6 +126,10 @@ class LearnFragmentViewModel(
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
             }
+            LearnFragmentViewActions.PathwayCtaClicked -> {
+                val currentState = viewState.value!!
+                _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
+            }
         }
     }
 }
@@ -135,7 +142,8 @@ data class LearnFragmentViewState(
     val courses: List<Course> = arrayListOf(),
     val selectedLanguage: String? = null,
     val languages: List<Language> = arrayListOf(),
-    val logo: String? = null
+    val logo: String? = null,
+    val showTakeTestButton: Boolean = false
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
@@ -144,10 +152,12 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object DismissSelectionSheet : LearnFragmentViewEvents()
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
+    data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object ToolbarClicked : LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
+    object PathwayCtaClicked : LearnFragmentViewActions()
 }

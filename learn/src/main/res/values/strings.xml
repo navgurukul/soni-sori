@@ -111,4 +111,7 @@
     <string name="next_course_message">Next Up: %1s</string>
     <string name="course_completed_message">%1s Completed!</string>
     <string name="finish">Finish</string>
+    <string name="residential_program_text">For Navgurukul Residential Programme Test Takers</string>
+    <string name="header_token_key">token</string>
+    <string name="header_redirect_url_key">redirectUrl</string>
 </resources>
