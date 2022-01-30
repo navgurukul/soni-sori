@@ -102,10 +102,9 @@
                 tools:text="English" />
             <ImageView
                 android:id="@+id/tvClassDot"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/dot"
-                app:layout_constraintWidth_default="wrap"
                 android:paddingStart="@dimen/spacing_1x"
                 android:paddingEnd="@dimen/spacing_1x"
                 android:foregroundGravity="center"
