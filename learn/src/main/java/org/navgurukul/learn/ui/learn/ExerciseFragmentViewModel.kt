@@ -33,7 +33,6 @@ class ExerciseFragmentViewModel(
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
-            is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.exerciseId)
             is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
                 args.exerciseId,
                 args.courseId,
@@ -78,21 +77,11 @@ class ExerciseFragmentViewModel(
         }
     }
 
-    private fun markCourseExerciseCompleted(
-        exerciseId: String
-    ) {
-        viewModelScope.launch {
-            learnRepo.markCourseExerciseCompleted(exerciseId)
-        }
-    }
-
     sealed class ExerciseFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : ExerciseFragmentViewEvents()
     }
 
     sealed class ExerciseFragmentViewActions : ViewModelAction {
-        data class MarkCompleteClicked(val exerciseId: String) :
-            ExerciseFragmentViewActions()
 
         object RequestContentRefresh : ExerciseFragmentViewActions()
 

@@ -38,7 +38,6 @@ class ExerciseFragment : Fragment() {
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-    private lateinit var navigationClickListener: ExerciseNavigationClickListener
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -145,10 +144,6 @@ class ExerciseFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
-    }
-
-    interface ExerciseNavigationClickListener {
-        fun onMarkCompleteClick()
     }
 
 }
