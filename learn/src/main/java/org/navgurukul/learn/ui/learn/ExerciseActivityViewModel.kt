@@ -85,7 +85,6 @@ class ExerciseActivityViewModel(
 
     fun handle(action: ExerciseActivityViewActions) {
         when (action) {
-            is ExerciseActivityViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(currentStudy?.exerciseId)
             is ExerciseActivityViewActions.ExerciseListItemSelected -> onExerciseListItemSelected(
                 action.exerciseId
             )
@@ -155,7 +154,7 @@ class ExerciseActivityViewModel(
             )
         )
     }
-    private fun markCourseExerciseCompleted(
+    private fun markCourseExerciseCompletedInDb(
         exerciseId: String?
     ) {
         exerciseId?.let {
@@ -166,6 +165,8 @@ class ExerciseActivityViewModel(
     }
 
     private fun onExerciseMarkedCompleted() {
+        markCourseExerciseCompletedInDb(currentStudy?.exerciseId)
+
         val updatedList = currentCourse
             .exercises.toMutableList()
 
@@ -256,7 +257,6 @@ data class ExerciseActivityViewState(
 ) : ViewState
 
 sealed class ExerciseActivityViewActions : ViewModelAction {
-    object MarkCompleteClicked : ExerciseActivityViewActions()
     object OnNextCourseClicked : ExerciseActivityViewActions()
     object PrevNavigationClicked : ExerciseActivityViewActions()
     object NextNavigationClicked : ExerciseActivityViewActions()

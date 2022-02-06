@@ -27,7 +27,7 @@ import org.navgurukul.learn.util.LearnUtils
 @Parcelize
 data class ExerciseActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
 
-class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigationClickListener {
+class ExerciseActivity : AppCompatActivity(){
 
     companion object {
         fun start(context: Context, courseId: String, pathwayId: Int) {
@@ -177,10 +177,6 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                 ExerciseFragment.TAG
             )
         }
-    }
-
-    override fun onMarkCompleteClick() {
-        viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
     }
 
 }
