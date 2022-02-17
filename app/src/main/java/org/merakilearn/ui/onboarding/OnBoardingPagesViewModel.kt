@@ -111,10 +111,22 @@ class OnBoardingPagesViewModel(
         val value=pattern.find(decodeReferrer,0)?.value
 
         if(value!=null){
-            _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage)
+            getPathwayForResidentialProgram()
         }
         else{
             _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+        }
+    }
+
+    private fun getPathwayForResidentialProgram() {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            val residentialProgramPathwayIdResponse = loginRepository.getPathwayForResidentialProgram()
+            setState { copy(isLoading = false) }
+
+            residentialProgramPathwayIdResponse?.let {
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage(it.get(0).id))
+            }?:run{ _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
 }
@@ -123,7 +135,7 @@ sealed class OnBoardingPagesEvents : ViewEvents {
     object OpenCourseSelection : OnBoardingPagesEvents()
     data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
     data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
-    object OpenHomePage : OnBoardingPagesEvents()
+    data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
 }
 
 sealed class OnBoardingPagesAction : ViewModelAction {
