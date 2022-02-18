@@ -58,7 +58,7 @@ class LoginRepository(
         }
     }
 
-    suspend fun getPathwayForResidentialProgram(): List<ResidentialProgramPathwayResponse>? {
+    suspend fun getPathwayForResidentialProgram(): ResidentialProgramPathwayResponse? {
         return try {
             val response = applicationApi.getResidentialProgramPathway()
             response

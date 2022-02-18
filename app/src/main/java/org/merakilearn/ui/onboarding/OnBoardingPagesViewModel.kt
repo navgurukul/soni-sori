@@ -125,7 +125,7 @@ class OnBoardingPagesViewModel(
             setState { copy(isLoading = false) }
 
             residentialProgramPathwayIdResponse?.let {
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage(it.get(0).id))
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage(it.id))
             }?:run{ _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
