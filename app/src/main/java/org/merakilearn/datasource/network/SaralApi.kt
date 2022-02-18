@@ -37,6 +37,6 @@ interface SaralApi {
     ): Classes
 
     @GET("pathways/ResidentialPathway ")
-    suspend fun getResidentialProgramPathway(): List<ResidentialProgramPathwayResponse>
+    suspend fun getResidentialProgramPathway(): ResidentialProgramPathwayResponse
 
 }
