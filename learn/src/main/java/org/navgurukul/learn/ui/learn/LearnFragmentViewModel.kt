@@ -10,17 +10,25 @@ import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
+import org.navgurukul.commonui.resources.StringProvider
+import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
     private val corePreferences: CorePreferences,
+    private val stringProvider: StringProvider,
+
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
+    private var batches: List<Batch> = arrayListOf()
+    private var isEnrolled: Boolean = false
+
+
 
     init {
         setState { copy(loading = true) }
@@ -61,7 +69,10 @@ class LearnFragmentViewModel(
                     }
                 }
             }
+            getBatchesDataByPathway(corePreferences.lastSelectedPathWayId)
+
         }
+
     }
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
@@ -101,6 +112,7 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
     }
 
+
     fun selectCourse(course: Course) {
         course.pathwayId?.let {
             _viewEvents.postValue(
@@ -114,6 +126,8 @@ class LearnFragmentViewModel(
             is LearnFragmentViewActions.ToolbarClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
             }
+
+            is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
                 val currentState = viewState.value!!
                 if (currentState.pathways.size > currentState.currentPathwayIndex) {
@@ -126,27 +140,73 @@ class LearnFragmentViewModel(
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
             }
+            LearnFragmentViewActions.BtnMoreBatchClicked ->{
+                val currentState = viewState.value!!
+                _viewEvents.postValue(LearnFragmentViewEvents.OpenBatchSelectionSheet(currentState.batches))
+            }
             LearnFragmentViewActions.PathwayCtaClicked -> {
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
+
         }
     }
-}
 
-data class LearnFragmentViewState(
+    fun getBatchesDataByPathway(pathwayId: Int) {
+        viewModelScope.launch {
+            setState { copy(loading=true) }
+            val batches =learnRepo.getBatchesListByPathway(pathwayId)
+            batches?.let {
+                setState {
+                    copy(
+                        batches = it
+                    )
+                }
+                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it.get(0)))
+            }
+        }
+
+    }
+
+    private fun primaryAction(classId: Int) {
+        viewModelScope.launch {
+        setState { copy(loading = true) }
+        val result = learnRepo.enrollToClass(classId, false)
+        if (result) {
+            isEnrolled = true
+//            val durationToClassStart = (classes.startTime.time - Date().time)
+            setState {
+                copy(
+                    loading = false,
+                )
+            }
+            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
+        } else {
+            setState { copy(loading = false) }
+            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
+        }
+        } }
+    }
+
+    data class LearnFragmentViewState(
     val loading: Boolean = false,
     val subtitle: String? = null,
     val pathways: List<Pathway> = arrayListOf(),
+    val batches: List<Batch> = arrayListOf(),
     val currentPathwayIndex: Int = 0,
     val courses: List<Course> = arrayListOf(),
     val selectedLanguage: String? = null,
     val languages: List<Language> = arrayListOf(),
     val logo: String? = null,
-    val showTakeTestButton: Boolean = false
+    val showTakeTestButton: Boolean = false,
+    val menuId: Int? = null,
+    val classId: Int = 0
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
+    class ShowToast(val toastText: String) :LearnFragmentViewEvents()
+    data class OpenBatchSelectionSheet(val batches: List<Batch>):LearnFragmentViewEvents()
+    data class ShowUpcomingBatch(val batch: Batch):LearnFragmentViewEvents()
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     object DismissSelectionSheet : LearnFragmentViewEvents()
@@ -156,7 +216,9 @@ sealed class LearnFragmentViewEvents : ViewEvents {
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
+    data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
+    object BtnMoreBatchClicked: LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
     object PathwayCtaClicked : LearnFragmentViewActions()

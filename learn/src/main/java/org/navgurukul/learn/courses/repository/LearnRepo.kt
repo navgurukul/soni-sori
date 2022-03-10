@@ -1,15 +1,21 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
+import org.navgurukul.learn.courses.network.enrolStatus
+import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.Classes
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.util.LearnUtils
@@ -19,6 +25,12 @@ class LearnRepo(
     private val application: Application,
     private val database: CoursesDatabase
 ) {
+
+    private val _classesFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
+
+    val classesFlow = _classesFlow.asSharedFlow()
+
+    var lastUpdatedClasses: List<Batch>? = null
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
         val pathwayDao = database.pathwayDao()
@@ -44,6 +56,8 @@ class LearnRepo(
         })
     }
 
+
+
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
@@ -52,6 +66,7 @@ class LearnRepo(
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
             courseApi.getCoursesForPathway(pathwayId, "json")
+//                              courseApi.checkedStudentEnrolment(pathwayId)
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
@@ -189,5 +204,49 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
+
+    suspend fun checkedStudentEnrolment(pathwayId: Int): enrolStatus {
+        return courseApi.checkedStudentEnrolment(pathwayId)
+    }
+
+    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch> {
+        return courseApi.getBatchesAsync(pathwayId)
+    }
+
+
+    suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
+        return try {
+            if (enrolled) {
+                courseApi.logOutToClassAsync(classId)
+                updateEnrollStatus(classId, false)
+            } else {
+                courseApi.enrollToClassAsync(classId, mutableMapOf())
+                updateEnrollStatus(classId, true)
+            }
+        } catch (ex: Exception) {
+//            Timber.tag(TAG).e(ex, "enrollToClass: ")
+            false
+        }
+    }
+
+    private suspend fun updateEnrollStatus(classId: Int, enrolled: Boolean): Boolean {
+        val classes = lastUpdatedClasses ?: return true
+        classes.forEachIndexed loop@ { index, classItem ->
+            if (classId == classItem.id) {
+                val updatedClass = classItem.copy(enrolled = enrolled)
+                lastUpdatedClasses = mutableListOf(*classes.toTypedArray()).apply {
+                    this[index] = updatedClass
+                }
+                _classesFlow.emit(lastUpdatedClasses)
+
+                return@loop
+            }
+        }
+        return true
+    }
+
+    companion object {
+        private const val TAG = "LearnRepo"
+    }
 
 }

@@ -1,20 +1,27 @@
 package org.navgurukul.learn.ui.learn
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_learn.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -26,6 +33,7 @@ class LearnFragment : Fragment(){
     private lateinit var mCourseAdapter: CourseAdapter
     private lateinit var mBinding: FragmentLearnBinding
     private val merakiNavigator: MerakiNavigator by inject()
+    private val batchId : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +53,9 @@ class LearnFragment : Fragment(){
         initSwipeRefresh()
 
         configureToolbar()
+        BatchCardBtnClicked()
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
             mCourseAdapter.submitList(it.courses, it.logo)
@@ -54,16 +63,17 @@ class LearnFragment : Fragment(){
                 it.subtitle,
                 it.pathways.isNotEmpty(),
                 it.selectedLanguage,
-                it.languages.isNotEmpty()
+                it.languages.isNotEmpty(),
+//                it.batches.isNotEmpty()
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
-            if(it.showTakeTestButton)
+            if (it.showTakeTestButton)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
-        })
+        }
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
                     ExerciseActivity.start(requireContext(), it.courseId, it.pathwayId)
@@ -80,11 +90,22 @@ class LearnFragment : Fragment(){
                         "OpenLanguageSelectionSheet"
                     )
                 }
+                 is LearnFragmentViewEvents.OpenBatchSelectionSheet -> {
+                    LearnBatchSelectionSheet().show(
+                        parentFragmentManager,
+                        "LearnBatchesSelectionSheet"
+                    )
+                }
+
+                is LearnFragmentViewEvents.ShowUpcomingBatch ->{
+                    it.batch
+                }
                 is LearnFragmentViewEvents.OpenUrl -> {
-                    it.cta?.let{ cta ->
-                        if(cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))
+                    it.cta?.let { cta ->
+                        if (cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))
                             merakiNavigator.openCustomTab(
-                                BrowserRedirectHelper.getRedirectUrl(requireContext(), cta.url).toString(),
+                                BrowserRedirectHelper.getRedirectUrl(requireContext(), cta.url)
+                                    .toString(),
                                 requireContext()
                             )
                         else
@@ -97,7 +118,7 @@ class LearnFragment : Fragment(){
                 else -> {
                 }
             }
-        })
+        }
     }
 
     private fun showTestButton(cta: PathwayCTA) {
@@ -105,6 +126,39 @@ class LearnFragment : Fragment(){
         mBinding.buttonTakeTest.setOnClickListener {
             viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
         }
+    }
+
+    private fun BatchCardBtnClicked(){
+        tvBtnEnroll.setOnClickListener {
+            showEnrolDialog()
+        }
+        more_classe.setOnClickListener {
+            viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked )
+        }
+    }
+
+    private fun showEnrolDialog(){
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
+        val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
+        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+        btnAccept.setOnClickListener {
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batchId))
+//            viewModel.handle(LearnFragmentViewActions.PrimaryAction)
+        }
+
+        btnBack.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+
+        btAlertDialog?.show()
+
     }
 
     private fun configureToolbar(
@@ -120,6 +174,7 @@ class LearnFragment : Fragment(){
                     {
                         viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
                     }
+
                 } else null,
                 action = selectedLanguage,
                 actionOnClickListener = if (languageClickListener) {

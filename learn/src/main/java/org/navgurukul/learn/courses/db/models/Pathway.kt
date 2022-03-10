@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.merakilearn.core.datasource.model.Language
+import org.navgurukul.learn.courses.network.model.Batch
 
 private val DEFAULT_SUPPORTED_LANGUAGES = listOf(Language("en", "English"))
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/spacing_2x"
+        android:padding="@dimen/spacing_5x">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_1x">
+
+        <TextView
+            android:id="@+id/sub_title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Class 1 Intro of python"/>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:padding="@dimen/spacing_1x"
+            app:layout_constraintStart_toEndOf="@+id/sub_title"
+            android:background="@drawable/gree_background"
+            tools:text="Batch"/>
+
+        <TextView
+            android:id="@+id/tvClassDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            app:layout_constraintStart_toStartOf="@+id/sub_title"
+            app:layout_constraintTop_toBottomOf="@+id/sub_title"
+            tools:text="14 JUl 21"/>
+
+        <TextView
+            android:id="@+id/tvFacilatorName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginTop="@dimen/spacing_3x"
+            app:layout_constraintStart_toEndOf="@+id/tvClassDate"
+            app:layout_constraintTop_toBottomOf="@+id/sub_title"
+            tools:text="Prajakta Kishori dhanshri" />
+
+        <TextView
+            android:id="@+id/tvClassLang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:layout_marginStart="@dimen/spacing_4x"
+            app:layout_constraintStart_toEndOf="@+id/tvFacilatorName"
+            app:layout_constraintTop_toBottomOf="@+id/sub_title"
+            tools:text="Prajakta Kishori"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

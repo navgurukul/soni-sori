@@ -26,4 +26,5 @@
     <color name="contentScreenBackground">#E5E5E5</color>
     <color name="textGrey">#818181</color>
     <color name="dotGrey"> #949494</color>
+    <color name="card_background">#E9F5E9</color>
 </resources>

@@ -99,6 +99,8 @@
     <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
+    <string name="enrolled">You have been enrolled to class successfully</string>
+    <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>
