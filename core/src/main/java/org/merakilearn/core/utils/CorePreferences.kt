@@ -8,7 +8,6 @@ class CorePreferences(private val sharedPreferences: SharedPreferences) {
     companion object {
         const val SELECTED_LANGUAGE = "selected_language"
         const val LAST_SELECTED_PATHWAY_ID = "last_selected_pathway_id"
-        const val LAST_SELECTED_BATCH_ID = "last_selected_batch_id"
     }
 
     var selectedLanguage: String
