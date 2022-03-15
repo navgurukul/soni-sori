@@ -1,6 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.Index
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.enrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.repository.LearnRepo
 
@@ -69,8 +72,8 @@ class LearnFragmentViewModel(
                     }
                 }
             }
-            getBatchesDataByPathway(corePreferences.lastSelectedPathWayId)
-
+//            getBatchesDataByPathway(corePreferences.lastSelectedPathWayId)
+            getBatchesDataByPathway(1)
         }
 
     }
@@ -101,6 +104,7 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
         refreshCourses(pathway, false)
     }
+
 
     fun selectLanguage(language: Language) {
         setState {
@@ -152,6 +156,10 @@ class LearnFragmentViewModel(
         }
     }
 
+    suspend fun checkedStudentEnrolment(pathwayId: Int): enrolStatus {
+       return learnRepo.checkedStudentEnrolment(pathwayId)
+    }
+
     fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             setState { copy(loading=true) }
@@ -162,12 +170,12 @@ class LearnFragmentViewModel(
                         batches = it
                     )
                 }
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it.get(0)))
+                if(it.isNotEmpty()){
+                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it.get(0)))
+                }
             }
         }
-
     }
-
     private fun primaryAction(classId: Int) {
         viewModelScope.launch {
         setState { copy(loading = true) }
@@ -188,7 +196,7 @@ class LearnFragmentViewModel(
         } }
     }
 
-    data class LearnFragmentViewState(
+data class LearnFragmentViewState(
     val loading: Boolean = false,
     val subtitle: String? = null,
     val pathways: List<Pathway> = arrayListOf(),

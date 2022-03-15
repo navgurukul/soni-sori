@@ -12,16 +12,14 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_learn.*
+import kotlinx.android.synthetic.main.batch_card.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.PathwayCTA
-import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -98,7 +96,7 @@ class LearnFragment : Fragment(){
                 }
 
                 is LearnFragmentViewEvents.ShowUpcomingBatch ->{
-                    it.batch
+                    it.batch   //
                 }
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->

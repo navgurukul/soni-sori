@@ -3,6 +3,9 @@ package org.navgurukul.learn.courses.network.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.merakilearn.core.extentions.capitalizeWords
+import org.navgurukul.learn.util.toDate
+import org.navgurukul.learn.util.toDay
+import org.navgurukul.learn.util.toTime
 import java.util.*
 
 @JsonClass(generateAdapter = true)
@@ -56,6 +59,6 @@ data class Batch(
     )
 }
 //
-//fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
-//fun Classes.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
+fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
+fun Classes.timeRange(): String = "${startTime.toDate()} - ${endTime.toDate()}"
 //fun Classes.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)
