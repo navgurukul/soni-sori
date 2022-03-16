@@ -67,7 +67,7 @@ interface ExerciseDao {
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
     fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<CourseExerciseContent>
 
-    @Query("Update course_exercise set exerciseProgress = :exerciseProgress where id = :exerciseId")
+    @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id = :exerciseId")
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 }
 
@@ -78,6 +78,25 @@ interface CurrentStudyDao {
 
     @Query("select * from user_current_study where courseId = :courseId")
     suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
+}
+
+@Dao
+interface ClassDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
+
+    @Query("select * from course_class where courseId = :courseId")
+    suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertClass(course: List<CourseClassContent?>?)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertClassAsync(course: List<CourseClassContent?>?)
+
+    @Query("select * from course_class where id = :classId and lang = :lang")
+    fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
+
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -212,9 +231,10 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
 @TypeConverters(Converters::class)
 abstract class CoursesDatabase : RoomDatabase() {
 
-    // DAOs for course, exercises and its sub exercise
+    // DAOs for course, classes, exercises and its sub exercise
     abstract fun courseDao(): CourseDao
     abstract fun pathwayDao(): PathwayDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun currentStudyDao(): CurrentStudyDao
+    abstract fun classDao(): ClassDao
 }

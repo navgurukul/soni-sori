@@ -12,12 +12,9 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.db.models.CourseExerciseContent
-import org.navgurukul.learn.courses.db.models.ExerciseProgress
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
+import org.navgurukul.learn.courses.db.models.*
 
 class ExerciseActivityViewModel(
     private val learnRepo: LearnRepo,
@@ -37,7 +34,7 @@ class ExerciseActivityViewModel(
     init {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            learnRepo.fetchCourseExerciseDataWithCourse(courseId, pathwayId, selectedLanguage)
+            learnRepo.fetchCourseContentDataWithCourse(courseId, pathwayId, selectedLanguage)
                 .combine(
                     learnRepo.getCoursesDataByPathway(
                         pathwayId,
@@ -140,10 +137,12 @@ class ExerciseActivityViewModel(
         val isFirst = index == 0
         val isLast = index == currentCourse.courseContents.size - 1
         val isCompleted =
-            currentCourse.courseContents[index].exerciseProgress == ExerciseProgress.COMPLETED
+            currentCourse.courseContents[index].courseContentProgress == CourseContentProgress.COMPLETED
+        val courseContentType = currentCourse.courseContents[index].contentContentType
+
         _viewEvents.setValue(
             ExerciseActivityViewEvents.ShowExerciseFragment(
-                isFirst, isLast, isCompleted, currentCourse.id, exerciseId, navigation
+                isFirst, isLast, isCompleted, currentCourse.id, exerciseId, courseContentType, navigation
             )
         )
     }
@@ -156,7 +155,7 @@ class ExerciseActivityViewModel(
             currentStudy?.exerciseId == it.id
         }
         completedExercise?.let {
-            it.exerciseProgress = ExerciseProgress.COMPLETED
+            it.courseContentProgress = CourseContentProgress.COMPLETED
 
             setState { copy(courseExerciseContentList = updatedList) }
         }
@@ -166,7 +165,7 @@ class ExerciseActivityViewModel(
         //course without exercise details
         getNextCourse(currentCourseId)?.let {
             viewModelScope.launch {
-                learnRepo.fetchCourseExerciseDataWithCourse(it.id, pathwayId, selectedLanguage)
+                learnRepo.fetchCourseContentDataWithCourse(it.id, pathwayId, selectedLanguage)
                     .collect {
                         //course with exercise details
                         launchLastSelectedExerciseOfCourse(it)
@@ -197,13 +196,13 @@ class ExerciseActivityViewModel(
         currentCourse.courseContents.toMutableList().let {
             it.forEachIndexed { index, exercise ->
                 if (exercise.id == exerciseId) {
-                    if (exercise.exerciseProgress != ExerciseProgress.COMPLETED) {
-                        exercise.exerciseProgress = ExerciseProgress.IN_PROGRESS
+                    if (exercise.courseContentProgress != CourseContentProgress.COMPLETED) {
+                        exercise.courseContentProgress = CourseContentProgress.IN_PROGRESS
                         selectedIndex = index
                     }
                 } else {
-                    if (exercise.exerciseProgress == ExerciseProgress.IN_PROGRESS) {
-                        exercise.exerciseProgress = ExerciseProgress.NOT_STARTED
+                    if (exercise.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
+                        exercise.courseContentProgress = CourseContentProgress.NOT_STARTED
                     }
                 }
             }
@@ -222,6 +221,7 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
         val isCompleted: Boolean,
         val courseId: String,
         val exerciseId: String,
+        val courseContentType: CourseContentType,
         val navigation: ExerciseNavigation?
     ) : ExerciseActivityViewEvents()
 

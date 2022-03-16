@@ -14,6 +14,7 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
+import org.navgurukul.learn.courses.db.models.CourseContentType
 
 class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -37,22 +38,25 @@ class ExerciseFragmentViewModel(
             is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
                 args.exerciseId,
                 args.courseId,
+                args.courseContentType,
                 true
             )
         }
     }
 
     private fun fetchExerciseContent(
-        exerciseId: String,
+        contentId: String,
         courseId: String,
+        courseContentType: CourseContentType,
         forceUpdate: Boolean = false,
     ) {
         fetchExerciseJob?.cancel()
         fetchExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
-            learnRepo.getExerciseContents(
-                exerciseId,
+            learnRepo.getCourseContentById(
+                contentId,
                 courseId,
+                courseContentType,
                 forceUpdate,
                 selectedLanguage
             ).collect {
@@ -62,7 +66,7 @@ class ExerciseFragmentViewModel(
 
                 if (list != null && list.content.isNotEmpty() == true) {
                     setState { copy(isError = false) }
-                    setState { copy(exerciseList = it.content) }
+                    setState { copy(exerciseContentList = it.content) }
                 } else {
                     _viewEvents.setValue(
                         ExerciseFragmentViewEvents.ShowToast(
@@ -109,7 +113,7 @@ class ExerciseFragmentViewModel(
     data class ExerciseFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val exerciseList: List<BaseCourseContent> = listOf()
+        val exerciseContentList: List<BaseCourseContent> = listOf()
     ) : ViewState
 
 }

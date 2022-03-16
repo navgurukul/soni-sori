@@ -21,6 +21,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
+import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
@@ -32,7 +33,8 @@ data class ExerciseFragmentArgs(
     val isLast: Boolean,
     var isCompleted: Boolean,
     val courseId: String,
-    val exerciseId: String
+    val exerciseId: String,
+    val courseContentType: CourseContentType,
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
@@ -52,7 +54,8 @@ class ExerciseFragment : Fragment() {
             isLast: Boolean,
             isCompleted: Boolean,
             courseId: String,
-            exerciseId: String
+            exerciseId: String,
+            courseContentType: CourseContentType
         ): ExerciseFragment {
             return ExerciseFragment().apply {
                 arguments = ExerciseFragmentArgs(
@@ -60,7 +63,8 @@ class ExerciseFragment : Fragment() {
                     isLast,
                     isCompleted,
                     courseId,
-                    exerciseId
+                    exerciseId,
+                    courseContentType
                 ).toBundle()
             }
         }
@@ -91,7 +95,7 @@ class ExerciseFragment : Fragment() {
             showErrorScreen(it.isError)
 
             if (!it.isError)
-                contentAdapter.submitList(it.exerciseList)
+                contentAdapter.submitList(it.exerciseContentList)
         })
 
         setIsCompletedView(args.isCompleted)

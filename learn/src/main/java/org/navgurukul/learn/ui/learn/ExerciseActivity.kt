@@ -19,6 +19,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ListSpacingDecoration
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
@@ -92,6 +93,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                         it.isCompleted,
                         it.courseId,
                         it.exerciseId,
+                        it.courseContentType,
                         it.navigation
                     )
 
@@ -159,6 +161,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         isCompleted: Boolean = false,
         courseId: String,
         exerciseId: String,
+        courseContentType: CourseContentType,
         navigation: ExerciseNavigation?
     ) {
         supportFragmentManager.commit {
@@ -172,7 +175,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             )
             replace(
                 R.id.exerciseContentContainer,
-                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
+                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId, courseContentType),
                 ExerciseFragment.TAG
             )
         }

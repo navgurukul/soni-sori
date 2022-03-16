@@ -60,59 +60,16 @@ class LearnRepo(
         })
     }
 
-    fun getCoursesExerciseData(courseId: String, language: String): Flow<List<CourseExerciseContent>?> {
-        val exerciseDao = database.exerciseDao()
-        val courseDao = database.courseDao()
-        return object : NetworkBoundResource<List<CourseExerciseContent>, CourseExerciseContainer>() {
-            override suspend fun saveCallResult(data: CourseExerciseContainer) {
-                val course = data.course
-                val lang =
-                    if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.courseContents.map {
-                    it.apply {
-                        this.courseId = courseId
-                        this.lang = lang
-                    }
-                }.toList()
-                exerciseDao.insertExercise(mappedData)
-            }
-
-            override fun shouldFetch(data: List<CourseExerciseContent>?): Boolean {
-                return LearnUtils.isOnline(application) && (data == null || data.isEmpty())
-            }
-
-            override suspend fun makeApiCallAsync(): CourseExerciseContainer {
-
-                return courseApi.getExercisesAsync(courseId, language)
-            }
-
-            override suspend fun loadFromDb(): List<CourseExerciseContent> {
-                val course = courseDao.course(courseId)
-                val lang: String = course?.let {
-                    if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                } ?: language
-                val data = exerciseDao.getAllExercisesForCourseDirect(courseId, lang)
-                parseData(data)
-                return data
-            }
-        }.asLiveData().asFlow()
-    }
-
-
-    private fun parseData(data: List<CourseExerciseContent>) {
-        data.forEachIndexed { index, exercise ->
-            exercise.number = (index + 1)
-        }
-    }
-
-    suspend fun getExerciseContents(
-        exerciseId: String,
+    suspend fun getCourseContentById(
+        contentId: String,
         courseId: String,
+        courseContentType: CourseContentType,
         forceUpdate: Boolean,
         language: String
-    ): Flow<CourseExerciseContent?> {
+    ): Flow<CourseContents?> {
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
+        val classDao = database.classDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
         val lang: String = course?.let {
             if (language in course.supportedLanguages) language else course.supportedLanguages[0]
@@ -123,23 +80,45 @@ class LearnRepo(
                 val mappedData = result.course.courseContents.map {
                     it.courseId = courseId
                     it.courseName = result.course.name
-                    it.lang =
-                        course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
-                            ?: language
+                    if(it.contentContentType == CourseContentType.EXERCISE) {
+                        it as CourseExerciseContent
+                        it.lang =
+                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                                ?: language
+                    }else{
+                        it as CourseClassContent
+                        it.lang =
+                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                                ?: language
+                    }
                     it
                 }.toList()
-                exerciseDao.insertExerciseAsync(mappedData)
+
+                try {
+                    exerciseDao.insertExerciseAsync(mappedData.filter { it.contentContentType == CourseContentType.EXERCISE } as List<CourseExerciseContent>)
+                }catch (ex: Exception) {
+                }
+                try {
+                    classDao.insertClassAsync(mappedData.filter { it.contentContentType == CourseContentType.CLASS_TOPIC } as List<CourseClassContent>)
+                }catch (ex: Exception) {
+                }
             } catch (ex: Exception) {
             }
         }
 
-        return exerciseDao.getExerciseById(exerciseId, lang).asFlow()
+
+        return when(courseContentType){
+            CourseContentType.EXERCISE -> exerciseDao.getExerciseById(contentId, lang).asFlow()
+            CourseContentType.CLASS_TOPIC -> classDao.getClassById(contentId, lang).asFlow()
+            else -> exerciseDao.getExerciseById(contentId, lang).asFlow()
+        }
     }
 
 
-    fun fetchCourseExerciseDataWithCourse(courseId: String, pathwayId: Int, language: String): Flow<Course?> {
+    fun fetchCourseContentDataWithCourse(courseId: String, pathwayId: Int, language: String): Flow<Course?> {
         val courseDao = database.courseDao()
         val exerciseDao = database.exerciseDao()
+        val classDao = database.classDao()
         return networkBoundResourceFlow(
             loadFromDb = {
                 val course = courseDao.getCourseById(courseId)
@@ -161,11 +140,24 @@ class LearnRepo(
                 val mappedData = course.courseContents.map {
                     it.apply {
                         this.courseId = courseId
-                        this.lang = lang
+                        if(this.contentContentType == CourseContentType.EXERCISE) {
+                            (this as CourseExerciseContent).lang = lang
+                        }else if(this.contentContentType == CourseContentType.CLASS_TOPIC){
+                            (this as CourseClassContent).lang = lang
+                        }
                     }
                 }.toList()
+
                 courseDao.insertCourse(course)
-                exerciseDao.insertExercise(mappedData)
+
+                try {
+                    exerciseDao.insertExercise(mappedData.filter { it.contentContentType == CourseContentType.EXERCISE } as List<CourseExerciseContent>)
+                }catch (ex: Exception) {
+                }
+                try {
+                    classDao.insertClass(mappedData.filter { it.contentContentType == CourseContentType.CLASS_TOPIC } as List<CourseClassContent>)
+                }catch (ex: Exception) {
+                }
             }
         )
     }
@@ -178,7 +170,7 @@ class LearnRepo(
     suspend fun markCourseExerciseCompleted(exerciseId: String) {
         val exerciseDao = database.exerciseDao()
         exerciseDao.markCourseExerciseCompleted(
-            ExerciseProgress.COMPLETED.name,
+            CourseContentProgress.COMPLETED.name,
             exerciseId
         )
     }
