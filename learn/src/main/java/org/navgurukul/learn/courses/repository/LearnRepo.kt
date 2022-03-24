@@ -1,8 +1,6 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,13 +9,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.NetworkBoundResource
-import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.courses.network.enrolStatus
+import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.courses.network.model.Classes
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
-import org.navgurukul.learn.courses.network.networkBoundResourceFlow
+import org.navgurukul.learn.courses.network.model.EnrollStatus
+import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.util.LearnUtils
 
 class LearnRepo(
@@ -26,11 +22,13 @@ class LearnRepo(
     private val database: CoursesDatabase
 ) {
 
-    private val _classesFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
+    private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
+    val batchFlow = _batchFlow.asSharedFlow()
+    var lastUpdatedBatches: List<Batch>? = null
 
-    val classesFlow = _classesFlow.asSharedFlow()
-
-    var lastUpdatedClasses: List<Batch>? = null
+    private val _classFlow = MutableSharedFlow<List<UpcomingClass>?>()
+    val classFlow = _classFlow.asSharedFlow()
+    var lastUpdatedClass: List<UpcomingClass>? = null
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
         val pathwayDao = database.pathwayDao()
@@ -205,7 +203,7 @@ class LearnRepo(
     }
 
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): enrolStatus {
+    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolStatus {
         return courseApi.checkedStudentEnrolment(pathwayId)
     }
 
@@ -213,6 +211,10 @@ class LearnRepo(
         return courseApi.getBatchesAsync(pathwayId)
     }
 
+
+    suspend fun getUpcomingClass(pathwayId: Int): List<UpcomingClass> {
+        return courseApi.getUpcomingClass(pathwayId)
+    }
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
@@ -230,14 +232,14 @@ class LearnRepo(
     }
 
     private suspend fun updateEnrollStatus(classId: Int, enrolled: Boolean): Boolean {
-        val classes = lastUpdatedClasses ?: return true
+        val classes = lastUpdatedBatches ?: return true
         classes.forEachIndexed loop@ { index, classItem ->
             if (classId == classItem.id) {
                 val updatedClass = classItem.copy(enrolled = enrolled)
-                lastUpdatedClasses = mutableListOf(*classes.toTypedArray()).apply {
+                lastUpdatedBatches = mutableListOf(*classes.toTypedArray()).apply {
                     this[index] = updatedClass
                 }
-                _classesFlow.emit(lastUpdatedClasses)
+                _batchFlow.emit(lastUpdatedBatches)
 
                 return@loop
             }

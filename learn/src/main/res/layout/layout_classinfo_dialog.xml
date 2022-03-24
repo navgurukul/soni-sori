@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="Batch"
+            type="org.navgurukul.learn.courses.network.model.Batch" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:padding="@dimen/spacing_6x"
+        android:layout_width="match_parent"
+        android:padding="@dimen/spacing_4x"
         android:background="@drawable/info_dialog_background"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/class_info"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/info_dialog_background"
             android:text="Awesome! You have taken the first step to being a programmer"
@@ -31,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_5x"
             app:layout_constraintEnd_toEndOf="@id/class_info"
-            android:text="Ankit_15SEP21"
+            android:text="@{Batch.title}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/class_info"
@@ -40,7 +42,7 @@
             tools:text="Ankit_15SEP21" />
 
         <TextView
-            android:id="@+id/tvClassDate"
+            android:id="@+id/tv_Batch_Date"
             style="?textAppearanceEmphasized2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,11 +63,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_6x"
-            android:text="Back"
+            android:text="@string/back"
             app:layout_constraintEnd_toStartOf="@+id/btnEnroll"
             app:layout_constraintHorizontal_bias="0.759"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvClassDate" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
 
         <TextView
             android:id="@+id/btnEnroll"
@@ -73,10 +75,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_6x"
             android:layout_marginBottom="@dimen/spacing_6x"
-            android:text="Enroll Today"
+            android:text="@string/enroll_today"
             android:textColor="@color/green_progress_color"
             app:layout_constraintEnd_toEndOf="@+id/class_info"
-            app:layout_constraintTop_toBottomOf="@+id/tvClassDate" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,26 +1,16 @@
 package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
-import android.os.ProxyFileDescriptorCallback
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.batch_selection_sheet.*
 import kotlinx.android.synthetic.main.batch_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.batch_selection_sheet.tv_title
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Pathway
-import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.databinding.ItemBatchBinding
-import org.navgurukul.learn.databinding.ItemPathwayBinding
-import org.navgurukul.learn.ui.common.DataBoundListAdapter
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionAdapter
 
 class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
@@ -51,9 +41,9 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
         tv_title.text = getString(R.string.more_batch)
 
         adapter = BatchSelectionAdapter {
-//            viewModel.selectBatch(it)
+            viewModel.selectBatch(it)
         }
-//            viewModel.selectPathway(it)}
+
 
         recycler_view.adapter = adapter
         recycler_view.addItemDecoration(
@@ -67,9 +57,15 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.batches)
         }
+        viewModel.viewEvents.observe(
+            viewLifecycleOwner,
+        ) {
+            dismiss()
+        }
 
 
 
     }
-
 }
+
+

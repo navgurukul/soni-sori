@@ -4,24 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="UpcomingClass"
+            type="org.navgurukul.learn.courses.network.model.UpcomingClass" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/green_progress_color"
         app:cardCornerRadius="@dimen/spacing_2x"
         android:padding="@dimen/spacing_5x">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_1x">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/sub_title"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Class 1 Intro of Python"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Class 1 Intro of python"/>

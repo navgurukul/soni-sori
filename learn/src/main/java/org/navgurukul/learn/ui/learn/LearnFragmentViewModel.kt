@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
-import androidx.lifecycle.LiveData
+
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Index
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +18,11 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
-import org.navgurukul.learn.courses.network.enrolStatus
+import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.courses.repository.LearnRepo
+import javax.security.auth.callback.Callback
 
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -28,13 +31,14 @@ class LearnFragmentViewModel(
 
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
-    private var batches: List<Batch> = arrayListOf()
     private var isEnrolled: Boolean = false
+    var liveDataList: MutableLiveData<List<UpcomingClass>>
 
 
 
     init {
         setState { copy(loading = true) }
+        liveDataList = MutableLiveData()
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getPathwayData(true).collect {
                 it?.let {
@@ -73,10 +77,16 @@ class LearnFragmentViewModel(
                 }
             }
 //            getBatchesDataByPathway(corePreferences.lastSelectedPathWayId)
-            getBatchesDataByPathway(1)
+
         }
 
     }
+
+    fun getLIveDataObserver():MutableLiveData<List<UpcomingClass>>{
+        return  liveDataList
+    }
+
+
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
@@ -117,6 +127,7 @@ class LearnFragmentViewModel(
     }
 
 
+
     fun selectCourse(course: Course) {
         course.pathwayId?.let {
             _viewEvents.postValue(
@@ -125,12 +136,21 @@ class LearnFragmentViewModel(
         }
     }
 
-    fun handle(actions: LearnFragmentViewActions) {
+   fun handle(actions: LearnFragmentViewActions) {
         when (actions) {
             is LearnFragmentViewActions.ToolbarClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
             }
-
+            is LearnFragmentViewActions.RequestPageLoad ->{
+                checkedStudentEnrolment(1)
+                getBatchesDataByPathway(1)
+            }
+//            LearnFragmentViewActions.RequestPageLoad ->{
+//                getUpcomingClasses(1)
+//            }
+//            is LearnFragmentViewActions.ShowUpcomingClasses ->{
+//                getUpcomingClasses(1)
+//            }
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
                 val currentState = viewState.value!!
@@ -148,34 +168,78 @@ class LearnFragmentViewModel(
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenBatchSelectionSheet(currentState.batches))
             }
+            is LearnFragmentViewActions.ShowUpcomingClasses ->{
+                val currentState = viewState.value!!
+                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(currentState.classes))
+            }
+
             LearnFragmentViewActions.PathwayCtaClicked -> {
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
+//            LearnFragmentViewActions.BatchSelectClicked ->{
+//                _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(it.batch))
+//            }
 
         }
     }
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): enrolStatus {
-       return learnRepo.checkedStudentEnrolment(pathwayId)
+
+
+     private fun checkedStudentEnrolment(pathwayId: Int){
+        viewModelScope.launch {
+            setState { copy(loading=true) }
+            val status = learnRepo.checkedStudentEnrolment(pathwayId)
+            if(status == EnrolStatus.Enrolled){
+                getUpcomingClasses(1)
+            } else if(status == EnrolStatus.NotEnrolled){
+                getBatchesDataByPathway(pathwayId)
+            }
+
+        }
+
     }
 
-    fun getBatchesDataByPathway(pathwayId: Int) {
+    private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             setState { copy(loading=true) }
             val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches?.let {
+            batches.let {
                 setState {
                     copy(
                         batches = it
                     )
                 }
                 if(it.isNotEmpty()){
-                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it.get(0)))
+                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
                 }
             }
         }
     }
+
+
+    private fun getUpcomingClasses(pathwayId: Int){
+        viewModelScope.launch {
+            setState { copy(loading= true) }
+            val classes = learnRepo.getUpcomingClass(pathwayId)
+            classes?.let {
+                setState {
+                    copy(
+                        classes = it
+                    )
+                }
+//                if (it.isNotEmpty()){
+//                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
+////                    liveDataList.postValue(classes)
+//                }
+            }
+        }
+    }
+
+    fun selectBatch(batch: Batch) {
+        _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
+    }
+
     private fun primaryAction(classId: Int) {
         viewModelScope.launch {
         setState { copy(loading = true) }
@@ -194,13 +258,19 @@ class LearnFragmentViewModel(
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
         }
         } }
+
+
+
+
     }
+
 
 data class LearnFragmentViewState(
     val loading: Boolean = false,
     val subtitle: String? = null,
     val pathways: List<Pathway> = arrayListOf(),
     val batches: List<Batch> = arrayListOf(),
+    val classes: List<UpcomingClass> = arrayListOf(),
     val currentPathwayIndex: Int = 0,
     val courses: List<Course> = arrayListOf(),
     val selectedLanguage: String? = null,
@@ -215,18 +285,23 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     class ShowToast(val toastText: String) :LearnFragmentViewEvents()
     data class OpenBatchSelectionSheet(val batches: List<Batch>):LearnFragmentViewEvents()
     data class ShowUpcomingBatch(val batch: Batch):LearnFragmentViewEvents()
+    data class ShowUpcomingClasses(val classes: List<UpcomingClass>) : LearnFragmentViewEvents()
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
+    data class BatchSelectClicked(val batch: Batch) : LearnFragmentViewEvents()
     object DismissSelectionSheet : LearnFragmentViewEvents()
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
+
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
+    object RequestPageLoad :LearnFragmentViewActions()
     data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()
+    object ShowUpcomingClasses :LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
     object PathwayCtaClicked : LearnFragmentViewActions()

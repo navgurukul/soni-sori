@@ -35,7 +35,7 @@ data class Batch(
     @Json(name = "start_time")
     val startTime: Date,
     @Json(name = "title")
-    val title: String,
+    var title: String,
     @Json(name = "type")
     val type: String,
     @Json(name = "video_id")
@@ -47,6 +47,7 @@ data class Batch(
     @Json(name = "pathway_id")
     val pathway_id : Int
 ) {
+
     @JsonClass(generateAdapter = true)
     data class Facilitator(
         @Json(name = "name")
@@ -58,7 +59,6 @@ data class Batch(
         val en: String?
     )
 }
-//
-fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
-fun Classes.timeRange(): String = "${startTime.toDate()} - ${endTime.toDate()}"
+fun Batch.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
+fun Batch.dateRange(): String = "${startTime.toDate()} to ${endTime.toDate()}"
 //fun Classes.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)

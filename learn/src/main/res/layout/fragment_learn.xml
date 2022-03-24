@@ -29,6 +29,13 @@
                 android:id="@+id/day2"
                 layout="@layout/batch_card"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
+            <include
+                android:id="@+id/upcoming"
+                layout="@layout/upcoming_class_selection_sheet"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <org.navgurukul.commonui.views.EmptyStateView
