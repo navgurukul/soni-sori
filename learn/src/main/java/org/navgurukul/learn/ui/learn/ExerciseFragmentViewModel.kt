@@ -15,6 +15,7 @@ import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
 
 class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -29,7 +30,7 @@ class ExerciseFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchExerciseContent(args.exerciseId, args.courseId)
+        fetchExerciseContent(args.exerciseId, args.courseId, args.courseContentType)
     }
 
     fun handle(action: ExerciseFragmentViewActions) {
@@ -60,23 +61,25 @@ class ExerciseFragmentViewModel(
                 forceUpdate,
                 selectedLanguage
             ).collect {
-                val list = it
+                if(it?.contentContentType == CourseContentType.EXERCISE) {
+                    val list = it as CourseExerciseContent
 
-                setState { copy(isLoading = false) }
+                    setState { copy(isLoading = false) }
 
-                if (list != null && list.content.isNotEmpty() == true) {
-                    setState { copy(isError = false) }
-                    setState { copy(exerciseContentList = it.content) }
-                } else {
-                    _viewEvents.setValue(
-                        ExerciseFragmentViewEvents.ShowToast(
-                            stringProvider.getString(
-                                R.string.error_loading_data
+                    if (list != null && list.content.isNotEmpty() == true) {
+                        setState { copy(isError = false) }
+                        setState { copy(exerciseContentList = list.content) }
+                    } else {
+                        _viewEvents.setValue(
+                            ExerciseFragmentViewEvents.ShowToast(
+                                stringProvider.getString(
+                                    R.string.error_loading_data
+                                )
                             )
                         )
-                    )
 
-                    setState { copy(isError = true) }
+                        setState { copy(isError = true) }
+                    }
                 }
             }
         }

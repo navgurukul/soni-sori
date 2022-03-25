@@ -25,6 +25,8 @@ data class CourseClassContent(
 
     override var contentContentType: CourseContentType,
 
+    override var courseContentProgress: CourseContentProgress?,
+
     @Json(name = "title")
     val title: String = "",
 
@@ -46,7 +48,8 @@ data class CourseClassContent(
     val type: ClassType,
 
     @Json(name = "meet_link")
-    val meetLink: String?
+    val meetLink: String?,
+
 ) : CourseContents {
     @Ignore
     var number: Int? = 0

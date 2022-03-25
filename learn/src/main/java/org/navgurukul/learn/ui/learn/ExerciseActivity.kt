@@ -22,7 +22,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.databinding.ActivityExerciseBinding
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
+import org.navgurukul.learn.ui.learn.adapter.CourseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 @Parcelize
@@ -56,7 +56,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     private val viewModel: ExerciseActivityViewModel by viewModel(
         parameters = { parametersOf(args.courseId, args.pathwayId) }
     )
-    private lateinit var mAdapter: CourseExerciseAdapter
+    private lateinit var mAdapter: CourseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +92,20 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
                         it.isLast,
                         it.isCompleted,
                         it.courseId,
-                        it.exerciseId,
+                        it.contentId,
+                        it.courseContentType,
+                        it.navigation
+                    )
+
+                    mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
+                }
+                is ExerciseActivityViewEvents.ShowClassFragment -> {
+                    launchClassFragment(
+                        it.isFirst,
+                        it.isLast,
+                        it.isCompleted,
+                        it.courseId,
+                        it.contentId,
                         it.courseContentType,
                         it.navigation
                     )
@@ -107,8 +120,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             if (!it.isCourseCompleted) {
-                mAdapter.submitList(it.courseExerciseContentList) {
-                    mBinding.recyclerviewCourseExerciseList.scrollToPosition(it.currentExerciseIndex)
+                mAdapter.submitList(it.courseContentList) {
+                    mBinding.recyclerviewCourseExerciseList.scrollToPosition(it.currentContentIndex)
                 }
                 mBinding.tvCourseTitle.text = it.currentCourseTitle
 
@@ -138,8 +151,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
     }
 
     private fun initRecyclerViewExerciseList() {
-        mAdapter = CourseExerciseAdapter {
-            viewModel.handle(ExerciseActivityViewActions.ExerciseListItemSelected(it.id))
+        mAdapter = CourseContentAdapter {
+            viewModel.handle(ExerciseActivityViewActions.ContentListItemSelected(it.id))
         }
 
         val layoutManager =
@@ -181,8 +194,34 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.ExerciseNavigatio
         }
     }
 
+    private fun launchClassFragment(
+        isFirst: Boolean = false,
+        isLast: Boolean = false,
+        isCompleted: Boolean = false,
+        courseId: String,
+        classId: String,
+        courseContentType: CourseContentType,
+        navigation: ExerciseNavigation?
+    ) {
+        supportFragmentManager.commit {
+            val enter = when (navigation) {
+                ExerciseNavigation.PREV -> android.R.anim.slide_in_left
+                ExerciseNavigation.NEXT -> R.anim.slide_in_to_left
+                null -> android.R.anim.fade_in
+            }
+            setCustomAnimations(
+                enter, 0
+            )
+            replace(
+                R.id.exerciseContentContainer,
+                ClassFragment.newInstance(isFirst, isLast, isCompleted, courseId, classId, courseContentType),
+                ClassFragment.TAG
+            )
+        }
+    }
+
     override fun onMarkCompleteClick() {
-        viewModel.handle(ExerciseActivityViewActions.ExerciseMarkedCompleted)
+        viewModel.handle(ExerciseActivityViewActions.ContentMarkedCompleted)
     }
 
 }

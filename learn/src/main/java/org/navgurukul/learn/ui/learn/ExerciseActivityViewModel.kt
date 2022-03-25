@@ -52,7 +52,7 @@ class ExerciseActivityViewModel(
                             ExerciseActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
                         )
                     } else {
-                        launchLastSelectedExerciseOfCourse(course)
+                        launchLastSelectedContentOfCourse(course)
                     }
                 }
 
@@ -60,7 +60,7 @@ class ExerciseActivityViewModel(
 
     }
 
-    private suspend fun launchLastSelectedExerciseOfCourse(course: Course?) {
+    private suspend fun launchLastSelectedContentOfCourse(course: Course?) {
         course?.let {
             currentCourse = it
 
@@ -68,7 +68,7 @@ class ExerciseActivityViewModel(
                 copy(
                     isLoading = false,
                     currentCourseTitle = currentCourse.name,
-                    courseExerciseContentList = currentCourse.courseContents,
+                    courseContentList = currentCourse.courseContents,
                     isCourseCompleted = false
                 )
             }
@@ -82,10 +82,10 @@ class ExerciseActivityViewModel(
 
     fun handle(action: ExerciseActivityViewActions) {
         when (action) {
-            is ExerciseActivityViewActions.ExerciseListItemSelected -> onExerciseListItemSelected(
-                action.exerciseId
+            is ExerciseActivityViewActions.ContentListItemSelected -> onExerciseListItemSelected(
+                action.contentId
             )
-            is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted()
+            is ExerciseActivityViewActions.ContentMarkedCompleted -> onExerciseMarkedCompleted()
             is ExerciseActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
             is ExerciseActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
             is ExerciseActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
@@ -131,7 +131,7 @@ class ExerciseActivityViewModel(
                 learnRepo.saveCourseExerciseCurrent(this@apply)
             }
         }
-        markExerciseSelected(exerciseId)
+        markContentSelected(exerciseId)
 
         val index = currentCourse.courseContents.indexOfFirst { exerciseId == it.id }
         val isFirst = index == 0
@@ -157,7 +157,7 @@ class ExerciseActivityViewModel(
         completedExercise?.let {
             it.courseContentProgress = CourseContentProgress.COMPLETED
 
-            setState { copy(courseExerciseContentList = updatedList) }
+            setState { copy(courseContentList = updatedList) }
         }
     }
 
@@ -168,7 +168,7 @@ class ExerciseActivityViewModel(
                 learnRepo.fetchCourseContentDataWithCourse(it.id, pathwayId, selectedLanguage)
                     .collect {
                         //course with exercise details
-                        launchLastSelectedExerciseOfCourse(it)
+                        launchLastSelectedContentOfCourse(it)
                     }
             }
         } ?: run {
@@ -191,23 +191,23 @@ class ExerciseActivityViewModel(
         return null
     }
 
-    private fun markExerciseSelected(exerciseId: String) {
+    private fun markContentSelected(contentId: String) {
         var selectedIndex = 0
         currentCourse.courseContents.toMutableList().let {
-            it.forEachIndexed { index, exercise ->
-                if (exercise.id == exerciseId) {
-                    if (exercise.courseContentProgress != CourseContentProgress.COMPLETED) {
-                        exercise.courseContentProgress = CourseContentProgress.IN_PROGRESS
+            it.forEachIndexed { index, content ->
+                if (content.id == contentId) {
+                    if (content.courseContentProgress != CourseContentProgress.COMPLETED) {
+                        content.courseContentProgress = CourseContentProgress.IN_PROGRESS
                         selectedIndex = index
                     }
                 } else {
-                    if (exercise.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
-                        exercise.courseContentProgress = CourseContentProgress.NOT_STARTED
+                    if (content.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
+                        content.courseContentProgress = CourseContentProgress.NOT_STARTED
                     }
                 }
             }
 
-            setState { copy(courseExerciseContentList = it, currentExerciseIndex = selectedIndex) }
+            setState { copy(courseContentList = it, currentContentIndex = selectedIndex) }
         }
     }
 }
@@ -220,7 +220,17 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
         val isLast: Boolean,
         val isCompleted: Boolean,
         val courseId: String,
-        val exerciseId: String,
+        val contentId: String,
+        val courseContentType: CourseContentType,
+        val navigation: ExerciseNavigation?
+    ) : ExerciseActivityViewEvents()
+
+    class ShowClassFragment(
+        val isFirst: Boolean,
+        val isLast: Boolean,
+        val isCompleted: Boolean,
+        val courseId: String,
+        val contentId: String,
         val courseContentType: CourseContentType,
         val navigation: ExerciseNavigation?
     ) : ExerciseActivityViewEvents()
@@ -234,14 +244,14 @@ data class ExerciseActivityViewState(
     val isCourseCompleted: Boolean = false,
     val currentCourseTitle: String = "",
     val nextCourseTitle: String = "",
-    val currentExerciseIndex: Int = 0,
-    val courseExerciseContentList: List<CourseExerciseContent> = listOf(),
+    val currentContentIndex: Int = 0,
+    val courseContentList: List<CourseContents> = listOf(),
 ) : ViewState
 
 sealed class ExerciseActivityViewActions : ViewModelAction {
     object OnNextCourseClicked : ExerciseActivityViewActions()
     object PrevNavigationClicked : ExerciseActivityViewActions()
     object NextNavigationClicked : ExerciseActivityViewActions()
-    data class ExerciseListItemSelected(val exerciseId: String) : ExerciseActivityViewActions()
-    object ExerciseMarkedCompleted : ExerciseActivityViewActions()
+    data class ContentListItemSelected(val contentId: String) : ExerciseActivityViewActions()
+    object ContentMarkedCompleted : ExerciseActivityViewActions()
 }

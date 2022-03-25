@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.NetworkBoundResource
 import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.util.LearnUtils
 

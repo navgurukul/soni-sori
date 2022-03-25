@@ -85,9 +85,6 @@ interface ClassDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
-    @Query("select * from course_class where courseId = :courseId")
-    suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertClass(course: List<CourseClassContent?>?)
 
@@ -224,7 +221,7 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class],
     version = DB_VERSION,
     exportSchema = false
 )
