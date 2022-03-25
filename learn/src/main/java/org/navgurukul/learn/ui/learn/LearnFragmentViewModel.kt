@@ -3,7 +3,6 @@ package org.navgurukul.learn.ui.learn
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.room.Index
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.courses.repository.LearnRepo
-import javax.security.auth.callback.Callback
 
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -189,10 +187,10 @@ class LearnFragmentViewModel(
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
             setState { copy(loading=true) }
-            val status = learnRepo.checkedStudentEnrolment(pathwayId)
-            if(status == EnrolStatus.Enrolled){
+            val status = learnRepo.checkedStudentEnrolment(pathwayId).message
+            if(status == EnrolStatus.enrolled){
                 getUpcomingClasses(1)
-            } else if(status == EnrolStatus.NotEnrolled){
+            } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
             }
 

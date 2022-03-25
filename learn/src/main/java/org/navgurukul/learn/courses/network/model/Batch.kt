@@ -13,13 +13,13 @@ data class Batch(
     @Json(name = "category_id")
     val categoryId: Int,
     @Json(name = "course_id")
-    val courseId: Any?,
+    val courseId: String?,
     @Json(name = "description")
     val description: String,
     @Json(name = "end_time")
-    val endTime: Date,
+    val endTime: Date?,
     @Json(name = "enrolled")
-    val enrolled: Boolean = false,
+    val enrolled: Boolean? = false,
     @Json(name = "exercise_id")
     val exerciseId: Any?,
     @Json(name = "facilitator")
@@ -27,25 +27,23 @@ data class Batch(
     @Json(name = "facilitator_id")
     val facilitatorId: Int?,
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @Json(name = "lang")
-    val lang: String,
+    val lang: String?,
     @Json(name = "rules")
     val rules: Rules?,
     @Json(name = "start_time")
-    val startTime: Date,
+    val startTime: Date?,
     @Json(name = "title")
-    var title: String,
+    var title: String?,
     @Json(name = "type")
-    val type: String,
-    @Json(name = "video_id")
-    val videoId: String?,
+    val type: String?,
     @Json(name = "meet_link")
-    val meetLink: String,
+    val meetLink: String?,
     @Json(name= "sub_title")
     val sub_title: String?,
     @Json(name = "pathway_id")
-    val pathway_id : Int
+    val pathway_id : Int?
 ) {
 
     @JsonClass(generateAdapter = true)
@@ -59,6 +57,6 @@ data class Batch(
         val en: String?
     )
 }
-fun Batch.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
-fun Batch.dateRange(): String = "${startTime.toDate()} to ${endTime.toDate()}"
+fun Batch.sanitizedType(): String = type?.replace("_", " ")?.capitalizeWords() ?: ""
+fun Batch.dateRange(): String = "${startTime?.toDate()} to ${endTime?.toDate()}"
 //fun Classes.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)
