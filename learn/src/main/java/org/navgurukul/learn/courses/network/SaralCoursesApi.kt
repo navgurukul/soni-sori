@@ -46,7 +46,7 @@ interface SaralCoursesApi {
     @GET("classes/studentEnrolment")
     suspend fun checkedStudentEnrolment(
         @Query("pathway_id") pathway_id: Int
-    ):EnrolStatus
+    ):EnrolResponse
 
     @GET("pathways/{pathwayId}/upcomingBatches")
     suspend fun getBatchesAsync(
@@ -57,6 +57,5 @@ interface SaralCoursesApi {
     suspend fun getUpcomingClass(
         @Path(value = "pathwayId") pathwayId: Int
     ):List<UpcomingClass>
-
 
 }

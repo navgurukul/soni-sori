@@ -202,7 +202,7 @@ class LearnFragment : Fragment(){
 
 
         btnAccept.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id))
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
             btAlertDialog?.dismiss()
         }
 

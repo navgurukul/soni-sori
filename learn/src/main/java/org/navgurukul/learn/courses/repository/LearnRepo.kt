@@ -203,7 +203,7 @@ class LearnRepo(
     }
 
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolStatus {
+    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
         return courseApi.checkedStudentEnrolment(pathwayId)
     }
 
