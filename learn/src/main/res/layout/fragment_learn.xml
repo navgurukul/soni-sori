@@ -26,16 +26,17 @@
             android:orientation="vertical">
 
             <include
-                android:id="@+id/day2"
+                android:id="@+id/batchCard"
                 layout="@layout/batch_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:visibility="gone"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
             <include
                 android:id="@+id/upcoming"
                 layout="@layout/upcoming_class_selection_sheet"
                 android:layout_width="match_parent"
+                tools:visibility="gone"
                 android:layout_height="wrap_content" />
 
             <org.navgurukul.commonui.views.EmptyStateView
@@ -47,7 +48,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/recyclerviewCourseContainer"
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/day2"
+                app:layout_constraintTop_toBottomOf="@id/batchCard"
                 android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
