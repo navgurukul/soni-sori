@@ -10,17 +10,14 @@ import org.navgurukul.learn.databinding.ItemUpcomingClassBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class UpcomingEnrolAdapater(val callback: (UpcomingClass) -> Unit,):
-    DataBoundListAdapter<ClassContainer, ItemUpcomingClassBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<ClassContainer>(){
-            override fun areItemsTheSame(oldItem:ClassContainer, newItem:ClassContainer): Boolean {
+class UpcomingEnrolAdapater(val callback: (UpcomingClass) -> Unit):
+    DataBoundListAdapter<UpcomingClass, ItemUpcomingClassBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<UpcomingClass>(){
+            override fun areItemsTheSame(oldItem:UpcomingClass, newItem:UpcomingClass): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(
-                oldItem: ClassContainer,
-                newItem: ClassContainer
-            ): Boolean {
+            override fun areContentsTheSame(oldItem: UpcomingClass, newItem:UpcomingClass): Boolean {
                 return oldItem == newItem
             }
         }
@@ -32,17 +29,18 @@ class UpcomingEnrolAdapater(val callback: (UpcomingClass) -> Unit,):
         )
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemUpcomingClassBinding>, item: ClassContainer) {
+
+    override fun bind(holder: DataBoundViewHolder<ItemUpcomingClassBinding>, item: UpcomingClass) {
         val binding = holder.binding
-        binding.upcomingClass = item.upcomingClass
-        binding.subTitle.text = item.upcomingClass.sub_title
-//        binding.subTitle.text = UpcomingClass
+        binding.upcomingClass = item
+        binding.subTitle.text = item.sub_title
+        binding.tvTitle.text  = item.title
         binding.root.setOnClickListener {
-            callback.invoke(item.upcomingClass)
+            callback.invoke(item)
         }
     }
 
 }
 
 
-data class ClassContainer(val upcomingClass: UpcomingClass)
+//data class ClassContainer(val upcomingClass: UpcomingClass)

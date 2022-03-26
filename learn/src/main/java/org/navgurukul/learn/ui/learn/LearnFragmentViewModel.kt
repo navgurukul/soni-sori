@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -30,13 +31,11 @@ class LearnFragmentViewModel(
 ) :
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
     private var isEnrolled: Boolean = false
-    var liveDataList: MutableLiveData<List<UpcomingClass>>
 
 
 
     init {
         setState { copy(loading = true) }
-        liveDataList = MutableLiveData()
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getPathwayData(true).collect {
                 it?.let {
@@ -79,12 +78,6 @@ class LearnFragmentViewModel(
         }
 
     }
-
-    fun getLIveDataObserver():MutableLiveData<List<UpcomingClass>>{
-        return  liveDataList
-    }
-
-
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
@@ -141,14 +134,12 @@ class LearnFragmentViewModel(
             }
             is LearnFragmentViewActions.RequestPageLoad ->{
                 checkedStudentEnrolment(1)
-                getBatchesDataByPathway(1)
+//                getBatchesDataByPathway(1)
             }
-//            LearnFragmentViewActions.RequestPageLoad ->{
-//                getUpcomingClasses(1)
-//            }
 //            is LearnFragmentViewActions.ShowUpcomingClasses ->{
 //                getUpcomingClasses(1)
 //            }
+
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
                 val currentState = viewState.value!!
@@ -226,10 +217,10 @@ class LearnFragmentViewModel(
                         classes = it
                     )
                 }
-//                if (it.isNotEmpty()){
+                if (it.isNotEmpty()){
 //                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
-////                    liveDataList.postValue(classes)
-//                }
+//                    liveDataList.postValue(classes)
+                }
             }
         }
     }
@@ -296,10 +287,10 @@ sealed class LearnFragmentViewEvents : ViewEvents {
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object RequestPageLoad :LearnFragmentViewActions()
+    object ShowUpcomingClasses : LearnFragmentViewActions()
     data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()
-    object ShowUpcomingClasses :LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
     object PathwayCtaClicked : LearnFragmentViewActions()

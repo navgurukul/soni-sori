@@ -8,8 +8,9 @@ import kotlinx.android.synthetic.main.item_upcoming_class.view.*
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.network.model.UpcomingClass
 
-class UpcomingClassAdapter: RecyclerView.Adapter<UpcomingClassAdapter.MyViewHolder>()  {
-    private var upcomingClasses : List<UpcomingClass>? = null
+
+class UpcomingClassAdapter(private var upcomingClasses : List<UpcomingClass>? = null): RecyclerView.Adapter<UpcomingClassAdapter.MyViewHolder>()  {
+
 
     fun setUpcomingClasses(upcomingClasses : List<UpcomingClass>?){
         this.upcomingClasses= upcomingClasses
@@ -19,13 +20,17 @@ class UpcomingClassAdapter: RecyclerView.Adapter<UpcomingClassAdapter.MyViewHold
         parent: ViewGroup,
         viewType: Int,
     ): UpcomingClassAdapter.MyViewHolder {
-       val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+       val view = LayoutInflater.from(parent.context).inflate(R.layout.item_upcoming_class, parent, false)
 
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: UpcomingClassAdapter.MyViewHolder, position: Int) {
-       holder.bind(upcomingClasses?.get(position)!!)
+        val upcomingClass = upcomingClasses?.get(position)
+//       holder.bind(upcomingClasses?.get(position)!!)
+        if (upcomingClass != null) {
+            holder.bind(upcomingClass , position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -37,10 +42,12 @@ class UpcomingClassAdapter: RecyclerView.Adapter<UpcomingClassAdapter.MyViewHold
 
         val subTitle = view.sub_title
         val tvTitle = view.tvTitle
+        val tvClassLang = view.tvClassLang
 
-        fun bind(data : UpcomingClass) {
+        fun bind(data : UpcomingClass, position: Int) {
             subTitle.text = data.sub_title
             tvTitle.text = data.type
+            tvClassLang.text = data.lang
 
         }
     }

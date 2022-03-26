@@ -4,19 +4,24 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.batch_card.*
 import kotlinx.android.synthetic.main.fragment_learn.*
+import kotlinx.android.synthetic.main.item_upcoming_class.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.navigator.MerakiNavigator
@@ -24,6 +29,7 @@ import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
@@ -37,7 +43,7 @@ class LearnFragment : Fragment(){
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
     private lateinit var mBinding: FragmentLearnBinding
-    private lateinit var mClassAdapter: UpcomingClassAdapter
+    private lateinit var mClassAdapter: UpcomingEnrolAdapater
     private val merakiNavigator: MerakiNavigator by inject()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +59,7 @@ class LearnFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
+
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
 
@@ -60,10 +67,8 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-//        recyclerView()
-
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
-//        viewModel.handle(LearnFragmentViewActions.ShowUpcomingClasses)
+
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
@@ -82,8 +87,10 @@ class LearnFragment : Fragment(){
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
         }
 
+
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
+
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
                     ExerciseActivity.start(requireContext(), it.courseId, it.pathwayId)
                 }
@@ -109,18 +116,16 @@ class LearnFragment : Fragment(){
                     showEnrolDialog(it.batch)
                 }
 
+
                 is LearnFragmentViewEvents.ShowUpcomingBatch ->{
                     setUpUpcomingData(it.batch)
 
                 }
                 is LearnFragmentViewEvents.ShowUpcomingClasses ->{
-                    recyclerView()
+                    initUpcomingRecyclerView()
+
                 }
 
-//                is LearnFragmentViewEvents.ShowUpcomingClasses ->{
-////                    initUpcomingRecyclerView()
-////                    setUpcomingClass(it.upcomingClass)
-//                }
 
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
@@ -143,15 +148,6 @@ class LearnFragment : Fragment(){
         }
     }
 
-
-    fun recyclerView(){
-        mClassAdapter = UpcomingClassAdapter()
-
-        val layoutManager= LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewUpcoming.layoutManager = layoutManager
-        recyclerViewUpcoming.adapter = mClassAdapter
-    }
-
     private fun setUpUpcomingData(batch: Batch) {
         tv_batch_type.text =batch.sanitizedType()
         tv_title_batch.text = batch.title
@@ -165,17 +161,6 @@ class LearnFragment : Fragment(){
             viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
         }
     }
-
-//    private fun setUpcomingClass(upcomingClass:UpcomingClass) {
-//        sub_title.text = upcomingClass.sub_title
-//        tvTitle.text = upcomingClass.type
-//        recycler_view_upcoming.adapter = mClassAdapter
-//        return viewModel.getUpcomingClasses()
-////         mClassAdapter = UpcomingEnrolAdapater {
-////            viewModel.getUpcomingClasses()
-////        }
-//
-//    }
 
     private fun showTestButton(cta: PathwayCTA) {
         mBinding.buttonTakeTest.text = cta.value
@@ -243,6 +228,22 @@ class LearnFragment : Fragment(){
         mBinding.swipeContainer.setOnRefreshListener {
             viewModel.handle(LearnFragmentViewActions.RefreshCourses)
         }
+    }
+
+    private fun initUpcomingRecyclerView(){
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewUpcoming.layoutManager = layoutManager
+        recyclerViewUpcoming.adapter = mClassAdapter
+
+        mClassAdapter = UpcomingEnrolAdapater{
+//            viewModel.getUpcomingClasses(it.pathway_id)
+        }
+        viewModel.viewState.observe(viewLifecycleOwner){
+            mClassAdapter.submitList(it.classes)
+        }
+
+
     }
 
     private fun initRecyclerView() {
