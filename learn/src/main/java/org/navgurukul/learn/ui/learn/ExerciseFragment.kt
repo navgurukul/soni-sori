@@ -28,22 +28,22 @@ import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 
 @Parcelize
-data class ExerciseFragmentArgs(
+data class CourseContentArgs(
     val isFirst: Boolean,
     val isLast: Boolean,
     var isCompleted: Boolean,
     val courseId: String,
-    val exerciseId: String,
+    val contentId: String,
     val courseContentType: CourseContentType,
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
 
-    private val args: ExerciseFragmentArgs by fragmentArgs()
+    private val args: CourseContentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-    private lateinit var navigationClickListener: ExerciseNavigationClickListener
+    private lateinit var navigationClickListener: CourseContentNavigationClickListener
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -58,7 +58,7 @@ class ExerciseFragment : Fragment() {
             courseContentType: CourseContentType
         ): ExerciseFragment {
             return ExerciseFragment().apply {
-                arguments = ExerciseFragmentArgs(
+                arguments = CourseContentArgs(
                     isFirst,
                     isLast,
                     isCompleted,
@@ -175,7 +175,7 @@ class ExerciseFragment : Fragment() {
     private fun markCompletedClicked() {
         fragmentViewModel.handle(
             ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(
-                args.exerciseId
+                args.contentId
             )
         )
 
@@ -186,12 +186,12 @@ class ExerciseFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is ExerciseNavigationClickListener) {
+        if (context is CourseContentNavigationClickListener) {
             this.navigationClickListener = context
         }
     }
 
-    interface ExerciseNavigationClickListener {
+    interface CourseContentNavigationClickListener {
         fun onMarkCompleteClick()
     }
 

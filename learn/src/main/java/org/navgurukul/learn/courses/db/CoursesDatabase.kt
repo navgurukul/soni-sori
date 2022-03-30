@@ -94,6 +94,8 @@ interface ClassDao {
     @Query("select * from course_class where id = :classId and lang = :lang")
     fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
 
+    @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
+    suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {

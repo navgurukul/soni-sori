@@ -173,6 +173,14 @@ class LearnRepo(
         )
     }
 
+    suspend fun markCourseClassCompleted(classId: String) {
+        val classDao = database.classDao()
+        classDao.markCourseClassCompleted(
+            CourseContentProgress.COMPLETED.name,
+            classId
+        )
+    }
+
     suspend fun fetchCurrentStudyForCourse(courseId: String): CurrentStudy? {
         val currentStudyDao = database.currentStudyDao()
         return currentStudyDao.getCurrentStudyForCourse(courseId)

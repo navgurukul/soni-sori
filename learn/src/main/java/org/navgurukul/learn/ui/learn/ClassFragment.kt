@@ -17,28 +17,18 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
-
-@Parcelize
-data class ClassFragmentArgs(
-    val isFirst: Boolean,
-    val isLast: Boolean,
-    var isCompleted: Boolean,
-    val courseId: String,
-    val classId: String,
-    val courseContentType: CourseContentType,
-) : Parcelable
 
 class ClassFragment  : Fragment() {
 
-    private val args: ExerciseFragmentArgs by fragmentArgs()
-    private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
+    private val args: CourseContentArgs by fragmentArgs()
+    private val fragmentViewModel: ClassFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-    private lateinit var navigationClickListener: ExerciseFragment.ExerciseNavigationClickListener
-    private lateinit var mBinding: FragmentExerciseBinding
+    private lateinit var navigationClickListener: ExerciseFragment.CourseContentNavigationClickListener
+    private lateinit var mBinding: FragmentClassBinding
     private val merakiNavigator: MerakiNavigator by inject()
 
     companion object {
@@ -47,22 +37,22 @@ class ClassFragment  : Fragment() {
             isLast: Boolean,
             isCompleted: Boolean,
             courseId: String,
-            exerciseId: String,
+            classId: String,
             courseContentType: CourseContentType
-        ): ExerciseFragment {
-            return ExerciseFragment().apply {
-                arguments = ExerciseFragmentArgs(
+        ): ClassFragment {
+            return ClassFragment().apply {
+                arguments = CourseContentArgs(
                     isFirst,
                     isLast,
                     isCompleted,
                     courseId,
-                    exerciseId,
+                    classId,
                     courseContentType
                 ).toBundle()
             }
         }
 
-        const val TAG = "ExerciseFragment"
+        const val TAG = "ClassFragment"
     }
 
     override fun onCreateView(
@@ -70,7 +60,7 @@ class ClassFragment  : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_class, container, false)
         return mBinding.root
     }
 
@@ -79,7 +69,7 @@ class ClassFragment  : Fragment() {
 
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                is ExerciseFragmentViewModel.ExerciseFragmentViewEvents.ShowToast -> toast(it.toastText)
+                is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
             }
         })
 
@@ -93,10 +83,6 @@ class ClassFragment  : Fragment() {
 
 //        initScreenRefresh()
 
-        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        mBinding.btnMarkCompleted.setOnClickListener {
-//            markCompletedClicked()
-        }
     }
 
 }

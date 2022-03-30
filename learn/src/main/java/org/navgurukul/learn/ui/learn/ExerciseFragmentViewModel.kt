@@ -21,7 +21,7 @@ class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,
     corePreferences: CorePreferences,
     private val stringProvider: StringProvider,
-    private val args: ExerciseFragmentArgs
+    private val args: CourseContentArgs
 ) : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
     ExerciseFragmentViewState()
 ) {
@@ -30,14 +30,14 @@ class ExerciseFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchExerciseContent(args.exerciseId, args.courseId, args.courseContentType)
+        fetchExerciseContent(args.contentId, args.courseId, args.courseContentType)
     }
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
             is ExerciseFragmentViewActions.MarkCompleteClicked -> markCourseExerciseCompleted(action.exerciseId)
             is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
-                args.exerciseId,
+                args.contentId,
                 args.courseId,
                 args.courseContentType,
                 true

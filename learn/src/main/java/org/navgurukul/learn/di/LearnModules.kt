@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LearnFragmentViewModel(get(), get()) }
-    viewModel { (args: ExerciseFragmentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
+    viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
     viewModel { (courseId: String, pathwayId: Int) -> ExerciseActivityViewModel(get(), get(), get(), courseId, pathwayId) }
 }
 
