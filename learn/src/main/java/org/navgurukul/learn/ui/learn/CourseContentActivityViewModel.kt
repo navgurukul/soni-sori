@@ -16,14 +16,14 @@ import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.*
 
-class ExerciseActivityViewModel(
+class CourseContentActivityViewModel(
     private val learnRepo: LearnRepo,
     corePreferences: CorePreferences,
     private val stringProvider: StringProvider,
     private var courseId: String,
     private val pathwayId: Int,
-) : BaseViewModel<ExerciseActivityViewEvents, ExerciseActivityViewState>(
-    ExerciseActivityViewState()
+) : BaseViewModel<CourseContentActivityViewEvents, CourseContentActivityViewState>(
+    CourseContentActivityViewState()
 ) {
 
     private lateinit var currentCourse: Course
@@ -49,7 +49,7 @@ class ExerciseActivityViewModel(
                     if (course == null) {
                         setState { copy(isLoading = false) }
                         _viewEvents.postValue(
-                            ExerciseActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
+                            CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
                         )
                     } else {
                         launchLastSelectedContentOfCourse(course)
@@ -80,15 +80,15 @@ class ExerciseActivityViewModel(
         }
     }
 
-    fun handle(action: ExerciseActivityViewActions) {
+    fun handle(action: CourseContentActivityViewActions) {
         when (action) {
-            is ExerciseActivityViewActions.ContentListItemSelected -> onExerciseListItemSelected(
+            is CourseContentActivityViewActions.ContentListItemSelected -> onExerciseListItemSelected(
                 action.contentId
             )
-            is ExerciseActivityViewActions.ContentMarkedCompleted -> onExerciseMarkedCompleted()
-            is ExerciseActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
-            is ExerciseActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
-            is ExerciseActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
+            is CourseContentActivityViewActions.ContentMarkedCompleted -> onExerciseMarkedCompleted()
+            is CourseContentActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
+            is CourseContentActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
+            is CourseContentActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
         }
     }
 
@@ -141,7 +141,7 @@ class ExerciseActivityViewModel(
         val courseContentType = currentCourse.courseContents[index].contentContentType
 
         _viewEvents.setValue(
-            ExerciseActivityViewEvents.ShowExerciseFragment(
+            CourseContentActivityViewEvents.ShowExerciseFragment(
                 isFirst, isLast, isCompleted, currentCourse.id, exerciseId, courseContentType, navigation
             )
         )
@@ -173,7 +173,7 @@ class ExerciseActivityViewModel(
             }
         } ?: run {
             _viewEvents.postValue(
-                ExerciseActivityViewEvents.FinishActivity
+                CourseContentActivityViewEvents.FinishActivity
             )
         }
 
@@ -214,7 +214,7 @@ class ExerciseActivityViewModel(
 
 enum class ExerciseNavigation { PREV, NEXT }
 
-sealed class ExerciseActivityViewEvents : ViewEvents {
+sealed class CourseContentActivityViewEvents : ViewEvents {
     class ShowExerciseFragment(
         val isFirst: Boolean,
         val isLast: Boolean,
@@ -223,7 +223,7 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
         val contentId: String,
         val courseContentType: CourseContentType,
         val navigation: ExerciseNavigation?
-    ) : ExerciseActivityViewEvents()
+    ) : CourseContentActivityViewEvents()
 
     class ShowClassFragment(
         val isFirst: Boolean,
@@ -233,13 +233,13 @@ sealed class ExerciseActivityViewEvents : ViewEvents {
         val contentId: String,
         val courseContentType: CourseContentType,
         val navigation: ExerciseNavigation?
-    ) : ExerciseActivityViewEvents()
+    ) : CourseContentActivityViewEvents()
 
-    object FinishActivity : ExerciseActivityViewEvents()
-    class ShowToast(val toastText: String) : ExerciseActivityViewEvents()
+    object FinishActivity : CourseContentActivityViewEvents()
+    class ShowToast(val toastText: String) : CourseContentActivityViewEvents()
 }
 
-data class ExerciseActivityViewState(
+data class CourseContentActivityViewState(
     val isLoading: Boolean = false,
     val isCourseCompleted: Boolean = false,
     val currentCourseTitle: String = "",
@@ -248,10 +248,10 @@ data class ExerciseActivityViewState(
     val courseContentList: List<CourseContents> = listOf(),
 ) : ViewState
 
-sealed class ExerciseActivityViewActions : ViewModelAction {
-    object OnNextCourseClicked : ExerciseActivityViewActions()
-    object PrevNavigationClicked : ExerciseActivityViewActions()
-    object NextNavigationClicked : ExerciseActivityViewActions()
-    data class ContentListItemSelected(val contentId: String) : ExerciseActivityViewActions()
-    object ContentMarkedCompleted : ExerciseActivityViewActions()
+sealed class CourseContentActivityViewActions : ViewModelAction {
+    object OnNextCourseClicked : CourseContentActivityViewActions()
+    object PrevNavigationClicked : CourseContentActivityViewActions()
+    object NextNavigationClicked : CourseContentActivityViewActions()
+    data class ContentListItemSelected(val contentId: String) : CourseContentActivityViewActions()
+    object ContentMarkedCompleted : CourseContentActivityViewActions()
 }
