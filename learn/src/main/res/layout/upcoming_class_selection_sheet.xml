@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:background="@color/borderColor"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="?textAppearanceEmphasized1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/spacing_4x"
-        android:text="Upcoming Classes"
-        android:layout_marginTop="@dimen/spacing_5x"
-        android:layout_marginBottom="@dimen/spacing_4x"
-        android:textColor="?textPrimary"
-        tools:text="More Batches" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUpcoming"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tv_title"
-        android:orientation="horizontal"
-        android:padding="@dimen/spacing_2x"
-        android:scrollbars="horizontal"
-        tools:listitem="@layout/item_upcoming_class"/>
+        android:layout_height="match_parent">
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            style="?textAppearanceEmphasized1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/spacing_4x"
+            android:text="Upcoming Classes"
+            android:layout_marginTop="@dimen/spacing_5x"
+            android:layout_marginBottom="@dimen/spacing_4x"
+            android:textColor="?textPrimary"
+            tools:text="More Batches" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUpcoming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2x"
+            android:scrollbars="horizontal" />
+
+
+    </RelativeLayout>
+
+
+
+</layout>

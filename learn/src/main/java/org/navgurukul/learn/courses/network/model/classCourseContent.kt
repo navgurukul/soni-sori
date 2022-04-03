@@ -38,7 +38,7 @@ data class UpcomingClass(
     val videoId: String?,
     @Json(name = "meet_link")
     val meetLink: String,
-    @Json(name= "sub_title")
+    @Json(name = "subTitle")
     val sub_title: String?,
     @Json(name = "pathway_id")
     val pathway_id : Int
@@ -55,3 +55,5 @@ data class UpcomingClass(
         val en: String?
     )
 }
+
+fun UpcomingClass.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)

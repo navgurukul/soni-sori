@@ -134,11 +134,7 @@ class LearnFragmentViewModel(
             }
             is LearnFragmentViewActions.RequestPageLoad ->{
                 checkedStudentEnrolment(1)
-//                getBatchesDataByPathway(1)
             }
-//            is LearnFragmentViewActions.ShowUpcomingClasses ->{
-//                getUpcomingClasses(1)
-//            }
 
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
@@ -157,18 +153,10 @@ class LearnFragmentViewModel(
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenBatchSelectionSheet(currentState.batches))
             }
-            is LearnFragmentViewActions.ShowUpcomingClasses ->{
-                val currentState = viewState.value!!
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(currentState.classes))
-            }
-
             LearnFragmentViewActions.PathwayCtaClicked -> {
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
-//            LearnFragmentViewActions.BatchSelectClicked ->{
-//                _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(it.batch))
-//            }
 
         }
     }
@@ -218,7 +206,7 @@ class LearnFragmentViewModel(
                     )
                 }
                 if (it.isNotEmpty()){
-//                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
+                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
 //                    liveDataList.postValue(classes)
                 }
             }
@@ -287,7 +275,6 @@ sealed class LearnFragmentViewEvents : ViewEvents {
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object RequestPageLoad :LearnFragmentViewActions()
-    object ShowUpcomingClasses : LearnFragmentViewActions()
     data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()

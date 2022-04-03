@@ -4,24 +4,17 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.*
-import kotlinx.android.synthetic.main.item_upcoming_class.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.navigator.MerakiNavigator
@@ -29,12 +22,10 @@ import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.PathwayCTA
-import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
-import org.navgurukul.learn.ui.learn.adapter.UpcomingClassAdapter
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
 
@@ -62,6 +53,9 @@ class LearnFragment : Fragment(){
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+        mBinding.batchCard.root.visibility = View.GONE
+        mBinding.upcoming.root.visibility = View.GONE
+
 
         initSwipeRefresh()
 
@@ -119,11 +113,12 @@ class LearnFragment : Fragment(){
 
                 is LearnFragmentViewEvents.ShowUpcomingBatch ->{
                     setUpUpcomingData(it.batch)
+                    mBinding.batchCard.root.visibility = View.VISIBLE
 
                 }
                 is LearnFragmentViewEvents.ShowUpcomingClasses ->{
-                    initUpcomingRecyclerView()
-
+                    initUpcomingRecyclerView(it.classes)
+                    mBinding.upcoming.root.visibility = View.VISIBLE
                 }
 
 
@@ -149,8 +144,8 @@ class LearnFragment : Fragment(){
     }
 
     private fun setUpUpcomingData(batch: Batch) {
-        tv_batch_type.text =batch.sanitizedType()
-        tv_title_batch.text = batch.title
+        tvType.text =batch.sanitizedType()
+        tvTitleBatch.text = batch.title
         tvBtnEnroll.text = batch.title
         tvBatchDate.text = batch.dateRange()
 
@@ -188,6 +183,7 @@ class LearnFragment : Fragment(){
 
         btnAccept.setOnClickListener {
             viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
+            mBinding.progressBarButton.visibility = View.VISIBLE
             btAlertDialog?.dismiss()
         }
 
@@ -230,17 +226,19 @@ class LearnFragment : Fragment(){
         }
     }
 
-    private fun initUpcomingRecyclerView(){
+    private fun initUpcomingRecyclerView(upcomingClassList: List<UpcomingClass>){
+        mClassAdapter = UpcomingEnrolAdapater{
+//            viewModel.getUpcomingClasses(it.pathway_id)
+        }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerViewUpcoming.layoutManager = layoutManager
         recyclerViewUpcoming.adapter = mClassAdapter
 
-        mClassAdapter = UpcomingEnrolAdapater{
-//            viewModel.getUpcomingClasses(it.pathway_id)
-        }
+
+        mClassAdapter.submitList(upcomingClassList)
         viewModel.viewState.observe(viewLifecycleOwner){
-            mClassAdapter.submitList(it.classes)
+
         }
 
 
@@ -260,4 +258,3 @@ class LearnFragment : Fragment(){
     }
 
 }
-

@@ -73,7 +73,7 @@ class OnBoardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
 
-        viewModel.viewEvents.observe(this, {
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 OnBoardingViewEvents.ShowSelectLanguageFragment -> showFragment(
                     SelectLanguageFragment.newInstance(),
@@ -95,7 +95,7 @@ class OnBoardingActivity : AppCompatActivity() {
                     LoginFragment.TAG
                 )
             }
-        })
+        }
 
         args?.let { args ->
             appOpenDelegate.onAppOpened(this, args.clearNotification)

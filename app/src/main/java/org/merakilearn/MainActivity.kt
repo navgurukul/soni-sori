@@ -1,6 +1,6 @@
 package org.merakilearn
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +10,7 @@ import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -20,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
@@ -27,6 +26,9 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.ui.profile.ProfileActivity
+import org.merakilearn.ui.profile.ProfileFragment
+import org.merakilearn.ui.profile.ProfileViewActions
+import org.merakilearn.ui.profile.ProfileViewModel
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
@@ -97,6 +99,30 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 OnBoardingActivity.restartApp(this@MainActivity)
             }
         }
+
+        findViewById<ImageView>(R.id.headerLogOut).let {
+            setUserLogoutThumbnail(it)
+        }
+    }
+
+    private fun setUserLogoutThumbnail(
+        it: ImageView
+    ){
+        val requestOptions = RequestOptions()
+            .centerCrop()
+            .transform(CircleCrop())
+
+        val thumbnail = GlideApp.with(this)
+            .load(R.drawable.ic_log_out)
+            .apply(requestOptions)
+
+        GlideApp.with(it)
+            .load(R.drawable.ic_log_out)
+            .apply(requestOptions)
+            .thumbnail(thumbnail)
+            .transform(CircleCrop())
+            .into(it)
+
     }
 
     private fun setUserThumbnail(
@@ -132,12 +158,13 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun configure(
         title: String,
-        @AttrRes colorRes: Int,
+        colorRes: Int,
         showProfile: Boolean,
         subtitle: String?,
         onClickListener: View.OnClickListener?,
         action: String?,
-        actionOnClickListener: View.OnClickListener?
+        actionOnClickListener: View.OnClickListener?,
+        showLogout: Boolean,
     ) {
         headerTitle.text = title
         headerTitle.setTextColor(getThemedColor(colorRes))
@@ -162,12 +189,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         headerIv.isVisible = showProfile
+        headerLogOut.isVisible = showLogout
 
         onClickListener?.let { listener ->
             appToolbar.setOnClickListener {
                 listener.onClick(it)
             }
         }
-
     }
 }
