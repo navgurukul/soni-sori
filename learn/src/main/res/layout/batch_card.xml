@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="Batch"
             type="org.navgurukul.learn.courses.network.model.Batch" />
-
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -23,13 +21,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/spacing_6x"
+            android:paddingTop="@dimen/spacing_5x"
             android:paddingBottom="@dimen/spacing_6x"
             android:background="@color/card_background"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_batch_type"
+                android:id="@+id/tvType"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -46,7 +44,7 @@
                 app:layout_constraintWidth_default="wrap"
                 tools:text="Batch " />
             <TextView
-                android:id="@+id/tv_title_batch"
+                android:id="@+id/tvTitleBatch"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -57,39 +55,49 @@
                 android:text="@{Batch.title}"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/tv_batch_type"
+                app:layout_constraintStart_toEndOf="@+id/tvType"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text=" Ankit_15SEP21" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:layout_marginStart="88dp"
+                android:drawableStart="@drawable/ic_book_lover"
+                app:layout_constraintBottom_toBottomOf="@id/tvClassDetail"
+                app:layout_constraintStart_toEndOf="@+id/tvTitleBatch" />
+
+            <TextView
                 android:id="@+id/tvBatchDate"
                 style="?textAppearanceBody2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_3x"
                 android:layout_marginEnd="@dimen/spacing_3x"
-                android:layout_marginStart="@dimen/spacing_3x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:drawableStartCompat="@drawable/ic_batch_calender"
-                app:layout_constraintStart_toStartOf="@id/tv_title_batch"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_batch"
+                app:layout_constraintStart_toStartOf="@id/tvType"
+                app:layout_constraintTop_toBottomOf="@id/tvType"
                 tools:text="15 Sep 21 to 15 Nov 21" />
 
             <TextView
                 android:id="@+id/tvClassDetail"
                 style="?textAppearanceBody2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_3x"
                 android:layout_marginEnd="@dimen/spacing_3x"
-                android:layout_marginStart="@dimen/spacing_3x"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/access_to_live_classes"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_title_batch"
+                app:drawableStartCompat="@drawable/ic_diploma"
+                app:layout_constraintStart_toStartOf="@id/tvType"
                 app:layout_constraintTop_toBottomOf="@id/tvBatchDate"
                 tools:text="Access to live classes" />
 
@@ -107,7 +115,7 @@
                 android:textColor="@color/colorWhite"
                 app:backgroundTint="@color/green_progress_color"
                 android:background="@color/green_progress_color"
-                app:layout_constraintStart_toStartOf="@id/tv_title_batch"
+                app:layout_constraintStart_toStartOf="@id/tvTitleBatch"
                 app:layout_constraintTop_toBottomOf="@id/tvClassDetail"
                 tools:text="Enroll to Ankit_15SEP21" />
 
@@ -121,6 +129,7 @@
                 android:layout_marginBottom="@dimen/spacing_4x"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:textStyle="bold"
                 android:text="Can't start on "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvClassDetail"
@@ -137,6 +146,7 @@
                 android:layout_marginBottom="@dimen/spacing_4x"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:textStyle="bold"
                 android:textColor="@color/green_progress_color"
                 android:text="Check out our other batch dates"
                 app:layout_constraintHorizontal_bias="0"
