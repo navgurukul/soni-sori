@@ -27,7 +27,7 @@ interface SaralCoursesApi {
     ): PathwayCourseContainer
 
     @GET("courses/{course_id}/exercises")
-    suspend fun getExercisesAsync(
+    suspend fun getCourseContentAsync(
         @Path("course_id") course_id: String,
         @Query("lang") language: String
     ): CourseExerciseContainer

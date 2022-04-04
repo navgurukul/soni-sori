@@ -17,14 +17,16 @@ data class CourseClassContent(
     @Json(name = "course_id")
     override var courseId: String = "",
 
-    @Json(name = "courseName")
+    @Json(name = "course_name")
     override var courseName: String?,
 
     @Json(name = "sequence_num")
     override var sequenceNumber: Int,
 
-    override var contentContentType: CourseContentType,
+    @Json(name = "content_type")
+    override var courseContentType: CourseContentType,
 
+    @Json(name = "progress")
     override var courseContentProgress: CourseContentProgress?,
 
     @Json(name = "title")
@@ -50,7 +52,7 @@ data class CourseClassContent(
     @Json(name = "meet_link")
     val meetLink: String?,
 
-) : CourseContents {
+    ) : CourseContents {
     @Ignore
     var number: Int? = 0
 }
@@ -65,6 +67,6 @@ data class Facilitator(
 )
 
 enum class ClassType{
-    BATCH_CLASS, REVISION_CLASS, DOUBT_CLASS
+    batch, REVISION_CLASS, DOUBT_CLASS
 }
 

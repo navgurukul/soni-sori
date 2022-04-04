@@ -39,7 +39,7 @@ class CourseContentAdapter(callback: (CourseContents) -> Unit) :
         binding.root.setOnClickListener {
             mCallback.invoke(item)
         }
-        setImageUrl(binding.ivExerciseTypeProgress, item.courseContentProgress, item.contentContentType)
+        setImageUrl(binding.ivExerciseTypeProgress, item.courseContentProgress, item.courseContentType)
     }
 
     private fun setImageUrl(
@@ -51,20 +51,20 @@ class CourseContentAdapter(callback: (CourseContents) -> Unit) :
             when (progress) {
                 CourseContentProgress.COMPLETED -> {
                     when(contentContentType){
-                        CourseContentType.EXERCISE -> R.drawable.ic_type_text_complete
-                        CourseContentType.CLASS_TOPIC -> R.drawable.ic_type_text_complete
+                        CourseContentType.exercise -> R.drawable.ic_type_text_complete
+                        CourseContentType.class_topic -> R.drawable.ic_type_class_complete
                     }
                 }
                 CourseContentProgress.IN_PROGRESS -> {
                     when(contentContentType){
-                        CourseContentType.EXERCISE -> R.drawable.ic_type_text_selected
-                        CourseContentType.CLASS_TOPIC -> R.drawable.ic_type_text_complete
+                        CourseContentType.exercise -> R.drawable.ic_type_text_selected
+                        CourseContentType.class_topic -> R.drawable.ic_type_class_selected
                     }
                 }
                 CourseContentProgress.NOT_STARTED -> {
                     when(contentContentType){
-                        CourseContentType.EXERCISE -> R.drawable.ic_type_text_notstarted
-                        CourseContentType.CLASS_TOPIC -> R.drawable.ic_type_text_complete
+                        CourseContentType.exercise -> R.drawable.ic_type_text_notstarted
+                        CourseContentType.class_topic -> R.drawable.ic_type_class_notstarted
                     }
                 }
                 else -> R.drawable.ic_type_text_notstarted

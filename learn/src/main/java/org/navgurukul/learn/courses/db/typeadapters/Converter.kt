@@ -24,14 +24,9 @@ class Converters(val moshi: Moshi) {
         List::class.java,
         Language::class.java
     )
-    private val facilitatorListType: Type = Types.newParameterizedType(
-        List::class.java,
-        Facilitator::class.java
-    )
     private val exerciseAdapter = moshi.adapter<List<BaseCourseContent>>(exerciseDetailListType)
     private val stringAdapter = moshi.adapter<List<String>>(stringListType)
     private val languageAdapter = moshi.adapter<List<Language>>(languageListType)
-    private val facilitatorAdapter = moshi.adapter<Facilitator>(facilitatorListType)
 
     @TypeConverter
     fun exerciseDetailListToString(list: List<BaseCourseContent>): String? {
@@ -70,15 +65,15 @@ class Converters(val moshi: Moshi) {
     }
 
     @TypeConverter
-    fun facilitatorListToString(facilitator: Facilitator?): String {
+    fun facilitatorToString(facilitator: Facilitator?): String {
         if (facilitator == null) return ""
-        return facilitatorAdapter.toJson(facilitator)
+        return moshi.adapter(Facilitator::class.java).toJson(facilitator)
     }
 
     @TypeConverter
-    fun stringToFacilitatorList(stringValue: String?): Facilitator? {
+    fun stringToFacilitator(stringValue: String?): Facilitator? {
         if (stringValue.isNullOrEmpty()) return null
-        return facilitatorAdapter.fromJson(stringValue) ?: null
+        return moshi.adapter(Facilitator::class.java).fromJson(stringValue) ?: null
     }
 
     @TypeConverter

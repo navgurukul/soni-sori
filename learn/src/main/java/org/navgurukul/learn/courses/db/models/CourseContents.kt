@@ -17,19 +17,14 @@ interface CourseContents {
 
     var sequenceNumber: Int
 
-    var contentContentType: CourseContentType
+    var courseContentType: CourseContentType
 
     var courseContentProgress: CourseContentProgress?
 
-    companion object {
-        const val COURSE_CONTENT_EXERCISE = "exercise"
-        const val COURSE_CONTENT_CLASS = "class"
-    }
 }
 
-
 enum class CourseContentType{
-    CLASS_TOPIC, EXERCISE
+    class_topic, exercise
 }
 
 enum class CourseContentProgress{

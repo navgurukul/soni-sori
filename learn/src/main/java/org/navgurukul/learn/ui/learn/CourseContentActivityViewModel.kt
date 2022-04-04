@@ -76,13 +76,13 @@ class CourseContentActivityViewModel(
             val exerciseId = withContext(Dispatchers.IO) {
                 learnRepo.fetchCurrentStudyForCourse(course.id)
             }?.exerciseId ?: currentCourse.courseContents.first().id
-            onExerciseListItemSelected(exerciseId)
+            onContentListItemSelected(exerciseId)
         }
     }
 
     fun handle(action: CourseContentActivityViewActions) {
         when (action) {
-            is CourseContentActivityViewActions.ContentListItemSelected -> onExerciseListItemSelected(
+            is CourseContentActivityViewActions.ContentListItemSelected -> onContentListItemSelected(
                 action.contentId
             )
             is CourseContentActivityViewActions.ContentMarkedCompleted -> onExerciseMarkedCompleted()
@@ -97,12 +97,12 @@ class CourseContentActivityViewModel(
             it.id == currentStudy?.exerciseId
         }
         if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
-            onExerciseListItemSelected(
+            onContentListItemSelected(
                 currentCourse.courseContents[currentStudyIndex - 1].id,
                 navigation
             )
         } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
-            onExerciseListItemSelected(
+            onContentListItemSelected(
                 currentCourse.courseContents[currentStudyIndex + 1].id,
                 navigation
             )
@@ -122,29 +122,49 @@ class CourseContentActivityViewModel(
         }
     }
 
-    private fun onExerciseListItemSelected(
-        exerciseId: String,
+    private fun onContentListItemSelected(
+        contentId: String,
         navigation: ExerciseNavigation? = null
     ) {
-        currentStudy = CurrentStudy(currentCourse.id, exerciseId).apply {
+        currentStudy = CurrentStudy(currentCourse.id, contentId).apply {
             viewModelScope.launch(Dispatchers.IO) {
-                learnRepo.saveCourseExerciseCurrent(this@apply)
+                learnRepo.saveCourseContentCurrent(this@apply)
             }
         }
-        markContentSelected(exerciseId)
+        markContentSelected(contentId)
 
-        val index = currentCourse.courseContents.indexOfFirst { exerciseId == it.id }
+        val index = currentCourse.courseContents.indexOfFirst { contentId == it.id }
         val isFirst = index == 0
         val isLast = index == currentCourse.courseContents.size - 1
         val isCompleted =
             currentCourse.courseContents[index].courseContentProgress == CourseContentProgress.COMPLETED
-        val courseContentType = currentCourse.courseContents[index].contentContentType
+        val courseContentType = currentCourse.courseContents[index].courseContentType
 
-        _viewEvents.setValue(
-            CourseContentActivityViewEvents.ShowExerciseFragment(
-                isFirst, isLast, isCompleted, currentCourse.id, exerciseId, courseContentType, navigation
+        if(courseContentType == CourseContentType.exercise) {
+            _viewEvents.setValue(
+                CourseContentActivityViewEvents.ShowExerciseFragment(
+                    isFirst,
+                    isLast,
+                    isCompleted,
+                    currentCourse.id,
+                    contentId,
+                    courseContentType,
+                    navigation
+                )
             )
-        )
+        } else if(courseContentType == CourseContentType.class_topic) {
+            _viewEvents.setValue(
+                CourseContentActivityViewEvents.ShowClassFragment(
+                    isFirst,
+                    isLast,
+                    isCompleted,
+                    currentCourse.id,
+                    contentId,
+                    courseContentType,
+                    navigation
+                )
+            )
+        }
     }
 
     private fun onExerciseMarkedCompleted() {

@@ -13,7 +13,6 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.db.models.CourseExerciseContent
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class ClassFragmentViewModel(
@@ -48,7 +47,7 @@ class ClassFragmentViewModel(
                 forceUpdate,
                 selectedLanguage
             ).collect {
-                if(it?.contentContentType == CourseContentType.CLASS_TOPIC) {
+                if(it?.courseContentType == CourseContentType.class_topic) {
                     val data = it as CourseClassContent
 
                     setState { copy(isLoading = false) }

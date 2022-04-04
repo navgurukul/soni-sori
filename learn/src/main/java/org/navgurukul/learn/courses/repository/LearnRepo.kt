@@ -1,6 +1,7 @@
 package org.navgurukul.learn.courses.repository
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +11,7 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.util.LearnUtils
+import java.util.ArrayList
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -74,11 +76,11 @@ class LearnRepo(
         } ?: language
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
-                val result = courseApi.getExercisesAsync(courseId, lang)
+                val result = courseApi.getCourseContentAsync(courseId, lang)
                 val mappedData = result.course.courseContents.map {
                     it.courseId = courseId
                     it.courseName = result.course.name
-                    if(it.contentContentType == CourseContentType.EXERCISE) {
+                    if(it.courseContentType == CourseContentType.exercise) {
                         it as CourseExerciseContent
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
@@ -93,21 +95,24 @@ class LearnRepo(
                 }.toList()
 
                 try {
-                    exerciseDao.insertExerciseAsync(mappedData.filter { it.contentContentType == CourseContentType.EXERCISE } as List<CourseExerciseContent>)
+                    exerciseDao.insertExerciseAsync(mappedData.filter { it.courseContentType == CourseContentType.exercise } as List<CourseExerciseContent>)
                 }catch (ex: Exception) {
+                    Log.d("LearnRepo", "exercise dao insert exception = ${ex.printStackTrace()}")
                 }
                 try {
-                    classDao.insertClassAsync(mappedData.filter { it.contentContentType == CourseContentType.CLASS_TOPIC } as List<CourseClassContent>)
+                    classDao.insertClassAsync(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
                 }catch (ex: Exception) {
+                    Log.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
                 }
             } catch (ex: Exception) {
+                Log.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
             }
         }
 
 
         return when(courseContentType){
-            CourseContentType.EXERCISE -> exerciseDao.getExerciseById(contentId, lang).asFlow()
-            CourseContentType.CLASS_TOPIC -> classDao.getClassById(contentId, lang).asFlow()
+            CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, lang).asFlow()
+            CourseContentType.class_topic -> classDao.getClassById(contentId, lang).asFlow()
             else -> exerciseDao.getExerciseById(contentId, lang).asFlow()
         }
     }
@@ -120,15 +125,22 @@ class LearnRepo(
         return networkBoundResourceFlow(
             loadFromDb = {
                 val course = courseDao.getCourseById(courseId)
+
                 val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
-                if (exercises.isNotEmpty()) {
-                    course.apply { this.courseContents = exercises }
+                val classes = classDao.getAllClassesForCourse(courseId, language)
+                val contentList = ArrayList<CourseContents>()
+                contentList.addAll(exercises)
+                contentList.addAll(classes)
+                contentList.sortBy { it.sequenceNumber }
+
+                if (contentList.isNotEmpty()) {
+                    course.apply { this.courseContents = contentList }
                 } else {
                     null
                 }
             },
             shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
-            makeApiCallAsync = { courseApi.getExercisesAsync(courseId, language) },
+            makeApiCallAsync = { courseApi.getCourseContentAsync(courseId, language) },
             saveCallResult = { courseExerciseContainer ->
                 val course = courseExerciseContainer.course.apply {
                     this.pathwayId = pathwayId
@@ -138,9 +150,9 @@ class LearnRepo(
                 val mappedData = course.courseContents.map {
                     it.apply {
                         this.courseId = courseId
-                        if(this.contentContentType == CourseContentType.EXERCISE) {
+                        if(this.courseContentType == CourseContentType.exercise) {
                             (this as CourseExerciseContent).lang = lang
-                        }else if(this.contentContentType == CourseContentType.CLASS_TOPIC){
+                        }else if(this.courseContentType == CourseContentType.class_topic){
                             (this as CourseClassContent).lang = lang
                         }
                     }
@@ -149,20 +161,20 @@ class LearnRepo(
                 courseDao.insertCourse(course)
 
                 try {
-                    exerciseDao.insertExercise(mappedData.filter { it.contentContentType == CourseContentType.EXERCISE } as List<CourseExerciseContent>)
+                    exerciseDao.insertExercise(mappedData.filter { it.courseContentType == CourseContentType.exercise } as List<CourseExerciseContent>)
                 }catch (ex: Exception) {
                 }
                 try {
-                    classDao.insertClass(mappedData.filter { it.contentContentType == CourseContentType.CLASS_TOPIC } as List<CourseClassContent>)
+                    classDao.insertClass(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
                 }catch (ex: Exception) {
                 }
             }
         )
     }
 
-    suspend fun saveCourseExerciseCurrent(currentStudy: CurrentStudy) {
+    suspend fun saveCourseContentCurrent(currentStudy: CurrentStudy) {
         val currentStudyDao = database.currentStudyDao()
-        currentStudyDao.saveCourseExerciseCurrent(currentStudy)
+        currentStudyDao.saveCourseContentCurrent(currentStudy)
     }
 
     suspend fun markCourseExerciseCompleted(exerciseId: String) {

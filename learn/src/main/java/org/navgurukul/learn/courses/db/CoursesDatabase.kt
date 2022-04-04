@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 6
+const val DB_VERSION = 7
 
 @Dao
 interface PathwayDao {
@@ -74,7 +74,7 @@ interface ExerciseDao {
 @Dao
 interface CurrentStudyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
+    suspend fun saveCourseContentCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
     suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
@@ -93,6 +93,9 @@ interface ClassDao {
 
     @Query("select * from course_class where id = :classId and lang = :lang")
     fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
+
+    @Query("select * from course_class where courseId = :courseId and lang = :lang")
+    suspend fun getAllClassesForCourse(courseId: String, lang: String): List<CourseClassContent>
 
     @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
