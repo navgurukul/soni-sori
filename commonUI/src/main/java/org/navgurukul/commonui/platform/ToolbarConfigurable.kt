@@ -15,6 +15,7 @@ interface ToolbarConfigurable {
         subtitle: String? = null,
         onClickListener: View.OnClickListener? = null,
         action: String? = null,
-        actionOnClickListener: View.OnClickListener? = null
+        actionOnClickListener: View.OnClickListener? = null,
+        showLogout: Boolean = false
     )
 }

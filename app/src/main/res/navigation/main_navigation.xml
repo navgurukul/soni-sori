@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/navigation_learn"
         android:name="org.navgurukul.learn.ui.learn.LearnFragment"
-        android:label="@string/title_learn"
+        android:label="Learn"
         tools:layout="@layout/fragment_learn" />
 
     <fragment
@@ -28,4 +28,12 @@
         android:name="org.merakilearn.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"
         tools:layout="@layout/fragment_playground" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="org.merakilearn.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

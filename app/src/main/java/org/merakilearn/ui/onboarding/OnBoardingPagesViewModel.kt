@@ -15,6 +15,7 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
+import java.net.URLDecoder
 
 class OnBoardingPagesViewModel(
     private val loginRepository: LoginRepository,
@@ -24,6 +25,9 @@ class OnBoardingPagesViewModel(
     private val config: Config
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
+    companion object{
+        const val PARTNER_ID="partner_id"
+    }
     fun handle(action: OnBoardingPagesAction) {
         val viewState = viewState.value!!
 
@@ -81,7 +85,7 @@ class OnBoardingPagesViewModel(
             setState { copy(isLoading = false) }
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+                checkPartner()
             } else {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
@@ -94,10 +98,35 @@ class OnBoardingPagesViewModel(
             val fakeUserLoginResponse = loginRepository.performFakeSignUp()
             setState { copy(isLoading = false) }
             fakeUserLoginResponse?.let {
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+                checkPartner()
             } ?: run {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }
+        }
+    }
+    private fun checkPartner(){
+        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
+        val pattern= Regex("[^$PARTNER_ID:]\\d+")
+
+        val value=pattern.find(decodeReferrer,0)?.value
+
+        if(value!=null){
+            getPathwayForResidentialProgram()
+        }
+        else{
+            _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+        }
+    }
+
+    private fun getPathwayForResidentialProgram() {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            val residentialProgramPathwayIdResponse = loginRepository.getPathwayForResidentialProgram()
+            setState { copy(isLoading = false) }
+
+            residentialProgramPathwayIdResponse?.let {
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage(it.id))
+            }?:run{ _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
 }
@@ -106,6 +135,7 @@ sealed class OnBoardingPagesEvents : ViewEvents {
     object OpenCourseSelection : OnBoardingPagesEvents()
     data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
     data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
+    data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
 }
 
 sealed class OnBoardingPagesAction : ViewModelAction {

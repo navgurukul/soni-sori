@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_3x"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:drawableStartCompat="@drawable/ic_arrow_left"
+            app:drawableStartCompat="@drawable/ic_batch_calender"
             tools:text="15 Sep 21, 4 PM - 5PM" />
 
         <TextView

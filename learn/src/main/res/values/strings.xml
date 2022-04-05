@@ -99,6 +99,8 @@
     <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
+    <string name="enrolled">You have been enrolled to class successfully</string>
+    <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>
@@ -111,4 +113,12 @@
     <string name="next_course_message">Next Up: %1s</string>
     <string name="course_completed_message">%1s Completed!</string>
     <string name="finish">Finish</string>
+    <string name="residential_program_text">For Navgurukul Residential Programme Test Takers</string>
+    <string name="header_token_key">token</string>
+    <string name="header_redirect_url_key">redirectUrl</string>
+    <string name="access_to_live_classes">Access to live classes</string>
+    <string name="enroll_today">Enroll Today</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rv_detail">Missed the class or need to revise? Enroll in a class from another batch</string>
 </resources>

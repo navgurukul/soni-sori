@@ -28,7 +28,7 @@ import org.navgurukul.learn.util.LearnUtils
 @Parcelize
 data class CourseContentActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
 
-class CourseContentActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavigationClickListener {
+class CourseContentActivity : AppCompatActivity(){
 
     companion object {
         fun start(context: Context, courseId: String, pathwayId: Int) {
@@ -76,6 +76,7 @@ class CourseContentActivity : AppCompatActivity(), ExerciseFragment.CourseConten
                 viewModel.handle(CourseContentActivityViewActions.PrevNavigationClicked)
             },
             {
+                viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
                 viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
             }
         )
@@ -218,10 +219,6 @@ class CourseContentActivity : AppCompatActivity(), ExerciseFragment.CourseConten
                 ClassFragment.TAG
             )
         }
-    }
-
-    override fun onMarkCompleteClick() {
-        viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
     }
 
 }

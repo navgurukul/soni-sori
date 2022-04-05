@@ -125,16 +125,16 @@ class RoomProfileActivity :
 
     override fun configure(
         title: String,
-        @AttrRes colorRes: Int,
+        colorRes: Int,
         showProfile: Boolean,
         subtitle: String?,
         onClickListener: View.OnClickListener?,
         action: String?,
-        actionOnClickListener: View.OnClickListener?
+        actionOnClickListener: View.OnClickListener?,
+        showLogout: Boolean
     ) {
         throw RuntimeException("Set Title is not supported")
     }
-
 }
 
 class RoomProfileSharedActionViewModel :

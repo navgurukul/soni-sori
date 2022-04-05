@@ -1,13 +1,11 @@
 package org.navgurukul.learn.ui.learn
 
-import android.content.Context
-import android.graphics.Paint
+
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,9 +18,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
-import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
@@ -43,7 +39,6 @@ class ExerciseFragment : Fragment() {
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-    private lateinit var navigationClickListener: CourseContentNavigationClickListener
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -98,15 +93,9 @@ class ExerciseFragment : Fragment() {
                 contentAdapter.submitList(it.exerciseContentList)
         })
 
-        setIsCompletedView(args.isCompleted)
-
         initContentRV()
         initScreenRefresh()
 
-        mBinding.btnMarkCompleted.setPaintFlags(mBinding.btnMarkCompleted.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        mBinding.btnMarkCompleted.setOnClickListener {
-            markCompletedClicked()
-        }
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -117,18 +106,6 @@ class ExerciseFragment : Fragment() {
             mBinding.errorLayout.root.visibility = View.GONE
             mBinding.contentLayout.visibility = View.VISIBLE
         }
-    }
-
-    private fun setIsCompletedView(isCompleted: Boolean) {
-        if (isCompleted) {
-            mBinding.btnMarkCompleted.setText(getString(R.string.reading_completed))
-            mBinding.btnMarkCompleted.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_check, null)
-        } else {
-            mBinding.btnMarkCompleted.setText(getString(R.string.mark_as_completed))
-            mBinding.btnMarkCompleted.icon = null
-        }
-
     }
 
     private fun initScreenRefresh() {
@@ -170,29 +147,6 @@ class ExerciseFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
-    }
-
-    private fun markCompletedClicked() {
-        fragmentViewModel.handle(
-            ExerciseFragmentViewModel.ExerciseFragmentViewActions.MarkCompleteClicked(
-                args.contentId
-            )
-        )
-
-        navigationClickListener.onMarkCompleteClick()
-        args.isCompleted = true
-        setIsCompletedView(true)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is CourseContentNavigationClickListener) {
-            this.navigationClickListener = context
-        }
-    }
-
-    interface CourseContentNavigationClickListener {
-        fun onMarkCompleteClick()
     }
 
 }

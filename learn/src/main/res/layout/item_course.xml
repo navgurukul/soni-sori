@@ -36,7 +36,7 @@
             app:trackColor="#CDCDCD"
             app:indicatorInset="0dp"
             app:indicatorSize="@dimen/pathway_circle_border_size"
-            app:indicatorColor="@color/green_progress_color"
+            app:indicatorColor="@color/colorRed"
             android:secondaryProgress="100"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

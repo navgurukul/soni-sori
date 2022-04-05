@@ -90,12 +90,17 @@ class EnrollActivity : AppCompatActivity() {
             updateState(it)
         })
 
-        viewModel.viewEvents.observe(this, {
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 is EnrollViewEvents.ShowToast -> toast(it.toastText)
-                is EnrollViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
+                is EnrollViewEvents.OpenLink -> startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
             }
-        })
+        }
 
         primary_action.setOnClickListener {
             viewModel.handle(EnrollViewActions.PrimaryAction)

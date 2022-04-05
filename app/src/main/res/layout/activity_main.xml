@@ -83,6 +83,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/headerLogOut"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:adjustViewBounds="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_log_out"
+                android:padding="@dimen/dimen_10_dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
