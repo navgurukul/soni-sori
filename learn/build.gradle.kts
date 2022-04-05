@@ -3,6 +3,7 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -78,6 +79,10 @@ dependencies {
     // Room DB
     implementation(AndroidxDependencies.roomRuntime)
     implementation(AndroidxDependencies.roomKtx)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     kapt(AndroidxDependencies.roomCompiler)
 
     implementation(MiscellaneousDependencies.textDrawable)

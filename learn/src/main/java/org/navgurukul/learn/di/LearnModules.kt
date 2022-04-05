@@ -14,7 +14,7 @@ import org.navgurukul.learn.ui.learn.*
 import retrofit2.Retrofit
 
 val viewModelModule = module {
-    viewModel { LearnFragmentViewModel(get(), get()) }
+    viewModel { LearnFragmentViewModel(get(), get(), get()) }
     viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
     viewModel { (args: CourseContentArgs) -> ClassFragmentViewModel(get(), get(), get(), args) }
     viewModel { (courseId: String, pathwayId: Int) -> CourseContentActivityViewModel(get(), get(), get(), courseId, pathwayId) }
@@ -41,6 +41,7 @@ val databaseModule = module {
             .addMigrations(MIGRATION_3_4)
             .addMigrations(MIGRATION_4_5)
             .addMigrations(MIGRATION_5_6)
+            .addMigrations(MIGRATION_6_7)
             .addTypeConverter(Converters(moshi))
             .build()
     }

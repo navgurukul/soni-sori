@@ -35,11 +35,14 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tvName"
                 style="?textAppearanceEmphasized1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
+                app:layout_constrainedWidth="true"
+                android:layout_marginTop="@dimen/spacing_4x"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_4x"
                 android:text="?textPrimary"
                 android:hint="@string/name"
+                app:layout_constraintHorizontal_bias="0"
                 android:inputType="textPersonName"
                 android:background="@null"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -47,18 +50,16 @@
                 app:layout_constraintTop_toTopOf="@id/ivProfile"
                 tools:text="Neha Singh" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:id="@+id/tvEmail"
                 style="?textAppearanceBody2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_1x"
                 android:text="?textPrimary"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:background="@null"
-                app:layout_constraintEnd_toEndOf="@id/tvName"
                 app:layout_constraintStart_toStartOf="@id/tvName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivProfile"
                 app:layout_constraintTop_toBottomOf="@id/tvName"
                 tools:text="nehasingh@xyz.com" />
 
@@ -71,8 +72,10 @@
                 android:minWidth="0dp"
                 android:text="@string/edit"
                 android:textAppearance="?textAppearanceEmphasized2"
-                app:layout_constraintStart_toEndOf="@+id/ivProfile"
-                app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintStart_toEndOf="@+id/tvName"
+                app:layout_constraintBottom_toBottomOf="@id/tvName"
+                app:layout_constraintTop_toTopOf="@id/tvName" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/groupServerUrl"
@@ -91,7 +94,7 @@
                 android:text="@string/server_url_label"
                 android:textColor="?textSecondary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnEdit" />
+                app:layout_constraintTop_toBottomOf="@id/ivProfile" />
 
             <TextView
                 android:id="@+id/serverUrlValue"
@@ -106,30 +109,6 @@
                 tools:text="https://api.merakilearn.org" />
 
             <TextView
-                android:id="@+id/appVersionTitle"
-                style="?textAppearanceEmphasized2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_4x"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:text="@string/app_version"
-                android:textColor="?textSecondary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
-
-            <TextView
-                android:id="@+id/appVersionValue"
-                style="?textAppearanceBody2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_4x"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:textColor="?textPrimary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appVersionTitle"
-                tools:text="1.4.0" />
-
-            <TextView
                 android:id="@+id/opportunityTitle"
                 style="?textAppearanceEmphasized2"
                 android:layout_width="wrap_content"
@@ -139,7 +118,7 @@
                 android:text="@string/opportunities"
                 android:textColor="?textSecondary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appVersionValue" />
+                app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
 
             <TextView
                 android:id="@+id/opportunityDescription"

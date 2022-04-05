@@ -100,15 +100,12 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
-
         val thumbnail = Glide.with(holder.itemView)
             .load(R.drawable.ic_typing_icon)
-
         Glide.with(binding.ivPathwayIcon)
             .load(item.logo)
             .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
             .thumbnail(thumbnail)
             .into(binding.ivPathwayIcon)
     }
-
 }

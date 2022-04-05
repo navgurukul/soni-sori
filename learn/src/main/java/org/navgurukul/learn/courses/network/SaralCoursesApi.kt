@@ -1,13 +1,13 @@
 package org.navgurukul.learn.courses.network
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
-import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
-import org.navgurukul.learn.courses.network.model.PathwayContainer
-import org.navgurukul.learn.courses.network.model.PathwayCourseContainer
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import org.navgurukul.learn.courses.network.model.*
+import retrofit2.http.*
+import java.util.*
 
 
 interface SaralCoursesApi {
@@ -38,5 +38,31 @@ interface SaralCoursesApi {
         @Path("classId") classId: String
     ):List<CourseClassContent>
 
+
+    @POST("classes/{classId}/register")
+    suspend fun enrollToClassAsync(
+        @Path(value = "classId") classId: Int,
+        @Body hashMap: MutableMap<String, Any>
+    ): ResponseBody
+
+    @DELETE("classes/{classId}/unregister")
+    suspend fun logOutToClassAsync(
+        @Path(value = "classId") classId: Int
+    ): ResponseBody
+
+    @GET("classes/studentEnrolment")
+    suspend fun checkedStudentEnrolment(
+        @Query("pathway_id") pathway_id: Int
+    ):EnrolResponse
+
+    @GET("pathways/{pathwayId}/upcomingBatches")
+    suspend fun getBatchesAsync(
+        @Path(value = "pathwayId") pathwayId: Int
+    ): List<Batch>
+
+    @GET("pathways/{pathwayId}/upcomingEnrolledClasses")
+    suspend fun getUpcomingClass(
+        @Path(value = "pathwayId") pathwayId: Int
+    ):List<UpcomingClass>
 
 }

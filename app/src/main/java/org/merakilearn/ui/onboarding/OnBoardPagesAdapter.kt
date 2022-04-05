@@ -52,7 +52,8 @@ class OnBoardPagesAdapter(
     enum class Images(@DrawableRes val id: Int) {
         PYTHON(R.drawable.on_boarding_learn_python),
         INTERVIEW(R.drawable.on_boarding_job_interview),
-        INTERACTIVE(R.drawable.on_boarding_book_lover)
+        INTERACTIVE(R.drawable.on_boarding_book_lover),
+        OPPORTUNITIES(R.drawable.on_boarding_opportunities)
     }
 }
 

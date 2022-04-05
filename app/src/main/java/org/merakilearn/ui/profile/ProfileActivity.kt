@@ -59,11 +59,11 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
-        viewModel.viewState.observe(this, {
+        viewModel.viewState.observe(this) {
             it?.let { updateState(it) }
-        })
+        }
 
-        viewModel.viewEvents.observe(this, {
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 is ProfileViewEvents.ShowToast -> {
                     toast(it.text)
@@ -82,7 +82,7 @@ class ProfileActivity : AppCompatActivity() {
                     merakiNavigator.openCustomTab(it.url, this)
                 }
             }
-        })
+        }
 
         explore_opportunity.setOnClickListener{
             viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
@@ -136,7 +136,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateState(it: ProfileViewState) {
-        mBinding.appVersionValue.text = it.appVersionText
+//        mBinding.appVersionValue.text = it.appVersionText
 
         it.userName?.let {
             mBinding.tvName.setText(it)
@@ -145,7 +145,6 @@ class ProfileActivity : AppCompatActivity() {
 
         it.userEmail?.let {
             mBinding.tvEmail.setText(it)
-            mBinding.tvEmail.setSelection(it.length)
         }
 
         if (it.savedFiles.isEmpty()) {
@@ -164,7 +163,6 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         if (it.showEditProfileLayout) {
-            mBinding.tvEmail.setBackgroundResource(R.drawable.bg_profile_edit_text)
             mBinding.tvEmail.isFocusable = true
             mBinding.tvEmail.isFocusableInTouchMode = true
             mBinding.tvName.setBackgroundResource(R.drawable.bg_profile_edit_text)

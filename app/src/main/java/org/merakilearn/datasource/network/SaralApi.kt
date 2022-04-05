@@ -36,4 +36,7 @@ interface SaralApi {
         @Path(value = "classId") classId: Int?
     ): Classes
 
+    @GET("pathways/ResidentialPathway ")
+    suspend fun getResidentialProgramPathway(): ResidentialProgramPathwayResponse
+
 }

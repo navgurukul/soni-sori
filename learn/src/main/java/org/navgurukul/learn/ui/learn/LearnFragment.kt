@@ -1,26 +1,41 @@
 package org.navgurukul.learn.ui.learn
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.batch_card.*
+import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
+import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
+import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
+import org.navgurukul.learn.util.BrowserRedirectHelper
 
 class LearnFragment : Fragment(){
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
     private lateinit var mBinding: FragmentLearnBinding
+    private lateinit var mClassAdapter: UpcomingEnrolAdapater
+    private val merakiNavigator: MerakiNavigator by inject()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,16 +46,25 @@ class LearnFragment : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+
+
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+        mBinding.batchCard.root.visibility = View.GONE
+        mBinding.upcoming.root.visibility = View.GONE
+
 
         initSwipeRefresh()
 
         configureToolbar()
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
+
+
+        viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
             mCourseAdapter.submitList(it.courses, it.logo)
@@ -48,13 +72,19 @@ class LearnFragment : Fragment(){
                 it.subtitle,
                 it.pathways.isNotEmpty(),
                 it.selectedLanguage,
-                it.languages.isNotEmpty()
+                it.languages.isNotEmpty(),
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
-        })
+            mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+            if (it.showTakeTestButton)
+                showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
+        }
+
+
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
+
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
                     CourseContentActivity.start(requireContext(), it.courseId, it.pathwayId)
                 }
@@ -70,10 +100,99 @@ class LearnFragment : Fragment(){
                         "OpenLanguageSelectionSheet"
                     )
                 }
+                 is LearnFragmentViewEvents.OpenBatchSelectionSheet -> {
+                    LearnBatchSelectionSheet().show(
+                        parentFragmentManager,
+                        "LearnBatchesSelectionSheet"
+                    )
+                }
+                is LearnFragmentViewEvents.BatchSelectClicked ->{
+                    showEnrolDialog(it.batch)
+                }
+
+
+                is LearnFragmentViewEvents.ShowUpcomingBatch ->{
+                    setUpUpcomingData(it.batch)
+                    mBinding.batchCard.root.visibility = View.VISIBLE
+
+                }
+                is LearnFragmentViewEvents.ShowUpcomingClasses ->{
+                    initUpcomingRecyclerView(it.classes)
+                    mBinding.upcoming.root.visibility = View.VISIBLE
+                }
+
+
+                is LearnFragmentViewEvents.OpenUrl -> {
+                    it.cta?.let { cta ->
+                        if (cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))
+                            merakiNavigator.openCustomTab(
+                                BrowserRedirectHelper.getRedirectUrl(requireContext(), cta.url)
+                                    .toString(),
+                                requireContext()
+                            )
+                        else
+                            merakiNavigator.openDeepLink(
+                                requireActivity(),
+                                cta.url
+                            )
+                    }
+                }
                 else -> {
                 }
             }
-        })
+        }
+    }
+
+    private fun setUpUpcomingData(batch: Batch) {
+        tvType.text =batch.sanitizedType()
+        tvTitleBatch.text = batch.title
+        tvBtnEnroll.text = batch.title
+        tvBatchDate.text = batch.dateRange()
+
+        tvBtnEnroll.setOnClickListener {
+            showEnrolDialog(batch)
+        }
+        more_classe.setOnClickListener {
+            viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+        }
+    }
+
+    private fun showTestButton(cta: PathwayCTA) {
+        mBinding.buttonTakeTest.text = cta.value
+        mBinding.buttonTakeTest.setOnClickListener {
+            viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
+        }
+    }
+
+    private fun showEnrolDialog(batch: Batch) {
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
+        val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
+        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val tvClassTitle = alertLayout.tvClassTitle
+        tvClassTitle.text = batch.title
+        val tvBatchDate = alertLayout.tv_Batch_Date
+        tvBatchDate.text = batch.dateRange()
+
+
+        btnAccept.setOnClickListener {
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
+            mBinding.progressBarButton.visibility = View.VISIBLE
+            btAlertDialog?.dismiss()
+        }
+
+        btnBack.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+
+        btAlertDialog?.show()
+
     }
 
     private fun configureToolbar(
@@ -89,6 +208,7 @@ class LearnFragment : Fragment(){
                     {
                         viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
                     }
+
                 } else null,
                 action = selectedLanguage,
                 actionOnClickListener = if (languageClickListener) {
@@ -104,6 +224,24 @@ class LearnFragment : Fragment(){
         mBinding.swipeContainer.setOnRefreshListener {
             viewModel.handle(LearnFragmentViewActions.RefreshCourses)
         }
+    }
+
+    private fun initUpcomingRecyclerView(upcomingClassList: List<UpcomingClass>){
+        mClassAdapter = UpcomingEnrolAdapater{
+//            viewModel.getUpcomingClasses(it.pathway_id)
+        }
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewUpcoming.layoutManager = layoutManager
+        recyclerViewUpcoming.adapter = mClassAdapter
+
+
+        mClassAdapter.submitList(upcomingClassList)
+        viewModel.viewState.observe(viewLifecycleOwner){
+
+        }
+
+
     }
 
     private fun initRecyclerView() {

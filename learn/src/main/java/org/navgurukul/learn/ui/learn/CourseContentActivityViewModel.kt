@@ -168,6 +168,8 @@ class CourseContentActivityViewModel(
     }
 
     private fun onExerciseMarkedCompleted() {
+        markCourseExerciseCompletedInDb(currentStudy?.exerciseId)
+
         val updatedList = currentCourse
             .courseContents.toMutableList()
 
@@ -197,6 +199,16 @@ class CourseContentActivityViewModel(
             )
         }
 
+    }
+
+    private fun markCourseExerciseCompletedInDb(
+        exerciseId: String?
+    ) {
+        exerciseId?.let {
+            viewModelScope.launch {
+                learnRepo.markCourseExerciseCompleted(it)
+            }
+        }
     }
 
     private fun getNextCourse(currentCourseId: String): Course? {

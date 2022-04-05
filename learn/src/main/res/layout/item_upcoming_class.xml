@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="upcomingClass"
+            type="org.navgurukul.learn.courses.network.model.UpcomingClass"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/spacing_6x"
+        app:cardCornerRadius="@dimen/spacing_4x"
+        android:padding="@dimen/spacing_4x">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/spacing_2x"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/first"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/sub_title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/spacing_2x"
+                    android:paddingVertical="@dimen/spacing_2x"
+                    android:text="Class 1 Intro of Python"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Class 1 Intro of python"/>
+
+                <TextView
+                    android:id="@+id/tvClassType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_8x"
+                    android:background="@drawable/primary_background"
+                    android:paddingHorizontal="@dimen/spacing_2x"
+                    android:paddingVertical="@dimen/spacing_1x"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/green_progress_color"
+                    tools:text="Batch" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvClassDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                app:layout_constraintStart_toStartOf="@+id/first"
+                app:layout_constraintTop_toBottomOf="@+id/first"
+                tools:text="14 JUl 21"/>
+
+            <TextView
+                android:id="@+id/tvFacilatorName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_3x"
+                app:layout_constraintStart_toEndOf="@+id/tvClassDate"
+                app:layout_constraintTop_toBottomOf="@+id/first"
+                tools:text="Prajakta Kishori dhanshri" />
+
+            <TextView
+                android:id="@+id/tvClassLang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_4x"
+                app:layout_constraintStart_toEndOf="@+id/tvFacilatorName"
+                app:layout_constraintTop_toBottomOf="@+id/first"
+                tools:text="Prajakta Kishori"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

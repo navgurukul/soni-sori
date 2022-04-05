@@ -5,12 +5,16 @@ import android.util.Log
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.SaralCoursesApi
-import org.navgurukul.learn.courses.network.networkBoundResourceFlow
-import org.navgurukul.learn.ui.learn.ExerciseFragment.Companion.TAG
+import org.navgurukul.learn.courses.network.*
+import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
+import org.navgurukul.learn.courses.network.model.EnrollStatus
+import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.util.LearnUtils
 import java.util.ArrayList
 
@@ -19,6 +23,14 @@ class LearnRepo(
     private val application: Application,
     private val database: CoursesDatabase
 ) {
+
+    private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
+    val batchFlow = _batchFlow.asSharedFlow()
+    var lastUpdatedBatches: List<Batch>? = null
+
+    private val _classFlow = MutableSharedFlow<List<UpcomingClass>?>()
+    val classFlow = _classFlow.asSharedFlow()
+    var lastUpdatedClass: List<UpcomingClass>? = null
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
         val pathwayDao = database.pathwayDao()
@@ -44,6 +56,8 @@ class LearnRepo(
         })
     }
 
+
+
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
@@ -52,6 +66,7 @@ class LearnRepo(
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
             courseApi.getCoursesForPathway(pathwayId, "json")
+//                              courseApi.checkedStudentEnrolment(pathwayId)
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
@@ -201,6 +216,54 @@ class LearnRepo(
 
     suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
             return courseApi.getRevisionClasses(classId)
+    }
+
+    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
+        return courseApi.checkedStudentEnrolment(pathwayId)
+    }
+
+    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch> {
+        return courseApi.getBatchesAsync(pathwayId)
+    }
+
+
+    suspend fun getUpcomingClass(pathwayId: Int): List<UpcomingClass> {
+        return courseApi.getUpcomingClass(pathwayId)
+    }
+
+    suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
+        return try {
+            if (enrolled) {
+                courseApi.logOutToClassAsync(classId)
+                updateEnrollStatus(classId, false)
+            } else {
+                courseApi.enrollToClassAsync(classId, mutableMapOf())
+                updateEnrollStatus(classId, true)
+            }
+        } catch (ex: Exception) {
+//            Timber.tag(TAG).e(ex, "enrollToClass: ")
+            false
+        }
+    }
+
+    private suspend fun updateEnrollStatus(classId: Int, enrolled: Boolean): Boolean {
+        val classes = lastUpdatedBatches ?: return true
+        classes.forEachIndexed loop@ { index, classItem ->
+            if (classId == classItem.id) {
+                val updatedClass = classItem.copy(enrolled = enrolled)
+                lastUpdatedBatches = mutableListOf(*classes.toTypedArray()).apply {
+                    this[index] = updatedClass
+                }
+                _batchFlow.emit(lastUpdatedBatches)
+
+                return@loop
+            }
+        }
+        return true
+    }
+
+    companion object {
+        private const val TAG = "LearnRepo"
     }
 
 }

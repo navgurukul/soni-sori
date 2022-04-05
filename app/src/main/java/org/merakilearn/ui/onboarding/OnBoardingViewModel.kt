@@ -64,6 +64,10 @@ class OnBoardingViewModel(
                 corePreferences.lastSelectedPathWayId = action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
             }
+            is OnBoardingViewActions.OpenHomeScreen ->{
+                corePreferences.lastSelectedPathWayId=action.pathwayId
+                _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId =action.pathwayId))
+            }
         }
     }
 }
@@ -80,6 +84,7 @@ sealed class OnBoardingViewActions : ViewModelAction {
     object NavigateNextFromOnBoardingScreen : OnBoardingViewActions()
     data class SelectLanguage(val language: OnBoardingViewModel.Language) : OnBoardingViewActions()
     data class SelectCourse(val pathwayId: Int) : OnBoardingViewActions()
+    data class OpenHomeScreen(val pathwayId:Int):OnBoardingViewActions()
 }
 
 data class OnBoardingViewState(
