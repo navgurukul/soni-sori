@@ -16,13 +16,14 @@ data class CourseExerciseContent(
     @Json(name = "course_id")
     override var courseId: String = "",
 
-    @Json(name = "courseName")
+    @Json(name = "course_name")
     override var courseName: String?,
 
     @Json(name = "sequence_num")
     override var sequenceNumber: Int,
 
-    override var contentContentType: CourseContentType,
+    @Json(name = "content_type")
+    override var courseContentType: CourseContentType,
 
     @Json(name = "progress")
     override var courseContentProgress: CourseContentProgress?,

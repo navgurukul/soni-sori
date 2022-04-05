@@ -99,6 +99,7 @@
     <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
+    <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>

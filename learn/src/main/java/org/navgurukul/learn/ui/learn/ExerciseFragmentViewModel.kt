@@ -61,7 +61,7 @@ class ExerciseFragmentViewModel(
                 forceUpdate,
                 selectedLanguage
             ).collect {
-                if(it?.contentContentType == CourseContentType.EXERCISE) {
+                if(it?.courseContentType == CourseContentType.exercise) {
                     val list = it as CourseExerciseContent
 
                     setState { copy(isLoading = false) }
@@ -89,7 +89,7 @@ class ExerciseFragmentViewModel(
         currentStudy: CurrentStudy
     ) {
         viewModelScope.launch {
-            learnRepo.saveCourseExerciseCurrent(currentStudy)
+            learnRepo.saveCourseContentCurrent(currentStudy)
         }
     }
 

@@ -17,7 +17,7 @@
 
     <application>
         <activity
-            android:name=".ui.learn.ExerciseActivity"
+            android:name=".ui.learn.CourseContentActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <intent-filter>

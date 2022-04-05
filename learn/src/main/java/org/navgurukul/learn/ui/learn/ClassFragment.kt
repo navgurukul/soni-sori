@@ -1,11 +1,14 @@
 package org.navgurukul.learn.ui.learn
 
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,6 +91,8 @@ class ClassFragment  : Fragment() {
                     setUpClassData(it.courseClass)
                     mBinding.classDetail.rootView.visibility = View.VISIBLE
                 }
+
+                is ClassFragmentViewModel.ClassFragmentViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
             }
         }
 
@@ -120,6 +125,7 @@ class ClassFragment  : Fragment() {
 
 
     }
+
 
 
 

@@ -20,7 +20,7 @@ data class Pathway @JvmOverloads constructor(
     @Json(name = "courses")
     var courses: List<Course> = arrayListOf(),
     @Json(name = "created_at")
-    val createdAt: String,
+    val createdAt: String?,
     @Json(name = "description")
     val description: String,
     @PrimaryKey(autoGenerate = false)

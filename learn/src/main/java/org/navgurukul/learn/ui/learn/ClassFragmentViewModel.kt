@@ -29,6 +29,7 @@ class ClassFragmentViewModel(
     private var fetchClassJob: Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
     private var classes: CourseClassContent? = null
+    private var isEnrolled: Boolean = false
 
     init {
         fetchClassContent(args.contentId, args.courseId, args.courseContentType)
@@ -50,7 +51,7 @@ class ClassFragmentViewModel(
                 forceUpdate,
                 selectedLanguage
             ).collect {
-                if(it?.contentContentType == CourseContentType.CLASS_TOPIC) {
+                if(it?.courseContentType == CourseContentType.class_topic) {
                     val data = it as CourseClassContent
 
                     setState { copy(isLoading = false) }
@@ -59,6 +60,12 @@ class ClassFragmentViewModel(
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
 //
+                        if ( Date().time > classes?.startTime?.time!!){
+                            getRevisionClasses(classes!!.id)
+                        }else {
+
+                        }
+
                     } else {
                         _viewEvents.setValue(
                             ClassFragmentViewEvents.ShowToast(
@@ -84,7 +91,7 @@ class ClassFragmentViewModel(
                 args.courseContentType,
                 true
             )
-            is ClassFragmentViewActions.RequestJoinClass -> primaryAction()
+            is ClassFragmentViewActions.RequestJoinClass -> attendClass()
         }
     }
 
@@ -96,7 +103,7 @@ class ClassFragmentViewModel(
         }
     }
 
-    private fun getRevisionClasses(classId: Int){
+    private fun getRevisionClasses(classId: String){
         viewModelScope.launch {
             val revisionClasses = learnRepo.getRevisionClasses(classId)
             revisionClasses?.let {
@@ -114,8 +121,26 @@ class ClassFragmentViewModel(
     }
 
 
-    private fun primaryAction() {
-
+    private fun attendClass(){
+        viewModelScope.launch {
+            val classes = classes ?: return@launch
+            if (isEnrolled) {
+                val durationToClassStart = (classes.startTime.time - Date().time)
+                if (classJoinEnabled(durationToClassStart)) {
+                    classes.meetLink?.let { ClassFragmentViewEvents.OpenLink(it) }
+                        ?.let { _viewEvents.setValue(it) }
+                } else {
+                    _viewEvents.setValue(
+                        ClassFragmentViewEvents.ShowToast(
+                            stringProvider.getString(
+                               R.string.class_not_started_toast,
+//                                durationToClassStart.toDisplayableInterval(stringProvider)     // Util class
+                            )
+                        )
+                    )
+                }
+            } else {}
+        }
     }
 
     private fun classJoinEnabled(durationToClassStart: Long) =
@@ -141,7 +166,7 @@ class ClassFragmentViewModel(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
         val classContent: CourseClassContent? = null,
-        val revisionClasses: List<CourseClassContent> = arrayListOf()
+        val revisionClasses: List<CourseClassContent> = arrayListOf(),
 
     ) : ViewState
 }

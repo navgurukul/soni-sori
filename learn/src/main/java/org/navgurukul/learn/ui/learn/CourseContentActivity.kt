@@ -26,14 +26,14 @@ import org.navgurukul.learn.ui.learn.adapter.CourseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 @Parcelize
-data class ExerciseActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
+data class CourseContentActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
 
-class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavigationClickListener {
+class CourseContentActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavigationClickListener {
 
     companion object {
         fun start(context: Context, courseId: String, pathwayId: Int) {
-            val intent = Intent(context, ExerciseActivity::class.java).apply {
-                putExtras(ExerciseActivityArgs(courseId, pathwayId).toBundle()!!)
+            val intent = Intent(context, CourseContentActivity::class.java).apply {
+                putExtras(CourseContentActivityArgs(courseId, pathwayId).toBundle()!!)
             }
             context.startActivity(intent)
         }
@@ -42,18 +42,18 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
         const val COURSE_URL_INDEX = 3
     }
 
-    private val args: ExerciseActivityArgs by lazy {
+    private val args: CourseContentActivityArgs by lazy {
         intent.getParcelableExtra(KEY_ARG) ?: run {
             val data: Uri = intent.data!!
             val paths = data.pathSegments
             val courseId = paths[COURSE_URL_INDEX]
             val pathwayId = paths[PATHWAY_URL_INDEX].toInt()
-            ExerciseActivityArgs(courseId, pathwayId)
+            CourseContentActivityArgs(courseId, pathwayId)
         }
     }
 
     private lateinit var mBinding: ActivityExerciseBinding
-    private val viewModel: ExerciseActivityViewModel by viewModel(
+    private val viewModel: CourseContentActivityViewModel by viewModel(
         parameters = { parametersOf(args.courseId, args.pathwayId) }
     )
     private lateinit var mAdapter: CourseContentAdapter
@@ -73,10 +73,10 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
 
         mBinding.bottomNavigationExercise.setNavigationActions(
             {
-                viewModel.handle(ExerciseActivityViewActions.PrevNavigationClicked)
+                viewModel.handle(CourseContentActivityViewActions.PrevNavigationClicked)
             },
             {
-                viewModel.handle(ExerciseActivityViewActions.NextNavigationClicked)
+                viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
             }
         )
 
@@ -85,8 +85,8 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
 
         viewModel.viewEvents.observe(this, {
             when (it) {
-                is ExerciseActivityViewEvents.ShowToast -> toast(it.toastText)
-                is ExerciseActivityViewEvents.ShowExerciseFragment -> {
+                is CourseContentActivityViewEvents.ShowToast -> toast(it.toastText)
+                is CourseContentActivityViewEvents.ShowExerciseFragment -> {
                     launchExerciseFragment(
                         it.isFirst,
                         it.isLast,
@@ -99,7 +99,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
-                is ExerciseActivityViewEvents.ShowClassFragment -> {
+                is CourseContentActivityViewEvents.ShowClassFragment -> {
                     launchClassFragment(
                         it.isFirst,
                         it.isLast,
@@ -112,7 +112,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
-                ExerciseActivityViewEvents.FinishActivity -> finish()
+                CourseContentActivityViewEvents.FinishActivity -> finish()
             }
         })
 
@@ -146,13 +146,13 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
             getString(R.string.course_completed_message, currentCourseTitle)
 
         mBinding.bottomNavigationExercise.setMainButton(nextCourseTitle) {
-            viewModel.handle(ExerciseActivityViewActions.OnNextCourseClicked)
+            viewModel.handle(CourseContentActivityViewActions.OnNextCourseClicked)
         }
     }
 
     private fun initRecyclerViewExerciseList() {
         mAdapter = CourseContentAdapter {
-            viewModel.handle(ExerciseActivityViewActions.ContentListItemSelected(it.id))
+            viewModel.handle(CourseContentActivityViewActions.ContentListItemSelected(it.id))
         }
 
         val layoutManager =
@@ -221,7 +221,7 @@ class ExerciseActivity : AppCompatActivity(), ExerciseFragment.CourseContentNavi
     }
 
     override fun onMarkCompleteClick() {
-        viewModel.handle(ExerciseActivityViewActions.ContentMarkedCompleted)
+        viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
     }
 
 }
