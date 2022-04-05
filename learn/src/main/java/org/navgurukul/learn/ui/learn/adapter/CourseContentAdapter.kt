@@ -67,7 +67,12 @@ class CourseContentAdapter(callback: (CourseContents) -> Unit) :
                         CourseContentType.class_topic -> R.drawable.ic_type_class_notstarted
                     }
                 }
-                else -> R.drawable.ic_type_text_notstarted
+                else ->{
+                    when(contentContentType){
+                        CourseContentType.exercise -> R.drawable.ic_type_text_notstarted
+                        CourseContentType.class_topic -> R.drawable.ic_type_class_notstarted
+                    }
+                }
             }
         imageView.setBackgroundResource(layoutId)
     }
