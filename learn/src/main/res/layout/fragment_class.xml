@@ -37,19 +37,20 @@
             android:layout_marginBottom="@dimen/spacing_4x"
             android:orientation="horizontal">
 
-            <TextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/tvClassType"
+                style="@style/Widget.MyApp.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/primary_background"
                 android:paddingHorizontal="@dimen/spacing_4x"
+                android:checked="true"
                 android:paddingVertical="@dimen/spacing_2x"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/green_progress_color"
                 tools:text="Batch" />
 
-            <TextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/tvClassLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,17 +83,25 @@
             android:layout_marginBottom="48dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <include
+            android:id="@+id/revision_list"
+            layout="@layout/revision_class_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"/>
+
+
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/tvBtnJoin"
-        android:layout_width="match_parent"
-        android:padding="@dimen/spacing_4x"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvClassDetail"
-        app:cornerRadius="@dimen/spacing_4x"
-        android:textColor="@color/primaryTextColor"
-        tools:text="Join class"/>
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/tvBtnJoin"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:padding="@dimen/spacing_4x"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tvClassDetail"-->
+<!--        app:cornerRadius="@dimen/spacing_4x"-->
+<!--        android:textColor="@color/primaryTextColor"-->
+<!--        tools:text="Join class"/>-->
 
     <include
         android:id="@+id/progressBar"
@@ -103,8 +112,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

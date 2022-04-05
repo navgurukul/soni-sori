@@ -1,6 +1,7 @@
 package org.navgurukul.learn.courses.network
 
 import org.navgurukul.learn.BuildConfig
+import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
 import org.navgurukul.learn.courses.network.model.PathwayContainer
 import org.navgurukul.learn.courses.network.model.PathwayCourseContainer
@@ -31,5 +32,10 @@ interface SaralCoursesApi {
         @Path("course_id") course_id: String,
         @Query("lang") language: String
     ): CourseExerciseContainer
+
+    @GET("classes/{classId}/revision")
+    suspend fun getRevisionClasses(
+        @Path("classId") classId: Int
+    ):List<CourseClassContent>
 
 }

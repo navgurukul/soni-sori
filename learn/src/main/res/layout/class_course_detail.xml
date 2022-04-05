@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/spacing_1x"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <TextView
@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_3x"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:drawableStartCompat="@drawable/ic_batch_calender"
             tools:text="15 Sep 21, 4 PM - 5PM" />
 
         <TextView
@@ -47,6 +46,19 @@
             android:ellipsize="end"
             android:maxLines="2"
             tools:text="If you miss the class or need to revise, you can enroll in an extra class to catch up after 15 Sep 21" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tvBtnJoin"
+            android:layout_width="match_parent"
+            android:padding="@dimen/spacing_4x"
+            android:layout_marginTop="48dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvClassDetail"
+            android:layout_gravity="bottom"
+            app:cornerRadius="@dimen/spacing_4x"
+            android:textColor="@color/primaryTextColor"
+            tools:text="Join class"/>
 
     </LinearLayout>
 

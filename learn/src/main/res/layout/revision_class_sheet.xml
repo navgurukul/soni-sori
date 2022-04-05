@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_5x"
             android:layout_marginBottom="@dimen/spacing_4x"
+            android:text="@string/revision_descr"
             android:paddingStart="@dimen/spacing_4x"
-            android:text="@string/rev_description"
             android:textColor="?textPrimary"
             tools:ignore="RtlSymmetry"
             tools:text="More Batches" />

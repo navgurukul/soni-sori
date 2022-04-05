@@ -13,8 +13,9 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.db.models.CourseExerciseContent
 import org.navgurukul.learn.courses.repository.LearnRepo
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ClassFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -27,6 +28,7 @@ class ClassFragmentViewModel(
 
     private var fetchClassJob: Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
+    private var classes: CourseClassContent? = null
 
     init {
         fetchClassContent(args.contentId, args.courseId, args.courseContentType)
@@ -56,6 +58,7 @@ class ClassFragmentViewModel(
                     if (data != null) {
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
+//
                     } else {
                         _viewEvents.setValue(
                             ClassFragmentViewEvents.ShowToast(
@@ -81,6 +84,7 @@ class ClassFragmentViewModel(
                 args.courseContentType,
                 true
             )
+            is ClassFragmentViewActions.RequestJoinClass -> primaryAction()
         }
     }
 
@@ -92,20 +96,52 @@ class ClassFragmentViewModel(
         }
     }
 
+    private fun getRevisionClasses(classId: Int){
+        viewModelScope.launch {
+            val revisionClasses = learnRepo.getRevisionClasses(classId)
+            revisionClasses?.let {
+                setState {
+                    copy(
+                        isLoading = true,
+                        revisionClasses = it
+                    )
+                }
+                if (it.isNotEmpty()){
+                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(revisionClasses))
+                }
+            }
+        }
+    }
+
+
+    private fun primaryAction() {
+
+    }
+
+    private fun classJoinEnabled(durationToClassStart: Long) =
+        durationToClassStart < TimeUnit.MINUTES.toMillis(5)
+
+
+
     sealed class ClassFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : ClassFragmentViewEvents()
+        data class ShowRevisionClasses(val revisionClasses: List<CourseClassContent>): ClassFragmentViewEvents()
+        data class ShowClassData(val courseClass : CourseClassContent): ClassFragmentViewEvents()
+        class OpenLink(val link: String) : ClassFragmentViewEvents()
     }
 
     sealed class ClassFragmentViewActions : ViewModelAction {
         data class MarkCompleteClicked(val classId: String) : ClassFragmentViewActions()
-
         object RequestContentRefresh : ClassFragmentViewActions()
+        object RequestJoinClass :ClassFragmentViewActions()
 
     }
 
     data class ClassFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val classContent: CourseClassContent? = null
+        val classContent: CourseClassContent? = null,
+        val revisionClasses: List<CourseClassContent> = arrayListOf()
+
     ) : ViewState
 }

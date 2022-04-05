@@ -9,6 +9,7 @@ import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.network.networkBoundResourceFlow
+import org.navgurukul.learn.ui.learn.ExerciseFragment.Companion.TAG
 import org.navgurukul.learn.util.LearnUtils
 
 class LearnRepo(
@@ -186,5 +187,8 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
+    suspend fun getRevisionClasses(classId: Int): List<CourseClassContent> {
+            return courseApi.getRevisionClasses(classId)
+    }
 
 }

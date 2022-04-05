@@ -40,7 +40,7 @@ class RevisionClassAdapter(val callback: (CourseClassContent) -> Unit) :
         item: CourseClassContent
     ) {
         val binding = holder.binding
-//        binding.batch = item
+        binding.tvClassRevision.text = item.startTime.toString()
         binding.root.setOnClickListener {
             callback.invoke(item)
         }

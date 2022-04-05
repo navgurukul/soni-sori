@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="courseClassContent"
+            type="org.navgurukul.learn.courses.db.models.CourseClassContent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_4x"
-        >
+        android:padding="@dimen/spacing_4x">
 
         <RadioButton
+            android:id="@+id/tvClassRevision"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="dhanshri sonwane"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:checked="true"
             android:buttonTint="@color/green_progress_color"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="19 Sep 21, 4 PM - 5 PM"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
