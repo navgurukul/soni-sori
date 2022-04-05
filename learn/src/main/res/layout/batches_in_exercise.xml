@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_12x"
+        android:background="@drawable/ic_laptop"
+        android:foregroundGravity="center"
+        android:paddingTop="@dimen/spacing_11x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:fontFamily="@font/nunito"
+        android:textColor="#2E2E2E"
+        android:layout_marginTop="@dimen/spacing_6x"
+        android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/description"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_8x"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/spacing_4x"
+        android:layout_marginStart="@dimen/spacing_6x"
+        android:layout_marginEnd="@dimen/spacing_6x"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintStart_toStartOf="@+id/description"
+        app:layout_constraintEnd_toEndOf="@+id/description"
+        android:layout_marginBottom="@dimen/spacing_8x"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/explore_opportunity"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:padding="@dimen/spacing_4x"
+        app:cornerRadius="?cornerRadius400"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:background="@color/green_progress_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        tools:text="Enroll in Ankit_19SEP21"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -113,4 +113,5 @@
     <string name="course_completed_message">%1s Completed!</string>
     <string name="finish">Finish</string>
     <string name="revision_descr">Missed the class or need to revise? Enroll in a class from another batch</string>
+    <string name="description">It seems you are not part of a batch. Please enroll in a batch to attend the live classes.</string>
 </resources>
