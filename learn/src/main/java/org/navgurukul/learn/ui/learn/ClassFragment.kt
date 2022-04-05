@@ -27,7 +27,6 @@ class ClassFragment  : Fragment() {
     private val fragmentViewModel: ClassFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-    private lateinit var navigationClickListener: ExerciseFragment.CourseContentNavigationClickListener
     private lateinit var mBinding: FragmentClassBinding
     private val merakiNavigator: MerakiNavigator by inject()
 
