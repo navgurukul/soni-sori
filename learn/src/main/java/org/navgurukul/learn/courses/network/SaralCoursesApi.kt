@@ -1,13 +1,10 @@
 package org.navgurukul.learn.courses.network
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
 import retrofit2.http.*
-import java.util.*
 
 
 interface SaralCoursesApi {
@@ -63,6 +60,6 @@ interface SaralCoursesApi {
     @GET("pathways/{pathwayId}/upcomingEnrolledClasses")
     suspend fun getUpcomingClass(
         @Path(value = "pathwayId") pathwayId: Int
-    ):List<UpcomingClass>
+    ):List<CourseClassContent>
 
 }

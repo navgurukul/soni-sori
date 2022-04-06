@@ -14,6 +14,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.util.toDisplayableInterval
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -134,7 +135,7 @@ class ClassFragmentViewModel(
                         ClassFragmentViewEvents.ShowToast(
                             stringProvider.getString(
                                R.string.class_not_started_toast,
-//                                durationToClassStart.toDisplayableInterval(stringProvider)     // Util class
+                                durationToClassStart.toDisplayableInterval(stringProvider)     // Util class
                             )
                         )
                     )

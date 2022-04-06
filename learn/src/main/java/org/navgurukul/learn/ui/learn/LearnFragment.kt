@@ -21,6 +21,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
@@ -226,7 +227,7 @@ class LearnFragment : Fragment(){
         }
     }
 
-    private fun initUpcomingRecyclerView(upcomingClassList: List<UpcomingClass>){
+    private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>){
         mClassAdapter = UpcomingEnrolAdapater{
 //            viewModel.getUpcomingClasses(it.pathway_id)
         }

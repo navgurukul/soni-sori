@@ -67,6 +67,9 @@ data class Facilitator(
 )
 
 enum class ClassType{
-    BATCH_CLASS, REVISION_CLASS, DOUBT_CLASS
+    batch, REVISION_CLASS, DOUBT_CLASS
 }
 
+
+
+fun CourseClassContent.displayableLanguage(): String = Locale(lang).getDisplayLanguage(java.util.Locale.ENGLISH)

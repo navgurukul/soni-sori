@@ -5,6 +5,8 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
 
 fun Date.toDay(): String {
     val outputFormat = SimpleDateFormat("EEEE", Locale.getDefault())
@@ -24,3 +26,20 @@ fun Date.toDate(): String {
 fun String.toDate(): Date = SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH).parse(this)!!
 
 
+fun Long.toDisplayableInterval(stringProvider: StringProvider): String {
+    val days = TimeUnit.MILLISECONDS.toDays(this).toInt()
+    if (days > 0) {
+        return stringProvider.getQuantityString(R.plurals.days, days, days)
+    }
+    val hours = TimeUnit.MILLISECONDS.toHours(this).toInt()
+    if (hours > 0) {
+        return stringProvider.getQuantityString(R.plurals.hours, hours, hours)
+    }
+
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(this).toInt()
+    if (minutes > 0) {
+        return stringProvider.getQuantityString(R.plurals.minutes, minutes, minutes)
+    }
+
+    return stringProvider.getQuantityString(R.plurals.minutes, 0, 0)
+}

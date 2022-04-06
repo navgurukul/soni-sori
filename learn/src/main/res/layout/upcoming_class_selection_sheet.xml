@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/borderColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="?textAppearanceEmphasized1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/spacing_4x"
-            android:text="Upcoming Classes"
-            android:layout_marginTop="@dimen/spacing_5x"
-            android:layout_marginBottom="@dimen/spacing_4x"
-            android:textColor="?textPrimary"
-            tools:text="More Batches" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewUpcoming"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_2x"
-            android:scrollbars="horizontal" />
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/tv_title"
+                style="?textAppearanceEmphasized1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/spacing_4x"
+                android:text="@string/upcoming_classes"
+                android:layout_marginTop="@dimen/spacing_5x"
+                android:layout_marginBottom="@dimen/spacing_4x"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="?textPrimary"
+                tools:text="Upcoming Classes" />
 
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewUpcoming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_5x"
+                android:padding="@dimen/spacing_2x"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                android:scrollbars="horizontal" />
 
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

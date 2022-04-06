@@ -12,9 +12,6 @@ import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.courses.network.model.CourseExerciseContainer
-import org.navgurukul.learn.courses.network.model.EnrollStatus
-import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.util.LearnUtils
 import java.util.ArrayList
 
@@ -28,9 +25,6 @@ class LearnRepo(
     val batchFlow = _batchFlow.asSharedFlow()
     var lastUpdatedBatches: List<Batch>? = null
 
-    private val _classFlow = MutableSharedFlow<List<UpcomingClass>?>()
-    val classFlow = _classFlow.asSharedFlow()
-    var lastUpdatedClass: List<UpcomingClass>? = null
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
         val pathwayDao = database.pathwayDao()
@@ -227,7 +221,7 @@ class LearnRepo(
     }
 
 
-    suspend fun getUpcomingClass(pathwayId: Int): List<UpcomingClass> {
+    suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
         return courseApi.getUpcomingClass(pathwayId)
     }
 

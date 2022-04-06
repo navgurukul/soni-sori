@@ -1,8 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
 
-import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -16,11 +14,11 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.courses.network.model.UpcomingClass
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnFragmentViewModel(
@@ -247,7 +245,7 @@ data class LearnFragmentViewState(
     val subtitle: String? = null,
     val pathways: List<Pathway> = arrayListOf(),
     val batches: List<Batch> = arrayListOf(),
-    val classes: List<UpcomingClass> = arrayListOf(),
+    val classes: List<CourseClassContent> = arrayListOf(),
     val currentPathwayIndex: Int = 0,
     val courses: List<Course> = arrayListOf(),
     val selectedLanguage: String? = null,
@@ -262,7 +260,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     class ShowToast(val toastText: String) :LearnFragmentViewEvents()
     data class OpenBatchSelectionSheet(val batches: List<Batch>):LearnFragmentViewEvents()
     data class ShowUpcomingBatch(val batch: Batch):LearnFragmentViewEvents()
-    data class ShowUpcomingClasses(val classes: List<UpcomingClass>) : LearnFragmentViewEvents()
+    data class ShowUpcomingClasses(val classes: List<CourseClassContent>) : LearnFragmentViewEvents()
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     data class BatchSelectClicked(val batch: Batch) : LearnFragmentViewEvents()
