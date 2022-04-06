@@ -22,7 +22,6 @@ class LearnRepo(
 ) {
 
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
-    val batchFlow = _batchFlow.asSharedFlow()
     var lastUpdatedBatches: List<Batch>? = null
 
 
@@ -60,7 +59,6 @@ class LearnRepo(
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
             courseApi.getCoursesForPathway(pathwayId, "json")
-//                              courseApi.checkedStudentEnrolment(pathwayId)
         }, saveCallResult = { data ->
             data.courses.map {
                 it.pathwayId = data.id
@@ -235,7 +233,6 @@ class LearnRepo(
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {
-//            Timber.tag(TAG).e(ex, "enrollToClass: ")
             false
         }
     }
@@ -254,10 +251,6 @@ class LearnRepo(
             }
         }
         return true
-    }
-
-    companion object {
-        private const val TAG = "LearnRepo"
     }
 
 }

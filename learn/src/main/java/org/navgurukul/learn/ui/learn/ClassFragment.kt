@@ -98,7 +98,7 @@ class ClassFragment  : Fragment() {
         fragmentViewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 //            showErrorScreen(it.isError)
-
+//
 
         })
 
@@ -119,9 +119,6 @@ class ClassFragment  : Fragment() {
         tvBtnJoin.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)
         }
-
-//        tvRule.text = enrolledclass.rule
-
 
     }
 
