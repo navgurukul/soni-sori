@@ -21,10 +21,10 @@ data class CourseClassContent(
     override var courseName: String?,
 
     @Json(name = "sequence_num")
-    override var sequenceNumber: Int,
+    override var sequenceNumber: Int?,
 
     @Json(name = "content_type")
-    override var courseContentType: CourseContentType,
+    override var courseContentType: CourseContentType = CourseContentType.class_topic,
 
     @Json(name = "progress")
     override var courseContentProgress: CourseContentProgress?,
@@ -47,7 +47,7 @@ data class CourseClassContent(
     val endTime: Date,
 
     @Json(name = "type")
-    val type: ClassType,
+    val type: ClassType = ClassType.batch,
 
     @Json(name = "meet_link")
     val meetLink: String?,
@@ -67,7 +67,7 @@ data class Facilitator(
 )
 
 enum class ClassType{
-    batch, REVISION_CLASS, DOUBT_CLASS
+    batch, revision, doubt, workshop
 }
 
 

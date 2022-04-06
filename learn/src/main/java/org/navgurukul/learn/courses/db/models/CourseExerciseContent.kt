@@ -20,7 +20,7 @@ data class CourseExerciseContent(
     override var courseName: String?,
 
     @Json(name = "sequence_num")
-    override var sequenceNumber: Int,
+    override var sequenceNumber: Int?,
 
     @Json(name = "content_type")
     override var courseContentType: CourseContentType,
