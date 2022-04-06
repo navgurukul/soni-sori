@@ -15,7 +15,7 @@ interface CourseContents {
 
     var courseName: String?
 
-    var sequenceNumber: Int
+    var sequenceNumber: Int?
 
     var courseContentType: CourseContentType
 
