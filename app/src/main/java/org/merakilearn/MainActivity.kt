@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun configure(
         title: String,
-        colorRes: Int,
+        @AttrRes colorRes: Int,
         showProfile: Boolean,
         subtitle: String?,
         onClickListener: View.OnClickListener?,

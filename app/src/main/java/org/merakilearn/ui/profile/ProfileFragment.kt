@@ -54,20 +54,6 @@ class ProfileFragment : Fragment() {
 
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        (activity as? ToolbarConfigurable)?.configure(
-//            getString(R.string.profile),
-//            R.attr.colorPrimary,
-//            false,
-//            null,
-//            null,
-//            null,
-//            null,
-//            true
-// )
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,20 +63,12 @@ class ProfileFragment : Fragment() {
         }
         viewModel.viewState.observe(viewLifecycleOwner) {
             it?.let { updateState(it) }
-            initToolBar(
-                null,
-                true,
-
-            )
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileViewEvents.ShowToast -> {
                     toast(it.text)
-                    if (it.finishActivity) {
-//                        navigateUp()
-                    }
                 }
                 is ProfileViewEvents.ShowUpdateServerDialog -> {
                     showUpdateServerDialog(it.serverUrl)
@@ -271,10 +249,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun initToolBar(
-        showDialog: String? = null, dialogClickListener: Boolean = false
-
-    ) {
+    private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),
             R.attr.colorPrimary,
@@ -284,16 +259,12 @@ class ProfileFragment : Fragment() {
             null, null,
             true,
             )
+
+
         val view = requireActivity().findViewById<ImageView>(R.id.headerLogOut)
         view.setOnClickListener {
             showLogOutDialog()
         }
-
-
-//        mBinding.idHeader.ivLogOut.setOnClickListener {
-//            showLogOutDialog()
-//        }
-
 
     }
 

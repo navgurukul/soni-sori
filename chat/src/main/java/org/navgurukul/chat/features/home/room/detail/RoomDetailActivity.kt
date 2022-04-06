@@ -69,7 +69,7 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable, KoinScopeCom
 
     override fun configure(
         title: String,
-        colorRes: Int,
+        @AttrRes colorRes: Int,
         showProfile: Boolean,
         subtitle: String?,
         onClickListener: View.OnClickListener?,
