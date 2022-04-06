@@ -61,7 +61,7 @@ class ClassFragmentViewModel(
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
 //
-                        if ( Date().time > classes?.startTime?.time!!){
+                        if ( Date().time > data.startTime.time){
                             getRevisionClasses(classes!!.id)
                         }else {
 
