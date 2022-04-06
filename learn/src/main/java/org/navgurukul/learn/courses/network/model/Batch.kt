@@ -59,4 +59,3 @@ data class Batch(
 }
 fun Batch.sanitizedType(): String = type?.replace("_", " ")?.capitalizeWords() ?: ""
 fun Batch.dateRange(): String = "${startTime?.toDate()} to ${endTime?.toDate()}"
-//fun Classes.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)
