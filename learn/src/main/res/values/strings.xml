@@ -125,6 +125,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="rv_detail">Missed the class or need to revise? Enroll in a class from another batch</string>
     <string name="upcoming_classes">Upcoming Classes</string>
+    <string name="check_text">Check out our other batch dates</string>
+    <string name="class_desc1">Clear your doubts related to the first class of Python and other queries during your studies</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

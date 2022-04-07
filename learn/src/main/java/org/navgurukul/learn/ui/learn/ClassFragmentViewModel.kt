@@ -64,7 +64,7 @@ class ClassFragmentViewModel(
                         if ( Date().time > data.startTime.time){
                             getRevisionClasses(classes!!.id)
                         }else {
-
+                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
                         }
 
                     } else {

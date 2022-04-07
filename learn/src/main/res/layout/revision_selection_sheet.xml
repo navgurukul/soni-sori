@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +9,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/handle_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/sheet_handle_height"
-        android:layout_marginTop="@dimen/spacing_2x"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/sheet_handle" />
+<!--    <View-->
+<!--        android:id="@+id/handle_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/sheet_handle_height"-->
+<!--        android:layout_marginTop="@dimen/spacing_2x"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:background="@drawable/sheet_handle" />-->
 
     <TextView
         style="?textAppearanceEmphasized1"
@@ -25,7 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_5x"
         android:text="@string/rv_detail"
-        tools:text="Missed the class or need to revise? Enroll in a class from another batch" />
+        tools:text="Missed the class or need to revise? Enroll in a class from another batch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -33,14 +35,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_5x"
         android:nestedScrollingEnabled="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRevision"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green_progress_color"
-        android:layout_marginBottom="@dimen/spacing_6x"
-        android:layout_marginTop="@dimen/spacing_11x"
+        android:layout_marginBottom="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_8x"
         android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:cornerRadius="@dimen/dimen_20_dp" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

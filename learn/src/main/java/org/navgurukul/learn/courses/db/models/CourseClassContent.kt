@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.merakilearn.core.extentions.capitalizeWords
+import org.navgurukul.learn.util.toDate
+import org.navgurukul.learn.util.toDay
+import org.navgurukul.learn.util.toTime
 import java.util.*
 
 @Entity(tableName = "course_class", primaryKeys = ["id", "lang"])
@@ -31,6 +35,9 @@ data class CourseClassContent(
 
     @Json(name = "title")
     val title: String = "",
+
+    @Json(name = "sub_title")
+    val subTitle: String = "",
 
     @Json(name = "description")
     val description: String = "",
@@ -73,3 +80,6 @@ enum class ClassType{
 
 
 fun CourseClassContent.displayableLanguage(): String = Locale(lang).getDisplayLanguage(java.util.Locale.ENGLISH)
+fun CourseClassContent.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
+fun CourseClassContent.timeDateRange(): String ="${startTime.toDate()}  "+ " ${startTime.toTime()} - ${endTime.toTime()}"
+

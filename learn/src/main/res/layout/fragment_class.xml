@@ -1,53 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/spacing_4x"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tvClassDetail"
+        android:padding="@dimen/spacing_4x"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="78dp"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_1x"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvSubTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class 1 - Intro to Python"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_4x"
-            android:layout_marginBottom="@dimen/spacing_4x"
-            android:orientation="horizontal">
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Class 1 - Intro to Python"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tvClassType"
                 style="@style/Widget.MyApp.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_4x"
                 android:paddingHorizontal="@dimen/spacing_4x"
-                android:checked="true"
                 android:paddingVertical="@dimen/spacing_2x"
-                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/green_progress_color"
+                app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:text="Batch" />
 
             <com.google.android.material.chip.Chip
@@ -55,14 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_2x"
-                android:background="@drawable/secondary_background"
                 android:paddingHorizontal="@dimen/spacing_4x"
                 android:paddingVertical="@dimen/spacing_2x"
+                app:layout_constraintTop_toTopOf="@+id/tvClassType"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/green_progress_color"
-                tools:text="English" />
-
-        </LinearLayout>
+                app:layout_constraintStart_toEndOf="@+id/tvClassType"
+                app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+                tools:text="" />
 
         <TextView
             android:id="@+id/tvAbout"
@@ -71,48 +54,47 @@
             android:layout_marginTop="@dimen/spacing_3x"
             android:ellipsize="end"
             android:maxLines="2"
+            android:text="@string/class_desc1"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             android:textColor="@color/textColor"
+            app:layout_constraintStart_toEndOf="@+id/tvClassType"
+            app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
             tools:text="Clear your doubts related to the first class of Python and other queries during your studies " />
+
 
         <include
             android:id="@+id/class_detail"
-            layout="@layout/class_course_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="0dp"
+            layout="@layout/class_course_detail"
+            android:layout_marginTop="@dimen/spacing_2x"
+            app:layout_constraintTop_toBottomOf="@+id/tvAbout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvAbout" />
 
         <include
             android:id="@+id/revision_list"
-            layout="@layout/revision_class_sheet"
+            layout="@layout/revision_selection_sheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"/>
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing_2x"
+            app:layout_constraintStart_toStartOf="@+id/tvAbout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/class_detail" />
+
+        <include
+            android:id="@+id/progressBar"
+            layout="@layout/component_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </LinearLayout>
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/tvBtnJoin"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:padding="@dimen/spacing_4x"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvClassDetail"-->
-<!--        app:cornerRadius="@dimen/spacing_4x"-->
-<!--        android:textColor="@color/primaryTextColor"-->
-<!--        tools:text="Join class"/>-->
-
-    <include
-        android:id="@+id/progressBar"
-        layout="@layout/component_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

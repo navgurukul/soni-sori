@@ -25,6 +25,20 @@ fun Date.toDate(): String {
 
 fun String.toDate(): Date = SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH).parse(this)!!
 
+//fun Date.relativeDay(stringProvider: StringProvider): String {
+//    return when {
+//        DateUtils.isToday(time) -> {
+//            stringProvider.getString(R.string.today)
+//        }
+//        DateUtils.isToday(time - DateUtils.DAY_IN_MILLIS) -> {
+//            stringProvider.getString(R.string.tomorrow)
+//        }
+//        else -> {
+//            toDay().toLowerCase(Locale.ENGLISH).capitalize(Locale.ENGLISH)
+//        }
+//    }
+//}
+
 
 fun Long.toDisplayableInterval(stringProvider: StringProvider): String {
     val days = TimeUnit.MILLISECONDS.toDays(this).toInt()

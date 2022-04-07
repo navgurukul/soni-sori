@@ -16,20 +16,22 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.class_course_detail.*
 import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.item_revision_class.*
-import kotlinx.android.synthetic.main.revision_class_sheet.*
+import kotlinx.android.synthetic.main.revision_selection_sheet.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.CourseClassContent
-import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
+import org.navgurukul.learn.util.toDay
+import org.navgurukul.learn.util.toTime
 
 class ClassFragment  : Fragment() {
 
@@ -64,7 +66,6 @@ class ClassFragment  : Fragment() {
 
         const val TAG = "ClassFragment"
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,17 +75,18 @@ class ClassFragment  : Fragment() {
         return mBinding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mBinding.revisionList.rootView.visibility = View.GONE
+        mBinding.classDetail.rootView.visibility = View.GONE
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClasses -> {
                     initRevisionRecyclerView(it.revisionClasses)
-                    mBinding.revisionList.root.visibility = View.VISIBLE
+                    mBinding.revisionList.rootView.visibility = View.VISIBLE
                 }
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
@@ -97,44 +99,29 @@ class ClassFragment  : Fragment() {
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
-//            showErrorScreen(it.isError)
-//
 
         })
-
-//        setIsCompletedView(args.isCompleted)
-
-//        initScreenRefresh()
-
     }
 
-
     private fun setUpClassData(courseClass : CourseClassContent){
-        tvSubTitle.text = courseClass.title
-        tvClassType.text = courseClass.type.name
-        tvClassLanguage.text = courseClass.lang
-        tvDate.text = courseClass.startTime.toString()
+        tvSubTitle.text = courseClass.subTitle
+        tvClassType.text = courseClass.type.name.capitalizeWords()
+        tvClassLanguage.text = courseClass.displayableLanguage()
+        tvDate.text = courseClass.timeDateRange()
         tvFacilatorName.text = courseClass.facilitator?.name
 
         tvBtnJoin.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)
         }
-
     }
-
-
-
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
         mRevisionAdapter = RevisionClassAdapter {
 
         }
-
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerViewRevision.layoutManager = layoutManager
-        recyclerViewRevision.adapter = mRevisionAdapter
-
+        recycler_view.layoutManager = layoutManager
+        recycler_view.adapter = mRevisionAdapter
         mRevisionAdapter.submitList(revisionClass)
     }
-
 }

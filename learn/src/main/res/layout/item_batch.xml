@@ -9,43 +9,54 @@
             type="org.navgurukul.learn.courses.network.model.Batch" />
 
     </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_3x">
+        android:layout_marginStart="@dimen/spacing_1x"
+        android:layout_marginEnd="@dimen/spacing_1x"
+        android:layout_marginTop="@dimen/spacing_1x">
 
-        <TextView
-            android:id="@+id/tv_title_batch"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:layout_marginStart="@dimen/spacing_3x"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{Batch.title}"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Ankit_15SEP21" />
-
-        <TextView
-            android:id="@+id/tvBatchDate"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:layout_marginEnd="@dimen/spacing_3x"
-            android:layout_marginStart="@dimen/spacing_3x"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_title_batch"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_batch"
-            tools:text="15 Sep 21 to 15 Nov 21"
-            app:drawableStartCompat="@drawable/ic_batch_calender" />
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_3x">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_title_batch"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{Batch.title}"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Ankit_15SEP21" />
+
+            <TextView
+                android:id="@+id/tvBatchDate"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:layout_marginBottom="@dimen/spacing_1x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_title_batch"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_batch"
+                tools:text="15 Sep 21 to 15 Nov 21"
+                app:drawableStartCompat="@drawable/ic_batch_calender" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 </layout>

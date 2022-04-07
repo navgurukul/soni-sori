@@ -21,7 +21,6 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/spacing_5x"
             android:paddingBottom="@dimen/spacing_6x"
             android:background="@color/card_background"
             android:layout_height="wrap_content">
@@ -33,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_3x"
                 android:layout_marginStart="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_6x"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/colorBlack"
@@ -56,17 +56,19 @@
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tvType"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvType"
                 tools:text=" Ankit_15SEP21" />
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:layout_marginStart="88dp"
-                android:drawableStart="@drawable/ic_book_lover"
-                app:layout_constraintBottom_toBottomOf="@id/tvClassDetail"
-                app:layout_constraintStart_toEndOf="@+id/tvTitleBatch" />
+                android:background="@drawable/ic_book"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_default="wrap"
+                android:layout_marginEnd="@dimen/spacing_2x"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintBottom_toBottomOf="@id/tvClassDetail" />
 
             <TextView
                 android:id="@+id/tvBatchDate"
@@ -94,6 +96,8 @@
                 android:layout_marginEnd="@dimen/spacing_3x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0"
                 android:text="@string/access_to_live_classes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:drawableStartCompat="@drawable/ic_diploma"
@@ -129,8 +133,8 @@
                 android:layout_marginBottom="@dimen/spacing_4x"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="Can’t start on 15 Sep 21?"
                 android:textStyle="bold"
-                android:text="Can't start on "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvClassDetail"
                 app:layout_constraintTop_toBottomOf="@id/tvBtnEnroll"
@@ -147,8 +151,8 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textStyle="bold"
+                android:text="@string/check_text"
                 android:textColor="@color/green_progress_color"
-                android:text="Check out our other batch dates"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvClassDetail"

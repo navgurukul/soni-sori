@@ -21,7 +21,6 @@
             android:layout_height="@dimen/pathway_select_icon_size"
             android:background="@drawable/pathway_selection_icon_bg"
             android:padding="@dimen/spacing_2x"
-            android:src="@{pathway.logo}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/ic_typing_icon" />

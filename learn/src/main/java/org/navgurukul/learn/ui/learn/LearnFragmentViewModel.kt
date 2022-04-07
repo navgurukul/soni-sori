@@ -30,8 +30,6 @@ class LearnFragmentViewModel(
     BaseViewModel<LearnFragmentViewEvents, LearnFragmentViewState>(LearnFragmentViewState()) {
     private var isEnrolled: Boolean = false
 
-
-
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
@@ -53,17 +51,21 @@ class LearnFragmentViewModel(
                             if (currentPathway.courses.isEmpty()) {
                                 selectPathway(currentPathway)
                             }
-                            val selectedLanguage = currentPathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?:  currentPathway.supportedLanguages[0].label
+                            val selectedLanguage =
+                                currentPathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
+                                    ?: currentPathway.supportedLanguages[0].label
                             copy(
                                 loading = courses.isEmpty(),
                                 pathways = it,
                                 courses = courses,
                                 currentPathwayIndex = currentPathwayIndex,
                                 subtitle = currentPathway.name,
-                                languages =  currentPathway.supportedLanguages,
+                                languages = currentPathway.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
                                 logo = currentPathway.logo,
-                                showTakeTestButton = if(currentPathway.cta?.url?.isBlank()?:true) false else true
+                                showTakeTestButton = if (currentPathway.cta?.url?.isBlank()
+                                        ?: true
+                                ) false else true
                             )
                         }
                     } else {
@@ -71,10 +73,7 @@ class LearnFragmentViewModel(
                     }
                 }
             }
-//            getBatchesDataByPathway(corePreferences.lastSelectedPathWayId)
-
         }
-
     }
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
@@ -115,8 +114,6 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
     }
 
-
-
     fun selectCourse(course: Course) {
         course.pathwayId?.let {
             _viewEvents.postValue(
@@ -133,7 +130,6 @@ class LearnFragmentViewModel(
             is LearnFragmentViewActions.RequestPageLoad ->{
                 checkedStudentEnrolment(1)
             }
-
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
                 val currentState = viewState.value!!
@@ -155,11 +151,8 @@ class LearnFragmentViewModel(
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
-
         }
     }
-
-
 
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
@@ -170,9 +163,7 @@ class LearnFragmentViewModel(
             } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
             }
-
         }
-
     }
 
     private fun getBatchesDataByPathway(pathwayId: Int) {
@@ -192,7 +183,6 @@ class LearnFragmentViewModel(
         }
     }
 
-
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
             setState { copy(loading= true) }
@@ -205,7 +195,6 @@ class LearnFragmentViewModel(
                 }
                 if (it.isNotEmpty()){
                     _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
-//                    liveDataList.postValue(classes)
                 }
             }
         }
@@ -221,7 +210,6 @@ class LearnFragmentViewModel(
         val result = learnRepo.enrollToClass(classId, false)
         if (result) {
             isEnrolled = true
-//            val durationToClassStart = (classes.startTime.time - Date().time)
             setState {
                 copy(
                     loading = false,
@@ -232,13 +220,9 @@ class LearnFragmentViewModel(
             setState { copy(loading = false) }
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
         }
-        } }
-
-
-
-
+        }
     }
-
+    }
 
 data class LearnFragmentViewState(
     val loading: Boolean = false,
