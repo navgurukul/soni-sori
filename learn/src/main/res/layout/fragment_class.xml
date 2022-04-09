@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tvClassDetail"
-        android:padding="@dimen/spacing_4x"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvSubTitle"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Class 1 - Intro to Python"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tvClassDetail"
+            android:padding="@dimen/spacing_4x"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvSubTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Class 1 - Intro to Python"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tvClassType"
@@ -47,54 +52,64 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
                 tools:text="" />
 
-        <TextView
-            android:id="@+id/tvAbout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_3x"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/class_desc1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
-            android:textColor="@color/textColor"
-            app:layout_constraintStart_toEndOf="@+id/tvClassType"
-            app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
-            tools:text="Clear your doubts related to the first class of Python and other queries during your studies " />
+            <TextView
+                android:id="@+id/tvAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/class_desc1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+                android:textColor="@color/textColor"
+                app:layout_constraintStart_toEndOf="@+id/tvClassType"
+                app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
+                tools:text="Clear your doubts related to the first class of Python and other queries during your studies " />
 
+            <include
+                android:id="@+id/class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                layout="@layout/class_course_detail"
+                android:layout_marginTop="@dimen/spacing_2x"
+                app:layout_constraintTop_toBottomOf="@+id/tvAbout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvAbout"
+                tools:visibility="gone"/>
+
+            <include
+                android:id="@+id/revision_list"
+                layout="@layout/revision_selection_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_2x"
+                app:layout_constraintStart_toStartOf="@+id/tvAbout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/class_detail"
+                tools:visibility="gone"/>
+
+            <include
+                android:id="@+id/progressBar"
+                layout="@layout/component_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/class_detail"
+            android:id="@+id/batchFragment"
+            layout="@layout/batches_in_exercise"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            layout="@layout/class_course_detail"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/spacing_2x"
-            app:layout_constraintTop_toBottomOf="@+id/tvAbout"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvAbout" />
-
-        <include
-            android:id="@+id/revision_list"
-            layout="@layout/revision_selection_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing_2x"
-            app:layout_constraintStart_toStartOf="@+id/tvAbout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/class_detail" />
-
-        <include
-            android:id="@+id/progressBar"
-            layout="@layout/component_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </layout>

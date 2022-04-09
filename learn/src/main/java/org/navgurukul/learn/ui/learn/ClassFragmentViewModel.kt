@@ -13,6 +13,7 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.toDisplayableInterval
 import java.util.*
@@ -64,7 +65,8 @@ class ClassFragmentViewModel(
                         if ( Date().time > data.startTime.time){
                             getRevisionClasses(classes!!.id)
                         }else {
-                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
+//                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
+                            getBatchesDataByPathway(1)
                         }
 
                     } else {
@@ -121,6 +123,23 @@ class ClassFragmentViewModel(
         }
     }
 
+    private fun getBatchesDataByPathway(pathwayId: Int) {
+        viewModelScope.launch {
+            setState { copy(isLoading=true) }
+            val batches =learnRepo.getBatchesListByPathway(pathwayId)
+            batches.let {
+                setState {
+                    copy(
+                        batches = it
+                    )
+                }
+                if (it.isNotEmpty()){
+                    _viewEvents.postValue(ClassFragmentViewEvents.ShowBatches(batches))
+                }
+            }
+        }
+    }
+
 
     private fun attendClass(){
         viewModelScope.launch {
@@ -153,6 +172,7 @@ class ClassFragmentViewModel(
         class ShowToast(val toastText: String) : ClassFragmentViewEvents()
         data class ShowRevisionClasses(val revisionClasses: List<CourseClassContent>): ClassFragmentViewEvents()
         data class ShowClassData(val courseClass : CourseClassContent): ClassFragmentViewEvents()
+        data class ShowBatches(val batches : List<Batch>):ClassFragmentViewEvents()
         class OpenLink(val link: String) : ClassFragmentViewEvents()
     }
 
@@ -168,6 +188,7 @@ class ClassFragmentViewModel(
         val isError: Boolean = false,
         val classContent: CourseClassContent? = null,
         val revisionClasses: List<CourseClassContent> = arrayListOf(),
+        val batches: List<Batch> = arrayListOf()
 
     ) : ViewState
 }
