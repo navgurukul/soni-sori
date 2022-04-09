@@ -59,6 +59,9 @@ data class CourseClassContent(
     @Json(name = "meet_link")
     val meetLink: String?,
 
+    @Json(name = "is_enrolled")
+    val isEnrolled: Boolean = false,
+
     ) : CourseContents {
     @Ignore
     var number: Int? = 0
@@ -79,6 +82,7 @@ enum class ClassType{
 
 
 
+fun CourseClassContent.sanitizedType(): String = type.name.replace("_", " ").capitalizeWords()
 fun CourseClassContent.displayableLanguage(): String = Locale(lang).getDisplayLanguage(java.util.Locale.ENGLISH)
 fun CourseClassContent.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
 fun CourseClassContent.timeDateRange(): String ="${startTime.toDate()}  "+ " ${startTime.toTime()} - ${endTime.toTime()}"

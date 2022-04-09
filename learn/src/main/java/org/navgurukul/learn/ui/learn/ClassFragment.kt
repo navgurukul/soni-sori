@@ -33,7 +33,7 @@ import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
 import org.navgurukul.learn.util.toDay
 import org.navgurukul.learn.util.toTime
 
-class ClassFragment  : Fragment() {
+class ClassFragment: Fragment() {
 
     private val args: CourseContentArgs by fragmentArgs()
     private val fragmentViewModel: ClassFragmentViewModel by viewModel(parameters = {

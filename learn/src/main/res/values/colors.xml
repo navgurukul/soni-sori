@@ -27,4 +27,6 @@
     <color name="textGrey">#818181</color>
     <color name="dotGrey"> #949494</color>
     <color name="card_background">#E9F5E9</color>
+    <color name="classChipSecondary">#4548A1</color>
+    <color name="classChipBackground">#4548A1</color>
 </resources>

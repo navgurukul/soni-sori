@@ -263,4 +263,5 @@ sealed class LearnFragmentViewActions : ViewModelAction {
     object LanguageSelectionClicked : LearnFragmentViewActions()
     object RefreshCourses : LearnFragmentViewActions()
     object PathwayCtaClicked : LearnFragmentViewActions()
+    data class ClassPrimaryCtaClicked(val classId: String, val isEnrolled: Boolean) : LearnFragmentViewActions()
 }

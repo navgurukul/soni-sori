@@ -127,6 +127,10 @@
     <string name="upcoming_classes">Upcoming Classes</string>
     <string name="check_text">Check out our other batch dates</string>
     <string name="class_desc1">Clear your doubts related to the first class of Python and other queries during your studies</string>
+    <string name="join_type_class">Join %1s Class</string>
+    <string name="starts_in">Starts in %1s</string>
+    <string name="enroll_to_type_class">Enroll to %1s Class</string>
+    <string name="unavailable">Unavailable</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
