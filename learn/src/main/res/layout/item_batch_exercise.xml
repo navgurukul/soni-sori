@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RadioGroup
+        android:id="@+id/radio_Group"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/bt1"
+            android:layout_marginTop="@dimen/spacing_2x"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Batch1"/>
+    </RadioGroup>
+
+</layout>
