@@ -80,8 +80,8 @@ class ClassFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mBinding.revisionList.rootView.visibility = View.GONE
-        mBinding.classDetail.rootView.visibility = View.GONE
+        mBinding.revisionList.visibility = View.GONE
+        mBinding.classDetail.visibility = View.GONE
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)

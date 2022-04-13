@@ -61,9 +61,9 @@ class ClassFragmentViewModel(
                     if (data != null) {
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
-//
+
                         if ( Date().time > data.startTime.time){
-                            getRevisionClasses(classes!!.id)
+                            getRevisionClasses(data.id)
                         }else {
 //                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
                             getBatchesDataByPathway(1)
