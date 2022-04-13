@@ -1,16 +1,19 @@
 package org.navgurukul.learn.courses.db.models
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.merakilearn.core.extentions.capitalizeWords
 import org.navgurukul.learn.util.toDate
 import org.navgurukul.learn.util.toDay
 import org.navgurukul.learn.util.toTime
 import java.util.*
 
+@Parcelize
 @Entity(tableName = "course_class", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
 data class CourseClassContent(
@@ -62,11 +65,12 @@ data class CourseClassContent(
     @Json(name = "is_enrolled")
     val isEnrolled: Boolean = false,
 
-    ) : CourseContents {
+    ): Parcelable, CourseContents {
     @Ignore
     var number: Int? = 0
 }
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Facilitator(
     @Json(name = "name")
@@ -74,7 +78,7 @@ data class Facilitator(
 
     @Json(name = "email")
     val email: String?,
-)
+): Parcelable
 
 enum class ClassType{
     batch, revision, doubt, workshop
