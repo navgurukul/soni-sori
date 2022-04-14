@@ -82,6 +82,7 @@ class ClassFragment: Fragment() {
 
         mBinding.revisionList.visibility = View.GONE
         mBinding.classDetail.visibility = View.GONE
+        mBinding.batchFragment.visibility = View.GONE
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
@@ -92,11 +93,15 @@ class ClassFragment: Fragment() {
                 }
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
+                    mBinding.tvClassDetail.visibility = View.GONE
                     mBinding.classDetail.rootView.visibility = View.VISIBLE
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowBatches ->{
                     initRecyclerViewBatch(it.batches)
+                    mBinding.batchFragment.visibility = View.VISIBLE
+                    mBinding.tvClassDetail.visibility= View.GONE
 //                    batchesGroup()
                 }
 
@@ -104,10 +109,10 @@ class ClassFragment: Fragment() {
             }
         }
 
-        fragmentViewModel.viewState.observe(viewLifecycleOwner, {
+        fragmentViewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
-        })
+        }
     }
 
 
@@ -169,7 +174,7 @@ class ClassFragment: Fragment() {
         recyclerviewBatch.layoutManager = layoutManager
         recyclerviewBatch.adapter = mClassAdapter
         mClassAdapter.submitList(batches.subList(0,4))
-        batchesGroup()
+//        batchesGroup()
     }
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){

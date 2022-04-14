@@ -6,7 +6,6 @@ import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
@@ -23,6 +22,7 @@ class LearnRepo(
 
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
     var lastUpdatedBatches: List<Batch>? = null
+    var statusEnrolled: EnrolResponse? = null
 
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
@@ -211,7 +211,10 @@ class LearnRepo(
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
-        return courseApi.checkedStudentEnrolment(pathwayId)
+//        return courseApi.checkedStudentEnrolment(pathwayId)
+
+        statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+        return statusEnrolled!!
     }
 
     suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch> {

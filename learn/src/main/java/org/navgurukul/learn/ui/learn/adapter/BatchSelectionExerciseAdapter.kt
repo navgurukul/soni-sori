@@ -31,15 +31,24 @@ class BatchSelectionExerciseAdapter(val callback: (Batch) -> Unit):
         )
     }
 
-//    override fun getItemCount(): Int {
-//        return 4
-//    }
-
+    fun makeSelection(value: Int) {
+        val mdl = currentList.find {
+            it.id == value
+        }
+        if (mdl != null) {
+            currentList.forEach {
+                it.isSelected = false
+            }
+            mdl.isSelected = true
+            notifyDataSetChanged()
+        }
+    }
     override fun bind(holder: DataBoundViewHolder<ItemBatchExerciseBinding>, item: Batch) {
         val binding = holder.binding
         binding.bt1.text = item.title
         binding.root.setOnClickListener {
             callback.invoke(item)
+            item.id?.let { it1 -> makeSelection(it1) }
         }
     }
 }

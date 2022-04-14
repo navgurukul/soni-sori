@@ -13,6 +13,8 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.network.EnrolResponse
+import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.toDisplayableInterval
@@ -62,12 +64,24 @@ class ClassFragmentViewModel(
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
 
-                        if ( Date().time > data.startTime.time){
-                            getRevisionClasses(data.id)
-                        }else {
-//                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
+                        val status = learnRepo.statusEnrolled?.message
+                        if ( status == EnrolStatus.enrolled){
+                            if (Date().time > data.startTime.time){
+                                getRevisionClasses(data.id)
+                            }else{
+                               _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
+                            }
+                        }
+                        else{
                             getBatchesDataByPathway(1)
                         }
+//
+//                        if ( Date().time > data.startTime.time){
+//                            getRevisionClasses(data.id)
+//                        }else {
+////                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
+//                            getBatchesDataByPathway(1)
+//                        }
 
                     } else {
                         _viewEvents.setValue(

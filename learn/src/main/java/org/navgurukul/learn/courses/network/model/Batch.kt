@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.network.model
 
+import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.merakilearn.core.extentions.capitalizeWords
@@ -43,7 +44,11 @@ data class Batch(
     @Json(name= "sub_title")
     val sub_title: String?,
     @Json(name = "pathway_id")
-    val pathway_id : Int?
+    val pathway_id : Int?,
+    @Ignore
+    @Json(name="is_Selected")
+    var isSelected: Boolean? = false
+
 ) {
 
     @JsonClass(generateAdapter = true)

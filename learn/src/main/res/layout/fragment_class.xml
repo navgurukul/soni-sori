@@ -10,7 +10,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvClassDetail"
             android:padding="@dimen/spacing_4x"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -108,7 +107,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/spacing_2x"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

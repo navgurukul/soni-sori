@@ -12,7 +12,6 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.displayableLanguage
 import org.navgurukul.learn.courses.db.models.sanitizedType
-import org.navgurukul.learn.courses.network.model.Classes
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.util.ColorProvider
 import org.navgurukul.learn.util.toDisplayableInterval
@@ -20,8 +19,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class EnrollViewModel(
-    private val classId: Int,
-    private var isEnrolled: Boolean,
     private val stringProvider: StringProvider,
     private val colorProvider: ColorProvider,
     private val learnRepo: LearnRepo,
@@ -37,7 +34,7 @@ class EnrollViewModel(
                 val durationToClassStart = (it.startTime.time - Date().time)
                 var primaryActionBackgroundColor =
                     colorProvider.getColorFromAttribute(R.attr.colorPrimary)
-                val primaryAction = if (isEnrolled) {
+                val primaryAction = if (mClass.isEnrolled) {
                     if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_type_class, it.sanitizedType())
                     } else {
@@ -81,13 +78,32 @@ class EnrollViewModel(
     fun handle(viewActions: EnrollViewActions) {
         when (viewActions) {
             is EnrollViewActions.PrimaryAction -> primaryAction()
+//            is EnrollViewActions.EnrolToClass -> enrollToBatch(viewActions.classId)
         }
     }
+//    private fun enrollToBatch(classId: Int){
+//        viewModelScope.launch {
+//            setState { copy(isLoading = true) }
+//            val result = learnRepo.enrollToClass(classId, false)
+//            if (result) {
+//                isEnrolled = true
+//                setState {
+//                    copy(
+//                        isLoading = false,
+//                    )
+//                }
+//                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
+//            } else {
+//                setState { copy(isLoading = false) }
+//                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
+//            }
+//        }
+//    }
 
     private fun primaryAction() {
         viewModelScope.launch {
             val classes = mClass
-            if (isEnrolled) {
+            if (mClass.isEnrolled) {
                 val durationToClassStart = (classes.startTime.time - Date().time)
                 if (classJoinEnabled(durationToClassStart)) {
                     classes.meetLink?.let {
@@ -105,9 +121,9 @@ class EnrollViewModel(
                 }
             } else {
                 setState { copy(isLoading = true) }
-                val result = learnRepo.enrollToClass(classId, false)
+                val result = learnRepo.enrollToClass(mClass.id.toInt(), false)
                 if (result) {
-                    isEnrolled = true
+                    mClass.isEnrolled = true
 
                     val durationToClassStart = (classes.startTime.time - Date().time)
                     var primaryActionBackgroundColor =
@@ -150,7 +166,8 @@ sealed class EnrollViewEvents : ViewEvents {
 }
 
 sealed class EnrollViewActions : ViewModelAction {
-    object PrimaryAction : EnrollViewActions()
+//    data class EnrolToClass(val classId: Int) : EnrollViewActions()
+   object PrimaryAction: EnrollViewActions()
     object DropOut : EnrollViewActions()
 }
 

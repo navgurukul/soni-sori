@@ -63,7 +63,7 @@ data class CourseClassContent(
     val meetLink: String?,
 
     @Json(name = "is_enrolled")
-    val isEnrolled: Boolean = false,
+    var isEnrolled: Boolean = false,
 
     ): Parcelable, CourseContents {
     @Ignore
