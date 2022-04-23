@@ -122,11 +122,13 @@ class ClassFragmentViewModel(
 
     private fun getRevisionClasses(classId: String){
         viewModelScope.launch {
+            setState {copy(isLoading = true)}
+
             val revisionClasses = learnRepo.getRevisionClasses(classId)
             revisionClasses?.let {
                 setState {
                     copy(
-                        isLoading = true,
+                        isLoading = false,
                         revisionClasses = it
                     )
                 }
