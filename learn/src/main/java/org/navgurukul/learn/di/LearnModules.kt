@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.courses.db.*
+import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -18,6 +19,7 @@ val viewModelModule = module {
     viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
     viewModel { (args: CourseContentArgs) -> ClassFragmentViewModel(get(), get(), get(), args) }
     viewModel { (courseId: String, pathwayId: Int) -> CourseContentActivityViewModel(get(), get(), get(), courseId, pathwayId) }
+    viewModel { (args: CourseClassContent) -> EnrollViewModel(get(), get(), get(), args) }
 }
 
 

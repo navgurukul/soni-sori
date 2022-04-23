@@ -10,6 +10,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.class_course_detail.*
 import kotlinx.android.synthetic.main.fragment_class.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.toBundle
@@ -35,8 +36,14 @@ class ClassActivity: AppCompatActivity(){
         }
     }
 
+    private val args: ClassActivityArgs? by lazy {
+        intent.extras?.getParcelable(KEY_ARG)
+    }
+
     private lateinit var mBinding: ActivityClassBinding
-    private val viewModel: EnrollViewModel by viewModel()
+    private val viewModel: EnrollViewModel by viewModel(parameters =
+    { parametersOf(args?.classContent) }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -93,13 +93,14 @@ class ClassFragment: Fragment() {
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClasses -> {
                     initRevisionRecyclerView(it.revisionClasses)
+                    fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.VISIBLE
+                    mBinding.classDetail.visibility = View.GONE
                 }
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
-                    mBinding.tvClassDetail.visibility = View.VISIBLE
                     mBinding.classDetail.visibility = View.VISIBLE
-
+                    mBinding.revisionList.visibility = View.GONE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowBatches ->{
@@ -128,15 +129,19 @@ class ClassFragment: Fragment() {
     }
 
     private fun setUpClassData(courseClass : CourseClassContent){
-        tvSubTitle.text = courseClass.subTitle
-        tvClassType.text = courseClass.type.name.capitalizeWords()
-        tvClassLanguage.text = courseClass.displayableLanguage()
+        setupClassHeaderDeatils(courseClass)
         tvDate.text = courseClass.timeDateRange()
         tvFacilatorName.text = courseClass.facilitator?.name
 
         tvBtnJoin.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)
         }
+    }
+
+    private fun setupClassHeaderDeatils(courseClass: CourseClassContent) {
+        tvSubTitle.text = courseClass.subTitle
+        tvClassType.text = courseClass.type.name.capitalizeWords()
+        tvClassLanguage.text = courseClass.displayableLanguage()
     }
 
 
