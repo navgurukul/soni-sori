@@ -83,6 +83,8 @@ class ClassFragment: Fragment() {
         mBinding.revisionList.visibility = View.GONE
         mBinding.classDetail.visibility = View.GONE
         mBinding.batchFragment.visibility = View.GONE
+        initScreenRefresh()
+
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
@@ -112,10 +114,30 @@ class ClassFragment: Fragment() {
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
-
+            showErrorScreen(it.isError)
         }
     }
 
+    private fun showErrorScreen(isError: Boolean) {
+        if (isError) {
+            mBinding.errorLayout.root.visibility = View.VISIBLE
+            mBinding.tvClassDetail.visibility = View.GONE
+        } else {
+            mBinding.errorLayout.root.visibility = View.GONE
+            mBinding.tvClassDetail.visibility = View.VISIBLE
+        }
+    }
+
+    private fun initScreenRefresh() {
+        mBinding.swipeContainer.setOnRefreshListener {
+            fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
+            mBinding.swipeContainer.isRefreshing = false
+        }
+
+        mBinding.errorLayout.btnRefresh.setOnClickListener {
+            fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
+        }
+    }
 
     private fun batchesGroup(){
 //      radio_Group.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->

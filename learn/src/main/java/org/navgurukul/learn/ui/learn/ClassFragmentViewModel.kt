@@ -75,13 +75,6 @@ class ClassFragmentViewModel(
                         else{
                             getBatchesDataByPathway(1)
                         }
-//
-//                        if ( Date().time > data.startTime.time){
-//                            getRevisionClasses(data.id)
-//                        }else {
-////                            _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
-//                            getBatchesDataByPathway(1)
-//                        }
 
                     } else {
                         _viewEvents.setValue(
