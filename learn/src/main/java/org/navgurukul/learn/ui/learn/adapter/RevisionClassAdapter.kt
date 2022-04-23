@@ -34,6 +34,18 @@ class RevisionClassAdapter(val callback: (CourseClassContent) -> Unit) :
             R.layout.item_revision_class, parent, false
         )
     }
+    fun makeSelection(value: Int) {
+        val mdl = currentList.find {
+            it.id.toInt() == value
+        }
+        if (mdl != null) {
+            currentList.forEach {
+                it.isSelected = false
+            }
+            mdl.isSelected = true
+            notifyDataSetChanged()
+        }
+    }
 
     override fun bind(
         holder: DataBoundListAdapter.DataBoundViewHolder<ItemRevisionClassBinding>,
@@ -41,8 +53,10 @@ class RevisionClassAdapter(val callback: (CourseClassContent) -> Unit) :
     ) {
         val binding = holder.binding
         binding.tvClassRevision.text = item.startTime.toString()
+        binding.tvClassRevision.isChecked = item.isSelected
         binding.root.setOnClickListener {
             callback.invoke(item)
+            item.id.toInt()?.let { it1 -> makeSelection(it1) }
         }
     }
 

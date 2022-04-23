@@ -68,6 +68,7 @@ class LearnFragmentViewModel(
                                 ) false else true
                             )
                         }
+                        checkedStudentEnrolment()
                     } else {
                         setState { copy(loading = false) }
                     }
@@ -78,6 +79,7 @@ class LearnFragmentViewModel(
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
+            checkedStudentEnrolment()
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
                     setState { copy(courses = it, loading = false, logo = pathway.logo,
@@ -128,17 +130,11 @@ class LearnFragmentViewModel(
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
             }
             is LearnFragmentViewActions.RequestPageLoad ->{
-                checkedStudentEnrolment(1)
+                checkedStudentEnrolment()
             }
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
-                val currentState = viewState.value!!
-                if (currentState.pathways.size > currentState.currentPathwayIndex) {
-                    refreshCourses(pathway = currentState.pathways[currentState.currentPathwayIndex], true)
-                } else {
-                    //TO hide progress bar
-                    setState { copy() }
-                }
+               refreshCourse()
             }
             LearnFragmentViewActions.LanguageSelectionClicked -> {
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenLanguageSelectionSheet)
@@ -154,7 +150,9 @@ class LearnFragmentViewModel(
         }
     }
 
-     private fun checkedStudentEnrolment(pathwayId: Int){
+     private fun checkedStudentEnrolment(){
+         val currentState = viewState.value!!
+         val pathwayId = (currentState.pathways[currentState.currentPathwayIndex].id)
         viewModelScope.launch {
             setState { copy(loading=true) }
             val status = learnRepo.checkedStudentEnrolment(pathwayId).message
@@ -163,6 +161,16 @@ class LearnFragmentViewModel(
             } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
             }
+        }
+    }
+
+    private fun refreshCourse(){
+        val currentState = viewState.value!!
+        if (currentState.pathways.size > currentState.currentPathwayIndex) {
+            refreshCourses(pathway = currentState.pathways[currentState.currentPathwayIndex], true)
+        } else {
+            //TO hide progress bar
+            setState { copy() }
         }
     }
 
@@ -215,6 +223,7 @@ class LearnFragmentViewModel(
                     loading = false,
                 )
             }
+            refreshCourse()
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
         } else {
             setState { copy(loading = false) }

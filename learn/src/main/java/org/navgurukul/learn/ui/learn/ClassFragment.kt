@@ -8,11 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.play.core.internal.i
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.class_course_detail.*
@@ -56,7 +54,7 @@ class ClassFragment: Fragment() {
             isCompleted: Boolean,
             courseId: String,
             classId: String,
-            courseContentType: CourseContentType
+            courseContentType: CourseContentType,
         ): ClassFragment {
             return ClassFragment().apply {
                 arguments = CourseContentArgs(
@@ -75,7 +73,7 @@ class ClassFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_class, container, false)
         return mBinding.root
@@ -142,10 +140,13 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupJoinButton(){
+//        val selectedId: Int = radio_Group.getCheckedRadioButtonId()
+//        val selectedId: Int = radio_Group.getCheckedRadioButtonId()
+//        val radioButton = (RadioButton)findViewById(selectedId)
+//        explore_opportunity.setText(radioButton)
+
         explore_opportunity.setOnClickListener {
             learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
-//            batch.id?.let { it1 -> LearnFragmentViewActions.PrimaryAction(it1) }
-//                ?.let { it2 -> learnViewModel.handle(it2) }
             Log.d("checked","enrolled successfully")
         }
     }

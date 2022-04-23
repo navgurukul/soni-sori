@@ -8,15 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.batch_card.*
+import kotlinx.android.synthetic.main.fragment_class.*
+import kotlinx.android.synthetic.main.fragment_learn.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
@@ -61,7 +65,7 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
+//        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
@@ -77,6 +81,7 @@ class LearnFragment : Fragment(){
 
             if (it.showTakeTestButton)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
+//            updateState(it)
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -171,6 +176,7 @@ class LearnFragment : Fragment(){
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
+            initSwipeRefresh()
             viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
             mBinding.progressBarButton.visibility = View.VISIBLE
             btAlertDialog?.dismiss()
@@ -179,6 +185,7 @@ class LearnFragment : Fragment(){
             btAlertDialog?.dismiss()
         }
         btAlertDialog?.show()
+        btAlertDialog?.setWidthPercent(45);
     }
 
     private fun configureToolbar(
@@ -209,6 +216,7 @@ class LearnFragment : Fragment(){
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
             viewModel.handle(LearnFragmentViewActions.RefreshCourses)
+            mBinding.swipeContainer.isRefreshing = false
         }
     }
 
@@ -237,6 +245,31 @@ class LearnFragment : Fragment(){
         mBinding.recyclerviewCourse.addItemDecoration(
             DotItemDecoration(requireContext())
         )
+    }
+
+    private fun updateState(it: LearnFragmentViewState){
+        progress_bar_button.isVisible = it.loading
+        it.courses?.let {
+            recyclerviewCourseContainer.isVisible = true
+            recyclerviewCourse.isVisible = true
+        }?: run {
+            recyclerviewCourseContainer.isVisible = false
+            recyclerviewCourse.isVisible = false
+        }
+
+        it.batches?.let {
+            batchCard.isVisible = true
+            upcoming.isVisible = false
+        }
+
+        it.classes?.let {
+
+            upcoming.isVisible = true
+            batchCard.isVisible = false
+        }?: kotlin.run {
+            upcoming.isVisible = false
+        }
+
     }
 
 }

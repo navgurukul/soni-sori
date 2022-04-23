@@ -65,9 +65,12 @@ data class CourseClassContent(
     @Json(name = "is_enrolled")
     var isEnrolled: Boolean = false,
 
+
     ): Parcelable, CourseContents {
     @Ignore
     var number: Int? = 0
+
+    var isSelected: Boolean = false
 }
 
 @Parcelize
