@@ -47,7 +47,7 @@ data class Batch(
     val pathway_id : Int?,
     @Ignore
     @Json(name="is_Selected")
-    var isSelected: Boolean? = false
+    var isSelected: Boolean = false
 
 ) {
 

@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.item_batch_exercise.*
 import kotlinx.android.synthetic.main.revision_selection_sheet.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.capitalizeWords
@@ -35,7 +37,6 @@ import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
 
 
 class ClassFragment: Fragment() {
-
     private val args: CourseContentArgs by fragmentArgs()
     private val fragmentViewModel: ClassFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
@@ -44,6 +45,9 @@ class ClassFragment: Fragment() {
     private val merakiNavigator: MerakiNavigator by inject()
     private lateinit var  mRevisionAdapter: RevisionClassAdapter
     private lateinit var mClassAdapter: BatchSelectionExerciseAdapter
+    private val learnViewModel: LearnFragmentViewModel by sharedViewModel()
+    private var selectedBatch : Batch? = null
+
 
     companion object {
         fun newInstance(
@@ -89,20 +93,19 @@ class ClassFragment: Fragment() {
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClasses -> {
                     initRevisionRecyclerView(it.revisionClasses)
-                    mBinding.revisionList.rootView.visibility = View.VISIBLE
+                    mBinding.revisionList.visibility = View.VISIBLE
                 }
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
-                    mBinding.tvClassDetail.visibility = View.GONE
-                    mBinding.classDetail.rootView.visibility = View.VISIBLE
+                    mBinding.tvClassDetail.visibility = View.VISIBLE
+                    mBinding.classDetail.visibility = View.VISIBLE
 
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowBatches ->{
                     initRecyclerViewBatch(it.batches)
-                    mBinding.batchFragment.visibility = View.VISIBLE
                     mBinding.tvClassDetail.visibility= View.GONE
-//                    batchesGroup()
+                    mBinding.batchFragment.visibility = View.VISIBLE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
@@ -115,42 +118,13 @@ class ClassFragment: Fragment() {
         }
     }
 
-
-    private fun batchesGroup(){
-//      radio_Group.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-//         explore_opportunity.setText(bt1.text.toString())
-//      })
-
+    private fun setupJoinButton(){
         explore_opportunity.setOnClickListener {
-            var id:Int = radio_Group.checkedRadioButtonId
-            if (id!=-1){
-                val radio: RadioButton = bt1.findViewById(id)
-
-            }
+            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
+//            batch.id?.let { it1 -> LearnFragmentViewActions.PrimaryAction(it1) }
+//                ?.let { it2 -> learnViewModel.handle(it2) }
+            Log.d("checked","enrolled successfully")
         }
-
-//        if(view is RadioButton){
-//            val checked = (view as RadioButton).isChecked
-//
-//            when((view as RadioButton).getId()){
-//                R.id.bt1 ->
-//                    if (checked){
-//                        explore_opportunity.setText(bt1.text.toString())
-//                    }
-//            }
-//        }
-////        bt1.setOnCheckedChangeListener { buttonView, isChecked ->
-////            explore_opportunity.setText(bt1.text.toString())
-////        }
-//////        radio_Group.setOnCheckedChangeListener(bt1, checkedId ->
-//////        )
-////
-////        explore_opportunity.setOnClickListener {
-////            var btnId:Int = radio_Group!!.checkedRadioButtonId
-////
-////
-////        }
-
     }
 
     private fun setUpClassData(courseClass : CourseClassContent){
@@ -168,13 +142,13 @@ class ClassFragment: Fragment() {
 
     private fun initRecyclerViewBatch(batches : List<Batch>){
         mClassAdapter = BatchSelectionExerciseAdapter {
-
+            selectedBatch = it
         }
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         recyclerviewBatch.layoutManager = layoutManager
         recyclerviewBatch.adapter = mClassAdapter
         mClassAdapter.submitList(batches.subList(0,4))
-//        batchesGroup()
+        setupJoinButton()
     }
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
