@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -119,6 +120,17 @@ class ClassFragment: Fragment() {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
         }
+        enrollViewModel.viewEvents.observe(viewLifecycleOwner){
+            when(it){
+                is EnrollViewEvents.ShowToast -> toast(it.toastText)
+
+            }
+        }
+        enrollViewModel.viewState.observe(viewLifecycleOwner){
+            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            updateState(it)
+        }
+
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -161,10 +173,21 @@ class ClassFragment: Fragment() {
         }
     }
 
+    private fun updateState(it: EnrollViewState) {
+        it.primaryActionBackgroundColor?.let {
+           btnRevision.setBackgroundColor(it)
+        }
+        it.primaryAction?.let {
+            btnRevision.isVisible = true
+          btnRevision.text = it
+        }
+    }
+
     private fun setUpClassData(courseClass : CourseClassContent){
         setupClassHeaderDeatils(courseClass)
         tvDate.text = courseClass.timeDateRange()
         tvFacilatorName.text = courseClass.facilitator?.name
+
 
         tvBtnJoin.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)

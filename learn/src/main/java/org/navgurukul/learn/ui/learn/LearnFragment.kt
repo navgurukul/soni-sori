@@ -251,29 +251,29 @@ class LearnFragment : Fragment(){
         )
     }
 
-    private fun updateState(it: LearnFragmentViewState){
-        progress_bar_button.isVisible = it.loading
-        it.courses?.let {
-            recyclerviewCourseContainer.isVisible = true
-            recyclerviewCourse.isVisible = true
-        }?: run {
-            recyclerviewCourseContainer.isVisible = false
-            recyclerviewCourse.isVisible = false
-        }
-
-        it.batches?.let {
-            batchCard.isVisible = true
-            upcoming.isVisible = false
-        }
-
-        it.classes?.let {
-
-            upcoming.isVisible = true
-            batchCard.isVisible = false
-        }?: kotlin.run {
-            upcoming.isVisible = false
-        }
-
-    }
+//    private fun updateState(it: LearnFragmentViewState){
+//        progress_bar_button.isVisible = it.loading
+//        it.courses?.let {
+//            recyclerviewCourseContainer.isVisible = true
+//            recyclerviewCourse.isVisible = true
+//        }?: run {
+//            recyclerviewCourseContainer.isVisible = false
+//            recyclerviewCourse.isVisible = false
+//        }
+//
+//        it.batches?.let {
+//            batchCard.isVisible = true
+//            upcoming.isVisible = false
+//        }
+//
+//        it.classes?.let {
+//
+//            upcoming.isVisible = true
+//            batchCard.isVisible = false
+//        }?: kotlin.run {
+//            upcoming.isVisible = false
+//        }
+//
+//    }
 
 }

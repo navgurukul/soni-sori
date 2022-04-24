@@ -7,13 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <View-->
-<!--        android:id="@+id/handle_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/sheet_handle_height"-->
-<!--        android:layout_marginTop="@dimen/spacing_2x"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:background="@drawable/sheet_handle" />-->
+    <View
+        android:id="@+id/handle_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sheet_handle_height"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/sheet_handle" />
 
     <TextView
         style="?textAppearanceEmphasized1"
@@ -40,7 +41,7 @@
         android:id="@+id/btnRevision"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_2x"
+        android:layout_marginBottom="@dimen/spacing_1x"
         android:layout_marginTop="@dimen/spacing_8x"
         android:gravity="center"
         android:insetTop="0dp"

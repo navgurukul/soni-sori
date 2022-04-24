@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_3x">
+            android:padding="@dimen/spacing_2x">
 
             <TextView
                 android:id="@+id/tv_title_batch"
