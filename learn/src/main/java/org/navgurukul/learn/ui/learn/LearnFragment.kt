@@ -250,8 +250,6 @@ class LearnFragment : Fragment(){
         recyclerViewUpcoming.adapter = mClassAdapter
 
         mClassAdapter.submitList(upcomingClassList)
-        viewModel.viewState.observe(viewLifecycleOwner){
-        }
     }
 
     private fun initRecyclerView() {

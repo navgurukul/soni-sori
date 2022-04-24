@@ -32,8 +32,6 @@ class ClassFragmentViewModel(
 
     private var fetchClassJob: Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
-    private var classes: CourseClassContent? = null
-    private var isEnrolled: Boolean = false
 
     init {
         fetchClassContent(args.contentId, args.courseId, args.courseContentType)
@@ -101,7 +99,6 @@ class ClassFragmentViewModel(
                 args.courseContentType,
                 true
             )
-            is ClassFragmentViewActions.RequestJoinClass -> attendClass()
         }
     }
 
@@ -126,7 +123,10 @@ class ClassFragmentViewModel(
                     )
                 }
                 if (it.isNotEmpty()){
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(revisionClasses))
+                    if(it.size == 1 || it.first().isEnrolled)
+                        _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
+                    else
+                        _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
                 }
             }
         }
@@ -149,36 +149,9 @@ class ClassFragmentViewModel(
         }
     }
 
-
-    private fun attendClass(){
-        viewModelScope.launch {
-            val classes = classes ?: return@launch
-            if (isEnrolled) {
-                val durationToClassStart = (classes.startTime.time - Date().time)
-                if (classJoinEnabled(durationToClassStart)) {
-                    classes.meetLink?.let { ClassFragmentViewEvents.OpenLink(it) }
-                        ?.let { _viewEvents.setValue(it) }
-                } else {
-                    _viewEvents.setValue(
-                        ClassFragmentViewEvents.ShowToast(
-                            stringProvider.getString(
-                               R.string.class_not_started_toast,
-                                durationToClassStart.toDisplayableInterval(stringProvider)     // Util class
-                            )
-                        )
-                    )
-                }
-            } else {}
-        }
-    }
-
-    private fun classJoinEnabled(durationToClassStart: Long) =
-        durationToClassStart < TimeUnit.MINUTES.toMillis(5)
-
-
-
     sealed class ClassFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : ClassFragmentViewEvents()
+        data class ShowRevisionClassToJoin(val revisionClass: CourseClassContent): ClassFragmentViewEvents()
         data class ShowRevisionClasses(val revisionClasses: List<CourseClassContent>): ClassFragmentViewEvents()
         data class ShowClassData(val courseClass : CourseClassContent): ClassFragmentViewEvents()
         data class ShowBatches(val batches : List<Batch>):ClassFragmentViewEvents()
@@ -188,7 +161,6 @@ class ClassFragmentViewModel(
     sealed class ClassFragmentViewActions : ViewModelAction {
         data class MarkCompleteClicked(val classId: String) : ClassFragmentViewActions()
         object RequestContentRefresh : ClassFragmentViewActions()
-        object RequestJoinClass :ClassFragmentViewActions()
 
     }
 
