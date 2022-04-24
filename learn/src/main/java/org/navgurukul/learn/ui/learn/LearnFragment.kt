@@ -34,6 +34,7 @@ import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
+import org.navgurukul.learn.util.toDate
 
 class LearnFragment : Fragment(){
 
@@ -145,9 +146,10 @@ class LearnFragment : Fragment(){
 
     private fun setUpUpcomingData(batch: Batch) {
         tvType.text =batch.sanitizedType()
-        tvTitleBatch.text = batch.title
+        tvTitleBatch.text = batch.title + " :"
         tvBtnEnroll.text = batch.title
         tvBatchDate.text = batch.dateRange()
+        tvText.text = "Can't start on{ "+ batch.startTime
         tvBtnEnroll.setOnClickListener {
             showEnrolDialog(batch)
         }

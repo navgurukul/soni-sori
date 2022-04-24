@@ -40,6 +40,7 @@ import org.navgurukul.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
+import org.navgurukul.learn.util.toDate
 
 
 class ClassFragment: Fragment() {
@@ -162,7 +163,6 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupJoinButton(){
-
         joinBatchBtn.setOnClickListener {
             selectedBatch?.let { it1 -> showEnrolDialog(it1) }
 //            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
@@ -170,12 +170,13 @@ class ClassFragment: Fragment() {
     }
 
     private fun setUpRevisionJoinBtn(){
+        completeText.text = (selectedBatch?.startTime?.toDate() ?:
         btnRevision.setOnClickListener {
             selectedRevisionClass?.let { it1 ->
                 enrollViewModel.handle(
-                EnrollViewActions.PrimaryAction(it1))}
-//            }?.let { it2 -> enrollViewModel.handle(it2) }
-        }
+                    EnrollViewActions.PrimaryAction(it1))}
+    //            }?.let { it2 -> enrollViewModel.handle(it2) }
+        }) as CharSequence?
     }
 
     private fun updateState(it: EnrollViewState) {

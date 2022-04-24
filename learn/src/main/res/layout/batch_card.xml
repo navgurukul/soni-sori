@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/tvTitleBatch"
                 style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_3x"
                 android:layout_marginStart="@dimen/spacing_3x"
@@ -57,7 +57,8 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tvType"
                 app:layout_constraintTop_toTopOf="@id/tvType"
-                tools:text=" Ankit_15SEP21" />
+                tools:text=" Ankit_15SEP21"
+                android:singleLine="true" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -135,7 +136,6 @@
                 android:layout_marginBottom="@dimen/spacing_4x"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Can’t start on 15 Sep 21?"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvClassDetail"
