@@ -19,7 +19,7 @@ val viewModelModule = module {
     viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
     viewModel { (args: CourseContentArgs) -> ClassFragmentViewModel(get(), get(), get(), args) }
     viewModel { (courseId: String, pathwayId: Int) -> CourseContentActivityViewModel(get(), get(), get(), courseId, pathwayId) }
-    viewModel { (args: CourseClassContent) -> EnrollViewModel(get(), get(), get(), args) }
+    viewModel { EnrollViewModel(get(), get(), get()) }
 }
 
 
