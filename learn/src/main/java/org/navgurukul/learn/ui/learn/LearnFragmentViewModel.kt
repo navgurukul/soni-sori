@@ -158,7 +158,7 @@ class LearnFragmentViewModel(
             setState { copy(loading=true) }
             val status = learnRepo.checkedStudentEnrolment(pathwayId).message
             if(status == EnrolStatus.enrolled){
-                getUpcomingClasses(1)
+                getUpcomingClasses(pathwayId)
             } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
             }
@@ -177,35 +177,37 @@ class LearnFragmentViewModel(
 
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
-            setState { copy(loading=true) }
             val batches =learnRepo.getBatchesListByPathway(pathwayId)
             batches.let {
                 setState {
                     copy(
-                        batches = it
+                        batches = it,
+                        classes = emptyList()
                     )
                 }
                 if(it.isNotEmpty()){
                     _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
                 }
             }
+            setState { copy(loading = false) }
         }
     }
 
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
-            setState { copy(loading= true) }
             val classes = learnRepo.getUpcomingClass(pathwayId)
             classes?.let {
                 setState {
                     copy(
-                        classes = it
+                        classes = it,
+                        batches = emptyList()
                     )
                 }
                 if (it.isNotEmpty()){
                     _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
                 }
             }
+            setState { copy(loading = false) }
         }
     }
 
