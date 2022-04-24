@@ -1,12 +1,16 @@
 package org.navgurukul.learn.ui.learn
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.RadioButton
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -17,6 +21,7 @@ import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.class_course_detail.*
 import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.item_batch_exercise.*
+import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.revision_selection_sheet.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -24,11 +29,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.fragmentArgs
+import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionExerciseAdapter
@@ -46,6 +53,7 @@ class ClassFragment: Fragment() {
     private lateinit var mClassAdapter: BatchSelectionExerciseAdapter
     private val learnViewModel: LearnFragmentViewModel by sharedViewModel()
     private var selectedBatch : Batch? = null
+    private var selectedClass: CourseClassContent? = null
     private var selectedRevisionClass : CourseClassContent? = null
     private val enrollViewModel : EnrollViewModel by sharedViewModel()
 
@@ -169,7 +177,7 @@ class ClassFragment: Fragment() {
 
     private fun setupJoinButton(){
         joinBatchBtn.setOnClickListener {
-            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
+            selectedBatch?.let { it1 -> showEnrolDialog(it1) }
         }
     }
 
@@ -233,4 +241,32 @@ class ClassFragment: Fragment() {
         mRevisionAdapter.submitList(revisionClass)
         setUpRevisionJoinBtn()
     }
+
+    private fun showEnrolDialog(batch: Batch) {
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
+        val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
+        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val tvClassTitle = alertLayout.tvClassTitle
+        tvClassTitle.text = batch.title
+        val tvBatchDate = alertLayout.tv_Batch_Date
+        tvBatchDate.text = batch.dateRange()
+
+        btnAccept.setOnClickListener {
+            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
+            btAlertDialog?.dismiss()
+        }
+        btnBack.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+        btAlertDialog?.show()
+        btAlertDialog?.setWidthPercent(45);
+    }
+
 }
