@@ -41,9 +41,7 @@ class ClassActivity: AppCompatActivity(){
     }
 
     private lateinit var mBinding: ActivityClassBinding
-    private val viewModel: EnrollViewModel by viewModel(parameters =
-    { parametersOf(args?.classContent) }
-    )
+    private val viewModel: EnrollViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +49,10 @@ class ClassActivity: AppCompatActivity(){
         setupToolbar()
 
         showClassDetails(intent.extras?.getParcelable<ClassActivityArgs>(KEY_ARG))
+
+        args?.classContent?.let {
+            viewModel.handle(EnrollViewActions.RequestPageLoad(it))
+        }
 
         viewModel.viewState.observe(this, {
             it?.let {
@@ -99,7 +101,7 @@ class ClassActivity: AppCompatActivity(){
                 mBinding.tvFacilatorName.text = it.facilitator?.name
 
                 mBinding.tvBtnJoin.setOnClickListener {
-                    viewModel.handle(EnrollViewActions.PrimaryAction)
+                    viewModel.handle(EnrollViewActions.PrimaryAction(args.classContent))
                 }
             }
 

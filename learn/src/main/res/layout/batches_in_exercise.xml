@@ -49,15 +49,17 @@
         tools:listitem="@layout/item_batch_exercise"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/explore_opportunity"
+        android:id="@+id/joinBatchBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_3x"
         android:layout_marginTop="@dimen/spacing_4x"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:backgroundTint="@color/green_progress_color"
         android:textAllCaps="false"
-        android:background="@color/green_progress_color"
+        android:text="Join Batch"
         android:textAppearance="?textAppearanceEmphasized2"
         app:cornerRadius="?cornerRadius400"
         app:layout_constraintBottom_toBottomOf="parent"/>

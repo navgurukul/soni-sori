@@ -1,17 +1,21 @@
 package org.navgurukul.learn.di
 
 import android.app.Application
+import android.view.ContextThemeWrapper
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.*
+import org.navgurukul.learn.util.ColorProvider
 import retrofit2.Retrofit
 
 val viewModelModule = module {
@@ -19,7 +23,7 @@ val viewModelModule = module {
     viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
     viewModel { (args: CourseContentArgs) -> ClassFragmentViewModel(get(), get(), get(), args) }
     viewModel { (courseId: String, pathwayId: Int) -> CourseContentActivityViewModel(get(), get(), get(), courseId, pathwayId) }
-    viewModel { (args: CourseClassContent) -> EnrollViewModel(get(), get(), get(), args) }
+    viewModel { EnrollViewModel(get(), get(), get()) }
 }
 
 
@@ -66,8 +70,10 @@ val repositoryModule = module {
 
     single { provideLearnRepository(get(), androidApplication(), get()) }
 }
-
+val factoryModule = module{
+    single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
+}
 val learnModules = arrayListOf(
     viewModelModule, apiModule, databaseModule,
-    repositoryModule
+    repositoryModule, factoryModule
 )

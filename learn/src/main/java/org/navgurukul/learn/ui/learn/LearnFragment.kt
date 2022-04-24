@@ -29,6 +29,7 @@ import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
+import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
@@ -65,7 +66,7 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-//        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
+        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
@@ -118,6 +119,7 @@ class LearnFragment : Fragment(){
                     initUpcomingRecyclerView(it.classes)
                     mBinding.upcoming.root.visibility = View.VISIBLE
                 }
+                is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
                         if (cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))

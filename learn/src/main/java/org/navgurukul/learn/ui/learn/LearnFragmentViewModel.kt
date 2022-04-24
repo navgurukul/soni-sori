@@ -68,7 +68,7 @@ class LearnFragmentViewModel(
                                 ) false else true
                             )
                         }
-                        checkedStudentEnrolment()
+//                        checkedStudentEnrolment()
                     } else {
                         setState { copy(loading = false) }
                     }
@@ -79,7 +79,7 @@ class LearnFragmentViewModel(
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
-            checkedStudentEnrolment()
+            checkedStudentEnrolment(1)
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
                     setState { copy(courses = it, loading = false, logo = pathway.logo,
@@ -130,7 +130,7 @@ class LearnFragmentViewModel(
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
             }
             is LearnFragmentViewActions.RequestPageLoad ->{
-                checkedStudentEnrolment()
+                checkedStudentEnrolment(1)
             }
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
@@ -150,9 +150,9 @@ class LearnFragmentViewModel(
         }
     }
 
-     private fun checkedStudentEnrolment(){
-         val currentState = viewState.value!!
-         val pathwayId = (currentState.pathways[currentState.currentPathwayIndex].id)
+     private fun checkedStudentEnrolment(pathwayId: Int){
+//         val currentState = viewState.value!!
+//         val pathwayId = (currentState.pathways[currentState.currentPathwayIndex].id)
         viewModelScope.launch {
             setState { copy(loading=true) }
             val status = learnRepo.checkedStudentEnrolment(pathwayId).message

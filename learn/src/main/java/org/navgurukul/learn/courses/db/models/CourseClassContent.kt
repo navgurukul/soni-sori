@@ -70,6 +70,7 @@ data class CourseClassContent(
     @Ignore
     var number: Int? = 0
 
+    @Ignore
     var isSelected: Boolean = false
 }
 

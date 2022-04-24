@@ -45,6 +45,8 @@ class ClassFragment: Fragment() {
     private lateinit var mClassAdapter: BatchSelectionExerciseAdapter
     private val learnViewModel: LearnFragmentViewModel by sharedViewModel()
     private var selectedBatch : Batch? = null
+    private var selectedRevisionClass : CourseClassContent? = null
+    private val enrollViewModel : EnrollViewModel by sharedViewModel()
 
 
     companion object {
@@ -145,9 +147,17 @@ class ClassFragment: Fragment() {
 //        val radioButton = (RadioButton)findViewById(selectedId)
 //        explore_opportunity.setText(radioButton)
 
-        explore_opportunity.setOnClickListener {
+        joinBatchBtn.setOnClickListener {
             learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
-            Log.d("checked","enrolled successfully")
+        }
+    }
+
+    private fun setUpRevisionJoinBtn(){
+        btnRevision.setOnClickListener {
+            selectedRevisionClass?.let { it1 ->
+                enrollViewModel.handle(
+                EnrollViewActions.PrimaryAction(it1))}
+//            }?.let { it2 -> enrollViewModel.handle(it2) }
         }
     }
 
@@ -181,11 +191,12 @@ class ClassFragment: Fragment() {
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
         mRevisionAdapter = RevisionClassAdapter {
-
+            selectedRevisionClass = it
         }
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = mRevisionAdapter
         mRevisionAdapter.submitList(revisionClass)
+        setUpRevisionJoinBtn()
     }
 }
