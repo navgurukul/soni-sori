@@ -224,7 +224,11 @@ class LearnFragment : Fragment(){
 
     private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>){
         mClassAdapter = UpcomingEnrolAdapater{
-//            viewModel.getUpcomingClasses(it.pathway_id)
+            val viewState = viewModel.viewState.value
+            viewState?.let { state ->
+                val pathwayId = state.pathways[state.currentPathwayIndex].id
+                CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
+            }
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

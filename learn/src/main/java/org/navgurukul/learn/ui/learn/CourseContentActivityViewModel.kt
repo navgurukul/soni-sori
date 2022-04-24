@@ -22,6 +22,7 @@ class CourseContentActivityViewModel(
     private val stringProvider: StringProvider,
     private var courseId: String,
     private val pathwayId: Int,
+    private val contentId: String? = null,
 ) : BaseViewModel<CourseContentActivityViewEvents, CourseContentActivityViewState>(
     CourseContentActivityViewState()
 ) {
@@ -52,7 +53,7 @@ class CourseContentActivityViewModel(
                             CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
                         )
                     } else {
-                        launchLastSelectedContentOfCourse(course)
+                        launchLastSelectedContentOfCourse(course, contentId)
                     }
                 }
 
@@ -60,7 +61,7 @@ class CourseContentActivityViewModel(
 
     }
 
-    private suspend fun launchLastSelectedContentOfCourse(course: Course?) {
+    private suspend fun launchLastSelectedContentOfCourse(course: Course?, contentId: String? = null) {
         course?.let {
             currentCourse = it
 
@@ -73,10 +74,12 @@ class CourseContentActivityViewModel(
                 )
             }
 
-            val exerciseId = withContext(Dispatchers.IO) {
-                learnRepo.fetchCurrentStudyForCourse(course.id)
-            }?.exerciseId ?: currentCourse.courseContents.first().id
-            onContentListItemSelected(exerciseId)
+            contentId?.let { onContentListItemSelected(it) } ?: kotlin.run {
+                val exerciseId = withContext(Dispatchers.IO) {
+                    learnRepo.fetchCurrentStudyForCourse(course.id)
+                }?.exerciseId ?: currentCourse.courseContents.first().id
+                onContentListItemSelected(exerciseId)
+            }
         }
     }
 
@@ -134,36 +137,41 @@ class CourseContentActivityViewModel(
         markContentSelected(contentId)
 
         val index = currentCourse.courseContents.indexOfFirst { contentId == it.id }
-        val isFirst = index == 0
-        val isLast = index == currentCourse.courseContents.size - 1
-        val isCompleted =
-            currentCourse.courseContents[index].courseContentProgress == CourseContentProgress.COMPLETED
-        val courseContentType = currentCourse.courseContents[index].courseContentType
 
-        if(courseContentType == CourseContentType.exercise) {
-            _viewEvents.setValue(
-                CourseContentActivityViewEvents.ShowExerciseFragment(
-                    isFirst,
-                    isLast,
-                    isCompleted,
-                    currentCourse.id,
-                    contentId,
-                    courseContentType,
-                    navigation
+        if(index > -1) {
+            val isFirst = index == 0
+            val isLast = index == currentCourse.courseContents.size - 1
+            val isCompleted =
+                currentCourse.courseContents[index].courseContentProgress == CourseContentProgress.COMPLETED
+            val courseContentType = currentCourse.courseContents[index].courseContentType
+
+            if (courseContentType == CourseContentType.exercise) {
+                _viewEvents.setValue(
+                    CourseContentActivityViewEvents.ShowExerciseFragment(
+                        isFirst,
+                        isLast,
+                        isCompleted,
+                        currentCourse.id,
+                        contentId,
+                        courseContentType,
+                        navigation
+                    )
                 )
-            )
-        } else if(courseContentType == CourseContentType.class_topic) {
-            _viewEvents.setValue(
-                CourseContentActivityViewEvents.ShowClassFragment(
-                    isFirst,
-                    isLast,
-                    isCompleted,
-                    currentCourse.id,
-                    contentId,
-                    courseContentType,
-                    navigation
+            } else if (courseContentType == CourseContentType.class_topic) {
+                _viewEvents.setValue(
+                    CourseContentActivityViewEvents.ShowClassFragment(
+                        isFirst,
+                        isLast,
+                        isCompleted,
+                        currentCourse.id,
+                        contentId,
+                        courseContentType,
+                        navigation
+                    )
                 )
-            )
+            }
+        }else{
+            _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.content_error_message)))
         }
     }
 
