@@ -168,9 +168,9 @@ sealed class EnrollViewEvents : ViewEvents {
 }
 
 sealed class EnrollViewActions : ViewModelAction {
-    //    data class EnrolToClass(val classId: Int) : EnrollViewActions()
-    data class PrimaryAction(val mClass: CourseClassContent): EnrollViewActions()
-    data class RequestPageLoad(val mClass: CourseClassContent): EnrollViewActions()
+//    data class EnrolToClass(val classId: Int) : EnrollViewActions()
+   data class PrimaryAction(val mClass: CourseClassContent): EnrollViewActions()
+   data class RequestPageLoad(val mClass: CourseClassContent): EnrollViewActions()
     object DropOut : EnrollViewActions()
 }
 

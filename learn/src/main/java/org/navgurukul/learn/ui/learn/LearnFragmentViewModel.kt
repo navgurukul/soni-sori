@@ -35,40 +35,43 @@ class LearnFragmentViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getPathwayData(true).collect {
                 it?.let {
+                    var currentPathway: Pathway? = null
                     if (it.isNotEmpty()) {
                         setState {
                             val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
                             var currentPathwayIndex = currentPathwayIndex
-                            var currentPathway = it[currentPathwayIndex]
+                            currentPathway = it[currentPathwayIndex]
                             it.forEachIndexed { index, pathway ->
                                 if (pathway.id == lastSelectedPathwayId) {
                                     currentPathwayIndex = index
                                     currentPathway = pathway
                                 }
                             }
-                            val courses = currentPathway.courses
+                            val courses = currentPathway!!.courses
 
-                            if (currentPathway.courses.isEmpty()) {
-                                selectPathway(currentPathway)
+                            if (currentPathway!!.courses.isEmpty()) {
+                                selectPathway(currentPathway!!)
                             }
                             val selectedLanguage =
-                                currentPathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
-                                    ?: currentPathway.supportedLanguages[0].label
+                                currentPathway!!.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
+                                    ?: currentPathway!!.supportedLanguages[0].label
                             copy(
                                 loading = courses.isEmpty(),
                                 pathways = it,
                                 courses = courses,
                                 currentPathwayIndex = currentPathwayIndex,
-                                subtitle = currentPathway.name,
-                                languages = currentPathway.supportedLanguages,
+                                subtitle = currentPathway!!.name,
+                                languages = currentPathway!!.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
-                                logo = currentPathway.logo,
-                                showTakeTestButton = if (currentPathway.cta?.url?.isBlank()
+                                logo = currentPathway!!.logo,
+                                showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
                                         ?: true
                                 ) false else true
                             )
                         }
-//                        checkedStudentEnrolment()
+                        currentPathway?.let {
+                            checkedStudentEnrolment(it.id)
+                        }
                     } else {
                         setState { copy(loading = false) }
                     }
@@ -79,7 +82,7 @@ class LearnFragmentViewModel(
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
-            checkedStudentEnrolment(1)
+            checkedStudentEnrolment(pathway.id)
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
                     setState { copy(courses = it, loading = false, logo = pathway.logo,
@@ -130,7 +133,7 @@ class LearnFragmentViewModel(
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenPathwaySelectionSheet)
             }
             is LearnFragmentViewActions.RequestPageLoad ->{
-                checkedStudentEnrolment(1)
+//                checkedStudentEnrolment()
             }
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
@@ -151,8 +154,6 @@ class LearnFragmentViewModel(
     }
 
      private fun checkedStudentEnrolment(pathwayId: Int){
-//         val currentState = viewState.value!!
-//         val pathwayId = (currentState.pathways[currentState.currentPathwayIndex].id)
         viewModelScope.launch {
             setState { copy(loading=true) }
             val status = learnRepo.checkedStudentEnrolment(pathwayId).message

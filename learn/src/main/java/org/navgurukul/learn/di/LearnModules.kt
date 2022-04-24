@@ -70,9 +70,11 @@ val repositoryModule = module {
 
     single { provideLearnRepository(get(), androidApplication(), get()) }
 }
+
 val factoryModule = module{
     single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
 }
+
 val learnModules = arrayListOf(
     viewModelModule, apiModule, databaseModule,
     repositoryModule, factoryModule
