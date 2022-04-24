@@ -46,7 +46,8 @@ class BatchSelectionExerciseAdapter(val callback: (Batch) -> Unit):
     override fun bind(holder: DataBoundViewHolder<ItemBatchExerciseBinding>, item: Batch) {
         val binding = holder.binding
         binding.bt1.text = item.title
-        binding.root.setOnClickListener {
+        binding.bt1.isChecked = item.isSelected
+        binding.bt1.setOnClickListener {
             callback.invoke(item)
             item.id?.let { it1 -> makeSelection(it1) }
         }

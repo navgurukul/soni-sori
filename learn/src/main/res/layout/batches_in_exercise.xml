@@ -32,20 +32,10 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/des" />
 
-<!--    <include-->
-<!--       android:id="@+id/listOfBatch"-->
-<!--        android:layout_marginTop="@dimen/spacing_8x"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        layout="@layout/item_batch_exercise"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/description"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/description"-->
-<!--        />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewBatch"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_2x"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -60,19 +50,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/explore_opportunity"
-        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_4x"
         android:layout_marginTop="@dimen/spacing_4x"
-        android:padding="@dimen/spacing_2x"
-        app:cornerRadius="?cornerRadius400"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
         android:background="@color/green_progress_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/spacing_5x"
-        tools:text="Enroll in Ankit_19SEP21"/>
+        android:textAppearance="?textAppearanceEmphasized2"
+        app:cornerRadius="?cornerRadius400"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
