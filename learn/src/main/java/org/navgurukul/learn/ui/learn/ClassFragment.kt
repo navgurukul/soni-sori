@@ -81,6 +81,7 @@ class ClassFragment: Fragment() {
 
         const val TAG = "ClassFragment"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -111,6 +112,7 @@ class ClassFragment: Fragment() {
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClassToJoin -> {
                     setUpRevisionJoinBtn(it.revisionClass)
+                    enrollViewModel.handle(EnrollViewActions.RequestPageLoad(it.revisionClass))
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.GONE
                     mBinding.classDetail.visibility = View.GONE
@@ -118,6 +120,7 @@ class ClassFragment: Fragment() {
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
+                    enrollViewModel.handle(EnrollViewActions.RequestPageLoad(it.courseClass))
                     mBinding.classDetail.visibility = View.VISIBLE
                     mBinding.revisionList.visibility = View.GONE
                 }
@@ -136,6 +139,7 @@ class ClassFragment: Fragment() {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
         }
+
         enrollViewModel.viewEvents.observe(viewLifecycleOwner){
             when(it){
                 is EnrollViewEvents.ShowToast -> toast(it.toastText)
