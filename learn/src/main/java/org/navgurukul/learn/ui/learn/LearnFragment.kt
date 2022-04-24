@@ -113,10 +113,12 @@ class LearnFragment : Fragment(){
                 is LearnFragmentViewEvents.ShowUpcomingBatch ->{
                     setUpUpcomingData(it.batch)
                     mBinding.batchCard.root.visibility = View.VISIBLE
+                    mBinding.upcoming.root.visibility = View.GONE
                 }
                 is LearnFragmentViewEvents.ShowUpcomingClasses ->{
                     initUpcomingRecyclerView(it.classes)
                     mBinding.upcoming.root.visibility = View.VISIBLE
+                    mBinding.batchCard.root.visibility = View.GONE
                 }
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
