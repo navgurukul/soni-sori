@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,8 @@ class ClassFragment: Fragment() {
     private lateinit var mClassAdapter: BatchSelectionExerciseAdapter
     private val learnViewModel: LearnFragmentViewModel by sharedViewModel()
     private var selectedBatch : Batch? = null
+    private var selectedRevisionClass : CourseClassContent? = null
+    private val enrollViewModel : EnrollViewModel by sharedViewModel()
 
 
     companion object {
@@ -117,6 +120,17 @@ class ClassFragment: Fragment() {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
         }
+        enrollViewModel.viewEvents.observe(viewLifecycleOwner){
+            when(it){
+                is EnrollViewEvents.ShowToast -> toast(it.toastText)
+
+            }
+        }
+        enrollViewModel.viewState.observe(viewLifecycleOwner){
+            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            updateState(it)
+        }
+
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -145,9 +159,27 @@ class ClassFragment: Fragment() {
 //        val radioButton = (RadioButton)findViewById(selectedId)
 //        explore_opportunity.setText(radioButton)
 
-        explore_opportunity.setOnClickListener {
+        joinBatchBtn.setOnClickListener {
             learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
-            Log.d("checked","enrolled successfully")
+        }
+    }
+
+    private fun setUpRevisionJoinBtn(){
+        btnRevision.setOnClickListener {
+            selectedRevisionClass?.let { it1 ->
+                enrollViewModel.handle(
+                EnrollViewActions.PrimaryAction(it1))}
+//            }?.let { it2 -> enrollViewModel.handle(it2) }
+        }
+    }
+
+    private fun updateState(it: EnrollViewState) {
+        it.primaryActionBackgroundColor?.let {
+           btnRevision.setBackgroundColor(it)
+        }
+        it.primaryAction?.let {
+            btnRevision.isVisible = true
+          btnRevision.text = it
         }
     }
 
@@ -155,6 +187,7 @@ class ClassFragment: Fragment() {
         setupClassHeaderDeatils(courseClass)
         tvDate.text = courseClass.timeDateRange()
         tvFacilatorName.text = courseClass.facilitator?.name
+
 
         tvBtnJoin.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)
@@ -181,11 +214,12 @@ class ClassFragment: Fragment() {
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
         mRevisionAdapter = RevisionClassAdapter {
-
+            selectedRevisionClass = it
         }
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = mRevisionAdapter
         mRevisionAdapter.submitList(revisionClass)
+        setUpRevisionJoinBtn()
     }
 }

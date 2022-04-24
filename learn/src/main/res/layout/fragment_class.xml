@@ -22,11 +22,10 @@
 
             <TextView
                 android:id="@+id/tvSubTitle"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline6"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Class 1 - Intro to Python"/>
 
@@ -69,7 +68,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/class_desc1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/textColor"
                 app:layout_constraintStart_toEndOf="@+id/tvClassType"
                 app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
@@ -92,10 +91,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/spacing_2x"
-                app:layout_constraintStart_toStartOf="@+id/tvAbout"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvAbout"
                 app:layout_constraintTop_toBottomOf="@+id/tvAbout"
-                tools:visibility="visible"/>
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
             <include
                 android:id="@+id/progressBar"

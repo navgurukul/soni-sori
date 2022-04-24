@@ -3,19 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingEnd="@dimen/spacing_4x"
-    android:paddingStart="@dimen/spacing_4x"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <View-->
-<!--        android:id="@+id/handle_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/sheet_handle_height"-->
-<!--        android:layout_marginTop="@dimen/spacing_2x"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:background="@drawable/sheet_handle" />-->
+    <View
+        android:id="@+id/handle_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sheet_handle_height"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/sheet_handle" />
 
     <TextView
         style="?textAppearanceEmphasized1"
@@ -42,11 +41,14 @@
         android:id="@+id/btnRevision"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green_progress_color"
-        android:layout_marginBottom="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_1x"
         android:layout_marginTop="@dimen/spacing_8x"
         android:gravity="center"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Enroll Revision Class"
+        app:cornerRadius="?cornerRadius400"
+        android:backgroundTint="@color/green_progress_color"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cornerRadius="@dimen/dimen_20_dp" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

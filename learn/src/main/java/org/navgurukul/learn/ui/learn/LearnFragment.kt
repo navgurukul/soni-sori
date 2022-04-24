@@ -29,6 +29,7 @@ import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.model.*
 import org.navgurukul.learn.databinding.FragmentLearnBinding
+import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
@@ -65,7 +66,7 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-//        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
+        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
@@ -132,6 +133,7 @@ class LearnFragment : Fragment(){
                     mBinding.upcoming.root.visibility = View.VISIBLE
                     mBinding.batchCard.root.visibility = View.GONE
                 }
+                is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
                         if (cta.url.contains(BrowserRedirectHelper.WEBSITE_REDIRECT_URL_DELIMITER))
@@ -265,29 +267,29 @@ class LearnFragment : Fragment(){
         )
     }
 
-    private fun updateState(it: LearnFragmentViewState){
-        progress_bar_button.isVisible = it.loading
-        it.courses?.let {
-            recyclerviewCourseContainer.isVisible = true
-            recyclerviewCourse.isVisible = true
-        }?: run {
-            recyclerviewCourseContainer.isVisible = false
-            recyclerviewCourse.isVisible = false
-        }
-
-        it.batches?.let {
-            batchCard.isVisible = true
-            upcoming.isVisible = false
-        }
-
-        it.classes?.let {
-
-            upcoming.isVisible = true
-            batchCard.isVisible = false
-        }?: kotlin.run {
-            upcoming.isVisible = false
-        }
-
-    }
+//    private fun updateState(it: LearnFragmentViewState){
+//        progress_bar_button.isVisible = it.loading
+//        it.courses?.let {
+//            recyclerviewCourseContainer.isVisible = true
+//            recyclerviewCourse.isVisible = true
+//        }?: run {
+//            recyclerviewCourseContainer.isVisible = false
+//            recyclerviewCourse.isVisible = false
+//        }
+//
+//        it.batches?.let {
+//            batchCard.isVisible = true
+//            upcoming.isVisible = false
+//        }
+//
+//        it.classes?.let {
+//
+//            upcoming.isVisible = true
+//            batchCard.isVisible = false
+//        }?: kotlin.run {
+//            upcoming.isVisible = false
+//        }
+//
+//    }
 
 }
