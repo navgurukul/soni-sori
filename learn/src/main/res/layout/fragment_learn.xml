@@ -37,6 +37,7 @@
                 layout="@layout/upcoming_class_selection_sheet"
                 android:layout_width="match_parent"
                 tools:visibility="gone"
+                android:visibility="gone"
                 android:layout_height="wrap_content" />
 
             <org.navgurukul.commonui.views.EmptyStateView

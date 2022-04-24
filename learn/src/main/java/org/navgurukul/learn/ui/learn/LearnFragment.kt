@@ -59,8 +59,8 @@ class LearnFragment : Fragment(){
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-        mBinding.batchCard.root.visibility = View.GONE
-        mBinding.upcoming.root.visibility = View.GONE
+//        mBinding.batchCard.root.visibility = View.GONE
+//        mBinding.upcoming.root.visibility = View.GONE
 
 
         initSwipeRefresh()
@@ -80,6 +80,18 @@ class LearnFragment : Fragment(){
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
+            if(!it.classes.isEmpty()){
+                mBinding.upcoming.root.isVisible = true
+                initUpcomingRecyclerView(it.classes)
+            }else{
+                mBinding.upcoming.root.isVisible = false
+            }
+            if(!it.batches.isEmpty()){
+                mBinding.batchCard.root.isVisible = true
+                setUpUpcomingData(it.batches.first())
+            }else{
+                mBinding.batchCard.root.isVisible = false
+            }
 
             if (it.showTakeTestButton)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
@@ -228,7 +240,11 @@ class LearnFragment : Fragment(){
 
     private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>){
         mClassAdapter = UpcomingEnrolAdapater{
-//            viewModel.getUpcomingClasses(it.pathway_id)
+            val viewState = viewModel.viewState.value
+            viewState?.let { state ->
+                val pathwayId = state.pathways[state.currentPathwayIndex].id
+                CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
+            }
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -236,8 +252,6 @@ class LearnFragment : Fragment(){
         recyclerViewUpcoming.adapter = mClassAdapter
 
         mClassAdapter.submitList(upcomingClassList)
-        viewModel.viewState.observe(viewLifecycleOwner){
-        }
     }
 
     private fun initRecyclerView() {

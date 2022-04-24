@@ -26,20 +26,21 @@ import org.navgurukul.learn.ui.learn.adapter.CourseContentAdapter
 import org.navgurukul.learn.util.LearnUtils
 
 @Parcelize
-data class CourseContentActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
+data class CourseContentActivityArgs(val courseId: String, val pathwayId: Int, val contentId: String?= null) : Parcelable
 
 class CourseContentActivity : AppCompatActivity(){
 
     companion object {
-        fun start(context: Context, courseId: String, pathwayId: Int) {
+        fun start(context: Context, courseId: String, pathwayId: Int, contentId: String? = null) {
             val intent = Intent(context, CourseContentActivity::class.java).apply {
-                putExtras(CourseContentActivityArgs(courseId, pathwayId).toBundle()!!)
+                putExtras(CourseContentActivityArgs(courseId, pathwayId, contentId).toBundle()!!)
             }
             context.startActivity(intent)
         }
 
         const val PATHWAY_URL_INDEX = 1
         const val COURSE_URL_INDEX = 3
+        const val CONTENT_URL_INDEX = 2
     }
 
     private val args: CourseContentActivityArgs by lazy {
@@ -48,13 +49,14 @@ class CourseContentActivity : AppCompatActivity(){
             val paths = data.pathSegments
             val courseId = paths[COURSE_URL_INDEX]
             val pathwayId = paths[PATHWAY_URL_INDEX].toInt()
-            CourseContentActivityArgs(courseId, pathwayId)
+            val contentId = paths[CONTENT_URL_INDEX]
+            CourseContentActivityArgs(courseId, pathwayId, contentId)
         }
     }
 
     private lateinit var mBinding: ActivityExerciseBinding
     private val viewModel: CourseContentActivityViewModel by viewModel(
-        parameters = { parametersOf(args.courseId, args.pathwayId) }
+        parameters = { parametersOf(args.courseId, args.pathwayId, args.contentId) }
     )
     private lateinit var mAdapter: CourseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -122,7 +124,7 @@ class CourseContentActivity : AppCompatActivity(){
 
             if (!it.isCourseCompleted) {
                 mAdapter.submitList(it.courseContentList) {
-                    mBinding.recyclerviewCourseExerciseList.scrollToPosition(it.currentContentIndex)
+                    mBinding.recyclerviewCourseExerciseList.smoothScrollToPosition(it.currentContentIndex)
                 }
                 mBinding.tvCourseTitle.text = it.currentCourseTitle
 

@@ -109,6 +109,14 @@ class ClassFragment: Fragment() {
                     mBinding.revisionList.visibility = View.VISIBLE
                     mBinding.classDetail.visibility = View.GONE
                 }
+
+                is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClassToJoin -> {
+                    setUpRevisionJoinBtn(it.revisionClass)
+                    fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
+                    mBinding.revisionList.visibility = View.GONE
+                    mBinding.classDetail.visibility = View.GONE
+                }
+
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
                     mBinding.classDetail.visibility = View.VISIBLE
@@ -132,6 +140,12 @@ class ClassFragment: Fragment() {
         enrollViewModel.viewEvents.observe(viewLifecycleOwner){
             when(it){
                 is EnrollViewEvents.ShowToast -> toast(it.toastText)
+                is EnrollViewEvents.OpenLink -> startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(it.link)
+                    )
+                )
 
             }
         }
@@ -165,27 +179,29 @@ class ClassFragment: Fragment() {
     private fun setupJoinButton(){
         joinBatchBtn.setOnClickListener {
             selectedBatch?.let { it1 -> showEnrolDialog(it1) }
-//            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
         }
     }
 
-    private fun setUpRevisionJoinBtn(){
-        completeText.text = (selectedBatch?.startTime?.toDate() ?:
+    private fun setUpRevisionJoinBtn(revisionClass: CourseClassContent ?= null){
         btnRevision.setOnClickListener {
-            selectedRevisionClass?.let { it1 ->
+            val mRevisionClass = revisionClass ?: selectedRevisionClass
+            mRevisionClass?.let { it1 ->
                 enrollViewModel.handle(
-                    EnrollViewActions.PrimaryAction(it1))}
-    //            }?.let { it2 -> enrollViewModel.handle(it2) }
-        }) as CharSequence?
+                    EnrollViewActions.PrimaryAction(it1)
+                )
+            } ?: kotlin.run { toast("Please Select a Class to Enrol into") }
+        }
     }
 
     private fun updateState(it: EnrollViewState) {
+        val button = if (selectedRevisionClass != null) btnRevision else tvBtnJoin
+
         it.primaryActionBackgroundColor?.let {
-           btnRevision.setBackgroundColor(it)
+            button.setBackgroundColor(it)
         }
         it.primaryAction?.let {
-            btnRevision.isVisible = true
-          btnRevision.text = it
+            button.isVisible = true
+            button.text = it
         }
     }
 
@@ -194,9 +210,8 @@ class ClassFragment: Fragment() {
         tvDate.text = courseClass.timeDateRange()
         tvFacilatorName.text = courseClass.facilitator?.name
 
-
         tvBtnJoin.setOnClickListener {
-            fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestJoinClass)
+            enrollViewModel.handle(EnrollViewActions.PrimaryAction(courseClass))
         }
     }
 
@@ -205,7 +220,6 @@ class ClassFragment: Fragment() {
         tvClassType.text = courseClass.type.name.capitalizeWords()
         tvClassLanguage.text = courseClass.displayableLanguage()
     }
-
 
     private fun initRecyclerViewBatch(batches : List<Batch>){
         mClassAdapter = BatchSelectionExerciseAdapter {
