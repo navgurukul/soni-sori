@@ -19,10 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.class_course_detail.*
+import kotlinx.android.synthetic.main.class_course_detail.tvDate
+import kotlinx.android.synthetic.main.class_course_detail.tvFacilatorName
 import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.item_batch_exercise.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
+import kotlinx.android.synthetic.main.layout_revision_dialog.view.*
+import kotlinx.android.synthetic.main.revision_class.*
 import kotlinx.android.synthetic.main.revision_selection_sheet.*
+import kotlinx.android.synthetic.main.revision_selection_sheet.btnRevision
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -97,6 +102,8 @@ class ClassFragment: Fragment() {
         mBinding.revisionList.visibility = View.GONE
         mBinding.classDetail.visibility = View.GONE
         mBinding.batchFragment.visibility = View.GONE
+        mBinding.revisionClassData.root.visibility = View.GONE
+
         initScreenRefresh()
 
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -108,19 +115,25 @@ class ClassFragment: Fragment() {
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.VISIBLE
                     mBinding.classDetail.visibility = View.GONE
+                    mBinding.revisionClassData.root.visibility = View.GONE
+
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClassToJoin -> {
-                    setUpRevisionJoinBtn(it.revisionClass)
+                    setUpRevisionClassData(it.revisionClass)
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.GONE
                     mBinding.classDetail.visibility = View.GONE
+                    mBinding.revisionClassData.root.visibility = View.VISIBLE
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
                     mBinding.classDetail.visibility = View.VISIBLE
                     mBinding.revisionList.visibility = View.GONE
+                    mBinding.batchFragment.visibility = View.GONE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowBatches ->{
@@ -182,14 +195,10 @@ class ClassFragment: Fragment() {
         }
     }
 
-    private fun setUpRevisionJoinBtn(revisionClass: CourseClassContent ?= null){
+    private fun setUpRevisionJoinBtn(){
+
         btnRevision.setOnClickListener {
-            val mRevisionClass = revisionClass ?: selectedRevisionClass
-            mRevisionClass?.let { it1 ->
-                enrollViewModel.handle(
-                    EnrollViewActions.PrimaryAction(it1)
-                )
-            } ?: kotlin.run { toast("Please Select a Class to Enrol into") }
+           selectedRevisionClass?.let { it1 -> showRevisionEnrolDialog(it1) }
         }
     }
 
@@ -205,6 +214,19 @@ class ClassFragment: Fragment() {
         }
     }
 
+    private fun setUpRevisionClassData(revisionClass: CourseClassContent){
+        tvRevDate.text = revisionClass.timeDateRange()
+        tvRevFacilatorName.text = revisionClass.facilitator?.name
+        btnRevision.setOnClickListener {
+            val mRevisionClass = revisionClass
+            mRevisionClass.let { it1 ->
+                enrollViewModel.handle(
+                    EnrollViewActions.PrimaryAction(it1)
+                )
+            }
+        }
+
+    }
     private fun setUpClassData(courseClass : CourseClassContent){
         setupClassHeaderDeatils(courseClass)
         tvDate.text = courseClass.timeDateRange()
@@ -216,6 +238,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupClassHeaderDeatils(courseClass: CourseClassContent) {
+        completeText.text = "Completed on "+courseClass.startTime.toDate()
         tvSubTitle.text = courseClass.subTitle
         tvClassType.text = courseClass.type.name.capitalizeWords()
         tvClassLanguage.text = courseClass.displayableLanguage()
@@ -269,5 +292,37 @@ class ClassFragment: Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45);
     }
+    private fun showRevisionEnrolDialog(revisionClass: CourseClassContent) {
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_revision_dialog, null)
+        val btnEnroll: View = alertLayout.findViewById(R.id.btnReviEnroll)
+        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val tvBatchDate = alertLayout.tv_revision_Date
+        tvBatchDate.text = revisionClass.timeDateRange()
+
+        btnEnroll.setOnClickListener {
+            val mRevisionClass = revisionClass
+            mRevisionClass?.let { it1 ->
+                enrollViewModel.handle(
+                    EnrollViewActions.PrimaryAction(it1)
+                )
+            } ?: kotlin.run { toast("Please Select a Class to Enrol into") }
+            btAlertDialog?.dismiss()
+        }
+        btnBack.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+        btAlertDialog?.show()
+        btAlertDialog?.setWidthPercent(45);
+    }
+
+
 
 }

@@ -37,6 +37,8 @@
                 android:layout_marginTop="@dimen/spacing_5x"
                 app:layout_constraintEnd_toEndOf="@id/class_info"
                 android:text="@{Batch.title}"
+                android:ellipsize="end"
+                android:maxLines="1"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/class_info"
@@ -60,6 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvClassTitle"
                 tools:ignore="MissingClass"
                 tools:text="15 Sep 21 to 15 Nov 21"
+                android:drawablePadding="@dimen/spacing_2x"
                 app:drawableStartCompat="@drawable/ic_batch_calender" />
 
             <TextView

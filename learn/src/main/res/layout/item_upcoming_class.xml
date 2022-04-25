@@ -38,6 +38,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_1x"
                     android:paddingVertical="@dimen/spacing_2x"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toStartOf="@+id/tvClassType"
+                    android:layout_marginEnd="@dimen/spacing_2x"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Class 1 Intro of python"/>

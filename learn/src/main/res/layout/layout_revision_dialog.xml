@@ -29,7 +29,7 @@
             tools:text="Revision Class By Prakhar Gupt" />
 
         <TextView
-            android:id="@+id/tv_Batch_Date"
+            android:id="@+id/tv_revision_Date"
             style="?textAppearanceEmphasized2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btnReviEnroll"
             app:layout_constraintHorizontal_bias="0.759"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_revision_Date" />
 
         <TextView
             android:id="@+id/btnReviEnroll"
@@ -67,7 +67,7 @@
             android:text="Confirm Enrollment"
             android:textColor="@color/green_progress_color"
             app:layout_constraintEnd_toEndOf="@+id/infoRevisionText"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_revision_Date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -158,10 +158,10 @@ class LearnFragment : Fragment(){
 
     private fun setUpUpcomingData(batch: Batch) {
         tvType.text =batch.sanitizedType()
-        tvTitleBatch.text = batch.title + " :"
+        tvTitleBatch.text = batch.title
         tvBtnEnroll.text = batch.title
         tvBatchDate.text = batch.dateRange()
-        tvText.text = "Can't start on{ "+ batch.startTime
+        tvText.text = "Can't start on "+ batch.startTime?.toDate()
         tvBtnEnroll.setOnClickListener {
             showEnrolDialog(batch)
         }
@@ -196,7 +196,6 @@ class LearnFragment : Fragment(){
         btnAccept.setOnClickListener {
             initSwipeRefresh()
             viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
-            mBinding.progressBarButton.visibility = View.VISIBLE
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {

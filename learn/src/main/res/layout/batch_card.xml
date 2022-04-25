@@ -55,12 +55,14 @@
                 android:text="@{Batch.title}"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvImg"
                 app:layout_constraintStart_toEndOf="@+id/tvType"
                 app:layout_constraintTop_toTopOf="@id/tvType"
                 tools:text=" Ankit_15SEP21"
                 android:singleLine="true" />
 
             <ImageView
+                android:id="@+id/tvImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_book"
