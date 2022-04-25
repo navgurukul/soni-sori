@@ -91,7 +91,7 @@ class ExerciseActivityViewModel(
             is ExerciseActivityViewActions.ExerciseMarkedCompleted -> onExerciseMarkedCompleted()
             is ExerciseActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
             is ExerciseActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
-            is ExerciseActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
+            is ExerciseActivityViewActions.OnNextCourseClicked -> launchNextCourse("2000")
         }
     }
 

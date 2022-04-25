@@ -28,14 +28,14 @@ class ExerciseFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchExerciseContent(args.exerciseId, args.courseId)
+        fetchExerciseContent(args.exerciseId, "2000")
     }
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
             is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
                 args.exerciseId,
-                args.courseId,
+               "2000",
                 true
             )
         }

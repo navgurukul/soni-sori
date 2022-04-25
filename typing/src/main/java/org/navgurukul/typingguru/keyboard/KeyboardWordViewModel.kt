@@ -16,11 +16,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit.*
 import kotlin.collections.ArrayList
 
-enum class CourseKeyState {
+enum class CourseKeyStateWord {
     CORRECT, INCORRECT, NEUTRAL
 }
 
-data class CourseKey(val label: Char, val state: CourseKeyState) {
+data class CourseKeyWord(val label: Char, val state: CourseKeyState) {
     override fun equals(other: Any?): Boolean {
         return other is CourseKey && label == other.label
     }
@@ -30,7 +30,7 @@ data class CourseKey(val label: Char, val state: CourseKeyState) {
     }
 }
 
-class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) :
+class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) :
     BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
 
     private var timerStarted: Boolean = false
@@ -139,9 +139,10 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
 
     private fun generateCourseKeys() = when (keyboardActivityArgs.mode) {
         is Mode.Course -> {
-//            generateRandomWordList(keyboardActivityArgs.mode.content.distinct())
+
             generateRandomWordList(('a'..'z').toList().map { it })
 
+//            generateRandomWordList(keyboardActivityArgs.mode.content.distinct())
         }
         Mode.Playground -> {
             generateRandomWordList(('a'..'z').toList().map { it })
@@ -161,7 +162,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
 
 }
 
-data class KeyboardViewState(
+data class KeyboardViewStateWord(
     val courseKeys: List<CourseKey> = listOf(),
     val activeKeyIndex: Int? = null,
     val correctKeys: Int = 0,
@@ -171,11 +172,11 @@ data class KeyboardViewState(
     val timerText: String = "00:00"
 ) : ViewState
 
-sealed class KeyboardViewAction {
+sealed class KeyboardViewActionWord {
     class OnKeyInput(val key: Char) : KeyboardViewAction()
 }
 
-sealed class KeyboardViewEvent : ViewEvents {
+sealed class KeyboardViewEventWord : ViewEvents {
     data class ShakeKey(val key: Char) : KeyboardViewEvent()
     data class OpenScoreActivity(
         val rightKeys: Int,

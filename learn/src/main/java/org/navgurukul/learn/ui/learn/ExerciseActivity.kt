@@ -45,7 +45,7 @@ class ExerciseActivity : AppCompatActivity(){
         intent.getParcelableExtra(KEY_ARG) ?: run {
             val data: Uri = intent.data!!
             val paths = data.pathSegments
-            val courseId = paths[COURSE_URL_INDEX]
+            val courseId = "2000"
             val pathwayId = paths[PATHWAY_URL_INDEX].toInt()
             ExerciseActivityArgs(courseId, pathwayId)
         }
@@ -53,7 +53,7 @@ class ExerciseActivity : AppCompatActivity(){
 
     private lateinit var mBinding: ActivityExerciseBinding
     private val viewModel: ExerciseActivityViewModel by viewModel(
-        parameters = { parametersOf(args.courseId, args.pathwayId) }
+        parameters = { parametersOf("2000", args.pathwayId) }
     )
     private lateinit var mAdapter: CourseExerciseAdapter
     private val merakiNavigator: MerakiNavigator by inject()
@@ -91,7 +91,7 @@ class ExerciseActivity : AppCompatActivity(){
                         it.isFirst,
                         it.isLast,
                         it.isCompleted,
-                        it.courseId,
+                        "2000",
                         it.exerciseId,
                         it.navigation
                     )

@@ -15,6 +15,9 @@
 
     <application>
         <activity
+            android:name=".keyboard.KeyboardWordActivity"
+            android:exported="false" />
+        <activity
             android:name=".keyboard.dialog.KeyboardDialogActivity"
             android:screenOrientation="behind"
             android:theme="@style/AppTheme.Transparent" />
