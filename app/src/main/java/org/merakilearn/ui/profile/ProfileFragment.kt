@@ -252,7 +252,7 @@ class ProfileFragment : Fragment() {
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),
-            R.attr.colorPrimary,
+            R.attr.textPrimary,
             false,
             null,
             null,

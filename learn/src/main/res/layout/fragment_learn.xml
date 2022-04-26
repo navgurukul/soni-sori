@@ -52,6 +52,11 @@
                 app:layout_constraintTop_toBottomOf="@id/batchCard"
                 android:layout_height="wrap_content">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Course"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerviewCourse"
                     android:layout_width="match_parent"

@@ -157,7 +157,7 @@ class LearnFragment : Fragment(){
     }
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text =batch.sanitizedType()
+        tvType.text =batch.sanitizedType()+"  :"
         tvTitleBatch.text = batch.title
         tvBtnEnroll.text = batch.title
         tvBatchDate.text = batch.dateRange()
@@ -210,23 +210,27 @@ class LearnFragment : Fragment(){
         selectedLanguage: String? = null, languageClickListener: Boolean = false
     ) {
         (activity as? ToolbarConfigurable)?.let {
-            it.configure(
-                getString(R.string.courses),
-                R.attr.textPrimary,
-                subtitle = subtitle,
-                onClickListener = if (attachClickListener) {
-                    {
-                        viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
-                    }
+            if (subtitle != null) {
+                it.configure(
+        //                "",
+                    subtitle,
+        //                getString(R.string.courses),
+                    R.attr.textPrimary,
+                    subtitle = subtitle,
+                    onClickListener = if (attachClickListener) {
+                        {
+                            viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
+                        }
 
-                } else null,
-                action = selectedLanguage,
-                actionOnClickListener = if (languageClickListener) {
-                    {
-                        viewModel.handle(LearnFragmentViewActions.LanguageSelectionClicked)
-                    }
-                } else null,
-            )
+                    } else null,
+                    action = selectedLanguage,
+                    actionOnClickListener = if (languageClickListener) {
+                        {
+                            viewModel.handle(LearnFragmentViewActions.LanguageSelectionClicked)
+                        }
+                    } else null,
+                )
+            }
         }
     }
 
@@ -265,30 +269,5 @@ class LearnFragment : Fragment(){
             DotItemDecoration(requireContext())
         )
     }
-
-//    private fun updateState(it: LearnFragmentViewState){
-//        progress_bar_button.isVisible = it.loading
-//        it.courses?.let {
-//            recyclerviewCourseContainer.isVisible = true
-//            recyclerviewCourse.isVisible = true
-//        }?: run {
-//            recyclerviewCourseContainer.isVisible = false
-//            recyclerviewCourse.isVisible = false
-//        }
-//
-//        it.batches?.let {
-//            batchCard.isVisible = true
-//            upcoming.isVisible = false
-//        }
-//
-//        it.classes?.let {
-//
-//            upcoming.isVisible = true
-//            batchCard.isVisible = false
-//        }?: kotlin.run {
-//            upcoming.isVisible = false
-//        }
-//
-//    }
 
 }

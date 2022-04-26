@@ -34,13 +34,14 @@
                 android:layout_marginHorizontal="@dimen/spacing_4x"
                 android:text="?textPrimary"
                 android:hint="@string/name"
+                android:ellipsize="end"
                 app:layout_constraintHorizontal_bias="0"
                 android:inputType="textPersonName"
                 android:background="@null"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnEdit"
                 app:layout_constraintStart_toEndOf="@id/ivProfile"
                 app:layout_constraintTop_toTopOf="@id/ivProfile"
-                tools:text="Neha Singh" />
+                tools:text="dhanshri sonwane" />
 
             <TextView
                 android:id="@+id/tvEmail"
@@ -60,12 +61,13 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_2x"
                 android:minWidth="0dp"
+                android:textColor="@color/green_progress_color"
                 android:text="@string/edit"
+                android:layout_marginEnd="@dimen/spacing_5x"
                 android:textAppearance="?textAppearanceEmphasized2"
                 app:layout_constraintWidth_default="wrap"
-                app:layout_constraintStart_toEndOf="@+id/tvName"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/tvName"
                 app:layout_constraintTop_toTopOf="@id/tvName" />
 
@@ -145,6 +147,7 @@
                 android:insetBottom="0dp"
                 android:text="@string/explore_opportunities"
                 android:textAllCaps="false"
+                android:backgroundTint="@color/green_progress_color"
                 android:textAppearance="?textAppearanceEmphasized2"
                 app:cornerRadius="?cornerRadius400"
                 app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
@@ -173,7 +176,7 @@
                 android:layout_marginEnd="@dimen/spacing_3x"
                 android:text="@string/view_all"
                 android:textAllCaps="false"
-                android:textColor="?textBrand"
+                android:textColor="@color/green_progress_color"
                 app:layout_constraintBottom_toBottomOf="@id/tvSavedFile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvSavedFile" />
