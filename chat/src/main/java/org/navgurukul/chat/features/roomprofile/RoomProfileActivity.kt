@@ -132,7 +132,8 @@ class RoomProfileActivity :
         action: String?,
         actionOnClickListener: View.OnClickListener?,
         showLogout: Boolean,
-        showIcon : String?
+        showPathwayIcon : Boolean,
+        pathwayIcon: String?
     ) {
         throw RuntimeException("Set Title is not supported")
     }

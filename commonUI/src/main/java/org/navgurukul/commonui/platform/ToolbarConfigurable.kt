@@ -18,7 +18,7 @@ interface ToolbarConfigurable {
         action: String? = null,
         actionOnClickListener: View.OnClickListener? = null,
         showLogout: Boolean = false,
-        showIcon: String? = null
-
+        showPathwayIcon: Boolean = false,
+        pathwayIcon: String? = null
     )
 }
