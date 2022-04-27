@@ -28,6 +28,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.model.*
@@ -249,7 +250,13 @@ class LearnFragment : Fragment(){
             val viewState = viewModel.viewState.value
             viewState?.let { state ->
                 val pathwayId = state.pathways[state.currentPathwayIndex].id
-                CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
+                if(it.type == ClassType.doubt)
+                    ClassActivity.start(requireContext(), it)
+                else if(it.type == ClassType.revision)
+                    CourseContentActivity.start(requireContext(), it.parentId?:it.courseId, pathwayId, it.id)
+                else{
+                    CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
+                }
             }
         }
         val layoutManager =

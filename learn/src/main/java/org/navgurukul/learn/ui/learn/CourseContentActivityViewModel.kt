@@ -178,16 +178,18 @@ class CourseContentActivityViewModel(
     private fun onExerciseMarkedCompleted() {
         markCourseExerciseCompletedInDb(currentStudy?.exerciseId)
 
-        val updatedList = currentCourse
-            .courseContents.toMutableList()
+        if(::currentCourse.isInitialized) {
+            val updatedList = currentCourse
+                .courseContents.toMutableList()
 
-        val completedExercise = updatedList.find {
-            currentStudy?.exerciseId == it.id
-        }
-        completedExercise?.let {
-            it.courseContentProgress = CourseContentProgress.COMPLETED
+            val completedExercise = updatedList.find {
+                currentStudy?.exerciseId == it.id
+            }
+            completedExercise?.let {
+                it.courseContentProgress = CourseContentProgress.COMPLETED
 
-            setState { copy(courseContentList = updatedList) }
+                setState { copy(courseContentList = updatedList) }
+            }
         }
     }
 

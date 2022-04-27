@@ -65,6 +65,8 @@ data class CourseClassContent(
     @Json(name = "is_enrolled")
     var isEnrolled: Boolean = false,
 
+    @Json(name = "parent_id")
+    var parentId: String? = "",
 
     ): Parcelable, CourseContents {
     @Ignore
