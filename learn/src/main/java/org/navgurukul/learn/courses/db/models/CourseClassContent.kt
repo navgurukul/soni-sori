@@ -92,7 +92,7 @@ enum class ClassType{
 
 
 
-fun CourseClassContent.sanitizedType(): String = type.name.replace("_", " ").capitalizeWords()
+fun CourseClassContent.sanitizedType(): String = type.name
 fun CourseClassContent.displayableLanguage(): String = Locale(lang).getDisplayLanguage(java.util.Locale.ENGLISH)
 fun CourseClassContent.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
 fun CourseClassContent.timeDateRange(): String ="${startTime.toDate()}  "+ " ${startTime.toTime()} - ${endTime.toTime()}"

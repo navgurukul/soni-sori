@@ -55,20 +55,5 @@
             app:layout_constraintTop_toBottomOf="@+id/tvRevFacilatorName"
             app:layout_constraintStart_toStartOf="@+id/tvRevDate" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRevision"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_1x"
-            android:layout_marginTop="@dimen/spacing_8x"
-            android:gravity="center"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Enroll Revision Class"
-            app:cornerRadius="?cornerRadius400"
-            android:backgroundTint="@color/green_progress_color"
-            app:layout_constraintTop_toBottomOf="@+id/tvRule"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

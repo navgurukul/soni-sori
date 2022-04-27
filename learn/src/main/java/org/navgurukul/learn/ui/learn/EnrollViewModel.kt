@@ -186,5 +186,6 @@ data class EnrollViewState(
     val rules: String? = null,
     val title: String? = null,
     val language: String? = null,
-    val menuId: Int? = null
+    val menuId: Int? = null,
+    val isRevisionClassEligible : Boolean = false,
 ) : ViewState
