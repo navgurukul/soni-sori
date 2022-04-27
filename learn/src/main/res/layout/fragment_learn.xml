@@ -30,14 +30,20 @@
                 layout="@layout/batch_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                tools:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
             <include
                 android:id="@+id/upcoming"
                 layout="@layout/upcoming_class_selection_sheet"
                 android:layout_width="match_parent"
                 tools:visibility="gone"
-                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/enrolled_butFinished"
+                android:layout_height="wrap_content" />
+            <include
+                android:id="@+id/enrolled_butFinished"
+                layout="@layout/enrolled_but_finished"
+                android:layout_width="match_parent"
+                tools:visibility="gone"
                 android:layout_height="wrap_content" />
 
             <org.navgurukul.commonui.views.EmptyStateView
@@ -58,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/spacing_2x"
-                    android:text="Courses"
+                    android:text="@string/courses"
                     android:layout_marginTop="@dimen/spacing_1x"
                     android:layout_marginBottom="@dimen/spacing_4x"
                     app:layout_constraintTop_toTopOf="parent"

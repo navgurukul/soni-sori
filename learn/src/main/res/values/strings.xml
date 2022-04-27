@@ -96,7 +96,6 @@
     <string name="course_content">Course Content</string>
     <string name="search_here">Search Here</string>
     <string name="ongoing">Ongoing</string>
-    <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
     <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
@@ -132,6 +131,7 @@
     <string name="enroll_to_type_class">Enroll to %1s Class</string>
     <string name="unavailable">Unavailable</string>
     <string name="course">Course</string>
+    <string name="courses">Courses</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

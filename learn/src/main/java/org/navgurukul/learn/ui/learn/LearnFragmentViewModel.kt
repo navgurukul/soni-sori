@@ -161,6 +161,9 @@ class LearnFragmentViewModel(
                 getUpcomingClasses(pathwayId)
             } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
+            }else if(status == EnrolStatus.enrolled_but_finished || status == EnrolStatus.not_enrolled){
+                _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+                getBatchesDataByPathway(pathwayId)
             }
         }
     }
@@ -257,6 +260,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     data class OpenBatchSelectionSheet(val batches: List<Batch>):LearnFragmentViewEvents()
     data class ShowUpcomingBatch(val batch: Batch):LearnFragmentViewEvents()
     data class ShowUpcomingClasses(val classes: List<CourseClassContent>) : LearnFragmentViewEvents()
+    object ShowCompletedStatus : LearnFragmentViewEvents()
     object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
     object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
     data class BatchSelectClicked(val batch: Batch) : LearnFragmentViewEvents()

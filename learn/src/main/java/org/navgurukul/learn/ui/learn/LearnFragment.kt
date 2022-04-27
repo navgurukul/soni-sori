@@ -87,6 +87,7 @@ class LearnFragment : Fragment(){
             if(!it.classes.isEmpty()){
                 mBinding.upcoming.root.isVisible = true
                 initUpcomingRecyclerView(it.classes)
+                mBinding.enrolledButFinished.root.isVisible = false
             }else{
                 mBinding.upcoming.root.isVisible = false
             }
@@ -137,7 +138,15 @@ class LearnFragment : Fragment(){
                     initUpcomingRecyclerView(it.classes)
                     mBinding.upcoming.root.visibility = View.VISIBLE
                     mBinding.batchCard.root.visibility = View.GONE
+                    mBinding.enrolledButFinished.root.visibility = View.GONE
+
                 }
+                is LearnFragmentViewEvents.ShowCompletedStatus ->{
+                    mBinding.enrolledButFinished.root.visibility = View.VISIBLE
+                    mBinding.upcoming.root.visibility = View.GONE
+                }
+
+
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
