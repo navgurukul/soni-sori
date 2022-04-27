@@ -215,7 +215,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun updateState(it: EnrollViewState) {
-        val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name ) btnRevision else tvBtnJoin
+        val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) btnRevision else tvBtnJoin
 
         it.primaryActionBackgroundColor?.let {
             button.setBackgroundColor(it)
