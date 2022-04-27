@@ -8,17 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_class.*
-import kotlinx.android.synthetic.main.fragment_learn.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import org.koin.android.ext.android.inject
@@ -239,7 +233,8 @@ class LearnFragment : Fragment(){
                             viewModel.handle(LearnFragmentViewActions.LanguageSelectionClicked)
                         }
                     } else null,
-                    showIcon = pathwayIcon
+                    showPathwayIcon = true,
+                    pathwayIcon = pathwayIcon
                 )
             }
         }

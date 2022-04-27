@@ -185,7 +185,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         action: String?,
         actionOnClickListener: View.OnClickListener?,
         showLogout: Boolean,
-        showIcon : String?
+        showPathwayIcon : Boolean,
+        pathwayIcon: String?
     ) {
         headerTitle.text = title
         headerTitle.setTextColor(getThemedColor(colorRes))
@@ -212,8 +213,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         headerIv.isVisible = showProfile
         headerLogOut.isVisible = showLogout
 
-        headerIcon?.let {
-//           headerIcon.background.isVisible = showIcon
+        headerIcon.isVisible = showPathwayIcon
+        pathwayIcon?.let {
+            GlideApp.with(headerIcon)
+                .load(it)
+                .transform(CircleCrop())
+                .into(headerIcon)
         }
 
         onClickListener?.let { listener ->
