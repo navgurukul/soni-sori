@@ -254,7 +254,7 @@ class LearnFragment : Fragment(){
             val viewState = viewModel.viewState.value
             viewState?.let { state ->
                 val pathwayId = state.pathways[state.currentPathwayIndex].id
-                if(it.type == ClassType.doubt)
+                if(it.type == ClassType.doubt_class)
                     ClassActivity.start(requireContext(), it)
                 else if(it.type == ClassType.revision)
                     CourseContentActivity.start(requireContext(), it.parentId?:it.courseId, pathwayId, it.id)

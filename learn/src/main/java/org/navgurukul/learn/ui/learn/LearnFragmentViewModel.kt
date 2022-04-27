@@ -161,9 +161,9 @@ class LearnFragmentViewModel(
                 getUpcomingClasses(pathwayId)
             } else if(status == EnrolStatus.not_enrolled){
                 getBatchesDataByPathway(pathwayId)
-            }else if(status == EnrolStatus.enrolled_but_finished || status == EnrolStatus.not_enrolled){
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+            }else if(status == EnrolStatus.enrolled_but_finished){
                 getBatchesDataByPathway(pathwayId)
+                _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
             }
         }
     }

@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.class_course_detail.*
 import kotlinx.android.synthetic.main.fragment_class.*
@@ -29,7 +31,7 @@ class ClassActivity: AppCompatActivity(){
 
     companion object {
         fun start(context: Context, classContent: CourseClassContent) {
-            val intent = Intent(context, CourseContentActivity::class.java).apply {
+            val intent = Intent(context, ClassActivity::class.java).apply {
                 putExtras(ClassActivityArgs(classContent).toBundle()!!)
             }
             context.startActivity(intent)
@@ -46,13 +48,8 @@ class ClassActivity: AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_class)
         setupToolbar()
-
-        showClassDetails(intent.extras?.getParcelable<ClassActivityArgs>(KEY_ARG))
-
-        args?.classContent?.let {
-            viewModel.handle(EnrollViewActions.RequestPageLoad(it))
-        }
 
         viewModel.viewState.observe(this, {
             it?.let {
@@ -71,6 +68,11 @@ class ClassActivity: AppCompatActivity(){
                 )
             }
         }
+
+        args?.classContent?.let {
+            viewModel.handle(EnrollViewActions.RequestPageLoad(it))
+        }
+        showClassDetails(args)
     }
 
     private fun updateState(it: EnrollViewState) {
@@ -94,7 +96,7 @@ class ClassActivity: AppCompatActivity(){
     private fun showClassDetails(args: ClassActivityArgs?) {
         args?.let { arg ->
             args.classContent.also {
-                supportActionBar?.title = it.subTitle
+                supportActionBar?.title = it.subTitle ?: ""
                 mBinding.tvClassType.text = it.type.name.capitalizeWords()
                 mBinding.tvClassLanguage.text = it.displayableLanguage()
                 mBinding.tvDate.text = it.timeDateRange()
@@ -106,6 +108,19 @@ class ClassActivity: AppCompatActivity(){
             }
 
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 }

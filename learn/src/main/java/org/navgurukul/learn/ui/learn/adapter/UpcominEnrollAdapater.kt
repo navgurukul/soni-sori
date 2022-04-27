@@ -35,7 +35,7 @@ class UpcomingEnrolAdapater(val callback: (CourseClassContent) -> Unit):
     override fun bind(holder: DataBoundViewHolder<ItemUpcomingClassBinding>, item: CourseClassContent) {
         val binding = holder.binding
         binding.upcomingClass = item
-        binding.subTitle.text = item.subTitle
+        binding.subTitle.text = item.subTitle ?: ""
         binding.tvClassType.text  = item.type.name.capitalizeWords()
         binding.tvClassDate.text = item.startTime.toDate()
         binding.tvFacilatorName.text = item.facilitator?.name

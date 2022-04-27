@@ -95,6 +95,7 @@ dependencies {
     // Retrofit
     implementation(RetrofitDependencies.retrofit)
     implementation(RetrofitDependencies.moshiAdapter)
+    implementation(RetrofitDependencies.moshiKotlin)
     implementation(RetrofitDependencies.moshiConverter)
     kapt(RetrofitDependencies.moshiKapt)
     implementation(RetrofitDependencies.logging)

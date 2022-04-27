@@ -43,7 +43,7 @@
                 android:id="@+id/enrolled_butFinished"
                 layout="@layout/enrolled_but_finished"
                 android:layout_width="match_parent"
-                tools:visibility="gone"
+                android:visibility="gone"
                 android:layout_height="wrap_content" />
 
             <org.navgurukul.commonui.views.EmptyStateView

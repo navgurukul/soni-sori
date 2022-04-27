@@ -40,7 +40,7 @@ data class CourseClassContent(
     val title: String = "",
 
     @Json(name = "sub_title")
-    val subTitle: String = "",
+    val subTitle: String? = "",
 
     @Json(name = "description")
     val description: String = "",
@@ -87,7 +87,7 @@ data class Facilitator(
 ): Parcelable
 
 enum class ClassType{
-    batch, revision, doubt, workshop
+    batch, revision, doubt_class, workshop
 }
 
 

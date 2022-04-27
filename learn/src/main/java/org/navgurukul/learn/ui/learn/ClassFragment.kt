@@ -242,7 +242,7 @@ class ClassFragment: Fragment() {
 
     private fun setupClassHeaderDeatils(courseClass: CourseClassContent) {
         completeText.text = "Completed on "+courseClass.startTime.toDate()
-        tvSubTitle.text = courseClass.subTitle
+        tvSubTitle.text = courseClass.subTitle ?: ""
         tvClassType.text = courseClass.type.name.capitalizeWords()
         tvClassLanguage.text = courseClass.displayableLanguage()
     }
