@@ -76,6 +76,7 @@ class RoomDetailActivity : ChatBaseActivity(), ToolbarConfigurable, KoinScopeCom
         action: String?,
         actionOnClickListener: View.OnClickListener?,
         showLogout: Boolean,
+        showIcon : String?
     ) {
         throw RuntimeException("Set Title is not supported")
     }

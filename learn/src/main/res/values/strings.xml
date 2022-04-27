@@ -131,6 +131,7 @@
     <string name="starts_in">Starts in %1s</string>
     <string name="enroll_to_type_class">Enroll to %1s Class</string>
     <string name="unavailable">Unavailable</string>
+    <string name="course">Course</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

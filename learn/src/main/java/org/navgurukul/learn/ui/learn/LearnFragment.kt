@@ -13,6 +13,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.batch_card.*
 import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.fragment_learn.*
@@ -62,7 +65,6 @@ class LearnFragment : Fragment(){
 //        mBinding.batchCard.root.visibility = View.GONE
 //        mBinding.upcoming.root.visibility = View.GONE
 
-
         initSwipeRefresh()
 
         configureToolbar()
@@ -76,7 +78,8 @@ class LearnFragment : Fragment(){
                 it.subtitle,
                 it.pathways.isNotEmpty(),
                 it.selectedLanguage,
-                it.languages.isNotEmpty()
+                it.languages.isNotEmpty(),
+                it.logo
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
@@ -207,16 +210,14 @@ class LearnFragment : Fragment(){
 
     private fun configureToolbar(
         subtitle: String? = null, attachClickListener: Boolean = false,
-        selectedLanguage: String? = null, languageClickListener: Boolean = false
+        selectedLanguage: String? = null, languageClickListener: Boolean = false, pathwayIcon : String? = null
     ) {
         (activity as? ToolbarConfigurable)?.let {
             if (subtitle != null) {
                 it.configure(
-        //                "",
                     subtitle,
-        //                getString(R.string.courses),
                     R.attr.textPrimary,
-                    subtitle = subtitle,
+                    subtitle="",
                     onClickListener = if (attachClickListener) {
                         {
                             viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
@@ -229,10 +230,12 @@ class LearnFragment : Fragment(){
                             viewModel.handle(LearnFragmentViewActions.LanguageSelectionClicked)
                         }
                     } else null,
+                    showIcon = pathwayIcon
                 )
             }
         }
     }
+
 
     private fun initSwipeRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {

@@ -12,7 +12,7 @@
                 style="?textAppearanceEmphasized1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/spacing_4x"
+                android:paddingStart="@dimen/spacing_2x"
                 android:text="@string/upcoming_classes"
                 android:layout_marginTop="@dimen/spacing_5x"
                 android:layout_marginBottom="@dimen/spacing_4x"

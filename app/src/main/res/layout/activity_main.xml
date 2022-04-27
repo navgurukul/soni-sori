@@ -25,8 +25,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textColor="?textPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/headerSubtitle"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/spacing_4x"
+                app:layout_constraintStart_toEndOf="@id/headerIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -39,11 +39,11 @@
                 android:drawablePadding="@dimen/spacing_2x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textAllCaps="true"
                 android:textColor="?textPrimary"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerTitle"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+                app:layout_constraintLeft_toRightOf="@id/headerTitle"
                 tools:text="Sample Subtitle" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -55,11 +55,11 @@
                 android:drawableEnd="@drawable/ic_drop_down"
                 android:drawablePadding="@dimen/spacing_2x"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerTitle"
+                app:layout_constraintBottom_toBottomOf="@id/headerTitle"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?textPrimary"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:text="Sample Action" />
 
             <View
@@ -96,6 +96,18 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/headerIcon"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/dimen_10_dp"
+                tools:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 

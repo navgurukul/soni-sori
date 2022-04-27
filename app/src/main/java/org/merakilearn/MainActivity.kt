@@ -32,6 +32,8 @@ import org.merakilearn.ui.profile.ProfileViewModel
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
+import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.repository.LearnRepo
 
 @Parcelize
 data class MainActivityArgs(
@@ -75,6 +77,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     private val appOpenDelegate: AppOpenDelegate by inject()
     private val mainActivityArgs: MainActivityArgs by activityArgs()
     private val userRepo: UserRepo by inject()
+    private val learnRepo: LearnRepo by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +106,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         findViewById<ImageView>(R.id.headerLogOut).let {
             setUserLogoutThumbnail(it)
         }
+
     }
 
     private fun setUserLogoutThumbnail(
@@ -152,6 +156,22 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
     }
 
+    private fun setIconePathway(it: ImageView, currentPathway: Pathway){
+        val requestOptions = RequestOptions()
+            .centerCrop()
+            .transform(CircleCrop())
+
+        val thumbnail = GlideApp.with(headerIcon)
+            .load(R.drawable.python_logo)
+            .apply(requestOptions)
+
+        GlideApp.with(headerIcon)
+            .load(R.drawable.python_logo)
+            .apply(requestOptions)
+            .thumbnail(thumbnail)
+            .into(it)
+    }
+
     override fun configure(toolbar: Toolbar) {
         throw RuntimeException("Custom Toolbar Not supported")
     }
@@ -165,6 +185,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         action: String?,
         actionOnClickListener: View.OnClickListener?,
         showLogout: Boolean,
+        showIcon : String?
     ) {
         headerTitle.text = title
         headerTitle.setTextColor(getThemedColor(colorRes))
@@ -190,6 +211,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         headerIv.isVisible = showProfile
         headerLogOut.isVisible = showLogout
+
+        headerIcon?.let {
+//           headerIcon.background.isVisible = showIcon
+        }
 
         onClickListener?.let { listener ->
             appToolbar.setOnClickListener {
