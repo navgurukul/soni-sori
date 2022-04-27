@@ -84,7 +84,7 @@ class LearnRepo(
 
             override suspend fun makeApiCallAsync(): CourseExerciseContainer {
 
-                return courseApi.getExercisesAsync("2000", language)
+                return courseApi.getExercisesAsync(courseId, language)
             }
 
             override suspend fun loadFromDb(): List<Exercise> {
