@@ -36,7 +36,26 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.learn.ClassActivity" />
+        <activity
+            android:name=".ui.learn.ClassActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="merakilearn.org"
+                    android:pathPattern="/class/.*"
+                    android:scheme="https" />
+                <data
+                    android:host="merakilearn.org"
+                    android:pathPattern="/class/.*"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -10,5 +10,5 @@ data class EnrolResponse(
 enum class EnrolStatus {
     enrolled,
     not_enrolled,
-    EnrolledButFinished
+    enrolled_but_finished
 }
