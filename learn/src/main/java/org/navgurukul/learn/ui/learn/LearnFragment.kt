@@ -201,7 +201,6 @@ class LearnFragment : Fragment(){
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
-            initSwipeRefresh()
             viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
             btAlertDialog?.dismiss()
         }
@@ -257,7 +256,7 @@ class LearnFragment : Fragment(){
                 if(it.type == ClassType.doubt_class)
                     ClassActivity.start(requireContext(), it)
                 else if(it.type == ClassType.revision)
-                    CourseContentActivity.start(requireContext(), it.parentId?:it.courseId, pathwayId, it.id)
+                    CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.parentId?:it.id)
                 else{
                     CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
                 }

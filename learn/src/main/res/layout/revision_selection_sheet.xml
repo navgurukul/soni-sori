@@ -23,7 +23,7 @@
         android:id="@+id/handle_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sheet_handle_height"
-        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginTop="@dimen/spacing_3x"
         android:layout_gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/completeText"
         android:background="@drawable/sheet_handle" />
@@ -55,18 +55,30 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include
+        android:id="@+id/revision_class_data"
+        layout="@layout/revision_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginBottom="@dimen/spacing_4x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_ofRevision"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRevision"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_1x"
-        android:layout_marginTop="@dimen/spacing_8x"
         android:gravity="center"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="Enroll Revision Class"
         app:cornerRadius="?cornerRadius400"
         android:backgroundTint="@color/green_progress_color"
-        app:layout_constraintTop_toBottomOf="@+id/list_ofRevision"
+        app:layout_constraintTop_toBottomOf="@+id/revision_class_data"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
