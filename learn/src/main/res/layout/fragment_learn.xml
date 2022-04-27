@@ -30,6 +30,7 @@
                 layout="@layout/batch_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_2x"
                 tools:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
             <include
@@ -37,6 +38,7 @@
                 layout="@layout/upcoming_class_selection_sheet"
                 android:layout_width="match_parent"
                 tools:visibility="gone"
+                android:layout_marginTop="@dimen/spacing_2x"
                 app:layout_constraintTop_toBottomOf="@+id/enrolled_butFinished"
                 android:layout_height="wrap_content" />
             <include
