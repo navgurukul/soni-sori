@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/spacing_2x"
                     android:text="@string/courses"
-                    android:layout_marginTop="@dimen/spacing_1x"
+                    android:layout_marginTop="@dimen/spacing_4x"
                     android:layout_marginBottom="@dimen/spacing_4x"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -9,12 +9,6 @@
             type="org.navgurukul.learn.courses.network.model.Batch" />
 
     </data>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_1x"
-        android:layout_marginEnd="@dimen/spacing_1x"
-        android:layout_marginTop="@dimen/spacing_1x">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,6 +42,7 @@
                 android:layout_marginBottom="@dimen/spacing_1x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:drawablePadding="@dimen/spacing_2x"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_title_batch"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_batch"
@@ -55,8 +50,4 @@
                 app:drawableStartCompat="@drawable/ic_batch_calender" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
 </layout>

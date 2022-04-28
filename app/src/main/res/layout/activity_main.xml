@@ -21,30 +21,40 @@
             <TextView
                 android:id="@+id/headerTitle"
                 style="?textAppearanceHeadline6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginEnd="25dp"
                 android:textColor="?textPrimary"
                 android:layout_marginTop="@dimen/spacing_4x"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintWidth_default="wrap"
                 app:layout_constraintStart_toEndOf="@id/headerIcon"
+                app:layout_constraintEnd_toStartOf="@id/headerAction"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/headerSubtitle"
                 style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_drop_down"
                 android:drawablePadding="@dimen/spacing_2x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                tools:visibility="visible"
+                app:layout_constraintWidth_default="wrap"
+                android:layout_marginEnd="@dimen/spacing_4x"
                 android:textAllCaps="true"
                 android:textColor="?textPrimary"
+                app:layout_constraintHorizontal_bias="1"
                 android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/headerTitle"
                 app:layout_constraintBottom_toBottomOf="@id/headerTitle"
-                app:layout_constraintLeft_toRightOf="@id/headerTitle"
-                tools:text="Sample Subtitle" />
+                tools:text="" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/headerAction"
@@ -55,7 +65,7 @@
                 android:drawableEnd="@drawable/ic_drop_down"
                 android:drawablePadding="@dimen/spacing_2x"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+                app:layout_constraintBottom_toBottomOf="@id/headerSubtitle"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?textPrimary"

@@ -19,6 +19,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.displayableLanguage
+import org.navgurukul.learn.courses.db.models.sanitizedType
 import org.navgurukul.learn.courses.db.models.timeDateRange
 import org.navgurukul.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.ui.common.toast
@@ -89,14 +90,14 @@ class ClassActivity: AppCompatActivity(){
         supportActionBar?.let {
             it.setDisplayShowTitleEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_navigate_back)
+            it.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
         }
     }
 
     private fun showClassDetails(args: ClassActivityArgs?) {
         args?.let { arg ->
             args.classContent.also {
-                supportActionBar?.title = it.subTitle ?: ""
+                supportActionBar?.title = it.title
                 mBinding.tvClassType.text = it.type.name.capitalizeWords()
                 mBinding.tvClassLanguage.text = it.displayableLanguage()
                 mBinding.tvDate.text = it.timeDateRange()

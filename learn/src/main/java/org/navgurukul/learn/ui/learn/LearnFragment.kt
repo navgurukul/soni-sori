@@ -8,17 +8,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.batch_card.*
+import kotlinx.android.synthetic.main.batch_selection_sheet.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
+import kotlinx.android.synthetic.main.learn_selection_sheet.*
+import kotlinx.android.synthetic.main.learn_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
@@ -164,9 +171,8 @@ class LearnFragment : Fragment(){
     }
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text =batch.sanitizedType()+"  :"
+        tvType.text =batch.sanitizedType()+" :"
         tvTitleBatch.text = batch.title
-        tvBtnEnroll.text = batch.title
         tvBatchDate.text = batch.dateRange()
         tvText.text = "Can't start on "+ batch.startTime?.toDate()
         tvBtnEnroll.setOnClickListener {
