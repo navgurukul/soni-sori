@@ -28,7 +28,6 @@ class EnrollViewModel(
         when (viewActions) {
             is EnrollViewActions.PrimaryAction -> primaryAction(viewActions.mClass)
             is EnrollViewActions.RequestPageLoad -> loadPage(viewActions.mClass)
-//            is EnrollViewActions.EnrolToClass -> enrollToBatch(viewActions.classId)
         }
     }
 
@@ -82,25 +81,6 @@ class EnrollViewModel(
             }
         }
     }
-
-//    private fun enrollToBatch(classId: Int){
-//        viewModelScope.launch {
-//            setState { copy(isLoading = true) }
-//            val result = learnRepo.enrollToClass(classId, false)
-//            if (result) {
-//                isEnrolled = true
-//                setState {
-//                    copy(
-//                        isLoading = false,
-//                    )
-//                }
-//                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
-//            } else {
-//                setState { copy(isLoading = false) }
-//                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
-//            }
-//        }
-//    }
 
     private fun primaryAction(mClass: CourseClassContent) {
         viewModelScope.launch {
@@ -168,7 +148,6 @@ sealed class EnrollViewEvents : ViewEvents {
 }
 
 sealed class EnrollViewActions : ViewModelAction {
-//    data class EnrolToClass(val classId: Int) : EnrollViewActions()
    data class PrimaryAction(val mClass: CourseClassContent): EnrollViewActions()
    data class RequestPageLoad(val mClass: CourseClassContent): EnrollViewActions()
     object DropOut : EnrollViewActions()

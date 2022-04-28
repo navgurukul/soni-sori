@@ -156,21 +156,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
     }
 
-    private fun setIconePathway(it: ImageView, currentPathway: Pathway){
-        val requestOptions = RequestOptions()
-            .centerCrop()
-            .transform(CircleCrop())
-
-        val thumbnail = GlideApp.with(headerIcon)
-            .load(R.drawable.python_logo)
-            .apply(requestOptions)
-
-        GlideApp.with(headerIcon)
-            .load(R.drawable.python_logo)
-            .apply(requestOptions)
-            .thumbnail(thumbnail)
-            .into(it)
-    }
 
     override fun configure(toolbar: Toolbar) {
         throw RuntimeException("Custom Toolbar Not supported")

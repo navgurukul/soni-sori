@@ -98,7 +98,7 @@ class ClassActivity: AppCompatActivity(){
         args?.let { arg ->
             args.classContent.also {
                 supportActionBar?.title = it.title
-                mBinding.tvClassType.text = it.type.name.capitalizeWords()
+                mBinding.tvClassType.text = it.sanitizedType()
                 mBinding.tvClassLanguage.text = it.displayableLanguage()
                 mBinding.tvDate.text = it.timeDateRange()
                 mBinding.tvFacilatorName.text = it.facilitator?.name
