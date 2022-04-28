@@ -36,6 +36,18 @@ class MerakiNavigator(
             null
         }
     }
+    private val typingAppModuleNavigatorNew: TypingAppModuleNavigatorNew? by lazy {
+        val serviceIterator = ServiceLoader.load(
+            TypingAppModuleNavigatorNew::class.java,
+            TypingAppModuleNavigatorNew::class.java.classLoader
+        ).iterator()
+        if (serviceIterator.hasNext()) {
+            serviceIterator.next()
+        } else {
+            null
+        }
+    }
+
 
     fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
@@ -88,6 +100,19 @@ class MerakiNavigator(
         }
     }
 
+    fun openDeepLinkNew(fragmentActivity: FragmentActivity, deepLink: String, data: String? = null) {
+        val uri = Uri.parse(deepLink)
+        if (uri.path == TYPING_DEEPLINK) {
+            launchTypingAppNew(fragmentActivity, data!!.objectify<ModeNew.Course>()!!)
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (isMerakiUrl(deepLink)) {
+                intent.setPackage(fragmentActivity.packageName)
+                intent.putExtra(KEY_ARG, data)
+            }
+            startActivity(fragmentActivity, intent, false)
+        }
+    }
     fun restartApp(context: Context, clearNotification: Boolean) {
         startActivity(
             context,
@@ -110,6 +135,25 @@ class MerakiNavigator(
             dynamicFeatureModuleManager.installModule(TYPING_MODULE_NAME, {
                 progress.dismiss()
                 typingAppModuleNavigator?.launchTypingApp(activity, mode)
+            }, {
+                progress.dismiss()
+            })
+        }
+
+    }
+    fun launchTypingAppNew(activity: FragmentActivity, mode: ModeNew) {
+        if (dynamicFeatureModuleManager.isInstalled(TYPING_MODULE_NAME)) {
+            typingAppModuleNavigatorNew?.launchTypingAppNew(activity, mode)
+        } else {
+            val progress = ProgressDialog(activity).apply {
+                setCancelable(false)
+                setMessage(activity.getString(R.string.installing_module_message))
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                show()
+            }
+            dynamicFeatureModuleManager.installModule(TYPING_MODULE_NAME, {
+                progress.dismiss()
+                typingAppModuleNavigatorNew?.launchTypingAppNew(activity, mode)
             }, {
                 progress.dismiss()
             })

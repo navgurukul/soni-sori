@@ -24,14 +24,13 @@ import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseExerciseAdapter
 import org.navgurukul.learn.util.LearnUtils
 
-@Parcelize
-data class ExerciseActivityArgs(val courseId: String, val pathwayId: Int) : Parcelable
 
-class ExerciseActivity : AppCompatActivity(){
+
+class ExerciseWordActivity : AppCompatActivity(){
 
     companion object {
         fun start(context: Context, courseId: String, pathwayId: Int) {
-            val intent = Intent(context, ExerciseActivity::class.java).apply {
+            val intent = Intent(context, ExerciseWordActivity::class.java).apply {
                 putExtras(ExerciseActivityArgs(courseId, pathwayId).toBundle()!!)
             }
             context.startActivity(intent)
@@ -91,7 +90,7 @@ class ExerciseActivity : AppCompatActivity(){
                         it.isFirst,
                         it.isLast,
                         it.isCompleted,
-                        it.courseId,
+                        "2000",
                         it.exerciseId,
                         it.navigation
                     )
@@ -173,8 +172,8 @@ class ExerciseActivity : AppCompatActivity(){
             )
             replace(
                 R.id.exerciseContentContainer,
-                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
-                ExerciseFragment.TAG
+                ExerciseWordFragmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
+                ExerciseWordFragmentFragment.TAG
             )
         }
     }

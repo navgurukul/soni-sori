@@ -31,10 +31,13 @@ import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.score.ScoreActivityArgs
 import org.navgurukul.typingguru.webview.WebViewActivity
 import org.merakilearn.core.extentions.setWidthPercent
+import org.merakilearn.core.navigator.ModeNew
+import org.navgurukul.typingguru.score.NewScoreActivity
+import org.navgurukul.typingguru.score.NewScoreActivityArgs
 
 @Parcelize
 data class KeyboardWordActivityArgs(
-    val mode: Mode,
+    val mode: ModeNew,
     val retake: Boolean = false
 ) : Parcelable
 
@@ -42,15 +45,15 @@ class KeyboardWordActivity : BaseActivity() {
 
     companion object {
 
-        fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
-            return Intent(context, KeyboardActivity::class.java).apply {
-                putExtras(KeyboardActivityArgs(mode, retake).toBundle()!!)
+        fun newIntent(context: Context, mode: ModeNew, retake: Boolean = false): Intent {
+            return Intent(context, KeyboardWordActivity::class.java).apply {
+                putExtras(KeyboardWordActivityArgs(mode, retake).toBundle()!!)
             }
         }
     }
 
-    private val keyboardActivityArgs: KeyboardActivityArgs by activityArgs()
-    private val viewModel: KeyboardViewModel by viewModel(parameters = {
+    private val keyboardActivityArgs: KeyboardWordActivityArgs by activityArgs()
+    private val viewModel: KeyboardWordViewModel by viewModel(parameters = {
         parametersOf(
             keyboardActivityArgs
         )
@@ -67,7 +70,7 @@ class KeyboardWordActivity : BaseActivity() {
         hideSystemUI()
 
         viewModel.viewState.observe(this, { state ->
-            course_keys_view.setKeys(state.courseKeys)
+            course_keys_view.setKey(state.courseKeys)
             course_keys_view.currentKeyIndex = state.activeKeyIndex
             keyboard_view.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
             progressBar.max = state.maxProgress
@@ -77,7 +80,7 @@ class KeyboardWordActivity : BaseActivity() {
 
         viewModel.viewEvents.observe(this, {
             when (it) {
-                is KeyboardViewEvent.ShakeKey -> {
+                is KeyboardViewEventWord.ShakeKey -> {
                     course_keys_view.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
                     keyboard_view.incorrectKey = it.key
@@ -87,11 +90,11 @@ class KeyboardWordActivity : BaseActivity() {
                         keyboard_view.incorrectKey = null
                     }
                 }
-                is KeyboardViewEvent.OpenScoreActivity -> {
+                is KeyboardViewEventWord.OpenScoreActivity -> {
                     Toast.makeText(this, "Lesson completed", Toast.LENGTH_SHORT).show()
-                    intent = ScoreActivity.newInstance(
+                    intent = NewScoreActivity.newInstance(
                         this,
-                        ScoreActivityArgs(
+                        NewScoreActivityArgs(
                             it.rightKeys,
                             it.wrongKeys,
                             it.timeTaken,
@@ -124,7 +127,7 @@ class KeyboardWordActivity : BaseActivity() {
             return super.onKeyUp(keyCode, event)
         }
 
-        viewModel.handle(KeyboardViewAction.OnKeyInput(event.displayLabel))
+        viewModel.handle(KeyboardViewActionWord.OnKeyInput(event.displayLabel))
 
         return super.onKeyUp(keyCode, event)
     }

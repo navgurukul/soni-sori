@@ -161,7 +161,7 @@ data class BannerAction(
         @Json(name = "icon")
         var icon: String?,
         @Json(name = "variant")
-        var variant: MerakiButtonType,
+        var variant: MerakiButtonType?,
 )
 
 @JsonClass(generateAdapter = true)

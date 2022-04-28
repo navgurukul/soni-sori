@@ -32,4 +32,10 @@ interface SaralCoursesApi {
         @Query("lang") language: String
     ): CourseExerciseContainer
 
+    @GET("courses/{course_id}/exercises")
+    suspend fun getExercisesAsyncforWord(
+        @Path("course_id") course_id: String,
+        @Query("lang") language: String
+    ): CourseExerciseContainer
+
 }

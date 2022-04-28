@@ -46,6 +46,8 @@ class CourseKeysView @JvmOverloads constructor(
     }
 
     private var currentKeyList: List<CourseKey>? = null
+    private var currentKeyListNew: List<CourseKeyWord>? = null
+
 
     private val inCorrectKeyBackgroundDrawable =
         AppCompatResources.getDrawable(context, R.drawable.key_background_incorrect)
@@ -109,6 +111,47 @@ class CourseKeysView @JvmOverloads constructor(
 
         invalidate()
     }
+    fun setKey(keyList: List<CourseKeyWord>) {
+
+        if (keyList == currentKeyList) {
+            updateKeyStateNew(keyList)
+            return
+        }
+
+        currentKeyListNew = keyList
+
+        removeAllViews()
+
+        for (key in keyList) {
+            addView(AppCompatTextView(context).apply {
+                text = key.label.toString()
+                TextViewCompat.setTextAppearance(
+                    this,
+                    context.getThemedFontStyle(commonR.attr.textAppearanceEmphasized2)
+                )
+                setTextColor(context.getThemedColor(commonR.attr.textPrimary))
+                background = getKeyBackgroundNew(key.state)
+                gravity = Gravity.CENTER
+                setPaddingRelative(keyHorizontalPadding, 0, keyHorizontalPadding, 0)
+                minimumWidth = keyHeight
+            }, LayoutParams(LayoutParams.WRAP_CONTENT, keyHeight).apply {
+                marginEnd = keyMargin
+                bottomMargin = keyMargin
+            })
+        }
+
+        invalidate()
+    }
+
+    private fun updateKeyStateNew(keyList: List<CourseKeyWord>) {
+        keyList.forEachIndexed { index, key ->
+            val selectedKeyView = getChildAt(index) ?: return
+            val background = getKeyBackgroundNew(key.state)
+            if (background != selectedKeyView.background) {
+                selectedKeyView.background = background
+            }
+        }
+    }
 
     private fun updateKeyState(keyList: List<CourseKey>) {
         keyList.forEachIndexed { index, key ->
@@ -124,6 +167,11 @@ class CourseKeysView @JvmOverloads constructor(
         CourseKeyState.CORRECT -> correctKeyBackgroundDrawable
         CourseKeyState.INCORRECT -> inCorrectKeyBackgroundDrawable
         CourseKeyState.NEUTRAL -> neutralKeyBackgroundDrawable
+    }
+    private fun getKeyBackgroundNew(state: CourseKeyStateWord) = when (state) {
+        CourseKeyStateWord.CORRECT -> correctKeyBackgroundDrawable
+        CourseKeyStateWord.INCORRECT -> inCorrectKeyBackgroundDrawable
+        CourseKeyStateWord.NEUTRAL -> neutralKeyBackgroundDrawable
     }
 
     fun shakeCurrentKey() {

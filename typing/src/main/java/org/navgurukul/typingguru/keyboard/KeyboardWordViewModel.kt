@@ -8,6 +8,7 @@ import kotlinx.coroutines.isActive
 import org.merakilearn.core.extentions.TickerState
 import org.merakilearn.core.extentions.tickerFlow
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.core.navigator.ModeNew
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewState
@@ -20,7 +21,7 @@ enum class CourseKeyStateWord {
     CORRECT, INCORRECT, NEUTRAL
 }
 
-data class CourseKeyWord(val label: Char, val state: CourseKeyState) {
+data class CourseKeyWord(val label: Char, val state: CourseKeyStateWord) {
     override fun equals(other: Any?): Boolean {
         return other is CourseKey && label == other.label
     }
@@ -30,8 +31,8 @@ data class CourseKeyWord(val label: Char, val state: CourseKeyState) {
     }
 }
 
-class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) :
-    BaseViewModel<KeyboardViewEvent, KeyboardViewState>(KeyboardViewState()) {
+class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardWordActivityArgs) :
+    BaseViewModel<KeyboardViewEventWord, KeyboardViewStateWord>(KeyboardViewStateWord()) {
 
     private var timerStarted: Boolean = false
     private val maxTime = MINUTES.toSeconds(2)
@@ -50,9 +51,9 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
         }
     }
 
-    fun handle(event: KeyboardViewAction) {
+    fun handle(event: KeyboardViewActionWord) {
         when (event) {
-            is KeyboardViewAction.OnKeyInput -> handleKeyInput(event.key)
+            is KeyboardViewActionWord.OnKeyInput -> handleKeyInput(event.key)
         }
     }
 
@@ -63,14 +64,14 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
         val courseKeys = viewState.courseKeys
         var correctKeys = viewState.correctKeys
         var inCorrectKeys = viewState.inCorrectKeys
-        val currentKeyState: CourseKeyState
+        val currentKeyState: CourseKeyStateWord
         if (key.lowercaseChar() == courseKeys[activeKeyIndex].label) {
-            currentKeyState = CourseKeyState.CORRECT
+            currentKeyState = CourseKeyStateWord.CORRECT
             correctKeys += 1
         } else {
-            currentKeyState = CourseKeyState.INCORRECT
+            currentKeyState = CourseKeyStateWord.INCORRECT
             inCorrectKeys += 1
-            _viewEvents.setValue(KeyboardViewEvent.ShakeKey(key.lowercaseChar()))
+            _viewEvents.setValue(KeyboardViewEventWord.ShakeKey(key.lowercaseChar()))
         }
 
         if (activeKeyIndex == courseKeys.size - 1) {
@@ -108,7 +109,7 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
                         TickerState.End -> {
                             super.viewState.value?.let {
                                 _viewEvents.setValue(
-                                    KeyboardViewEvent.OpenScoreActivity(
+                                    KeyboardViewEventWord.OpenScoreActivity(
                                         it.correctKeys,
                                         it.inCorrectKeys,
                                         SECONDS.toMillis(it.maxProgress.toLong()),
@@ -124,8 +125,8 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
                                     Locale.ENGLISH
                                 )
                             timer.timeZone = TimeZone.getTimeZone("IST")
-                            val timeText= timer.format(SECONDS.toMillis(tickerState.value))
-                            val progress = maxTime-tickerState.value
+                            val timeText = timer.format(SECONDS.toMillis(tickerState.value))
+                            val progress = maxTime - tickerState.value
                             setState {
                                 copy(currentProgress = progress.toInt(), timerText = timeText)
                             }
@@ -138,17 +139,16 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
     }
 
     private fun generateCourseKeys() = when (keyboardActivityArgs.mode) {
-        is Mode.Course -> {
+        is ModeNew.Course -> {
 
-            generateRandomWordList(('a'..'z').toList().map { it })
+            generateMeaningfulCharList(keyboardActivityArgs.mode.content)
 
-//            generateRandomWordList(keyboardActivityArgs.mode.content.distinct())
         }
-        Mode.Playground -> {
+        ModeNew.Playground -> {
             generateRandomWordList(('a'..'z').toList().map { it })
         }
     }.map {
-        CourseKey(it, CourseKeyState.NEUTRAL)
+        CourseKeyWord(it, CourseKeyStateWord.NEUTRAL)
     }
 
     private fun generateRandomWordList(list: List<Char>): ArrayList<Char> {
@@ -160,10 +160,21 @@ class KeyboardWordViewModel(private val keyboardActivityArgs: KeyboardActivityAr
         }
     }
 
+    private fun generateMeaningfulWordList(list: List<String>): String {
+        return list.random()
+    }
+
+    private fun generateMeaningfulCharList(list: List<String>): ArrayList<Char> {
+        val string = generateMeaningfulWordList(list)
+        val chars: ArrayList<Char> = ArrayList()
+        string.forEach { chars.add(it) }
+        return chars
+    }
+
 }
 
 data class KeyboardViewStateWord(
-    val courseKeys: List<CourseKey> = listOf(),
+    val courseKeys: List<CourseKeyWord> = listOf(),
     val activeKeyIndex: Int? = null,
     val correctKeys: Int = 0,
     val inCorrectKeys: Int = 0,
@@ -173,15 +184,15 @@ data class KeyboardViewStateWord(
 ) : ViewState
 
 sealed class KeyboardViewActionWord {
-    class OnKeyInput(val key: Char) : KeyboardViewAction()
+    class OnKeyInput(val key: Char) : KeyboardViewActionWord()
 }
 
 sealed class KeyboardViewEventWord : ViewEvents {
-    data class ShakeKey(val key: Char) : KeyboardViewEvent()
+    data class ShakeKey(val key: Char) : KeyboardViewEventWord()
     data class OpenScoreActivity(
         val rightKeys: Int,
         val wrongKeys: Int,
         val timeTaken: Long,
-        val mode: Mode
-    ) : KeyboardViewEvent()
+        val mode: ModeNew
+    ) : KeyboardViewEventWord()
 }

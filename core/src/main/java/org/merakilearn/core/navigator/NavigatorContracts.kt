@@ -28,9 +28,21 @@ sealed class Mode: Parcelable {
     object Playground : Mode()
     @Parcelize
     @JsonClass(generateAdapter = true)
-    data class Course(val content: List<String>, val code: String) : Mode()
+    data class Course(val content: List<Char>, val code: String) : Mode()
 }
 
+sealed class ModeNew: Parcelable {
+    @Parcelize
+    object Playground : ModeNew()
+    @Parcelize
+    @JsonClass(generateAdapter = true)
+    data class Course(val content: List<String>, val code: String) : ModeNew()
+}
 interface TypingAppModuleNavigator {
     fun launchTypingApp(activity: FragmentActivity, mode : Mode)
+}
+
+
+interface TypingAppModuleNavigatorNew {
+    fun launchTypingAppNew(activity: FragmentActivity, mode : ModeNew)
 }

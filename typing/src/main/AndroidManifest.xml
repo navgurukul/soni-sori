@@ -15,8 +15,13 @@
 
     <application>
         <activity
-            android:name=".keyboard.KeyboardWordActivity"
+            android:name=".score.NewScoreActivity"
             android:exported="false" />
+        <activity
+            android:name=".keyboard.KeyboardWordActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            />
         <activity
             android:name=".keyboard.dialog.KeyboardDialogActivity"
             android:screenOrientation="behind"

@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit.*
 import kotlin.collections.ArrayList
-import kotlin.random.Random.Default.nextInt
 
 enum class CourseKeyState {
     CORRECT, INCORRECT, NEUTRAL
@@ -125,8 +124,8 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                                     Locale.ENGLISH
                                 )
                             timer.timeZone = TimeZone.getTimeZone("IST")
-                            val timeText = timer.format(SECONDS.toMillis(tickerState.value))
-                            val progress = maxTime - tickerState.value
+                            val timeText= timer.format(SECONDS.toMillis(tickerState.value))
+                            val progress = maxTime-tickerState.value
                             setState {
                                 copy(currentProgress = progress.toInt(), timerText = timeText)
                             }
@@ -140,8 +139,7 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
 
     private fun generateCourseKeys() = when (keyboardActivityArgs.mode) {
         is Mode.Course -> {
-            generateMeaningfulCharList(keyboardActivityArgs.mode.content)
-
+            generateRandomWordList(keyboardActivityArgs.mode.content.distinct())
         }
         Mode.Playground -> {
             generateRandomWordList(('a'..'z').toList().map { it })
@@ -157,17 +155,6 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
                 add(list[r.nextInt(list.size)])
             }
         }
-    }
-
-    private fun generateMeaningfulWordList(list: List<String>): String {
-        return list.random()
-    }
-
-    private fun generateMeaningfulCharList(list: List<String>): ArrayList<Char> {
-        val string = generateMeaningfulWordList(list)
-        val chars: ArrayList<Char> = ArrayList()
-        string.forEach { chars.add(it) }
-        return chars
     }
 
 }

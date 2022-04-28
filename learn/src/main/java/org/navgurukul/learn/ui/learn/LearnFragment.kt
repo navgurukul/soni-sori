@@ -46,6 +46,10 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
+        mBinding.tvMeaningfulWordTyping.setOnClickListener {
+            ExerciseWordActivity.start(requireContext(), "2000", 61)
+
+        }
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
@@ -66,7 +70,7 @@ class LearnFragment : Fragment(){
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
-                    ExerciseActivity.start(requireContext(), "2000", it.pathwayId)
+                    ExerciseActivity.start(requireContext(), it.courseId, it.pathwayId)
                 }
                 LearnFragmentViewEvents.OpenPathwaySelectionSheet -> {
                     LearnFragmentPathwaySelectionSheet().show(
