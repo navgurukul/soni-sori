@@ -99,9 +99,8 @@ class LearnFragment : Fragment(){
                 mBinding.batchCard.root.isVisible = false
             }
 
-            if (it.showTakeTestButton)
+            if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
-//            updateState(it)
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
