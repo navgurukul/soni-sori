@@ -114,6 +114,7 @@ val networkModule = module {
                 PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
                     .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
                     .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
+                    .withSubtype(CourseClassContent::class.java, CourseContentType.assessment.name)
             )
             .build()
     }

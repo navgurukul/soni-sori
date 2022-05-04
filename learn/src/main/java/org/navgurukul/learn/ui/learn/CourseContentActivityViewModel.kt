@@ -277,6 +277,19 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val navigation: ExerciseNavigation?
     ) : CourseContentActivityViewEvents()
 
+
+    class ShowAssessmentFragment(
+        val isFirst: Boolean,
+        val isLast: Boolean,
+        val isCompleted: Boolean,
+        val courseId: String,
+        val contentId: String,
+        val courseContentType: CourseContentType,
+        val navigation: ExerciseNavigation?
+    ) : CourseContentActivityViewEvents()
+
+
+
     object FinishActivity : CourseContentActivityViewEvents()
     class ShowToast(val toastText: String) : CourseContentActivityViewEvents()
 }

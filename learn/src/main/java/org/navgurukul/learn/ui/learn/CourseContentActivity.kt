@@ -86,7 +86,7 @@ class CourseContentActivity : AppCompatActivity(){
         initRecyclerViewExerciseList()
 
 
-        viewModel.viewEvents.observe(this, {
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 is CourseContentActivityViewEvents.ShowToast -> toast(it.toastText)
                 is CourseContentActivityViewEvents.ShowExerciseFragment -> {
@@ -115,11 +115,25 @@ class CourseContentActivity : AppCompatActivity(){
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
+
+                is CourseContentActivityViewEvents.ShowAssessmentFragment -> {
+                    launchAssessmentFragment(
+                        it.isFirst,
+                        it.isLast,
+                        it.isCompleted,
+                        it.courseId,
+                        it.contentId,
+                        it.courseContentType,
+                        it.navigation
+                    )
+
+                    mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
+                }
                 CourseContentActivityViewEvents.FinishActivity -> finish()
             }
-        })
+        }
 
-        viewModel.viewState.observe(this, {
+        viewModel.viewState.observe(this) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             if (!it.isCourseCompleted) {
@@ -134,7 +148,7 @@ class CourseContentActivity : AppCompatActivity(){
             } else {
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
-        })
+        }
     }
 
     private fun showCompletionScreen(
@@ -219,6 +233,32 @@ class CourseContentActivity : AppCompatActivity(){
                 R.id.exerciseContentContainer,
                 ClassFragment.newInstance(isFirst, isLast, isCompleted, courseId, classId, courseContentType),
                 ClassFragment.TAG
+            )
+        }
+    }
+
+    private fun launchAssessmentFragment(
+        isFirst: Boolean = false,
+        isLast: Boolean = false,
+        isCompleted: Boolean = false,
+        courseId: String,
+        assessmentId : String,
+        courseContentType: CourseContentType,
+        navigation: ExerciseNavigation?
+    ){
+        supportFragmentManager.commit {
+            val enter = when(navigation){
+                ExerciseNavigation.PREV -> android.R.anim.slide_in_left
+                ExerciseNavigation.NEXT -> R.anim.slide_in_to_left
+                null -> android.R.anim.fade_in
+            }
+            setCustomAnimations(
+                enter,0
+            )
+            replace(
+                R.id.exerciseContentContainer,
+                AssessmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, assessmentId, courseContentType),
+                AssessmentFragment.TAG
             )
         }
     }

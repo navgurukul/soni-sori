@@ -29,4 +29,5 @@
     <color name="card_background">#E9F5E9</color>
     <color name="classChipSecondary">#4548A1</color>
     <color name="classChipBackground">#DADAEC</color>
+    <color name="assesmentBackground">#F5F5F5</color>
 </resources>
