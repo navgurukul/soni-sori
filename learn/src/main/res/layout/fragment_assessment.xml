@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_2x"
+        tools:context=".ui.learn.AssessmentFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/optionRecyclerview"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+            android:layout_marginBottom="@dimen/spacing_11x"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryColor"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
