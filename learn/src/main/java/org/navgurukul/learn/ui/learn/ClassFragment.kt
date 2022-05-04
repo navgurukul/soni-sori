@@ -116,6 +116,7 @@ class ClassFragment: Fragment() {
                     mBinding.classDetail.visibility = View.GONE
                     mBinding.revisionList.list_ofRevision.visibility = View.VISIBLE
                     mBinding.revisionList.revision_class_data.visibility = View.GONE
+                    mBinding.batchFragment.visibility = View.GONE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClassToJoin -> {

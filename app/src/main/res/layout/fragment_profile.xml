@@ -152,18 +152,23 @@
                 app:cornerRadius="?cornerRadius400"
                 app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
 
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEnrolledBatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_4x"
+                app:layout_constraintTop_toBottomOf="@id/explore_opportunity"/>
             <TextView
                 android:id="@+id/tvSavedFile"
                 style="?textAppearanceEmphasized2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_4x"
-                android:layout_marginTop="@dimen/spacing_8x"
+                android:layout_marginTop="@dimen/spacing_4x"
                 android:text="@string/files_saved"
                 android:textColor="?textSecondary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/explore_opportunity"
+                app:layout_constraintTop_toBottomOf="@+id/rvEnrolledBatch"
                 tools:text="Files Saved" />
 
             <com.google.android.material.button.MaterialButton
