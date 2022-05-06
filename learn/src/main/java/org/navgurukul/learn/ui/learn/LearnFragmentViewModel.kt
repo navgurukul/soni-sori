@@ -136,6 +136,7 @@ class LearnFragmentViewModel(
 //                checkedStudentEnrolment()
             }
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
+            is LearnFragmentViewActions.DropOut -> dropOut(actions.classId)
             LearnFragmentViewActions.RefreshCourses -> {
                refreshCourse()
             }
@@ -218,6 +219,26 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
     }
 
+    private fun dropOut(classId: Int){
+        viewModelScope.launch {
+            setState { copy(loading = true) }
+            val result = learnRepo.enrollToClass(classId, true)
+            setState { copy(loading = false) }
+            if (result) {
+                isEnrolled = false
+                setState {
+                    copy(
+                        loading = false
+                    )
+                }
+                _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
+            } else {
+                setState { copy(loading = false) }
+                _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
+            }
+        }
+    }
+
     private fun primaryAction(classId: Int) {
         viewModelScope.launch {
         setState { copy(loading = true) }
@@ -230,6 +251,7 @@ class LearnFragmentViewModel(
                 )
             }
             refreshCourse()
+            _viewEvents.postValue(LearnFragmentViewEvents.EnrolledSuccessfully)
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
         } else {
             setState { copy(loading = false) }
@@ -268,12 +290,14 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
+    object EnrolledSuccessfully : LearnFragmentViewEvents()
 
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object RequestPageLoad :LearnFragmentViewActions()
     data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
+    data class DropOut(val classId: Int): LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()

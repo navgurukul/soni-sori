@@ -10,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.batch_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.batch_selection_sheet.tv_title
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
@@ -65,16 +64,13 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             })
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            adapter.submitList(it.batches)
+            adapter.submitList(it.batches.subList(0,5))
         }
         viewModel.viewEvents.observe(
             viewLifecycleOwner,
         ) {
             dismiss()
         }
-
-
-
     }
 }
 

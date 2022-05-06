@@ -2,6 +2,7 @@ package org.merakilearn.datasource
 
 import kotlinx.coroutines.flow.*
 import org.merakilearn.datasource.network.SaralApi
+import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.Classes
 import timber.log.Timber
 
@@ -24,7 +25,6 @@ class ClassesRepo(
             Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
             _classesFlow.emit(arrayListOf())
         }
-
     }
 
     suspend fun fetchClassData(classId: Int): Classes? {
@@ -36,6 +36,9 @@ class ClassesRepo(
         }
     }
 
+    suspend fun getEnrolledBatches():List<Batches>{
+        return api.getEnrolledBatches()
+    }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
             if (enrolled) {

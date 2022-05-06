@@ -161,7 +161,6 @@ class ClassFragmentViewModel(
     sealed class ClassFragmentViewActions : ViewModelAction {
         data class MarkCompleteClicked(val classId: String) : ClassFragmentViewActions()
         object RequestContentRefresh : ClassFragmentViewActions()
-
     }
 
     data class ClassFragmentViewState(

@@ -3,45 +3,54 @@ package org.merakilearn.ui.profile
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.EditText
-import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_profile.btnPrivacyPolicy
-import kotlinx.android.synthetic.main.fragment_profile.explore_opportunity
-import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.item_enrolled_batch.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
+import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
 import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
+import org.merakilearn.ui.adapter.EnrolledBatchAdapter
+import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
 import java.io.File
-import java.security.cert.TrustAnchor
 
 class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
     private val userRepo: UserRepo by inject()
     private lateinit var mBinding: FragmentProfileBinding
+    private lateinit var mAdapter: EnrolledBatchAdapter
 
 
     override fun onCreateView(
@@ -51,12 +60,10 @@ class ProfileFragment : Fragment() {
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return mBinding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
@@ -80,6 +87,12 @@ class ProfileFragment : Fragment() {
                 is ProfileViewEvents.OpenUrl -> {
                     merakiNavigator.openCustomTab(it.url, requireContext())
                 }
+                is ProfileViewEvents.ShowEnrolledBatches -> {
+                    initShowEnrolledBatches(it.batches)
+                }
+                is ProfileViewEvents.BatchSelectClicked ->{
+                   dropOut(it.batch)
+                }
             }
         }
 
@@ -92,6 +105,13 @@ class ProfileFragment : Fragment() {
 
         initSavedFile()
         initToolBar()
+
+    }
+
+    private fun dropOut(batches: Batches){
+        mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
+            showDropOutDialog(batches)
+        }
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {
@@ -151,6 +171,11 @@ class ProfileFragment : Fragment() {
             mBinding.tvSavedFile.visibility = View.VISIBLE
             val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
             adapter.submitList(it.savedFiles)
+        }
+        if(it.batches.isEmpty()){
+            mBinding.tvEnrolledText.visibility = View.GONE
+        }else{
+            mBinding.tvEnrolledText.visibility = View.VISIBLE
         }
 
         it.showAllButtonText?.let {
@@ -233,6 +258,32 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun initShowEnrolledBatches(batches: List<Batches>){
+        mAdapter = EnrolledBatchAdapter {
+            viewModel.selectBatch(it)
+        }
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        mBinding.rvEnrolledBatch.layoutManager = layoutManager
+        rvEnrolledBatch.adapter = mAdapter
+        mAdapter.submitList(batches)
+
+        rvEnrolledBatch.addItemDecoration(
+            SpaceItemDecoration(
+                requireContext().resources.getDimensionPixelSize(
+                    org.navgurukul.learn.R.dimen.spacing_3x
+                ), 0
+            )
+        )
+        rvEnrolledBatch.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            ).apply {
+                setDrawable(AppCompatResources.getDrawable(requireContext(), org.navgurukul.learn.R.drawable.divider)!!)
+            })
+    }
+
     private fun showPopupMenu(file: File, view: View) {
         val popup = PopupMenu(context, view)
         popup.menuInflater.inflate(R.menu.popup_menu_saved_file, popup.menu)
@@ -280,6 +331,28 @@ class ProfileFragment : Fragment() {
             ) { dialog, _ ->
                 dialog.dismiss()
             }.create().show()
+    }
+
+    private fun showDropOutDialog(batches: Batches){
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.dialog_dropout, null)
+        val btnStay: View = alertLayout.findViewById(R.id.btnStay)
+        val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnStay.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+        btnDroupOut.setOnClickListener {
+            viewModel.handle(ProfileViewActions.DropOut(batches.id))
+            btAlertDialog?.dismiss()
+        }
+        btAlertDialog?.show()
+        btAlertDialog?.setWidthPercent(45)
     }
 
 }

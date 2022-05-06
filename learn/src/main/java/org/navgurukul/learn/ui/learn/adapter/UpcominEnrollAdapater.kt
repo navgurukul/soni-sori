@@ -38,7 +38,6 @@ class UpcomingEnrolAdapater(val callback: (CourseClassContent) -> Unit):
         binding.subTitle.text = item.subTitle ?: ""
         binding.tvClassType.text  = item.type.name.capitalizeWords()
         binding.tvClassDate.text = item.startTime.toDate()
-        binding.tvFacilatorName.text = item.facilitator?.name
         binding.tvClassLang.text = item.displayableLanguage()
         binding.root.setOnClickListener {
             callback.invoke(item)

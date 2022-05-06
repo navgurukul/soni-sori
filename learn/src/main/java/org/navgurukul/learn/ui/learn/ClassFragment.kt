@@ -127,7 +127,7 @@ class ClassFragment: Fragment() {
                     mBinding.classDetail.visibility = View.GONE
                     mBinding.revisionList.revision_class_data.visibility = View.VISIBLE
                     mBinding.revisionList.list_ofRevision.visibility = View.GONE
-
+                    mBinding.batchFragment.visibility = View.GONE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
@@ -162,14 +162,22 @@ class ClassFragment: Fragment() {
                         Uri.parse(it.link)
                     )
                 )
-
             }
         }
+
         enrollViewModel.viewState.observe(viewLifecycleOwner){
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             updateState(it)
         }
-
+        learnViewModel.viewEvents.observe(viewLifecycleOwner){
+            when(it){
+                is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
+                is LearnFragmentViewEvents.EnrolledSuccessfully ->{
+                    learnViewModel.handle(LearnFragmentViewActions.RefreshCourses)
+                    fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
+                }
+            }
+        }
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -181,8 +189,10 @@ class ClassFragment: Fragment() {
             mBinding.tvClassDetail.visibility = View.VISIBLE
         }
     }
+
     private fun initScreenRefresh() {
         mBinding.swipeContainer.setOnRefreshListener {
+            learnViewModel.handle(LearnFragmentViewActions.RefreshCourses)
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
             mBinding.swipeContainer.isRefreshing = false
         }
@@ -214,7 +224,6 @@ class ClassFragment: Fragment() {
             }
         }
     }
-
     private fun updateState(it: EnrollViewState) {
         val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) btnRevision else tvBtnJoin
 
@@ -231,6 +240,9 @@ class ClassFragment: Fragment() {
         tvRevDate.text = revisionClass.timeDateRange()
         tvRevFacilatorName.text = revisionClass.facilitator?.name
         setUpRevisionJoinBtn(revisionClass)
+        btnDropOut.setOnClickListener {
+            showDropoutDialog(revisionClass)
+        }
     }
 
 
@@ -263,6 +275,7 @@ class ClassFragment: Fragment() {
         setupJoinButton()
     }
 
+
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
         mRevisionAdapter = RevisionClassAdapter {
             selectedRevisionClass = it
@@ -273,6 +286,7 @@ class ClassFragment: Fragment() {
         mRevisionAdapter.submitList(revisionClass)
         setUpRevisionEnrollBtn()
     }
+
 
     private fun showEnrolDialog(batch: Batch) {
         val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
@@ -298,7 +312,7 @@ class ClassFragment: Fragment() {
             btAlertDialog?.dismiss()
         }
         btAlertDialog?.show()
-        btAlertDialog?.setWidthPercent(45);
+        btAlertDialog?.setWidthPercent(45)
     }
     private fun showRevisionEnrolDialog(revisionClass: CourseClassContent) {
         val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_revision_dialog, null)
@@ -311,9 +325,11 @@ class ClassFragment: Fragment() {
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
         val tvBatchDate = alertLayout.tv_revision_Date
         tvBatchDate.text = revisionClass.timeDateRange()
+        val tvFacilitatorName = alertLayout.tvFacilatorName
+        tvFacilitatorName.text = "Revision Class by "+ revisionClass.facilitator?.name
+
 
         btnEnroll.setOnClickListener {
             val mRevisionClass = revisionClass
@@ -331,6 +347,26 @@ class ClassFragment: Fragment() {
         btAlertDialog?.setWidthPercent(45);
     }
 
+    private fun showDropoutDialog(revisionClass: CourseClassContent){
+        val alertLayout:View = getLayoutInflater().inflate(R.layout.dialog_dropout, null)
+        val btnStay: View = alertLayout.findViewById(R.id.btnStay)
+        val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
+        builder.setView(alertLayout)
+        builder.setCancelable(true)
+        val btAlertDialog: AlertDialog? = builder.create()
+        btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        btnStay.setOnClickListener {
+            btAlertDialog?.dismiss()
+        }
+        btnDroupOut.setOnClickListener {
+            learnViewModel.handle(LearnFragmentViewActions.DropOut(revisionClass.id.toInt()))
+            btAlertDialog?.dismiss()
+        }
+        btAlertDialog?.show()
+        btAlertDialog?.setWidthPercent(45)
+    }
 
 }

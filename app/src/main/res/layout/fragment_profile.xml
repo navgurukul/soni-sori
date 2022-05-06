@@ -6,6 +6,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -151,13 +152,27 @@
                 android:textAppearance="?textAppearanceEmphasized2"
                 app:cornerRadius="?cornerRadius400"
                 app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
+            <TextView
+                android:id="@+id/tvEnrolledText"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/enrolled_batches"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/explore_opportunity"
+                tools:text="Enrolled Batches" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvEnrolledBatch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4x"
-                app:layout_constraintTop_toBottomOf="@id/explore_opportunity"/>
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:layout_marginStart="@dimen/spacing_4x"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvEnrolledText"/>
             <TextView
                 android:id="@+id/tvSavedFile"
                 style="?textAppearanceEmphasized2"
@@ -189,7 +204,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_4x"
                 android:clipChildren="false"
                 android:clipToPadding="false"
@@ -197,7 +212,7 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toTopOf="@id/btnPrivacyPolicy"
                 app:layout_constraintTop_toBottomOf="@id/tvSavedFile"
-                tools:listitem="@layout/item_saved_file" />
+                tools:listitem="@layout/item_saved_file"/>
 
             <ProgressBar
                 android:id="@+id/progress_bar_button"

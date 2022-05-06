@@ -39,4 +39,7 @@ interface SaralApi {
     @GET("pathways/ResidentialPathway ")
     suspend fun getResidentialProgramPathway(): ResidentialProgramPathwayResponse
 
+    @GET("users/EnrolledBatches")
+    suspend fun getEnrolledBatches():List<Batches>
+
 }

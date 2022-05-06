@@ -100,6 +100,8 @@
     <string name="run_code">Run Code</string>
     <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
     <string name="enrolled">You have been enrolled to class successfully</string>
+    <string name="log_out_class">You have been dropped out of class successfully</string>
+    <string name="unable_to_drop">Unable to drop out of class</string>
     <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
@@ -133,6 +135,13 @@
     <string name="course">Course</string>
     <string name="courses">Courses</string>
     <string name="rule">If you miss the class or need to revise, you can enroll in an extra class to catch up after completion of this class  </string>
+    <string name="rule_for_joining">Please be sure to join at least 10 minutes before the scheduled time</string>
+    <string name="revision_class">Revision Class</string>
+    <string name="can_t_attend">Can\'t attend?</string>
+    <string name="stay_enrolled">Stay Enrolled</string>
+    <string name="drop_out">Drop Out</string>
+    <string name="conf_txt">Something urgent came up? Keep an eye for future revision classes</string>
+    <string name="confirmation">Confirm dropping out</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

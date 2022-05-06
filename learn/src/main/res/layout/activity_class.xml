@@ -98,6 +98,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tvFacilatorName"
             app:layout_constraintStart_toStartOf="@+id/tvDate" />
 
+        <TextView
+            android:id="@+id/btnDropOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_10x"
+            android:text="@string/can_t_attend"
+            android:textColor="@color/colorRed"
+            app:layout_constraintStart_toStartOf="@+id/tvRule"
+            app:layout_constraintTop_toBottomOf="@+id/tvRule"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tvBtnJoin"
             android:layout_width="match_parent"

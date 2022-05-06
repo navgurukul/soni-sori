@@ -1,8 +1,5 @@
 package org.merakilearn.ui.profile
 
-import android.app.AlertDialog
-import android.provider.Settings.Global.getString
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -10,8 +7,10 @@ import kotlinx.coroutines.launch
 import org.merakilearn.BuildConfig
 import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
+import org.merakilearn.datasource.ClassesRepo
 import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -28,9 +27,11 @@ class ProfileViewModel(
     private val pythonRepository: PythonRepository,
     private val stringProvider: StringProvider,
     private val userRepo: UserRepo,
+    private val classesRepo: ClassesRepo,
     private val settingsRepo: SettingsRepo,
     private val config: Config
 ) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState(serverUrl = settingsRepo.serverBaseUrl)) {
+    private var isEnrolled: Boolean = false
 
     companion object {
         const val PARTNER_ID = "partner_id"
@@ -54,7 +55,7 @@ class ProfileViewModel(
         viewModelScope.launch {
             updateFiles()
         }
-
+        getEnrolledBatches()
     }
 
     fun handle(action: ProfileViewActions) {
@@ -82,6 +83,27 @@ class ProfileViewModel(
                 )
             )
             is ProfileViewActions.ExploreOpportunityClicked -> openURL()
+            is ProfileViewActions.DropOut -> dropOut(action.batchId)
+        }
+    }
+
+    private fun dropOut(batchId: Int){
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            val result = classesRepo.enrollToClass(batchId, true)
+            setState { copy(isLoading = false) }
+            if (result) {
+                isEnrolled = false
+                setState {
+                    copy(
+                        isLoading = false
+                    )
+                }
+                _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
+            } else {
+                setState { copy(isLoading = false) }
+                _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
+            }
         }
     }
 
@@ -187,9 +209,30 @@ class ProfileViewModel(
             updateFiles(expanded)
         }
     }
+
+    private fun getEnrolledBatches(){
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            val batches = classesRepo.getEnrolledBatches()
+            batches.let {
+                setState {
+                    copy(
+                        batches = it
+                    )
+                }
+                if(it.isNotEmpty()){
+                    _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
+                }
+            }
+        }
+    }
+    fun selectBatch(batches: Batches){
+        _viewEvents.postValue(ProfileViewEvents.BatchSelectClicked(batches))
+    }
 }
 
 data class ProfileViewState(
+    val isLoading: Boolean = false,
     val savedFiles: List<File> = emptyList(),
     val appVersionText: String? = null,
     val userName: String? = null,
@@ -201,7 +244,8 @@ data class ProfileViewState(
     val showUpdateProfile: Boolean = false,
     val showEditProfileLayout: Boolean = false,
     val showServerUrl: Boolean = BuildConfig.DEBUG,
-    val serverUrl: String
+    val serverUrl: String,
+    val batches: List<Batches> = arrayListOf()
 ) : ViewState
 
 sealed class ProfileViewEvents : ViewEvents {
@@ -210,6 +254,8 @@ sealed class ProfileViewEvents : ViewEvents {
     class OpenUrl(val url: String) : ProfileViewEvents()
     class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
     object RestartApp : ProfileViewEvents()
+    data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
+    data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
 }
 
 sealed class ProfileViewActions : ViewModelAction {
@@ -224,4 +270,5 @@ sealed class ProfileViewActions : ViewModelAction {
     class UpdateServerUrl(val serverUrl: String) : ProfileViewActions()
     object ResetServerUrl : ProfileViewActions()
     object PrivacyPolicyClicked : ProfileViewActions()
+    data class DropOut(val batchId : Int): ProfileViewActions()
 }
