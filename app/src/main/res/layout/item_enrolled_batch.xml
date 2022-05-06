@@ -9,41 +9,41 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:padding="@dimen/spacing_2x"
+        android:padding="@dimen/spacing_1x"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvBatchTitle"
-            android:textAppearance="@style/TextAppearance.AppCompat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="Dhanshri Sonwane"
             android:textStyle="bold"
-            tools:text ="Ankit_15Sep2020"
-            android:layout_marginStart="@dimen/spacing_4x"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/tvClassType"
+            android:id="@+id/tv_pathway_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_2x"
-            android:paddingHorizontal="@dimen/spacing_4x"
-            android:paddingVertical="@dimen/spacing_2x"
+            android:layout_marginTop="@dimen/spacing_1x"
             app:chipBackgroundColor="#E9F5E9"
+            android:layout_marginStart="@dimen/spacing_4x"
+            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/green_progress_color"
-            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvBatchTitle"
-            tools:text="Batch" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Python" />
 
-        <ImageView
-            android:id="@+id/btnDropout"
-            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
+        <TextView
+            android:id="@+id/btnCross"
             android:layout_width="wrap_content"
-            android:background="@drawable/ic_cross"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="wrap_content"/>
+            android:layout_marginEnd="@dimen/spacing_4x"
+            android:padding="@dimen/spacing_3x"
+            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/ic_cross" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
