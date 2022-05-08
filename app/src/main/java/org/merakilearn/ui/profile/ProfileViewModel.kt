@@ -84,6 +84,7 @@ class ProfileViewModel(
             )
             is ProfileViewActions.ExploreOpportunityClicked -> openURL()
             is ProfileViewActions.DropOut -> dropOut(action.batchId)
+            is ProfileViewActions.RefreshPage -> getEnrolledBatches()
         }
     }
 
@@ -99,6 +100,7 @@ class ProfileViewModel(
                         isLoading = false
                     )
                 }
+                getEnrolledBatches()
                 _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
             } else {
                 setState { copy(isLoading = false) }
@@ -245,7 +247,7 @@ data class ProfileViewState(
     val showEditProfileLayout: Boolean = false,
     val showServerUrl: Boolean = BuildConfig.DEBUG,
     val serverUrl: String,
-    val batches: List<Batches> = arrayListOf()
+    val batches: List<Batches> = arrayListOf(),
 ) : ViewState
 
 sealed class ProfileViewEvents : ViewEvents {
@@ -270,5 +272,6 @@ sealed class ProfileViewActions : ViewModelAction {
     class UpdateServerUrl(val serverUrl: String) : ProfileViewActions()
     object ResetServerUrl : ProfileViewActions()
     object PrivacyPolicyClicked : ProfileViewActions()
+    object RefreshPage : ProfileViewActions()
     data class DropOut(val batchId : Int): ProfileViewActions()
 }

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,6 +43,7 @@ import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 import org.merakilearn.ui.adapter.EnrolledBatchAdapter
 import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
 import java.io.File
 
@@ -49,6 +51,7 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
     private val userRepo: UserRepo by inject()
+    private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private lateinit var mBinding: FragmentProfileBinding
     private lateinit var mAdapter: EnrolledBatchAdapter
 
@@ -64,6 +67,10 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initSwipeRefresh()
+
+        initShowEnrolledBatches()
 
         btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
@@ -88,7 +95,7 @@ class ProfileFragment : Fragment() {
                     merakiNavigator.openCustomTab(it.url, requireContext())
                 }
                 is ProfileViewEvents.ShowEnrolledBatches -> {
-                    initShowEnrolledBatches(it.batches)
+                    mAdapter.submitList(it.batches)
                 }
                 is ProfileViewEvents.BatchSelectClicked ->{
                    dropOut(it.batch)
@@ -105,6 +112,16 @@ class ProfileFragment : Fragment() {
 
         initSavedFile()
         initToolBar()
+
+    }
+
+    private fun initSwipeRefresh() {
+        screenRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+            viewModel.handle(ProfileViewActions.RefreshPage)
+            mBinding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        mBinding.swipeRefreshLayout.setOnRefreshListener(screenRefreshListener)
 
     }
 
@@ -174,8 +191,10 @@ class ProfileFragment : Fragment() {
         }
         if(it.batches.isEmpty()){
             mBinding.tvEnrolledText.visibility = View.GONE
+            mBinding.rvEnrolledBatch.visibility = View.GONE
         }else{
             mBinding.tvEnrolledText.visibility = View.VISIBLE
+            mBinding.rvEnrolledBatch.visibility = View.VISIBLE
         }
 
         it.showAllButtonText?.let {
@@ -258,7 +277,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun initShowEnrolledBatches(batches: List<Batches>){
+    private fun initShowEnrolledBatches(){
         mAdapter = EnrolledBatchAdapter {
             viewModel.selectBatch(it)
         }
@@ -266,7 +285,6 @@ class ProfileFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.rvEnrolledBatch.layoutManager = layoutManager
         rvEnrolledBatch.adapter = mAdapter
-        mAdapter.submitList(batches)
 
         rvEnrolledBatch.addItemDecoration(
             SpaceItemDecoration(

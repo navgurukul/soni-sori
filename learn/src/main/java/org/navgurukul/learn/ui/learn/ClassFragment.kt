@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.class_course_detail.*
 import kotlinx.android.synthetic.main.class_course_detail.tvDate
@@ -54,6 +55,7 @@ class ClassFragment: Fragment() {
     private val merakiNavigator: MerakiNavigator by inject()
     private lateinit var  mRevisionAdapter: RevisionClassAdapter
     private lateinit var mClassAdapter: BatchSelectionExerciseAdapter
+    private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val learnViewModel: LearnFragmentViewModel by sharedViewModel()
     private var selectedBatch : Batch? = null
     private var selectedClass: CourseClassContent? = null
@@ -173,8 +175,7 @@ class ClassFragment: Fragment() {
             when(it){
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.EnrolledSuccessfully ->{
-                    learnViewModel.handle(LearnFragmentViewActions.RefreshCourses)
-                    fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
+                    screenRefreshListener?.onRefresh()
                 }
             }
         }
@@ -191,11 +192,13 @@ class ClassFragment: Fragment() {
     }
 
     private fun initScreenRefresh() {
-        mBinding.swipeContainer.setOnRefreshListener {
+        screenRefreshListener = SwipeRefreshLayout.OnRefreshListener {
             learnViewModel.handle(LearnFragmentViewActions.RefreshCourses)
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
             mBinding.swipeContainer.isRefreshing = false
         }
+
+        mBinding.swipeContainer.setOnRefreshListener(screenRefreshListener)
 
         mBinding.errorLayout.btnRefresh.setOnClickListener {
             fragmentViewModel.handle(ClassFragmentViewModel.ClassFragmentViewActions.RequestContentRefresh)
