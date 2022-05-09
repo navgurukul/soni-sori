@@ -90,7 +90,7 @@ class ExerciseWordActivity : AppCompatActivity(){
                         it.isFirst,
                         it.isLast,
                         it.isCompleted,
-                        "2000",
+                        it.courseId,
                         it.exerciseId,
                         it.navigation
                     )
@@ -172,8 +172,8 @@ class ExerciseWordActivity : AppCompatActivity(){
             )
             replace(
                 R.id.exerciseContentContainer,
-                ExerciseWordFragmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
-                ExerciseWordFragmentFragment.TAG
+                ExerciseWordFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId),
+                ExerciseWordFragment.TAG
             )
         }
     }

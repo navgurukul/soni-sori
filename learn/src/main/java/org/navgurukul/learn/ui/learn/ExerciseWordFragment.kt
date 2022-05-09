@@ -23,16 +23,7 @@ import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 
-//@Parcelize
-//data class ExerciseWordFragmentArgs(
-//    val isFirst: Boolean,
-//    val isLast: Boolean,
-//    var isCompleted: Boolean,
-//    val courseId: String,
-//    val exerciseId: String
-//) : Parcelable
-
-class ExerciseWordFragmentFragment : Fragment() {
+class ExerciseWordFragment : Fragment() {
 
     private val args: ExerciseFragmentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
@@ -49,8 +40,8 @@ class ExerciseWordFragmentFragment : Fragment() {
             isCompleted: Boolean,
             courseId: String,
             exerciseId: String
-        ): ExerciseWordFragmentFragment {
-            return ExerciseWordFragmentFragment().apply {
+        ): ExerciseWordFragment {
+            return ExerciseWordFragment().apply {
                 arguments = ExerciseFragmentArgs(
                     isFirst,
                     isLast,
