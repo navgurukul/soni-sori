@@ -1,11 +1,16 @@
 package org.navgurukul.learn.ui.learn
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.MenuItem
+import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.parcel.Parcelize
@@ -15,6 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.capitalizeWords
+import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
@@ -106,8 +112,10 @@ class ClassActivity: AppCompatActivity(){
                 mBinding.tvBtnJoin.setOnClickListener {
                     viewModel.handle(EnrollViewActions.PrimaryAction(args.classContent))
                 }
+                mBinding.btnDropOut.setOnClickListener {
+//                    showDropoutDialog(args.classContent)
+                }
             }
-
         }
     }
 
@@ -122,6 +130,33 @@ class ClassActivity: AppCompatActivity(){
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    private fun showDropoutDialog(args: ClassActivityArgs?){
+        args?.let {args ->
+            args.classContent.also {
+                val alertLayout: View = getLayoutInflater().inflate(R.layout.dialog_dropout, null)
+                val btnStay: View = alertLayout.findViewById(R.id.btnStay)
+                val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder.setView(alertLayout)
+                builder.setCancelable(true)
+                val btAlertDialog: AlertDialog? = builder.create()
+                btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                btnStay.setOnClickListener {
+                    btAlertDialog?.dismiss()
+                }
+
+                btnDroupOut.setOnClickListener {
+                    viewModel.handle(EnrollViewActions.DropOut(args.classContent))
+                    btAlertDialog?.dismiss()
+                }
+                btAlertDialog?.show()
+                btAlertDialog?.setWidthPercent(45)
+            }
+        }
     }
 
 }

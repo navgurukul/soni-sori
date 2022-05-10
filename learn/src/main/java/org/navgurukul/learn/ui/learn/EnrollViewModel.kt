@@ -150,7 +150,7 @@ sealed class EnrollViewEvents : ViewEvents {
 sealed class EnrollViewActions : ViewModelAction {
    data class PrimaryAction(val mClass: CourseClassContent): EnrollViewActions()
    data class RequestPageLoad(val mClass: CourseClassContent): EnrollViewActions()
-    object DropOut : EnrollViewActions()
+    data class DropOut(val mClass: CourseClassContent) : EnrollViewActions()
 }
 
 data class EnrollViewState(
