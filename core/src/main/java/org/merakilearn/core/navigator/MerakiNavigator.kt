@@ -88,7 +88,9 @@ class MerakiNavigator(
 
     fun openDeepLink(fragmentActivity: FragmentActivity, deepLink: String, data: String? = null) {
         val uri = Uri.parse(deepLink)
-        if (uri.path == TYPING_DEEPLINK) {
+        if (uri.path == TYPING_DEEPLINK && data!!.contains("wordstyping")) {
+            launchTypingAppNew(fragmentActivity, data.objectify<ModeNew.Course>()!!)
+        } else if (uri.path == TYPING_DEEPLINK) {
             launchTypingApp(fragmentActivity, data!!.objectify<Mode.Course>()!!)
         } else {
             val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -100,7 +102,11 @@ class MerakiNavigator(
         }
     }
 
-    fun openDeepLinkNew(fragmentActivity: FragmentActivity, deepLink: String, data: String? = null) {
+    fun openDeepLinkNew(
+        fragmentActivity: FragmentActivity,
+        deepLink: String,
+        data: String? = null
+    ) {
         val uri = Uri.parse(deepLink)
         if (uri.path == TYPING_DEEPLINK) {
             launchTypingAppNew(fragmentActivity, data!!.objectify<ModeNew.Course>()!!)
@@ -113,6 +119,7 @@ class MerakiNavigator(
             startActivity(fragmentActivity, intent, false)
         }
     }
+
     fun restartApp(context: Context, clearNotification: Boolean) {
         startActivity(
             context,
@@ -141,6 +148,7 @@ class MerakiNavigator(
         }
 
     }
+
     fun launchTypingAppNew(activity: FragmentActivity, mode: ModeNew) {
         if (dynamicFeatureModuleManager.isInstalled(TYPING_MODULE_NAME)) {
             typingAppModuleNavigatorNew?.launchTypingAppNew(activity, mode)

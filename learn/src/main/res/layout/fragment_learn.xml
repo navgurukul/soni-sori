@@ -25,17 +25,6 @@
             android:clipToPadding="false"
             android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/tv_meaningful_word_typing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Meaningful Word Typing"
-                android:textColor="@color/colorBlack"
-                android:layout_marginTop="@dimen/dimen_10_dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
             <org.navgurukul.commonui.views.EmptyStateView
                 android:id="@+id/empty_state_view"
                 android:layout_width="match_parent"
@@ -48,7 +37,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintHeight_default="wrap"
                 android:layout_marginTop="@dimen/spacing_3x"
-                app:layout_constraintTop_toBottomOf="@id/tv_meaningful_word_typing"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:clipChildren="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

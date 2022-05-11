@@ -46,10 +46,6 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-        mBinding.tvMeaningfulWordTyping.setOnClickListener {
-            ExerciseWordActivity.start(requireContext(), "2000", 61)
-
-        }
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading

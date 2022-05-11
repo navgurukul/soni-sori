@@ -148,6 +148,17 @@ class KeyboardViewModel(private val keyboardActivityArgs: KeyboardActivityArgs) 
         CourseKey(it, CourseKeyState.NEUTRAL)
     }
 
+    private fun generateMeaningfulWordList(list: List<String>): String {
+        return list.random()
+    }
+
+    private fun generateMeaningfulCharList(list: List<String>): ArrayList<Char> {
+        val string = generateMeaningfulWordList(list)
+        val chars: ArrayList<Char> = ArrayList()
+        string.forEach { chars.add(it) }
+        return chars
+    }
+
     private fun generateRandomWordList(list: List<Char>): ArrayList<Char> {
         return ArrayList<Char>().apply {
             val r = Random()
