@@ -39,10 +39,12 @@
                     android:layout_marginTop="@dimen/spacing_4x"
                     android:background="@null"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:text="?textPrimary"
                     app:layout_constrainedWidth="true"
+                    android:layout_marginRight="@dimen/spacing_3x"
                     app:layout_constraintEnd_toStartOf="@id/btnEdit"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/ivProfile"
@@ -160,13 +162,13 @@
 
                 <TextView
                     android:id="@+id/tvEnrolledText"
-                    style="?textAppearanceEmphasized2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
+                    android:layout_marginTop="@dimen/spacing_10x"
                     android:text="@string/enrolled_batches"
                     android:textColor="?textSecondary"
+                    android:textAllCaps="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/explore_opportunity"
                     tools:text="Enrolled Batches" />
@@ -176,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_2x"
+                    android:layout_marginTop="@dimen/spacing_4x"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvEnrolledText" />
 

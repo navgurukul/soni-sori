@@ -9,7 +9,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:padding="@dimen/spacing_1x"
         android:layout_height="wrap_content">
 
         <TextView
@@ -28,10 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_1x"
             app:chipBackgroundColor="#E9F5E9"
-            android:layout_marginStart="@dimen/spacing_4x"
             app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/green_progress_color"
+            android:textColor="@color/textInChip"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Python" />
 

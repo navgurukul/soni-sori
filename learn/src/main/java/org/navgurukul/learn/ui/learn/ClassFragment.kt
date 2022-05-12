@@ -164,6 +164,10 @@ class ClassFragment: Fragment() {
                         Uri.parse(it.link)
                     )
                 )
+                is EnrollViewEvents.RefreshContent -> {
+                    EnrollViewActions.RequestPageLoad(it.mClass)
+                    screenRefreshListener?.onRefresh()
+                }
             }
         }
 
@@ -220,7 +224,7 @@ class ClassFragment: Fragment() {
     private fun setUpRevisionJoinBtn(revisionClass: CourseClassContent){
         mBinding.revisionList.btnRevision.setOnClickListener {
             val mRevisionClass = revisionClass
-            mRevisionClass?.let { it1 ->
+            mRevisionClass.let { it1 ->
                 enrollViewModel.handle(
                     EnrollViewActions.PrimaryAction(it1)
                 )
@@ -268,6 +272,8 @@ class ClassFragment: Fragment() {
 
 
     private fun initRecyclerViewBatch(batches : List<Batch>){
+        selectedBatch = batches[0]
+        selectedBatch!!.isSelected = true
         mClassAdapter = BatchSelectionExerciseAdapter {
             selectedBatch = it
         }
@@ -280,6 +286,8 @@ class ClassFragment: Fragment() {
 
 
     private fun initRevisionRecyclerView(revisionClass: List<CourseClassContent>){
+        selectedRevisionClass = revisionClass[0]
+        selectedRevisionClass!!.isSelected = true
         mRevisionAdapter = RevisionClassAdapter {
             selectedRevisionClass = it
         }
@@ -317,6 +325,7 @@ class ClassFragment: Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45)
     }
+
     private fun showRevisionEnrolDialog(revisionClass: CourseClassContent) {
         val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_revision_dialog, null)
         val btnEnroll: View = alertLayout.findViewById(R.id.btnReviEnroll)
@@ -333,14 +342,10 @@ class ClassFragment: Fragment() {
         val tvFacilitatorName = alertLayout.tvFacilatorName
         tvFacilitatorName.text = "Revision Class by "+ revisionClass.facilitator?.name
 
-
         btnEnroll.setOnClickListener {
-            val mRevisionClass = revisionClass
-            mRevisionClass?.let { it1 ->
-                enrollViewModel.handle(
-                    EnrollViewActions.PrimaryAction(it1)
-                )
-            } ?: kotlin.run { toast("Please Select a Class to Enrol into") }
+            revisionClass.let { it1 ->
+                enrollViewModel.handle(EnrollViewActions.PrimaryAction(it1))
+            }
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {
@@ -365,7 +370,9 @@ class ClassFragment: Fragment() {
             btAlertDialog?.dismiss()
         }
         btnDroupOut.setOnClickListener {
-            learnViewModel.handle(LearnFragmentViewActions.DropOut(revisionClass.id.toInt()))
+            revisionClass.let {
+                enrollViewModel.handle(EnrollViewActions.DropOut(it))
+            }
             btAlertDialog?.dismiss()
         }
         btAlertDialog?.show()

@@ -64,7 +64,7 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             })
 
         viewModel.viewState.observe(viewLifecycleOwner) {
-            adapter.submitList(it.batches.subList(0,5))
+            adapter.submitList(it.batches.subList(0,3))
         }
         viewModel.viewEvents.observe(
             viewLifecycleOwner,

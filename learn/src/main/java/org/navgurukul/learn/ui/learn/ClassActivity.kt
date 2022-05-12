@@ -14,12 +14,8 @@ import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.class_course_detail.*
-import kotlinx.android.synthetic.main.fragment_class.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.KEY_ARG
-import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.learn.R
@@ -29,7 +25,6 @@ import org.navgurukul.learn.courses.db.models.sanitizedType
 import org.navgurukul.learn.courses.db.models.timeDateRange
 import org.navgurukul.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.ui.common.toast
-import java.util.*
 
 @Parcelize
 data class ClassActivityArgs(val classContent: CourseClassContent): Parcelable
@@ -58,11 +53,11 @@ class ClassActivity: AppCompatActivity(){
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_class)
         setupToolbar()
 
-        viewModel.viewState.observe(this, {
+        viewModel.viewState.observe(this) {
             it?.let {
                 updateState(it)
             }
-        })
+        }
 
         viewModel.viewEvents.observe(this) {
             when (it) {
@@ -113,7 +108,7 @@ class ClassActivity: AppCompatActivity(){
                     viewModel.handle(EnrollViewActions.PrimaryAction(args.classContent))
                 }
                 mBinding.btnDropOut.setOnClickListener {
-//                    showDropoutDialog(args.classContent)
+                    showDropoutDialog()
                 }
             }
         }
@@ -132,9 +127,7 @@ class ClassActivity: AppCompatActivity(){
         finish()
     }
 
-    private fun showDropoutDialog(args: ClassActivityArgs?){
-        args?.let {args ->
-            args.classContent.also {
+    private fun showDropoutDialog() {
                 val alertLayout: View = getLayoutInflater().inflate(R.layout.dialog_dropout, null)
                 val btnStay: View = alertLayout.findViewById(R.id.btnStay)
                 val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
@@ -150,13 +143,12 @@ class ClassActivity: AppCompatActivity(){
                 }
 
                 btnDroupOut.setOnClickListener {
-                    viewModel.handle(EnrollViewActions.DropOut(args.classContent))
+                    args?.classContent?.let {
+                        viewModel.handle(EnrollViewActions.DropOut(it))
+                    }
                     btAlertDialog?.dismiss()
                 }
                 btAlertDialog?.show()
                 btAlertDialog?.setWidthPercent(45)
-            }
         }
-    }
-
 }
