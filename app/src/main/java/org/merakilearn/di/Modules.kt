@@ -106,6 +106,9 @@ val networkModule = module {
                 .withSubtype(HeaderBaseCourseContent::class.java, BaseCourseContent.COMPONENT_HEADER)
                 .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
                 .withSubtype(BannerBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
+                .withSubtype(SolutionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_SOLUTION)
+                    .withSubtype(OptionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OPTIONS)
+                .withSubtype(OutputBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OUTPUT)
                 .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
                 .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)
                 .withDefaultValue(UnknownBaseCourseContent())
@@ -114,7 +117,7 @@ val networkModule = module {
                 PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
                     .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
                     .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
-                    .withSubtype(CourseClassContent::class.java, CourseContentType.assessment.name)
+                    .withSubtype(CourseAssessmentContent::class.java, CourseContentType.assessment.name)
             )
             .build()
     }
