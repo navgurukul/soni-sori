@@ -231,7 +231,7 @@ class LearnFragmentViewModel(
             }
             refreshCourse()
             _viewEvents.postValue(LearnFragmentViewEvents.EnrolledSuccessfully)
-            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
+            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enroll_to_batch)))
         } else {
             setState { copy(loading = false) }
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))

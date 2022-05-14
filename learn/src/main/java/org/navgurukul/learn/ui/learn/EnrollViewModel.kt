@@ -151,7 +151,7 @@ class EnrollViewModel(
                         )
                     }
                     _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
-                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
+                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enroll_to_class_msg)))
                 } else {
                     setState { copy(isLoading = false) }
                     _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))

@@ -99,11 +99,12 @@
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
     <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
-    <string name="enrolled">You have been enrolled to class successfully</string>
-    <string name="log_out_class">You have been dropped out of class successfully</string>
-    <string name="enroll_to_class">Enroll To Class</string>
-    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="enroll_to_batch">You have been enrolled to batch successfully</string>
     <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
+    <string name="enroll_to_class_msg">You have been enrolled to class successfully</string>
+    <string name="log_out_class">You have been dropped out of class successfully</string>
+    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="enroll_to_class">Enroll To Class</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>
@@ -143,6 +144,7 @@
     <string name="drop_out">Drop Out</string>
     <string name="conf_txt">Something urgent came up? Keep an eye for future revision classes</string>
     <string name="confirmation">Confirm dropping out</string>
+    <string name="enroll_to_the_batch">Enroll to the batch</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

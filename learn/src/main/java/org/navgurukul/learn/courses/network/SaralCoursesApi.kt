@@ -35,7 +35,6 @@ interface SaralCoursesApi {
         @Path("classId") classId: String
     ):List<CourseClassContent>
 
-
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
