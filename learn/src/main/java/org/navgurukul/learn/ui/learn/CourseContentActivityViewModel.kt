@@ -169,6 +169,18 @@ class CourseContentActivityViewModel(
                         navigation
                     )
                 )
+            }else if (courseContentType == CourseContentType.assessment){
+                _viewEvents.setValue(
+                    CourseContentActivityViewEvents.ShowAssessmentFragment(
+                        isFirst,
+                        isLast,
+                        isCompleted,
+                        currentCourse.id,
+                        contentId,
+                        courseContentType,
+                        navigation
+                    )
+                )
             }
         }else{
             _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.content_error_message)))

@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_16_dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/tvText"
+        tools:layout_editor_absoluteX="-9dp"
         tools:text="Hi Body" />
 </androidx.constraintlayout.widget.ConstraintLayout>
