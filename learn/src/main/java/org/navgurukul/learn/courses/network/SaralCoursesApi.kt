@@ -38,12 +38,14 @@ interface SaralCoursesApi {
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
-        @Body hashMap: MutableMap<String, Any>
+        @Body hashMap: MutableMap<String, Any>,
+        @Query("register_all") shouldRegisterAll: Boolean
     ): ResponseBody
 
     @DELETE("classes/{classId}/unregister")
     suspend fun logOutToClassAsync(
-        @Path(value = "classId") classId: Int
+        @Path(value = "classId") classId: Int,
+        @Query("unregister_all") shouldUnregisterAll: Boolean
     ): ResponseBody
 
     @GET("classes/studentEnrolment")

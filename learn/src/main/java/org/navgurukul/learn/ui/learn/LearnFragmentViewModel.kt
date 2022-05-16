@@ -135,7 +135,7 @@ class LearnFragmentViewModel(
             is LearnFragmentViewActions.RequestPageLoad ->{
 //                checkedStudentEnrolment()
             }
-            is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
+            is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId, actions.shouldRegisterUnregisterAll)
             LearnFragmentViewActions.RefreshCourses -> {
                refreshCourse()
             }
@@ -218,10 +218,10 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
     }
 
-    private fun primaryAction(classId: Int) {
+    private fun primaryAction(classId: Int, shouldRegisterUnregisterAll: Boolean = false) {
         viewModelScope.launch {
         setState { copy(loading = true) }
-        val result = learnRepo.enrollToClass(classId, false)
+        val result = learnRepo.enrollToClass(classId, false, shouldRegisterUnregisterAll)
         if (result) {
             isEnrolled = true
             setState {
@@ -275,7 +275,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object RequestPageLoad :LearnFragmentViewActions()
-    data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
+    data class PrimaryAction(val classId: Int, val shouldRegisterUnregisterAll: Boolean) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()

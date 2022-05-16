@@ -226,7 +226,7 @@ class ClassFragment: Fragment() {
             val mRevisionClass = revisionClass
             mRevisionClass.let { it1 ->
                 enrollViewModel.handle(
-                    EnrollViewActions.PrimaryAction(it1)
+                    EnrollViewActions.PrimaryAction(it1, false)
                 )
             }
         }
@@ -259,7 +259,7 @@ class ClassFragment: Fragment() {
         tvFacilatorName.text = courseClass.facilitator?.name
 
         tvBtnJoin.setOnClickListener {
-            enrollViewModel.handle(EnrollViewActions.PrimaryAction(courseClass))
+            enrollViewModel.handle(EnrollViewActions.PrimaryAction(courseClass, true))
         }
     }
 
@@ -316,7 +316,7 @@ class ClassFragment: Fragment() {
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
-            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0))
+            learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0, true))
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {
@@ -344,7 +344,7 @@ class ClassFragment: Fragment() {
 
         btnEnroll.setOnClickListener {
             revisionClass.let { it1 ->
-                enrollViewModel.handle(EnrollViewActions.PrimaryAction(it1))
+                enrollViewModel.handle(EnrollViewActions.PrimaryAction(it1, false))
             }
             btAlertDialog?.dismiss()
         }
@@ -371,7 +371,7 @@ class ClassFragment: Fragment() {
         }
         btnDroupOut.setOnClickListener {
             revisionClass.let {
-                enrollViewModel.handle(EnrollViewActions.DropOut(it))
+                enrollViewModel.handle(EnrollViewActions.DropOut(it, false))
             }
             btAlertDialog?.dismiss()
         }

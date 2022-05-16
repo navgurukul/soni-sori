@@ -26,9 +26,9 @@ class EnrollViewModel(
 
     fun handle(viewActions: EnrollViewActions) {
         when (viewActions) {
-            is EnrollViewActions.PrimaryAction -> primaryAction(viewActions.mClass)
+            is EnrollViewActions.PrimaryAction -> primaryAction(viewActions.mClass, viewActions.shouldRegisterUnregisterAll)
             is EnrollViewActions.RequestPageLoad -> loadPage(viewActions.mClass)
-            is EnrollViewActions.DropOut -> dropOut(viewActions.mClass)
+            is EnrollViewActions.DropOut -> dropOut(viewActions.mClass, viewActions.shouldRegisterUnregisterAll)
 
         }
     }
@@ -80,10 +80,10 @@ class EnrollViewModel(
             }
         }
     }
-    private fun dropOut(mClass: CourseClassContent){
+    private fun dropOut(mClass: CourseClassContent, shouldRegisterUnregisterAll: Boolean = false){
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val result = learnRepo.enrollToClass(mClass.id.toInt(), true)
+            val result = learnRepo.enrollToClass(mClass.id.toInt(), true, shouldRegisterUnregisterAll)
             setState { copy(isLoading = true) }
             if (result){
                 mClass.isEnrolled = false
@@ -104,7 +104,7 @@ class EnrollViewModel(
         }
     }
 
-    private fun primaryAction(mClass: CourseClassContent) {
+    private fun primaryAction(mClass: CourseClassContent, shouldRegisterUnregisterAll: Boolean = false) {
         viewModelScope.launch {
             val classes = mClass
             if (mClass.isEnrolled) {
@@ -125,7 +125,7 @@ class EnrollViewModel(
                 }
             } else {
                 setState { copy(isLoading = true) }
-                val result = learnRepo.enrollToClass(mClass.id.toInt(), false)
+                val result = learnRepo.enrollToClass(mClass.id.toInt(), false, shouldRegisterUnregisterAll)
                 if (result) {
                     mClass.isEnrolled = true
 
@@ -172,9 +172,9 @@ sealed class EnrollViewEvents : ViewEvents {
 }
 
 sealed class EnrollViewActions : ViewModelAction {
-   data class PrimaryAction(val mClass: CourseClassContent): EnrollViewActions()
+   data class PrimaryAction(val mClass: CourseClassContent, val shouldRegisterUnregisterAll: Boolean): EnrollViewActions()
    data class RequestPageLoad(val mClass: CourseClassContent): EnrollViewActions()
-    data class DropOut(val mClass: CourseClassContent) : EnrollViewActions()
+    data class DropOut(val mClass: CourseClassContent, val shouldRegisterUnregisterAll: Boolean) : EnrollViewActions()
 }
 
 data class EnrollViewState(
