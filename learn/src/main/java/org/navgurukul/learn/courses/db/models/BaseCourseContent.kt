@@ -165,6 +165,7 @@ data class SolutionBaseCourseContent(
         override val decoration: Decoration? = null
 ):BaseCourseContent
 
+@JsonClass(generateAdapter = true)
 data class OutputBaseCourseContent(
         @Json(name = "component")
         override val component: String,

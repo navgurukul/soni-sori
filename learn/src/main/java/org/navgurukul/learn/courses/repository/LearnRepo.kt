@@ -206,8 +206,10 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
-    suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
-            return courseApi.getRevisionClasses(classId)
+    suspend fun getRevisionClasses(classId: String): List<CourseClassContent>? {
+        val res = courseApi.getRevisionClasses(classId)
+        if(res.isSuccessful) return res.body()
+        return emptyList()
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
