@@ -150,7 +150,7 @@ data class OptionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String?,
+        var value: OptionResponse,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ): BaseCourseContent
@@ -170,7 +170,7 @@ data class OutputBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: String?,
+        var value: AnswerOutput,
         @Json(name = "decoration")
 override val decoration: Decoration? = null
 ):BaseCourseContent
@@ -212,3 +212,24 @@ enum class CodeType {
 enum class DecorationType {
     number, bullet
 }
+
+
+@JsonClass(generateAdapter = true)
+data class OptionResponse(
+        @Json(name = "1")
+        val option1: String,
+        @Json(name = "2")
+        val option2: String,
+        @Json(name = "3")
+        val option3: String,
+        @Json(name = "4")
+        val option4: String,
+)
+
+@JsonClass(generateAdapter = true)
+data class AnswerOutput(
+        @Json(name = "correct")
+        val correct: List<BaseCourseContent>,
+        @Json(name = "incorrect")
+        val incorrect: List<BaseCourseContent>,
+)

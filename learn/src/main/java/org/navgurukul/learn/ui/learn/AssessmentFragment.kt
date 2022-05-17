@@ -12,10 +12,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.courses.network.model.Classes
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
-import org.navgurukul.learn.ui.learn.adapter.BatchSelectionExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
 
 
