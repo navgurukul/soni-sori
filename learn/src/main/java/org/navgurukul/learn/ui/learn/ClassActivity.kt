@@ -105,7 +105,7 @@ class ClassActivity: AppCompatActivity(){
                 mBinding.tvFacilatorName.text = it.facilitator?.name
 
                 mBinding.tvBtnJoin.setOnClickListener {
-                    viewModel.handle(EnrollViewActions.PrimaryAction(args.classContent))
+                    viewModel.handle(EnrollViewActions.PrimaryAction(args.classContent, true))
                 }
                 mBinding.btnDropOut.setOnClickListener {
                     showDropoutDialog()
@@ -144,7 +144,7 @@ class ClassActivity: AppCompatActivity(){
 
                 btnDroupOut.setOnClickListener {
                     args?.classContent?.let {
-                        viewModel.handle(EnrollViewActions.DropOut(it))
+                        viewModel.handle(EnrollViewActions.DropOut(it, false))
                     }
                     btAlertDialog?.dismiss()
                 }

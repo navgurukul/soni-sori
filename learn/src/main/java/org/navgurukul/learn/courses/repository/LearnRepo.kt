@@ -226,13 +226,13 @@ class LearnRepo(
         return courseApi.getUpcomingClass(pathwayId)
     }
 
-    suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
+    suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {
-                courseApi.logOutToClassAsync(classId)
+                courseApi.logOutToClassAsync(classId, shouldRegisterUnregisterAll)
                 updateEnrollStatus(classId, false)
             } else {
-                courseApi.enrollToClassAsync(classId, mutableMapOf())
+                courseApi.enrollToClassAsync(classId, mutableMapOf(),shouldRegisterUnregisterAll)
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {

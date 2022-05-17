@@ -206,7 +206,7 @@ class LearnFragment : Fragment(){
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0, true))
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {
