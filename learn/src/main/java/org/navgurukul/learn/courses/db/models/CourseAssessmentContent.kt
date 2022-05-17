@@ -1,7 +1,9 @@
 package org.navgurukul.learn.courses.db.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CourseAssessmentContent(
     @Json(name = "id")
     override val id: String = "",
