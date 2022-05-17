@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -33,7 +34,7 @@ interface SaralCoursesApi {
     @GET("classes/{classId}/revision")
     suspend fun getRevisionClasses(
         @Path("classId") classId: String
-    ):List<CourseClassContent>
+    ):Response<List<CourseClassContent>>
 
 
     @POST("classes/{classId}/register")
