@@ -71,9 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_6x"
                 android:text="@string/back"
+                android:layout_marginEnd="@dimen/spacing_8x"
                 app:layout_constraintEnd_toStartOf="@+id/btnEnroll"
-                app:layout_constraintHorizontal_bias="0.759"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
 
             <TextView
@@ -83,6 +82,8 @@
                 android:layout_marginTop="@dimen/spacing_6x"
                 android:layout_marginBottom="@dimen/spacing_6x"
                 android:text="@string/enroll_today"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/spacing_3x"
                 android:textColor="@color/green_progress_color"
                 app:layout_constraintEnd_toEndOf="@+id/class_info"
                 app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />

@@ -145,6 +145,9 @@
     <string name="conf_txt">Something urgent came up? Keep an eye for future revision classes</string>
     <string name="confirmation">Confirm dropping out</string>
     <string name="enroll_to_the_batch">Enroll to the batch</string>
+    <string name="enroll_to_revision_class">Enroll to Revision Class</string>
+    <string name="join_class">Join Class</string>
+    <string name="confirm_enrollment">Confirm Enrollment</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

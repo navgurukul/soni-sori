@@ -32,7 +32,6 @@
             android:layout_marginEnd="@dimen/spacing_3x"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="15 Sep 21 to 15 Nov 21"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             tools:ignore="MissingClass"
@@ -59,7 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_6x"
             android:layout_marginBottom="@dimen/spacing_6x"
-            android:text="Confirm Enrollment"
+            android:textStyle="bold"
+            android:text="@string/confirm_enrollment"
             android:textColor="@color/green_progress_color"
             app:layout_constraintEnd_toEndOf="@+id/tvFacilatorName"
             app:layout_constraintTop_toBottomOf="@+id/tv_revision_Date" />

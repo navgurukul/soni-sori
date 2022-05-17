@@ -89,7 +89,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvAbout"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tvAbout"
-                        tools:visibility="gone"/>
+                        tools:visibility="visible"/>
 
                     <include
                         android:id="@+id/revision_list"

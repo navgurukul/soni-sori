@@ -58,13 +58,13 @@
             android:layout_marginTop="48dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Join Class"
+            android:text="@string/join_class"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             app:cornerRadius="?cornerRadius400"
             android:backgroundTint="@color/green_progress_color"
             android:textColor="@color/primaryTextColor"
-            android:layout_marginBottom="@dimen/spacing_2x"
+            android:layout_marginBottom="@dimen/spacing_1x"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Join class"/>
 
