@@ -33,8 +33,8 @@ class AssessmentFragment : Fragment() {
             courseId: String,
             assessmentId : String,
             courseContentType: CourseContentType,
-        ): ClassFragment {
-            return ClassFragment().apply {
+        ): AssessmentFragment {
+            return AssessmentFragment().apply {
                 arguments = CourseContentArgs(
                     isFirst,
                     isLast,
