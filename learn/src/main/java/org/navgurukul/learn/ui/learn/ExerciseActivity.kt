@@ -60,6 +60,7 @@ class ExerciseActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         mBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         // Instantiate an instance of SplitInstallManager for the dynamic feature module

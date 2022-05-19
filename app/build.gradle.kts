@@ -138,6 +138,7 @@ dependencies {
     implementation(GooglePlayDependencies.playCore)
     implementation(GooglePlayDependencies.installReferrer)
 
+    implementation ("com.facebook.stetho:stetho:1.5.1")
 
     //test
     testImplementation(TestDependencies.jUnit)

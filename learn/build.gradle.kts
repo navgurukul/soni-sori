@@ -104,6 +104,8 @@ dependencies {
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 
+    implementation ("androidx.navigation:navigation-ui:2.3.0")
+
     //test
     testImplementation(TestDependencies.jUnit)
 

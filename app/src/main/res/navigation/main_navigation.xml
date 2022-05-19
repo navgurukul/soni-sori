@@ -21,11 +21,24 @@
         android:id="@+id/navigation_learn"
         android:name="org.navgurukul.learn.ui.learn.LearnFragment"
         android:label="@string/title_learn"
-        tools:layout="@layout/fragment_learn" />
+        tools:layout="@layout/fragment_learn" >
+        <action android:id="@+id/action_paragraph"
+            app:destination="@id/navigation_learn_paragraph"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_playground"
         android:name="org.merakilearn.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"
         tools:layout="@layout/fragment_playground" />
+
+    <fragment
+        android:id="@+id/navigation_learn_paragraph"
+        android:name="org.navgurukul.learn.ui.learn.ExerciseWordFragmentFragment"
+        android:label="@string/title_learn"
+        tools:layout="@layout/fragment_exercise" />
 </navigation>

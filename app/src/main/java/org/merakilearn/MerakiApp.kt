@@ -2,6 +2,7 @@ package org.merakilearn
 
 import android.app.Application
 import android.content.Context
+import com.facebook.stetho.Stetho
 import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -60,6 +61,8 @@ class MerakiApp : Application() {
 
         val installReferrerManager: InstallReferrerManager by inject()
         installReferrerManager.checkReferrer()
+
+        Stetho.initializeWithDefaults(this)
 
     }
 

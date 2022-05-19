@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_exercise.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
@@ -47,13 +51,34 @@ class LearnFragment : Fragment(){
         configureToolbar()
 
         mBinding.tvMeaningfulWordTyping.setOnClickListener {
-            ExerciseWordActivity.start(requireContext(), "2000", 61)
+//            activity?.supportFragmentManager?.commit {
+//                replace(
+//                    (activity as ExerciseActivity).exerciseContentContainer.id,
+//                    ExerciseWordFragmentFragment.newInstance(
+//                        isFirst = true,
+//                        isLast = true,
+//                        isCompleted = true,
+//                        courseId = "2000",
+//                        exerciseId = "5698"
+//                    )
+//                )
+//            }
+            //ExerciseWordActivity.start(requireContext(), "2000", 61)
+
+            Navigation.findNavController(view).navigate(R.id.action_paragraph)
 
         }
+
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
-            mCourseAdapter.submitList(it.courses, it.logo)
+            val mutableCoursesList = it.courses as MutableList
+
+            //TODO: Remove Hardcoding later
+            //if(mutableCoursesList.isNotEmpty() && mutableCoursesList[0].id != "2000")
+            //mutableCoursesList.add(0, Course(id= "2000", name= "Meaningful Word (Typing)", pathwayId=61, shortDescription="Let's learn typing", supportedLanguages= emptyList()))
+
+            mCourseAdapter.submitList(mutableCoursesList, it.logo)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),
