@@ -12,18 +12,14 @@
         <dist:delivery>
             <dist:install-time />
         </dist:delivery>
-
         <dist:fusing dist:include="true" />
     </dist:module>
 
     <application>
         <activity
-            android:name=".ui.learn.ExerciseWordActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.learn.ExerciseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

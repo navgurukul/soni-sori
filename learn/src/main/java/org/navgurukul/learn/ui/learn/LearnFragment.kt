@@ -51,24 +51,9 @@ class LearnFragment : Fragment(){
         configureToolbar()
 
         mBinding.tvMeaningfulWordTyping.setOnClickListener {
-//            activity?.supportFragmentManager?.commit {
-//                replace(
-//                    (activity as ExerciseActivity).exerciseContentContainer.id,
-//                    ExerciseWordFragmentFragment.newInstance(
-//                        isFirst = true,
-//                        isLast = true,
-//                        isCompleted = true,
-//                        courseId = "2000",
-//                        exerciseId = "5698"
-//                    )
-//                )
-//            }
-            //ExerciseWordActivity.start(requireContext(), "2000", 61)
-
-            Navigation.findNavController(view).navigate(R.id.action_paragraph)
+            ExerciseWordActivity.start(requireContext(), "2000", 61)
 
         }
-
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
