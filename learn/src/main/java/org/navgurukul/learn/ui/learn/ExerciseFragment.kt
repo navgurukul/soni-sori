@@ -94,13 +94,13 @@ class ExerciseFragment : Fragment() {
             }
         })
 
-        fragmentViewModel.viewState.observe(viewLifecycleOwner, {
+        fragmentViewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
 
             if (!it.isError)
                 contentAdapter.submitList(it.exerciseContentList)
-        })
+        }
 
         initContentRV()
         initScreenRefresh()

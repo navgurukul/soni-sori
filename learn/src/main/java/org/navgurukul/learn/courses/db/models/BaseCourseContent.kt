@@ -213,7 +213,6 @@ enum class DecorationType {
     number, bullet
 }
 
-
 @JsonClass(generateAdapter = true)
 data class OptionResponse(
         @Json(name = "1")
