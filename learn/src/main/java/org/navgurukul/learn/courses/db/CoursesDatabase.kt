@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 7
+const val DB_VERSION = 8
 
 @Dao
 interface PathwayDao {
@@ -230,6 +230,13 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
         database.execSQL(
             "ALTER TABLE `pathway` ADD COLUMN 'cta' TEXT"
         )
+    }
+}
+
+val MIGRATION_7_8 = object : Migration(6, 7) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("DROP TABLE course_exercise")
     }
 }
 
