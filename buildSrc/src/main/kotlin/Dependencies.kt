@@ -149,6 +149,7 @@ object FirebaseDependencies {
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
     const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
+    const val perfKtx ="com.google.firebase:firebase-perf-ktx:20.0.6"
 }
 
 object RetrofitDependencies {
@@ -184,6 +185,7 @@ object Classpath {
     const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
+    const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
 }
 
 object Plugins {
@@ -197,4 +199,5 @@ object Plugins {
     const val crashlytics = "com.google.firebase.crashlytics"
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
+    const val perf = "com.google.firebase.firebase-perf"
 }
