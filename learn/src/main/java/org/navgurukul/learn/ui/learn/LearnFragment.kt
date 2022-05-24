@@ -50,18 +50,18 @@ class LearnFragment : Fragment(){
 
         configureToolbar()
 
-        mBinding.tvMeaningfulWordTyping.setOnClickListener {
-            ExerciseWordActivity.start(requireContext(), "2000", 61)
-
-        }
+//        mBinding.tvMeaningfulWordTyping.setOnClickListener {
+//            ExerciseWordActivity.start(requireContext(), "2000", 61)
+//
+//        }
         viewModel.viewState.observe(viewLifecycleOwner, {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
             val mutableCoursesList = it.courses as MutableList
 
             //TODO: Remove Hardcoding later
-            //if(mutableCoursesList.isNotEmpty() && mutableCoursesList[0].id != "2000")
-            //mutableCoursesList.add(0, Course(id= "2000", name= "Meaningful Word (Typing)", pathwayId=61, shortDescription="Let's learn typing", supportedLanguages= emptyList()))
+            if(mutableCoursesList.isNotEmpty() && mutableCoursesList[0].id != "2001")
+                mutableCoursesList.add(0, Course(id= "2001", name= "Paragraph (Typing)", pathwayId=61, shortDescription="Let's learn typing", supportedLanguages= emptyList()))
 
             mCourseAdapter.submitList(mutableCoursesList, it.logo)
             configureToolbar(
@@ -80,6 +80,13 @@ class LearnFragment : Fragment(){
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
                 is LearnFragmentViewEvents.OpenCourseDetailActivity -> {
+                    //TODO: Will remove after API integration
+                    if(it.courseId == "2001") {
+                        merakiNavigator.openDeepLink(requireActivity()
+                            , "https://merakilearn.org/typing"
+                    , "{\"content\":[\"hello, again, friend of a friend, I knew you when\", \"our common goal was waiting for, the world to end.\"],\"code\":\"wordstyping\"}")
+                    }
+                    else
                     ExerciseActivity.start(requireContext(), it.courseId, it.pathwayId)
                 }
                 LearnFragmentViewEvents.OpenPathwaySelectionSheet -> {

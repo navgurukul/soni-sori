@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         tools:text="00/3:00" />
 
-    <org.navgurukul.typingguru.keyboard.CourseKeysView
+    <org.navgurukul.typingguru.keyboard.ParagraphKeysView
         android:id="@+id/course_keys_view"
         android:layout_width="wrap_content"
         android:layout_height="45dp"

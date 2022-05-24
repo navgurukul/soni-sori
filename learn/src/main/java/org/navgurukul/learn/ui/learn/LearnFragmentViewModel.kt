@@ -152,7 +152,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object DismissSelectionSheet : LearnFragmentViewEvents()
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
-    data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
+    data class OpenUrl(val cta: PathwayCTA?, val dummyId: Int = 0) : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
