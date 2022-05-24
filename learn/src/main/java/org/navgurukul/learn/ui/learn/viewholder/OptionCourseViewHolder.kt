@@ -20,8 +20,8 @@ class OptionCourseViewHolder(itemView: View):
     fun bindView(item: OptionBaseCourseContent) {
         super.bind(item)
 
-        item.value?.let {
-           optionContent.apply {
+        item.value.let {
+            optionContent.apply {
                 this.text = HtmlCompat.fromHtml(it.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT)
             }
         }
