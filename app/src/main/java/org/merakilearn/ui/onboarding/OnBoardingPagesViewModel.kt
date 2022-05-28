@@ -1,6 +1,9 @@
 package org.merakilearn.ui.onboarding
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
@@ -28,6 +31,8 @@ class OnBoardingPagesViewModel(
     companion object{
         const val PARTNER_ID="partner_id"
     }
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     fun handle(action: OnBoardingPagesAction) {
         val viewState = viewState.value!!
 
@@ -106,16 +111,26 @@ class OnBoardingPagesViewModel(
     }
     private fun checkPartner(){
         val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-        val pattern= Regex("[^$PARTNER_ID:]\\d+")
+        val partnerIdPattern= Regex("[^$PARTNER_ID:]\\d+")
+        val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
 
-        val value=pattern.find(decodeReferrer,0)?.value
+        val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
+        val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
 
-        if(value!=null){
+
+        if(partnerIdValue!=null){
+            setAnalytics(partnerIdValue,partnerNameValue!!)
             getPathwayForResidentialProgram()
         }
         else{
             _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
         }
+    }
+
+    private fun setAnalytics( partner_id:String,partner_name:String) {
+        firebaseAnalytics= Firebase.analytics
+        firebaseAnalytics.setUserProperty("partner_id",partner_id)
+        firebaseAnalytics.setUserProperty("partner_name",partner_name)
     }
 
     private fun getPathwayForResidentialProgram() {

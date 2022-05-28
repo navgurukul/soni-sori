@@ -17,6 +17,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -39,6 +42,7 @@ data class MainActivityArgs(
 
 class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
+    private lateinit var firebaseAnalytics : FirebaseAnalytics
     companion object {
         fun launch(context: Context, selectedPathwayId: Int? = null) {
             val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
@@ -78,6 +82,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        firebaseAnalytics= Firebase.analytics
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
@@ -106,6 +111,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         val requestOptions = RequestOptions()
             .centerCrop()
             .transform(CircleCrop())
+
+        firebaseAnalytics.setUserId(currentUser.id)
 
         val thumbnail = GlideApp.with(this)
             .load(R.drawable.illus_default_avatar)
