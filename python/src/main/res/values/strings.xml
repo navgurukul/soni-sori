@@ -16,7 +16,7 @@
     <string name="curly_brace_open" translatable="false">{</string>
     <string name="curly_brace_close" translatable="false">}</string>
     <string name="clear">Clear</string>
-    <string name="replace_code">Do you want to replace existing code snnipet ?</string>
+    <string name="replace_code">Do you want to replace existing code snippet ?</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
     <string name="enter_file_name">Enter file name</string>

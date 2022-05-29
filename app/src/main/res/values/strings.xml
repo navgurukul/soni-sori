@@ -22,6 +22,7 @@
     <string name="title_home">Home</string>
     <string name="meraki">Meraki</string>
     <string name="search_classes">Search for Classes</string>
+    <string name="search_playground">Search projects or lab…</string>
     <string name="no_class_scheduled">No Class Scheduled</string>
     <string name="about">About</string>
     <string name="class_detail">Class Detail</string>
