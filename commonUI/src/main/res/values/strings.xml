@@ -7,6 +7,7 @@
 
     <!-- button names -->
     <string name="ok">OK</string>
+    <string name="save">Save</string>
     <string name="jump_to_first_unread">Jump to first unread message.</string>
     <string name="action_close">Close</string>
     <string name="join">Join</string>

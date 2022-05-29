@@ -57,7 +57,7 @@ class PythonEditorActivity : AppCompatActivity() {
 
         fun launchWithFileContent(file: File, context: Context): Intent {
             val intent = Intent(context, PythonEditorActivity::class.java)
-            val code = file.bufferedReader().readLine()
+            val code = file.bufferedReader().readText()
             intent.putExtras(PythonEditorArgs(code).toBundle()!!)
             return intent
         }
