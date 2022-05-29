@@ -2,6 +2,7 @@ package org.merakilearn.ui.playground
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
@@ -22,10 +23,11 @@ class PlaygroundFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.layoutManager = GridLayoutManager(context, 2)
+        recycler_view.layoutManager = GridLayoutManager(context, 4)
+        initSearchListener()
 
         val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 2))
+        recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
         val adapter = PlaygroundAdapter(requireContext()) {
             viewModel.selectPlayground(it)
@@ -38,12 +40,27 @@ class PlaygroundFragment : BaseFragment() {
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext())
-                PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
+                is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext())
+                is PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
+                is PlaygroundViewEvents.OpenPythonPlaygroundWithFile -> navigator.openPlaygroundWithFileContent(requireActivity(), file = it.file)
             }
         })
 
         (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_playground), R.attr.textPrimary)
     }
 
+    private fun initSearchListener() {
+        search_view.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.handle(PlaygroundActions.Query(query))
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.handle(PlaygroundActions.Query(newText))
+                return false
+            }
+        })
+    }
 }
