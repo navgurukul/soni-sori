@@ -123,6 +123,15 @@ class PythonRepositoryImpl(
         }
     }
 
+    override suspend fun isFileNamePresent(fileName:String): Boolean{
+        val list=fetchSavedFiles()
+        for(file_name in list) {
+            if(fileName == file_name.name.replaceAfterLast("_", "").removeSuffix("_"))
+                return true
+        }
+        return false
+    }
+
     override suspend fun fetchSavedFiles(): Array<File> {
         return withContext(Dispatchers.IO) {
             val directory = File(

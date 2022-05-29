@@ -1,7 +1,11 @@
 package org.navgurukul.playground.editor
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -15,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -39,6 +44,9 @@ class PythonEditorFragment : BaseFragment() {
     private val layoutInput: View by lazy { requireView().findViewById(R.id.layoutInput) }
     private val controlsContainer: ViewGroup by lazy { requireView().findViewById(R.id.control_buttons_container) }
     private val ibEnter: MaterialButton by lazy { requireView().findViewById(R.id.ibEnter) }
+    private lateinit var etFileName:TextInputLayout
+    private lateinit var alertDialog:AlertDialog
+
     private val sheetBehavior: BottomSheetBehavior<View> by lazy {
         BottomSheetBehavior.from(
             bottomSheet
@@ -88,8 +96,10 @@ class PythonEditorFragment : BaseFragment() {
             when (it) {
                 PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
-                is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
-                PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
+                is PythonEditorViewEvents.ShowToast -> codeSaved(it.message)
+                is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
+                is PythonEditorViewEvents.ShowFileNameError -> showFileNameError()
+
             }
         })
 
@@ -107,6 +117,28 @@ class PythonEditorFragment : BaseFragment() {
                 }
             }
         )
+    }
+
+    private fun codeSaved(message: String) {
+        alertDialog.dismiss()
+        requireActivity().toast(message)
+    }
+
+    private fun showFileNameError() {
+        etFileName.isErrorEnabled=true
+        etFileName.error= "Project name already exists!"
+        etFileName.editText?.addTextChangedListener (object :TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                etFileName.isErrorEnabled=false
+            }
+        })
     }
 
     private fun createControlButtons() {
@@ -192,24 +224,28 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showDialogForFileName() {
-        val inputContainer =
-            LayoutInflater.from(requireContext()).inflate(R.layout.alert_edit_text, null)
-        val input = inputContainer.findViewById<EditText>(R.id.input)
+        val inputContainer :View = getLayoutInflater().inflate(R.layout.alert_edit_text,null)
+        etFileName = inputContainer.findViewById(R.id.input)
+        val btnSave: View = inputContainer.findViewById(R.id.save)
+        val btnCancel: View = inputContainer.findViewById(R.id.cancel)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(inputContainer)
+        builder.setCancelable(false)
+        alertDialog  = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
 
-        val alertDialog =
-            AlertDialog.Builder(requireContext()).setMessage(getString(R.string.enter_file_name))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    viewModel.handle(PythonEditorViewActions.OnFileNameEntered(input.text.toString()))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }.create()
 
-        alertDialog.setView(inputContainer)
+        btnSave.setOnClickListener{
+            viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
+        }
+        btnCancel.setOnClickListener{
+            if(alertDialog.isShowing) {
+                alertDialog.dismiss()
+            }
+        }
+
         alertDialog.show()
-
     }
 
     private fun createInput() {

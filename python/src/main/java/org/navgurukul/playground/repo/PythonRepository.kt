@@ -10,6 +10,7 @@ interface PythonRepository {
     suspend fun deleteFile(file: File): Boolean
     suspend fun runCode(code: String, tag: Any): String?
     suspend fun onInput(input: String)
+    suspend fun isFileNamePresent(fileName:String): Boolean
 
     val inputFlow: Flow<PythonInput>
     val outputFlow: Flow<PythonOutput>

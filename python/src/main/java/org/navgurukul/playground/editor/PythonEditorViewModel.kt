@@ -155,9 +155,16 @@ class PythonEditorViewModel(
     }
 
     private fun onFileNameEntered(fileName: String) {
-        val viewState = viewState.value!!
-        pythonRepository.saveCode(viewState.code, fileName)
-        _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.code_saved)))
+        viewModelScope.launch {
+            val viewState = viewState.value!!
+            if(pythonRepository.isFileNamePresent(fileName)){
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError)
+            }
+            else {
+                pythonRepository.saveCode(viewState.code, fileName)
+                _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.code_saved)))
+            }
+        }
     }
 }
 
@@ -178,6 +185,7 @@ sealed class PythonEditorViewEvents : ViewEvents {
     object ShowFileNameDialog : PythonEditorViewEvents()
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
+    object ShowFileNameError:PythonEditorViewEvents()
 }
 
 data class PythonEditorViewState(
