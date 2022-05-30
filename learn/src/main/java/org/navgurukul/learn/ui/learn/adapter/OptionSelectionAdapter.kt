@@ -11,35 +11,33 @@ import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.OptionBaseCourseContent
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
+import org.navgurukul.learn.databinding.ItemOptionContentBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
-class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
-    DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>(){
-    override fun areItemsTheSame(oldItem:OptionResponse, newItem:OptionResponse): Boolean {
+class OptionSelectionAdapter(val callback: (List<OptionResponse>) -> Unit):
+    DataBoundListAdapter<List<OptionResponse>, ItemOptionContentBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<List<OptionResponse>>(){
+    override fun areItemsTheSame(oldItem:List<OptionResponse>, newItem:List<OptionResponse>): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: OptionResponse, newItem:OptionResponse): Boolean {
+    override fun areContentsTheSame(oldItem: List<OptionResponse>, newItem:List<OptionResponse>): Boolean {
         return oldItem == newItem
     }
 })
 {
-    override fun createBinding(parent: ViewGroup, viewType: Int): ItemMcqOptionBinding{
+    override fun createBinding(parent: ViewGroup, viewType: Int): ItemOptionContentBinding{
        return DataBindingUtil.inflate(
            LayoutInflater.from(parent.context),
-           R.layout.item_mcq_option,parent,false
+           R.layout.item_option_content,parent,false
        )
     }
 
     override fun bind(
-        holder: DataBoundViewHolder<ItemMcqOptionBinding>,
-        item: OptionResponse,
+        holder: DataBoundViewHolder<ItemOptionContentBinding>,
+        item: List<OptionResponse>,
     ) {
        val binding = holder.binding
-        binding.tvOption.text = HtmlCompat.fromHtml(
-            (item ?: "") as String, HtmlCompat.FROM_HTML_MODE_COMPACT
-        )
         binding.root.setOnClickListener {
             callback.invoke(item)
         }

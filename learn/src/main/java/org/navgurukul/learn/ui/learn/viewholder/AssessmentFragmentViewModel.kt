@@ -14,6 +14,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseAssessmentContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -83,12 +84,17 @@ class AssessmentFragmentViewModel (
             }
         }
 
+    fun selectedOption(option: OptionResponse){
+        _viewEvents.postValue(AssessmentFragmentViewEvents.OptionSelectedClicked(option))
+    }
+
 
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         object ShowCorrectOutput : AssessmentFragmentViewEvents()
         object ShowIncorrectOutput : AssessmentFragmentViewEvents()
+        data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewEvents()
     }
 
 

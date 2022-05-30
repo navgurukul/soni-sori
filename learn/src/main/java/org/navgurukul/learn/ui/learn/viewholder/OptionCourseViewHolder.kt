@@ -35,10 +35,10 @@ class OptionCourseViewHolder(itemView: View):
 
 
         item.value.let {
-            optionContent.tvOption.text = HtmlCompat.fromHtml(
-                (item.value
-                    ?: "") as String, HtmlCompat.FROM_HTML_MODE_COMPACT
-            )
+//            optionContent.tvOption.text = HtmlCompat.fromHtml(
+//                (item.value
+//                    ?: "") as String, HtmlCompat.FROM_HTML_MODE_COMPACT
+//            )
             mClassAdapter = OptionSelectionAdapter {
 
             }
