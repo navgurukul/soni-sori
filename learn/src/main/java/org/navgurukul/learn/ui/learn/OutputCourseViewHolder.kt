@@ -24,9 +24,29 @@ BaseCourseViewHolder(itemView){
 
         item.value.correct.let {
             if (it.isNotEmpty()){
-//                val
+//                val adapter = OutputAdapter(it)
+//                val layoutManager = LinearLayoutManager(outputView.context ,LinearLayoutManager.VERTICAL, false)
+//                outputView.layoutManager = layoutManager
+//
+//                outputView.adapter = adapter
+//                outputView.addItemDecoration(
+//                    ListSpacingDecoration(
+//                        outputView.context,
+//                        R.dimen.table_margin_vertical_spacing,
+//                        R.dimen.table_margin_horizontal_spacing
+//                    )
+//                )
             }
         }
     }
+
+//    private fun getFlattenedTableList(list: List<BaseCourseContent>): List<String> {
+//        val flatList = ArrayList<String>()
+//        for (item in list) {
+//            flatList.add(item.header ?: "")
+//            item.items?.let { flatList.addAll(it) }
+//        }
+//        return flatList
+//    }
 
 }

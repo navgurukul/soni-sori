@@ -2,21 +2,25 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.OptionBaseCourseContent
+import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
-class OptionSelectionAdapter(val callback: (CourseClassContent) -> Unit):
-    DataBoundListAdapter<CourseClassContent, ItemMcqOptionBinding>(
-        mDiffCallback = object : DiffUtil.ItemCallback<CourseClassContent>(){
-    override fun areItemsTheSame(oldItem:CourseClassContent, newItem:CourseClassContent): Boolean {
+class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
+    DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>(){
+    override fun areItemsTheSame(oldItem:OptionResponse, newItem:OptionResponse): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: CourseClassContent, newItem:CourseClassContent): Boolean {
+    override fun areContentsTheSame(oldItem: OptionResponse, newItem:OptionResponse): Boolean {
         return oldItem == newItem
     }
 })
@@ -30,9 +34,12 @@ class OptionSelectionAdapter(val callback: (CourseClassContent) -> Unit):
 
     override fun bind(
         holder: DataBoundViewHolder<ItemMcqOptionBinding>,
-        item: CourseClassContent,
+        item: OptionResponse,
     ) {
        val binding = holder.binding
+        binding.tvOption.text = HtmlCompat.fromHtml(
+            (item ?: "") as String, HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
         binding.root.setOnClickListener {
             callback.invoke(item)
         }

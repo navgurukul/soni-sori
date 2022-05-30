@@ -26,6 +26,7 @@ interface BaseCourseContent : Serializable {
         const val COMPONENT_SOLUTION = "solution"
         const val COMPONENT_OPTIONS = "options"
         const val COMPONENT_OUTPUT = "output"
+        const val COMPONENT_QUESTION_CODE = "questionCode"
     }
 }
 
@@ -146,6 +147,20 @@ data class BannerBaseCourseContent(
 ) : BaseCourseContent
 
 @JsonClass(generateAdapter = true)
+data class QuestionCodeBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        val value: String?,
+        @Json(name = "title")
+        val title: String? = null,
+        @Json(name = "type")
+        val codeTypes: CodeType,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+) : BaseCourseContent
+
+@JsonClass(generateAdapter = true)
 data class OptionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
@@ -172,7 +187,7 @@ data class OutputBaseCourseContent(
         @Json(name = "value")
         var value: AnswerOutput,
         @Json(name = "decoration")
-override val decoration: Decoration? = null
+        override val decoration: Decoration? = null
 ):BaseCourseContent
 
 @JsonClass(generateAdapter = true)
@@ -215,13 +230,13 @@ enum class DecorationType {
 
 @JsonClass(generateAdapter = true)
 data class OptionResponse(
-        @Json(name = "1")
+        @Json(name = "option1")
         val option1: String,
-        @Json(name = "2")
+        @Json(name = "option2")
         val option2: String,
-        @Json(name = "3")
+        @Json(name = "option3")
         val option3: String,
-        @Json(name = "4")
+        @Json(name = "option4")
         val option4: String,
 )
 

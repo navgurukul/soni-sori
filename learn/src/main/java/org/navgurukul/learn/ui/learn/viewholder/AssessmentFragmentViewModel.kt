@@ -87,6 +87,8 @@ class AssessmentFragmentViewModel (
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
+        object ShowCorrectOutput : AssessmentFragmentViewEvents()
+        object ShowIncorrectOutput : AssessmentFragmentViewEvents()
     }
 
 

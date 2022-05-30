@@ -36,6 +36,12 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/optionRecyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_4x"/>
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
@@ -50,7 +56,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
-
             <include
                 android:id="@+id/errorLayout"
                 layout="@layout/content_error_screen"
@@ -62,13 +67,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/optionRecyclerview"-->
-<!--            android:layout_width="match_parent"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/btnSubmit"-->
-<!--            android:layout_marginBottom="@dimen/spacing_11x"-->
-<!--            android:layout_height="wrap_content">-->
-<!--        </androidx.recyclerview.widget.RecyclerView>-->
+
 
 <!--        <com.google.android.material.button.MaterialButton-->
 <!--            android:id="@+id/btnSubmit"-->

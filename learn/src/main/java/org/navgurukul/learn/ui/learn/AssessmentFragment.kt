@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.fragment_assessment.*
-import kotlinx.android.synthetic.main.fragment_exercise.*
-import kotlinx.android.synthetic.main.fragment_exercise.recycler_view_slug
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -76,6 +74,9 @@ class AssessmentFragment : Fragment() {
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
+
+                }
             }
         }
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
@@ -87,6 +88,7 @@ class AssessmentFragment : Fragment() {
 
 
         initContentRv()
+//        initRecyclerviewOption()
     }
 
     private fun initContentRv(){
@@ -100,13 +102,12 @@ class AssessmentFragment : Fragment() {
     }
 
 
-//    private fun initRecyclerviewOption(option: List<CourseClassContent>){
-//        mClassAdapter = OptionSelectionAdapter {
-//
-//        }
-//        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
-//        optionRecyclerview.layoutManager = layoutManager
-//        optionRecyclerview.adapter = mClassAdapter
-//        mClassAdapter.submitList(option.subList(0,4))
-//    }
+    private fun initRecyclerviewOption(){
+        mClassAdapter = OptionSelectionAdapter {
+
+        }
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+        optionRecyclerview.layoutManager = layoutManager
+        optionRecyclerview.adapter = mClassAdapter
+    }
 }

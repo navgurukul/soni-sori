@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.ui.learn.OutputCourseViewHolder
 import org.navgurukul.learn.ui.learn.viewholder.*
 
 class AssessmentContentAdapter(
@@ -44,9 +43,10 @@ class AssessmentContentAdapter(
         return when (viewType){
 
             R.layout.item_text_content -> TextCourseViewHolder(itemView)
-            R.layout.item_code_content -> CodeCourseViewHolder(itemView)
+            R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
             R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
-            R.layout.item_mcq_option -> OptionCourseViewHolder(itemView)
+            R.layout.item_option_content-> OptionCourseViewHolder(itemView)
+            R.layout.item_output_content -> OutputCourseViewHolder(itemView)
             else -> UnknownCourseViewHolder(itemView)
         }
     }
@@ -56,14 +56,17 @@ class AssessmentContentAdapter(
             R.layout.item_text_content ->
                 (holder as TextCourseViewHolder).bindView(getItem(position) as TextBaseCourseContent)
 
-            R.layout.item_code_content ->
-                (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent, mCallback)
+            R.layout.item_question_code_content ->
+                (holder as QuestionCodeCourseViewHolder).bindView(getItem(position) as QuestionCodeBaseCourseContent, mCallback)
 
             R.layout.item_header_content ->
                 (holder as HeaderCourseViewHolder).bindView(getItem(position) as HeaderBaseCourseContent)
 
-            R.layout.item_mcq_option ->
+            R.layout.item_option_content ->
                 (holder as OptionCourseViewHolder).bindView(getItem(position) as OptionBaseCourseContent)
+
+            R.layout.item_output_content ->
+                (holder as OutputCourseViewHolder).bindView(getItem(position) as OutputBaseCourseContent)
 
         }
     }
@@ -71,9 +74,9 @@ class AssessmentContentAdapter(
         return when (getItem(position)) {
             is HeaderBaseCourseContent -> R.layout.item_header_content
             is TextBaseCourseContent -> R.layout.item_text_content
-            is CodeBaseCourseContent -> R.layout.item_code_content
-            is OptionBaseCourseContent -> R.layout.item_mcq_option
-
+            is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
+            is OptionBaseCourseContent -> R.layout.item_option_content
+            is OutputBaseCourseContent -> R.layout.item_output_content
             else -> R.layout.item_base_course_content
         }
     }
