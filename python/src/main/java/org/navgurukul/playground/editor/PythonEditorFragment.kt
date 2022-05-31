@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
@@ -96,7 +97,8 @@ class PythonEditorFragment : BaseFragment() {
             when (it) {
                 PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
-                is PythonEditorViewEvents.ShowToast -> codeSaved(it.message)
+                is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
+                is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog()
                 is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
                 is PythonEditorViewEvents.ShowFileNameError -> showFileNameError()
 
@@ -119,10 +121,7 @@ class PythonEditorFragment : BaseFragment() {
         )
     }
 
-    private fun codeSaved(message: String) {
-        alertDialog.dismiss()
-        requireActivity().toast(message)
-    }
+
 
     private fun showFileNameError() {
         etFileName.isErrorEnabled=true
@@ -246,6 +245,24 @@ class PythonEditorFragment : BaseFragment() {
         }
 
         alertDialog.show()
+    }
+
+    private fun showCodeSavedDialog(){
+        alertDialog.dismiss()
+
+        val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
+        val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(view)
+        alertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+        alertDialog.show()
+
+        Handler().postDelayed({
+            alertDialog.dismiss()
+        },1000)
+
     }
 
     private fun createInput() {

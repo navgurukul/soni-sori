@@ -162,7 +162,7 @@ class PythonEditorViewModel(
             }
             else {
                 pythonRepository.saveCode(viewState.code, fileName)
-                _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.code_saved)))
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog)
             }
         }
     }
@@ -186,6 +186,7 @@ sealed class PythonEditorViewEvents : ViewEvents {
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
     object ShowFileNameError:PythonEditorViewEvents()
+    object ShowFileSavedDialog:PythonEditorViewEvents()
 }
 
 data class PythonEditorViewState(

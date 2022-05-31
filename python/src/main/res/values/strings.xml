@@ -23,7 +23,7 @@
     <string name="save_file_hint">Hello World… </string>
     <string name="save_as">Save your project as</string>
     <string name="enter_file_name">Enter file name</string>
-    <string name="code_saved">Code saved successfully</string>
+    <string name="code_saved">Project Saved Successfully</string>
     <string name="nothing_to_save">Nothing to save</string>
     <string name="nothing_to_share">Nothing to share</string>
     <string name="share_code">Share Code</string>
