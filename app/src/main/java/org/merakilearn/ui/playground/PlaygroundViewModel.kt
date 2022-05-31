@@ -24,6 +24,10 @@ class PlaygroundViewModel(
 
     init {
         viewModelScope.launch {
+            playgroundsList = repository.getAllPlaygrounds().toMutableList()
+            setState {
+                copy(playgroundsList=playgroundsList)
+            }
             setList()
         }
     }
@@ -68,9 +72,7 @@ class PlaygroundViewModel(
     }
 
     private suspend fun setList() {
-        playgroundsList= repository.getAllPlaygrounds().toMutableList()
         val savedFiles= pythonRepository.fetchSavedFiles()
-
         for(file in savedFiles){
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.PYTHON_FILE, name = "",file= file, iconResource = R.drawable.ic_saved_file))
         }
