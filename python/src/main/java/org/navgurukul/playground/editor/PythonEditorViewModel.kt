@@ -4,6 +4,7 @@ import android.text.TextUtils
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.lifecycle.viewModelScope
+import com.chaquo.python.Python
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -12,6 +13,7 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.R
+import org.navgurukul.playground.editor.PythonEditorActivity.Companion.EMPTY_FILE
 import org.navgurukul.playground.repo.PythonRepository
 
 
@@ -30,7 +32,7 @@ class PythonEditorViewModel(
         val existingCode = pythonRepository.cachedCode
 
         if (!existingCode.isNullOrEmpty()) {
-            setState { copy(code = existingCode) }
+            setState { copy(code = existingCode,fileName="Untitled") }
         }
 
         if (!pythonEditorArgs.code.isNullOrEmpty()) {
@@ -134,7 +136,7 @@ class PythonEditorViewModel(
 
     private fun overrideCode() {
         setState {
-            copy(code = pythonEditorArgs.code!!)
+            copy(code = pythonEditorArgs.code!!,fileName=pythonEditorArgs.file.name.replaceAfterLast("_", "").removeSuffix("_"))
         }
     }
 
@@ -148,7 +150,12 @@ class PythonEditorViewModel(
     private fun saveCode() {
         val viewState = viewState.value!!
         if (!TextUtils.isEmpty(viewState.code)) {
-            _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameDialog)
+            if(pythonEditorArgs.file.name==EMPTY_FILE)
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameDialog)
+            else{
+                pythonRepository.saveCode(viewState.code, pythonEditorArgs.file.name,true)
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(false))
+            }
         } else {
             _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.nothing_to_save)))
         }
@@ -157,12 +164,16 @@ class PythonEditorViewModel(
     private fun onFileNameEntered(fileName: String) {
         viewModelScope.launch {
             val viewState = viewState.value!!
-            if(pythonRepository.isFileNamePresent(fileName)){
-                _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError)
+            if(fileName!="") {
+                if (pythonRepository.isFileNamePresent(fileName)) {
+                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
+                } else {
+                    pythonRepository.saveCode(viewState.code, fileName,false)
+                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
+                }
             }
-            else {
-                pythonRepository.saveCode(viewState.code, fileName)
-                _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog)
+            else{
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_required)))
             }
         }
     }
@@ -185,14 +196,15 @@ sealed class PythonEditorViewEvents : ViewEvents {
     object ShowFileNameDialog : PythonEditorViewEvents()
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
-    object ShowFileNameError:PythonEditorViewEvents()
-    object ShowFileSavedDialog:PythonEditorViewEvents()
+    class ShowFileNameError(val message:String):PythonEditorViewEvents()
+    class ShowFileSavedDialog(val closeDialog:Boolean):PythonEditorViewEvents()
 }
 
 data class PythonEditorViewState(
     val code: String = "",
     val codeResponse: CodeResponseModel? = null,
-    val inputEnabled: Boolean = false
+    val inputEnabled: Boolean = false,
+    val fileName:String = "",
 ) : ViewState
 
 sealed class CodeResponseModel {

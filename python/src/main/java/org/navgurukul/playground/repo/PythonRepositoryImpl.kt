@@ -103,7 +103,7 @@ class PythonRepositoryImpl(
         get() = sharedPreferences.getString(KEY_PREF_CODE_BACKUP, null)
         set(value) = sharedPreferences.edit { putString(KEY_PREF_CODE_BACKUP, value) }
 
-    override fun saveCode(code: String, fileName: String) {
+    override fun saveCode(code: String, fileName: String,existingFile:Boolean) {
         try {
             val directory = File(
                 context.getExternalFilesDir(null),
@@ -111,7 +111,8 @@ class PythonRepositoryImpl(
             ).also {
                 it.mkdirs()
             }
-            val finalFileName = fileName + "_" + Date().time + ".py"
+
+            val finalFileName = if(existingFile) fileName else fileName + "_" + Date().time + ".py"
             val fileOutStream =
                 FileOutputStream(File(directory.toString() + File.separator + finalFileName))
             val outputStreamWriter =
