@@ -84,6 +84,8 @@ class PythonEditorFragment : BaseFragment() {
                 layoutInput.visibility = View.GONE
             }
 
+            activity?.title=it.fileName
+
             when (it.codeResponse) {
                 is CodeResponseModel.Output -> showOutput(it.codeResponse.output)
                 null -> {
@@ -95,12 +97,12 @@ class PythonEditorFragment : BaseFragment() {
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
+                is PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
                 is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
-                is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog()
+                is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog(it.closeDialog)
                 is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
-                is PythonEditorViewEvents.ShowFileNameError -> showFileNameError()
+                is PythonEditorViewEvents.ShowFileNameError -> showFileNameError(it.message)
 
             }
         })
@@ -123,9 +125,9 @@ class PythonEditorFragment : BaseFragment() {
 
 
 
-    private fun showFileNameError() {
+    private fun showFileNameError(message: String) {
         etFileName.isErrorEnabled=true
-        etFileName.error= "Project name already exists!"
+        etFileName.error= message
         etFileName.editText?.addTextChangedListener (object :TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -247,9 +249,10 @@ class PythonEditorFragment : BaseFragment() {
         alertDialog.show()
     }
 
-    private fun showCodeSavedDialog(){
-        alertDialog.dismiss()
-
+    private fun showCodeSavedDialog(closeDialog:Boolean){
+        if(closeDialog){
+            alertDialog.dismiss()
+        }
         val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
         val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(view)
