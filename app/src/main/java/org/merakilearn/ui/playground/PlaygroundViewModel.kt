@@ -1,6 +1,7 @@
 package org.merakilearn.ui.playground
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.datasource.PlaygroundRepo
@@ -22,28 +23,25 @@ class PlaygroundViewModel(
     private var currentQuery: String? =null
     private lateinit var playgroundsList: MutableList<PlaygroundItemModel>
 
-    init {
-        viewModelScope.launch {
-            playgroundsList = repository.getAllPlaygrounds().toMutableList()
-            setState {
-                copy(playgroundsList=playgroundsList)
-            }
-            setList()
-        }
-    }
-
     fun handle(action: PlaygroundActions){
         when(action){
             is PlaygroundActions.Query -> {
                 currentQuery = action.query
                 filterList()
             }
+            is PlaygroundActions.RefreshLayout -> init()
+        }
+    }
+
+    fun init(){
+        viewModelScope.launch {
+            setList()
         }
     }
 
     private fun filterList() {
-        val list = playgroundsList
-        viewModelScope.launch {
+        val list = playgroundsList ?: return
+        viewModelScope.launch(Dispatchers.Default){
             val filterList=list.filter {
                 val filterQuery= currentQuery?.let{ currentQuery ->
                     if(currentQuery.isNotEmpty()){
@@ -72,6 +70,7 @@ class PlaygroundViewModel(
     }
 
     private suspend fun setList() {
+        playgroundsList=repository.getAllPlaygrounds().toMutableList()
         val savedFiles= pythonRepository.fetchSavedFiles()
         for(file in savedFiles){
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.PYTHON_FILE, name = "",file= file, iconResource = R.drawable.ic_saved_file))
@@ -97,6 +96,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
 
 sealed class PlaygroundActions: ViewModelAction{
     data class Query(val query: String?):PlaygroundActions()
+    object RefreshLayout: PlaygroundActions()
 }
 
 data class PlaygroundViewState(

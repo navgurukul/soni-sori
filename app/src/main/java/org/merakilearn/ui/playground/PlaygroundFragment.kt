@@ -63,4 +63,9 @@ class PlaygroundFragment : BaseFragment() {
             }
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.handle(PlaygroundActions.RefreshLayout)
+    }
 }
