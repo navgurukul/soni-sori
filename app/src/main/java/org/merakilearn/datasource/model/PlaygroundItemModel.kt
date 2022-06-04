@@ -6,7 +6,7 @@ import java.io.File
 data class PlaygroundItemModel(
     val type: PlaygroundTypes,
     val name: String = "",
-    val file: File = File("temp.txt"),
+    val file: File = File(" "),
     @DrawableRes val iconResource: Int,
 )
 
