@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/spacing_3x"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -29,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvText">
 
         <TextView
-            android:id="@+id/btnseeExplanation"
+            android:id="@+id/btnSeeExplanation"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,31 +37,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnRetry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Re-Try"
             android:layout_marginEnd="@dimen/spacing_3x"
+            android:textColor="@color/green_progress_color"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/incorrectExplanation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_1x"
-        android:layout_marginTop="@dimen/spacing_5x"
-        app:layout_constraintTop_toBottomOf="@+id/tvRetryOption">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text ="The first two lines have a “string” object while the line print (2+5) gives a numerical output."/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

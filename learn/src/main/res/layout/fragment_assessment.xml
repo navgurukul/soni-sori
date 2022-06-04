@@ -63,19 +63,25 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primaryColor"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:text="@string/submit"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <include
+                android:id="@+id/incorrect_output_handling"
+                layout="@layout/incorrect_output_handling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnSubmit"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="@color/primaryColor"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/colorWhite"-->
-<!--            android:text="Submit"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 </layout>

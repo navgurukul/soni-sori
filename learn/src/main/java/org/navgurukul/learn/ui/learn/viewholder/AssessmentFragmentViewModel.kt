@@ -11,10 +11,7 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.BaseCourseContent
-import org.navgurukul.learn.courses.db.models.CourseAssessmentContent
-import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.db.models.OptionResponse
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -88,12 +85,21 @@ class AssessmentFragmentViewModel (
         _viewEvents.postValue(AssessmentFragmentViewEvents.OptionSelectedClicked(option))
     }
 
+//    fun showOutputScreen(clickedOption:OptionResponse){
+//        val currentState = viewState.value!!
+//        if (selectedOption(clickedOption) == SolutionBaseCourseContent.value){
+//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
+//        } else{
+//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
+//        }
+//    }
+
 
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
-        object ShowCorrectOutput : AssessmentFragmentViewEvents()
-        object ShowIncorrectOutput : AssessmentFragmentViewEvents()
+        data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
+        data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
         data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewEvents()
     }
 
@@ -107,6 +113,12 @@ class AssessmentFragmentViewModel (
     data class AssessmentFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val assessmentContentList: List<BaseCourseContent> = listOf()
+        val assessmentContentList: List<BaseCourseContent> = listOf(),
+        val correctOutput: List<BaseCourseContent> =  arrayListOf(),
+        val incorrectOutput: List<BaseCourseContent> =  arrayListOf(),
+
     ) : ViewState
 }
+
+
+

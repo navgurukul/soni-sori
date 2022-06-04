@@ -134,6 +134,7 @@
     <string name="courses">Courses</string>
     <string name="rule">If you miss the class or need to revise, you can enroll in an extra class to catch up after completion of this class  </string>
     <string name="you_got_it_right">You got it right</string>
+    <string name="submit">Submit</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

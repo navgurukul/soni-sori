@@ -7,21 +7,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.fragment_assessment.*
+import kotlinx.android.synthetic.main.incorrect_output_handling.*
+import kotlinx.android.synthetic.main.item_output_content.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.CourseClassContent
-import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.db.models.OptionBaseCourseContent
-import org.navgurukul.learn.courses.db.models.SolutionBaseCourseContent
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.AssessmentContentAdapter
+import org.navgurukul.learn.ui.learn.adapter.IncorrectOutputAdapter
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
+import org.navgurukul.learn.ui.learn.adapter.OutputAdapter
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
 
 
@@ -31,6 +31,8 @@ class AssessmentFragment : Fragment() {
     private lateinit var mBinding: FragmentAssessmentBinding
     private lateinit var mClassAdapter: OptionSelectionAdapter
     private lateinit var contentAdapter: AssessmentContentAdapter
+    private lateinit var correctAdapter: OutputAdapter
+    private lateinit var inCorrectAdapter : IncorrectOutputAdapter
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -76,6 +78,11 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
 
+
+                }
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
+                    mBinding.incorrectOutputHandling.visibility = View.VISIBLE
+                    incorrectOutputHandling()
                 }
             }
         }
@@ -88,7 +95,18 @@ class AssessmentFragment : Fragment() {
 
 
         initContentRv()
+        initIncorrectRV()
 //        initRecyclerviewOption()
+    }
+
+    private fun incorrectOutputHandling(){
+        btnSeeExplanation.setOnClickListener {
+            initIncorrectRV()
+        }
+
+        btnRetry.setOnClickListener {
+
+        }
     }
 
     private fun initContentRv(){
@@ -110,4 +128,21 @@ class AssessmentFragment : Fragment() {
         optionRecyclerview.layoutManager = layoutManager
         optionRecyclerview.adapter = mClassAdapter
     }
+
+    private fun initCorrectRV(list: List<BaseCourseContent>){
+        correctAdapter = OutputAdapter{
+
+        }
+    }
+
+    private fun initIncorrectRV(){
+        inCorrectAdapter = IncorrectOutputAdapter(this.requireContext()){
+
+        }
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        outputLayout.layoutManager = layoutManager
+        outputLayout.adapter = inCorrectAdapter
+    }
+
+
 }

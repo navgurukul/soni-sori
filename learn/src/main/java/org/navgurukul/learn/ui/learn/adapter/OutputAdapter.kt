@@ -14,15 +14,15 @@ import kotlinx.android.synthetic.main.item_text_content.view.*
 import org.navgurukul.commonui.platform.BaseViewHolder
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.databinding.ItemHeaderContentBinding
 import org.navgurukul.learn.databinding.ItemTableHeaderBinding
 import org.navgurukul.learn.databinding.ItemTextContentBinding
 
 
 class OutputAdapter(
-    val dataList: List<BaseCourseContent>
-):RecyclerView.Adapter<BaseViewHolder<BaseCourseContent>>(
-)
+    val callback: (List<BaseCourseContent>) -> Unit
+):RecyclerView.Adapter<BaseViewHolder<BaseCourseContent>>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseCourseContent> {
         val inflater = LayoutInflater.from(parent.context)
@@ -65,12 +65,25 @@ class OutputAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<BaseCourseContent>, position: Int) {
-        holder.onBind(dataList[position])
+
+        when(getItemViewType(position)){
+            R.layout.item_text_content ->{
+//                (holder as TextViewHolder).onBind(callback.)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return itemCount
     }
+
+//    override fun onBindViewHolder(holder: BaseViewHolder<BaseCourseContent>, position: Int) {
+//        holder.onBind(dataList[position])
+//    }
+//
+//    override fun getItemCount(): Int {
+////       return callback.
+//    }
 
 
 }
