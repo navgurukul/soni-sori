@@ -30,7 +30,7 @@ class LearnRepo(
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
             val data = pathwayDao.getAllPathways()
-            data.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
+            data?.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
             data
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))

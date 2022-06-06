@@ -36,8 +36,11 @@ class ClassesRepo(
         }
     }
 
-    suspend fun getEnrolledBatches():List<Batches>{
-        return api.getEnrolledBatches()
+    suspend fun getEnrolledBatches():List<Batches>?{
+        val res = api.getEnrolledBatches()
+        if(res.isSuccessful)
+            return res.body()
+        return null
     }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {

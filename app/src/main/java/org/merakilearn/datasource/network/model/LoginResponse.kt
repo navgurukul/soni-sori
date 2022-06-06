@@ -39,7 +39,7 @@ data class LoginResponse(
         var mediumLink: Any?,
         @Json(name = "name")
         var name: String,
-        @Json(name = "pathways")
+        @Json(name = "pathwaysV2")
         var pathways: List<Any?>?,
         @Json(name = "profile_picture")
         var profilePicture: String?,

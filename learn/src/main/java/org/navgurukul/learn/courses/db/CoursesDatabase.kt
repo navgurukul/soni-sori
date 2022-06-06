@@ -18,7 +18,7 @@ interface PathwayDao {
     fun insertPathway(course: Pathway)
 
     @Query("select * from pathway")
-    fun getAllPathways(): List<Pathway>
+    fun getAllPathways(): List<Pathway>?
 
     @Query("select * from pathway where id=:pathwayId")
     fun getByPathwayId(pathwayId: String): List<Pathway>
@@ -233,10 +233,47 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
     }
 }
 
-val MIGRATION_7_8 = object : Migration(6, 7) {
+val MIGRATION_7_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {
 
         database.execSQL("DROP TABLE course_exercise")
+        database.execSQL("CREATE TABLE `course_exercise`(" +
+                " `content` TEXT NOT NULL," +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " 'courseContentProgress' TEXT," +
+                " 'sequenceNumber' INTEGER," +
+                " 'courseContentType' TEXT NOT NULL," +
+                " 'description' TEXT NOT NULL DEFAULT ''," +
+                " PRIMARY KEY(`id`, `lang`) )")
+
+        database.execSQL("DROP TABLE pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, PRIMARY KEY(`id`))")
+
+
+        database.execSQL("CREATE TABLE `course_class`(" +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " 'courseContentProgress' TEXT," +
+                " 'sequenceNumber' INTEGER," +
+                " 'courseContentType' TEXT NOT NULL," +
+                " 'description' TEXT NOT NULL," +
+                " 'title' TEXT NOT NULL," +
+                " 'subTitle' TEXT," +
+                " 'facilitator' TEXT ," +
+                " 'startTime' INTEGER NOT NULL ," +
+                " 'endTime' INTEGER NOT NULL ," +
+                " 'type' TEXT NOT NULL," +
+                " 'meetLink' TEXT," +
+                " 'isEnrolled' INTEGER NOT NULL," +
+                " 'parentId' TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )")
+
     }
 }
 

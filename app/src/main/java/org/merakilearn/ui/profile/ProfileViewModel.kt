@@ -216,7 +216,7 @@ class ProfileViewModel(
         viewModelScope.launch {
             setState { copy(isLoading = true) }
             val batches = classesRepo.getEnrolledBatches()
-            batches.let {
+            batches?.let {
                 setState {
                     copy(
                         batches = it
