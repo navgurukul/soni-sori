@@ -96,32 +96,36 @@ class CourseContentActivityViewModel(
     }
 
     private fun navigate(navigation: ExerciseNavigation) {
-        val currentStudyIndex = currentCourse.courseContents.indexOfFirst {
-            it.id == currentStudy?.exerciseId
-        }
-        if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
-            onContentListItemSelected(
-                currentCourse.courseContents[currentStudyIndex - 1].id,
-                navigation
-            )
-        } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
-            onContentListItemSelected(
-                currentCourse.courseContents[currentStudyIndex + 1].id,
-                navigation
-            )
-        } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
-            val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
-                stringProvider.getString(
-                    R.string.next_course_message,
-                    it.name
-                )
-            } ?: stringProvider.getString(R.string.finish)
-            setState {
-                copy(
-                    isCourseCompleted = true,
-                    nextCourseTitle = nextActionTitle
-                )
+        if(::currentCourse.isInitialized) {
+            val currentStudyIndex = currentCourse.courseContents.indexOfFirst {
+                it.id == currentStudy?.exerciseId
             }
+            if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
+                onContentListItemSelected(
+                    currentCourse.courseContents[currentStudyIndex - 1].id,
+                    navigation
+                )
+            } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
+                onContentListItemSelected(
+                    currentCourse.courseContents[currentStudyIndex + 1].id,
+                    navigation
+                )
+            } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
+                val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
+                    stringProvider.getString(
+                        R.string.next_course_message,
+                        it.name
+                    )
+                } ?: stringProvider.getString(R.string.finish)
+                setState {
+                    copy(
+                        isCourseCompleted = true,
+                        nextCourseTitle = nextActionTitle
+                    )
+                }
+            }
+        }else{
+            _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.retry_after_some_time)))
         }
     }
 

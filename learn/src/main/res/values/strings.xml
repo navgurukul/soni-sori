@@ -148,6 +148,7 @@
     <string name="enroll_to_revision_class">Enroll to Revision Class</string>
     <string name="join_class">Join Class</string>
     <string name="confirm_enrollment">Confirm Enrollment</string>
+    <string name="retry_after_some_time">Please retry after some time!</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
