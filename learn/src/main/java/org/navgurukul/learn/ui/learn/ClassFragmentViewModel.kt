@@ -136,7 +136,7 @@ class ClassFragmentViewModel(
         viewModelScope.launch {
             setState { copy(isLoading=true) }
             val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches.let {
+            batches?.let {
                 setState {
                     copy(
                         batches = it

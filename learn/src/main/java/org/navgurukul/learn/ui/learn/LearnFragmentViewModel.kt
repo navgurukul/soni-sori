@@ -156,7 +156,7 @@ class LearnFragmentViewModel(
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
             setState { copy(loading=true) }
-            val status = learnRepo.checkedStudentEnrolment(pathwayId).message
+            val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
             if(status == EnrolStatus.enrolled){
                 getUpcomingClasses(pathwayId)
             } else if(status == EnrolStatus.not_enrolled){
@@ -181,7 +181,7 @@ class LearnFragmentViewModel(
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches.let {
+            batches?.let {
                 setState {
                     copy(
                         batches = it,

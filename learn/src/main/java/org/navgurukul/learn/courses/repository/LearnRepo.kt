@@ -210,15 +210,18 @@ class LearnRepo(
             return courseApi.getRevisionClasses(classId)
     }
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
+    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
 //        return courseApi.checkedStudentEnrolment(pathwayId)
-
-        statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
-        return statusEnrolled!!
+        if(LearnUtils.isOnline(application))
+            statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+        return statusEnrolled
     }
 
-    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch> {
-        return courseApi.getBatchesAsync(pathwayId)
+    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
+        if(LearnUtils.isOnline(application)) {
+            return courseApi.getBatchesAsync(pathwayId)
+        }
+        return null
     }
 
 
