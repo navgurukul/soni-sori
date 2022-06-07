@@ -117,4 +117,8 @@ dependencies {
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
     androidTestImplementation(TestDependencies.annotation)
+
+    //firebase
+    implementation(FirebaseDependencies.perfKtx)
+
 }

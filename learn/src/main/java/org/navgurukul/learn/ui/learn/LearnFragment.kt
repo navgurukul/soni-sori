@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import kotlinx.android.synthetic.main.learn_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import com.google.firebase.perf.metrics.AddTrace
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.capitalizeWords
