@@ -84,7 +84,12 @@ class PythonEditorFragment : BaseFragment() {
                 layoutInput.visibility = View.GONE
             }
 
-            activity?.title=it.fileName
+            if(it.fileSaved){
+                activity?.title=it.title
+            }
+            else{
+                activity?.title=it.title+" *"
+            }
 
             when (it.codeResponse) {
                 is CodeResponseModel.Output -> showOutput(it.codeResponse.output)

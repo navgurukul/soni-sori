@@ -27,12 +27,16 @@ class PythonEditorViewModel(
     companion object {
         const val PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE = "File \"<string>\","
     }
+    var newFile:Boolean=false
 
     init {
         val existingCode = pythonRepository.cachedCode
 
+        setState {
+            copy(title="Untitled")
+        }
         if (!existingCode.isNullOrEmpty()) {
-            setState { copy(code = existingCode,fileName="Untitled") }
+            setState { copy(code = existingCode) }
         }
 
         if (!pythonEditorArgs.code.isNullOrEmpty()) {
@@ -63,6 +67,8 @@ class PythonEditorViewModel(
                 }
             }
         }
+
+        newFile=pythonEditorArgs.newFile
     }
 
     private fun updateOutput(output: CharSequence) {
@@ -136,25 +142,39 @@ class PythonEditorViewModel(
 
     private fun overrideCode() {
         setState {
-            copy(code = pythonEditorArgs.code!!,fileName=pythonEditorArgs.file.name.replaceAfterLast("_", "").removeSuffix("_"))
+            copy(
+                code = pythonEditorArgs.code!!,
+                fileName=pythonEditorArgs.file.name,
+                title = pythonEditorArgs.file.name.replaceAfterLast("_", "").removeSuffix("_"),
+                fileSaved = !newFile
+            )
         }
     }
 
     private fun updateCode(code: String) {
         pythonRepository.cachedCode = code
         setState {
-            copy(code = code, codeResponse = null)
+            copy(
+                code = code,
+                codeResponse = null,
+                fileSaved=false
+            )
         }
     }
 
     private fun saveCode() {
         val viewState = viewState.value!!
         if (!TextUtils.isEmpty(viewState.code)) {
-            if(pythonEditorArgs.file.name==EMPTY_FILE)
+            if(newFile)
                 _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameDialog)
             else{
-                pythonRepository.saveCode(viewState.code, pythonEditorArgs.file.name,true)
+                pythonRepository.saveCode(viewState.code, viewState.fileName,true)
                 _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(false))
+                setState {
+                    copy(
+                        fileSaved = true
+                    )
+                }
             }
         } else {
             _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.nothing_to_save)))
@@ -168,8 +188,16 @@ class PythonEditorViewModel(
                 if (pythonRepository.isFileNamePresent(fileName)) {
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
                 } else {
-                    pythonRepository.saveCode(viewState.code, fileName,false)
+                    val savedFileName=pythonRepository.saveCode(viewState.code, fileName,false)
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
+                    newFile=false
+                    setState {
+                        copy(
+                            fileName=savedFileName ,
+                            title = savedFileName.replaceAfterLast("_", "").removeSuffix("_"),
+                            fileSaved = true
+                        )
+                    }
                 }
             }
             else{
@@ -205,6 +233,8 @@ data class PythonEditorViewState(
     val codeResponse: CodeResponseModel? = null,
     val inputEnabled: Boolean = false,
     val fileName:String = "",
+    val fileSaved: Boolean = false,
+    val title:String=" "
 ) : ViewState
 
 sealed class CodeResponseModel {

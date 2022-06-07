@@ -49,17 +49,17 @@ class PythonEditorActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EMPTY_FILE:String="EMPTY"
+        const val EMPTY_FILE:String="Untitled"
         fun launch(code: String?, context: Context): Intent {
             val intent = Intent(context, PythonEditorActivity::class.java)
-            intent.putExtras(PythonEditorArgs(code,File(EMPTY_FILE)).toBundle()!!)
+            intent.putExtras(PythonEditorArgs(code,File(EMPTY_FILE),true).toBundle()!!)
             return intent
         }
 
         fun launchWithFileContent(file: File, context: Context): Intent {
             val intent = Intent(context, PythonEditorActivity::class.java)
             val code = file.bufferedReader().readText()
-            intent.putExtras(PythonEditorArgs(code,file).toBundle()!!)
+            intent.putExtras(PythonEditorArgs(code,file,false).toBundle()!!)
             return intent
         }
     }
@@ -69,5 +69,6 @@ class PythonEditorActivity : AppCompatActivity() {
 @Parcelize
 data class PythonEditorArgs(
     val code: String?,
-    val file: File
+    val file: File,
+    val newFile:Boolean,
 ) : Parcelable
