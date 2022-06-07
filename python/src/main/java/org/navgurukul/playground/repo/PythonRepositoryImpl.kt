@@ -103,7 +103,8 @@ class PythonRepositoryImpl(
         get() = sharedPreferences.getString(KEY_PREF_CODE_BACKUP, null)
         set(value) = sharedPreferences.edit { putString(KEY_PREF_CODE_BACKUP, value) }
 
-    override fun saveCode(code: String, fileName: String,existingFile:Boolean) {
+    override fun saveCode(code: String, fileName: String,existingFile:Boolean) :String {
+        var finalFileName =""
         try {
             val directory = File(
                 context.getExternalFilesDir(null),
@@ -112,7 +113,7 @@ class PythonRepositoryImpl(
                 it.mkdirs()
             }
 
-            val finalFileName = if(existingFile) fileName else fileName + "_" + Date().time + ".py"
+            finalFileName = if(existingFile) fileName else fileName + "_" + Date().time + ".py"
             val fileOutStream =
                 FileOutputStream(File(directory.toString() + File.separator + finalFileName))
             val outputStreamWriter =
@@ -122,6 +123,7 @@ class PythonRepositoryImpl(
         } catch (ex: IOException) {
             FirebaseCrashlytics.getInstance().recordException(ex)
         }
+        return finalFileName
     }
 
     override suspend fun isFileNamePresent(fileName:String): Boolean{
