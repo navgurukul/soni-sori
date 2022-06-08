@@ -18,7 +18,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/class_info"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/info_dialog_background"
