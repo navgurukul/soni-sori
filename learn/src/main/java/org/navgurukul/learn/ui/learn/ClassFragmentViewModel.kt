@@ -64,7 +64,7 @@ class ClassFragmentViewModel(
 
                         val status = learnRepo.statusEnrolled?.message
                         if ( status == EnrolStatus.enrolled){
-                            if (Date().time > data.startTime.time){
+                            if (Date().time > data.endTime.time){
                                 getRevisionClasses(data.id)
                             }else{
                                _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
@@ -123,10 +123,12 @@ class ClassFragmentViewModel(
                     )
                 }
                 if (it.isNotEmpty()){
-                    if(it.size == 1 || it.first().isEnrolled)
+                    if(it.first().isEnrolled)
                         _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
                     else
                         _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+                }else{
+                    _viewEvents.postValue(ClassFragmentViewEvents.ShowToast("No revision classes found at the moment. Please come back later."))
                 }
             }
         }
