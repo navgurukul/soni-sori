@@ -39,7 +39,7 @@ class OptionCourseViewHolder(itemView: View):
             val layoutManager = LinearLayoutManager(optionContent.context, LinearLayoutManager.VERTICAL,false)
             optionContent.layoutManager = layoutManager
             optionContent.adapter = mClassAdapter
-
+            mClassAdapter.submitList(it)
 
         }
 
