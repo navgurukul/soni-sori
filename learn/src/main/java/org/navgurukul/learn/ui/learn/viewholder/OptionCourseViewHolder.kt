@@ -21,8 +21,6 @@ class OptionCourseViewHolder(itemView: View):
         private lateinit var mClassAdapter: OptionSelectionAdapter
 
 
-
-
     override val horizontalMargin: Int
         get() = optionContent.context.resources.getDimensionPixelOffset(R.dimen.dimen_course_content_margin)
 
@@ -35,10 +33,6 @@ class OptionCourseViewHolder(itemView: View):
 
 
         item.value.let {
-//            optionContent.tvOption.text = HtmlCompat.fromHtml(
-//                (item.value
-//                    ?: "") as String, HtmlCompat.FROM_HTML_MODE_COMPACT
-//            )
             mClassAdapter = OptionSelectionAdapter {
 
             }

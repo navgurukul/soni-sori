@@ -129,7 +129,7 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter(this.requireContext(), {
+        contentAdapter = ExerciseContentAdapter(this.requireContext(),{
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     val fromHtml = it.value.replace("<br>", "\n").replace("&emsp;", " ")

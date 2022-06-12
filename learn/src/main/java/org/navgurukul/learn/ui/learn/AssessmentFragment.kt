@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
+import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.learn.adapter.AssessmentContentAdapter
-import org.navgurukul.learn.ui.learn.adapter.IncorrectOutputAdapter
-import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
-import org.navgurukul.learn.ui.learn.adapter.OutputAdapter
+import org.navgurukul.learn.ui.learn.adapter.*
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
 
 
@@ -30,12 +28,14 @@ class AssessmentFragment : Fragment() {
     private val args: CourseContentArgs by fragmentArgs()
     private lateinit var mBinding: FragmentAssessmentBinding
     private lateinit var mClassAdapter: OptionSelectionAdapter
-    private lateinit var contentAdapter: AssessmentContentAdapter
+    private lateinit var contentAdapter: ExerciseContentAdapter
     private lateinit var correctAdapter: OutputAdapter
     private lateinit var inCorrectAdapter : IncorrectOutputAdapter
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
+
+//    val assessmentContentList: List<BaseCourseContent> = listOf()
 
 
     companion object {
@@ -89,19 +89,24 @@ class AssessmentFragment : Fragment() {
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
+
             if (!it.isError)
                 contentAdapter.submitList(it.assessmentContentList)
+
+
+
+
         }
 
 
         initContentRv()
-        initIncorrectRV()
+//        initIncorrectRV()
 //        initRecyclerviewOption()
     }
 
     private fun incorrectOutputHandling(){
         btnSeeExplanation.setOnClickListener {
-            initIncorrectRV()
+//            initIncorrectRV()
         }
 
         btnRetry.setOnClickListener {
@@ -110,12 +115,15 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun initContentRv(){
-        contentAdapter = AssessmentContentAdapter(this.requireContext()) {
+        contentAdapter = ExerciseContentAdapter(this.requireContext(),{
+
+        }) {
 
         }
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         recycler_view_asses.layoutManager = layoutManager
         recycler_view_asses.adapter = contentAdapter
+
 
     }
 
@@ -131,7 +139,6 @@ class AssessmentFragment : Fragment() {
 
     private fun initCorrectRV(list: List<BaseCourseContent>){
         correctAdapter = OutputAdapter{
-
         }
     }
 

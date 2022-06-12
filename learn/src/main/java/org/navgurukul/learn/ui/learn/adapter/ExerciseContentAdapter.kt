@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.ui.learn.OutputCourseViewHolder
 import org.navgurukul.learn.ui.learn.viewholder.*
 
 
@@ -63,6 +64,9 @@ class ExerciseContentAdapter(
             R.layout.item_code_content -> CodeCourseViewHolder(itemView)
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
+            R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
+            R.layout.item_option_content-> OptionCourseViewHolder(itemView)
+            R.layout.item_output_content -> OutputCourseViewHolder(itemView)
             else -> UnknownCourseViewHolder(itemView)
 
         }
@@ -72,6 +76,10 @@ class ExerciseContentAdapter(
         holder: BaseCourseViewHolder,
         position: Int
     ) {
+
+        if (getItemViewType(position)== BaseCourseContent.COMPONENT_SOLUTION.length){
+            notifyItemRemoved(position)
+        }
         when (getItemViewType(position)) {
             R.layout.item_table_content ->
                 (holder as TableCourseViewHolder).bindView(getItem(position) as TableBaseCourseContent)
@@ -100,6 +108,15 @@ class ExerciseContentAdapter(
             R.layout.item_link_content ->
                 (holder as LinkCourseViewHolder).bindView(getItem(position) as LinkBaseCourseContent, mCallback)
 
+            R.layout.item_question_code_content ->
+                (holder as QuestionCodeCourseViewHolder).bindView(getItem(position) as QuestionCodeBaseCourseContent, mCallback)
+
+            R.layout.item_option_content ->
+                (holder as OptionCourseViewHolder).bindView(getItem(position) as OptionBaseCourseContent)
+
+            R.layout.item_output_content ->
+                (holder as OutputCourseViewHolder).bindView(getItem(position) as OutputBaseCourseContent)
+
             R.layout.item_base_course_content ->
                 (holder as UnknownCourseViewHolder).bindView(getItem(position) as UnknownBaseCourseContent)
 
@@ -117,6 +134,9 @@ class ExerciseContentAdapter(
             is CodeBaseCourseContent -> R.layout.item_code_content
             is BannerBaseCourseContent -> R.layout.item_banner_content
             is LinkBaseCourseContent -> R.layout.item_link_content
+            is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
+            is OptionBaseCourseContent -> R.layout.item_option_content
+            is OutputBaseCourseContent -> R.layout.item_output_content
             else -> R.layout.item_base_course_content
         }
     }

@@ -81,13 +81,13 @@ class AssessmentFragmentViewModel (
             }
         }
 
-    fun selectedOption(option: OptionResponse){
-        _viewEvents.postValue(AssessmentFragmentViewEvents.OptionSelectedClicked(option))
-    }
-
+//    fun optionSelected(option: String){
+//        _viewEvents.postValue(AssessmentFragmentViewEvents.OptionSelectedClicked(option))
+//    }
+//
 //    fun showOutputScreen(clickedOption:OptionResponse){
 //        val currentState = viewState.value!!
-//        if (selectedOption(clickedOption) == SolutionBaseCourseContent.value){
+//        if ( optionSelected(clickedOption) ==  ){
 //            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
 //        } else{
 //            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
@@ -100,7 +100,7 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
-        data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewEvents()
+        data class OptionSelectedClicked(val selectedOptionResponse: String): AssessmentFragmentViewEvents()
     }
 
 
