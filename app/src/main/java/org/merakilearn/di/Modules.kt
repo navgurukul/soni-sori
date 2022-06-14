@@ -108,7 +108,7 @@ val networkModule = module {
                 .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
                 .withSubtype(BannerBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
                 .withSubtype(SolutionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_SOLUTION)
-                    .withSubtype(OptionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OPTIONS)
+                    .withSubtype(OptionsBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OPTIONS)
                 .withSubtype(OutputBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OUTPUT)
                 .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
                 .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)

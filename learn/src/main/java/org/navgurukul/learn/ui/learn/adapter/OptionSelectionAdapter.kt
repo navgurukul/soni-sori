@@ -2,16 +2,11 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.BaseCourseContent
-import org.navgurukul.learn.courses.db.models.CourseClassContent
-import org.navgurukul.learn.courses.db.models.OptionBaseCourseContent
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
-import org.navgurukul.learn.databinding.ItemOptionContentBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
@@ -22,7 +17,7 @@ class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
                 oldItem: OptionResponse,
                 newItem: OptionResponse,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(

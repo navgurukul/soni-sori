@@ -161,7 +161,7 @@ data class QuestionCodeBaseCourseContent(
 ) : BaseCourseContent
 
 @JsonClass(generateAdapter = true)
-data class OptionBaseCourseContent(
+data class OptionsBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")

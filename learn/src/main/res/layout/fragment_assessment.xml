@@ -36,12 +36,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/optionRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_4x"/>
-
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
@@ -56,6 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
+
             <include
                 android:id="@+id/errorLayout"
                 layout="@layout/content_error_screen"
@@ -74,8 +69,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <include
-                android:id="@+id/incorrect_output_handling"
-                layout="@layout/incorrect_output_handling"
+                android:id="@+id/incorrect_output_layout"
+                layout="@layout/incorrect_output_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <include
+                android:id="@+id/correct_output_layout"
+                layout="@layout/correct_output_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"/>

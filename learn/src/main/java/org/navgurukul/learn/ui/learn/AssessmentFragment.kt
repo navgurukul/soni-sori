@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
-import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_assessment.*
-import kotlinx.android.synthetic.main.incorrect_output_handling.*
+import kotlinx.android.synthetic.main.incorrect_output_layout.*
 import kotlinx.android.synthetic.main.item_output_content.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -27,10 +26,9 @@ class AssessmentFragment : Fragment() {
 
     private val args: CourseContentArgs by fragmentArgs()
     private lateinit var mBinding: FragmentAssessmentBinding
-    private lateinit var mClassAdapter: OptionSelectionAdapter
     private lateinit var contentAdapter: ExerciseContentAdapter
-    private lateinit var correctAdapter: OutputAdapter
-    private lateinit var inCorrectAdapter : IncorrectOutputAdapter
+    private lateinit var correctAdapter: ExerciseContentAdapter
+    private lateinit var inCorrectAdapter : ExerciseContentAdapter
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -81,7 +79,7 @@ class AssessmentFragment : Fragment() {
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
-                    mBinding.incorrectOutputHandling.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     incorrectOutputHandling()
                 }
             }
@@ -117,6 +115,8 @@ class AssessmentFragment : Fragment() {
     private fun initContentRv(){
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
 
+        }, {
+
         }) {
 
         }
@@ -127,25 +127,20 @@ class AssessmentFragment : Fragment() {
 
     }
 
-
-    private fun initRecyclerviewOption(){
-        mClassAdapter = OptionSelectionAdapter {
-
-        }
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
-        optionRecyclerview.layoutManager = layoutManager
-        optionRecyclerview.adapter = mClassAdapter
-    }
-
     private fun initCorrectRV(list: List<BaseCourseContent>){
-        correctAdapter = OutputAdapter{
-        }
+        correctAdapter = ExerciseContentAdapter(requireContext(), {
+        },{
+
+        }, {
+
+        })
     }
 
     private fun initIncorrectRV(){
-        inCorrectAdapter = IncorrectOutputAdapter(this.requireContext()){
+        inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{},
+            {
 
-        }
+        })
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         outputLayout.layoutManager = layoutManager
         outputLayout.adapter = inCorrectAdapter
