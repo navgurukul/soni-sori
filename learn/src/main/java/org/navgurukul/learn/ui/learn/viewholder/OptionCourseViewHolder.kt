@@ -1,24 +1,21 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_mcq_option.view.*
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.OptionBaseCourseContent
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.OptionResponse
+import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
 
 class OptionCourseViewHolder(itemView: View):
     BaseCourseViewHolder(itemView) {
 
-        private val optionContentView: ConstraintLayout = populateStub(R.layout.item_option_content)
+        private val optionContentView: ConstraintLayout = populateStub(R.layout.item_options_list_content)
         private val optionContent: RecyclerView = optionContentView.findViewById(R.id.optionLayout)
-        private lateinit var mClassAdapter: OptionSelectionAdapter
+        private lateinit var optionsAdapter: OptionSelectionAdapter
 
 
     override val horizontalMargin: Int
@@ -28,18 +25,17 @@ class OptionCourseViewHolder(itemView: View):
         super.setHorizontalMargin(horizontalMargin)
     }
 
-    fun bindView(item: OptionBaseCourseContent) {
+    fun bindView(item: OptionsBaseCourseContent, mOptionCallback: ((OptionResponse) -> Unit)?) {
         super.bind(item)
 
-
         item.value.let {
-            mClassAdapter = OptionSelectionAdapter {
-
+            optionsAdapter = OptionSelectionAdapter {
+                mOptionCallback?.invoke(it)
             }
             val layoutManager = LinearLayoutManager(optionContent.context, LinearLayoutManager.VERTICAL,false)
             optionContent.layoutManager = layoutManager
-            optionContent.adapter = mClassAdapter
-            mClassAdapter.submitList(it)
+            optionContent.adapter = optionsAdapter
+            optionsAdapter.submitList(it)
 
         }
 
