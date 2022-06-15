@@ -30,6 +30,7 @@ class PlaygroundViewModel(
                 filterList()
             }
             is PlaygroundActions.RefreshLayout -> init()
+            is PlaygroundActions.DeleteFile -> deleteFile(action.file)
         }
     }
 
@@ -86,6 +87,13 @@ class PlaygroundViewModel(
             PlaygroundTypes.PYTHON_FILE -> _viewEvents.setValue(PlaygroundViewEvents.OpenPythonPlaygroundWithFile(playgroundItemModel.file))
         }
     }
+
+    private fun deleteFile(file:File){
+        viewModelScope.launch {
+            pythonRepository.deleteFile(file)
+            init()
+        }
+    }
 }
 
 sealed class PlaygroundViewEvents : ViewEvents {
@@ -97,6 +105,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
 sealed class PlaygroundActions: ViewModelAction{
     data class Query(val query: String?):PlaygroundActions()
     object RefreshLayout: PlaygroundActions()
+    class DeleteFile(val file:File):PlaygroundActions()
 }
 
 data class PlaygroundViewState(

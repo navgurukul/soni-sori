@@ -30,13 +30,10 @@ class PythonEditorViewModel(
     var newFile:Boolean=false
 
     init {
-        val existingCode = pythonRepository.cachedCode
+        val existingCode = ""//pythonRepository.cachedCode
 
         setState {
-            copy(title="Untitled")
-        }
-        if (!existingCode.isNullOrEmpty()) {
-            setState { copy(code = existingCode) }
+            copy(title="Untitled", code = existingCode)
         }
 
         if (!pythonEditorArgs.code.isNullOrEmpty()) {
@@ -215,6 +212,7 @@ sealed class PythonEditorViewActions : ViewModelAction {
     object OnSaveAction : PythonEditorViewActions()
     object ClearCode : PythonEditorViewActions()
     object ShareCode : PythonEditorViewActions()
+    object RenameFile : PythonEditorViewActions()
 
     data class OnInput(val input: String) : PythonEditorViewActions()
 }
