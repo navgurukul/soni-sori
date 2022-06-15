@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="Batch"
+            type="org.navgurukul.learn.courses.network.model.Batch" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/Batch_card_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@android:color/transparent"
+        app:cardCornerRadius="@dimen/dimen_20_dp"
+        app:strokeWidth="?borderWidth">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:paddingBottom="@dimen/spacing_6x"
+            android:background="@color/card_background"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvType"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_6x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:text="@{Batch.type}"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_default="wrap"
+                tools:text="Batch " />
+            <TextView
+                android:id="@+id/tvTitleBatch"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginStart="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{Batch.title}"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvImg"
+                app:layout_constraintStart_toEndOf="@+id/tvType"
+                app:layout_constraintTop_toTopOf="@id/tvType"
+                tools:text=" Ankit_15SEP21"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/tvImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_book"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_default="wrap"
+                android:layout_marginEnd="@dimen/spacing_2x"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintBottom_toBottomOf="@id/tvClassDetail" />
+
+            <TextView
+                android:id="@+id/tvBatchDate"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_batch_calender"
+                android:drawablePadding="@dimen/spacing_2x"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvType"
+                app:layout_constraintTop_toBottomOf="@id/tvType"
+                tools:text="15 Sep 21 to 15 Nov 21" />
+
+            <TextView
+                android:id="@+id/tvClassDetail"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0"
+                android:text="@string/access_to_live_classes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:drawableStartCompat="@drawable/ic_diploma"
+                android:drawablePadding="@dimen/spacing_2x"
+                app:layout_constraintStart_toStartOf="@id/tvType"
+                app:layout_constraintTop_toBottomOf="@id/tvBatchDate"
+                tools:text="Access to live classes" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tvBtnEnroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_3x"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/enroll_to_the_batch"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"
+                app:cornerRadius="?cornerRadius400"
+                android:backgroundTint="@color/green_progress_color"
+                app:layout_constraintStart_toStartOf="@id/tvTitleBatch"
+                app:layout_constraintTop_toBottomOf="@id/tvClassDetail"
+                tools:text="Enroll to Ankit_15SEP21" />
+
+            <TextView
+                android:id="@+id/tvText"
+                style="?textAppearanceBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_3x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginBottom="@dimen/spacing_4x"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvClassDetail"
+                app:layout_constraintTop_toBottomOf="@id/tvBtnEnroll"
+                tools:text="Can’t start on 15 Sep 21?" />
+
+            <TextView
+                android:id="@+id/more_classe"
+                style="?android:textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:layout_marginBottom="@dimen/spacing_4x"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textStyle="bold"
+                android:text="@string/check_text"
+                android:textColor="@color/green_progress_color"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvClassDetail"
+                app:layout_constraintTop_toBottomOf="@id/tvText"
+                tools:text="Check out our other batch dates" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

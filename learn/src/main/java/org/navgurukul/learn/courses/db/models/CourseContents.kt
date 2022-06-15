@@ -1,22 +1,34 @@
 package org.navgurukul.learn.courses.db.models
 
+import androidx.room.ColumnInfo
 import com.squareup.moshi.Json
-import java.io.Serializable
 
-interface CourseContents: Serializable {
-    @Json(name = "id")
-    val id: String
-    @Json(name = "course_id")
+interface CourseContents {
     var courseId: String
-    @Json(name = "sequence_num")
-    var sequenceNumber: Int
-    @Json(name = "content_type")
-    var contentContentType: CourseContentType
-    var lang: String
-    @Json(name = "courseName")
+
+    val id: String
+
+//    @Json(name = "name")
+//    val name: String
+
+//    var lang: String
+
     var courseName: String?
+
+    var sequenceNumber: Int?
+
+    var courseContentType: CourseContentType
+
+    var courseContentProgress: CourseContentProgress?
+
 }
 
-enum class CourseContentType(var value: String){
-    EXERCISE("exercise"), CLASS("class_topic")
+enum class CourseContentType{
+    class_topic, exercise
 }
+
+enum class CourseContentProgress{
+    NOT_STARTED, IN_PROGRESS, COMPLETED
+}
+
+

@@ -3,13 +3,20 @@ package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.parcel.Parcelize
+import org.json.JSONException
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -22,19 +29,22 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
+import java.util.*
+
 
 @Parcelize
-data class ExerciseFragmentArgs(
+data class CourseContentArgs(
     val isFirst: Boolean,
     val isLast: Boolean,
     var isCompleted: Boolean,
     val courseId: String,
-    val exerciseId: String
+    val contentId: String,
+    val courseContentType: CourseContentType,
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
 
-    private val args: ExerciseFragmentArgs by fragmentArgs()
+    private val args: CourseContentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -48,15 +58,17 @@ class ExerciseFragment : Fragment() {
             isLast: Boolean,
             isCompleted: Boolean,
             courseId: String,
-            exerciseId: String
+            exerciseId: String,
+            courseContentType: CourseContentType
         ): ExerciseFragment {
             return ExerciseFragment().apply {
-                arguments = ExerciseFragmentArgs(
+                arguments = CourseContentArgs(
                     isFirst,
                     isLast,
                     isCompleted,
                     courseId,
-                    exerciseId
+                    exerciseId,
+                    courseContentType
                 ).toBundle()
             }
         }
@@ -87,7 +99,7 @@ class ExerciseFragment : Fragment() {
             showErrorScreen(it.isError)
 
             if (!it.isError)
-                contentAdapter.submitList(it.exerciseList)
+                contentAdapter.submitList(it.exerciseContentList)
         })
 
         initContentRV()
@@ -131,7 +143,26 @@ class ExerciseFragment : Fragment() {
         }) {
             it?.let { action ->
                 action.url?.let { url ->
-                    merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
+                    if(url.contains(MerakiNavigator.CLASS_DEEPLINK)) {
+                        action.data?.let { data ->
+                            val moshi = Moshi.Builder()
+                                .add(KotlinJsonAdapterFactory())
+                                .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+                                .build()
+                            val jsonAdapter: JsonAdapter<CourseClassContent> =
+                                moshi.adapter(CourseClassContent::class.java)
+
+                            try {
+                                val doubtClass = jsonAdapter.fromJson(data)
+                                doubtClass?.let {
+                                    ClassActivity.start(this.requireContext(), it)
+                                }
+                            } catch (err: JSONException) {
+                                Log.d("Error", err.toString())
+                            }
+                        }
+                    } else
+                        merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
         }

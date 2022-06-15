@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_2x"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:drawableStartCompat="@drawable/ic_batch_calender"
+            app:layout_constraintTop_toTopOf="parent"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="15 Sep 21, 4 PM - 5PM" />
+
+        <TextView
+            android:id="@+id/tvFacilatorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Prajakata Kishori"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableStartCompat="@drawable/ic_reshot_teacher" />
+
+        <TextView
+            android:id="@+id/tvRule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:ellipsize="end"
+            android:text="Please be sure to join at least 10 minutes before the scheduled time"
+            tools:text="Please be sure to join at least 10 minutes before the scheduleed time"
+            app:layout_constraintTop_toBottomOf="@+id/tvFacilatorName"
+            app:layout_constraintStart_toStartOf="@+id/tvDate" />
+
+        <TextView
+            android:id="@+id/tvInstruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_5x"
+            android:ellipsize="end"
+            android:text="@string/rule"
+            app:layout_constraintTop_toBottomOf="@+id/tvRule"
+            app:layout_constraintStart_toStartOf="@+id/tvDate"
+            tools:text="If you miss the class or need to revise, you can enroll in an extra class to catch up after 15 Sep 21" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tvBtnJoin"
+            android:layout_width="match_parent"
+            android:layout_marginTop="48dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/join_class"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:cornerRadius="?cornerRadius400"
+            android:backgroundTint="@color/green_progress_color"
+            android:textColor="@color/primaryTextColor"
+            android:layout_marginBottom="@dimen/spacing_1x"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Join class"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

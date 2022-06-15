@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 7
+const val DB_VERSION = 8
 
 @Dao
 interface PathwayDao {
@@ -18,7 +18,7 @@ interface PathwayDao {
     fun insertPathway(course: Pathway)
 
     @Query("select * from pathway")
-    fun getAllPathways(): List<Pathway>
+    fun getAllPathways(): List<Pathway>?
 
     @Query("select * from pathway where id=:pathwayId")
     fun getByPathwayId(pathwayId: String): List<Pathway>
@@ -52,32 +52,53 @@ interface CourseDao {
 @Dao
 interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExercise(course: List<Exercise?>?)
+    fun insertExercise(course: List<CourseExerciseContent?>?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExerciseAsync(course: List<Exercise?>?)
+    suspend fun insertExerciseAsync(course: List<CourseExerciseContent?>?)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<Exercise>
+    suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<CourseExerciseContent>
 
     @Query("select * from course_exercise where id = :exerciseId and lang = :lang")
-    fun getExerciseById(exerciseId: String, lang: String): LiveData<Exercise>
+    fun getExerciseById(exerciseId: String, lang: String): LiveData<CourseExerciseContent>
 
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
-    fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<Exercise>
+    fun getAllExercisesForCourseDirect(courseId: String, lang: String): List<CourseExerciseContent>
 
-    @Query("Update course_exercise set exerciseProgress = :exerciseProgress where id = :exerciseId")
+    @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id = :exerciseId")
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 }
 
 @Dao
 interface CurrentStudyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
+    suspend fun saveCourseContentCurrent(course: CurrentStudy)
 
     @Query("select * from user_current_study where courseId = :courseId")
     suspend fun getCurrentStudyForCourse(courseId: String?): CurrentStudy?
+}
+
+@Dao
+interface ClassDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertClass(course: List<CourseClassContent?>?)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertClassAsync(course: List<CourseClassContent?>?)
+
+    @Query("select * from course_class where id = :classId and lang = :lang")
+    fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
+
+    @Query("select * from course_class where courseId = :courseId and lang = :lang")
+    suspend fun getAllClassesForCourse(courseId: String, lang: String): List<CourseClassContent>
+
+    @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
+    suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -212,18 +233,63 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
     }
 }
 
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("DROP TABLE course_exercise")
+        database.execSQL("CREATE TABLE `course_exercise`(" +
+                " `content` TEXT NOT NULL," +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " 'courseContentProgress' TEXT," +
+                " 'sequenceNumber' INTEGER," +
+                " 'courseContentType' TEXT NOT NULL," +
+                " 'description' TEXT NOT NULL DEFAULT ''," +
+                " PRIMARY KEY(`id`, `lang`) )")
+
+        database.execSQL("DROP TABLE pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, PRIMARY KEY(`id`))")
+
+
+        database.execSQL("CREATE TABLE `course_class`(" +
+                " `courseId` TEXT NOT NULL," +
+                " `id` TEXT NOT NULL," +
+                " `lang` TEXT NOT NULL," +
+                " `courseName` TEXT," +
+                " 'courseContentProgress' TEXT," +
+                " 'sequenceNumber' INTEGER," +
+                " 'courseContentType' TEXT NOT NULL," +
+                " 'description' TEXT NOT NULL," +
+                " 'title' TEXT NOT NULL," +
+                " 'subTitle' TEXT," +
+                " 'facilitator' TEXT ," +
+                " 'startTime' INTEGER NOT NULL ," +
+                " 'endTime' INTEGER NOT NULL ," +
+                " 'type' TEXT NOT NULL," +
+                " 'meetLink' TEXT," +
+                " 'isEnrolled' INTEGER NOT NULL," +
+                " 'parentId' TEXT," +
+                " PRIMARY KEY(`id`, `lang`) )")
+
+    }
+}
+
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, Exercise::class, CurrentStudy::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class],
     version = DB_VERSION,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class CoursesDatabase : RoomDatabase() {
 
-    // DAOs for course, exercises and its sub exercise
+    // DAOs for course, classes, exercises and its sub exercise
     abstract fun courseDao(): CourseDao
     abstract fun pathwayDao(): PathwayDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun currentStudyDao(): CurrentStudyDao
+    abstract fun classDao(): ClassDao
 }

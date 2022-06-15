@@ -65,9 +65,9 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.languages)
-        })
+        }
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             dismiss()

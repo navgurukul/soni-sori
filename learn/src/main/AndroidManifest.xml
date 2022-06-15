@@ -17,7 +17,7 @@
 
     <application>
         <activity
-            android:name=".ui.learn.ExerciseActivity"
+            android:name=".ui.learn.CourseContentActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -36,6 +36,8 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.learn.ClassActivity"/>
     </application>
 
 </manifest>

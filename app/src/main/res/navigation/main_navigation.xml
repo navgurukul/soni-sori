@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_learn">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -28,4 +28,12 @@
         android:name="org.merakilearn.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"
         tools:layout="@layout/fragment_playground" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="org.merakilearn.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

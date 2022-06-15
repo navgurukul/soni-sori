@@ -96,9 +96,15 @@
     <string name="course_content">Course Content</string>
     <string name="search_here">Search Here</string>
     <string name="ongoing">Ongoing</string>
-    <string name="courses">Courses</string>
     <string name="run">RUN</string>
     <string name="run_code">Run Code</string>
+    <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
+    <string name="enroll_to_batch">You have been enrolled to batch successfully</string>
+    <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
+    <string name="enroll_to_class_msg">You have been enrolled to class successfully</string>
+    <string name="log_out_class">You have been dropped out of class successfully</string>
+    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="enroll_to_class">Enroll To Class</string>
     <string name="select_program">Select Program</string>
     <string name="select_language">Select Language</string>
     <string name="error_loading_data">Some error occurred while fetching data. Please try again</string>
@@ -111,7 +117,49 @@
     <string name="next_course_message">Next Up: %1s</string>
     <string name="course_completed_message">%1s Completed!</string>
     <string name="finish">Finish</string>
+    <string name="revision_descr">Missed the class or need to revise? Enroll in a class from another batch</string>
+    <string name="des">It seems you are not part of a batch. Please enroll in a batch to attend the live classes.</string>
     <string name="residential_program_text">For Navgurukul Residential Programme Test Takers</string>
     <string name="header_token_key">token</string>
     <string name="header_redirect_url_key">redirectUrl</string>
+    <string name="access_to_live_classes">Access to live classes</string>
+    <string name="enroll_today">Enroll Today</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rv_detail">Missed the class or need to revise? Enroll in a class from another batch</string>
+    <string name="upcoming_classes">Upcoming Classes</string>
+    <string name="check_text">Check out our other batch dates</string>
+    <string name="class_desc1">Clear your doubts related to the first class of Python and other queries during your studies</string>
+    <string name="join_type_class">Join %1s Class</string>
+    <string name="starts_in">Starts in %1s</string>
+    <string name="enroll_to_type_class">Enroll to %1s Class</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="course">Course</string>
+    <string name="courses">Courses</string>
+    <string name="rule">If you miss the class or need to revise, you can enroll in an extra class to catch up after completion of this class  </string>
+    <string name="rule_for_joining">Please be sure to join at least 10 minutes before the scheduled time</string>
+    <string name="revision_class">Revision Class</string>
+    <string name="can_t_attend">Can\'t attend?</string>
+    <string name="stay_enrolled">Stay Enrolled</string>
+    <string name="drop_out">Drop Out</string>
+    <string name="conf_txt">Something urgent came up? Keep an eye for future revision classes</string>
+    <string name="confirmation">Confirm dropping out</string>
+    <string name="enroll_to_the_batch">Enroll to the batch</string>
+    <string name="enroll_to_revision_class">Enroll to Revision Class</string>
+    <string name="join_class">Join Class</string>
+    <string name="confirm_enrollment">Confirm Enrollment</string>
+    <string name="retry_after_some_time">Please retry after some time!</string>
+
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
 </resources>

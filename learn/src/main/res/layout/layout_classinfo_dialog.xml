@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="Batch"
+            type="org.navgurukul.learn.courses.network.model.Batch" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:padding="@dimen/spacing_5x"
+            android:layout_marginStart="@dimen/spacing_5x"
+            android:layout_marginEnd="@dimen/spacing_5x"
+            android:background="@drawable/info_dialog_background"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/class_info"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/info_dialog_background"
+                android:text="Awesome! You have taken the first step to being a programmer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Awesome! You have taken the first step to being a programmer" />
+
+            <TextView
+                android:id="@+id/tvClassTitle"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_5x"
+                app:layout_constraintEnd_toEndOf="@id/class_info"
+                android:text="@{Batch.title}"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/class_info"
+                app:layout_constraintTop_toBottomOf="@+id/class_info"
+                tools:layout_editor_absoluteY="26dp"
+                tools:text="Ankit_15SEP21" />
+
+            <TextView
+                android:id="@+id/tv_Batch_Date"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_5x"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="15 Sep 21 to 15 Nov 21"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/tvClassTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvClassTitle"
+                tools:ignore="MissingClass"
+                tools:text="15 Sep 21 to 15 Nov 21"
+                android:drawablePadding="@dimen/spacing_2x"
+                app:drawableStartCompat="@drawable/ic_batch_calender" />
+
+            <TextView
+                android:id="@+id/btnback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_6x"
+                android:text="@string/back"
+                android:layout_marginEnd="@dimen/spacing_8x"
+                app:layout_constraintEnd_toStartOf="@+id/btnEnroll"
+                app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
+
+            <TextView
+                android:id="@+id/btnEnroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_6x"
+                android:layout_marginBottom="@dimen/spacing_6x"
+                android:text="@string/enroll_today"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/spacing_3x"
+                android:textColor="@color/green_progress_color"
+                app:layout_constraintEnd_toEndOf="@+id/class_info"
+                app:layout_constraintTop_toBottomOf="@+id/tv_Batch_Date" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

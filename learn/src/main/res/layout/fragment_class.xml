@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tvClassDetail"
+                    android:padding="@dimen/spacing_4x"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvSubTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Class 1 - Intro to Python"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/tvClassType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:paddingHorizontal="@dimen/spacing_4x"
+                        android:paddingVertical="@dimen/spacing_2x"
+                        app:chipBackgroundColor="#E9F5E9"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/green_progress_color"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Batch" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/tvClassLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_2x"
+                        android:paddingHorizontal="@dimen/spacing_4x"
+                        android:paddingVertical="@dimen/spacing_2x"
+                        app:chipBackgroundColor="@android:color/transparent"
+                        app:chipStrokeColor="@color/green_progress_color"
+                        app:chipStrokeWidth="1dp"
+                        app:layout_constraintTop_toTopOf="@+id/tvClassType"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/green_progress_color"
+                        app:layout_constraintStart_toEndOf="@+id/tvClassType"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+                        tools:text="" />
+
+                    <TextView
+                        android:id="@+id/tvAbout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_3x"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/class_desc1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/textColor"
+                        app:layout_constraintStart_toEndOf="@+id/tvClassType"
+                        app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
+                        tools:text="Clear your doubts related to the first class of Python and other queries during your studies " />
+
+                    <include
+                        android:id="@+id/class_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        layout="@layout/class_course_detail"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAbout"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvAbout"
+                        tools:visibility="visible"/>
+
+                    <include
+                        android:id="@+id/revision_list"
+                        layout="@layout/revision_selection_sheet"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvAbout"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAbout"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:visibility="gone" />
+
+                    <include
+                        android:id="@+id/progressBar"
+                        layout="@layout/component_progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <include
+                    android:id="@+id/batchFragment"
+                    layout="@layout/batches_in_exercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:visibility="gone" />
+
+                <include
+                    android:id="@+id/errorLayout"
+                    layout="@layout/content_error_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

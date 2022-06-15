@@ -155,6 +155,7 @@ object FirebaseDependencies {
 object RetrofitDependencies {
     const val moshiKapt = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi_version}"
     const val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi_version}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi_version}"
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val logging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
     const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
@@ -170,7 +171,7 @@ object BuildConfigVersions {
     const val compileSdkVersion = 30
     const val minSdkVersion = 21
     const val targetSdkVersion = 30
-    const val versionCode = 34
+    const val versionCode = 36
     const val versionName = "1.5.4"
     const val applicationId = "org.merakilearn"
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/spacing_2x"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tvText"
+            style="@style/TextAppearance.AppCompat.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/revision_class"/>
+
+        <TextView
+            android:id="@+id/btnDropOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvText"
+            android:text="@string/can_t_attend"/>
+
+        <TextView
+            android:id="@+id/tvRevDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:drawableStartCompat="@drawable/ic_batch_calender"
+            app:layout_constraintTop_toBottomOf="@+id/tvText"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="15 Sep 21, 4 PM - 5PM" />
+
+        <TextView
+            android:id="@+id/tvRevFacilatorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintTop_toBottomOf="@+id/tvRevDate"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Prajakata Kishori"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableStartCompat="@drawable/ic_reshot_teacher" />
+
+        <TextView
+            android:id="@+id/tvRule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:ellipsize="end"
+            android:text="@string/rule_for_joining"
+            tools:text="Please be sure to join at least 10 minutes before the scheduleed time"
+            app:layout_constraintTop_toBottomOf="@+id/tvRevFacilatorName"
+            app:layout_constraintStart_toStartOf="@+id/tvRevDate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

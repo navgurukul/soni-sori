@@ -3,13 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="exercise"
-            type="org.navgurukul.learn.courses.db.models.Exercise" />
-    </data>
-
     <ImageView
         android:id="@+id/iv_exercise_type_progress"
         android:layout_width="30dp"
