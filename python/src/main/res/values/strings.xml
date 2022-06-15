@@ -18,6 +18,7 @@
     <string name="delete">Delete</string>
     <string name="replace_code">Do you want to replace existing code snippet ?</string>
     <string name="share">Share</string>
+    <string name="rename">Rename</string>
     <string name="save">Save</string>
     <string name="cancel_alert">Cancel</string>
     <string name="save_file_hint">Hello World… </string>

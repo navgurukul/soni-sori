@@ -12,7 +12,7 @@ import org.merakilearn.R
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.navgurukul.commonui.platform.BaseViewHolder
 
-class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel) -> Unit) :
+class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel,View,Boolean) -> Unit) :
     RecyclerView.Adapter<BaseViewHolder<PlaygroundItemModel>>() {
 
     private val dataList = arrayListOf<PlaygroundItemModel>()
@@ -29,7 +29,15 @@ class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel
         val playgroundItemModel = dataList[position]
         holder.onBind(playgroundItemModel)
         holder.itemView.setOnClickListener {
-            listener(playgroundItemModel)
+            listener(playgroundItemModel,it,false)
+        }
+        holder.itemView.setOnLongClickListener{
+            if(playgroundItemModel.file.name == " ")
+                return@setOnLongClickListener false
+            else {
+                listener(playgroundItemModel, it, true)
+                return@setOnLongClickListener true
+            }
         }
     }
 

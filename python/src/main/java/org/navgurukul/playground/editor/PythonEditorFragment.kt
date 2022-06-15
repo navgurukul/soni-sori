@@ -71,7 +71,7 @@ class PythonEditorFragment : BaseFragment() {
         createCode()
         createControlButtons()
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             if (it.code != etCode.text.toString()) {
                 etCode.setText(it.code)
                 etCode.setSelection(it.code.length)
@@ -84,11 +84,10 @@ class PythonEditorFragment : BaseFragment() {
                 layoutInput.visibility = View.GONE
             }
 
-            if(it.fileSaved){
-                activity?.title=it.title
-            }
-            else{
-                activity?.title=it.title+" *"
+            if (it.fileSaved) {
+                activity?.title = it.title
+            } else {
+                activity?.title = it.title + " *"
             }
 
             when (it.codeResponse) {
@@ -98,9 +97,9 @@ class PythonEditorFragment : BaseFragment() {
                 }
             }
 
-        })
+        }
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
@@ -110,7 +109,7 @@ class PythonEditorFragment : BaseFragment() {
                 is PythonEditorViewEvents.ShowFileNameError -> showFileNameError(it.message)
 
             }
-        })
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -315,6 +314,9 @@ class PythonEditorFragment : BaseFragment() {
             }
             R.id.save -> {
                 viewModel.handle(PythonEditorViewActions.OnSaveAction)
+            }
+            R.id.rename -> {
+                viewModel.handle(PythonEditorViewActions.RenameFile)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -2,6 +2,7 @@ package org.merakilearn.ui.playground
 
 import android.os.Bundle
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_playground.*
@@ -13,6 +14,7 @@ import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
+import java.io.File
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -29,8 +31,12 @@ class PlaygroundFragment : BaseFragment() {
         val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
         recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
-        val adapter = PlaygroundAdapter(requireContext()) {
-            viewModel.selectPlayground(it)
+        val adapter = PlaygroundAdapter(requireContext()) {playgroundItemModel,view,isLongClick->
+            if(isLongClick)
+                showUpPopMenu(playgroundItemModel.file,view)
+            else
+                viewModel.selectPlayground(playgroundItemModel)
+
         }
         recycler_view.adapter = adapter
 
@@ -47,6 +53,19 @@ class PlaygroundFragment : BaseFragment() {
         })
 
         (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_playground), R.attr.textPrimary)
+    }
+
+    private fun showUpPopMenu(file: File, view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.menuInflater.inflate(R.menu.popup_menu_file_saved,popup.menu)
+        popup.setOnMenuItemClickListener { item->
+            when(item.itemId){
+                R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
+            }
+            true
+        }
+
+        popup.show()
     }
 
     private fun initSearchListener() {

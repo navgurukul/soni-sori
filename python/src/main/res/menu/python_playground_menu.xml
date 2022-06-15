@@ -13,15 +13,20 @@
         app:iconTint="@android:color/white"
         app:showAsAction="always">
         <menu>
+
+            <item android:id="@+id/rename"
+                android:title="@string/rename"
+                android:icon="@drawable/ic_rename"/>
+
             <item android:id="@+id/share"
                 android:title="@string/share"
                 android:icon="@drawable/ic_share" />
 
             <item android:id="@+id/clear"
                 android:title="@string/delete"
-
                 android:icon="@drawable/ic_clear"
                 app:iconTint="@color/error_text"/>
+
         </menu>
     </item>
 </menu>
