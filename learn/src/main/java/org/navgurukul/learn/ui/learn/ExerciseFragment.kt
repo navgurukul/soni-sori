@@ -140,7 +140,7 @@ class ExerciseFragment : Fragment() {
                     merakiNavigator.openCustomTab(url, this.requireContext())
                 }
             }
-        }) {
+        },{
             it?.let { action ->
                 action.url?.let { url ->
                     if(url.contains(MerakiNavigator.CLASS_DEEPLINK)) {
@@ -165,7 +165,7 @@ class ExerciseFragment : Fragment() {
                         merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
-        }
+        })
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
