@@ -80,7 +80,7 @@ class AssessmentFragment : Fragment() {
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    incorrectOutputHandling()
+                    incorrectOutputHandling(it.list)
                 }
             }
         }
@@ -102,9 +102,9 @@ class AssessmentFragment : Fragment() {
 //        initRecyclerviewOption()
     }
 
-    private fun incorrectOutputHandling(){
+    private fun incorrectOutputHandling(list: List<BaseCourseContent>) {
         btnSeeExplanation.setOnClickListener {
-//            initIncorrectRV()
+            initIncorrectRV()
         }
 
         btnRetry.setOnClickListener {
@@ -118,7 +118,7 @@ class AssessmentFragment : Fragment() {
         }, {
 
         }) {
-
+            AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
         }
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         recycler_view_asses.layoutManager = layoutManager
@@ -139,7 +139,7 @@ class AssessmentFragment : Fragment() {
     private fun initIncorrectRV(){
         inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{},
             {
-
+                AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
         })
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         outputLayout.layoutManager = layoutManager

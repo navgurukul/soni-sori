@@ -12,6 +12,8 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_OUTPUT
+import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_SOLUTION
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -40,6 +42,7 @@ class AssessmentFragmentViewModel (
                 args.courseContentType,
                 true
             )
+            is AssessmentFragmentViewActions.OptionSelectedClicked -> showOutputScreen(action.selectedOptionResponse)
         }
     }
     private fun fetchAssessmentContent(
@@ -65,7 +68,8 @@ class AssessmentFragmentViewModel (
 
                     if (list != null && list.content.isNotEmpty() == true){
                         setState { copy(isError = false) }
-                        setState { copy(assessmentContentList = list.content) }
+
+                        setState { copy(assessmentContentList = getAssessmentListForUI(list.content)) }
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -81,33 +85,45 @@ class AssessmentFragmentViewModel (
             }
         }
 
-//    fun optionSelected(option: String){
-//        _viewEvents.postValue(AssessmentFragmentViewEvents.OptionSelectedClicked(option))
-//    }
-//
-//    fun showOutputScreen(clickedOption:OptionResponse){
-//        val currentState = viewState.value!!
-//        if ( optionSelected(clickedOption) ==  ){
-//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
-//        } else{
-//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
-//        }
-//    }
+    private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
+        return content.filterNot { it.component == COMPONENT_SOLUTION ||
+                it.component == COMPONENT_OUTPUT }
+    }
 
+    fun showOutputScreen(clickedOption:OptionResponse){
+        val currentState = viewState.value!!
+        if (isOptionSelectedCorrect(currentState, clickedOption)){
+            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
+        } else{
+            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
+        }
+    }
+
+    private fun isOptionSelectedCorrect(
+        currentState: AssessmentFragmentViewState,
+        clickedOption: OptionResponse
+    ): Boolean {
+        try {
+            return clickedOption.id ==
+                    (currentState.assessmentContentList
+                        .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
+                        .value
+        }catch (e: Exception){
+            return false
+        }
+    }
 
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
-        data class OptionSelectedClicked(val selectedOptionResponse: String): AssessmentFragmentViewEvents()
     }
 
 
     sealed class AssessmentFragmentViewActions : ViewModelAction {
-
-        object RequestContentRefresh : AssessmentFragmentViewModel.AssessmentFragmentViewActions()
-
+        object RequestContentRefresh : AssessmentFragmentViewActions()
+        data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
     }
 
     data class AssessmentFragmentViewState(
