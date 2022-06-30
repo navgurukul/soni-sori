@@ -36,7 +36,27 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
+
+                    <include
+                        android:id="@+id/incorrect_output_layout"
+                        layout="@layout/incorrect_output_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
+
+                    <include
+                        android:id="@+id/correct_output_layout"
+                        layout="@layout/item_output_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
+
                 </LinearLayout>
+
+
+
             </androidx.core.widget.NestedScrollView>
 
             <include
@@ -64,24 +84,11 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/primaryColor"
                 android:textAllCaps="false"
+                android:padding="@dimen/spacing_3x"
                 android:textColor="@color/colorWhite"
                 android:text="@string/submit"
+                tools:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <include
-                android:id="@+id/incorrect_output_layout"
-                layout="@layout/incorrect_output_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <include
-                android:id="@+id/correct_output_layout"
-                layout="@layout/correct_output_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

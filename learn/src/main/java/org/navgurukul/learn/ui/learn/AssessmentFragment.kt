@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_assessment.*
 import kotlinx.android.synthetic.main.incorrect_output_layout.*
 import kotlinx.android.synthetic.main.item_output_content.*
+import kotlinx.android.synthetic.main.item_output_content.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -29,11 +30,10 @@ class AssessmentFragment : Fragment() {
     private lateinit var contentAdapter: ExerciseContentAdapter
     private lateinit var correctAdapter: ExerciseContentAdapter
     private lateinit var inCorrectAdapter : ExerciseContentAdapter
+    private var selectedOption : OptionResponse? = null
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
-
-//    val assessmentContentList: List<BaseCourseContent> = listOf()
 
 
     companion object {
@@ -71,11 +71,16 @@ class AssessmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mBinding.btnSubmit.visibility = View.GONE
+        mBinding.correctOutputLayout.root.visibility = View.GONE
+        mBinding.incorrectOutputLayout.visibility = View.GONE
+
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
-
+                    initCorrectRV(it.list)
+                    mBinding.correctOutputLayout.root.visibility = View.VISIBLE
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
@@ -102,9 +107,21 @@ class AssessmentFragment : Fragment() {
 //        initRecyclerviewOption()
     }
 
+    private fun setUpSubmitAnswer(){
+        mBinding.btnSubmit.setOnClickListener{
+            mBinding.btnSubmit.visibility = View.GONE
+            selectedOption.let {
+                it?.let { it1 ->
+                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it1)
+                }?.let { it2 -> fragmentViewModel.handle(it2) }
+            }
+        }
+    }
+
     private fun incorrectOutputHandling(list: List<BaseCourseContent>) {
         btnSeeExplanation.setOnClickListener {
-            initIncorrectRV()
+//            initIncorrectRV()
+
         }
 
         btnRetry.setOnClickListener {
@@ -117,23 +134,25 @@ class AssessmentFragment : Fragment() {
 
         }, {
 
-        }) {
+        } ,{
             AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
-        }
+            mBinding.btnSubmit.visibility = View.VISIBLE
+        })
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         recycler_view_asses.layoutManager = layoutManager
         recycler_view_asses.adapter = contentAdapter
+        setUpSubmitAnswer()
 
 
     }
 
     private fun initCorrectRV(list: List<BaseCourseContent>){
-        correctAdapter = ExerciseContentAdapter(requireContext(), {
-        },{
+        correctAdapter = ExerciseContentAdapter(this.requireContext(),{},{})
+        val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            correct_output_layout.outputLayout.layoutManager = layoutManager
+        correct_output_layout.outputLayout.adapter = correctAdapter
+        correctAdapter.submitList(list)
 
-        }, {
-
-        })
     }
 
     private fun initIncorrectRV(){

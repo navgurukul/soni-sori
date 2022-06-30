@@ -18,6 +18,7 @@ class ExerciseContentAdapter(
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit,
     optionCallback: ((OptionResponse) -> Unit) ?= null,
+
 ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
         ContentDiffCallback()
@@ -133,7 +134,6 @@ class ExerciseContentAdapter(
             is LinkBaseCourseContent -> R.layout.item_link_content
             is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
             is OptionsBaseCourseContent -> R.layout.item_options_list_content
-            is OutputBaseCourseContent -> R.layout.item_output_content
             else -> R.layout.item_base_course_content
         }
     }

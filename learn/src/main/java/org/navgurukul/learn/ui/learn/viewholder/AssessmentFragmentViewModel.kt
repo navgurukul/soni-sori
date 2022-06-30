@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -93,9 +94,22 @@ class AssessmentFragmentViewModel (
     fun showOutputScreen(clickedOption:OptionResponse){
         val currentState = viewState.value!!
         if (isOptionSelectedCorrect(currentState, clickedOption)){
+            Log.d("correct", "correctOutput layout")
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
         } else{
+            Log.d("Incorrect", "Incorrect output layout")
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
+        }
+    }
+    private fun showOutputData(
+        currentState: AssessmentFragmentViewState,
+        currentOutput: AnswerOutput,
+        clickedOption: OptionResponse
+    ){
+        if (clickedOption.id == (currentState.assessmentContentList
+                .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
+                .value ){
+//            return currentOutput.correct
         }
     }
 
