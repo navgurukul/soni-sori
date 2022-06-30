@@ -87,7 +87,7 @@ data class Facilitator(
 ): Parcelable
 
 enum class ClassType{
-    batch, revision, doubt_class, workshop
+    batch, revision, doubt_class, workshop, cohort
 }
 
 
