@@ -110,13 +110,12 @@ class AssessmentFragment : Fragment() {
     private fun setUpSubmitAnswer(){
         mBinding.btnSubmit.setOnClickListener{
             mBinding.btnSubmit.visibility = View.GONE
-            selectedOption.let {
-                it?.let { it1 ->
-                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it1)
-                }?.let { it2 -> fragmentViewModel.handle(it2) }
+            selectedOption?.let {
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it))
+                }
             }
         }
-    }
+
 
     private fun incorrectOutputHandling(list: List<BaseCourseContent>) {
         btnSeeExplanation.setOnClickListener {
