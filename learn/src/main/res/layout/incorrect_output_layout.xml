@@ -23,30 +23,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_1x"
-        android:layout_marginStart="@dimen/spacing_5x"
         android:layout_marginTop="@dimen/spacing_5x"
         app:layout_constraintTop_toBottomOf="@+id/tvText">
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSeeExplanation"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="See Explanation"
             android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#2E2E2E"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnRetry"/>
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRetry"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Re-Try"
-            android:layout_marginEnd="@dimen/spacing_3x"
+            android:textSize="14sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="@color/primaryColor"
+            app:strokeWidth="@dimen/dimen_2_dp"
             android:textColor="@color/green_progress_color"
+            android:layout_marginStart="@dimen/spacing_2x"
+            app:layout_constraintStart_toEndOf="@id/btnSeeExplanation"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/incorrectRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_course_content_margin"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
