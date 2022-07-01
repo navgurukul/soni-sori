@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.db.models
 
+import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.navgurukul.learn.ui.common.MerakiButtonType
@@ -233,7 +234,9 @@ data class OptionResponse(
         @Json(name = "id")
         val id : Int,
         @Json(name = "value")
-        val value: String
+        val value: String,
+        @Ignore
+        var isSelected: Boolean = false
 )
 
 @JsonClass(generateAdapter = true)

@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_assessment.*
 import kotlinx.android.synthetic.main.incorrect_output_layout.*
-import kotlinx.android.synthetic.main.item_output_content.*
+import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import kotlinx.android.synthetic.main.item_output_content.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -85,6 +86,7 @@ class AssessmentFragment : Fragment() {
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                     incorrectOutputHandling(it.list)
                 }
             }
@@ -119,13 +121,25 @@ class AssessmentFragment : Fragment() {
 
     private fun incorrectOutputHandling(list: List<BaseCourseContent>) {
         btnSeeExplanation.setOnClickListener {
-//            initIncorrectRV()
-
+            initIncorrectRV(list)
+            incorrectRv.isVisible = true
         }
 
         btnRetry.setOnClickListener {
-
+            contentAdapter.submitList(resetList())
+            mBinding.incorrectOutputLayout.isVisible = false
         }
+    }
+
+    private fun resetList(): MutableList<BaseCourseContent>? {
+        val newList = fragmentViewModel.viewState.value?.assessmentContentList?.toMutableList()
+        newList?.forEach {
+            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                    val item = it as OptionsBaseCourseContent
+                    item.value = item.value.toMutableList().map{ it.copy(isSelected = false) }
+            }
+        }
+        return newList
     }
 
     private fun initContentRv(){
@@ -154,14 +168,16 @@ class AssessmentFragment : Fragment() {
 
     }
 
-    private fun initIncorrectRV(){
+    private fun initIncorrectRV(list: List<BaseCourseContent>) {
         inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{},
             {
                 AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
         })
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        outputLayout.layoutManager = layoutManager
-        outputLayout.adapter = inCorrectAdapter
+        mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
+        mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
+
+        inCorrectAdapter.submitList(list)
     }
 
 
