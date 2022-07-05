@@ -112,7 +112,13 @@ class ClassFragment: Fragment() {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClasses -> {
-                    initRevisionRecyclerView(it.revisionClasses)
+                    if(it.revisionClasses.isNotEmpty()){
+                        mBinding.revisionList.btnRevision.visibility = View.VISIBLE
+                        initRevisionRecyclerView(it.revisionClasses)
+                    }else {
+                        mBinding.revisionList.btnRevision.visibility = View.GONE
+                        toast("No revision classes found at the moment. Please come back later.")
+                    }
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.VISIBLE
                     mBinding.classDetail.visibility = View.GONE
