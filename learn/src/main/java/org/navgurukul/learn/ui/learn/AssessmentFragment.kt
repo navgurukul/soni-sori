@@ -80,11 +80,12 @@ class AssessmentFragment : Fragment() {
             when (it) {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
-                    initCorrectRV(it.list)
+                    initCorrectRV()
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
+                    initCorrectRV()
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                     incorrectOutputHandling(it.list)
@@ -98,15 +99,9 @@ class AssessmentFragment : Fragment() {
             if (!it.isError)
                 contentAdapter.submitList(it.assessmentContentList)
 
-
-
-
         }
 
-
         initContentRv()
-//        initIncorrectRV()
-//        initRecyclerviewOption()
     }
 
     private fun setUpSubmitAnswer(){
@@ -148,7 +143,9 @@ class AssessmentFragment : Fragment() {
         }, {
 
         } ,{
+            selectedOption = it
             AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
+            it.copy(isSelected = true)
             mBinding.btnSubmit.visibility = View.VISIBLE
         })
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
@@ -159,13 +156,18 @@ class AssessmentFragment : Fragment() {
 
     }
 
-    private fun initCorrectRV(list: List<BaseCourseContent>){
-        correctAdapter = ExerciseContentAdapter(this.requireContext(),{},{})
+    private fun initCorrectRV(){
+        correctAdapter = ExerciseContentAdapter(this.requireContext(),{
+
+        }, {
+
+        } ,{
+            selectedOption = it
+            AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it)
+        })
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
             correct_output_layout.outputLayout.layoutManager = layoutManager
-        correct_output_layout.outputLayout.adapter = correctAdapter
-        correctAdapter.submitList(list)
-
+            correct_output_layout.outputLayout.adapter = correctAdapter
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {

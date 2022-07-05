@@ -71,6 +71,8 @@ class AssessmentFragmentViewModel (
                         setState { copy(isError = false) }
 
                         setState { copy(assessmentContentList = getAssessmentListForUI(list.content)) }
+                        setState { copy(correctOutput = getOutputListForUI(list.content)) }
+
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -86,6 +88,13 @@ class AssessmentFragmentViewModel (
             }
         }
 
+    private fun getOutputListForUI(content: List<BaseCourseContent> ): List<BaseCourseContent>{
+
+        return content.filter { it.component == COMPONENT_OUTPUT
+//                 (currentState.assessmentContentList.find {  it.component == COMPONENT_OUTPUT } as OutputBaseCourseContent).value.correct
+        }
+    }
+
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
         return content.filterNot { it.component == COMPONENT_SOLUTION ||
                 it.component == COMPONENT_OUTPUT }
@@ -93,11 +102,10 @@ class AssessmentFragmentViewModel (
 
     fun showOutputScreen(clickedOption:OptionResponse){
         val currentState = viewState.value!!
+//        val correctOutputList = content.find { it.component == COMPONENT_OUTPUT}
         if (isOptionSelectedCorrect(currentState, clickedOption)){
-            Log.d("correct", "correctOutput layout")
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
         } else{
-            Log.d("Incorrect", "Incorrect output layout")
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
         }
     }
