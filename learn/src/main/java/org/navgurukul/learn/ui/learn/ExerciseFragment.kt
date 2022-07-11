@@ -100,7 +100,7 @@ class ExerciseFragment : Fragment() {
 
             if (!it.isError)
                 contentAdapter.submitList(it.exerciseContentList)
-        })
+        }
 
         initContentRV()
         initScreenRefresh()
