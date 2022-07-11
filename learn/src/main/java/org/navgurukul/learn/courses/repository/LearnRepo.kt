@@ -30,7 +30,7 @@ class LearnRepo(
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(loadFromDb = {
             val data = pathwayDao.getAllPathways()
-            data.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
+            data?.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
             data
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
@@ -99,7 +99,7 @@ class LearnRepo(
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
-                    } else{
+                    }else{
                         it as CourseAssessmentContent
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
@@ -237,21 +237,22 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
-    suspend fun getRevisionClasses(classId: String): List<CourseClassContent>? {
-        val res = courseApi.getRevisionClasses(classId)
-        if(res.isSuccessful) return res.body()
-        return emptyList()
+    suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
+            return courseApi.getRevisionClasses(classId)
     }
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse {
+    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
 //        return courseApi.checkedStudentEnrolment(pathwayId)
-
-        statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
-        return statusEnrolled!!
+        if(LearnUtils.isOnline(application))
+            statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+        return statusEnrolled
     }
 
-    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch> {
-        return courseApi.getBatchesAsync(pathwayId)
+    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
+        if(LearnUtils.isOnline(application)) {
+            return courseApi.getBatchesAsync(pathwayId)
+        }
+        return null
     }
 
 
@@ -259,13 +260,13 @@ class LearnRepo(
         return courseApi.getUpcomingClass(pathwayId)
     }
 
-    suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
+    suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {
-                courseApi.logOutToClassAsync(classId)
+                courseApi.logOutToClassAsync(classId, shouldRegisterUnregisterAll)
                 updateEnrollStatus(classId, false)
             } else {
-                courseApi.enrollToClassAsync(classId, mutableMapOf())
+                courseApi.enrollToClassAsync(classId, mutableMapOf(),shouldRegisterUnregisterAll)
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {

@@ -14,12 +14,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.batch_card.*
 import kotlinx.android.synthetic.main.batch_selection_sheet.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import kotlinx.android.synthetic.main.learn_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import com.google.firebase.perf.metrics.AddTrace
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.capitalizeWords
@@ -47,6 +49,7 @@ class LearnFragment : Fragment(){
     private lateinit var mCourseAdapter: CourseAdapter
     private lateinit var mBinding: FragmentLearnBinding
     private lateinit var mClassAdapter: UpcomingEnrolAdapater
+    private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
 
     override fun onCreateView(
@@ -206,7 +209,7 @@ class LearnFragment : Fragment(){
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0))
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0, true))
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {
@@ -245,12 +248,17 @@ class LearnFragment : Fragment(){
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        screenRefreshListener?.onRefresh()
+    }
 
     private fun initSwipeRefresh() {
-        mBinding.swipeContainer.setOnRefreshListener {
+        screenRefreshListener = SwipeRefreshLayout.OnRefreshListener {
             viewModel.handle(LearnFragmentViewActions.RefreshCourses)
             mBinding.swipeContainer.isRefreshing = false
         }
+        mBinding.swipeContainer.setOnRefreshListener(screenRefreshListener)
     }
 
     private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>){

@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/spacing_3x"
-        android:padding="@dimen/spacing_4x"
         android:layout_marginBottom="@dimen/spacing_4x"
         android:layout_marginStart="@dimen/spacing_2x"
         android:layout_marginEnd="@dimen/spacing_2x"
@@ -62,55 +61,35 @@
                     android:textColor="@color/green_progress_color"
                     tools:text="Batch" />
 
-            <TextView
-                android:id="@+id/tvClassDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_3x"
-                app:layout_constraintStart_toStartOf="@+id/sub_title"
-                app:layout_constraintTop_toBottomOf="@+id/sub_title"
-                tools:text="14 JUl 21"/>
+                <TextView
+                    android:id="@+id/tvClassDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_3x"
+                    app:layout_constraintStart_toStartOf="@+id/sub_title"
+                    app:layout_constraintTop_toBottomOf="@+id/sub_title"
+                    tools:text="14 JUl 21"/>
 
-            <ImageView
-                android:id="@+id/dot1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_2x"
-                app:layout_constraintTop_toTopOf="@+id/tvClassDate"
-                android:background="@drawable/ic_ellipse"
-                app:layout_constraintBottom_toBottomOf="@+id/tvClassDate"
-                app:layout_constraintTop_toBottomOf="@+id/sub_title"
-                app:layout_constraintStart_toEndOf="@+id/tvClassDate"/>
+                <ImageView
+                    android:id="@+id/dot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_2x"
+                    app:layout_constraintTop_toTopOf="@+id/tvClassDate"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvClassDate"
+                    android:background="@drawable/ic_ellipse"
+                    app:layout_constraintStart_toEndOf="@+id/tvClassDate"/>
 
-            <TextView
-                android:id="@+id/tvFacilatorName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_2x"
-                android:layout_marginTop="@dimen/spacing_3x"
-                app:layout_constraintStart_toEndOf="@+id/dot1"
-                app:layout_constraintTop_toBottomOf="@+id/sub_title"
-                tools:text="Prajakta Kishori dhanshri" />
-            <ImageView
-                android:id="@+id/dot2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_2x"
-                app:layout_constraintTop_toTopOf="@+id/tvClassDate"
-                android:background="@drawable/ic_ellipse"
-                app:layout_constraintBottom_toBottomOf="@+id/tvClassDate"
-                app:layout_constraintTop_toBottomOf="@+id/sub_title"
-                app:layout_constraintStart_toEndOf="@+id/tvFacilatorName"/>
-
-            <TextView
-                android:id="@+id/tvClassLang"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_3x"
-                android:layout_marginStart="@dimen/spacing_2x"
-                app:layout_constraintStart_toEndOf="@+id/dot2"
-                app:layout_constraintTop_toBottomOf="@+id/sub_title"
-                tools:text="Prajakta Kishori"/>
+                <TextView
+                    android:id="@+id/tvClassLang"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_2x"
+                    android:maxLines="1"
+                    android:layout_marginEnd="@dimen/spacing_2x"
+                    app:layout_constraintStart_toEndOf="@+id/dot1"
+                    app:layout_constraintTop_toTopOf="@+id/tvClassDate"
+                    tools:text="English"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

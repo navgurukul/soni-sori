@@ -25,10 +25,11 @@
                 android:id="@+id/recyclerViewUpcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/spacing_5x"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                android:scrollbars="horizontal" />
+                android:clipChildren="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

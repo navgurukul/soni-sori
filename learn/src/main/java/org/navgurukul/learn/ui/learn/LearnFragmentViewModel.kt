@@ -135,7 +135,7 @@ class LearnFragmentViewModel(
             is LearnFragmentViewActions.RequestPageLoad ->{
 //                checkedStudentEnrolment()
             }
-            is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId)
+            is LearnFragmentViewActions.PrimaryAction -> primaryAction(actions.classId, actions.shouldRegisterUnregisterAll)
             LearnFragmentViewActions.RefreshCourses -> {
                refreshCourse()
             }
@@ -156,7 +156,7 @@ class LearnFragmentViewModel(
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
             setState { copy(loading=true) }
-            val status = learnRepo.checkedStudentEnrolment(pathwayId).message
+            val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
             if(status == EnrolStatus.enrolled){
                 getUpcomingClasses(pathwayId)
             } else if(status == EnrolStatus.not_enrolled){
@@ -181,7 +181,7 @@ class LearnFragmentViewModel(
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches.let {
+            batches?.let {
                 setState {
                     copy(
                         batches = it,
@@ -218,10 +218,10 @@ class LearnFragmentViewModel(
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
     }
 
-    private fun primaryAction(classId: Int) {
+    private fun primaryAction(classId: Int, shouldRegisterUnregisterAll: Boolean = false) {
         viewModelScope.launch {
         setState { copy(loading = true) }
-        val result = learnRepo.enrollToClass(classId, false)
+        val result = learnRepo.enrollToClass(classId, false, shouldRegisterUnregisterAll)
         if (result) {
             isEnrolled = true
             setState {
@@ -230,7 +230,8 @@ class LearnFragmentViewModel(
                 )
             }
             refreshCourse()
-            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enrolled)))
+            _viewEvents.postValue(LearnFragmentViewEvents.EnrolledSuccessfully)
+            _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.enroll_to_batch)))
         } else {
             setState { copy(loading = false) }
             _viewEvents.setValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
@@ -268,12 +269,13 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
         LearnFragmentViewEvents()
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
+    object EnrolledSuccessfully : LearnFragmentViewEvents()
 
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
     object RequestPageLoad :LearnFragmentViewActions()
-    data class PrimaryAction(val classId: Int) : LearnFragmentViewActions()
+    data class PrimaryAction(val classId: Int, val shouldRegisterUnregisterAll: Boolean) : LearnFragmentViewActions()
     object ToolbarClicked : LearnFragmentViewActions()
     object BtnMoreBatchClicked: LearnFragmentViewActions()
     object LanguageSelectionClicked : LearnFragmentViewActions()

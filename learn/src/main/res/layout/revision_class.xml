@@ -3,10 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="@dimen/spacing_2x"
@@ -18,7 +14,17 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Revision Class"/>
+            android:text="@string/revision_class"/>
+
+        <TextView
+            android:id="@+id/btnDropOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvText"
+            android:text="@string/can_t_attend"/>
 
         <TextView
             android:id="@+id/tvRevDate"
@@ -50,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_6x"
             android:ellipsize="end"
-            android:text="Please be sure to join at least 10 minutes before the scheduled time"
+            android:text="@string/rule_for_joining"
             tools:text="Please be sure to join at least 10 minutes before the scheduleed time"
             app:layout_constraintTop_toBottomOf="@+id/tvRevFacilatorName"
             app:layout_constraintStart_toStartOf="@+id/tvRevDate" />

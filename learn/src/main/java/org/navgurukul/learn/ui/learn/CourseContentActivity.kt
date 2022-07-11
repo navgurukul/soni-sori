@@ -115,7 +115,6 @@ class CourseContentActivity : AppCompatActivity(){
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
-
                 is CourseContentActivityViewEvents.ShowAssessmentFragment -> {
                     launchAssessmentFragment(
                         it.isFirst,
@@ -262,5 +261,4 @@ class CourseContentActivity : AppCompatActivity(){
             )
         }
     }
-
 }

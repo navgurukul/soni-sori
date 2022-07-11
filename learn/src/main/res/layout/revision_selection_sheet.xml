@@ -5,25 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/completeText"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_4x"
-        style="@style/TextAppearance.AppCompat.Subhead"
-        android:textStyle="bold"
-        android:drawableStart="@drawable/ic_checkmark_circle"
-        app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Completed on 15 6" />
+        app:drawableStartCompat="@drawable/ic_checkmark_circle"
+        android:drawablePadding="@dimen/spacing_2x"
+        tools:text="Completed on 15 6"/>
 
     <View
         android:id="@+id/handle_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sheet_handle_height"
-        android:layout_marginTop="@dimen/spacing_3x"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/spacing_4x"
         android:layout_gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/completeText"
         android:background="@drawable/sheet_handle" />
@@ -33,25 +33,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/handle_view">
+
         <TextView
-            style="?textAppearanceEmphasized1"
             android:id="@+id/tv_title"
-            android:textColor="?textPrimary"
+            style="?textAppearanceEmphasized1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_5x"
+            android:layout_marginTop="16dp"
             android:text="@string/rv_detail"
+            android:textColor="?textPrimary"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Missed the class or need to revise? Enroll in a class from another batch"
-            app:layout_constraintStart_toStartOf="parent" />
+            tools:text="Missed the class or need to revise? Enroll in a class from another batch" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_5x"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_2x"
-        android:layout_marginBottom="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_5x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_ofRevision"
@@ -73,12 +72,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_1x"
+        android:backgroundTint="@color/green_progress_color"
         android:gravity="center"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="Enroll Revision Class"
+        android:text="@string/enroll_to_revision_class"
+        android:textAllCaps="false"
         app:cornerRadius="?cornerRadius400"
-        android:backgroundTint="@color/green_progress_color"
-        app:layout_constraintTop_toBottomOf="@+id/revision_class_data"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

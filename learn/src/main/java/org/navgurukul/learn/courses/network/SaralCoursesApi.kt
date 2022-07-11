@@ -4,7 +4,6 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
-import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -34,18 +33,19 @@ interface SaralCoursesApi {
     @GET("classes/{classId}/revision")
     suspend fun getRevisionClasses(
         @Path("classId") classId: String
-    ):Response<List<CourseClassContent>>
-
+    ):List<CourseClassContent>
 
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
-        @Body hashMap: MutableMap<String, Any>
+        @Body hashMap: MutableMap<String, Any>,
+        @Query("register-all") shouldRegisterAll: Boolean
     ): ResponseBody
 
     @DELETE("classes/{classId}/unregister")
     suspend fun logOutToClassAsync(
-        @Path(value = "classId") classId: Int
+        @Path(value = "classId") classId: Int,
+        @Query("unregister-all") shouldUnregisterAll: Boolean
     ): ResponseBody
 
     @GET("classes/studentEnrolment")

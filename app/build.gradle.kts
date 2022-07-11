@@ -9,6 +9,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.gms)
     id(Plugins.crashlytics)
+    id(Plugins.perf)
 }
 
 android {
@@ -129,6 +130,7 @@ dependencies {
     implementation(FirebaseDependencies.messaging)
     implementation(FirebaseDependencies.dynamicLinksKtx)
     implementation(FirebaseDependencies.inAppMessagingKtx)
+    implementation(FirebaseDependencies.perfKtx)
 
     //glide
     implementation(GlideDependencies.glide)

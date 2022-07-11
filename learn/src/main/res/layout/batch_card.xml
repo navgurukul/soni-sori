@@ -118,7 +118,7 @@
                 android:layout_marginTop="@dimen/spacing_3x"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:text="Enroll Batch"
+                android:text="@string/enroll_to_the_batch"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colorWhite"
                 android:textAllCaps="false"

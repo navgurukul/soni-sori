@@ -75,7 +75,8 @@ class SelectCourseFragment : BaseFragment() {
     enum class DefaultLogos(@DrawableRes val id: Int) {
         PYTHON(R.drawable.python_logo),
         TYPING(R.drawable.ic_icon_typing),
-        ENGLISH(R.drawable.ic_icon_language)
+        ENGLISH(R.drawable.ic_icon_language),
+        JAVASCRIPT(R.drawable.ic_javascript_logo)
     }
 
 }

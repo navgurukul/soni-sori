@@ -31,4 +31,6 @@
     <color name="classChipSecondary">#4548A1</color>
     <color name="classChipBackground">#DADAEC</color>
     <color name="assesmentBackground">#F5F5F5</color>
+    <color name="courseBackground">#DEDEDE</color>
+    <color name="textInChip">#2E2E2E</color>
 </resources>
