@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -43,9 +42,29 @@ class AssessmentFragmentViewModel (
                 args.courseContentType,
                 true
             )
-            is AssessmentFragmentViewActions.OptionSelectedClicked -> showOutputScreen(action.selectedOptionResponse)
+            is AssessmentFragmentViewActions.OptionSelectedClicked -> {
+                updateList(action.selectedOptionResponse)
+                showOutputScreen(action.selectedOptionResponse)
+            }
         }
     }
+
+    private fun updateList(selectedOptionResponse: OptionResponse) {
+        val currentState = viewState.value!!
+            currentState.assessmentContentList.forEach {
+                if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
+                    val option = it as OptionsBaseCourseContent
+                    for(item in option.value){
+                        if (item == selectedOptionResponse){
+                            item.viewState = OptionViewState.SELECTED
+                            break
+                        }
+                    }
+                }
+            }
+        setState { copy(assessmentContentList = currentState.assessmentContentList) }
+    }
+
     private fun fetchAssessmentContent(
         contentId: String,
         courseId: String,

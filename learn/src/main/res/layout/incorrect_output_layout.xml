@@ -19,7 +19,7 @@
         android:text="It missed the correct option"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tvRetryOption"
+        android:id="@+id/explanationRetryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_1x"

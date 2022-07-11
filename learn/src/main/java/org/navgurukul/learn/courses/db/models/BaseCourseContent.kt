@@ -236,7 +236,7 @@ data class OptionResponse(
         @Json(name = "value")
         val value: String,
         @Ignore
-        var isSelected: Boolean = false
+        var viewState: OptionViewState = OptionViewState.NOT_SELECTED
 )
 
 @JsonClass(generateAdapter = true)
@@ -246,3 +246,7 @@ data class AnswerOutput(
         @Json(name = "incorrect")
         val incorrect: List<BaseCourseContent>,
 )
+
+enum class OptionViewState{
+        NOT_SELECTED, SELECTED, CORRECT, INCORRECT
+}

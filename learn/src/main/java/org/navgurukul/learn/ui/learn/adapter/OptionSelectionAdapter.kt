@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.OptionResponse
+import org.navgurukul.learn.courses.db.models.OptionViewState
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
-class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
+class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
     DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>(){
 
@@ -35,11 +36,21 @@ class OptionSelectionAdapter(val callback: (OptionResponse) -> Unit):
        )
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
+    override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.tvOption.text = item.value
-        binding.root.setOnClickListener {
-            callback.invoke(item)
+
+        when(item.viewState){
+            OptionViewState.SELECTED -> {}
+            OptionViewState.NOT_SELECTED -> {}
+            OptionViewState.INCORRECT -> {}
+            OptionViewState.CORRECT -> {}
+        }
+
+        callback?.let {
+            binding.root.setOnClickListener { view ->
+                it.invoke(item)
+            }
         }
     }
 
