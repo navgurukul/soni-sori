@@ -147,12 +147,14 @@ class AssessmentFragment : Fragment() {
         return newList
     }
 
-    private fun getNewReferencedList(list: List<BaseCourseContent>?): MutableList<BaseCourseContent>? {
-        val newList = list?.toMutableList()
-        newList?.forEach {
+    private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
+        val newList = list?.toMutableList()?.map {
             if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
-                    val item = it as OptionsBaseCourseContent
-                    item.value = item.value.toMutableList().map{ it.copy() }
+                (it as OptionsBaseCourseContent).copy(
+                    value = it.value.toMutableList().map{ it.copy() }
+                )
+            }else{
+                it
             }
         }
         return newList
