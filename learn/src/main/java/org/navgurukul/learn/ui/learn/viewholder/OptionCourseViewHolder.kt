@@ -33,7 +33,7 @@ class OptionCourseViewHolder(itemView: View):
             mOptionCallback?.let { callback ->
                 optionsAdapter = OptionSelectionAdapter() {
                     callback.invoke(it)
-                    it.viewState = OptionViewState.SELECTED
+//                    it.viewState = OptionViewState.SELECTED
                 }
             }?: kotlin.run {
                 optionsAdapter = OptionSelectionAdapter()

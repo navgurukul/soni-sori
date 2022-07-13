@@ -195,9 +195,9 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
-        correctAdapter.submitList(list)
+//        correctAdapter.submitList(list)
 
-//        correctAdapter.submitList(getNewReferencedList(list))
+        correctAdapter.submitList(getNewReferencedList(list))
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
@@ -205,9 +205,9 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
-        inCorrectAdapter.submitList(list)
+//        inCorrectAdapter.submitList(list)
 
-//        inCorrectAdapter.submitList(getNewReferencedList(list))
+        inCorrectAdapter.submitList(getNewReferencedList(list))
     }
 
 

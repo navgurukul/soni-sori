@@ -91,9 +91,6 @@ class AssessmentFragmentViewModel (
                         setState { copy(isError = false) }
 
                         setState { copy(assessmentContentList = getAssessmentListForUI(list.content)) }
-                        setState { copy(correctOutput = getOutputListForUI(list1.value.correct) ) }
-                        setState { copy(incorrectOutput = getOutputListForUI(list1.value.incorrect)) }
-
 
                     } else {
                         _viewEvents.setValue(
@@ -119,22 +116,6 @@ class AssessmentFragmentViewModel (
                 it.component == COMPONENT_OUTPUT }
     }
 
-//    fun showOutputScreen(clickedOption:OptionResponse){
-//        val currentState = viewState.value!!
-//        if (isOptionSelectedCorrect(currentState, clickedOption)){
-//            if(clickedOption.id == (currentState.assessmentContentList.find {it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).value){
-//                clickedOption.viewState = OptionViewState.CORRECT
-//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
-//            } else{
-//                clickedOption.viewState = OptionViewState.INCORRECT
-//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
-//                }
-//        } else{
-//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
-//
-//        }
-//    }
-
     fun showOutputScreen(clickedOption: OptionResponse){
         val currentState = viewState.value!!
         if (isOptionSelectedCorrect(currentState, clickedOption)){
@@ -153,7 +134,6 @@ class AssessmentFragmentViewModel (
         clickedOption: OptionResponse
     ): Boolean {
         try {
-            clickedOption.viewState = OptionViewState.SELECTED
             return clickedOption.id ==
                     (currentState.assessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
