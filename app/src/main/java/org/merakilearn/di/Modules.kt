@@ -103,6 +103,7 @@ val networkModule = module {
 //                .withSubtype(CodeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_SOLUTION)
                 .withSubtype(CodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_CODE)
                 .withSubtype(QuestionCodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_CODE)
+                .withSubtype(QuestionExpressionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_EXPRESSION)
                 .withSubtype(BlockQuoteBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BLOCK_QUOTE)
                 .withSubtype(HeaderBaseCourseContent::class.java, BaseCourseContent.COMPONENT_HEADER)
                 .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)

@@ -67,6 +67,7 @@ class ExerciseContentAdapter(
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
             R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
+            R.layout.item_question_expression_content -> QuestionExpressionCourseViewHolder(itemView)
             R.layout.item_options_list_content-> OptionCourseViewHolder(itemView)
             else -> UnknownCourseViewHolder(itemView)
 
@@ -112,6 +113,9 @@ class ExerciseContentAdapter(
             R.layout.item_question_code_content ->
                 (holder as QuestionCodeCourseViewHolder).bindView(getItem(position) as QuestionCodeBaseCourseContent, mCallback)
 
+            R.layout.item_question_expression_content ->
+                (holder as QuestionExpressionCourseViewHolder).bindView(getItem(position) as QuestionExpressionBaseCourseContent, mCallback)
+
             R.layout.item_options_list_content ->
                 (holder as OptionCourseViewHolder).bindView(getItem(position) as OptionsBaseCourseContent, mOptionCallback)
 
@@ -133,6 +137,7 @@ class ExerciseContentAdapter(
             is BannerBaseCourseContent -> R.layout.item_banner_content
             is LinkBaseCourseContent -> R.layout.item_link_content
             is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
+            is QuestionExpressionBaseCourseContent -> R.layout.item_question_expression_content
             is OptionsBaseCourseContent -> R.layout.item_options_list_content
             else -> R.layout.item_base_course_content
         }

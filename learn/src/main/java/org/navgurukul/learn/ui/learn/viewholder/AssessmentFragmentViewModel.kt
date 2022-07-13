@@ -83,6 +83,7 @@ class AssessmentFragmentViewModel (
             ).collect {
                 if (it?.courseContentType == CourseContentType.assessment){
                     val list = it as CourseAssessmentContent
+                    val list1 = it as OutputBaseCourseContent
 
                     setState { copy(isLoading = false) }
 
@@ -90,7 +91,9 @@ class AssessmentFragmentViewModel (
                         setState { copy(isError = false) }
 
                         setState { copy(assessmentContentList = getAssessmentListForUI(list.content)) }
-                        setState { copy(correctOutput = getOutputListForUI(list.content)) }
+                        setState { copy(correctOutput = getOutputListForUI(list1.value.correct) ) }
+                        setState { copy(incorrectOutput = getOutputListForUI(list1.value.incorrect)) }
+
 
                     } else {
                         _viewEvents.setValue(
@@ -108,10 +111,7 @@ class AssessmentFragmentViewModel (
         }
 
     private fun getOutputListForUI(content: List<BaseCourseContent> ): List<BaseCourseContent>{
-
-        return content.filter { it.component == COMPONENT_OUTPUT
-//                 (currentState.assessmentContentList.find {  it.component == COMPONENT_OUTPUT } as OutputBaseCourseContent).value.correct
-        }
+        return content.filter {it.component == COMPONENT_OUTPUT}
     }
 
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
@@ -119,12 +119,31 @@ class AssessmentFragmentViewModel (
                 it.component == COMPONENT_OUTPUT }
     }
 
-    fun showOutputScreen(clickedOption:OptionResponse){
+//    fun showOutputScreen(clickedOption:OptionResponse){
+//        val currentState = viewState.value!!
+//        if (isOptionSelectedCorrect(currentState, clickedOption)){
+//            if(clickedOption.id == (currentState.assessmentContentList.find {it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).value){
+//                clickedOption.viewState = OptionViewState.CORRECT
+//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
+//            } else{
+//                clickedOption.viewState = OptionViewState.INCORRECT
+//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
+//                }
+//        } else{
+//            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
+//
+//        }
+//    }
+
+    fun showOutputScreen(clickedOption: OptionResponse){
         val currentState = viewState.value!!
-//        val correctOutputList = content.find { it.component == COMPONENT_OUTPUT}
         if (isOptionSelectedCorrect(currentState, clickedOption)){
+            clickedOption.viewState = OptionViewState.CORRECT
+            setState { copy(correctOutput = currentState.correctOutput) }
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
-        } else{
+        }else{
+            clickedOption.viewState = OptionViewState.INCORRECT
+            setState { copy(incorrectOutput = currentState.incorrectOutput) }
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
         }
     }
@@ -134,10 +153,12 @@ class AssessmentFragmentViewModel (
         clickedOption: OptionResponse
     ): Boolean {
         try {
+            clickedOption.viewState = OptionViewState.SELECTED
             return clickedOption.id ==
                     (currentState.assessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
                         .value
+
         }catch (e: Exception){
             return false
         }

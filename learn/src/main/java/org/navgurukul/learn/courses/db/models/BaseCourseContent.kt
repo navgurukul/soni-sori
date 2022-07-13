@@ -28,6 +28,7 @@ interface BaseCourseContent : Serializable {
         const val COMPONENT_OPTIONS = "options"
         const val COMPONENT_OUTPUT = "output"
         const val COMPONENT_QUESTION_CODE = "questionCode"
+        const val COMPONENT_QUESTION_EXPRESSION = "questionExpression"
     }
 }
 
@@ -149,6 +150,20 @@ data class BannerBaseCourseContent(
 
 @JsonClass(generateAdapter = true)
 data class QuestionCodeBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        val value: String?,
+        @Json(name = "title")
+        val title: String? = null,
+        @Json(name = "type")
+        val codeTypes: CodeType,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+) : BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class QuestionExpressionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
