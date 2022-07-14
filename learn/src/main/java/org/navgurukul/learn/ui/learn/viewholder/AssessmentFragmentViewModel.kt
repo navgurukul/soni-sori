@@ -29,6 +29,7 @@ class AssessmentFragmentViewModel (
 {
     private var fetchAssessmentJob : Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
+    private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
 
     init {
         fetchAssessmentContent(args.contentId,args.courseId,args.courseContentType)
@@ -51,7 +52,7 @@ class AssessmentFragmentViewModel (
 
     private fun updateList(selectedOptionResponse: OptionResponse) {
         val currentState = viewState.value!!
-            currentState.assessmentContentList.forEach {
+            currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                     val option = it as OptionsBaseCourseContent
                     for(item in option.value){
@@ -62,7 +63,7 @@ class AssessmentFragmentViewModel (
                     }
                 }
             }
-        setState { copy(assessmentContentList = currentState.assessmentContentList) }
+        setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
     }
 
     private fun fetchAssessmentContent(
@@ -83,15 +84,14 @@ class AssessmentFragmentViewModel (
             ).collect {
                 if (it?.courseContentType == CourseContentType.assessment){
                     val list = it as CourseAssessmentContent
-                    val list1 = it as OutputBaseCourseContent
 
                     setState { copy(isLoading = false) }
 
                     if (list != null && list.content.isNotEmpty() == true){
                         setState { copy(isError = false) }
 
-                        setState { copy(assessmentContentList = getAssessmentListForUI(list.content)) }
-
+                        setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
+                        allAssessmentContentList = list.content
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -135,7 +135,7 @@ class AssessmentFragmentViewModel (
     ): Boolean {
         try {
             return clickedOption.id ==
-                    (currentState.assessmentContentList
+                    (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
                         .value
 
@@ -160,11 +160,11 @@ class AssessmentFragmentViewModel (
     data class AssessmentFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val assessmentContentList: List<BaseCourseContent> = listOf(),
+        val assessmentContentListForUI: List<BaseCourseContent> = listOf(),
         val correctOutput: List<BaseCourseContent> =  arrayListOf(),
         val incorrectOutput: List<BaseCourseContent> =  arrayListOf(),
 
-    ) : ViewState
+        ) : ViewState
 }
 
 
