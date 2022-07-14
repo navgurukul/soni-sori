@@ -96,7 +96,7 @@ class AssessmentFragment : Fragment() {
             showErrorScreen(it.isError)
 
             if (!it.isError)
-                contentAdapter.submitList(getNewReferencedList(it.assessmentContentList))
+                contentAdapter.submitList(getNewReferencedList(it.assessmentContentListForUI))
 
         }
 
@@ -137,7 +137,7 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun resetList(): MutableList<BaseCourseContent>? {
-        val newList = fragmentViewModel.viewState.value?.assessmentContentList?.toMutableList()
+        val newList = fragmentViewModel.viewState.value?.assessmentContentListForUI?.toMutableList()
         newList?.forEach {
             if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
                     val item = it as OptionsBaseCourseContent
@@ -161,7 +161,7 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun getSingleSelectedOptionInNewList(selectedOption: OptionResponse): MutableList<BaseCourseContent>? {
-        val newList = fragmentViewModel.viewState.value?.assessmentContentList?.toMutableList()
+        val newList = fragmentViewModel.viewState.value?.assessmentContentListForUI?.toMutableList()
         newList?.forEach {
             if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
                     val item = it as OptionsBaseCourseContent
