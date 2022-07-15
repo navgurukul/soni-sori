@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_2x"
+        android:textStyle="bold"
         android:layout_marginBottom="@dimen/spacing_2x"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/let_s_dive_in_with_a_code_sample"
