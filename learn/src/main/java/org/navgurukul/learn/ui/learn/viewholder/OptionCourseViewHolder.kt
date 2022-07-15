@@ -5,9 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.OptionResponse
-import org.navgurukul.learn.courses.db.models.OptionViewState
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
 
@@ -33,7 +31,6 @@ class OptionCourseViewHolder(itemView: View):
             mOptionCallback?.let { callback ->
                 optionsAdapter = OptionSelectionAdapter() {
                     callback.invoke(it)
-//                    it.viewState = OptionViewState.SELECTED
                 }
             }?: kotlin.run {
                 optionsAdapter = OptionSelectionAdapter()

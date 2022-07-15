@@ -13,6 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
@@ -126,6 +127,7 @@ class AssessmentFragment : Fragment() {
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
             initIncorrectRV(list)
+            mBinding.incorrectOutputLayout.tvText.isVisible = false
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
             mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
         }
@@ -133,6 +135,7 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
             contentAdapter.submitList(resetList())
             mBinding.incorrectOutputLayout.isVisible = false
+            isContentRvClickable = true
         }
     }
 
@@ -187,6 +190,9 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.recyclerViewAsses.layoutManager = layoutManager
         mBinding.recyclerViewAsses.adapter = contentAdapter
+        mBinding.recyclerViewAsses.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_1x), 0)
+        )
         setUpSubmitAnswer()
     }
 
@@ -195,9 +201,10 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
-//        correctAdapter.submitList(list)
-
-        correctAdapter.submitList(getNewReferencedList(list))
+        mBinding.correctOutputLayout.outputLayout.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+        )
+        correctAdapter.submitList(list)
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
@@ -205,10 +212,10 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
-//        inCorrectAdapter.submitList(list)
-
-        inCorrectAdapter.submitList(getNewReferencedList(list))
+        mBinding.incorrectOutputLayout.incorrectRv.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+        )
+        inCorrectAdapter.submitList(list)
     }
-
 
 }

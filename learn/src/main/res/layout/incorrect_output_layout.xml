@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_1x"
-        android:layout_marginTop="@dimen/spacing_5x"
+        android:layout_marginTop="@dimen/spacing_3x"
         app:layout_constraintTop_toBottomOf="@+id/tvText">
 
         <com.google.android.material.button.MaterialButton
@@ -31,10 +31,11 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="See Explanation"
+            android:text="@string/see_explanation"
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="#2E2E2E"
+            android:textAllCaps="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnRetry"/>
@@ -43,13 +44,14 @@
             android:id="@+id/btnRetry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Re-Try"
-            android:textSize="14sp"
+            android:text="@string/re_try"
+            android:textSize="13sp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             app:strokeColor="@color/primaryColor"
             app:strokeWidth="@dimen/dimen_2_dp"
             android:textColor="@color/green_progress_color"
             android:layout_marginStart="@dimen/spacing_2x"
+            android:textAllCaps="false"
             app:layout_constraintStart_toEndOf="@id/btnSeeExplanation"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

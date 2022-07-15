@@ -37,16 +37,23 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
        )
     }
 
-
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.tvOption.text = item.value
 
         when(item.viewState){
-            OptionViewState.SELECTED -> {binding.tvCardOption.setBackgroundColor(Color.parseColor("#48A145"))}
-            OptionViewState.NOT_SELECTED -> {binding.tvCardOption.setBackgroundColor(Color.parseColor("#48A145"))}
-            OptionViewState.INCORRECT -> {binding.tvCardOption.setBackgroundColor(Color.parseColor("#D63447"))}
-            OptionViewState.CORRECT -> {binding.tvCardOption.setBackgroundColor(Color.parseColor("#48A145"))}
+            OptionViewState.SELECTED -> {
+                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#F5F5F5"))
+            }
+            OptionViewState.NOT_SELECTED -> {
+                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+            }
+            OptionViewState.INCORRECT -> {
+                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+            }
+            OptionViewState.CORRECT -> {
+                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+            }
         }
 
         callback?.let {

@@ -8,8 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_2x"
-        android:foregroundTint="@color/green_progress_color"
-        android:backgroundTint="@color/colorWhite"
         app:cardCornerRadius="@dimen/spacing_2x">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +21,7 @@
                 android:id="@+id/tvOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="@dimen/spacing_1x"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text ="A. You can not have a chocolate"/>

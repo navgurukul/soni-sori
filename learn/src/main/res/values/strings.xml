@@ -151,6 +151,9 @@
     <string name="retry_after_some_time">Please retry after some time!</string>
     <string name="you_got_it_right">You got it right</string>
     <string name="submit">Submit</string>
+    <string name="let_s_dive_in_with_a_code_sample">Let’s dive in with a code sample</string>
+    <string name="see_explanation">See Explanation</string>
+    <string name="re_try">Re-Try</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

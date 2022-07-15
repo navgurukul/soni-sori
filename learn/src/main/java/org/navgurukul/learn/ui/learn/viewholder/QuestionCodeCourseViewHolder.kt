@@ -27,8 +27,6 @@ BaseCourseViewHolder(itemview){
             item.value
                 ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
         )
-
     }
-
 
 }
