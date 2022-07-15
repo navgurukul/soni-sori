@@ -10,13 +10,14 @@
         style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_sad_emoji"
         android:drawablePadding="@dimen/spacing_4x"
         android:textStyle="bold"
         android:textColor="@color/colorRed"
+        android:paddingStart="@dimen/spacing_1x"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="It missed the correct option"/>
+        android:text="@string/missed_the_bull_s_eye"
+        app:drawableStartCompat="@drawable/ic_sad_emoji" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/explanationRetryLayout"

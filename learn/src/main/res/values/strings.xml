@@ -154,6 +154,7 @@
     <string name="let_s_dive_in_with_a_code_sample">Let’s dive in with a code sample</string>
     <string name="see_explanation">See Explanation</string>
     <string name="re_try">Re-Try</string>
+    <string name="missed_the_bull_s_eye">Missed the bull’s eye</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
