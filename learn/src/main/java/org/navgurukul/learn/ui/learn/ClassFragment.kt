@@ -281,7 +281,7 @@ class ClassFragment: Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         recyclerviewBatch.layoutManager = layoutManager
         recyclerviewBatch.adapter = mClassAdapter
-        mClassAdapter.submitList(batches.subList(0,4))
+        mClassAdapter.submitList(batches.take(3))
         setupJoinButton()
     }
 
