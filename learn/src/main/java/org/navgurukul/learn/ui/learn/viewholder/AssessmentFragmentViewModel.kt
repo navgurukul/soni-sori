@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn.viewholder
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.merakilearn.core.utils.CorePreferences
@@ -49,6 +50,9 @@ class AssessmentFragmentViewModel (
                 showOutputScreen(action.selectedOptionResponse)
                 updateList(action.selectedOptionResponse, OptionViewState.SELECTED )
             }
+            is AssessmentFragmentViewActions.ShowUpdatedOutput ->{
+                resetList()
+            }
         }
     }
 
@@ -67,6 +71,20 @@ class AssessmentFragmentViewModel (
             }
         setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
     }
+
+    private fun resetList(): MutableList<BaseCourseContent>? {
+        val currentState = viewState.value!!
+        val newList = viewState.value?.assessmentContentListForUI?.toMutableList()
+        newList?.forEach {
+            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                val item = it as OptionsBaseCourseContent
+                item.value = item.value.toMutableList().map{ it.copy(viewState = OptionViewState.NOT_SELECTED) }
+            }
+        }
+        setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
+        return newList
+    }
+
 
     private fun fetchAssessmentContent(
         contentId: String,
@@ -110,6 +128,7 @@ class AssessmentFragmentViewModel (
         }
 
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
+        resetList()
         return content.filterNot { it.component == COMPONENT_SOLUTION ||
                 it.component == COMPONENT_OUTPUT }
     }
@@ -143,7 +162,6 @@ class AssessmentFragmentViewModel (
         }
     }
 
-
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
@@ -154,6 +172,7 @@ class AssessmentFragmentViewModel (
     sealed class AssessmentFragmentViewActions : ViewModelAction {
         object RequestContentRefresh : AssessmentFragmentViewActions()
         data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+        object ShowUpdatedOutput : AssessmentFragmentViewActions()
     }
 
     data class AssessmentFragmentViewState(
