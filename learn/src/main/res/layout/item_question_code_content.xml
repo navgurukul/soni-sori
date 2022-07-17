@@ -6,29 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/question_code_background"
-    android:padding="@dimen/spacing_6x"
-    android:paddingBottom="@dimen/dimen_16_dp">
+    android:padding="@dimen/spacing_6x">
 
-    <TextView
-        android:id="@+id/txt"
-        style="@style/TextAppearance.AppCompat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/spacing_2x"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/spacing_2x"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/let_s_dive_in_with_a_code_sample"
-        app:drawableLeftCompat="@drawable/ic_reshot_icon" />
 
     <TextView
         android:id="@+id/questionCodeBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/spacing_3x"
-        android:layout_marginTop="@dimen/spacing_4x"
-        app:layout_constraintTop_toBottomOf="@+id/txt"
         android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Hi Body" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_OUTPUT
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_SOLUTION
+import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -126,6 +127,13 @@ class AssessmentFragmentViewModel (
             }
             }
         }
+
+    private fun postStudentResult(assessmentId: Int , status : Status){
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            learnRepo.postStudentResult(assessmentId, status)
+        }
+    }
 
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
         resetList()

@@ -44,6 +44,7 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
         when(item.viewState){
             OptionViewState.SELECTED -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#F5F5F5"))
+
             }
             OptionViewState.NOT_SELECTED -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))

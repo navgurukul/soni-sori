@@ -9,11 +9,13 @@
 
     <TextView
         android:id="@+id/questionExpressionBody"
-        style="@style/TextAppearance.AppCompat.Headline6"
+        style="TextAppearance.AppCompat.Emphasized1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_16_dp"
         android:paddingStart="@dimen/spacing_4x"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Hi Body" />

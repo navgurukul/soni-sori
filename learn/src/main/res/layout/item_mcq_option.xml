@@ -7,8 +7,12 @@
         android:id="@+id/tvCardOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_2x"
-        app:cardCornerRadius="@dimen/spacing_2x">
+        android:layout_marginLeft="@dimen/spacing_2x"
+        android:layout_marginRight="@dimen/spacing_2x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:nextFocusRight="@dimen/spacing_4x"
+        app:cardCornerRadius="@dimen/spacing_2x"
+        android:layout_marginBottom="@dimen/spacing_2x">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

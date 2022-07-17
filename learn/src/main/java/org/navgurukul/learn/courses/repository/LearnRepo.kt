@@ -290,4 +290,14 @@ class LearnRepo(
         return true
     }
 
+    suspend fun postStudentResult(assessmentId: Int, status: Status) : AttempResponse{
+        return try {
+            val studentResult = StudentResult(assessmentId , status = status )
+            val result = courseApi.postStudentResult(studentResult)
+            result
+        } catch (ex : Exception){
+            return AttempResponse.CORRECT
+        }
+    }
+
 }

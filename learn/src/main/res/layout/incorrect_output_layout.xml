@@ -7,7 +7,6 @@
 
     <TextView
         android:id="@+id/tvText"
-        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_4x"
@@ -16,7 +15,7 @@
         android:paddingStart="@dimen/spacing_1x"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/missed_the_bull_s_eye"
+        android:text="It missed the mark"
         app:drawableStartCompat="@drawable/ic_sad_emoji" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/see_explanation"
             android:textStyle="bold"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textColor="#2E2E2E"
             android:textAllCaps="false"
             app:layout_constraintTop_toTopOf="parent"
