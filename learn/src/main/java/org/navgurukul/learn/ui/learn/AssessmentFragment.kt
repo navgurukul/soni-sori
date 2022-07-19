@@ -86,8 +86,7 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
-                    mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = true
-                    setupIncorrectOutputLayout(it.list)
+                    initIncorrectRV(it.list)
                 }
             }
         }
@@ -123,20 +122,6 @@ class AssessmentFragment : Fragment() {
             }
         }
 
-    private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
-        mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-            initIncorrectRV(list)
-            mBinding.incorrectOutputLayout.tvText.isVisible = false
-            mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-            mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
-        }
-
-        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
-            mBinding.incorrectOutputLayout.isVisible = false
-            isContentRvClickable = true
-        }
-    }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
         val newList = list?.toMutableList()?.map {
