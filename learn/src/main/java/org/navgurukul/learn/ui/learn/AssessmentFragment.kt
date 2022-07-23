@@ -117,7 +117,7 @@ class AssessmentFragment : Fragment() {
             mBinding.btnSubmit.visibility = View.GONE
             selectedOption?.let {
                 isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it))
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
                 }
             }
         }
@@ -131,20 +131,10 @@ class AssessmentFragment : Fragment() {
         }
 
         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-            contentAdapter.submitList(resetList())
+            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ResetOptionsList)
             mBinding.incorrectOutputLayout.isVisible = false
+            isContentRvClickable = true
         }
-    }
-
-    private fun resetList(): MutableList<BaseCourseContent>? {
-        val newList = fragmentViewModel.viewState.value?.assessmentContentListForUI?.toMutableList()
-        newList?.forEach {
-            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
-                    val item = it as OptionsBaseCourseContent
-                    item.value = item.value.toMutableList().map{ it.copy(viewState = OptionViewState.NOT_SELECTED) }
-            }
-        }
-        return newList
     }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
@@ -160,19 +150,6 @@ class AssessmentFragment : Fragment() {
         return newList
     }
 
-    private fun getSingleSelectedOptionInNewList(selectedOption: OptionResponse): MutableList<BaseCourseContent>? {
-        val newList = fragmentViewModel.viewState.value?.assessmentContentListForUI?.toMutableList()
-        newList?.forEach {
-            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
-                    val item = it as OptionsBaseCourseContent
-                    item.value = item.value.toMutableList().map{ item ->
-                        item.copy(viewState = if(item == selectedOption) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED)
-                    }
-            }
-        }
-        return newList
-    }
-
     private fun initContentRv(){
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
 
@@ -181,6 +158,7 @@ class AssessmentFragment : Fragment() {
         } ,{
             if(isContentRvClickable) {
                 selectedOption = it
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE
             }
         })

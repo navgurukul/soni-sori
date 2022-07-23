@@ -30,6 +30,8 @@ class AssessmentFragmentViewModel (
     private var fetchAssessmentJob : Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
     private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
+    private var correctOutputDataList:  List<BaseCourseContent> = listOf()
+    private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
 
     init {
         fetchAssessmentContent(args.contentId,args.courseId,args.courseContentType)
@@ -43,26 +45,42 @@ class AssessmentFragmentViewModel (
                 args.courseContentType,
                 true
             )
-            is AssessmentFragmentViewActions.OptionSelectedClicked -> {
-                updateList(action.selectedOptionResponse)
+            is AssessmentFragmentViewActions.SubmitOptionClicked -> {
                 showOutputScreen(action.selectedOptionResponse)
+            }
+            is AssessmentFragmentViewActions.ResetOptionsList -> {
+                resetList()
+            }
+            is AssessmentFragmentViewActions.OptionSelected -> {
+                updateList(action.selectedOptionResponse, OptionViewState.SELECTED)
             }
         }
     }
 
-    private fun updateList(selectedOptionResponse: OptionResponse) {
+    private fun resetList(){
+        viewState.value?.assessmentContentListForUI?.forEach {
+            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                val item = it as OptionsBaseCourseContent
+                item.value = item.value.toMutableList().map{ it.copy(viewState = OptionViewState.NOT_SELECTED) }
+            }
+        }
+        setState { copy(assessmentContentListForUI = assessmentContentListForUI) }
+    }
+
+    private fun updateList(selectedOptionResponse: OptionResponse, newViewState: OptionViewState) {
         val currentState = viewState.value!!
-            currentState.assessmentContentListForUI.forEach {
-                if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
-                    val option = it as OptionsBaseCourseContent
-                    for(item in option.value){
-                        if (item == selectedOptionResponse){
-                            item.viewState = OptionViewState.SELECTED
-                            break
-                        }
+        currentState.assessmentContentListForUI.forEach {
+            if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
+                val optionsList = it as OptionsBaseCourseContent
+                for(option in optionsList.value){
+                    if (option == selectedOptionResponse){
+                        option.viewState = newViewState
+                    }else{
+                        option.viewState = OptionViewState.NOT_SELECTED
                     }
                 }
             }
+        }
         setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
     }
 
@@ -92,6 +110,16 @@ class AssessmentFragmentViewModel (
 
                         setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
                         allAssessmentContentList = list.content
+                        val solutionList = allAssessmentContentList.find { it.component == BaseCourseContent.COMPONENT_OUTPUT }
+                        solutionList?.let {
+                            try {
+                                it as OutputBaseCourseContent
+                                inCorrectOutputDataList = it.value.incorrect
+                                correctOutputDataList = it.value.correct
+                            }catch (e: Exception){
+
+                            }
+                        }
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -119,13 +147,11 @@ class AssessmentFragmentViewModel (
     fun showOutputScreen(clickedOption: OptionResponse){
         val currentState = viewState.value!!
         if (isOptionSelectedCorrect(currentState, clickedOption)){
-            clickedOption.viewState = OptionViewState.CORRECT
-            setState { copy(correctOutput = currentState.correctOutput) }
-            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(currentState.correctOutput))
+            updateList(clickedOption, OptionViewState.CORRECT)
+            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
         }else{
-            clickedOption.viewState = OptionViewState.INCORRECT
-            setState { copy(incorrectOutput = currentState.incorrectOutput) }
-            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(currentState.incorrectOutput))
+            updateList(clickedOption, OptionViewState.INCORRECT)
+            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
         }
     }
 
@@ -153,17 +179,16 @@ class AssessmentFragmentViewModel (
 
 
     sealed class AssessmentFragmentViewActions : ViewModelAction {
+        object ResetOptionsList : AssessmentFragmentViewActions()
         object RequestContentRefresh : AssessmentFragmentViewActions()
-        data class OptionSelectedClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+        data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+        data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
     }
 
     data class AssessmentFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
         val assessmentContentListForUI: List<BaseCourseContent> = listOf(),
-        val correctOutput: List<BaseCourseContent> =  arrayListOf(),
-        val incorrectOutput: List<BaseCourseContent> =  arrayListOf(),
-
         ) : ViewState
 }
 
