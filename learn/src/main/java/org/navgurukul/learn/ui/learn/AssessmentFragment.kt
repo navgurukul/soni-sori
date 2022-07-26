@@ -84,9 +84,9 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
                     initIncorrectRV(it.list)
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                 }
             }
         }
@@ -117,7 +117,8 @@ class AssessmentFragment : Fragment() {
             mBinding.btnSubmit.visibility = View.GONE
             selectedOption?.let {
                 isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelectedClicked(it))
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ResetOptionList)
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
                 }
             }
         }
@@ -144,6 +145,7 @@ class AssessmentFragment : Fragment() {
         } ,{
             if(isContentRvClickable) {
                 selectedOption = it
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE
             }
         })
