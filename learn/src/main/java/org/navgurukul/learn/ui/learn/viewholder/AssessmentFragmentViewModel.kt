@@ -32,8 +32,8 @@ class AssessmentFragmentViewModel (
     private var fetchAssessmentJob : Job? = null
     private val selectedLanguage = corePreferences.selectedLanguage
     private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
-    private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
     private var correctOutputDataList:  List<BaseCourseContent> = listOf()
+    private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
 
     init {
         fetchAssessmentContent(args.contentId,args.courseId,args.courseContentType)
@@ -156,10 +156,10 @@ class AssessmentFragmentViewModel (
     fun showOutputScreen(clickedOption: OptionResponse){
         val currentState = viewState.value!!
         if (isOptionSelectedCorrect(currentState, clickedOption)){
-            updateList(clickedOption, OptionViewState.CORRECT )
+            updateList(clickedOption, OptionViewState.CORRECT)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
         }else{
-            updateList(clickedOption, OptionViewState.INCORRECT )
+            updateList(clickedOption, OptionViewState.INCORRECT)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
         }
     }
