@@ -66,12 +66,12 @@ interface SaralCoursesApi {
     @POST("assessment/student/result")
     suspend fun postStudentResult(
         @Body studentResult : StudentResult
-    ) : AttempResponse
+    ) : StudentResponse
 
     @GET("assessment/{assessmentId}/student/result")
     suspend fun getStudentResult(
         @Path(value = "assessmentId")  assessmentId : Int
-    ):AttempResponse
+    ): AttemptResponse
 
 
 

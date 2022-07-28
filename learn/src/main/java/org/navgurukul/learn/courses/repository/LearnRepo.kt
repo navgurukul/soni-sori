@@ -242,7 +242,6 @@ class LearnRepo(
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
-//        return courseApi.checkedStudentEnrolment(pathwayId)
         if(LearnUtils.isOnline(application))
             statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
         return statusEnrolled
@@ -258,6 +257,10 @@ class LearnRepo(
 
     suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
         return courseApi.getUpcomingClass(pathwayId)
+    }
+
+    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
+       return courseApi.getStudentResult(assessmentId)
     }
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
@@ -290,14 +293,13 @@ class LearnRepo(
         return true
     }
 
-    suspend fun postStudentResult(assessmentId: Int, status: Status) : AttempResponse{
-        return try {
-            val studentResult = StudentResult(assessmentId , status = status )
-            val result = courseApi.postStudentResult(studentResult)
-            result
-        } catch (ex : Exception){
-            return AttempResponse.CORRECT
-        }
+    suspend fun postStudentResult(
+        assessmentId: Int,
+        status: Status,
+        selectedOption: Int?
+    ): StudentResponse{
+        val studentResult = StudentResult(assessmentId, status,selectedOption)
+        return courseApi.postStudentResult(studentResult)
     }
 
 }

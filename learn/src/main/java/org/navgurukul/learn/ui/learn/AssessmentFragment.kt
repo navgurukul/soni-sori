@@ -16,6 +16,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -117,9 +118,9 @@ class AssessmentFragment : Fragment() {
             mBinding.btnSubmit.visibility = View.GONE
             selectedOption?.let {
                 isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ResetOptionList)
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
-                }
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ContentMarkCompleted)
+            }
             }
         }
 
@@ -166,7 +167,7 @@ class AssessmentFragment : Fragment() {
         mBinding.correctOutputLayout.outputLayout.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
-        correctAdapter.submitList(list)
+        correctAdapter.submitList(getNewReferencedList(list))
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
@@ -177,7 +178,7 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.incorrectRv.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
-        inCorrectAdapter.submitList(list)
+        inCorrectAdapter.submitList(getNewReferencedList(list))
     }
 
 }

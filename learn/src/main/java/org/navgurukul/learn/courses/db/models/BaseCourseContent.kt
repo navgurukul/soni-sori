@@ -260,6 +260,7 @@ data class AnswerOutput(
         val correct: List<BaseCourseContent>,
         @Json(name = "incorrect")
         val incorrect: List<BaseCourseContent>,
+
 )
 
 enum class OptionViewState{
