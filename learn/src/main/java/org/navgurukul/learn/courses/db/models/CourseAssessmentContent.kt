@@ -1,9 +1,11 @@
 package org.navgurukul.learn.courses.db.models
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.navgurukul.learn.courses.network.AttemptResponse
 
 @Entity(tableName = "course_assessment", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
@@ -37,5 +39,9 @@ data class CourseAssessmentContent(
 
     @Json(name = "content")
     val content: List<BaseCourseContent>,
+
+    @Embedded(prefix = "assess_")
+    @Json(name = "attempt_status")
+    val attemptStatus: AttemptResponse,
 
     ):CourseContents

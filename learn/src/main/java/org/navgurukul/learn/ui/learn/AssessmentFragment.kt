@@ -81,10 +81,12 @@ class AssessmentFragment : Fragment() {
             when (it) {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
+                    isContentRvClickable = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
+                    isContentRvClickable = false
                     initIncorrectRV(it.list)
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
