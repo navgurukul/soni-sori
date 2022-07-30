@@ -50,6 +50,7 @@ class AssessmentFragmentViewModel (
                 true
             )
             is AssessmentFragmentViewActions.SubmitOptionClicked -> {
+                postResultOnSubmit(action.selectedOptionResponse)
                 showOutputScreen(action.selectedOptionResponse)
             }
 
@@ -124,7 +125,7 @@ class AssessmentFragmentViewModel (
 
                         allAssessmentContentList = list.content
 
-                        list.attemptStatus.selectedOption?.let{
+                        list.attemptStatus?.selectedOption?.let{
                             val contentListForUI = getAssessmentListForUI(list.content)
                             getOptionItemById(it, contentListForUI)?.let { option ->
                                 showOutputScreen(option, contentListForUI)
@@ -197,15 +198,21 @@ class AssessmentFragmentViewModel (
     private fun showOutputScreen(clickedOption: OptionResponse, content: List<BaseCourseContent>? = null){
         if (isOptionSelectedCorrect(clickedOption)){
             updateList(clickedOption, OptionViewState.CORRECT, content)
-            postStudentResult(args.contentId.toInt(), Status.Pass,clickedOption.id)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
         }else{
             updateList(clickedOption, OptionViewState.INCORRECT, content)
-            postStudentResult(args.contentId.toInt(), Status.Fail,clickedOption.id)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
         }
     }
 
+    private fun postResultOnSubmit(clickedOption: OptionResponse){
+        if (isOptionSelectedCorrect(clickedOption)){
+            postStudentResult(args.contentId.toInt(), Status.Pass,clickedOption.id)
+        }
+        else{
+            postStudentResult(args.contentId.toInt(), Status.Fail,clickedOption.id)
+        }
+    }
     private fun isOptionSelectedCorrect(
         clickedOption: OptionResponse
     ): Boolean {

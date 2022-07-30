@@ -5,7 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.AttemptResponseStatus
 
 @Entity(tableName = "course_assessment", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
@@ -42,6 +42,5 @@ data class CourseAssessmentContent(
 
     @Embedded(prefix = "assess_")
     @Json(name = "attempt_status")
-    val attemptStatus: AttemptResponse,
-
+    val attemptStatus: AttemptResponseStatus? = null
     ):CourseContents

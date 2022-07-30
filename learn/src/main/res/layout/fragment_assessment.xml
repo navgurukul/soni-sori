@@ -36,13 +36,12 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
-
                     <include
                         android:id="@+id/incorrect_output_layout"
                         layout="@layout/incorrect_output_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:visibility="gone"
+                        tools:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
 
                     <include
@@ -54,8 +53,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
 
                 </LinearLayout>
-
-
 
             </androidx.core.widget.NestedScrollView>
 
@@ -84,10 +81,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/primaryColor"
                 android:textAllCaps="false"
-                android:padding="@dimen/spacing_3x"
                 android:textColor="@color/colorWhite"
                 android:text="@string/submit"
-                tools:visibility="gone"
+                tools:visibility="visible"
+                android:padding="@dimen/spacing_3x"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

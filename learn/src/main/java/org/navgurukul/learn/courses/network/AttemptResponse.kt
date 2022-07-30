@@ -8,9 +8,14 @@ data class AttemptResponse(
     @Json(name = "attempt_status")
     val attemptStatus: AttemptStatus,
     @Json(name = "selected_option")
-    val selectedOption : Int?
+    val selectedOption : Int? = null
 )
 
+@JsonClass(generateAdapter = true)
+data class AttemptResponseStatus(
+    @Json(name = "selected_option")
+    val selectedOption : Int?
+)
 enum class AttemptStatus{
     NOT_ATTEMPTED,
     CORRECT,

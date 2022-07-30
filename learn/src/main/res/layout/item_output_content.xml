@@ -5,13 +5,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginLeft="@dimen/spacing_2x"
+        android:layout_marginRight="@dimen/spacing_2x">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/outputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_course_content_margin"
+            android:padding="@dimen/spacing_2x"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
