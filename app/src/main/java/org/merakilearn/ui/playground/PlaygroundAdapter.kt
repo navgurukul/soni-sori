@@ -62,7 +62,7 @@ class PlaygroundItemViewHolder(itemView: View) : BaseViewHolder<PlaygroundItemMo
 
     override fun onBind(model: PlaygroundItemModel) {
         ivIcon.setImageResource(model.iconResource)
-        tvName.text = if(model.name != "") model.name else model.file.name.replaceAfterLast("_", "").removeSuffix("_")
+        tvName.text = if(model.name.isNotBlank()) model.name else model.file.name.replaceAfterLast("_", "").removeSuffix("_")
     }
 }
 
