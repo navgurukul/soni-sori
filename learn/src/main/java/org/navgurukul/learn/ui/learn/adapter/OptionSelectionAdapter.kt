@@ -43,16 +43,18 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
 
         when(item.viewState){
             OptionViewState.SELECTED -> {
-                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#F5F5F5"))
+                binding.tvCardOption.setStrokeColor(Color.parseColor("#48A145"))
             }
             OptionViewState.NOT_SELECTED -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
             }
             OptionViewState.INCORRECT -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                binding.tvCardOption.setStrokeColor(Color.parseColor("#F44336"))
             }
             OptionViewState.CORRECT -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                binding.tvCardOption.setStrokeColor(Color.parseColor("#48A145"))
             }
         }
 
