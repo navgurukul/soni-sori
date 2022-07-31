@@ -177,6 +177,7 @@ class MerakiNavigator(
     companion object {
         const val MERAKI_DEEP_LINK_URL = "merakilearn.org"
         const val TYPING_DEEPLINK = "/typing"
+        const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
 
         private fun isMerakiUrl(url: String): Boolean {

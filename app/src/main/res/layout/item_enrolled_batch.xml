@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvBatchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Dhanshri Sonwane"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tv_pathway_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_1x"
+            app:chipBackgroundColor="#E9F5E9"
+            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/textInChip"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Python" />
+
+        <TextView
+            android:id="@+id/btnCross"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            android:padding="@dimen/spacing_4x"
+            app:layout_constraintTop_toBottomOf="@+id/tvBatchTitle"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/ic_cross" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

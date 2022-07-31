@@ -14,12 +14,14 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CurrentStudy
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
 
 class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,
     corePreferences: CorePreferences,
     private val stringProvider: StringProvider,
-    private val args: ExerciseFragmentArgs
+    private val args: CourseContentArgs
 ) : BaseViewModel<ExerciseFragmentViewModel.ExerciseFragmentViewEvents, ExerciseFragmentViewModel.ExerciseFragmentViewState>(
     ExerciseFragmentViewState()
 ) {
@@ -28,50 +30,55 @@ class ExerciseFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchExerciseContent(args.exerciseId, args.courseId)
+        fetchExerciseContent(args.contentId, args.courseId, args.courseContentType)
     }
 
     fun handle(action: ExerciseFragmentViewActions) {
         when (action) {
             is ExerciseFragmentViewActions.RequestContentRefresh -> fetchExerciseContent(
-                args.exerciseId,
+                args.contentId,
                 args.courseId,
+                args.courseContentType,
                 true
             )
         }
     }
 
     private fun fetchExerciseContent(
-        exerciseId: String,
+        contentId: String,
         courseId: String,
+        courseContentType: CourseContentType,
         forceUpdate: Boolean = false,
     ) {
         fetchExerciseJob?.cancel()
         fetchExerciseJob = viewModelScope.launch {
             setState { copy(isLoading = true) }
-            learnRepo.getExerciseContents(
-                exerciseId,
+            learnRepo.getCourseContentById(
+                contentId,
                 courseId,
+                courseContentType,
                 forceUpdate,
                 selectedLanguage
             ).collect {
-                val list = it
+                if(it?.courseContentType == CourseContentType.exercise) {
+                    val list = it as CourseExerciseContent
 
-                setState { copy(isLoading = false) }
+                    setState { copy(isLoading = false) }
 
-                if (list != null && list.content.isNotEmpty() == true) {
-                    setState { copy(isError = false) }
-                    setState { copy(exerciseList = it.content) }
-                } else {
-                    _viewEvents.setValue(
-                        ExerciseFragmentViewEvents.ShowToast(
-                            stringProvider.getString(
-                                R.string.error_loading_data
+                    if (list != null && list.content.isNotEmpty() == true) {
+                        setState { copy(isError = false) }
+                        setState { copy(exerciseContentList = list.content) }
+                    } else {
+                        _viewEvents.setValue(
+                            ExerciseFragmentViewEvents.ShowToast(
+                                stringProvider.getString(
+                                    R.string.error_loading_data
+                                )
                             )
                         )
-                    )
 
-                    setState { copy(isError = true) }
+                        setState { copy(isError = true) }
+                    }
                 }
             }
         }
@@ -90,7 +97,7 @@ class ExerciseFragmentViewModel(
     data class ExerciseFragmentViewState(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val exerciseList: List<BaseCourseContent> = listOf()
+        val exerciseContentList: List<BaseCourseContent> = listOf()
     ) : ViewState
 
 }

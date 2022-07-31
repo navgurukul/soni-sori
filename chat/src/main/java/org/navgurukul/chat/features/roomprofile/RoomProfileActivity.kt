@@ -130,11 +130,13 @@ class RoomProfileActivity :
         subtitle: String?,
         onClickListener: View.OnClickListener?,
         action: String?,
-        actionOnClickListener: View.OnClickListener?
+        actionOnClickListener: View.OnClickListener?,
+        showLogout: Boolean,
+        showPathwayIcon : Boolean,
+        pathwayIcon: String?
     ) {
         throw RuntimeException("Set Title is not supported")
     }
-
 }
 
 class RoomProfileSharedActionViewModel :

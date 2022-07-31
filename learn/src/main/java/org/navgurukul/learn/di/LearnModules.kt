@@ -1,22 +1,29 @@
 package org.navgurukul.learn.di
 
 import android.app.Application
+import android.view.ContextThemeWrapper
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.*
+import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.*
+import org.navgurukul.learn.util.ColorProvider
 import retrofit2.Retrofit
 
 val viewModelModule = module {
-    viewModel { LearnFragmentViewModel(get(), get()) }
-    viewModel { (args: ExerciseFragmentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
-    viewModel { (courseId: String, pathwayId: Int) -> ExerciseActivityViewModel(get(), get(), get(), courseId, pathwayId) }
+    viewModel { LearnFragmentViewModel(get(), get(), get()) }
+    viewModel { (args: CourseContentArgs) -> ExerciseFragmentViewModel(get(), get(), get(), args) }
+    viewModel { (args: CourseContentArgs) -> ClassFragmentViewModel(get(), get(), get(), args) }
+    viewModel { (courseId: String, pathwayId: Int, contentId: String?) -> CourseContentActivityViewModel(get(), get(), get(), courseId, pathwayId, contentId) }
+    viewModel { EnrollViewModel(get(), get(), get()) }
 }
 
 
@@ -41,6 +48,7 @@ val databaseModule = module {
             .addMigrations(MIGRATION_4_5)
             .addMigrations(MIGRATION_5_6)
             .addMigrations(MIGRATION_6_7)
+            .addMigrations(MIGRATION_7_8)
             .addTypeConverter(Converters(moshi))
             .build()
     }
@@ -64,7 +72,11 @@ val repositoryModule = module {
     single { provideLearnRepository(get(), androidApplication(), get()) }
 }
 
+val factoryModule = module{
+    single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
+}
+
 val learnModules = arrayListOf(
     viewModelModule, apiModule, databaseModule,
-    repositoryModule
+    repositoryModule, factoryModule
 )

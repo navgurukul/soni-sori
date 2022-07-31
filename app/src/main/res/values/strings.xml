@@ -4,6 +4,7 @@
     <string name="app_name">Meraki</string>
 
     <string name="title_more">More</string>
+    <string name="profile">Profile</string>
     <string name="hello">Hello!</string>
     <string name="description">I am <font fgcolor='#D63447'>Meraki.</font>\nI am here to help you learn</string>
     <string name="powered_by">Powered by Nav-Gurukul</string>
@@ -30,8 +31,8 @@
     <string name="enroll_to_class">Enroll To Class</string>
     <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="enrolled">You have been enrolled to class successfully</string>
-    <string name="log_out_class">You have been dropped out of class successfully</string>
-    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="log_out_class">You have been dropped out of batch successfully</string>
+    <string name="unable_to_drop">Unable to drop out of batch</string>
     <string name="drop_out">I want to drop out</string>
     <string name="join_class">Join the class</string>
     <string name="join_class_in">Join the class (Starts in %s)</string>
@@ -109,5 +110,13 @@
 
     <string name="learn_python_header_english">Learn Python</string>
     <string name="learn_python_desc_english">Step into the world of tech with guidance from Python professionals</string>
+    <string name="title_learn">Learn</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_title">Profile</string>
+    <string name="enrolled_batches">Enrolled Batches</string>
+    <string name="confirmation">Confirm dropping out of the batch</string>
+    <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
+    <string name="stay_enrolled">Stay Enrolled</string>
 
 </resources>

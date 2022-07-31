@@ -26,4 +26,9 @@
     <color name="contentScreenBackground">#E5E5E5</color>
     <color name="textGrey">#818181</color>
     <color name="dotGrey"> #949494</color>
+    <color name="card_background">#E9F5E9</color>
+    <color name="classChipSecondary">#4548A1</color>
+    <color name="classChipBackground">#DADAEC</color>
+    <color name="courseBackground">#DEDEDE</color>
+    <color name="textInChip">#2E2E2E</color>
 </resources>

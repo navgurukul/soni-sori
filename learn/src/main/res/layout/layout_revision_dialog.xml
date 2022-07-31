@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:padding="@dimen/spacing_5x"
+        android:layout_marginStart="@dimen/spacing_5x"
+        android:layout_marginEnd="@dimen/spacing_5x"
+        android:background="@drawable/info_dialog_background"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvFacilatorName"
+            style="@style/TextAppearance.AppCompat.Emphasized2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/info_dialog_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Revision Class By Prakhar Gupt" />
+
+        <TextView
+            android:id="@+id/tv_revision_Date"
+            style="?textAppearanceEmphasized2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_5x"
+            android:layout_marginEnd="@dimen/spacing_3x"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            tools:ignore="MissingClass"
+            app:layout_constraintStart_toStartOf="@id/tvFacilatorName"
+            app:layout_constraintTop_toBottomOf="@id/tvFacilatorName"
+            tools:text="15 Sep 21 to 15 Nov 21"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableStartCompat="@drawable/ic_batch_calender" />
+
+        <TextView
+            android:id="@+id/btnback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:text="@string/back"
+            app:layout_constraintEnd_toStartOf="@+id/btnReviEnroll"
+            app:layout_constraintHorizontal_bias="0.759"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_revision_Date" />
+
+        <TextView
+            android:id="@+id/btnReviEnroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:layout_marginBottom="@dimen/spacing_6x"
+            android:textStyle="bold"
+            android:text="@string/confirm_enrollment"
+            android:textColor="@color/green_progress_color"
+            app:layout_constraintEnd_toEndOf="@+id/tvFacilatorName"
+            app:layout_constraintTop_toBottomOf="@+id/tv_revision_Date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

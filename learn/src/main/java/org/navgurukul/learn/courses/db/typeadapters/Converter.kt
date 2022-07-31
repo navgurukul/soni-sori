@@ -7,8 +7,10 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.Facilitator
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import java.lang.reflect.Type
+import java.util.*
 
 @ProvidedTypeConverter
 class Converters(val moshi: Moshi) {
@@ -79,5 +81,27 @@ class Converters(val moshi: Moshi) {
     fun stringToPathwayCta(stringValue: String?): PathwayCTA {
         if (stringValue.isNullOrEmpty()) return PathwayCTA("","")
         return pathwayCtaAdapter.fromJson(stringValue) ?: PathwayCTA("","")
+    }
+
+    @TypeConverter
+    fun facilitatorToString(facilitator: Facilitator?): String {
+        if (facilitator == null) return ""
+        return moshi.adapter(Facilitator::class.java).toJson(facilitator)
+    }
+
+    @TypeConverter
+    fun stringToFacilitator(stringValue: String?): Facilitator? {
+        if (stringValue.isNullOrEmpty()) return null
+        return moshi.adapter(Facilitator::class.java).fromJson(stringValue) ?: null
+    }
+
+    @TypeConverter
+    fun toDate(timestamp: Long): Date {
+        return Date(timestamp)
+    }
+
+    @TypeConverter
+    fun toTimestamp(date: Date): Long {
+        return date.time
     }
 }
