@@ -128,7 +128,7 @@ class ClassFragmentViewModel(
                     else
                         _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
                 }else{
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowToast("No revision classes found at the moment. Please come back later."))
+                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
                 }
             }
         }
