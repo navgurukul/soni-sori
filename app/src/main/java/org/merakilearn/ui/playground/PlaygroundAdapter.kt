@@ -2,23 +2,20 @@ package org.merakilearn.ui.playground
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.merakilearn.R
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.navgurukul.commonui.platform.BaseViewHolder
 
-class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel) -> Unit) :
+class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel,View,Boolean) -> Unit) :
     RecyclerView.Adapter<BaseViewHolder<PlaygroundItemModel>>() {
 
     private val dataList = arrayListOf<PlaygroundItemModel>()
-
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(
@@ -32,7 +29,15 @@ class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel
         val playgroundItemModel = dataList[position]
         holder.onBind(playgroundItemModel)
         holder.itemView.setOnClickListener {
-            listener(playgroundItemModel)
+            listener(playgroundItemModel,it,false)
+        }
+        holder.itemView.setOnLongClickListener{
+            if(playgroundItemModel.file.name == " ")
+                return@setOnLongClickListener false
+            else {
+                listener(playgroundItemModel, it, true)
+                return@setOnLongClickListener true
+            }
         }
     }
 
@@ -48,7 +53,6 @@ class PlaygroundAdapter(val context: Context, val listener: (PlaygroundItemModel
         notifyDataSetChanged()
     }
 
-
 }
 
 class PlaygroundItemViewHolder(itemView: View) : BaseViewHolder<PlaygroundItemModel>(itemView) {
@@ -58,8 +62,8 @@ class PlaygroundItemViewHolder(itemView: View) : BaseViewHolder<PlaygroundItemMo
 
     override fun onBind(model: PlaygroundItemModel) {
         ivIcon.setImageResource(model.iconResource)
-        ivIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(ivIcon.context, model.backgroundColor))
-        tvName.text = itemView.context.getString(model.name)
+        tvName.text = if(model.name.isNotBlank()) model.name else model.file.name.replaceAfterLast("_", "").removeSuffix("_")
     }
 }
+
 
