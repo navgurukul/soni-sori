@@ -181,7 +181,7 @@ class PythonEditorViewModel(
     private fun onFileNameEntered(fileName: String) {
         viewModelScope.launch {
             val viewState = viewState.value!!
-            if(fileName!="") {
+            if(fileName.isNotBlank()) {
                 if (pythonRepository.isFileNamePresent(fileName)) {
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
                 } else {
@@ -222,8 +222,8 @@ sealed class PythonEditorViewEvents : ViewEvents {
     object ShowFileNameDialog : PythonEditorViewEvents()
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
-    class ShowFileNameError(val message:String):PythonEditorViewEvents()
-    class ShowFileSavedDialog(val closeDialog:Boolean):PythonEditorViewEvents()
+    class ShowFileNameError(val message: String): PythonEditorViewEvents()
+    class ShowFileSavedDialog(val closeDialog: Boolean): PythonEditorViewEvents()
 }
 
 data class PythonEditorViewState(
