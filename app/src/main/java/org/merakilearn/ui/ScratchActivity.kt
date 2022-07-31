@@ -35,7 +35,7 @@ class ScratchActivity : AppCompatActivity() {
 
                 webView = findViewById(R.id.webview)
         webView.webViewClient = WebViewClient()
-        webView.loadUrl("https://www.scratch.merakilearn.org/")
+        webView.loadUrl("https://scratchdev.merakilearn.org/")
 
         webView.settings.javaScriptEnabled = true
 
