@@ -104,6 +104,8 @@ class LearnRepo(
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?:language
+                        if(it.attemptStatus?.selectedOption != null)
+                            it.courseContentProgress = CourseContentProgress.COMPLETED
                     }
                     it
                 }.toList()
@@ -297,9 +299,20 @@ class LearnRepo(
         assessmentId: Int,
         status: Status,
         selectedOption: Int?
-    ): StudentResponse{
+    ){
         val studentResult = StudentResult(assessmentId, status,selectedOption)
-        return courseApi.postStudentResult(studentResult)
+        courseApi.postStudentResult(studentResult)
+    }
+
+    suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
+        try {
+            val assessmentDao = database.assessmentDao()
+            assessmentDao.insertAssessmentAsync(
+                currentStateList as List<CourseAssessmentContent?>
+            )
+        }catch (e: Exception){
+
+        }
     }
 
 }

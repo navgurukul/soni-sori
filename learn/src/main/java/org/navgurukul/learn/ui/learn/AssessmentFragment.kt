@@ -121,7 +121,7 @@ class AssessmentFragment : Fragment() {
             selectedOption?.let {
                 isContentRvClickable = false
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ContentMarkCompleted)
+//                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ContentMarkCompleted)
             }
             }
         }

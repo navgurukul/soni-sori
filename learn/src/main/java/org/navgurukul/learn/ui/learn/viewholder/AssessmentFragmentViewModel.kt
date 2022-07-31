@@ -64,8 +64,8 @@ class AssessmentFragmentViewModel (
     }
 
     private fun updateList(selectedOptionResponse: OptionResponse, newViewState : OptionViewState, content: List<BaseCourseContent> ?= null) {
-        val currentState = content?:viewState.value!!.assessmentContentListForUI
-            currentState.forEach {
+        val currentStateList = content?:viewState.value!!.assessmentContentListForUI
+            currentStateList.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                     val optionList = it as OptionsBaseCourseContent
                     for(option in optionList.value){
@@ -76,11 +76,21 @@ class AssessmentFragmentViewModel (
                             option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
-                    setState { copy(assessmentContentListForUI = currentState) }
+                    setState {
+                        copy(assessmentContentListForUI = currentStateList)
+                    }
+//                    updateListInLocalDb(currentStateList)
                 }
             }
 
     }
+
+    private fun updateListInLocalDb(currentStateList: List<BaseCourseContent>) {
+        viewModelScope.launch {
+            learnRepo.updateAssessmentListInLocalDb(currentStateList)
+        }
+    }
+
     private suspend fun updateListAttemptStatus(assessmentId: Int, newViewState: OptionViewState){
         val selectedOption= learnRepo.getStudentResult(assessmentId).selectedOption
         val currentState = viewState.value!!
@@ -125,17 +135,6 @@ class AssessmentFragmentViewModel (
 
                         allAssessmentContentList = list.content
 
-                        list.attemptStatus?.selectedOption?.let{
-                            val contentListForUI = getAssessmentListForUI(list.content)
-                            getOptionItemById(it, contentListForUI)?.let { option ->
-                                showOutputScreen(option, contentListForUI)
-                                markAssessmentCompleted()
-                            }
-                        }?: kotlin.run {
-                            //not attempted condition
-                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-                        }
-
                         val solutionList = allAssessmentContentList.find { it.component == BaseCourseContent.COMPONENT_OUTPUT }
                         solutionList?.let {
                             try {
@@ -146,6 +145,17 @@ class AssessmentFragmentViewModel (
 
                             }
                         }
+
+                        list.attemptStatus?.selectedOption?.let{
+                            val contentListForUI = getAssessmentListForUI(list.content)
+                            getOptionItemById(it, contentListForUI)?.let { option ->
+                                showOutputScreen(option, contentListForUI)
+                            }
+                        }?: kotlin.run {
+                            //not attempted condition
+                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
+                        }
+
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -247,6 +257,3 @@ class AssessmentFragmentViewModel (
         val assessmentContentListForUI: List<BaseCourseContent> = listOf(),
         ) : ViewState
 }
-
-
-

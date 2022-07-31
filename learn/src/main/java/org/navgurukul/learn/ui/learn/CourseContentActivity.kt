@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.play.core.assetpacks.cu
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,7 +79,8 @@ class CourseContentActivity : AppCompatActivity(){
                 viewModel.handle(CourseContentActivityViewActions.PrevNavigationClicked)
             },
             {
-                viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+                if(!isCurrentContentAssessment())
+                    viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
                 viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
             }
         )
@@ -148,6 +150,17 @@ class CourseContentActivity : AppCompatActivity(){
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
         }
+    }
+
+    private fun isCurrentContentAssessment(): Boolean {
+        val currState = viewModel.viewState.value
+        return currState?.let{
+            val idx = it.currentContentIndex
+            val list = it.courseContentList
+            if(idx > -1 && idx < list.size)
+                return@let list[idx].courseContentType == CourseContentType.assessment
+            return@let false
+        }?:false
     }
 
     private fun showCompletionScreen(
