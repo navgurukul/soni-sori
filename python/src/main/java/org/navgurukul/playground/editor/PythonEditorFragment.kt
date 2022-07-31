@@ -1,7 +1,12 @@
 package org.navgurukul.playground.editor
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -15,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -39,6 +45,9 @@ class PythonEditorFragment : BaseFragment() {
     private val layoutInput: View by lazy { requireView().findViewById(R.id.layoutInput) }
     private val controlsContainer: ViewGroup by lazy { requireView().findViewById(R.id.control_buttons_container) }
     private val ibEnter: MaterialButton by lazy { requireView().findViewById(R.id.ibEnter) }
+    private lateinit var etFileName:TextInputLayout
+    private lateinit var alertDialog:AlertDialog
+
     private val sheetBehavior: BottomSheetBehavior<View> by lazy {
         BottomSheetBehavior.from(
             bottomSheet
@@ -62,7 +71,7 @@ class PythonEditorFragment : BaseFragment() {
         createCode()
         createControlButtons()
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             if (it.code != etCode.text.toString()) {
                 etCode.setText(it.code)
                 etCode.setSelection(it.code.length)
@@ -75,6 +84,12 @@ class PythonEditorFragment : BaseFragment() {
                 layoutInput.visibility = View.GONE
             }
 
+            if (it.fileSaved) {
+                activity?.title = it.title
+            } else {
+                activity?.title = it.title + " *"
+            }
+
             when (it.codeResponse) {
                 is CodeResponseModel.Output -> showOutput(it.codeResponse.output)
                 null -> {
@@ -82,16 +97,19 @@ class PythonEditorFragment : BaseFragment() {
                 }
             }
 
-        })
+        }
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
-                PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
+                is PythonEditorViewEvents.ShowUpdateCodeDialog -> showDialogToOverrideCode()
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
                 is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
-                PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
+                is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog(it.closeDialog)
+                is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
+                is PythonEditorViewEvents.ShowFileNameError -> showFileNameError(it.message)
+
             }
-        })
+        }
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -107,6 +125,25 @@ class PythonEditorFragment : BaseFragment() {
                 }
             }
         )
+    }
+
+
+
+    private fun showFileNameError(message: String) {
+        etFileName.isErrorEnabled=true
+        etFileName.error= message
+        etFileName.editText?.addTextChangedListener (object :TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                etFileName.isErrorEnabled=false
+            }
+        })
     }
 
     private fun createControlButtons() {
@@ -192,23 +229,46 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showDialogForFileName() {
-        val inputContainer =
-            LayoutInflater.from(requireContext()).inflate(R.layout.alert_edit_text, null)
-        val input = inputContainer.findViewById<EditText>(R.id.input)
+        val inputContainer :View = getLayoutInflater().inflate(R.layout.alert_edit_text,null)
+        etFileName = inputContainer.findViewById(R.id.input)
+        val btnSave: View = inputContainer.findViewById(R.id.save)
+        val btnCancel: View = inputContainer.findViewById(R.id.cancel)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(inputContainer)
+        builder.setCancelable(false)
+        alertDialog  = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
 
-        val alertDialog =
-            AlertDialog.Builder(requireContext()).setMessage(getString(R.string.enter_file_name))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    viewModel.handle(PythonEditorViewActions.OnFileNameEntered(input.text.toString()))
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }.create()
 
-        alertDialog.setView(inputContainer)
+        btnSave.setOnClickListener{
+            viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
+        }
+        btnCancel.setOnClickListener{
+            if(alertDialog.isShowing) {
+                alertDialog.dismiss()
+            }
+        }
+
         alertDialog.show()
+    }
+
+    private fun showCodeSavedDialog(closeDialog:Boolean){
+        if(closeDialog){
+            alertDialog.dismiss()
+        }
+        val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
+        val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(view)
+        alertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+        alertDialog.show()
+
+        Handler().postDelayed({
+            alertDialog.dismiss()
+        },1000)
 
     }
 
@@ -254,6 +314,9 @@ class PythonEditorFragment : BaseFragment() {
             }
             R.id.save -> {
                 viewModel.handle(PythonEditorViewActions.OnSaveAction)
+            }
+            R.id.rename -> {
+                viewModel.handle(PythonEditorViewActions.RenameFile)
             }
         }
         return super.onOptionsItemSelected(item)

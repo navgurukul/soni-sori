@@ -15,18 +15,24 @@
     <string name="control_single_quotes" translatable="false">\'</string>
     <string name="curly_brace_open" translatable="false">{</string>
     <string name="curly_brace_close" translatable="false">}</string>
-    <string name="clear">Clear</string>
-    <string name="replace_code">Do you want to replace existing code snnipet ?</string>
+    <string name="delete">Delete</string>
+    <string name="replace_code">Do you want to replace existing code snippet ?</string>
     <string name="share">Share</string>
+    <string name="rename">Rename</string>
     <string name="save">Save</string>
+    <string name="cancel_alert">Cancel</string>
+    <string name="save_file_hint">Hello World… </string>
+    <string name="save_as">Save your project as</string>
     <string name="enter_file_name">Enter file name</string>
-    <string name="code_saved">Code saved successfully</string>
+    <string name="code_saved">Project Saved Successfully</string>
     <string name="nothing_to_save">Nothing to save</string>
     <string name="nothing_to_share">Nothing to share</string>
     <string name="share_code">Share Code</string>
     <string name="python">Python</string>
     <string name="typing">Typing Guru</string>
     <string name="executing_code">Executing Code</string>
+    <string name="filename_error">Project name already exists!</string>
+    <string name="filename_required">Please enter a filename</string>
 
 
 </resources>
