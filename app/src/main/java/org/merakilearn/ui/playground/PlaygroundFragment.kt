@@ -9,6 +9,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -29,6 +31,12 @@ class PlaygroundFragment : BaseFragment() {
 
         val adapter = PlaygroundAdapter(requireContext()) {
             viewModel.selectPlayground(it)
+            val viewState = viewModel.viewState.value
+            viewState?.let {state ->
+                if(it.type == PlaygroundTypes.SCRATCH){
+                    ScratchActivity.start(requireContext())
+                }
+            }
         }
         recycler_view.adapter = adapter
 

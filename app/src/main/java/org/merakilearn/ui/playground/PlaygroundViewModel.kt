@@ -22,6 +22,7 @@ class PlaygroundViewModel(
         when (playgroundItemModel.type) {
             PlaygroundTypes.TYPING_APP -> _viewEvents.setValue(PlaygroundViewEvents.OpenTypingApp)
             PlaygroundTypes.PYTHON -> _viewEvents.postValue(PlaygroundViewEvents.OpenPythonPlayground)
+            PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
         }
     }
 }
@@ -29,6 +30,7 @@ class PlaygroundViewModel(
 sealed class PlaygroundViewEvents : ViewEvents {
     object OpenTypingApp : PlaygroundViewEvents()
     object OpenPythonPlayground : PlaygroundViewEvents()
+    object OpenScratch : PlaygroundViewEvents()
 }
 
 data class PlaygroundViewState(
