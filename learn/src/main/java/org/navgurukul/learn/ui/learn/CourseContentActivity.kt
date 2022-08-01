@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.play.core.assetpacks.cu
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,7 +79,8 @@ class CourseContentActivity : AppCompatActivity(){
                 viewModel.handle(CourseContentActivityViewActions.PrevNavigationClicked)
             },
             {
-                viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+                if(!isCurrentContentAssessment())
+                    viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
                 viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
             }
         )
@@ -86,7 +88,7 @@ class CourseContentActivity : AppCompatActivity(){
         initRecyclerViewExerciseList()
 
 
-        viewModel.viewEvents.observe(this, {
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 is CourseContentActivityViewEvents.ShowToast -> toast(it.toastText)
                 is CourseContentActivityViewEvents.ShowExerciseFragment -> {
@@ -115,11 +117,24 @@ class CourseContentActivity : AppCompatActivity(){
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
+                is CourseContentActivityViewEvents.ShowAssessmentFragment -> {
+                    launchAssessmentFragment(
+                        it.isFirst,
+                        it.isLast,
+                        it.isCompleted,
+                        it.courseId,
+                        it.contentId,
+                        it.courseContentType,
+                        it.navigation
+                    )
+
+                    mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
+                }
                 CourseContentActivityViewEvents.FinishActivity -> finish()
             }
-        })
+        }
 
-        viewModel.viewState.observe(this, {
+        viewModel.viewState.observe(this) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             if (!it.isCourseCompleted) {
@@ -134,7 +149,18 @@ class CourseContentActivity : AppCompatActivity(){
             } else {
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
-        })
+        }
+    }
+
+    private fun isCurrentContentAssessment(): Boolean {
+        val currState = viewModel.viewState.value
+        return currState?.let{
+            val idx = it.currentContentIndex
+            val list = it.courseContentList
+            if(idx > -1 && idx < list.size)
+                return@let list[idx].courseContentType == CourseContentType.assessment
+            return@let false
+        }?:false
     }
 
     private fun showCompletionScreen(
@@ -223,4 +249,29 @@ class CourseContentActivity : AppCompatActivity(){
         }
     }
 
+    private fun launchAssessmentFragment(
+        isFirst: Boolean = false,
+        isLast: Boolean = false,
+        isCompleted: Boolean = false,
+        courseId: String,
+        assessmentId : String,
+        courseContentType: CourseContentType,
+        navigation: ExerciseNavigation?
+    ){
+        supportFragmentManager.commit {
+            val enter = when(navigation){
+                ExerciseNavigation.PREV -> android.R.anim.slide_in_left
+                ExerciseNavigation.NEXT -> R.anim.slide_in_to_left
+                null -> android.R.anim.fade_in
+            }
+            setCustomAnimations(
+                enter,0
+            )
+            replace(
+                R.id.exerciseContentContainer,
+                AssessmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, assessmentId, courseContentType),
+                AssessmentFragment.TAG
+            )
+        }
+    }
 }

@@ -53,24 +53,28 @@ class CourseContentAdapter(callback: (CourseContents) -> Unit) :
                     when(contentContentType){
                         CourseContentType.exercise -> R.drawable.ic_type_text_complete
                         CourseContentType.class_topic -> R.drawable.ic_type_class_complete
+                        CourseContentType.assessment -> R.drawable.ic_type_assessment_completed
                     }
                 }
                 CourseContentProgress.IN_PROGRESS -> {
                     when(contentContentType){
                         CourseContentType.exercise -> R.drawable.ic_type_text_selected
                         CourseContentType.class_topic -> R.drawable.ic_type_class_selected
+                        CourseContentType.assessment -> R.drawable.ic_type_assessment_selected
                     }
                 }
                 CourseContentProgress.NOT_STARTED -> {
                     when(contentContentType){
                         CourseContentType.exercise -> R.drawable.ic_type_text_notstarted
                         CourseContentType.class_topic -> R.drawable.ic_type_class_notstarted
+                        CourseContentType.assessment -> R.drawable.ic_type_assessment_notstarted
                     }
                 }
                 else ->{
                     when(contentContentType){
                         CourseContentType.exercise -> R.drawable.ic_type_text_notstarted
                         CourseContentType.class_topic -> R.drawable.ic_type_class_notstarted
+                        CourseContentType.assessment -> R.drawable.ic_type_assessment_notstarted
                     }
                 }
             }

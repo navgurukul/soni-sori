@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/spacing_3x"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <TextView
+        android:id="@+id/tvCorrectText"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_happy_emoji"
+        android:drawablePadding="@dimen/spacing_4x"
+        android:textColor="@color/primaryColor"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/you_got_it_right"/>
+
+    <TextView
+        android:id="@+id/tvCorrectExplanation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4x"
+        app:layout_constraintTop_toBottomOf="@+id/tvCorrectText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text ="Finally, there is a loop (it will come later). A value of 0 is given to a letter (variable) i. Just like a repeated task the line “I will be printed again and again.” is printed 100 times. We will learn more about loops in later courses."/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

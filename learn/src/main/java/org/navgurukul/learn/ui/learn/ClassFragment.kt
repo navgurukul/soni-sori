@@ -112,7 +112,13 @@ class ClassFragment: Fragment() {
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowToast -> toast(it.toastText)
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClasses -> {
-                    initRevisionRecyclerView(it.revisionClasses)
+                    if(it.revisionClasses.isNotEmpty()){
+                        mBinding.revisionList.btnRevision.visibility = View.VISIBLE
+                        initRevisionRecyclerView(it.revisionClasses)
+                    }else {
+                        mBinding.revisionList.btnRevision.visibility = View.GONE
+                        toast("No revision classes found at the moment. Please come back later.")
+                    }
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
                     mBinding.revisionList.visibility = View.VISIBLE
                     mBinding.classDetail.visibility = View.GONE
@@ -231,6 +237,7 @@ class ClassFragment: Fragment() {
             }
         }
     }
+
     private fun updateState(it: EnrollViewState) {
         val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) btnRevision else tvBtnJoin
 
@@ -280,7 +287,7 @@ class ClassFragment: Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         recyclerviewBatch.layoutManager = layoutManager
         recyclerviewBatch.adapter = mClassAdapter
-        mClassAdapter.submitList(batches.subList(0,4))
+        mClassAdapter.submitList(batches.take(3))
         setupJoinButton()
     }
 

@@ -63,4 +63,18 @@ interface SaralCoursesApi {
         @Path(value = "pathwayId") pathwayId: Int
     ):List<CourseClassContent>
 
+    @POST("assessment/student/result")
+    suspend fun postStudentResult(
+        @Body studentResult : StudentResult
+    ) : StudentResponse
+
+    @GET("assessment/{assessmentId}/student/result")
+    suspend fun getStudentResult(
+        @Path(value = "assessmentId")  assessmentId : Int
+    ): AttemptResponse
+
+
+
 }
+
+

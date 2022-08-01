@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.db
 
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
@@ -99,6 +100,27 @@ interface ClassDao {
 
     @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
+}
+
+@Dao
+interface AssessmentDao{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveCourseAssessmentCurrent(course: CurrentStudy)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAssessment(course: List<CourseAssessmentContent?>?)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent?>?)
+
+    @Query("select * from course_assessment where id = :assessmentId and lang= :lang")
+    fun getAssessmentById(assessmentId: String, lang: String): LiveData<CourseAssessmentContent>
+
+    @Query("select * from course_assessment where courseId = :courseId and lang = :lang")
+    suspend fun getAllAssessmentForCourse(courseId: String, lang: String): List<CourseAssessmentContent>
+
+    @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
+    suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -277,9 +299,18 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
     }
 }
 
+val MIGRATION_8_9 = object : Migration(8,9) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `course_assessment`" +
+                    "ADD COLUMN 'assessmentProgress' TEXT"
+        )
+    }
+}
+
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -292,4 +323,5 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun currentStudyDao(): CurrentStudyDao
     abstract fun classDao(): ClassDao
+    abstract fun assessmentDao() : AssessmentDao
 }

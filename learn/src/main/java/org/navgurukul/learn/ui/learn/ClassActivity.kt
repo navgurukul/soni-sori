@@ -25,6 +25,7 @@ import org.navgurukul.learn.courses.db.models.sanitizedType
 import org.navgurukul.learn.courses.db.models.timeDateRange
 import org.navgurukul.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.ui.common.toast
+import java.util.*
 
 @Parcelize
 data class ClassActivityArgs(val classContent: CourseClassContent): Parcelable

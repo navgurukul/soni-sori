@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/clear"
-        android:title="@string/clear"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_clear"
-        app:iconTint="@android:color/white"
-        />
-    <item android:id="@+id/share"
-        android:title="@string/share"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_share"
-        app:iconTint="@android:color/white"
-        />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:itemTextColor="@color/python_menu_selector">
 
     <item android:id="@+id/save"
         android:title="@string/save"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_save"
+        app:itemTextColor="@color/python_menu_selector"
+        app:iconTint="@android:color/white"/>
+    <item
+        android:id="@+id/action_more"
+        android:title=""
+        android:icon="@drawable/ic_vert_ellipse"
         app:iconTint="@android:color/white"
-        />
+        app:showAsAction="always">
+        <menu>
 
+            <item android:id="@+id/rename"
+                android:title="@string/rename"
+                android:icon="@drawable/ic_rename"/>
 
+            <item android:id="@+id/share"
+                android:title="@string/share"
+                android:icon="@drawable/ic_share" />
+
+            <item android:id="@+id/clear"
+                android:title="@string/clear"
+                android:icon="@drawable/ic_clear"/>
+        </menu>
+    </item>
 </menu>

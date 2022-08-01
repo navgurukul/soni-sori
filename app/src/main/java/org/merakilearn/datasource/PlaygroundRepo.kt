@@ -10,22 +10,20 @@ class PlaygroundRepo {
         return arrayListOf(
             PlaygroundItemModel(
                 PlaygroundTypes.PYTHON,
-                R.string.python,
-                R.drawable.ic_python_icon,
-                R.color.python_item_bg_color
+                name="Python",
+                iconResource = R.drawable.python_logo,
             ),
             PlaygroundItemModel(
                 PlaygroundTypes.TYPING_APP,
-                R.string.typing,
-                R.drawable.ic_typing_icon,
-                R.color.typing_item_bg_color
+                name="Typing",
+                iconResource = R.drawable.ic_icon_typing,
             ),
             PlaygroundItemModel(
                 PlaygroundTypes.SCRATCH,
-                R.string.scratch,
-                R.drawable.ic_typing_icon,
-                R.color.typing_item_bg_color
-            )
+                name="Scratch",
+                iconResource = R.drawable.ic_icon_typing,
+            ),
+
         )
     }
 }

@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.db.models
 
+import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.navgurukul.learn.ui.common.MerakiButtonType
@@ -23,6 +24,11 @@ interface BaseCourseContent : Serializable {
         const val COMPONENT_UNKNOWN = "unknown"
         const val COMPONENT_IMAGE = "image"
         const val COMPONENT_BANNER = "banner"
+        const val COMPONENT_SOLUTION = "solution"
+        const val COMPONENT_OPTIONS = "options"
+        const val COMPONENT_OUTPUT = "output"
+        const val COMPONENT_QUESTION_CODE = "questionCode"
+        const val COMPONENT_QUESTION_EXPRESSION = "questionExpression"
     }
 }
 
@@ -143,6 +149,64 @@ data class BannerBaseCourseContent(
 ) : BaseCourseContent
 
 @JsonClass(generateAdapter = true)
+data class QuestionCodeBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        val value: String?,
+        @Json(name = "title")
+        val title: String? = null,
+        @Json(name = "type")
+        val codeTypes: CodeType,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+) : BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class QuestionExpressionBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        val value: String?,
+        @Json(name = "title")
+        val title: String? = null,
+        @Json(name = "type")
+        val codeTypes: CodeType,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+) : BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class OptionsBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        var value: List<OptionResponse>,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+): BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class SolutionBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        var value: Int?,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+):BaseCourseContent
+
+@JsonClass(generateAdapter = true)
+data class OutputBaseCourseContent(
+        @Json(name = "component")
+        override val component: String,
+        @Json(name = "value")
+        var value: AnswerOutput,
+        @Json(name = "decoration")
+        override val decoration: Decoration? = null
+):BaseCourseContent
+
+@JsonClass(generateAdapter = true)
 data class Decoration(
         @Json(name = "type")
         val type: DecorationType,
@@ -178,4 +242,27 @@ enum class CodeType {
 
 enum class DecorationType {
     number, bullet
+}
+
+@JsonClass(generateAdapter = true)
+data class OptionResponse(
+        @Json(name = "id")
+        val id : Int,
+        @Json(name = "value")
+        val value: String,
+        @Ignore
+        var viewState: OptionViewState = OptionViewState.NOT_SELECTED
+)
+
+@JsonClass(generateAdapter = true)
+data class AnswerOutput(
+        @Json(name = "correct")
+        val correct: List<BaseCourseContent>,
+        @Json(name = "incorrect")
+        val incorrect: List<BaseCourseContent>,
+
+)
+
+enum class OptionViewState{
+        NOT_SELECTED, SELECTED, CORRECT, INCORRECT
 }

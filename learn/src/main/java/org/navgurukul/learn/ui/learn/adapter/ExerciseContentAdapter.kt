@@ -16,7 +16,9 @@ import org.navgurukul.learn.ui.learn.viewholder.*
 class ExerciseContentAdapter(
     context: Context,
     callback: (BaseCourseContent) -> Unit,
-    urlCallback: (BannerAction?) -> Unit
+    urlCallback: (BannerAction?) -> Unit,
+    optionCallback: ((OptionResponse) -> Unit) ?= null,
+
 ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
         ContentDiffCallback()
@@ -24,6 +26,7 @@ class ExerciseContentAdapter(
 
     private val inflater = LayoutInflater.from(context)
     private val mCallback = callback
+    private val mOptionCallback = optionCallback
     private val mUrlCallback = urlCallback
     private val glideRequests: RequestManager by lazy { Glide.with(context) }
 
@@ -63,6 +66,9 @@ class ExerciseContentAdapter(
             R.layout.item_code_content -> CodeCourseViewHolder(itemView)
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
+            R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
+            R.layout.item_question_expression_content -> QuestionExpressionCourseViewHolder(itemView)
+            R.layout.item_options_list_content-> OptionCourseViewHolder(itemView)
             else -> UnknownCourseViewHolder(itemView)
 
         }
@@ -72,6 +78,10 @@ class ExerciseContentAdapter(
         holder: BaseCourseViewHolder,
         position: Int
     ) {
+
+        if (getItemViewType(position)== BaseCourseContent.COMPONENT_SOLUTION.length){
+            notifyItemRemoved(position)
+        }
         when (getItemViewType(position)) {
             R.layout.item_table_content ->
                 (holder as TableCourseViewHolder).bindView(getItem(position) as TableBaseCourseContent)
@@ -100,6 +110,15 @@ class ExerciseContentAdapter(
             R.layout.item_link_content ->
                 (holder as LinkCourseViewHolder).bindView(getItem(position) as LinkBaseCourseContent, mCallback)
 
+            R.layout.item_question_code_content ->
+                (holder as QuestionCodeCourseViewHolder).bindView(getItem(position) as QuestionCodeBaseCourseContent, mCallback)
+
+            R.layout.item_question_expression_content ->
+                (holder as QuestionExpressionCourseViewHolder).bindView(getItem(position) as QuestionExpressionBaseCourseContent, mCallback)
+
+            R.layout.item_options_list_content ->
+                (holder as OptionCourseViewHolder).bindView(getItem(position) as OptionsBaseCourseContent, mOptionCallback)
+
             R.layout.item_base_course_content ->
                 (holder as UnknownCourseViewHolder).bindView(getItem(position) as UnknownBaseCourseContent)
 
@@ -117,6 +136,9 @@ class ExerciseContentAdapter(
             is CodeBaseCourseContent -> R.layout.item_code_content
             is BannerBaseCourseContent -> R.layout.item_banner_content
             is LinkBaseCourseContent -> R.layout.item_link_content
+            is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
+            is QuestionExpressionBaseCourseContent -> R.layout.item_question_expression_content
+            is OptionsBaseCourseContent -> R.layout.item_options_list_content
             else -> R.layout.item_base_course_content
         }
     }

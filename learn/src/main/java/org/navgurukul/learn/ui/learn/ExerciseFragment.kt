@@ -94,13 +94,13 @@ class ExerciseFragment : Fragment() {
             }
         })
 
-        fragmentViewModel.viewState.observe(viewLifecycleOwner, {
+        fragmentViewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
 
             if (!it.isError)
                 contentAdapter.submitList(it.exerciseContentList)
-        })
+        }
 
         initContentRV()
         initScreenRefresh()
@@ -129,7 +129,7 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun initContentRV() {
-        contentAdapter = ExerciseContentAdapter(this.requireContext(), {
+        contentAdapter = ExerciseContentAdapter(this.requireContext(),{
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     val fromHtml = it.value.replace("<br>", "\n").replace("&emsp;", " ")
@@ -140,7 +140,7 @@ class ExerciseFragment : Fragment() {
                     merakiNavigator.openCustomTab(url, this.requireContext())
                 }
             }
-        }) {
+        },{
             it?.let { action ->
                 action.url?.let { url ->
                     if(url.contains(MerakiNavigator.CLASS_DEEPLINK)) {
@@ -165,7 +165,7 @@ class ExerciseFragment : Fragment() {
                         merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
-        }
+        })
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)

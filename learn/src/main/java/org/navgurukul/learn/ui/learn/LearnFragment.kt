@@ -67,6 +67,8 @@ class LearnFragment : Fragment(){
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+//        mBinding.batchCard.root.visibility = View.GONE
+//        mBinding.upcoming.root.visibility = View.GONE
 
         initSwipeRefresh()
 
