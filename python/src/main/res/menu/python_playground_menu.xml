@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:itemTextColor="@color/python_menu_selector">
 
     <item android:id="@+id/save"
         android:title="@string/save"
         app:showAsAction="ifRoom"
-        app:iconTint="@android:color/white" />
+        app:itemTextColor="@color/python_menu_selector"
+        app:iconTint="@android:color/white"/>
     <item
         android:id="@+id/action_more"
         android:title=""
@@ -23,10 +25,8 @@
                 android:icon="@drawable/ic_share" />
 
             <item android:id="@+id/clear"
-                android:title="@string/delete"
-                android:icon="@drawable/ic_clear"
-                app:iconTint="@color/error_text"/>
-
+                android:title="@string/clear"
+                android:icon="@drawable/ic_clear"/>
         </menu>
     </item>
 </menu>

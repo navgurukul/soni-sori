@@ -110,7 +110,6 @@ class ProfileFragment : Fragment() {
             viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
         }
 
-        initSavedFile()
         initToolBar()
 
     }
@@ -182,26 +181,12 @@ class ProfileFragment : Fragment() {
             mBinding.tvEmail.setText(it)
         }
 
-        if (it.savedFiles.isEmpty()) {
-            mBinding.tvSavedFile.visibility = View.GONE
-        } else {
-            mBinding.tvSavedFile.visibility = View.VISIBLE
-            val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
-            adapter.submitList(it.savedFiles)
-        }
         if(it.batches.isEmpty()){
             mBinding.tvEnrolledText.visibility = View.GONE
             mBinding.rvEnrolledBatch.visibility = View.GONE
         }else{
             mBinding.tvEnrolledText.visibility = View.VISIBLE
             mBinding.rvEnrolledBatch.visibility = View.VISIBLE
-        }
-
-        it.showAllButtonText?.let {
-            mBinding.tvViewAll.isVisible = true
-            mBinding.tvViewAll.text = it
-        } ?: run {
-            mBinding.tvViewAll.isVisible = false
         }
 
         if (it.showEditProfileLayout) {
@@ -263,19 +248,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun initSavedFile() {
-        val adapter = SavedFileAdapter { file, view ->
-            showPopupMenu(file, view)
-        }
-        val padding = resources.getDimensionPixelSize(R.dimen.spacing_2x)
-        mBinding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
-        mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
-        mBinding.recyclerview.adapter = adapter
 
-        mBinding.tvViewAll.setOnClickListener {
-            viewModel.handle(ProfileViewActions.ExpandFileList)
-        }
-    }
 
     private fun initShowEnrolledBatches(){
         mAdapter = EnrolledBatchAdapter {
@@ -301,23 +274,7 @@ class ProfileFragment : Fragment() {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), org.navgurukul.learn.R.drawable.divider)!!)
             })
     }
-
-    private fun showPopupMenu(file: File, view: View) {
-        val popup = PopupMenu(context, view)
-        popup.menuInflater.inflate(R.menu.popup_menu_saved_file, popup.menu)
-        //registering popup with OnMenuItemClickListener
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.share -> viewModel.handle(ProfileViewActions.ShareFile(file))
-                R.id.delete -> viewModel.handle(ProfileViewActions.DeleteFile(file))
-                R.id.copy -> merakiNavigator.openPlaygroundWithFileContent(requireContext(), file)
-            }
-            true
-        }
-        popup.show()
-
-    }
-
+    
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),

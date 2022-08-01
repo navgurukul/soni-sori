@@ -102,6 +102,7 @@ class AssessmentFragment : Fragment() {
                 contentAdapter.submitList(getNewReferencedList(it.assessmentContentListForUI))
 
         }
+        initScreenRefresh()
 
     }
 
@@ -140,6 +141,17 @@ class AssessmentFragment : Fragment() {
         return newList
     }
 
+    private fun initScreenRefresh() {
+        mBinding.swipeContainer.setOnRefreshListener {
+            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.RequestContentRefresh)
+            mBinding.swipeContainer.isRefreshing = false
+        }
+
+        mBinding.errorLayout.btnRefresh.setOnClickListener {
+            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.RequestContentRefresh)
+        }
+    }
+
     private fun initContentRv(){
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
 
@@ -166,9 +178,6 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
-        mBinding.correctOutputLayout.outputLayout.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_half_x), 0)
-        )
         correctAdapter.submitList(getNewReferencedList(list))
     }
 
@@ -177,9 +186,6 @@ class AssessmentFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
-        mBinding.incorrectOutputLayout.incorrectRv.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_half_x), 0)
-        )
         inCorrectAdapter.submitList(getNewReferencedList(list))
     }
 
