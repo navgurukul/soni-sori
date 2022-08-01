@@ -167,7 +167,7 @@ class AssessmentFragment : Fragment() {
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
         mBinding.correctOutputLayout.outputLayout.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_2x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_half_x), 0)
         )
         correctAdapter.submitList(getNewReferencedList(list))
     }
@@ -178,7 +178,7 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
         mBinding.incorrectOutputLayout.incorrectRv.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_2x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_half_x), 0)
         )
         inCorrectAdapter.submitList(getNewReferencedList(list))
     }

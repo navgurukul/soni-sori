@@ -156,6 +156,8 @@ class AssessmentFragmentViewModel (
                             setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
                         }
 
+                        getAttemptStatus(list.id.toInt())
+
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -199,6 +201,23 @@ class AssessmentFragmentViewModel (
             learnRepo.postStudentResult(assessmentId, status, selectedOption)
         }
     }
+
+    private fun getAttemptStatus(assessmentId: Int){
+        viewModelScope.launch {
+            setState { copy(isLoading = false) }
+            val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
+            if (attemptStatus == AttemptStatus.CORRECT){
+                updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
+            } else if ( attemptStatus == AttemptStatus.INCORRECT){
+                updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+            } else {
+                updateListAttemptStatus(assessmentId,OptionViewState.NOT_SELECTED)
+            }
+        }
+    }
+
 
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
         return content.filterNot { it.component == COMPONENT_SOLUTION ||
