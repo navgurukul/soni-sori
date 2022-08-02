@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,6 +37,7 @@ class AssessmentFragment : Fragment() {
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
+    private lateinit var activityViewModel: CourseContentActivityViewModel
 
 
     companion object {
@@ -75,6 +78,8 @@ class AssessmentFragment : Fragment() {
         mBinding.btnSubmit.visibility = View.GONE
         mBinding.correctOutputLayout.root.visibility = View.GONE
         mBinding.incorrectOutputLayout.visibility = View.GONE
+
+        activityViewModel = ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
 
         initContentRv()
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -122,7 +127,7 @@ class AssessmentFragment : Fragment() {
             selectedOption?.let {
                 isContentRvClickable = false
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
-//                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ContentMarkCompleted)
+                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
             }
             }
         }
