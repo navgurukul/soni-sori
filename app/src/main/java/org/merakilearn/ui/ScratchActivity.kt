@@ -38,14 +38,11 @@ class ScratchActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progressBar)
-        setProgressValue(0)
         webView.webViewClient = WebViewClient()
         webView.loadUrl("https://scratch.merakilearn.org")
 
         webView.settings.javaScriptEnabled = true
-
         webView.settings.setSupportZoom(true)
-
 
     }
 
@@ -63,23 +60,6 @@ class ScratchActivity : AppCompatActivity() {
            progressBar.visibility = View.GONE
         }
     }
-
-    private fun setProgressValue(progress: Int) {
-
-        // set the progress
-        progressBar.setProgress(progress)
-        // thread is used to change the progress value
-        val thread = Thread {
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-            setProgressValue(progress + 1)
-        }
-        thread.start()
-    }
-
 
     override fun onBackPressed() {
         // if your webview can go back it will go back

@@ -12,9 +12,8 @@
         android:layout_width="@dimen/dimen_youtube_view_height"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:max="100"
-        android:maxWidth="100dip"
-        android:progress="0" />
+        android:max="3"
+        android:progress="100" />
 
     <WebView
         android:id="@+id/webview"
