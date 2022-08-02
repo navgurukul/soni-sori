@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    app:itemTextColor="@color/python_menu_selector">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/save"
+    <item
+        android:id="@+id/save"
         android:title="@string/save"
-        app:showAsAction="ifRoom"
-        app:itemTextColor="@color/python_menu_selector"
-        app:iconTint="@android:color/white"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_more"
         android:title=""
