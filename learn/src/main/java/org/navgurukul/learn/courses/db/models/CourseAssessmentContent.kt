@@ -23,9 +23,6 @@ data class CourseAssessmentContent(
     @Json(name = "sequence_num")
     override var sequenceNumber: Int?,
 
-    @Json(name = "exercise_id")
-    var exerciseId: String?,
-
     var lang: String = "en",
 
     @Json(name = "content_type")
@@ -33,9 +30,6 @@ data class CourseAssessmentContent(
 
     @Json(name = "progress")
     override var courseContentProgress: CourseContentProgress?,
-
-    @Json(name = "exercise_name")
-    var exerciseName: String?,
 
     @Json(name = "content")
     val content: List<BaseCourseContent>,

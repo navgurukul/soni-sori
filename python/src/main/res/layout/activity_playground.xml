@@ -17,7 +17,6 @@
             android:minHeight="?actionBarSize"
             android:layout_width="match_parent"
             app:titleTextColor="@android:color/white"
-            app:itemTextColor="@color/python_menu_selector"
             app:navigationIconTint="@android:color/white"
             android:layout_height="?actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
