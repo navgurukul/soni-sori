@@ -311,7 +311,7 @@ val MIGRATION_8_9 = object : Migration(8,9) {
                     " 'courseContentProgress' TEXT," +
                     " 'sequenceNumber' INTEGER," +
                     " 'courseContentType' TEXT NOT NULL," +
-                    " 'assess_attempt_status' TEXT," +
+                    " 'assess_selectedOption' INTEGER," +
                     " PRIMARY KEY(`id`, `lang`) )"
         )
     }
