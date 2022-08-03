@@ -11,6 +11,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundItemModel
+import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -20,6 +23,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private val viewModel: PlaygroundViewModel by viewModel()
     private val navigator: MerakiNavigator by inject()
+    var isLoading: Boolean = false
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -31,13 +35,22 @@ class PlaygroundFragment : BaseFragment() {
         val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
         recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
-        val adapter = PlaygroundAdapter(requireContext()) {playgroundItemModel,view,isLongClick->
-            if(isLongClick)
-                showUpPopMenu(playgroundItemModel.file,view)
-            else
-                viewModel.selectPlayground(playgroundItemModel)
+        val adapter =
+            PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
 
-        }
+                val viewState = viewModel.viewState.value
+                viewState?.let { state ->
+                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
+                        ScratchActivity.start(requireContext())
+                    }
+                }
+                if (isLongClick)
+                    showUpPopMenu(playgroundItemModel.file, view)
+                else
+                    viewModel.selectPlayground(playgroundItemModel)
+
+            }
+        if (isLoading) showLoading() else dismissLoadingDialog()
         recycler_view.adapter = adapter
 
         viewModel.viewState.observe(viewLifecycleOwner, {
@@ -46,20 +59,31 @@ class PlaygroundFragment : BaseFragment() {
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
             when (it) {
-                is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(requireContext())
-                is PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(requireActivity(), Mode.Playground)
-                is PlaygroundViewEvents.OpenPythonPlaygroundWithFile -> navigator.openPlaygroundWithFileContent(requireActivity(), file = it.file)
+                is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
+                    requireContext()
+                )
+                is PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(
+                    requireActivity(),
+                    Mode.Playground
+                )
+                is PlaygroundViewEvents.OpenPythonPlaygroundWithFile -> navigator.openPlaygroundWithFileContent(
+                    requireActivity(),
+                    file = it.file
+                )
             }
         })
 
-        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_playground), R.attr.textPrimary)
+        (activity as? ToolbarConfigurable)?.configure(
+            getString(R.string.title_playground),
+            R.attr.textPrimary
+        )
     }
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.popup_menu_file_saved,popup.menu)
-        popup.setOnMenuItemClickListener { item->
-            when(item.itemId){
+        popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
                 R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
             }
             true
@@ -70,7 +94,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun initSearchListener() {
         search_view.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener{
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.handle(PlaygroundActions.Query(query))
                 return true
@@ -87,4 +111,6 @@ class PlaygroundFragment : BaseFragment() {
         super.onResume()
         viewModel.handle(PlaygroundActions.RefreshLayout)
     }
+
+
 }

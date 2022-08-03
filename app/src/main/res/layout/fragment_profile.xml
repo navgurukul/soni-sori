@@ -182,47 +182,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvEnrolledText" />
 
-                <TextView
-                    android:id="@+id/tvSavedFile"
-                    style="?textAppearanceEmphasized2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:text="@string/files_saved"
-                    android:textColor="?textSecondary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rvEnrolledBatch"
-                    tools:text="Files Saved" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tvViewAll"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/spacing_3x"
-                    android:layout_marginEnd="@dimen/spacing_3x"
-                    android:text="@string/view_all"
-                    android:textAllCaps="false"
-                    android:textColor="@color/green_progress_color"
-                    app:layout_constraintBottom_toBottomOf="@id/tvSavedFile"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvSavedFile" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:paddingBottom="@dimen/spacing_4x"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@id/btnPrivacyPolicy"
-                    app:layout_constraintTop_toBottomOf="@id/tvSavedFile"
-                    tools:listitem="@layout/item_saved_file" />
-
                 <ProgressBar
                     android:id="@+id/progress_bar_button"
                     style="?android:attr/progressBarStyleSmall"

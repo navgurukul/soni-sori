@@ -78,6 +78,7 @@ class LearnRepo(
         val exerciseDao = database.exerciseDao()
         val courseDao = database.courseDao()
         val classDao = database.classDao()
+        val assessmentDao = database.assessmentDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
         val lang: String = course?.let {
             if (language in course.supportedLanguages) language else course.supportedLanguages[0]
@@ -93,11 +94,18 @@ class LearnRepo(
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
-                    }else{
+                    }else if (it.courseContentType == CourseContentType.class_topic){
                         it as CourseClassContent
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
+                    }else{
+                        it as CourseAssessmentContent
+                        it.lang =
+                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                                ?:language
+                        if(it.attemptStatus?.selectedOption != null)
+                            it.courseContentProgress = CourseContentProgress.COMPLETED
                     }
                     it
                 }.toList()
@@ -112,6 +120,11 @@ class LearnRepo(
                 }catch (ex: Exception) {
                     Log.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
                 }
+                try {
+                    assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent?>)
+                }catch (ex: Exception){
+                    Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
+                }
             } catch (ex: Exception) {
                 Log.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
             }
@@ -121,6 +134,7 @@ class LearnRepo(
         return when(courseContentType){
             CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, lang).asFlow()
             CourseContentType.class_topic -> classDao.getClassById(contentId, lang).asFlow()
+            CourseContentType.assessment -> assessmentDao.getAssessmentById(contentId, lang).asFlow()
             else -> exerciseDao.getExerciseById(contentId, lang).asFlow()
         }
     }
@@ -130,15 +144,19 @@ class LearnRepo(
         val courseDao = database.courseDao()
         val exerciseDao = database.exerciseDao()
         val classDao = database.classDao()
+        val assessmentDao = database.assessmentDao()
+
         return networkBoundResourceFlow(
             loadFromDb = {
                 val course = courseDao.getCourseById(courseId)
 
                 val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
                 val classes = classDao.getAllClassesForCourse(courseId, language)
+                val assessments = assessmentDao.getAllAssessmentForCourse(courseId, language)
                 val contentList = ArrayList<CourseContents>()
                 contentList.addAll(exercises)
                 contentList.addAll(classes)
+                contentList.addAll(assessments)
                 contentList.sortBy { it.sequenceNumber }
 
                 if (contentList.isNotEmpty()) {
@@ -163,6 +181,9 @@ class LearnRepo(
                         }else if(this.courseContentType == CourseContentType.class_topic){
                             (this as CourseClassContent).lang = lang
                         }
+                        else if (this.courseContentType == CourseContentType.assessment){
+                            (this as CourseAssessmentContent).lang = lang
+                        }
                     }
                 }.toList()
 
@@ -175,6 +196,10 @@ class LearnRepo(
                 try {
                     classDao.insertClass(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
                 }catch (ex: Exception) {
+                }
+                try {
+                    assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
+                }catch (ex: Exception){
                 }
             }
         )
@@ -201,6 +226,14 @@ class LearnRepo(
         )
     }
 
+    suspend fun  markCourseAssessmentCompleted(assessmentId: String){
+        val assessmentDao = database.assessmentDao()
+        assessmentDao.markCourseAssessmentCompleted(
+            CourseContentProgress.COMPLETED.name,
+            assessmentId
+        )
+    }
+
     suspend fun fetchCurrentStudyForCourse(courseId: String): CurrentStudy? {
         val currentStudyDao = database.currentStudyDao()
         return currentStudyDao.getCurrentStudyForCourse(courseId)
@@ -211,7 +244,6 @@ class LearnRepo(
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
-//        return courseApi.checkedStudentEnrolment(pathwayId)
         if(LearnUtils.isOnline(application))
             statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
         return statusEnrolled
@@ -227,6 +259,10 @@ class LearnRepo(
 
     suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
         return courseApi.getUpcomingClass(pathwayId)
+    }
+
+    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
+       return courseApi.getStudentResult(assessmentId)
     }
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
@@ -257,6 +293,26 @@ class LearnRepo(
             }
         }
         return true
+    }
+
+    suspend fun postStudentResult(
+        assessmentId: Int,
+        status: Status,
+        selectedOption: Int?
+    ){
+        val studentResult = StudentResult(assessmentId, status,selectedOption)
+        courseApi.postStudentResult(studentResult)
+    }
+
+    suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
+        try {
+            val assessmentDao = database.assessmentDao()
+            assessmentDao.insertAssessmentAsync(
+                currentStateList as List<CourseAssessmentContent?>
+            )
+        }catch (e: Exception){
+
+        }
     }
 
 }

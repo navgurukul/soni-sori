@@ -24,7 +24,7 @@ interface CourseContents {
 }
 
 enum class CourseContentType{
-    class_topic, exercise
+    class_topic, exercise, assessment
 }
 
 enum class CourseContentProgress{

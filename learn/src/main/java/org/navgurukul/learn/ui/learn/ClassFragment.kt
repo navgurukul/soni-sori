@@ -237,6 +237,7 @@ class ClassFragment: Fragment() {
             }
         }
     }
+
     private fun updateState(it: EnrollViewState) {
         val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) btnRevision else tvBtnJoin
 
@@ -286,7 +287,7 @@ class ClassFragment: Fragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         recyclerviewBatch.layoutManager = layoutManager
         recyclerviewBatch.adapter = mClassAdapter
-        mClassAdapter.submitList(batches.subList(0,4))
+        mClassAdapter.submitList(batches.take(3))
         setupJoinButton()
     }
 
