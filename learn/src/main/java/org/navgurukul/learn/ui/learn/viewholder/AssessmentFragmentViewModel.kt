@@ -79,7 +79,7 @@ class AssessmentFragmentViewModel (
                     setState {
                         copy(assessmentContentListForUI = currentStateList)
                     }
-//                    updateListInLocalDb(currentStateList)
+                    updateListInLocalDb(currentStateList)
                 }
             }
 
@@ -185,15 +185,7 @@ class AssessmentFragmentViewModel (
     }
 
     private fun markAssessmentCompleted(){
-        markCourseAssessmentCompleted(args.contentId.toInt())
-    }
-
-    private fun markCourseAssessmentCompleted(
-       assessmentId: Int
-    ) {
-        viewModelScope.launch {
-            learnRepo.markCourseAssessmentCompleted(assessmentId.toString())
-        }
+//        markCourseAssessmentCompleted(args.contentId.toInt())
     }
 
     private fun postStudentResult(assessmentId: Int, status : Status, selectedOption: Int?){

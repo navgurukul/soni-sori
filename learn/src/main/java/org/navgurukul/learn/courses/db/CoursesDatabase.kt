@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 8
+const val DB_VERSION = 9
 
 @Dao
 interface PathwayDao {
@@ -302,8 +302,17 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
 val MIGRATION_8_9 = object : Migration(8,9) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL(
-            "ALTER TABLE `course_assessment`" +
-                    "ADD COLUMN 'assessmentProgress' TEXT"
+            "CREATE TABLE `course_assessment`(" +
+                    " `content` TEXT NOT NULL," +
+                    " `courseId` TEXT NOT NULL," +
+                    " `id` TEXT NOT NULL," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " 'courseContentProgress' TEXT," +
+                    " 'sequenceNumber' INTEGER," +
+                    " 'courseContentType' TEXT NOT NULL," +
+                    " 'assess_selectedOption' INTEGER," +
+                    " PRIMARY KEY(`id`, `lang`) )"
         )
     }
 }

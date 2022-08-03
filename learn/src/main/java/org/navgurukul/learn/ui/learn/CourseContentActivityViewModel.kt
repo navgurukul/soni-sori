@@ -232,7 +232,11 @@ class CourseContentActivityViewModel(
     ) {
         exerciseId?.let {
             viewModelScope.launch {
-                learnRepo.markCourseExerciseCompleted(it)
+                when(currentCourse.courseContents.find { it.id == exerciseId }?.courseContentType){
+                    CourseContentType.assessment -> learnRepo.markCourseAssessmentCompleted(it)
+                    CourseContentType.class_topic -> learnRepo.markCourseClassCompleted(it)
+                    CourseContentType.exercise -> learnRepo.markCourseExerciseCompleted(it)
+                }
             }
         }
     }
