@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
@@ -18,7 +17,6 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -89,12 +87,15 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.visibility = View.GONE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
                     isContentRvClickable = false
-                    initIncorrectRV(it.list)
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
+                    mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = true
+                    setupIncorrectOutputLayout(it.list)
+
                 }
             }
         }
@@ -132,6 +133,20 @@ class AssessmentFragment : Fragment() {
             }
         }
 
+    private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
+        mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
+            initIncorrectRV(list)
+            mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+            mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+        }
+
+        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+            mBinding.incorrectOutputLayout.isVisible = false
+            mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+            isContentRvClickable = true
+        }
+    }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
         val newList = list?.toMutableList()?.map {

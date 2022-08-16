@@ -14,7 +14,6 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_OUTPUT
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_SOLUTION
-import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -59,6 +58,9 @@ class AssessmentFragmentViewModel (
             }
             is AssessmentFragmentViewActions.ContentMarkCompleted -> {
                 markAssessmentCompleted()
+            }
+            is AssessmentFragmentViewActions.ShowUpdatedOutput -> {
+                resetList()
             }
         }
     }
@@ -198,16 +200,31 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
+            val attemptCount = learnRepo.getStudentResult(assessmentId).attemptCount
             if (attemptStatus == AttemptStatus.CORRECT){
                 updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
             } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+                if (attemptCount < 1 ){
+                    resetList()
+                } else{
+                    updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+                }
             } else {
                 updateListAttemptStatus(assessmentId,OptionViewState.NOT_SELECTED)
             }
         }
+    }
+
+    private fun resetList(){
+        viewState.value?.assessmentContentListForUI?.forEach {
+            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                val item = it as OptionsBaseCourseContent
+                item.value = item.value.toMutableList().map{ it.copy(viewState = OptionViewState.NOT_SELECTED) }
+            }
+        }
+        setState { copy(assessmentContentListForUI = assessmentContentListForUI) }
     }
 
 
@@ -259,6 +276,7 @@ class AssessmentFragmentViewModel (
         object RequestContentRefresh : AssessmentFragmentViewActions()
         data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+        object ShowUpdatedOutput : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()
     }
 
