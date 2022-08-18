@@ -16,7 +16,9 @@ data class AttemptResponse(
 @JsonClass(generateAdapter = true)
 data class AttemptResponseStatus(
     @Json(name = "selected_option")
-    val selectedOption : Int?
+    val selectedOption : Int?,
+    @Json(name =  "attempt_count")
+    val attemptCount: Int
 )
 enum class AttemptStatus{
     NOT_ATTEMPTED,

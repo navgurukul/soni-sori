@@ -17,6 +17,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.AttemptResponseStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -36,7 +37,7 @@ class AssessmentFragment : Fragment() {
         parametersOf(args)
     })
     private lateinit var activityViewModel: CourseContentActivityViewModel
-
+    private var attemptStatus : AttemptResponseStatus? = null
 
     companion object {
         fun newInstance(
@@ -90,11 +91,18 @@ class AssessmentFragment : Fragment() {
                     mBinding.incorrectOutputLayout.visibility = View.GONE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
-                    isContentRvClickable = false
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
-                    mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = true
-                    setupIncorrectOutputLayout(it.list)
+                    if (attemptStatus?.attemptCount == 1){
+                        isContentRvClickable = false
+                        mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                        mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
+                        mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = true
+                        setupIncorrectOutputLayout(it.list)
+                    }
+                    else{
+                        mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+                        mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+                        initIncorrectRV(it.list)
+                    }
 
                 }
             }
@@ -135,16 +143,24 @@ class AssessmentFragment : Fragment() {
 
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-            initIncorrectRV(list)
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
             mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+            initIncorrectRV(list)
         }
 
         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
-            mBinding.incorrectOutputLayout.isVisible = false
-            mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
-            isContentRvClickable = true
+            if (attemptStatus?.attemptCount == 1 ){
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                mBinding.incorrectOutputLayout.isVisible = false
+                mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+                isContentRvClickable = true
+            }
+            else{
+                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+                mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+                initIncorrectRV(list)
+            }
+
         }
     }
 
