@@ -7,6 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
 const val DB_VERSION = 9
 
@@ -70,7 +71,11 @@ interface ExerciseDao {
 
     @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id = :exerciseId")
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
+
+    @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id in (:exerciseIdList) ")
+    suspend fun markExerciseCompleted(exerciseProgress: String,exerciseIdList : List<String>?)
 }
+
 
 @Dao
 interface CurrentStudyDao {
@@ -100,6 +105,8 @@ interface ClassDao {
 
     @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
+
+
 }
 
 @Dao
@@ -121,6 +128,8 @@ interface AssessmentDao{
 
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
+
+
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {

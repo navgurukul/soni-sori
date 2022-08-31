@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -56,6 +57,8 @@ class CourseContentActivityViewModel(
                         launchLastSelectedContentOfCourse(course, contentId)
                     }
                 }
+            learnRepo.getCompletedContentsIds(courseId)
+
 
         }
 
@@ -100,16 +103,25 @@ class CourseContentActivityViewModel(
             val currentStudyIndex = currentCourse.courseContents.indexOfFirst {
                 it.id == currentStudy?.exerciseId
             }
+            val courseContentType = currentCourse.courseContents[currentStudyIndex].courseContentType
+            Log.d("courseContentType","$courseContentType")
+            Log.d("currentStudyIndex", "$currentStudyIndex")
             if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex - 1].id,
                     navigation
                 )
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
+                if (courseContentType == CourseContentType.exercise){
+                    postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
+                }
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex + 1].id,
                     navigation
                 )
+//                postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
+
+
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
                 val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
                     stringProvider.getString(
@@ -227,6 +239,8 @@ class CourseContentActivityViewModel(
 
     }
 
+
+
     private fun markCourseExerciseCompletedInDb(
         exerciseId: String?
     ) {
@@ -272,6 +286,15 @@ class CourseContentActivityViewModel(
             setState { copy(courseContentList = it, currentContentIndex = selectedIndex) }
         }
     }
+
+    private fun postLearningTrackStatus(contentId: String){
+        viewModelScope.launch {
+                currentCourse.pathwayId?.let { learnRepo.postLearningTrackStatus(it, currentCourse.id, contentId)
+            }
+        }
+        }
+
+
 }
 
 enum class ExerciseNavigation { PREV, NEXT }
