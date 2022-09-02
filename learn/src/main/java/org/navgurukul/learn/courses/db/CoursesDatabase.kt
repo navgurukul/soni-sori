@@ -106,6 +106,8 @@ interface ClassDao {
     @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
 
+    @Query("Update course_class set courseContentProgress = :classProgress where id in (:classIdList) ")
+    suspend fun markClassCompleted(classProgress: String,classIdList : List<String>?)
 
 }
 
@@ -128,6 +130,9 @@ interface AssessmentDao{
 
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
+
+    @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
+    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 
 
 }

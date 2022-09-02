@@ -11,7 +11,6 @@ import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
-import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.util.ArrayList
@@ -209,10 +208,21 @@ class LearnRepo(
 
     suspend fun getCompletedContentsIds(courseId: String) {
         val exerciseDao = database.exerciseDao()
+        val classesDao = database.classDao()
+        val assessmentDao = database.assessmentDao()
         exerciseDao.markExerciseCompleted(
             CourseContentProgress.COMPLETED.name,
             courseApi.getCompletedContentsIds(courseId).exercises?.map { it.toString() }
         )
+        classesDao.markClassCompleted(
+            CourseContentProgress.COMPLETED.name,
+            courseApi.getCompletedContentsIds(courseId).classes?.map { it.toString() }
+        )
+        assessmentDao.markAssessmentCompleted(
+            CourseContentProgress.COMPLETED.name,
+            courseApi.getCompletedContentsIds(courseId).assessments?.map { it.toString() }
+        )
+
     }
 
 

@@ -21,7 +21,7 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="normal"
         android:fontFamily="@font/nunito"
         android:textColor="#2E2E2E"

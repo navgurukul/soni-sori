@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -104,8 +103,6 @@ class CourseContentActivityViewModel(
                 it.id == currentStudy?.exerciseId
             }
             val courseContentType = currentCourse.courseContents[currentStudyIndex].courseContentType
-            Log.d("courseContentType","$courseContentType")
-            Log.d("currentStudyIndex", "$currentStudyIndex")
             if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex - 1].id,
@@ -119,8 +116,6 @@ class CourseContentActivityViewModel(
                     currentCourse.courseContents[currentStudyIndex + 1].id,
                     navigation
                 )
-//                postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
-
 
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
                 val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
