@@ -13,6 +13,7 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -46,6 +47,7 @@ import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
 import java.io.File
+import java.util.regex.Pattern
 
 class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
@@ -198,12 +200,20 @@ class ProfileFragment : Fragment() {
             mBinding.tvName.requestFocus()
             mBinding.btnEdit.text = getString(R.string.save)
             mBinding.btnEdit.setOnClickListener {
-                viewModel.handle(
-                    ProfileViewActions.UpdateProfile(
-                        mBinding.tvName.text.toString(),
-                        mBinding.tvEmail.text.toString()
+
+                if(mBinding.tvName.text.toString().isNotEmpty()&&mBinding.tvName.text.toString().isValidUserName()
+                    &&mBinding.tvName.text.toString().length<=30){
+                    viewModel.handle(
+                        ProfileViewActions.UpdateProfile(
+                            mBinding.tvName.text.toString(),
+                            mBinding.tvEmail.text.toString()
+                        )
                     )
-                )
+                }
+                else{
+                    Toast.makeText(requireContext(),"Please enter a valid name", Toast.LENGTH_SHORT).show()
+                }
+
             }
         } else {
             mBinding.tvEmail.background = null
@@ -328,6 +338,13 @@ class ProfileFragment : Fragment() {
         }
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45)
+    }
+
+    private fun CharSequence.isValidUserName(): Boolean {
+        val userNamePattern = "^[ A-Za-z]+\$"
+        val pattern = Pattern.compile(userNamePattern)
+        val matcher = pattern.matcher(this)
+        return (matcher.matches())
     }
 
 }
