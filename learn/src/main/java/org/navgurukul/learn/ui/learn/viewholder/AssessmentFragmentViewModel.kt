@@ -62,6 +62,9 @@ class AssessmentFragmentViewModel (
             is AssessmentFragmentViewActions.ShowUpdatedOutput -> {
                 resetList()
             }
+            is AssessmentFragmentViewActions.ShowCorrectOnIncorrect -> {
+                showCorrectOnIncorrect()
+            }
         }
     }
 
@@ -84,6 +87,24 @@ class AssessmentFragmentViewModel (
                     updateListInLocalDb(currentStateList)
                 }
             }
+
+    }
+
+    private fun showCorrectOnIncorrect(){
+        val correctOption = (allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
+            .value
+        val currentState = viewState.value!!
+        currentState.assessmentContentListForUI.forEach {
+            if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                val optionList = it as OptionsBaseCourseContent
+                for (option in optionList.value){
+                    if (option.id == correctOption){
+                        option.viewState = OptionViewState.CORRECT
+                    }
+                }
+            }
+        }
 
     }
 
@@ -197,6 +218,7 @@ class AssessmentFragmentViewModel (
     }
 
     private fun getAttemptStatus(assessmentId: Int){
+        showCorrectOnIncorrect()
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
@@ -251,6 +273,7 @@ class AssessmentFragmentViewModel (
             postStudentResult(args.contentId.toInt(), Status.Fail,clickedOption.id)
         }
     }
+
     private fun isOptionSelectedCorrect(
         clickedOption: OptionResponse
     ): Boolean {
@@ -277,6 +300,7 @@ class AssessmentFragmentViewModel (
         data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
+        object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()
     }
 

@@ -17,7 +17,6 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.AttemptResponseStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -37,7 +36,8 @@ class AssessmentFragment : Fragment() {
         parametersOf(args)
     })
     private lateinit var activityViewModel: CourseContentActivityViewModel
-    private var attemptStatus : AttemptResponseStatus? = null
+//    private var attemptStatus : AttemptResponseStatus? = null
+    private var attemptCount : Int = 0
 
     companion object {
         fun newInstance(
@@ -91,18 +91,10 @@ class AssessmentFragment : Fragment() {
                     mBinding.incorrectOutputLayout.visibility = View.GONE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
-                    if (attemptStatus?.attemptCount == 1){
-                        isContentRvClickable = false
-                        mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                        mBinding.incorrectOutputLayout.incorrectRv.isVisible = false
-                        mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = true
-                        setupIncorrectOutputLayout(it.list)
-                    }
-                    else{
-                        mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                        mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
-                        initIncorrectRV(it.list)
-                    }
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.correctOutputLayout.root.visibility = View.GONE
+                    setupIncorrectOutputLayout(it.list)
+
 
                 }
             }
@@ -142,26 +134,31 @@ class AssessmentFragment : Fragment() {
         }
 
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
+//        val attemptCount = attemptStatus?.attemptCount
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-            mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+            mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
+            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
             initIncorrectRV(list)
         }
 
-        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-            if (attemptStatus?.attemptCount == 1 ){
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
-                mBinding.incorrectOutputLayout.isVisible = false
-                mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
-                isContentRvClickable = true
+        if (attemptCount != null) {
+            if (attemptCount < 2){
+                mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+                    isContentRvClickable = true
+                    mBinding.incorrectOutputLayout.visibility =  View.GONE
+                    fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+
+                }
             }
             else{
                 mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                mBinding.incorrectOutputLayout.explanationRetryLayout.isVisible = false
+                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
                 initIncorrectRV(list)
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
             }
-
         }
+
     }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
@@ -194,7 +191,8 @@ class AssessmentFragment : Fragment() {
         }, {
 
         } ,{
-            if(isContentRvClickable) {
+            if(isContentRvClickable ) {
+                attemptCount += 1
                 selectedOption = it
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE
