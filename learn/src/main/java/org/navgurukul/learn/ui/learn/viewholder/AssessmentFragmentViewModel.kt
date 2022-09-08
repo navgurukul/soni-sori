@@ -14,6 +14,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_OUTPUT
 import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPONENT_SOLUTION
+import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -34,6 +35,7 @@ class AssessmentFragmentViewModel (
     private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
     private var correctOutputDataList:  List<BaseCourseContent> = listOf()
     private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
+    private var attemptResponse : AttemptResponse? = null
 
 
     init {
@@ -218,7 +220,6 @@ class AssessmentFragmentViewModel (
     }
 
     private fun getAttemptStatus(assessmentId: Int){
-        showCorrectOnIncorrect()
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
@@ -227,12 +228,8 @@ class AssessmentFragmentViewModel (
                 updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
             } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                if (attemptCount < 1 ){
-                    resetList()
-                } else{
-                    updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
-                }
+                updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
             } else {
                 updateListAttemptStatus(assessmentId,OptionViewState.NOT_SELECTED)
             }
