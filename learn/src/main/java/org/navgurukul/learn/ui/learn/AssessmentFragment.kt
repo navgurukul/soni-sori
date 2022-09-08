@@ -17,6 +17,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -36,8 +37,7 @@ class AssessmentFragment : Fragment() {
         parametersOf(args)
     })
     private lateinit var activityViewModel: CourseContentActivityViewModel
-//    private var attemptStatus : AttemptResponseStatus? = null
-    private var attemptCount : Int = 0
+    private var attemptStatus : AttemptResponse? = null
 
     companion object {
         fun newInstance(
@@ -134,14 +134,13 @@ class AssessmentFragment : Fragment() {
         }
 
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>) {
-//        val attemptCount = attemptStatus?.attemptCount
+        val attemptCount = attemptStatus?.attemptCount
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
             mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
             initIncorrectRV(list)
         }
-
         if (attemptCount != null) {
             if (attemptCount < 2){
                 mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
@@ -192,7 +191,6 @@ class AssessmentFragment : Fragment() {
 
         } ,{
             if(isContentRvClickable ) {
-                attemptCount += 1
                 selectedOption = it
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE
