@@ -110,6 +110,9 @@ class AssessmentFragmentViewModel (
                             option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
+                    setState {
+                        copy(assessmentContentListForUI = currentState.assessmentContentListForUI)
+                    }
                 }
             }
         }
@@ -235,7 +238,7 @@ class AssessmentFragmentViewModel (
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
             } else if ( attemptStatus == AttemptStatus.INCORRECT){
                 updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOnIncorrect(inCorrectOutputDataList, attemptResponse))
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
             }
         }
     }
@@ -293,7 +296,7 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
-        data class ShowCorrectOnIncorrect(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
+        data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
     }
 
 
@@ -302,7 +305,6 @@ class AssessmentFragmentViewModel (
         data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
-//        data class ShowCorrectOnIncorrect(val assessmentId: Int) : AssessmentFragmentViewActions()
         object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()
     }

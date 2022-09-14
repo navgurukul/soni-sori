@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.incorrect_output_layout.*
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -89,7 +90,7 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.visibility = View.GONE
                 }
-                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOnIncorrect -> {
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowRetryOnce -> {
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     setupIncorrectOutputLayout(it.list, it.attemptResponse)
@@ -139,6 +140,11 @@ class AssessmentFragment : Fragment() {
 
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>, attemptResponse: AttemptResponse?) {
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
+            selectedOption?.let {
+                isContentRvClickable = false
+                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
+                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+            }
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
             mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
             initIncorrectRV(list)
