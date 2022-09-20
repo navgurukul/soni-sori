@@ -35,6 +35,7 @@ class AssessmentFragmentViewModel (
     private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
     private var correctOutputDataList:  List<BaseCourseContent> = listOf()
     private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
+    private var selectedOption: Int? = 0
 
 
     init {
@@ -96,7 +97,6 @@ class AssessmentFragmentViewModel (
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
                 .value
-            val selectedOption= learnRepo.getStudentResult(args.contentId.toInt()).selectedOption
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
@@ -126,7 +126,7 @@ class AssessmentFragmentViewModel (
     }
 
     private suspend fun updateListAttemptStatus(assessmentId: Int, newViewState: OptionViewState){
-        val selectedOption= learnRepo.getStudentResult(assessmentId).selectedOption
+        selectedOption = learnRepo.getStudentResult(assessmentId).selectedOption
         val currentState = viewState.value!!
         currentState.assessmentContentListForUI.forEach {
             if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
@@ -232,7 +232,7 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
-            val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
+            val attemptStatus = attemptResponse.attemptStatus
             if (attemptStatus == AttemptStatus.CORRECT){
                 updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
