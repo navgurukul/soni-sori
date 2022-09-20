@@ -262,6 +262,9 @@ class CourseContentActivityViewModel(
                         content.courseContentProgress = CourseContentProgress.IN_PROGRESS
                         selectedIndex = index
                     }
+                    else if (content.courseContentProgress == CourseContentProgress.COMPLETED){
+                        content.courseContentProgress = CourseContentProgress.COMPLETED_RESELECT
+                    }
                 } else {
                     if (content.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
                         content.courseContentProgress = CourseContentProgress.NOT_STARTED
