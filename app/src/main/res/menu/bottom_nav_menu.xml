@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home"
-        android:visible="false"
-        android:title="@string/title_home" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_home"-->
+<!--        android:icon="@drawable/ic_home"-->
+<!--        android:visible="false"-->
+<!--        android:title="@string/title_home" />-->
 
     <item
         android:id="@+id/navigation_learn"
         android:icon="@drawable/ic_whiteboard"
         android:title="@string/title_learn" />
-
-    <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_chat_help"
-        android:title="@string/title_chat" />
-
     <item
         android:id="@+id/navigation_playground"
         android:icon="@drawable/ic_playground"
         android:title="@string/title_playground" />
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/ic_chat_help"
+        android:title="@string/title_chat" />
+    <item
+        android:id="@+id/navigation_alert"
+        android:icon="@drawable/ic_alerts"
+        android:title="@string/title_alert" />
 
     <item
         android:id="@+id/navigation_profile"

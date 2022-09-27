@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_chat">Mentor</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_alert">Alert</string>
     <string name="reject">Reject</string>
     <string name="join">Join</string>
     <string name="action_quick_reply">Quick Reply</string>
