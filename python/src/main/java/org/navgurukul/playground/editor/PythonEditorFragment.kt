@@ -118,7 +118,11 @@ class PythonEditorFragment : BaseFragment() {
                     if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                         // If bottom sheet is expanded, collapse it on back button
                         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    } else {
+                    }
+                    if(!viewModel.viewState.value!!.fileSaved&&viewModel.viewState.value!!.code.isNotEmpty()) {
+                        showFileNotSavedDialog()
+                    }
+                    else {
                         isEnabled = false
                         requireActivity().onBackPressed()
                     }
@@ -270,6 +274,29 @@ class PythonEditorFragment : BaseFragment() {
             alertDialog.dismiss()
         },1000)
 
+    }
+
+    private fun showFileNotSavedDialog(){
+        val fileNotSavedDialog = AlertDialog.Builder(requireContext())
+        fileNotSavedDialog.setTitle("File not saved")
+        fileNotSavedDialog.setMessage("Do you want to continue without saving? You may loose your work!")
+        fileNotSavedDialog.setCancelable(true)
+        fileNotSavedDialog.setPositiveButton("Don't Save"){ dialog, which ->
+            if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                // If bottom sheet is expanded, collapse it on back button
+                sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+            viewModel.viewState.value!!.fileSaved = true
+            requireActivity().onBackPressed()
+        }
+        fileNotSavedDialog.setNegativeButton("Save"){ dialog, which ->
+            viewModel.handle(PythonEditorViewActions.OnSaveAction)
+        }
+        fileNotSavedDialog.setNeutralButton("Cancel"){
+            dialog, which ->
+            dialog.dismiss()
+        }
+        fileNotSavedDialog.show()
     }
 
     private fun createInput() {
