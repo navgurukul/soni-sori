@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import kotlinx.android.parcel.Parcelize
 import org.merakilearn.R
 import org.merakilearn.core.extentions.KEY_ARG
@@ -16,7 +18,8 @@ import org.merakilearn.core.extentions.toBundle
 @Parcelize
 object ScratchActivityArgs: Parcelable
 class ScratchActivity : AppCompatActivity() {
-
+    lateinit var webView: WebView
+    lateinit var progressBar:ProgressBar
         companion object {
         fun start(context: Context) {
             val intent = Intent(context,ScratchActivity::class.java).apply {
@@ -28,8 +31,7 @@ class ScratchActivity : AppCompatActivity() {
     private val args: ScratchActivityArgs? by lazy {
         intent.extras?.getParcelable(KEY_ARG)
     }
-    private lateinit var webView: WebView
-    lateinit var progressBar:ProgressBar
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +45,17 @@ class ScratchActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
         webView.settings.setSupportZoom(true)
-        webView.addJavascriptInterface(SAVESCRATCH,"Scratch")
+        webView.addJavascriptInterface(this,"Scratch")
+
 
     }
-    object SAVESCRATCH
-    {
 
+    @JavascriptInterface
+    fun onBack() {
+        finish()
     }
+
+
 
     // Overriding WebViewClient functions
     inner class WebViewClient : android.webkit.WebViewClient() {
@@ -66,14 +72,6 @@ class ScratchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        // if your webview can go back it will go back
-        if (webView.canGoBack())
-            webView.goBack()
-        // if your webview cannot go back
-        // it will exit the application
-        else
-            super.onBackPressed()
-    }
+
 }
 
