@@ -39,10 +39,15 @@ class ScratchActivity : AppCompatActivity() {
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progressBar)
         webView.webViewClient = WebViewClient()
-        webView.loadUrl("https://scratch.merakilearn.org")
+        webView.loadUrl("file:///android_asset/index.html")
 
         webView.settings.javaScriptEnabled = true
         webView.settings.setSupportZoom(true)
+        webView.addJavascriptInterface(SAVESCRATCH,"Scratch")
+
+    }
+    object SAVESCRATCH
+    {
 
     }
 
