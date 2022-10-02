@@ -105,6 +105,7 @@ dependencies {
     //Moshi
     implementation(RetrofitDependencies.moshiAdapter)
     implementation(RetrofitDependencies.moshiConverter)
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.8.1")
     kapt(RetrofitDependencies.moshiKapt)
 
     // Room DB

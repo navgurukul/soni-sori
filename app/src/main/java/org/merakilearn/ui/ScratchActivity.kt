@@ -8,12 +8,13 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import kotlinx.android.parcel.Parcelize
 import org.merakilearn.R
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.toBundle
+
 
 @Parcelize
 object ScratchActivityArgs: Parcelable
@@ -45,14 +46,25 @@ class ScratchActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
         webView.settings.setSupportZoom(true)
-        webView.addJavascriptInterface(this,"Scratch")
+        webView.addJavascriptInterface(this, "Scratch")
 
+
+
+    }
+
+
+    @JavascriptInterface
+    fun onPageFinished() {
+
+        finish()
+        Toast.makeText(applicationContext,"File Saved",Toast.LENGTH_LONG).show()
 
     }
 
     @JavascriptInterface
     fun onBack() {
         finish()
+        Toast.makeText(applicationContext,"Scratch Exit",Toast.LENGTH_LONG).show()
     }
 
 
@@ -70,8 +82,18 @@ class ScratchActivity : AppCompatActivity() {
             super.onPageFinished(view, url)
            progressBar.visibility = View.GONE
         }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val context: Context = this
+        val pathFilename = context.filesDir.path + "savedWebPage.mht"
+        webView.saveWebArchive(pathFilename)
+        Toast.makeText(applicationContext,"File Saved on Destroy",Toast.LENGTH_LONG).show()
     }
 
 
 }
+
 
