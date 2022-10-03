@@ -255,6 +255,7 @@ class CourseContentActivityViewModel(
 
     private fun markContentSelected(contentId: String) {
         var selectedIndex = 0
+        var bool:Boolean=false;
         currentCourse.courseContents.toMutableList().let {
             it.forEachIndexed { index, content ->
                 if (content.id == contentId) {
@@ -264,10 +265,15 @@ class CourseContentActivityViewModel(
                     }
                     else if (content.courseContentProgress == CourseContentProgress.COMPLETED){
                         content.courseContentProgress = CourseContentProgress.COMPLETED_RESELECT
+                        selectedIndex = index
                     }
+
                 } else {
                     if (content.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
                         content.courseContentProgress = CourseContentProgress.NOT_STARTED
+                    }
+                    else if (content.courseContentProgress == CourseContentProgress.COMPLETED_RESELECT){
+                        content.courseContentProgress = CourseContentProgress.COMPLETED
                     }
                 }
             }
