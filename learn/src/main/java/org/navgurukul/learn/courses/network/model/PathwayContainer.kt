@@ -1,9 +1,11 @@
 package org.navgurukul.learn.courses.network.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import org.navgurukul.learn.courses.db.models.Pathway
 
+@JsonClass(generateAdapter = true)
 data class PathwayContainer(
-    @SerializedName("pathways")
+    @Json(name = "pathways")
     val pathways: List<Pathway>
 )

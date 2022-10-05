@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutBannerContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/hint_box_drawable">
+
+    <TextView
+        android:id="@+id/bannerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:fontFamily="@font/nunito"
+        android:textColor="?textPrimary"
+        android:textAppearance="?textAppearanceBody2"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Kya aapke pas extrenal keyboard hai?" />
+
+    <ImageView
+        android:id="@+id/bannerImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bannerTitle"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginStart="@dimen/spacing_4x"
+        tools:src="@drawable/ic_class_nudge"/>
+
+    <TextView
+        android:id="@+id/bannerBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito"
+        android:textColor="?textPrimary"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/bannerImage"
+        app:layout_constraintTop_toTopOf="@id/bannerImage"
+        android:layout_marginStart="@dimen/spacing_2x"
+        tools:text="Aap typing abhi start kar sakte hai" />
+
+    <org.navgurukul.learn.ui.common.MerakiButton
+        android:id="@+id/bannerButton1"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_2x"
+        app:layout_constraintTop_toBottomOf="@id/bannerBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_4x"/>
+
+    <org.navgurukul.learn.ui.common.MerakiButton
+        android:id="@+id/bannerButton2"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_2x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bannerButton2"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/bannerBody"
+        app:layout_constraintTop_toBottomOf="@id/bannerBody"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_4x"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

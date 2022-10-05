@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appToolbar"
         android:layout_width="match_parent"
@@ -21,30 +20,63 @@
             <TextView
                 android:id="@+id/headerTitle"
                 style="?textAppearanceHeadline6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginEnd="45dp"
                 android:textColor="?textPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/headerSubtitle"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/spacing_4x"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintStart_toEndOf="@id/headerIcon"
+                app:layout_constraintEnd_toStartOf="@id/headerAction"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/headerSubtitle"
                 style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_drop_down"
                 android:drawablePadding="@dimen/spacing_2x"
                 android:ellipsize="end"
                 android:maxLines="1"
+                tools:visibility="visible"
+                app:layout_constraintWidth_default="wrap"
+                android:layout_marginEnd="@dimen/spacing_4x"
+                android:textAllCaps="true"
                 android:textColor="?textPrimary"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerTitle"
-                tools:text="Sample Subtitle" />
+                app:layout_constraintHorizontal_bias="1"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/headerTitle"
+                app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+                tools:text="" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headerAction"
+                style="?textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_4x"
+                android:drawableEnd="@drawable/ic_drop_down"
+                android:drawablePadding="@dimen/spacing_2x"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/headerSubtitle"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?textPrimary"
+                android:visibility="visible"
+                tools:text="Sample Action" />
+
+            <View
+                android:id="@+id/headerActionClickArea"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/headerAction"/>
 
             <ImageView
                 android:id="@+id/headerIv"
@@ -58,6 +90,33 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/headerLogOut"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10_dp"
+                android:adjustViewBounds="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_log_out"
+                android:padding="@dimen/dimen_10_dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/headerIcon"
+                android:layout_width="@dimen/course_profile_pic"
+                android:layout_height="@dimen/course_profile_pic"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/dimen_10_dp"
+                tools:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 

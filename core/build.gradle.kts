@@ -2,25 +2,23 @@ plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinKapt)
 }
 
 android {
-    compileSdkVersion(BuildConfigVersions.compileSdkVersion)
-    buildToolsVersion(BuildConfigVersions.buildToolsVersion)
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(BuildConfigVersions.minSdkVersion)
-        targetSdkVersion(BuildConfigVersions.targetSdkVersion)
-        versionCode(BuildConfigVersions.versionCode)
-        versionName(BuildConfigVersions.versionName)
+        minSdk = BuildConfigVersions.minSdkVersion
+        targetSdk = BuildConfigVersions.targetSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         getByName("release") {
-            minifyEnabled(false)
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -42,18 +40,29 @@ dependencies {
     //androidx
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.appcompat)
+    implementation(AndroidxDependencies.browser)
 
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
-    implementation(RetrofitDependencies.gson)
+    // Kotlin
+    implementation(KotlinDependencies.coroutinesCore)
+    implementation(KotlinDependencies.coroutinesAndroid)
+
+    implementation(RetrofitDependencies.moshiAdapter)
+    kapt(RetrofitDependencies.moshiKapt)
 
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 
     //firebase
     implementation(FirebaseDependencies.messaging)
+    implementation(FirebaseDependencies.configKtx)
+    implementation(FirebaseDependencies.commonKtx)
+
+    //Logging
+    implementation(MiscellaneousDependencies.timber)
 
     testImplementation(TestDependencies.jUnit)
     androidTestImplementation(TestDependencies.androidxJUnit)

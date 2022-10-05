@@ -50,6 +50,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.Scope
+import org.merakilearn.core.extentions.fragmentArgs
+import org.merakilearn.core.extentions.hideKeyboard
+import org.merakilearn.core.extentions.showKeyboard
+import org.merakilearn.core.extentions.toast
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.dialogs.ConfirmationDialogBuilder
@@ -102,7 +106,7 @@ class RoomDetailFragment : BaseFragment(),
     override val scope: Scope by lazy { fragmentScope() }
 
     private lateinit var layoutManager: LinearLayoutManager
-    private val roomDetailArgs: RoomDetailArgs by args()
+    private val roomDetailArgs: RoomDetailArgs by fragmentArgs()
 
     private val timelineEventController: TimelineEventController by inject(parameters = { parametersOf(scope)})
 
@@ -202,7 +206,7 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.OpenStickerPicker                -> openStickerPicker(it)
 //                is RoomDetailFragmentViewEvents.DisplayEnableIntegrationsWarning -> displayDisabledIntegrationDialog()
 //                is RoomDetailFragmentViewEvents.OpenIntegrationManager           -> openIntegrationManager()
-//                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
+                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
             }
         })
 
@@ -212,7 +216,22 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
-        navigator.openDeepLink(requireContext(), event.deepLink)
+        navigator.openDeepLink(requireActivity(), event.deepLink)
+    }
+
+    private fun startOpenFileIntent(action: RoomDetailFragmentViewEvents.OpenFile) {
+        if (action.uri != null) {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndTypeAndNormalize(action.uri, action.mimeType)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                requireActivity().startActivity(intent)
+            } else {
+                requireActivity().toast(R.string.error_no_external_application_found)
+            }
+        }
     }
 
     private fun invalidateState(state: RoomDetailViewState) {

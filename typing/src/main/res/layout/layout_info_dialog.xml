@@ -1,65 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="260dp"
-    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/info_dialog_background_white">
 
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <ImageView
+        android:id="@+id/img"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_undraw_code_typing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_close" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/info_dialog_background"
-            android:orientation="vertical">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_close"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="0dp"
+        app:icon="@drawable/ic_close"
+        app:iconTint="?textSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="118dp"
-                android:layout_height="89dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="47dp"
-                android:src="@drawable/ic_undraw_code_typing" />
+    <TextView
+        android:id="@+id/txt_lbl_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:background="@drawable/info_text_background"
+        android:text="@string/info_text"
+        android:textColor="?textSecondary"
+        style="?textAppearanceCaption"
+        android:paddingStart="@dimen/spacing_4x"
+        android:paddingEnd="@dimen/spacing_4x"
+        android:paddingTop="@dimen/spacing_6x"
+        android:paddingBottom="@dimen/spacing_6x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="123dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/info_text_background"
-                android:orientation="vertical">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_2x"
+        android:text="@string/okay_understood"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_lbl_info" />
 
-                <TextView
-                    android:id="@+id/txt_lbl_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginTop="31dp"
-                    android:layout_marginRight="28dp"
-                    android:text="@string/info_text"
-                    android:textColor="@color/info_text_color"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_ok"
-                android:layout_width="158dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="19dp"
-                android:background="@drawable/primary_btn_selector"
-                android:fontFamily="@font/nunito"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/okay_understood"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

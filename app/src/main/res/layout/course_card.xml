@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="?cornerRadius400"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:background="?selectableItemBackground"
+        android:padding="@dimen/spacing_4x">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/python_logo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/course_text"
+            style="?textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_2x"
+            android:textAlignment="center"
+            android:textColor="?textPrimary"
+            tools:text="Python" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

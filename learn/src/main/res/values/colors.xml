@@ -10,8 +10,27 @@
     <color name="colorNumberBackground">#FFF3F3</color>
     <color name="exerciseBackground">#FFDCDC</color>
     <color name="colorNumber">#D63447</color>
-    <color name="course_background">#f2f2f2</color>
-    <color name="run_background">#D63447</color>
+    <color name="course_background">#ffffff</color>
+    <color name="run_background">#343A33</color>
     <color name="row_color">#F4F4F4</color>
     <color name="errorColor_70">#B3B00020</color>
+    <color name="colorGrey_100">#818181</color>
+    <color name="green_progress_color">#48A145</color>
+
+    <color name="colorBlockQuoteBackgroundDark">#FFC107</color>
+    <color name="colorBlockQuoteBackground">#FFE69C</color>
+
+    <color name="contentBannerBackground">#E9F5E9</color>
+    <color name="code_title_background">#343A33</color>
+    <color name="code_background">#F5F5F5</color>
+    <color name="question_code_background">#F5F5F5</color>
+    <color name="contentScreenBackground">#E5E5E5</color>
+    <color name="textGrey">#818181</color>
+    <color name="dotGrey"> #949494</color>
+    <color name="card_background">#E9F5E9</color>
+    <color name="classChipSecondary">#4548A1</color>
+    <color name="classChipBackground">#DADAEC</color>
+    <color name="assesmentBackground">#F5F5F5</color>
+    <color name="courseBackground">#DEDEDE</color>
+    <color name="textInChip">#2E2E2E</color>
 </resources>

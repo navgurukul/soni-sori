@@ -1,225 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColorHome"
+    android:fillViewport="true">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/sv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@color/backgroundColorHome">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:clipChildren="false">
+            android:background="@drawable/rounded_rect_white_8"
+            android:queryHint="@string/search_classes"
+            app:defaultQueryHint="@string/search_classes"
+            app:iconifiedByDefault="false"
+            android:elevation="?elevation100"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            android:layout_marginTop="@dimen/spacing_4x"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:queryBackground="@android:color/transparent"
+            app:searchHintIcon="@drawable/ic_baseline_search_24"
+            app:searchIcon="@drawable/ic_baseline_search_24" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/start_guideline"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/spacing_4x"/>
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/language_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:visibility="visible"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view"
+            app:singleLine="false"
+            app:singleSelection="true" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/end_guideline"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/spacing_4x"/>
+        <TextView
+            android:id="@+id/tv_upcoming_classes"
+            style="?textAppearanceEmphasized1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:text="@string/upcoming_class"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/language_chip_group" />
 
-            <TextView
-                android:id="@+id/tvWhereYouLeft"
-                style="?textAppearanceEmphasized1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/where_you_left"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/spacing_4x"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerviewCourseContinue"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_only_enrolled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/only_enrolled"
+            app:switchPadding="@dimen/spacing_2x"
+            app:layout_constraintBottom_toBottomOf="@id/tv_upcoming_classes"
+            app:layout_constraintTop_toTopOf="@id/tv_upcoming_classes"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerviewCourseContinue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:layout_height="100dp"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingClass"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/tvWhereYouLeft"
-                tools:listitem="@layout/item_exercise_continue" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/spacing_2x"
+            android:paddingEnd="@dimen/spacing_2x"
+            android:paddingBottom="@dimen/spacing_2x"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_upcoming_classes"
+            tools:listitem="@layout/item_class" />
 
-            <TextView
-                android:id="@+id/upcomingClass"
-                style="?textAppearanceEmphasized1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/upcoming_class"
-                android:layout_marginTop="@dimen/spacing_6x"
-                app:layout_goneMarginTop="@dimen/spacing_4x"
-                app:layout_constraintBottom_toTopOf="@+id/barrier_upcoming_classes_content_top"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerviewCourseContinue" />
+        <org.navgurukul.commonui.views.EmptyStateView
+            android:id="@+id/emptyStateView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/spacing_4x"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_upcoming_classes"/>
 
-            <TextView
-                android:id="@+id/viewAll"
-                style="?textAppearanceEmphasized1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/view_all"
-                android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@id/ivArrow"
-                app:layout_constraintTop_toTopOf="@id/upcomingClass" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintBottom_toBottomOf="@id/viewAll"
-                app:layout_constraintTop_toTopOf="@id/viewAll" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar_button_my"
-                android:layout_width="@dimen/dimen_progress_bar"
-                android:layout_height="@dimen/dimen_progress_bar"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@id/barrier_upcoming_classes_content"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@id/upcomingClass" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_my_upcoming_class"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:orientation="horizontal"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@id/upcomingClass"
-                tools:listitem="@layout/item_class" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/empty_my_class"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:cardElevation="?elevation200"
-                app:cardCornerRadius="?cornerRadius400"
-                app:contentPadding="@dimen/spacing_4x"
-                android:layout_marginTop="@dimen/spacing_4x"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@id/upcomingClass">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvCourseTitle"
-                        style="?textAppearanceEmphasized1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:text="@string/discover_class" />
-
-                    <TextView
-                        android:id="@+id/tvCourseDescription"
-                        style="?textAppearanceCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:layout_marginTop="@dimen/spacing_2x"
-                        android:text="@string/stay_updated" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier_upcoming_classes_content"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="empty_my_class, recyclerview_my_upcoming_class" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier_upcoming_classes_content_top"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:barrierDirection="top"
-                app:constraint_referenced_ids="empty_my_class, recyclerview_my_upcoming_class" />
-
-            <TextView
-                android:id="@+id/otherCourses"
-                style="?textAppearanceEmphasized1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/other_class"
-                android:layout_marginTop="@dimen/spacing_6x"
-                app:layout_constraintBottom_toTopOf="@+id/otherCoursesDescription"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/barrier_upcoming_classes_content" />
-
-            <TextView
-                android:id="@+id/otherCoursesDescription"
-                style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_1x"
-                android:text="@string/try_other_courses"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerviewOtherCourse"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/otherCourses" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerviewOtherCourse"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4x"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/otherCoursesDescription"
-                tools:listitem="@layout/item_course_home" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar_button"
-                android:layout_width="@dimen/dimen_progress_bar"
-                android:layout_height="@dimen/dimen_progress_bar"
-                android:layout_margin="@dimen/dimen_50_dp"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintTop_toTopOf="@id/recyclerviewOtherCourse" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -48,7 +48,7 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
             }
         })
 
-        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_chat), null, R.attr.textPrimary)
+        (activity as? ToolbarConfigurable)?.configure(getString(R.string.title_chat), R.attr.textPrimary)
     }
 
     private fun invalidateState(state: RoomListViewState) {

@@ -3,24 +3,22 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdkVersion(BuildConfigVersions.compileSdkVersion)
-    buildToolsVersion(BuildConfigVersions.buildToolsVersion)
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(BuildConfigVersions.minSdkVersion)
-        targetSdkVersion(BuildConfigVersions.targetSdkVersion)
-        versionCode = BuildConfigVersions.versionCode
-        versionName = BuildConfigVersions.versionName
+        minSdk = BuildConfigVersions.minSdkVersion
+        targetSdk = BuildConfigVersions.targetSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         getByName("debug") {
-            storeFile(file("debug.keystore"))
+            storeFile = file("debug.keystore")
         }
     }
 
@@ -81,6 +79,10 @@ dependencies {
     // Room DB
     implementation(AndroidxDependencies.roomRuntime)
     implementation(AndroidxDependencies.roomKtx)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     kapt(AndroidxDependencies.roomCompiler)
 
     implementation(MiscellaneousDependencies.textDrawable)
@@ -92,8 +94,10 @@ dependencies {
 
     // Retrofit
     implementation(RetrofitDependencies.retrofit)
-    implementation(RetrofitDependencies.gson)
-    implementation(RetrofitDependencies.converterGson)
+    implementation(RetrofitDependencies.moshiAdapter)
+    implementation(RetrofitDependencies.moshiKotlin)
+    implementation(RetrofitDependencies.moshiConverter)
+    kapt(RetrofitDependencies.moshiKapt)
     implementation(RetrofitDependencies.logging)
 
 
@@ -113,4 +117,8 @@ dependencies {
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
     androidTestImplementation(TestDependencies.annotation)
+
+    //firebase
+    implementation(FirebaseDependencies.perfKtx)
+
 }

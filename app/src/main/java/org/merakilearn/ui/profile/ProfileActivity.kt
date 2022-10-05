@@ -5,24 +5,28 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.*
+import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.adapter.SavedFileAdapter
-import org.merakilearn.util.AppUtils
+import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
@@ -33,6 +37,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityProfileBinding
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
+    private val userRepo: UserRepo by inject()
 
     companion object {
         fun launch(context: Context) {
@@ -45,16 +50,20 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
 
-        if (!AppUtils.isUserLoggedIn(this) || AppUtils.isFakeLogin(this)) {
-            OnBoardingActivity.restartApp(this, OnBoardingActivityArgs(true))
+        if (!userRepo.isUserLoggedIn() || userRepo.isFakeLogin()) {
+            OnBoardingActivity.restartApp(this, true)
             return
         }
 
-        viewModel.viewState.observe(this, Observer {
-            it?.let { updateState(it) }
-        })
+        btnPrivacyPolicy.setOnClickListener {
+            viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
+        }
 
-        viewModel.viewEvents.observe(this, Observer {
+        viewModel.viewState.observe(this) {
+            it?.let { updateState(it) }
+        }
+
+        viewModel.viewEvents.observe(this) {
             when (it) {
                 is ProfileViewEvents.ShowToast -> {
                     toast(it.text)
@@ -62,30 +71,55 @@ class ProfileActivity : AppCompatActivity() {
                         navigateUp()
                     }
                 }
+                is ProfileViewEvents.ShowUpdateServerDialog -> {
+                    showUpdateServerDialog(it.serverUrl)
+                }
                 is ProfileViewEvents.ShareText -> shareCode(it)
                 ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(
-                    this, OnBoardingActivityArgs(
-                        clearNotification = true
-                    )
+                    this, clearNotification = true
                 )
+                is ProfileViewEvents.OpenUrl -> {
+                    merakiNavigator.openCustomTab(it.url, this)
+                }
             }
-        })
-
-        mBinding.updateProfile.setOnClickListener {
-            viewModel.handle(
-                ProfileViewActions.UpdateProfile(
-                    etName.text.toString(),
-                    etEmail.text.toString()
-                )
-            )
         }
 
-        mBinding.ivEdit.setOnClickListener {
-            viewModel.handle(ProfileViewActions.EditProfileClicked)
+        explore_opportunity.setOnClickListener{
+            viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
+        }
+
+        mBinding.serverUrlValue.setOnClickListener {
+            viewModel.handle(ProfileViewActions.UpdateServerUrlClicked)
         }
 
         initSavedFile()
         initToolBar()
+    }
+
+    private fun showUpdateServerDialog(serverUrl: String) {
+        val inputText = EditText(this)
+        val alert = MaterialAlertDialogBuilder(this)
+            .setTitle("Server Url")
+            .setView(inputText)
+            .setPositiveButton("OK") { _, _ ->
+                viewModel.handle(ProfileViewActions.UpdateServerUrl(inputText.text.toString()))
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNeutralButton("Reset") { _, _ ->
+                viewModel.handle(ProfileViewActions.ResetServerUrl)
+            }
+            .create()
+        alert.setOnShowListener {
+            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+            inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                marginEnd = margin
+                marginStart = margin
+            }
+            inputText.setText(serverUrl)
+        }
+        alert.show()
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {
@@ -102,23 +136,21 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateState(it: ProfileViewState) {
-        mBinding.tvAppVersion.text = it.appVersionText
+//        mBinding.appVersionValue.text = it.appVersionText
+
         it.userName?.let {
-            mBinding.tvName.text = it
-            mBinding.etName.setText(it)
-            mBinding.etName.setSelection(it.length)
+            mBinding.tvName.setText(it)
+            mBinding.tvName.setSelection(it.length)
         }
 
         it.userEmail?.let {
-            mBinding.tvEmail.text = it
-            mBinding.etEmail.setText(it)
-            mBinding.etEmail.setSelection(it.length)
+            mBinding.tvEmail.setText(it)
         }
 
         if (it.savedFiles.isEmpty()) {
-            mBinding.rlSavedFile.visibility = View.GONE
+            mBinding.tvSavedFile.visibility = View.GONE
         } else {
-            mBinding.rlSavedFile.visibility = View.VISIBLE
+            mBinding.tvSavedFile.visibility = View.VISIBLE
             val adapter = mBinding.recyclerview.adapter as SavedFileAdapter
             adapter.submitList(it.savedFiles)
         }
@@ -130,14 +162,39 @@ class ProfileActivity : AppCompatActivity() {
             mBinding.tvViewAll.isVisible = false
         }
 
-        mBinding.updateProfile.isVisible = it.showUpdateProfile
-        mBinding.llProfileEdit.isVisible = it.showEditProfileLayout
-        mBinding.updateProfile.isVisible = it.showUpdateProfile
+        if (it.showEditProfileLayout) {
+            mBinding.tvEmail.isFocusable = true
+            mBinding.tvEmail.isFocusableInTouchMode = true
+            mBinding.tvName.setBackgroundResource(R.drawable.bg_profile_edit_text)
+            mBinding.tvName.isFocusable = true
+            mBinding.tvName.isFocusableInTouchMode = true
+            mBinding.tvName.requestFocus()
+            mBinding.btnEdit.text = getString(R.string.save)
+            mBinding.btnEdit.setOnClickListener {
+                viewModel.handle(
+                    ProfileViewActions.UpdateProfile(
+                        mBinding.tvName.text.toString(),
+                        mBinding.tvEmail.text.toString()
+                    )
+                )
+            }
+        } else {
+            mBinding.tvEmail.background = null
+            mBinding.tvEmail.isFocusable = false
+            mBinding.tvName.background = null
+            mBinding.tvName.isFocusable = false
+            mBinding.btnEdit.text = getString(R.string.edit)
+            mBinding.btnEdit.setOnClickListener {
+                viewModel.handle(ProfileViewActions.EditProfileClicked)
+            }
+        }
+
         mBinding.progressBarButton.isVisible = it.showProgressBar
 
         //Update profile image only when it changes
         if (mBinding.ivProfile.getTag(R.id.ivProfile) == null ||
-            mBinding.ivProfile.getTag(R.id.ivProfile)!= it.profilePic) {
+            mBinding.ivProfile.getTag(R.id.ivProfile) != it.profilePic
+        ) {
             val requestOptions = RequestOptions()
                 .centerCrop()
                 .transform(CircleCrop())
@@ -154,6 +211,13 @@ class ProfileActivity : AppCompatActivity() {
                 .into(mBinding.ivProfile)
 
             mBinding.ivProfile.setTag(R.id.ivProfile, it.profilePic)
+        }
+
+        if (it.showServerUrl) {
+            mBinding.groupServerUrl.visibility = View.VISIBLE
+            mBinding.serverUrlValue.text = it.serverUrl
+        } else {
+            mBinding.groupServerUrl.visibility = View.GONE
         }
     }
 
@@ -179,7 +243,7 @@ class ProfileActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.share -> viewModel.handle(ProfileViewActions.ShareFile(file))
                 R.id.delete -> viewModel.handle(ProfileViewActions.DeleteFile(file))
-                R.id.copy -> merakiNavigator.openPlaygroundWithFileContent(this, file.name)
+                R.id.copy -> merakiNavigator.openPlaygroundWithFileContent(this, file)
             }
             true
         }

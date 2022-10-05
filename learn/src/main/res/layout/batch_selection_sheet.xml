@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/spacing_4x"
+    android:paddingEnd="@dimen/spacing_4x">
+
+    <View
+        android:id="@+id/handle_view"
+        android:layout_width="@dimen/sheet_handle_width"
+        android:layout_height="@dimen/sheet_handle_height"
+        android:layout_marginTop="@dimen/spacing_2x"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/sheet_handle" />
+
+    <TextView
+        style="?textAppearanceEmphasized1"
+        android:id="@+id/tv_title"
+        android:textColor="?textPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_5x"
+        android:text="More Batches"
+        tools:text="More Batches" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_6x"
+        android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</LinearLayout>

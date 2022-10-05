@@ -14,7 +14,9 @@
             android:layout_height="@dimen/dimen_50_dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackground"
             android:padding="@dimen/dimen_10_dp"
+            android:scaleType="center"
             android:src="@drawable/ic_back"
             tools:ignore="ContentDescription" />
 
@@ -33,6 +35,7 @@
             android:layout_height="@dimen/dimen_50_dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackground"
             android:padding="@dimen/dimen_10_dp"
             android:src="@drawable/ic_log_out"
             tools:ignore="ContentDescription" />

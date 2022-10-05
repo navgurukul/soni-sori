@@ -3,17 +3,17 @@ object Versions {
     const val arrow_version = "0.8.2"
     const val daggerAssistedInject = "0.5.0"
     const val daggerVersion = "2.25.4"
-    const val moshi_version = "1.11.0"
+    const val moshi_version = "1.12.0"
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
     const val markdown = "4.5.1"
-    const val kotlin = "1.4.20"
+    const val kotlin = "1.5.21"
     const val lifecycle_extensions = "2.2.0"
-    const val koin = "2.2.0"
-    const val room = "2.2.5"
+    const val koin = "2.2.3"
+    const val room = "2.4.0-alpha03"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
-    const val coroutines = "1.3.7"
+    const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
 }
 
@@ -75,10 +75,11 @@ object AndroidxDependencies {
     const val appcompat = "androidx.appcompat:appcompat:1.2.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
+    const val browser = "androidx.browser:browser:1.3.0"
 }
 
 object MaterialDesignDependencies {
-    const val materialDesign = "com.google.android.material:material:1.2.0"
+    const val materialDesign = "com.google.android.material:material:1.4.0"
 }
 
 object OkReplayDependencies {
@@ -98,8 +99,8 @@ object GMSDependencies {
 }
 
 object KoinDependencies {
-    const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
-    const val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+    const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
+    const val koinViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
 }
 
 object GlideDependencies {
@@ -135,27 +136,29 @@ object MiscellaneousDependencies {
     const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:8.10.23"
     const val photoView = "com.github.chrisbanes:PhotoView:2.0.0"
     const val alerter = "com.tapadoo.android:alerter:5.1.2"
-    const val timber = "com.jakewharton.timber:timber:4.7.1"
+    const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
+    const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
     const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
     const val messaging = "com.google.firebase:firebase-messaging:20.2.4"
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
+    const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:17.5.0"
+    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
+    const val perfKtx ="com.google.firebase:firebase-perf-ktx:20.0.6"
 }
 
 object RetrofitDependencies {
     const val moshiKapt = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi_version}"
     const val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi_version}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi_version}"
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val logging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
     const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
-    const val converterGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-    const val gson = "com.google.code.gson:gson:2.8.6"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
 }
 
@@ -165,25 +168,25 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 29
-    const val buildToolsVersion = "29.0.3"
+    const val compileSdkVersion = 30
     const val minSdkVersion = 21
-    const val targetSdkVersion = 29
-    const val versionCode = 17
-    const val versionName = "1.2.1"
+    const val targetSdkVersion = 30
+    const val versionCode = 36
+    const val versionName = "1.5.6"
     const val applicationId = "org.merakilearn"
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:4.1.2"
+    const val gradle = "com.android.tools.build:gradle:7.0.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:8.0.1"
+    const val python = "com.chaquo.python:gradle:10.0.1"
     const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
+    const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
 }
 
 object Plugins {
@@ -197,4 +200,5 @@ object Plugins {
     const val crashlytics = "com.google.firebase.crashlytics"
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
+    const val perf = "com.google.firebase.firebase-perf"
 }

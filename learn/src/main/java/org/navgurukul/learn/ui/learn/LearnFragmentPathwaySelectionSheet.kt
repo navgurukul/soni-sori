@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.pathway_selection_sheet.*
+import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
@@ -35,13 +35,13 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.pathway_selection_sheet, container, false)
+        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val offsetFromTop = 200
+        val offsetFromTop = resources.getDimensionPixelSize(R.dimen.sheet_top_offset)
         (dialog as? BottomSheetDialog)?.behavior?.apply {
             setExpandedOffset(offsetFromTop)
         }
@@ -100,15 +100,12 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
-
         val thumbnail = Glide.with(holder.itemView)
             .load(R.drawable.ic_typing_icon)
-
         Glide.with(binding.ivPathwayIcon)
             .load(item.logo)
             .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
             .thumbnail(thumbnail)
             .into(binding.ivPathwayIcon)
     }
-
 }

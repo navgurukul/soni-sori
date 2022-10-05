@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/iv_playground_icon"
+        android:layout_width="@dimen/spacing_10x"
+        android:layout_height="@dimen/spacing_10x"
+        android:background="@drawable/playground_item_background"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/python_logo" />
+
+    <TextView
+        android:id="@+id/tv_playground_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?textAppearanceSubtitle2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_playground_icon"
+        android:layout_margin="@dimen/spacing_2x"
+        tools:text="Python" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

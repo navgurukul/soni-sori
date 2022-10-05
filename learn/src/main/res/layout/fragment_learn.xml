@@ -3,28 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewmodel"
-            type="org.navgurukul.learn.ui.learn.LearnViewModel" />
-
-        <variable
-            name="itemOnClick"
-            type="android.view.View.OnClickListener" />
-
-        <import type="android.view.View" />
-    </data>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rlCourseContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/course_background"
             android:paddingStart="@dimen/spacing_4x"
             android:paddingEnd="@dimen/spacing_4x"
@@ -32,23 +25,68 @@
             android:clipToPadding="false"
             android:orientation="vertical">
 
+            <include
+                android:id="@+id/batchCard"
+                layout="@layout/batch_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_2x"
+                tools:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
+            <include
+                android:id="@+id/upcoming"
+                layout="@layout/upcoming_class_selection_sheet"
+                android:layout_width="match_parent"
+                tools:visibility="gone"
+                android:layout_marginTop="@dimen/spacing_2x"
+                app:layout_constraintTop_toBottomOf="@+id/enrolled_butFinished"
+                android:layout_height="wrap_content" />
+            <include
+                android:id="@+id/enrolled_butFinished"
+                layout="@layout/enrolled_but_finished"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
+
             <org.navgurukul.commonui.views.EmptyStateView
                 android:id="@+id/empty_state_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerviewCourse"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recyclerviewCourseContainer"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/spacing_3x"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:clipChildren="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_course" />
+                app:layout_constraintTop_toBottomOf="@id/batchCard"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTextCourse"
+                    style="?textAppearanceEmphasized1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/spacing_2x"
+                    android:text="@string/courses"
+                    android:layout_marginBottom="@dimen/spacing_4x"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="?textPrimary"
+                    tools:text="Course" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintHeight_default="wrap"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTextCourse"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:clipChildren="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_course" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ProgressBar
                 android:id="@+id/progress_bar_button"
@@ -59,9 +97,57 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.2"
                 android:indeterminate="true"
+                android:visibility="visible"
+                app:elevation="30dp"
+                android:elevation="30dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutTakeTest"
                 android:visibility="gone"
-                app:elevation="2dp" />
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/recyclerviewCourseContainer"
+                android:layout_marginTop="@dimen/spacing_1x">
+
+                <View
+                    android:id="@+id/separatorView"
+                    android:layout_width="120dp"
+                    android:layout_height="1dp"
+                    android:background="#DEDEDE"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textAskOverviewCompletion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/separatorView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/spacing_4x"
+                    style="?textAppearanceBody2"
+                    android:text="Have you completed the overview?"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonTakeTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button"
+                    app:layout_constraintTop_toBottomOf="@+id/textAskOverviewCompletion"
+                    android:layout_marginHorizontal="@dimen/spacing_4x"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    tools:text="Yes, let’s take the test"
+                    android:padding="@dimen/spacing_4x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="@dimen/spacing_4x"
+                    android:layout_marginBottom="@dimen/spacing_12x"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

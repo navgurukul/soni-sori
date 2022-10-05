@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_peek_layout"
+    android:paddingBottom="@dimen/spacing_4x"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="@dimen/height_bottom_peek"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/linearLayoutPeek"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_bottom_peek"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/spacing_4x"
+        android:paddingRight="@dimen/spacing_4x"
+        android:text="@string/output"
+        android:textAppearance="?textAppearanceHeadline5"
+        android:textColor="?textPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="?borderWidth"
+        android:background="?borderColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeek" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/layoutInput"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeek">
+
+        <TextView
+            android:id="@+id/tvOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:freezesText="true"
+            android:padding="@dimen/spacing_4x"
+            android:textColor="?textPrimary"
+            android:textIsSelectable="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:id="@+id/etInput"
+            style="@style/Code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_2x"
+            android:layout_marginEnd="@dimen/spacing_2x"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input"
+            android:ems="10"
+            android:hint="@string/enter_input_here"
+            android:imeOptions="actionDone|flagNoFullscreen"
+            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:padding="@dimen/spacing_2x"
+            android:singleLine="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ibEnter"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="48dp"
+            app:icon="@drawable/ic_enter_round" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

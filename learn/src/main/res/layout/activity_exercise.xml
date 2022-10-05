@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationExercise">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarExercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/light_gradient_toolbar_background"
+                app:elevation="0dp">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/exerciseToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_back"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/mtrl_min_touch_target_size"
+                            app:icon="@drawable/ic_arrow_left"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconTint="?textPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvCourseTitle"
+                            style="?textAppearanceEmphasized1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?textPrimary"
+                            app:layout_constraintBottom_toBottomOf="@id/button_back"
+                            app:layout_constraintStart_toEndOf="@id/button_back"
+                            app:layout_constraintTop_toTopOf="@id/button_back"
+                            tools:text="JS Operators" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerviewCourseExerciseList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_4x"
+                            android:layout_marginEnd="@dimen/spacing_4x"
+                            android:layout_marginTop="@dimen/spacing_2x"
+                            android:layout_marginBottom="@dimen/spacing_2x"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/button_back"
+                            tools:listitem="@layout/item_course_exercise" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/exerciseContentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/dimen_progress_bar"
+                android:layout_height="@dimen/dimen_progress_bar"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+
+            <include
+                android:id="@+id/courseCompletedView"
+                layout="@layout/course_completion_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet
+            android:id="@+id/bottomNavigationExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

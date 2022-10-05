@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_playground">Play</string>
+    <string name="toast_exit_console">If you want to exit the playground, first exit()
+        the console or click on the home up button!</string>
+    <string name="output">Output</string>
+    <string name="enter_input_here">Enter input here:</string>
+    <string name="tab">TAB</string>
+    <string name="run">RUN</string>
+
+    <!--    Control Strings, Don't Change-->
+    <string name="bracket_open" translatable="false">(</string>
+    <string name="bracket_close" translatable="false">)</string>
+    <string name="control_double_quotes" translatable="false">\"</string>
+    <string name="control_single_quotes" translatable="false">\'</string>
+    <string name="curly_brace_open" translatable="false">{</string>
+    <string name="curly_brace_close" translatable="false">}</string>
+    <string name="delete">Delete</string>
+    <string name="replace_code">Do you want to replace existing code snippet ?</string>
+    <string name="share">Share</string>
+    <string name="rename">Rename</string>
+    <string name="save">Save</string>
+    <string name="cancel_alert">Cancel</string>
+    <string name="save_file_hint">Hello World… </string>
+    <string name="save_as">Save your project as</string>
+    <string name="enter_file_name">Enter file name</string>
+    <string name="code_saved">Project Saved Successfully</string>
+    <string name="nothing_to_save">Nothing to save</string>
+    <string name="nothing_to_share">Nothing to share</string>
+    <string name="share_code">Share Code</string>
+    <string name="python">Python</string>
+    <string name="typing">Typing Guru</string>
+    <string name="installing_module_message">Preparing the app for you</string>
+    <string name="take_mentor_help"><u>Take Mentor Help</u></string>
+    <string name="error_fix_tip">FIX: How to fix this type of error will be given here in short.</string>
+    <string name="scratch">Scratch</string>
+    <string name="executing_code">Executing Code</string>
+    <string name="filename_error">Project name already exists!</string>
+    <string name="filename_required">Please enter a filename</string>
+    <string name="clear">Clear</string>
+
+
+</resources>

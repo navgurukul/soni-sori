@@ -7,6 +7,7 @@
 
     <!-- button names -->
     <string name="ok">OK</string>
+    <string name="save">Save</string>
     <string name="jump_to_first_unread">Jump to first unread message.</string>
     <string name="action_close">Close</string>
     <string name="join">Join</string>
@@ -35,4 +36,6 @@
     <string name="keyErrorExampleText">You\'re trying to access an key which is<b>not exisiting</b> in the <b>dictionary(dict).</b></string>
     <string name="keyboardInterruptExampleText">KeyboardInterrupt is thrown when the user hits <b>the interrupt key</b> (normally Control-C) during the execution of the program.</string>
     <!-- Error Screen UI Strings: End-->
+    <string name="more_batch">More Batches</string>
+    <string name="upcoming_classes">Upcoming Classes</string>
 </resources>

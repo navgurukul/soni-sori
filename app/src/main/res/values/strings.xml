@@ -4,6 +4,7 @@
     <string name="app_name">Meraki</string>
 
     <string name="title_more">More</string>
+    <string name="profile">Profile</string>
     <string name="hello">Hello!</string>
     <string name="description">I am <font fgcolor='#D63447'>Meraki.</font>\nI am here to help you learn</string>
     <string name="powered_by">Powered by Nav-Gurukul</string>
@@ -22,6 +23,7 @@
     <string name="title_home">Home</string>
     <string name="meraki">Meraki</string>
     <string name="search_classes">Search for Classes</string>
+    <string name="search_playground">Search projects or lab…</string>
     <string name="no_class_scheduled">No Class Scheduled</string>
     <string name="about">About</string>
     <string name="class_detail">Class Detail</string>
@@ -29,10 +31,11 @@
     <string name="enroll_to_class">Enroll To Class</string>
     <string name="unable_to_enroll">Unable to enroll you currently. You might be already enrolled.</string>
     <string name="enrolled">You have been enrolled to class successfully</string>
-    <string name="log_out_class">You have been dropped out of class successfully</string>
-    <string name="unable_to_drop">Unable to drop out of class</string>
+    <string name="log_out_class">You have been dropped out of batch successfully</string>
+    <string name="unable_to_drop">Unable to drop out of batch</string>
     <string name="drop_out">I want to drop out</string>
     <string name="join_class">Join the class</string>
+    <string name="join_class_in">Join the class (Starts in %s)</string>
     <string name="unable_to_process_request">Unable to process your request, please try again</string>
 
     <string name="default_notification_channel_id" translatable="false">meraki_fcm_default_channel</string>
@@ -52,7 +55,7 @@
     <string name="please_connect">Please connect your account to update</string>
     <string name="update_profile">Update Profile</string>
     <string name="email_already_used">This email is already linked with another account</string>
-    <string name="app_version">App Version: %1$s</string>
+    <string name="app_version">App Version</string>
     <string name="connect_with_email">Connect with Email</string>
     <string name="skip_login">Don\'t want to login? <u>Skip Login</u></string>
     <string name="create_new_account">Create New Account</string>
@@ -62,9 +65,58 @@
     <string name="enroll_date_and_time">Mentor - %1$s\nDate - %2$s\nTime - %3$s</string>
     <string name="unavailable">Unavailable</string>
     <string name="files_saved">Files Saved</string>
+    <string name="server_url_label">Server Url</string>
     <string name="delete">Delete</string>
     <string name="copy_to_playground">Copy to Playground</string>
     <string name="file_deleted">File is deleted</string>
     <string name="collapse">Collapse</string>
     <string name="title_typing">Typing</string>
+    <string name="enrolled_label">Enrolled</string>
+    <string name="only_enrolled">Only Enrolled</string>
+    <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+
+    <string name="opportunities">Opportunities</string>
+    <string name="opportunities_desc">Curated list of admission tests, grants, advanced courses and mentorship to skyrocket your career</string>
+    <string name="explore_opportunities">Explore Opportunities</string>
+    <string name="edit">Edit</string>
+
+    <string name="select_language_english">Please select the language you are comfortable to study in</string>
+    <string name="select_language_hindi">कृपया अपनी पढ़ाई के लिए पसंदीदा भाषा को चुने </string>
+    <string name="english">English</string>
+    <string name="hindi">"हिन्दी "</string>
+    <string name="skip_login_english">Skip Login</string>
+    <string name="skip_login_hindi">लॉगिन छोड़ें</string>
+    <string name="skip_english">Skip</string>
+    <string name="skip_hindi">छोड़े </string>
+    <string name="next_english">Next</string>
+    <string name="next_hindi">अगला</string>
+    <string name="continue_with_google_hindi">गूगल के साथ जारी रखें</string>
+    <string name="continue_with_google_english">Continue with Google</string>
+
+
+    <string name="learn_python_header_english">Learn Python</string>
+    <string name="learn_python_desc_english">Step into the world of tech with guidance from Python professionals</string>
+    <string name="title_learn">Learn</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_title">Profile</string>
+    <string name="enrolled_batches">Enrolled Batches</string>
+    <string name="confirmation">Confirm dropping out of the batch</string>
+    <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
+    <string name="stay_enrolled">Stay Enrolled</string>
+
 </resources>

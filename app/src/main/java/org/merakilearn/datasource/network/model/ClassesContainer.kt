@@ -1,9 +1,11 @@
 package org.merakilearn.datasource.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ClassesContainer(
-    @SerializedName("classes")
+    @Json(name = "classes")
     val classes: List<Classes>
 )

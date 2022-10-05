@@ -5,10 +5,11 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import org.merakilearn.core.dynamic.module.DynamicFeatureModuleManager
 import org.merakilearn.core.navigator.MerakiNavigator
-import java.io.File
+import org.merakilearn.core.utils.CorePreferences
 
 private val module = module {
-    single { MerakiNavigator(get(), get(),get()) }
+    single { MerakiNavigator(get(), get(),get(), get()) }
+    single { CorePreferences(get()) }
     single { DynamicFeatureModuleManager(SplitInstallManagerFactory.create(androidApplication())) }
 }
 

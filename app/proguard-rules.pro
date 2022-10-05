@@ -25,9 +25,9 @@
 }
 -keep,allowobfuscation @interface com.google.gson.annotations.SerializedName
 
--keep class com.chaquo.python.* {*;}
--keepclassmembers class com.chaquo.python.* {*;}
--keep class com.chaquo.python.android.* {*;}
--keepclassmembers class com.chaquo.python.android.* {*;}
+-keep class com.chaquo.python.*.* {*;}
+-keepclassmembers class com.chaquo.python.*.* {*;}
+-keep class com.chaquo.python.android.*.* {*;}
+-keepclassmembers class com.chaquo.python.android.*.* {*;}
 
--keepclassmembers class org.navgurukul.playground.ui.PythonPlaygroundViewModel {*;}
+-keepclassmembers class org.navgurukul.playground.repo.PythonRepositoryImpl {*;}

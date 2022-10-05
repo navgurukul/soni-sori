@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/save_alert_bg">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_4x"
+        style="?textAppearanceHeadline6"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/save_as"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_5x"
+        android:layout_marginEnd="@dimen/spacing_5x"
+        android:layout_marginTop="@dimen/spacing_4x"
+        app:hintEnabled="false"
+        app:boxBackgroundColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" >
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hello world..."
+      />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_5x"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_3x"
+        android:layout_marginEnd="@dimen/spacing_2x"
+        android:textAllCaps="false"
+        android:text="@string/cancel_alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/save"
+        app:layout_constraintTop_toBottomOf="@+id/input" />
+</androidx.constraintlayout.widget.ConstraintLayout>

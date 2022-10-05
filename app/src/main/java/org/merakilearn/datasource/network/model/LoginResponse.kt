@@ -1,46 +1,49 @@
 package org.merakilearn.datasource.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class LoginResponse(
-    @SerializedName("token")
+    @Json(name = "token")
     var token: String,
-    @SerializedName("user")
+    @Json(name = "user")
     var user: User,
-    @SerializedName("room_id")
-    val roomId: String,
-    @SerializedName("is_first_time")
-    val is_first_time: Boolean
+    @Json(name = "room_id")
+    val roomId: String?,
+    @Json(name = "is_first_time")
+    val is_first_time: Boolean = true
 ) {
+    @JsonClass(generateAdapter = true)
     data class User(
-        @SerializedName("chat_id")
-        val chatId: String,
-        @SerializedName("chat_password")
-        val chatPassword: String,
-        @SerializedName("center")
-        var center: Any? = null,
-        @SerializedName("created_at")
-        var createdAt: String,
-        @SerializedName("email")
+        @Json(name = "chat_id")
+        val chatId: String?,
+        @Json(name = "chat_password")
+        val chatPassword: String?,
+        @Json(name = "center")
+        var center: Any?,
+        @Json(name = "created_at")
+        var createdAt: String?,
+        @Json(name = "email")
         var email: String,
-        @SerializedName("github_link")
-        var githubLink: Any? = null,
-        @SerializedName("google_user_id")
-        var googleUserId: String? = null,
-        @SerializedName("id")
+        @Json(name = "github_link")
+        var githubLink: Any?,
+        @Json(name = "google_user_id")
+        var googleUserId: String?,
+        @Json(name = "id")
         var id: String,
-        @SerializedName("linkedin_link")
-        var linkedinLink: Any? = null,
-        @SerializedName("medium_link")
-        var mediumLink: Any? = null,
-        @SerializedName("name")
+        @Json(name = "linkedin_link")
+        var linkedinLink: Any?,
+        @Json(name = "medium_link")
+        var mediumLink: Any?,
+        @Json(name = "name")
         var name: String,
-        @SerializedName("pathways")
-        var pathways: List<Any?>? = null,
-        @SerializedName("profile_picture")
-        var profilePicture: String? = null,
-        @SerializedName("rolesList")
+        @Json(name = "pathwaysV2")
+        var pathways: List<Any?>?,
+        @Json(name = "profile_picture")
+        var profilePicture: String?,
+        @Json(name = "rolesList")
         var rolesList: List<Any?>? = emptyList()
     )
 }

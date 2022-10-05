@@ -5,6 +5,8 @@ import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import org.merakilearn.core.extentions.hideKeyboard
+import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.BaseFragment
 
 fun FragmentActivity.addFragment(frameId: Int, fragment: Fragment) {

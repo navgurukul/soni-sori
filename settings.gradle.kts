@@ -1,7 +1,7 @@
 include (":typing")
 include (":core")
 include (":commonUI")
-include (":playground")
+include (":python")
 include (":learn")
 include (":chat")
 include (":app")

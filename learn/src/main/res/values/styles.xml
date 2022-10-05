@@ -17,6 +17,7 @@
 
     <style name="text_view_profile">
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:padding">@dimen/dimen_5_dp</item>
         <item name="android:layout_marginEnd">@dimen/dimen_5_dp</item>
         <item name="android:layout_marginStart">@dimen/dimen_5_dp</item>
@@ -67,5 +68,11 @@
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/sheet_background</item>
+    </style>
+    <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
+    </style>
+    <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
+        <item name="elevationOverlayEnabled">false</item>
     </style>
 </resources>

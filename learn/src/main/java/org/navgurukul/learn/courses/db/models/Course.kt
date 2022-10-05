@@ -1,42 +1,30 @@
 package org.navgurukul.learn.courses.db.models
 
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 @Entity(tableName = "pathway_course")
+@JsonClass(generateAdapter = true)
 data class Course(
-    @SerializedName("created_at")
-    var createdAt: String? = null,
-    @SerializedName("days_to_complete")
-    var daysToComplete: String? = null,
-
     @PrimaryKey(autoGenerate = false)
-    @SerializedName("id")
-    var id: String = "",
-    @SerializedName("logo")
-    var logo: String? = null,
-    @SerializedName("name")
-    var name: String = "",
-    @SerializedName("notes")
-    var notes: String? = null,
-    @SerializedName("pathwayId")
+    @Json(name = "id")
+    val id: String = "",
+    @Json(name = "name")
+    var name: String,
+    @Json(name = "pathwayId")
     var pathwayId: Int? = null,
-    @SerializedName("pathwayName")
-    var pathwayName: String? = null,
-    @SerializedName("sequence_num")
-    var sequenceNum: String? = null,
-    @SerializedName("short_description")
-    var shortDescription: String? = null,
-    @SerializedName("type")
-    var type: String? = null,
+    @Json(name = "short_description")
+    var shortDescription: String,
+    @Json(name = "lang_available")
+    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
+    var supportedLanguages: List<String> = listOf("en"),
+){
     @Ignore
-    @SerializedName("number")
-    var number: Int? = null,
-
-    @Ignore
-    @SerializedName("exercises")
-    var exercises: List<Exercise?>? = listOf()
-)
+    @Json(name = "exercises")
+    var courseContents: List<CourseContents> = listOf()
+}

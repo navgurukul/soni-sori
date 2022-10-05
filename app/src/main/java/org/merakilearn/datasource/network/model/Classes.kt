@@ -1,58 +1,59 @@
 package org.merakilearn.datasource.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import org.merakilearn.core.extentions.capitalizeWords
-import org.merakilearn.util.toDate
-import org.merakilearn.util.toDay
 import org.merakilearn.util.toTime
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Classes(
-    @SerializedName("category_id")
+    @Json(name = "category_id")
     val categoryId: Int,
-    @SerializedName("course_id")
+    @Json(name = "course_id")
     val courseId: Any?,
-    @SerializedName("description")
+    @Json(name = "description")
     val description: String,
-    @SerializedName("end_time")
+    @Json(name = "end_time")
     val endTime: Date,
-    @SerializedName("enrolled")
-    val enrolled: Boolean,
-    @SerializedName("exercise_id")
+    @Json(name = "enrolled")
+    val enrolled: Boolean = false,
+    @Json(name = "exercise_id")
     val exerciseId: Any?,
-    @SerializedName("facilitator")
+    @Json(name = "facilitator")
     val facilitator: Facilitator?,
-    @SerializedName("facilitator_id")
+    @Json(name = "facilitator_id")
     val facilitatorId: Int?,
-    @SerializedName("id")
+    @Json(name = "id")
     val id: Int,
-    @SerializedName("lang")
+    @Json(name = "lang")
     val lang: String,
-    @SerializedName("rules")
+    @Json(name = "rules")
     val rules: Rules?,
-    @SerializedName("start_time")
+    @Json(name = "start_time")
     val startTime: Date,
-    @SerializedName("title")
+    @Json(name = "title")
     val title: String,
-    @SerializedName("type")
+    @Json(name = "type")
     val type: String,
-    @SerializedName("video_id")
+    @Json(name = "video_id")
     val videoId: String?,
-    @SerializedName("meet_link")
+    @Json(name = "meet_link")
     val meetLink: String
 ) {
+    @JsonClass(generateAdapter = true)
     data class Facilitator(
-        @SerializedName("name")
+        @Json(name = "name")
         val name: String?
     )
-
+    @JsonClass(generateAdapter = true)
     data class Rules(
-        @SerializedName("en")
+        @Json(name = "en")
         val en: String?
     )
 }
 
 fun Classes.sanitizedType(): String = type.replace("_", " ").capitalizeWords()
 fun Classes.timeRange(): String = "${startTime.toTime()} - ${endTime.toTime()}"
-fun Classes.formattedDate(): String = startTime.toDate()
+fun Classes.displayableLanguage(): String = Locale(lang).getDisplayLanguage(Locale.ENGLISH)

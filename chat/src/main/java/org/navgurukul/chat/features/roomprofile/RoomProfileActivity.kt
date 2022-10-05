@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.merakilearn.core.extentions.KEY_ARG
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.extensions.KEY_ARG
 import org.navgurukul.chat.core.extensions.addFragment
 import org.navgurukul.chat.core.extensions.addFragmentToBackstack
 import org.navgurukul.chat.features.home.room.detail.RequireActiveMembershipViewEvents
@@ -123,9 +124,20 @@ class RoomProfileActivity :
         configureToolbar(toolbar)
     }
 
-    override fun configure(title: String, subtitle: String?, colorRes: Int, showProfile: Boolean, onClickListener: View.OnClickListener?) {
+    override fun configure(
+        title: String,
+        @AttrRes colorRes: Int,
+        showProfile: Boolean,
+        subtitle: String?,
+        onClickListener: View.OnClickListener?,
+        action: String?,
+        actionOnClickListener: View.OnClickListener?,
+        showLogout: Boolean,
+        showPathwayIcon : Boolean,
+        pathwayIcon: String?
+    ) {
+        throw RuntimeException("Set Title is not supported")
     }
-
 }
 
 class RoomProfileSharedActionViewModel :

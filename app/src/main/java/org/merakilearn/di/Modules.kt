@@ -1,43 +1,54 @@
 package org.merakilearn.di
 
 import androidx.preference.PreferenceManager
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.get
 import org.merakilearn.BuildConfig
 import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
+import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.navigator.AppModuleNavigator
-import org.merakilearn.datasource.ApplicationRepo
-import org.merakilearn.datasource.Config
-import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.*
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
-import org.merakilearn.ui.discover.DiscoverViewModel
 import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
-import org.merakilearn.ui.onboarding.WelcomeViewModel
+import org.merakilearn.ui.onboarding.OnBoardingActivityArgs
+import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
+import org.merakilearn.ui.onboarding.OnBoardingViewModel
+import org.merakilearn.ui.playground.PlaygroundViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
+import org.navgurukul.learn.courses.db.models.*
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
-    viewModel { HomeViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get()) }
-    viewModel { WelcomeViewModel(get(), get(), get(), get()) }
-    viewModel { DiscoverViewModel(get(), get(), get()) }
-    viewModel { (classId : Int, isEnrolled: Boolean) -> EnrollViewModel(classId = classId,
-        isEnrolled = isEnrolled,
-        stringProvider = get(),
-        applicationRepo = get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
+    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { PlaygroundViewModel(get(),get()) }
+    viewModel { (classId: Int, isEnrolled: Boolean) ->
+        EnrollViewModel(
+            classId = classId,
+            isEnrolled = isEnrolled,
+            stringProvider = get(),
+            colorProvider = get(),
+            classesRepo = get()
+        )
+    }
 }
 
 val factoryModule = module {
@@ -67,35 +78,81 @@ val networkModule = module {
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
+        okHttpClientBuilder.addInterceptor { chain ->
+            val chainBuilder = chain.request().newBuilder()
+            val userRepo: UserRepo = get(UserRepo::class.java)
+            chainBuilder.addHeader("version-code", BuildConfig.VERSION_CODE.toString())
+            chainBuilder.addHeader("platform", "android")
+            chainBuilder.addHeader("Authorization", userRepo.getAuthToken())
+            chainBuilder.build().let(chain::proceed)
+        }
         okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
         okHttpClientBuilder.readTimeout(5, TimeUnit.MINUTES)
 
         return okHttpClientBuilder.build()
     }
 
-    fun provideGson(): Gson {
-        return GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").setLenient().create()
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(
+                PolymorphicJsonAdapterFactory.of(BaseCourseContent::class.java, "component")
+                .withSubtype(ImageBaseCourseContent::class.java, BaseCourseContent.COMPONENT_IMAGE)
+                .withSubtype(TextBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TEXT)
+                .withSubtype(LinkBaseCourseContent::class.java, BaseCourseContent.COMPONENT_LINK)
+//                .withSubtype(CodeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_SOLUTION)
+                .withSubtype(CodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_CODE)
+                .withSubtype(QuestionCodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_CODE)
+                .withSubtype(QuestionExpressionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_EXPRESSION)
+                .withSubtype(BlockQuoteBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BLOCK_QUOTE)
+                .withSubtype(HeaderBaseCourseContent::class.java, BaseCourseContent.COMPONENT_HEADER)
+                .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
+                .withSubtype(BannerBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
+                .withSubtype(SolutionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_SOLUTION)
+                    .withSubtype(OptionsBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OPTIONS)
+                .withSubtype(OutputBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OUTPUT)
+                .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
+                .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)
+                .withDefaultValue(UnknownBaseCourseContent())
+            )
+            .add(
+                PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
+                    .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
+                    .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
+                    .withSubtype(CourseAssessmentContent::class.java, CourseContentType.assessment.name)
+            )
+            .build()
     }
 
 
-    fun provideRetrofit(factory: Gson, client: OkHttpClient): Retrofit {
+    fun provideRetrofit(factory: Moshi, client: OkHttpClient, settingsRepo: SettingsRepo): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.SERVER_URL)
-            .addConverterFactory(GsonConverterFactory.create(factory))
+            .baseUrl(settingsRepo.serverBaseUrl)
+            .addConverterFactory(MoshiConverterFactory.create(factory))
             .client(client)
             .build()
     }
 
     single { provideHttpClient() }
-    single { provideGson() }
-    single { provideRetrofit(get(), get()) }
+    single { provideMoshi() }
+    single { provideRetrofit(get(), get(), get()) }
 
 }
 
 val repositoryModule = module {
-    single { ApplicationRepo(get(), androidApplication(), get(), get()) }
+    single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
     single { Config() }
-    single { UserRepo(get(), PreferenceManager.getDefaultSharedPreferences(androidApplication()), get(), get()) }
+    single { ClassesRepo(get()) }
+    single { SettingsRepo(get()) }
+    single { PlaygroundRepo() }
+    single {
+        UserRepo(
+            get(),
+            PreferenceManager.getDefaultSharedPreferences(androidApplication()),
+            get(),
+            get(),
+        )
+    }
 }
 
 val appModules =

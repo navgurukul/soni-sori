@@ -1,10 +1,12 @@
 package org.navgurukul.learn.courses.network.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import org.navgurukul.learn.courses.db.models.Course
 
+@JsonClass(generateAdapter = true)
 data class CourseExerciseContainer(
-    @SerializedName("course")
-    var course: Course? = Course()
+    @Json(name = "course")
+    val course: Course
 )

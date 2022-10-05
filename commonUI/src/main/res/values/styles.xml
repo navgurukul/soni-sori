@@ -16,12 +16,14 @@
         <item name="colorOnError">@color/primaryTextColor</item>
         <item name="colorOnSurface">@color/textColor</item>
         <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
+        <item name="constructiveForeground">@color/constructiveForeground</item>
 
         <item name="textAppearanceEmphasized1">@style/TextAppearance.AppCompat.Emphasized1</item>
         <item name="textAppearanceEmphasized2">@style/TextAppearance.AppCompat.Emphasized2</item>
         <item name="textAppearanceBody1">@style/TextAppearance.AppCompat.Body1</item>
         <item name="textAppearanceBody2">@style/TextAppearance.AppCompat.Body2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="textAppearanceCaption2">@style/TextAppearance.AppCompat.Caption2</item>
         <item name="textAppearanceSubtitle1">@style/TextAppearance.AppCompat.Subtitle1</item>
 
         <item name="textAppearanceHeadline6">@style/TextAppearance.AppCompat.Headline6</item>
@@ -35,6 +37,8 @@
         <item name="elevation100">2dp</item>
         <item name="elevation200">4dp</item>
 
+        <item name="borderWidth">1dp</item>
+
         <item name="textPrimary">@color/textColor</item>
         <item name="textBrand">@color/primaryColor</item>
         <item name="textSecondary">@color/textColorAlt</item>
@@ -42,7 +46,11 @@
         <item name="backgroundColor">@color/backgroundColor</item>
         <item name="borderColor">@color/borderColor</item>
 
+        <item name="colorBackgroundDisabled">@color/colorBackgroundDisabled</item>
+
         <item name="actionBarSize">@dimen/actionBarSize</item>
+
+        <item name="actionOverflowMenuStyle">@style/PopupMenu</item>
 
     </style>
 
@@ -55,5 +63,16 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="buttonTextAppearanceStyle" parent="@style/TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
+    <!-- Popup Menu -->
+    <style name="PopupMenu" parent="@style/Widget.MaterialComponents.PopupMenu">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <color name="colorBackgroundDisabled">#BEBEBE</color>
 </resources>

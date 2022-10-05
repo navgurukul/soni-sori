@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/textContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?textPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:textColorLink="@color/primaryColor"
+        tools:text="@string/dialog_title_error"
+        tools:visibility="visible" />
+</layout>

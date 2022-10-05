@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_class"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/class_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/light_gradient_toolbar_background" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvClassType"
+            app:checkedIconEnabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_4x"
+            android:layout_marginStart="@dimen/spacing_5x"
+            android:paddingHorizontal="@dimen/spacing_4x"
+            android:paddingVertical="@dimen/spacing_2x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/classChipSecondary"
+            app:chipBackgroundColor="@color/classChipBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/class_toolbar"
+            tools:text="Batch" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvClassLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_2x"
+            android:paddingHorizontal="@dimen/spacing_4x"
+            android:paddingVertical="@dimen/spacing_2x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/classChipSecondary"
+            app:layout_constraintTop_toTopOf="@+id/tvClassType"
+            app:chipStrokeColor="@color/classChipSecondary"
+            app:layout_constraintStart_toEndOf="@+id/tvClassType"
+            tools:text="Hindi" />
+
+        <TextView
+            android:id="@+id/tvAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:layout_marginHorizontal="@dimen/spacing_5x"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/class_desc1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+            android:textColor="@color/textColor"
+            app:layout_constraintStart_toEndOf="@+id/tvClassType"
+            app:layout_constraintTop_toBottomOf="@+id/tvClassLanguage"
+            tools:text="Clear your doubts related to the first class of Python and other queries during your studies " />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:layout_marginStart="@dimen/spacing_5x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:drawablePadding="@dimen/spacing_2x"
+            app:drawableStartCompat="@drawable/ic_batch_calender"
+            app:layout_constraintTop_toBottomOf="@id/tvAbout"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="15 Sep 21, 4 PM - 5PM" />
+
+        <TextView
+            android:id="@+id/tvFacilatorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_3x"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:layout_constraintStart_toStartOf="@id/tvDate"
+            android:drawablePadding="@dimen/spacing_2x"
+            tools:text="Prajakata Kishori"
+            app:drawableStartCompat="@drawable/ic_reshot_teacher" />
+
+        <TextView
+            android:id="@+id/tvRule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_6x"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Please be sure to join at least 10 minutes before the scheduled time"
+            tools:text="Please be sure to join at least 10 minutes before the scheduleed time"
+            app:layout_constraintTop_toBottomOf="@+id/tvFacilatorName"
+            app:layout_constraintStart_toStartOf="@+id/tvDate" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tvBtnJoin"
+            android:layout_width="match_parent"
+            android:padding="@dimen/spacing_4x"
+            android:layout_marginTop="48dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textAllCaps="false"
+            app:cornerRadius="@dimen/spacing_4x"
+            android:background="@color/green_progress_color"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Enroll"/>
+
+        <TextView
+            android:id="@+id/btnDropOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_10x"
+            android:text="@string/can_t_attend"
+            android:textColor="@color/colorRed"
+            app:layout_constraintStart_toStartOf="@+id/tvRule"
+            app:layout_constraintTop_toBottomOf="@+id/tvRule"/>
+
+        <include
+            android:id="@+id/progressBar"
+            layout="@layout/component_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
