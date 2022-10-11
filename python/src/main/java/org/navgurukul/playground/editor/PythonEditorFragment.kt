@@ -106,7 +106,9 @@ class PythonEditorFragment : BaseFragment() {
                 is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
                 is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog(it.closeDialog)
                 is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
+                is PythonEditorViewEvents.ShowFileRenameDialog -> showDialogForFileRename()
                 is PythonEditorViewEvents.ShowFileNameError -> showFileNameError(it.message)
+                is PythonEditorViewEvents.ShowFileRenamedDialog->showCodeRenamedDialog(it.closeDialog)
 
             }
         }
@@ -252,12 +254,54 @@ class PythonEditorFragment : BaseFragment() {
 
         alertDialog.show()
     }
+    private fun showDialogForFileRename() {
+        val inputContainer :View = getLayoutInflater().inflate(R.layout.alert_edit_text,null)
+        etFileName = inputContainer.findViewById(R.id.input)
+        val btnSave: View = inputContainer.findViewById(R.id.save)
+        val btnCancel: View = inputContainer.findViewById(R.id.cancel)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(inputContainer)
+        builder.setCancelable(false)
+        alertDialog  = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+
+        btnSave.setOnClickListener{
+            viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
+        }
+        btnCancel.setOnClickListener{
+            if(alertDialog.isShowing) {
+                alertDialog.dismiss()
+            }
+        }
+
+        alertDialog.show()
+    }
 
     private fun showCodeSavedDialog(closeDialog:Boolean){
         if(closeDialog){
             alertDialog.dismiss()
         }
         val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
+        val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(view)
+        alertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+        alertDialog.show()
+
+        Handler().postDelayed({
+            alertDialog.dismiss()
+        },1000)
+
+    }
+    private fun showCodeRenamedDialog(closeDialog:Boolean){
+        if(closeDialog){
+            alertDialog.dismiss()
+        }
+        val view:View = getLayoutInflater().inflate(R.layout.alert_file_renamed,null)
         val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(view)
         alertDialog = builder.create()

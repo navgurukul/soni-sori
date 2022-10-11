@@ -107,6 +107,8 @@ class PythonEditorViewModel(
             PythonEditorViewActions.ClearCode -> updateCode("")
             PythonEditorViewActions.ShareCode -> shareCode()
             PythonEditorViewActions.OnSaveAction -> saveCode()
+            PythonEditorViewActions.OnSaveAction -> renameFile()
+
             is PythonEditorViewActions.OnInput -> onInput(action.input)
         }
     }
@@ -157,6 +159,23 @@ class PythonEditorViewModel(
                 fileSaved=false
             )
         }
+    }
+    private fun renameFile(){
+        val viewState = viewState.value!!
+        if (!TextUtils.isEmpty(viewState.code)) {
+            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenameDialog)
+            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenameDialog)
+            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenamedDialog(false))
+            setState {
+                copy(
+                    fileSaved = true
+                )
+            }
+        }
+        else {
+            _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.nothing_to_rename)))
+        }
+
     }
 
     private fun saveCode() {
@@ -220,10 +239,13 @@ sealed class PythonEditorViewActions : ViewModelAction {
 sealed class PythonEditorViewEvents : ViewEvents {
     object ShowUpdateCodeDialog : PythonEditorViewEvents()
     object ShowFileNameDialog : PythonEditorViewEvents()
+    object ShowFileRenameDialog : PythonEditorViewEvents()
+    class ShowFileRenamedDialog(val closeDialog: Boolean) : PythonEditorViewEvents()
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
     class ShowFileNameError(val message: String): PythonEditorViewEvents()
     class ShowFileSavedDialog(val closeDialog: Boolean): PythonEditorViewEvents()
+
 }
 
 data class PythonEditorViewState(
