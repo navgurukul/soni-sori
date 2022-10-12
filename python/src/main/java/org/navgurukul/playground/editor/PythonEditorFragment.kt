@@ -228,7 +228,7 @@ class PythonEditorFragment : BaseFragment() {
 
     }
 
-    private fun showDialogForFileName() {
+    fun showDialogForFileName() {
         val inputContainer :View = getLayoutInflater().inflate(R.layout.alert_edit_text,null)
         etFileName = inputContainer.findViewById(R.id.input)
         val btnSave: View = inputContainer.findViewById(R.id.save)
