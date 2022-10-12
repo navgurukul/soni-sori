@@ -102,14 +102,23 @@ class PythonEditorViewModel(
         when (action) {
             is PythonEditorViewActions.OnCodeUpdated -> updateCode(action.code)
             is PythonEditorViewActions.OnFileNameEntered -> onFileNameEntered(action.fileName)
+            is PythonEditorViewActions.OnFileRenameEntered->onFileRenameEntered(action.reName)
             PythonEditorViewActions.OnOverrideCode -> overrideCode()
             PythonEditorViewActions.OnRunCode -> runCode()
             PythonEditorViewActions.ClearCode -> updateCode("")
             PythonEditorViewActions.ShareCode -> shareCode()
             PythonEditorViewActions.OnSaveAction -> saveCode()
-            PythonEditorViewActions.OnSaveAction -> renameFile()
-
+            PythonEditorViewActions.OnRenameFile -> renameCode()
             is PythonEditorViewActions.OnInput -> onInput(action.input)
+        }
+    }
+
+    private fun renameCode() {
+        val viewState = viewState.value!!
+        if (!TextUtils.isEmpty(viewState.code)) {
+            _viewEvents.postValue(PythonEditorViewEvents.ShowRenameDialog)
+        } else {
+            _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.nothing_to_rename)))
         }
     }
 
@@ -160,22 +169,15 @@ class PythonEditorViewModel(
             )
         }
     }
-    private fun renameFile(){
+    private fun updateName(name:String){
         val viewState = viewState.value!!
-        if (!TextUtils.isEmpty(viewState.code)) {
-            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenameDialog)
-            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenameDialog)
-            _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenamedDialog(false))
-            setState {
-                copy(
-                    fileSaved = true
-                )
-            }
+        pythonRepository.saveCode(viewState.code, viewState.fileName,true)
+        _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(false))
+        setState {
+            copy(
+                fileSaved = true
+            )
         }
-        else {
-            _viewEvents.postValue(PythonEditorViewEvents.ShowToast(stringProvider.getString(R.string.nothing_to_rename)))
-        }
-
     }
 
     private fun saveCode() {
@@ -204,13 +206,38 @@ class PythonEditorViewModel(
                 if (pythonRepository.isFileNamePresent(fileName)) {
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
                 } else {
+
                     val savedFileName=pythonRepository.saveCode(viewState.code, fileName,false)
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
-                    newFile=false
+                    newFile=true
                     setState {
                         copy(
                             fileName=savedFileName ,
-                            title = savedFileName.replaceAfterLast("_", "").removeSuffix("_"),
+                            title = fileName,
+                            fileSaved = true
+                        )
+                    }
+                }
+            }
+            else{
+                _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_required)))
+            }
+        }
+    }
+    private fun onFileRenameEntered(fileName: String) {
+        viewModelScope.launch {
+            val viewState = viewState.value!!
+            if(fileName.isNotBlank()) {
+                if (pythonRepository.isFileNamePresent(fileName)) {
+                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
+                } else {
+
+                    val savedFileName=pythonRepository.updateName( fileName,false)
+                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
+                    setState {
+                        copy(
+                            fileName=savedFileName ,
+                            title = fileName,
                             fileSaved = true
                         )
                     }
@@ -223,6 +250,8 @@ class PythonEditorViewModel(
     }
 }
 
+
+
 sealed class PythonEditorViewActions : ViewModelAction {
     data class OnCodeUpdated(val code: String) : PythonEditorViewActions()
     data class OnFileNameEntered(val fileName: String) : PythonEditorViewActions()
@@ -231,21 +260,23 @@ sealed class PythonEditorViewActions : ViewModelAction {
     object OnSaveAction : PythonEditorViewActions()
     object ClearCode : PythonEditorViewActions()
     object ShareCode : PythonEditorViewActions()
-    object RenameFile : PythonEditorViewActions()
+    object OnRenameFile : PythonEditorViewActions()
 
     data class OnInput(val input: String) : PythonEditorViewActions()
+    data class OnFileRenameEntered(val reName: String) : PythonEditorViewActions()
+
+
 }
 
 sealed class PythonEditorViewEvents : ViewEvents {
     object ShowUpdateCodeDialog : PythonEditorViewEvents()
     object ShowFileNameDialog : PythonEditorViewEvents()
-    object ShowFileRenameDialog : PythonEditorViewEvents()
-    class ShowFileRenamedDialog(val closeDialog: Boolean) : PythonEditorViewEvents()
+    object ShowRenameDialog:PythonEditorViewEvents()
     data class ShowToast(val message: String) : PythonEditorViewEvents()
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
     class ShowFileNameError(val message: String): PythonEditorViewEvents()
     class ShowFileSavedDialog(val closeDialog: Boolean): PythonEditorViewEvents()
-
+    object OnRenameFile : PythonEditorViewEvents()
 }
 
 data class PythonEditorViewState(

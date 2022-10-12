@@ -126,6 +126,31 @@ class PythonRepositoryImpl(
         return finalFileName
     }
 
+    override fun updateName(fileName: String, existingFile: Boolean): String {
+        var finalFileName =""
+        try {
+            val directory = File(
+                context.getExternalFilesDir(null),
+                DIRECTORY_NAME
+            ).also {
+                it.mkdirs()
+            }
+
+            finalFileName = if(existingFile) fileName else fileName + "_" + Date().time + ".py"
+            val fileOutStream =
+                FileOutputStream(File(directory.toString() + File.separator + finalFileName))
+            val outputStreamWriter =
+                OutputStreamWriter(fileOutStream)
+//            outputStreamWriter.write(code)
+            outputStreamWriter.close()
+        } catch (ex: IOException) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+        }
+        return finalFileName
+    }
+
+
+
     override suspend fun isFileNamePresent(fileName:String): Boolean{
         val list=fetchSavedFiles()
         for(file_name in list) {
