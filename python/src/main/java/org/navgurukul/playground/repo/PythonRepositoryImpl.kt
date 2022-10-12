@@ -126,7 +126,7 @@ class PythonRepositoryImpl(
         return finalFileName
     }
 
-    override fun updateName(code: String,fileName: String, existingFile: Boolean): String {
+    override fun updateName(code: String,fileName: String, existingFile: Boolean,oldName:String): String {
         var finalFileName =fileName
         try {
             val directory = File(
@@ -136,14 +136,19 @@ class PythonRepositoryImpl(
             ).also {
                 it.mkdirs()
             }
+            val old=oldName
+            val new=fileName
+            if (directory.exists()) {
+                val from: File = File(directory, old)
+                val to: File = File(directory, new)
+                if (from.exists())
+                    from.renameTo(to)
+            }
 
             finalFileName = fileName
             val fileOutStream =
                 FileOutputStream(File(directory.toString() + File.separator + finalFileName))
-//            val outputStreamWriter =
-//                OutputStreamWriter(fileOutStream)
-//            outputStreamWriter.write(code)
-//            outputStreamWriter.close()
+
         } catch (ex: IOException) {
             FirebaseCrashlytics.getInstance().recordException(ex)
         }

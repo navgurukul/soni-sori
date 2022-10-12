@@ -165,6 +165,7 @@ class PythonEditorFragment : BaseFragment() {
         etFileName = inputContainer.findViewById(R.id.input_rename)
         val btnRename: View = inputContainer.findViewById(R.id.rename)
         val btnCancel: View = inputContainer.findViewById(R.id.cancel)
+        var oldRename:String=pythonEditorArgs.file.name
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(inputContainer)
         builder.setCancelable(false)
