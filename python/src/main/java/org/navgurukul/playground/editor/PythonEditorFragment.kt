@@ -147,7 +147,7 @@ class PythonEditorFragment : BaseFragment() {
         btnRename.setOnClickListener{
 
 
-            viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
+            viewModel.handle(PythonEditorViewActions.OnFileRenameEntered(etFileName.editText?.text.toString()))
         }
         btnCancel.setOnClickListener{
             if(alertDialog.isShowing) {
@@ -176,7 +176,7 @@ class PythonEditorFragment : BaseFragment() {
         btnRename.setOnClickListener{
 
 
-            viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
+            viewModel.handle(PythonEditorViewActions.OnFileRenameEntered(etFileName.editText?.text.toString()))
         }
         btnCancel.setOnClickListener{
             if(alertDialog.isShowing) {

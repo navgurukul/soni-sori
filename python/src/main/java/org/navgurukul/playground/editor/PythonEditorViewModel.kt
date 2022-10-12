@@ -232,8 +232,9 @@ class PythonEditorViewModel(
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileNameError(stringProvider.getString(R.string.filename_error)))
                 } else {
 
-                    val savedFileName=pythonRepository.updateName( fileName,false)
+                    val savedFileName=pythonRepository.updateName( viewState.code,fileName,true)
                     _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
+                    newFile=false
                     setState {
                         copy(
                             fileName=savedFileName ,
