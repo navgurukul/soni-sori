@@ -1,0 +1,31 @@
+.vertical-scrollbar,
+.horizontal-scrollbar {
+  position: absolute;
+  background: rgba(190, 190, 190, 0.8);
+  border-radius: calc(8px / 2);
+  cursor: pointer;
+}
+
+.vertical-scrollbar-wrapper {
+  position: absolute;
+  width: 8px;
+  right: 0;
+  top: 1px;
+  height: calc(100% - 8px - 1px);
+}
+
+.horizontal-scrollbar-wrapper {
+  position: absolute;
+  height: 8px;
+  left: 1px;
+  bottom: 0;
+  width: calc(100% - 8px - 1px);
+}
+
+.vertical-scrollbar {
+  width: 8px;
+}
+
+.horizontal-scrollbar {
+  height: 8px;
+}

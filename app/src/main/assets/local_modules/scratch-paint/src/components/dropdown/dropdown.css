@@ -1,0 +1,39 @@
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+.dropdown {
+  border: 1px solid #E9EEF2;
+  border-radius: 5px;
+  overflow: visible;
+  min-width: 3.5rem;
+  color: #4C97FF;
+  padding: .5rem;
+}
+
+.mod-open {
+  background-color: #E9EEF2;
+}
+
+.dropdown-icon {
+  width: .5rem;
+  height: .5rem;
+  vertical-align: middle;
+  padding-bottom: .2rem;
+}
+
+[dir="ltr"] .dropdown-icon {
+  margin-left: .5rem;
+}
+
+[dir=\"rtl\"] .dropdown-icon {
+  margin-right: .5rem;
+}
+
+.mod-caret-up {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  padding-bottom: 0;
+  padding-top: .2rem;
+}

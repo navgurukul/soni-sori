@@ -1,0 +1,13 @@
+{
+    "name": "linebreak",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./src/linebreaker.js",
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT"
+}

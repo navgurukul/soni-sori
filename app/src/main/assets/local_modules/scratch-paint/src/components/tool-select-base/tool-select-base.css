@@ -1,0 +1,58 @@
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+/* ACTUALLY, THIS IS EDITED ;)
+THIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST
+GRID UNITS.
+ALSO EDITED ON 11/13/2017 TO ADD IN CONTANTS FOR LAYOUT FROM `layout-contents.js`*/
+
+/* layout contants from `layout-constants.js`, minus 1px */
+
+.mod-tool-select {
+  display: inline-block;
+  margin: .25rem;
+  border: none;
+  border-radius: .25rem;
+  outline: none;
+  background: none;
+  padding: .25rem;
+  font-size: 0.85rem;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.mod-tool-select.is-selected {
+  background-color: #4C97FF;
+}
+
+.mod-tool-select:focus {
+  outline: none;
+}
+
+img.tool-select-icon {
+  width: 2rem;
+  height: 2rem;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  vertical-align: middle;
+}
+
+.mod-tool-select.is-selected .tool-select-icon {
+  /* Make the tool icons white while selected by making them black and inverting */
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
+@media only screen and (max-width: 1249px) {
+  .tool-select-base_mod-tool-select_8BmWU {
+    margin: 0;
+  }
+}

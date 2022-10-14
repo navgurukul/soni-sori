@@ -1,0 +1,15 @@
+{
+    "name": "get-float-time-domain-data",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./lib/get-float-time-domain-data.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT"
+}

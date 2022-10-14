@@ -1,0 +1,173 @@
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+/* ACTUALLY, THIS IS EDITED ;)
+THIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST
+GRID UNITS.
+ALSO EDITED ON 11/13/2017 TO ADD IN CONTANTS FOR LAYOUT FROM `layout-contents.js`*/
+
+/* layout contants from `layout-constants.js`, minus 1px */
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.costume-input {
+  width: 8rem;
+}
+
+[dir="ltr"] .mod-dashed-border {
+  border-right: 1px dashed #D9D9D9;
+  padding-right: calc(2 * .25rem);
+}
+
+[dir=\"rtl\"] .mod-dashed-border {
+  border-left: 1px dashed #D9D9D9;
+  padding-left: calc(2 * .25rem);
+}
+
+.mod-unselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.button-group-button {
+  display: inline-block;
+  border: 1px solid #D9D9D9;
+  border-radius: 0;
+  padding: .35rem;
+}
+
+[dir="ltr"] .button-group-button {
+  border-left: none;
+}
+
+[dir=\"rtl\"] .button-group-button {
+  border-right: none;
+}
+
+[dir="ltr"] .button-group-button:last-of-type {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+[dir="ltr"] .button-group-button:first-of-type {
+  border-left: 1px solid #D9D9D9;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+[dir=\"rtl\"] .button-group-button:last-of-type {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+[dir=\"rtl\"] .button-group-button:first-of-type {
+  border-right: 1px solid #D9D9D9;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+[dir="ltr"] .button-group-button.mod-start-border {
+  border-left: 1px solid #D9D9D9;
+}
+
+[dir=\"rtl\"] .button-group-button.mod-start-border {
+  border-right: 1px solid #D9D9D9;
+}
+
+[dir="ltr"] .button-group-button.mod-no-end-border {
+  border-right: none;
+}
+
+[dir=\"rtl\"] .button-group-button.mod-no-end-border {
+  border-left: none;
+}
+
+.button-group-button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+[dir=\"rtl\"] .button-group-button-icon {
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.mod-context-menu {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.mod-top-divider {
+  border-top: 1px solid #D9D9D9;
+}
+
+.mod-menu-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 -.25rem;
+  min-width: 6.25rem;
+  padding: calc(3 * .25rem);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-transition: 0.1s ease;
+  -o-transition: 0.1s ease;
+  transition: 0.1s ease;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: \"Helvetica Neue\", Helvetica, sans-serif;
+}
+
+.mod-disabled {
+  cursor: auto;
+}
+
+.mod-menu-item:hover {
+  background: hsla(215, 100%, 65%, 0.20);
+}
+
+.mod-disabled:hover {
+  background-color: transparent;
+}
+
+.menu-item-icon {
+  margin-right: calc(2 * .25rem);
+}
+
+[dir=\"rtl\"] .menu-item-icon {
+  margin-right: 0;
+  margin-left: calc(2 * .25rem);
+}

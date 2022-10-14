@@ -1,0 +1,24 @@
+/* DO NOT EDIT
+@todo This file is copied from GUI and should be pulled out into a shared library.
+See https://github.com/LLK/scratch-paint/issues/13 */
+
+/* ACTUALLY, THIS IS EDITED ;)
+THIS WAS CHANGED ON 10/25/2017 BY @mewtaylor TO ADD A VARIABLE FOR THE SMALLEST
+GRID UNITS.
+ALSO EDITED ON 11/13/2017 TO ADD IN CONTANTS FOR LAYOUT FROM `layout-contents.js`*/
+
+/* layout contants from `layout-constants.js`, minus 1px */
+
+[dir="ltr"] .input-group + .input-group {
+  margin-left: calc(2 * .25rem);
+}
+
+[dir=\"rtl\"] .input-group + .input-group {
+  margin-right: calc(2 * .25rem);
+}
+
+.disabled {
+  opacity: 0.3;
+  /* Prevent any user actions */
+  pointer-events: none;
+}
