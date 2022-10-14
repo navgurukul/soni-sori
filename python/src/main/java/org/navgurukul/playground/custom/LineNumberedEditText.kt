@@ -15,6 +15,7 @@ import java.lang.Integer.max
  * the simple implementation of an EditText where each line is numbered on the left
  * Code courtesy: https://gist.github.com/francisnnumbi/37ff8a3189a194b939d58d4ad79bf694
  */
+
 class LineNumberedEditText(
     context: Context,
     attrs: AttributeSet?
