@@ -110,8 +110,8 @@ open fun saveBase64StringToFile(
         }
     }
 }
-    //val data = datalinkload.toByteArray(charset("UTF-8"))
-    //val base64: String = Base64.encodeToString(data, Base64.DEFAULT)
+    val data = datalinkload.toByteArray(charset("UTF-8"))
+    val base64: String = Base64.encodeToString(data, Base64.DEFAULT)
 
     @JavascriptInterface
     fun onsave() {
@@ -122,6 +122,8 @@ open fun saveBase64StringToFile(
     fun onBack() {
           finish()
           Toast.makeText(this,"Scratch Exit",Toast.LENGTH_LONG).show()
+          println(base64);
+
     }
 
 
@@ -162,7 +164,7 @@ open fun saveBase64StringToFile(
         // ProgressBar will disappear once page is loaded
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
-          //  webView.loadUrl("javascript:init('" + base64 + "')");
+          //webView.loadUrl("javascript:init('" + base64 + "')");
             progressBar.visibility = View.GONE
         }
 
