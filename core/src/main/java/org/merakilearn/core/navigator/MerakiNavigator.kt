@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.net.Uri
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.app.TaskStackBuilder
@@ -29,6 +30,18 @@ class MerakiNavigator(
         val serviceIterator = ServiceLoader.load(
             TypingAppModuleNavigator::class.java,
             TypingAppModuleNavigator::class.java.classLoader
+        ).iterator()
+        if (serviceIterator.hasNext()) {
+            serviceIterator.next()
+        } else {
+            null
+        }
+    }
+
+    private val scratchModuleNavigator: ScratchModuleNavigator? by lazy {
+        val serviceIterator = ServiceLoader.load(
+            ScratchModuleNavigator::class.java,
+            ScratchModuleNavigator::class.java.classLoader
         ).iterator()
         if (serviceIterator.hasNext()) {
             serviceIterator.next()
@@ -117,6 +130,27 @@ class MerakiNavigator(
 
     }
 
+    fun launchScratchActivity(context: Context, activity: FragmentActivity){
+        if (dynamicFeatureModuleManager.isInstalled(SCRATCH_MODULE_NAME)) {
+            scratchModuleNavigator?.launchScratchActivity(context)
+            Toast.makeText(context,"Module is Installed",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context,"Module is not installed",Toast.LENGTH_SHORT).show()
+            val progress = ProgressDialog(activity).apply {
+                setCancelable(false)
+                setMessage(activity.getString(R.string.installing_module_message))
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                show()
+            }
+            dynamicFeatureModuleManager.installModule(SCRATCH_MODULE_NAME, {
+                progress.dismiss()
+                scratchModuleNavigator?.launchScratchActivity(context)
+            }, {
+                progress.dismiss()
+            })
+        }
+    }
+
     private fun startActivity(
         context: Context,
         intent: Intent,
@@ -179,6 +213,7 @@ class MerakiNavigator(
         const val TYPING_DEEPLINK = "/typing"
         const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
+        const val SCRATCH_MODULE_NAME = "scratch"
 
         private fun isMerakiUrl(url: String): Boolean {
             return try {

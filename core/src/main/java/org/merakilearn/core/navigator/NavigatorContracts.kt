@@ -34,3 +34,8 @@ sealed class Mode: Parcelable {
 interface TypingAppModuleNavigator {
     fun launchTypingApp(activity: FragmentActivity, mode : Mode)
 }
+
+interface ScratchModuleNavigator {
+    fun launchScratchActivity(context: Context): Intent
+    fun launchScratchActivityWithFile(context: Context, file: File): Intent
+}

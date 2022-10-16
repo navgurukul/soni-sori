@@ -1,5 +1,6 @@
 package org.merakilearn.ui.playground
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
@@ -17,6 +18,7 @@ import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
+import org.navgurukul.playground.BuildConfig
 import java.io.File
 
 class PlaygroundFragment : BaseFragment() {
@@ -40,9 +42,9 @@ class PlaygroundFragment : BaseFragment() {
 
                 val viewState = viewModel.viewState.value
                 viewState?.let { state ->
-                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
-                        ScratchActivity.start(requireContext())
-                    }
+//                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
+//                        ScratchActivity.start(requireContext())
+//                    }
                 }
                 if (isLongClick)
                     showUpPopMenu(playgroundItemModel.file, view)
@@ -70,6 +72,14 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
+                is PlaygroundViewEvents.OpenScratch -> {navigator.launchScratchActivity(
+                    requireContext(),
+                    requireActivity()
+                )
+                    var intent = Intent()
+                    intent.setClassName(org.merakilearn.BuildConfig.APPLICATION_ID,"org.merakilearn.scratch.ScratchMainActivity")
+                    startActivity(intent)
+                }
             }
         })
 
