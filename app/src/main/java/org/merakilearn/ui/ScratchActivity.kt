@@ -114,7 +114,7 @@ open fun saveBase64StringToFile(
 
     @JavascriptInterface
     fun onsave() {
-        webView.loadUrl("javascript:Scratch.getBase64StringFromWeb(base64String);");
+
     }
 
     @JavascriptInterface
@@ -171,7 +171,7 @@ open fun saveBase64StringToFile(
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
            // webView.loadUrl("javascript:loadProjectUsingBase64('"+fileName+"','"+datalinksave+"')")
-
+            //webView.loadUrl("javascript:Scratch.getBase64StringFromWeb(globalBase64String);");
             progressBar.visibility = View.GONE
         }
 
