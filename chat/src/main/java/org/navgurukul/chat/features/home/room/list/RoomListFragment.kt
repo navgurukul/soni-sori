@@ -1,7 +1,9 @@
 package org.navgurukul.chat.features.home.room.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -114,6 +116,15 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
 
 
     private fun handleSelectRoom(event: RoomListViewEvents.SelectRoom) {
+        if(event.roomSummary.roomId=="!mpKUsizojzHSvioqKx:navgurukul.org"){
+            Toast.makeText(activity?.applicationContext, "Test", Toast.LENGTH_LONG).show()
+
+//            fun Context.toast(message: CharSequence) =
+//                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//            fun myFun(context: Context) {
+//                context.toast("You Are into the war")
+//            }
+        }
         navigator.openRoom(requireActivity(), event.roomSummary.roomId)
     }
 

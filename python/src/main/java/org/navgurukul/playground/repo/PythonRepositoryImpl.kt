@@ -144,10 +144,8 @@ class PythonRepositoryImpl(
                 if (from.exists())
                     from.renameTo(to)
             }
+            finalFileName = if(existingFile) fileName else fileName + "_" +  ".py"
 
-            finalFileName = fileName
-            val fileOutStream =
-                FileOutputStream(File(directory.toString() + File.separator + finalFileName))
 
         } catch (ex: IOException) {
             FirebaseCrashlytics.getInstance().recordException(ex)
