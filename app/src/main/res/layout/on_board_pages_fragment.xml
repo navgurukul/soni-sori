@@ -8,8 +8,8 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="413dp"
+        android:layout_height="733dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +18,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skip"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="81dp"
+        android:layout_height="48dp"
         android:textAllCaps="false"
         android:textColor="?textSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +36,8 @@
         app:layout_constraintStart_toEndOf="@id/skip"
         app:tabBackground="@drawable/tab_pager_selector"
         app:tabGravity="center"
-        app:tabIndicatorHeight="0dp" />
+        app:tabIndicatorHeight="0dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
