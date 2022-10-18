@@ -106,6 +106,7 @@ class PythonEditorFragment : BaseFragment() {
                 is PythonEditorViewEvents.ShowShareIntent -> showShareIntent(it.code)
                 is PythonEditorViewEvents.ShowToast -> requireActivity().toast(it.message)
                 is PythonEditorViewEvents.ShowFileSavedDialog -> showCodeSavedDialog(it.closeDialog)
+                is PythonEditorViewEvents.ShowFileRenamedDialog -> showCodeRenamedDialog(it.closeDialog)
                 is PythonEditorViewEvents.ShowFileNameDialog -> showDialogForFileName()
                 is PythonEditorViewEvents.ShowRenameDialog -> showDialogForReName()
                 is PythonEditorViewEvents.ShowFileNameError -> showFileNameError(it.message)
@@ -320,6 +321,24 @@ class PythonEditorFragment : BaseFragment() {
             alertDialog.dismiss()
         }
         val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
+        val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(view)
+        alertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+
+        alertDialog.show()
+
+        Handler().postDelayed({
+            alertDialog.dismiss()
+        },1000)
+
+    }
+    private fun showCodeRenamedDialog(closeDialog:Boolean){
+        if(closeDialog){
+            alertDialog.dismiss()
+        }
+        val view:View = getLayoutInflater().inflate(R.layout.alert_file_renamed,null)
         val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(view)
         alertDialog = builder.create()

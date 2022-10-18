@@ -233,7 +233,7 @@ class PythonEditorViewModel(
                 } else {
                     var oldName=pythonEditorArgs.file.name
                     val savedFileName=pythonRepository.updateName( viewState.code,fileName,true,oldName)
-                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileSavedDialog(true))
+                    _viewEvents.postValue(PythonEditorViewEvents.ShowFileRenamedDialog(true))
                     newFile=false
                     setState {
                         copy(
@@ -277,6 +277,7 @@ sealed class PythonEditorViewEvents : ViewEvents {
     data class ShowShareIntent(val code: String) : PythonEditorViewEvents()
     class ShowFileNameError(val message: String): PythonEditorViewEvents()
     class ShowFileSavedDialog(val closeDialog: Boolean): PythonEditorViewEvents()
+    class ShowFileRenamedDialog(val closeDialog: Boolean): PythonEditorViewEvents()
     object OnRenameFile : PythonEditorViewEvents()
 }
 
