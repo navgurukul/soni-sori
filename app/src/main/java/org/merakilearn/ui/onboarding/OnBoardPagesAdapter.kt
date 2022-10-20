@@ -53,7 +53,7 @@ class OnBoardPagesAdapter(
         PYTHON(R.drawable.on_boarding_mobile),
         INTERVIEW(R.drawable.on_boarding_interactive_classes),
         INTERACTIVE(R.drawable.on_boarding_develop),
-        OPPORTUNITIES(R.drawable.on_boarding_mobile)
+        OPPORTUNITIES(R.drawable.on_boarding_develop)
     }
 }
 

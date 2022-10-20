@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_4x">
+    android:padding="@dimen/spacing_half_x">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="413dp"
-        android:layout_height="733dp"
+        android:layout_height="730dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,9 +74,9 @@
         android:text="@string/continue_with_google_english"
         android:textAllCaps="false"
         android:textColor="@color/green_progress_color"
+        android:visibility="gone"
         app:icon="@drawable/google_icon"
         app:iconGravity="textStart"
-        android:visibility="gone"
         app:iconPadding="@dimen/spacing_4x"
         app:iconTint="@android:color/transparent"
         app:iconTintMode="add"
@@ -91,11 +91,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetTop="0dp"
-        android:visibility="gone"
         android:insetBottom="0dp"
         android:text="@string/skip_login_english"
         android:textAllCaps="false"
         android:textColor="?textSecondary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
