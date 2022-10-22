@@ -140,7 +140,7 @@
         <item quantity="one">1 unread notified message</item>
         <item quantity="other">%d unread notified messages</item>
     </plurals>
-    <plurals name="notification_compat_summary_line_for_room" >
+    <plurals name="notification_compat_summary_line_for_room">
         <item quantity="one">%1$s: 1 message</item>
         <item quantity="other">%1$s: %2$d messages</item>
     </plurals>
@@ -338,6 +338,8 @@
     <string name="room_list_quick_actions_low_priority_add">"Add to low priority"</string>
     <string name="room_list_quick_actions_low_priority_remove">"Remove from low priority"</string>
     <string name="room_list_quick_actions_leave">"Leave the room"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

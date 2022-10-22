@@ -18,9 +18,9 @@
         tools:layout="@layout/fragment_room_list" />
     <fragment
         android:id="@+id/navigation_alert"
-        android:name="org.navgurukul.chat.features.home.room.list.RoomListFragment"
+        android:name="org.navgurukul.chat.features.home.room.list.roomBot"
         android:label="@string/title_alert"
-        tools:layout="@layout/fragment_room_detail" />
+        tools:layout="@layout/fragment_room_bot" />
 
     <fragment
         android:id="@+id/navigation_learn"

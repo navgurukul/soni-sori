@@ -4,11 +4,13 @@ plugins {
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
     id(Plugins.realm)
+    id("org.jetbrains.kotlin.android")
 }
 
 kapt {
     correctErrorTypes = true
 }
+
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
