@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="installing_module_message">Installing this feature. This may take a while. Cancelling forcefuly might make the app misbehave.</string>
+    <string name="installing_typing_module_message">Installing Typing. This will take a few minutes. Check your Notifications for more details</string>
+    <string name="installing_scratch_module_message">Installing Scratch. This will take a few minutes. Check your Notifications for more details</string>
 </resources>

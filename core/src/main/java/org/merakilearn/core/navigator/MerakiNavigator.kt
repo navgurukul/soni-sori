@@ -116,7 +116,7 @@ class MerakiNavigator(
         } else {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
-                setMessage(activity.getString(R.string.installing_module_message))
+                setMessage(activity.getString(R.string.installing_typing_module_message))
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 show()
             }
@@ -134,7 +134,7 @@ class MerakiNavigator(
         if (!dynamicFeatureModuleManager.isInstalled(SCRATCH_MODULE_NAME)) {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
-                setMessage(activity.getString(R.string.installing_module_message))
+                setMessage(activity.getString(R.string.installing_scratch_module_message))
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 show()
             }
