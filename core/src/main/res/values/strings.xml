@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="installing_module_message">Preparing the app for you</string>
+    <string name="installing_module_message">Installing this feature. This may take a while. Cancelling forcefuly might make the app misbehave.</string>
 </resources>

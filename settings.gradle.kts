@@ -1,3 +1,4 @@
+include(":scratch")
 include (":typing")
 include (":core")
 include (":commonUI")
@@ -6,4 +7,3 @@ include (":learn")
 include (":chat")
 include (":app")
 rootProject.name = "Saral"
-include(":scratch")

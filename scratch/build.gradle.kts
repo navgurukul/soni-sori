@@ -49,6 +49,9 @@ dependencies {
 
     // Logging
     implementation(MiscellaneousDependencies.timber)
+    implementation(AndroidxDependencies.appcompat)
+    implementation(MaterialDesignDependencies.materialDesign)
+    implementation(AndroidxDependencies.constraintLayout)
 
     //test
     testImplementation(TestDependencies.jUnit)

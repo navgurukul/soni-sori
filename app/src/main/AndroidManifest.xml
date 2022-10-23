@@ -91,13 +91,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.ScratchActivity"
-            android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="landscape">
-
-        </activity>
-
         <service
             android:name=".fcm.MerakiMessagingService"
             android:exported="false">

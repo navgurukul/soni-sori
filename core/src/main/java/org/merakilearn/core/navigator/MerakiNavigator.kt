@@ -130,12 +130,8 @@ class MerakiNavigator(
 
     }
 
-    fun launchScratchActivity(context: Context, activity: FragmentActivity){
-        if (dynamicFeatureModuleManager.isInstalled(SCRATCH_MODULE_NAME)) {
-            scratchModuleNavigator?.launchScratchActivity(context)
-            Toast.makeText(context,"Module is Installed",Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context,"Module is not installed",Toast.LENGTH_SHORT).show()
+    fun launchScratchActivity(activity: FragmentActivity, context: Context): Boolean {
+        if (!dynamicFeatureModuleManager.isInstalled(SCRATCH_MODULE_NAME)) {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
                 setMessage(activity.getString(R.string.installing_module_message))
@@ -144,10 +140,14 @@ class MerakiNavigator(
             }
             dynamicFeatureModuleManager.installModule(SCRATCH_MODULE_NAME, {
                 progress.dismiss()
-                scratchModuleNavigator?.launchScratchActivity(context)
+                Toast.makeText(context,"Finished Scratch Installation. This feature is now available☺", Toast.LENGTH_LONG).show()
             }, {
                 progress.dismiss()
             })
+            return false
+        } else{
+            Toast.makeText(context,"Opening Scratch", Toast.LENGTH_SHORT).show()
+            return true
         }
     }
 

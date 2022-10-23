@@ -12,13 +12,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
-import org.merakilearn.datasource.model.PlaygroundItemModel
-import org.merakilearn.datasource.model.PlaygroundTypes
-import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import org.navgurukul.playground.BuildConfig
 import java.io.File
 
 class PlaygroundFragment : BaseFragment() {
@@ -39,13 +35,6 @@ class PlaygroundFragment : BaseFragment() {
 
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
-
-                val viewState = viewModel.viewState.value
-                viewState?.let { state ->
-//                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
-//                        ScratchActivity.start(requireContext())
-//                    }
-                }
                 if (isLongClick)
                     showUpPopMenu(playgroundItemModel.file, view)
                 else
@@ -59,7 +48,7 @@ class PlaygroundFragment : BaseFragment() {
             adapter.setData(it.playgroundsList)
         })
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
                     requireContext()
@@ -72,16 +61,26 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
-                is PlaygroundViewEvents.OpenScratch -> {navigator.launchScratchActivity(
-                    requireContext(),
-                    requireActivity()
-                )
-                    var intent = Intent()
-                    intent.setClassName(org.merakilearn.BuildConfig.APPLICATION_ID,"org.merakilearn.scratch.ScratchMainActivity")
-                    startActivity(intent)
+                is PlaygroundViewEvents.OpenScratch -> {
+                    if (navigator.launchScratchActivity(requireActivity(), requireContext())) {
+                        val intent = Intent()
+                        intent.setClassName(org.merakilearn.BuildConfig.APPLICATION_ID,
+                            "org.merakilearn.scratch.ScratchMainActivity")
+                        startActivity(intent)
+                    }
+                }
+                is PlaygroundViewEvents.OpenScratchWithFile -> {
+                    if (navigator.launchScratchActivity(requireActivity(), requireContext())) {
+                        val intent = Intent()
+                        intent.setClassName(org.merakilearn.BuildConfig.APPLICATION_ID,
+                            "org.merakilearn.scratch.ScratchMainActivity")
+                        val file: File = it.file
+                        intent.putExtra("file", file)
+                        startActivity(intent)
+                    }
                 }
             }
-        })
+        }
 
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.title_playground),
