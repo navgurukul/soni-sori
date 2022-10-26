@@ -118,6 +118,6 @@
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
     <string name="stay_enrolled">Stay Enrolled</string>
-    <string name="title_scratch">Meraki Scratch</string>
+    <string name="title_scratch">Scratch</string>
 
 </resources>

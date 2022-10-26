@@ -88,18 +88,20 @@ class DynamicFeatureModuleManager(private val splitInstallManager: SplitInstallM
         SplitInstallStateUpdatedListener {
             if (it.sessionId() == sessionId.get()) {
                 when (it.status()) {
-                    SplitInstallSessionStatus.PENDING ->
+                    SplitInstallSessionStatus.PENDING -> {
                         progress?.invoke(DynamicDeliveryProgress.Pending)
+                    }
                     SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION ->
                         // Confirmation is required
                         progress?.invoke(DynamicDeliveryProgress.RequiresConfirmation(it))
-                    SplitInstallSessionStatus.DOWNLOADING ->
+                    SplitInstallSessionStatus.DOWNLOADING -> {
                         progress?.invoke(
                             DynamicDeliveryProgress.Downloading(
                                 totalBytes = it.totalBytesToDownload(),
                                 currentBytes = it.bytesDownloaded()
                             )
                         )
+                    }
                     SplitInstallSessionStatus.DOWNLOADED -> {
                         onComplete(null)
                     }
