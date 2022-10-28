@@ -46,21 +46,36 @@ abstract class RoomSummaryItem : MerakiEpoxyModel<RoomSummaryItem.Holder>() {
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash) var itemClickListener: View.OnClickListener? = null
 
     override fun bind(holder: Holder) {
-        super.bind(holder)
-        holder.rootView.setOnClickListener(itemClickListener)
-        holder.rootView.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            itemLongClickListener?.onLongClick(it) ?: false
+        if(matrixItem.getBestName()!="Meraki") {
+            super.bind(holder)
+            holder.rootView.setOnClickListener(itemClickListener)
+            holder.rootView.setOnLongClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                itemLongClickListener?.onLongClick(it) ?: false
+            }
+
+
+            holder.titleView.text = matrixItem.getBestName()
+            holder.lastEventTimeView.text = lastEventTime
+            holder.lastEventView.text = lastFormattedEvent
+            holder.unreadCounterBadgeView.render(
+                UnreadCounterBadgeView.State(
+                    unreadNotificationCount,
+                    showHighlighted
+                )
+            )
+            holder.unreadIndentIndicator.isVisible = hasUnreadMessage
+            holder.draftView.isVisible = hasDraft
+            avatarRenderer.render(matrixItem, holder.avatarImageView)
+            holder.typingView.setTextOrHide(typingMessage)
+            holder.lastEventView.isInvisible = holder.typingView.isVisible
         }
-        holder.titleView.text = matrixItem.getBestName()
-        holder.lastEventTimeView.text = lastEventTime
-        holder.lastEventView.text = lastFormattedEvent
-        holder.unreadCounterBadgeView.render(UnreadCounterBadgeView.State(unreadNotificationCount, showHighlighted))
-        holder.unreadIndentIndicator.isVisible = hasUnreadMessage
-        holder.draftView.isVisible = hasDraft
-        avatarRenderer.render(matrixItem, holder.avatarImageView)
-        holder.typingView.setTextOrHide(typingMessage)
-        holder.lastEventView.isInvisible = holder.typingView.isVisible
+        else{
+            holder.titleView.visibility = View.GONE
+            holder.lastEventTimeView.visibility = View.GONE
+            holder.lastEventView.visibility = View.GONE
+            holder.rootView.layoutParams = ViewGroup.LayoutParams(0,0)
+        }
     }
 
     override fun unbind(holder: Holder) {
