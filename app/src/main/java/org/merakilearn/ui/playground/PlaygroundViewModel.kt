@@ -7,6 +7,7 @@ import org.merakilearn.R
 import org.merakilearn.datasource.PlaygroundRepo
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.repo.ScratchRepository
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -17,6 +18,7 @@ import java.io.File
 class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
+    private val scratchRepository: ScratchRepository
 ) :
     BaseViewModel<PlaygroundViewEvents, PlaygroundViewState>(PlaygroundViewState()) {
 
@@ -76,8 +78,12 @@ class PlaygroundViewModel(
         for(file in savedFiles){
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.PYTHON_FILE, name = "",file= file, iconResource = R.drawable.ic_saved_file))
         }
+        val savedFiles2= scratchRepository.fetchSavedFiles()
+        for(file in savedFiles2){
+            playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.SCRATCH_FILE, name = file.name.removeSuffix(".sb3"),file= file, iconResource = R.drawable.ic_scratch))
+        }
 
-       updateState(playgroundsList)
+        updateState(playgroundsList)
     }
 
     fun selectPlayground(playgroundItemModel: PlaygroundItemModel) {
@@ -86,12 +92,13 @@ class PlaygroundViewModel(
             PlaygroundTypes.PYTHON -> _viewEvents.postValue(PlaygroundViewEvents.OpenPythonPlayground)
             PlaygroundTypes.PYTHON_FILE -> _viewEvents.setValue(PlaygroundViewEvents.OpenPythonPlaygroundWithFile(playgroundItemModel.file))
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
-
+            PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(playgroundItemModel.file))
         }
     }
 
     private fun deleteFile(file:File){
         viewModelScope.launch {
+            scratchRepository.deleteFile(file)
             pythonRepository.deleteFile(file)
             init()
         }
@@ -103,6 +110,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
+    class OpenScratchWithFile(val file: File): PlaygroundViewEvents()
 
 }
 

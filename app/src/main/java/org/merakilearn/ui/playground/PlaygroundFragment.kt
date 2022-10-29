@@ -1,5 +1,6 @@
 package org.merakilearn.ui.playground
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
@@ -37,13 +38,6 @@ class PlaygroundFragment : BaseFragment() {
 
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
-
-                val viewState = viewModel.viewState.value
-                viewState?.let { state ->
-                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
-                        ScratchActivity.start(requireContext())
-                    }
-                }
                 if (isLongClick)
                     showUpPopMenu(playgroundItemModel.file, view)
                 else
@@ -53,11 +47,11 @@ class PlaygroundFragment : BaseFragment() {
         if (isLoading) showLoading() else dismissLoadingDialog()
         recycler_view.adapter = adapter
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.setData(it.playgroundsList)
-        })
+        }
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
                     requireContext()
@@ -70,8 +64,17 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
+                is PlaygroundViewEvents.OpenScratch -> {
+                    val intent = Intent(requireContext(),ScratchActivity::class.java)
+                    startActivity(intent)
+                }
+                is PlaygroundViewEvents.OpenScratchWithFile -> {
+                    val intent = Intent(requireContext(),ScratchActivity::class.java)
+                    intent.putExtra("file",it.file)
+                    startActivity(intent)
+                }
             }
-        })
+        }
 
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.title_playground),
