@@ -85,7 +85,7 @@ class OnBoardingActivity : AppCompatActivity() {
                 }
                 OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
                     OnBoardPagesFragment.newInstance(),
-                    OnBoardPagesFragment.TAG
+                    OnBoardPagesFragment.TAG,
                 )
                 OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
                     SelectCourseFragment.newInstance(), SelectCourseFragment.TAG

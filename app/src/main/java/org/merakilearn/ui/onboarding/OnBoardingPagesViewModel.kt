@@ -1,5 +1,6 @@
 package org.merakilearn.ui.onboarding
 
+import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -55,13 +56,29 @@ class OnBoardingPagesViewModel(
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems))
             }
             is OnBoardingPagesAction.PageSelected -> {
-                val isLoginLayoutVisible =
+                var isLoginLayoutVisible =
                     action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 1
                 setState {
                     copy(
                         isLoginLayoutVisible = isLoginLayoutVisible,
                         isNavLayoutVisible = !isLoginLayoutVisible
                     )
+                }
+                if(isLoginLayoutVisible){
+                    setState {
+                        copy(
+                            isLoginLayoutVisible = isLoginLayoutVisible,
+                            isNavLayoutVisible = !isLoginLayoutVisible
+                        )
+                    }
+                }
+                else{
+                    setState {
+                        copy(
+                            isLoginLayoutVisible = true,
+                            isNavLayoutVisible = true
+                        )
+                    }
                 }
             }
         }
@@ -91,6 +108,7 @@ class OnBoardingPagesViewModel(
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
                 checkPartner()
+
             } else {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }

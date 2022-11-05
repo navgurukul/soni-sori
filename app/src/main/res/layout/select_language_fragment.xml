@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/dimen_0_dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp">
 
     <TextView
         android:id="@+id/info_english"
@@ -31,7 +36,7 @@
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/select_language_hindi"
         android:textColor="?textPrimary"
         app:layout_constraintBottom_toTopOf="@+id/btn_english"
@@ -40,54 +45,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info_english" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_english"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="156dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="412dp"
-        android:elevation="2dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minHeight="@dimen/minimum_button_height"
-        android:text="@string/english"
-        android:textAllCaps="false"
-        android:textAppearance="?textAppearanceBody2"
-        android:textColor="?textPrimary"
-        app:backgroundTint="#E9F5E9"
-        app:cornerRadius="?cornerRadius400"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_hindi"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_hindi"
-        app:strokeColor="@color/colorGrey"
-        app:strokeWidth="?borderWidth" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="center_vertical"
+            >
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_hindi"
-        android:layout_width="165dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="342dp"
-        android:elevation="2dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minHeight="@dimen/minimum_button_height"
-        android:text="@string/hindi"
-        android:textAppearance="?textAppearanceBody2"
-        android:textColor="?textPrimary"
-        app:backgroundTint="#FFF5CC"
-        app:cornerRadius="?cornerRadius400"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_english"
-        app:layout_constraintTop_toBottomOf="@+id/info_hindi"
-        app:layout_constraintVertical_bias="0.391"
-        app:strokeColor="@color/colorGrey"
-        app:strokeWidth="?borderWidth" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_english"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="156dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:elevation="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="@dimen/minimum_button_height"
+                android:text="@string/english"
+                android:textAllCaps="false"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="?textPrimary"
+                app:backgroundTint="#E9F5E9"
+                app:cornerRadius="?cornerRadius400"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_hindi"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info_hindi"
+                app:strokeColor="@color/colorGrey"
+                app:strokeWidth="?borderWidth" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_hindi"
+                android:layout_width="156dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:elevation="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="@dimen/minimum_button_height"
+                android:text="@string/hindi"
+                android:textAppearance="?textAppearanceBody2"
+                android:textColor="?textPrimary"
+                app:backgroundTint="#FFF5CC"
+                app:cornerRadius="?cornerRadius400"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_english"
+                app:layout_constraintTop_toBottomOf="@+id/info_hindi"
+                app:layout_constraintVertical_bias="0.391"
+                app:strokeColor="@color/colorGrey"
+                app:strokeWidth="?borderWidth" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

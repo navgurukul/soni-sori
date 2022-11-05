@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/spacing_half_x">
+    android:layout_height="match_parent">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
@@ -15,46 +14,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/skip"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="81dp"
-        android:layout_height="48dp"
-        android:textAllCaps="false"
-        android:textColor="?textSecondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/skip_english" />
+
+
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/next"
-        app:layout_constraintStart_toEndOf="@id/skip"
         app:tabBackground="@drawable/tab_pager_selector"
         app:tabGravity="center"
+        android:layout_marginBottom="80dp"
         app:tabIndicatorHeight="0dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/next"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:textColor="@color/green_progress_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="@string/next_english" />
+
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/nav_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:constraint_referenced_ids="next, tab_layout, skip" />
+        app:constraint_referenced_ids=" tab_layout" />
+
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/login_layout"
@@ -65,8 +49,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_with_google"
+        android:layout_margin="10dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_2x"
         android:insetTop="0dp"

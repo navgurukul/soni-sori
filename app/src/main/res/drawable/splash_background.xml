@@ -1,6 +1,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@color/home_backgroundColor"/>
+    <item android:drawable="@color/meraki_backgroundColor"/>
     <item android:gravity="center" android:top="-100dp">
         <bitmap
             android:gravity="center"

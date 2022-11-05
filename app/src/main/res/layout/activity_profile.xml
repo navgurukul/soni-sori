@@ -109,6 +109,47 @@
                 tools:text="https://api.merakilearn.org" />
 
             <TextView
+                android:id="@+id/title"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_4x"
+                android:text="@string/title"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:id="@+id/partnerImage"
+                android:layout_marginStart="@dimen/spacing_4x"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"/>
+            <TextView
+                android:id="@+id/partnerName"
+                style="?textAppearanceEmphasized1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:text="@string/partnerName"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/partnerImage" />
+            <TextView
+                android:id="@+id/partnerDesc"
+                style="?textAppearanceEmphasized2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4x"
+                android:layout_marginTop="@dimen/spacing_2x"
+                android:text="@string/partnerDesc"
+                android:textColor="?textSecondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/partnerName" />
+
+            <TextView
                 android:id="@+id/opportunityTitle"
                 style="?textAppearanceEmphasized2"
                 android:layout_width="wrap_content"
@@ -118,7 +159,7 @@
                 android:text="@string/opportunities"
                 android:textColor="?textSecondary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
+                app:layout_constraintTop_toBottomOf="@id/partnerDesc" />
 
             <TextView
                 android:id="@+id/opportunityDescription"

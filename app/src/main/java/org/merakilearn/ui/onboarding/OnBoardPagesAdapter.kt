@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import org.merakilearn.R
@@ -32,6 +33,10 @@ class OnBoardPagesAdapter(
         val translation = onBoardingTranslations.onBoardingPageDataListTexts[position]
         holder.header.text = translation.header
         holder.desc.text = translation.description
+        if(position==1){
+            val musha=holder.header.text
+            Toast.makeText(context,"$musha",Toast.LENGTH_SHORT).show()
+        }
 
         val onBoardingData = onBoardingData.onBoardingPagesList[position]
 
