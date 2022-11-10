@@ -1,40 +1,47 @@
 package org.navgurukul.learn.ui.learn
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.appcompat.content.res.AppCompatResources
+import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.barteksc.pdfviewer.PDFView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.batch_selection_sheet.*
+import kotlinx.android.synthetic.main.generated_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
-import kotlinx.android.synthetic.main.learn_selection_sheet.recycler_view
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
-import com.google.firebase.perf.metrics.AddTrace
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.merakilearn.core.extentions.capitalizeWords
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
-import org.navgurukul.learn.courses.network.model.*
+import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.dateRange
+import org.navgurukul.learn.courses.network.model.sanitizedType
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
@@ -42,6 +49,12 @@ import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
 import org.navgurukul.learn.util.toDate
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 class LearnFragment : Fragment(){
 
@@ -51,6 +64,7 @@ class LearnFragment : Fragment(){
     private lateinit var mClassAdapter: UpcomingEnrolAdapater
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
+    lateinit var pdfView: PDFView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,8 +81,7 @@ class LearnFragment : Fragment(){
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-//        mBinding.batchCard.root.visibility = View.GONE
-//        mBinding.upcoming.root.visibility = View.GONE
+        mBinding.certificate.visibility = View.VISIBLE
 
         initSwipeRefresh()
 
@@ -104,6 +117,10 @@ class LearnFragment : Fragment(){
 
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
+
+            if (it.subtitle == "Python"){
+                mBinding.certificate.rootView.isVisible = true
+            }
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -148,8 +165,9 @@ class LearnFragment : Fragment(){
                     mBinding.enrolledButFinished.root.visibility = View.VISIBLE
                     mBinding.upcoming.root.visibility = View.GONE
                 }
-
-
+                is LearnFragmentViewEvents.GetCertificate -> {
+                    getCertificate(it.pdfUrl,it.getCompletedPortion)
+                }
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
                     it.cta?.let { cta ->
@@ -168,9 +186,105 @@ class LearnFragment : Fragment(){
                 }
                 else -> {
                 }
+
             }
         }
     }
+
+    private fun getCertificate(pdfUrl : String, completedPortion: Int){
+        mBinding.certificate.setOnClickListener {
+            if (completedPortion != 100){
+                val dialog = BottomSheetDialog(requireContext())
+                val view = layoutInflater.inflate(R.layout.generated_certificate, null)
+                pdfView = view.idPDFView
+                view.tvDownload.setOnClickListener {
+                    generatePDF(pdfUrl)
+                }
+                view.tvShare.setOnClickListener {
+                    showShareIntent(pdfUrl)
+                }
+                RetrievePDFFromURL(pdfView).execute(pdfUrl)
+                println("required completed portion in fragment $completedPortion")
+                dialog.setCancelable(true)
+                dialog.setContentView(view)
+                dialog.show()
+            } else {
+                println("required completed portion in fragment $completedPortion")
+                Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
+            }
+
+        }
+    }
+
+    class RetrievePDFFromURL(pdfView: PDFView) :
+        AsyncTask<String, Void, InputStream>() {
+        @SuppressLint("StaticFieldLeak")
+        val mypdfView: PDFView = pdfView
+        override fun doInBackground(vararg params: String?): InputStream? {
+            var inputStream: InputStream? = null
+            try {
+                val url = URL(params.get(0))
+                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+                if (urlConnection.responseCode == 200) {
+                    inputStream = BufferedInputStream(urlConnection.inputStream)
+                }
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+                return null;
+            }
+            return inputStream;
+        }
+        override fun onPostExecute(result: InputStream?) {
+            mypdfView.fromStream(result).load()
+            }
+        }
+
+    private fun generatePDF(pdfUrl : String){
+        val download= context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val PdfUri = Uri.parse(pdfUrl)
+        val getPdf = DownloadManager.Request(PdfUri)
+        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        download.enqueue(getPdf)
+        Toast.makeText(context,"Download Started", Toast.LENGTH_LONG).show()
+
+    }
+
+    private fun showShareIntent(pdfUrl:String) {
+        val outputFile = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            pdfUrl
+        )
+//        val uri: Uri = FileProvider.getUriForFile(
+//            requireContext(),
+//            "org.merakilearn.provider",
+//            outputFile
+//        )
+
+        val pdfUri : Uri
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pdfUri = FileProvider.getUriForFile(
+                requireContext(),
+                "org.merakilearn" + ".provider",
+                outputFile
+            )
+        } else {
+            pdfUri = Uri.fromFile(outputFile)
+        }
+        val share = Intent()
+        share.action = Intent.ACTION_SEND
+        share.type = "application/pdf"
+        share.putExtra(Intent.EXTRA_STREAM, pdfUri)
+        startActivity(Intent.createChooser(share, "Share"))
+
+//        val share = Intent()
+//        share.action = Intent.ACTION_SEND
+//        share.type = "application/pdf"
+//        share.putExtra(Intent.EXTRA_STREAM, uri)
+//
+//        requireActivity().startActivity(share)
+    }
+
 
     private fun setUpUpcomingData(batch: Batch) {
         tvType.text =batch.sanitizedType()+" :"
@@ -191,7 +305,6 @@ class LearnFragment : Fragment(){
             viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
         }
     }
-
     private fun showEnrolDialog(batch: Batch) {
         val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
         val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)

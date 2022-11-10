@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_5x"
+    app:circularflow_defaultRadius="@dimen/spacing_5x"
+    android:layout_marginBottom="@dimen/spacing_5x"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/txtCertificate"
+        style="@style/TextAppearance.AppCompat.Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/python_certificate" />
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/idPDFView"
+        android:layout_width="328dp"
+        android:layout_height="230dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/spacing_5x"
+        android:padding="@dimen/spacing_2x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCertificate" />
+
+    <TextView
+        android:id="@+id/txt"
+        android:fontFamily="@font/nunito_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:padding="@dimen/spacing_2x"
+        android:layout_marginTop="@dimen/spacing_3x"
+        android:layout_marginBottom="@dimen/spacing_2x"
+        app:layout_constraintTop_toBottomOf="@+id/idPDFView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/certificate_information" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        android:layout_marginTop="@dimen/spacing_5x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:chipBackgroundColor="#E9F5E9"
+            app:chipStrokeColor="@color/green_progress_color"
+            app:chipStrokeWidth="2dp"
+            android:padding="@dimen/spacing_12x"
+            android:textAlignment="center"
+            android:layout_marginEnd="@dimen/spacing_3x"
+            android:text="@string/share_to_friends"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/green_progress_color"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:chipBackgroundColor="@color/green_progress_color"
+            app:chipStrokeColor="@color/green_progress_color"
+            app:chipStrokeWidth="2dp"
+            android:textAlignment="center"
+            android:padding="@dimen/spacing_12x"
+            android:layout_marginStart="@dimen/spacing_3x"
+            android:text="@string/get_certificate"
+            app:layout_constraintTop_toTopOf="@+id/tvClassType"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

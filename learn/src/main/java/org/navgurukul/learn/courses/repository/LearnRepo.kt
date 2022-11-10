@@ -265,6 +265,13 @@ class LearnRepo(
        return courseApi.getStudentResult(assessmentId)
     }
 
+    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
+        return courseApi.getCompletedPortionData(pathwayId)
+    }
+
+    suspend fun getCertificate(): CertificateResponse{
+        return courseApi.getCertificate()
+    }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {

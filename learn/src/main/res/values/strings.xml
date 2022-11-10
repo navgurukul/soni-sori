@@ -155,6 +155,11 @@
     <string name="see_explanation">See Explanation</string>
     <string name="re_try">Re-Try</string>
     <string name="missed_the_bull_s_eye">Missed the bull’s eye</string>
+    <string name="python_certificate">Python Certificate</string>
+    <string name="certificate_information">Meraki certifies that you have diligently attended all classes and taken the practice questions. You have a good grasp of Python fundamentals.</string>
+    <string name="get_certificate">GET Certificate</string>
+    <string name="share_to_friends">Share to friends</string>
+    <string name="complete_course">Please complete all the courses to unlock Python certificate</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

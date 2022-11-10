@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/spacing_5x"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/ivCertificateLogo"
+        android:layout_width="@dimen/pathway_logo_size"
+        android:layout_height="@dimen/pathway_logo_size"
+        android:src="@drawable/ic_certificate"
+        app:layout_constraintBottom_toBottomOf="@id/txtCertificate"
+        app:layout_constraintLeft_toLeftOf="@id/txtCertificate"
+        app:layout_constraintRight_toRightOf="@id/txtCertificate"
+        app:layout_constraintTop_toTopOf="@id/txtCertificate"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/txtCertificate"
+        style="?textAppearanceBody2"
+        android:textColor="?textPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        android:text="@string/python_certificate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCertificateLogo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
