@@ -64,6 +64,7 @@ class LearnFragmentViewModel(
                                 selectedLanguage = selectedLanguage,
                                 logo = currentPathway!!.logo,
                                 code = currentPathway!!.code,
+                                shouldShowCertificate = currentPathway!!.shouldShowCertificate,
                                 showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
                                         ?: true
                                 ) false else true
@@ -269,7 +270,8 @@ data class LearnFragmentViewState(
     val code : String ? = null,
     val showTakeTestButton: Boolean = false,
     val menuId: Int? = null,
-    val classId: Int = 0
+    val classId: Int = 0,
+    var shouldShowCertificate: Boolean = false
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {

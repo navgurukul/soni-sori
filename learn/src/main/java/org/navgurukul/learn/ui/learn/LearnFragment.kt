@@ -9,13 +9,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -81,7 +82,6 @@ class LearnFragment : Fragment(){
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-        mBinding.certificate.visibility = View.VISIBLE
 
         initSwipeRefresh()
 
@@ -118,8 +118,10 @@ class LearnFragment : Fragment(){
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
-            if (it.subtitle == "Python"){
-                mBinding.certificate.rootView.isVisible = true
+            if (it.shouldShowCertificate == true){
+                mBinding.certificate.visibility = View.VISIBLE
+            }else {
+                mBinding.certificate.visibility = View.GONE
             }
         }
 
@@ -253,36 +255,32 @@ class LearnFragment : Fragment(){
     private fun showShareIntent(pdfUrl:String) {
         val outputFile = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            pdfUrl
+            "dhanu"
         )
-//        val uri: Uri = FileProvider.getUriForFile(
-//            requireContext(),
-//            "org.merakilearn.provider",
-//            outputFile
-//        )
 
-        val pdfUri : Uri
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pdfUri = FileProvider.getUriForFile(
+        val pdfUri : Uri = FileProvider.getUriForFile(
                 requireContext(),
-                "org.merakilearn" + ".provider",
+                "org.merakilearn.provider_paths",
                 outputFile
             )
-        } else {
-            pdfUri = Uri.fromFile(outputFile)
-        }
+
+//        Log.d("pdfUrl","$pdfUrl")
+        Log.d("uritext","$pdfUri")
+        val url = requireContext().contentResolver.getType(pdfUri)
+        val extention = MimeTypeMap.getSingleton().getExtensionFromMimeType(url)
+        Log.d("geturl", "$url")
+        Log.d("getExtenstion","$extention")
+//        } else {
+//            pdfUri = Uri.fromFile(outputFile)
+//        }
         val share = Intent()
         share.action = Intent.ACTION_SEND
         share.type = "application/pdf"
-        share.putExtra(Intent.EXTRA_STREAM, pdfUri)
+        val pdf = Uri.parse(pdfUrl)
+        share.putExtra(Intent.EXTRA_TEXT,pdf)
+        share.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         startActivity(Intent.createChooser(share, "Share"))
 
-//        val share = Intent()
-//        share.action = Intent.ACTION_SEND
-//        share.type = "application/pdf"
-//        share.putExtra(Intent.EXTRA_STREAM, uri)
-//
-//        requireActivity().startActivity(share)
     }
 
 
