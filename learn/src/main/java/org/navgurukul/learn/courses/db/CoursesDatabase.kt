@@ -331,6 +331,15 @@ val MIGRATION_8_9 = object : Migration(8,9) {
     }
 }
 
+val MIGRATION_9_10 = object : Migration(9,10){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `pathway_course` ADD COLUMN 'completed_portion' INTEGER"
+        )
+    }
+
+}
+
 // When ever we do any change in local db need to write migration script here.
 @Database(
     entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class],
