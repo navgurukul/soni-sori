@@ -1,11 +1,12 @@
 package org.merakilearn.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
+import android.os.Handler
+import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
@@ -15,13 +16,10 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.merakilearn.R
-import org.merakilearn.core.extentions.KEY_ARG
-import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.repo.ScratchRepositoryImpl
 import java.io.File
 
@@ -32,6 +30,8 @@ class ScratchActivity : AppCompatActivity() {
     lateinit var scratchRepository: ScratchRepositoryImpl
     var file: File? = null
     var savedFile: Boolean = false
+    var savedFileName: String = ""
+    var loadSavedFileCalled: Boolean = false
     var datalinkload: String = ""
     var datalinksave: String = ""
 
@@ -60,11 +60,9 @@ class ScratchActivity : AppCompatActivity() {
 
     }
 
-    val data = datalinkload.toByteArray(charset("UTF-8"))
-    val base64: String = Base64.encodeToString(data, Base64.DEFAULT)
-
     @JavascriptInterface
-    fun onSave() {
+    fun onSave(myIds: String) {
+        datalinksave = myIds
         showCodeSaveDialog()
     }
 
@@ -74,13 +72,6 @@ class ScratchActivity : AppCompatActivity() {
         finish()
         onBackPressed()
     }
-
-    @JavascriptInterface
-    fun getBase64StringFromWeb(myIds: String) {
-        datalinksave = myIds
-        println(datalinksave)
-    }
-
 
     // Overriding WebViewClient functions
     inner class WebChromeClient : android.webkit.WebChromeClient() {
@@ -96,7 +87,7 @@ class ScratchActivity : AppCompatActivity() {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            webView.loadUrl("javascript:Scratch.getBase64StringFromWeb(globalBase64String);")
+            //webView.loadUrl("javascript:Scratch.getBase64StringFromWeb(globalBase64String);")
             return super.onConsoleMessage(consoleMessage)
         }
 
@@ -111,20 +102,36 @@ class ScratchActivity : AppCompatActivity() {
 
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
-            file?.let { isSavedFilePresent(it) }
 
-            if(progressBar.visibility == View.VISIBLE)
+            if (!loadSavedFileCalled) {
+                loadSavedFileCalled = true
+                loadSavedFile(file)
+            }
+
+            if (progressBar.visibility == View.VISIBLE)
                 progressBar.visibility = View.GONE
         }
 
     }
 
-    fun isSavedFilePresent(file: File) {
+    fun loadSavedFile(file: File?) {
+
+        webView.loadUrl("javascript:openLoaderScreen();")
+        if (file != null) {
+            savedFileName = file.name
+            datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
+        } else {
+            savedFileName = "defaultMerakiScratchFile.sb3"
+            datalinkload = Base64.encodeToString(application.assets.open(
+                "defaultMerakiScratchFile.sb3").readBytes(), Base64.DEFAULT)
+        }
         progressBar.visibility = View.VISIBLE
-        datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
-        webView.loadUrl("javascript:loadProjectUsingBase64('" + file.name + "','" + datalinkload + "')")
-        if(progressBar.visibility == View.VISIBLE)
-            progressBar.visibility = View.GONE
+        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            webView.loadUrl("javascript:closeLoaderScreen();")
+        }, 5000)
+
     }
 
     private fun showCodeSaveDialog() {
@@ -174,7 +181,7 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private fun showCodeSavedDialog(){
+    private fun showCodeSavedDialog() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("File Saved")
         alertDialog.setIcon(R.drawable.ic_scratch);
@@ -186,4 +193,3 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 }
-

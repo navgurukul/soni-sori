@@ -1,24 +1,27 @@
 package org.merakilearn.ui.playground
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
-import org.merakilearn.datasource.model.PlaygroundItemModel
-import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
+import java.net.URLConnection
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -65,12 +68,12 @@ class PlaygroundFragment : BaseFragment() {
                     file = it.file
                 )
                 is PlaygroundViewEvents.OpenScratch -> {
-                    val intent = Intent(requireContext(),ScratchActivity::class.java)
+                    val intent = Intent(requireContext(), ScratchActivity::class.java)
                     startActivity(intent)
                 }
                 is PlaygroundViewEvents.OpenScratchWithFile -> {
-                    val intent = Intent(requireContext(),ScratchActivity::class.java)
-                    intent.putExtra("file",it.file)
+                    val intent = Intent(requireContext(), ScratchActivity::class.java)
+                    intent.putExtra("file", it.file)
                     startActivity(intent)
                 }
             }
@@ -88,10 +91,19 @@ class PlaygroundFragment : BaseFragment() {
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
+                R.id.shareSavedFile -> {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "text/x-python"
+                    val uri = FileProvider.getUriForFile(requireContext(),"org.merakilearn.fileprovider",file)
+                    intent.putExtra(Intent.EXTRA_STREAM, uri)
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
+                    intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
+                    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    startActivity(Intent.createChooser(intent, "Share File"))
+                }
             }
             true
         }
-
         popup.show()
     }
 

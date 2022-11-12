@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.merakilearn">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MerakiApp"
         android:allowBackup="false"
@@ -12,8 +14,73 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:replace="android:allowBackup"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.merakilearn.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+        <activity
+            android:name=".FileChooserActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+
+                <!-- <data android:pathPattern=".*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
+                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
+
+            </intent-filter>
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW"/> -->
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+            <!-- <data android:host="com.whatsapp.provider.media"/> -->
+            <!-- <data android:scheme="file"/> -->
+            <!-- <data android:scheme="content"/> -->
+            <!-- <data android:mimeType="*/*"/> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW"/> -->
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+            <!-- <data android:host="com.google.android.gm.sapi"/> -->
+            <!-- <data android:scheme="file"/> -->
+            <!-- <data android:scheme="content"/> -->
+            <!-- <data android:mimeType="*/*"/> -->
+            <!-- </intent-filter> -->
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW"/> -->
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+            <!-- <data android:host="com.google.android.apps.docs.storage.legacy"/> -->
+            <!-- <data android:scheme="file"/> -->
+            <!-- <data android:scheme="content"/> -->
+            <!-- <data android:mimeType="*/*"/> -->
+            <!-- </intent-filter> -->
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -29,7 +96,6 @@
                     android:host="merakilearn.org"
                     android:pathPattern="/home"
                     android:scheme="http" />
-
                 <data
                     android:host="merakilearn.org"
                     android:pathPattern="/home"
@@ -57,7 +123,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.onboarding.OnBoardingActivity"
             android:label="@string/app_name"
@@ -90,12 +155,12 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.ScratchActivity"
+        <activity
+            android:name=".ui.ScratchActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape">
-
         </activity>
 
         <service
