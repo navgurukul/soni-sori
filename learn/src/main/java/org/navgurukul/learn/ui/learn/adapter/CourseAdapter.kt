@@ -59,7 +59,7 @@ class CourseAdapter(val callback: (Course) -> Unit) :
             .into(binding.ivLogo)
 
         // TODO set progress from the object
-        binding.progressBar.progress = 100
+        binding.progressBar.progress = item.course.completedPortion?:0
         binding.tvName.text = item.course.name
 
         binding.root.setOnClickListener {

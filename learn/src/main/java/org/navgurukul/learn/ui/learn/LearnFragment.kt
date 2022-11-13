@@ -173,7 +173,7 @@ class LearnFragment : Fragment(){
     }
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text =batch.sanitizedType()+" :"
+        tvType.text =batch.sanitizedType()+":"
         tvTitleBatch.text = batch.title
         tvBatchDate.text = batch.dateRange()
         tvText.text = "Can't start on "+ batch.startTime?.toDate()
