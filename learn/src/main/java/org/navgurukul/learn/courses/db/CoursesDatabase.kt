@@ -9,7 +9,7 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 9
+const val DB_VERSION = 10
 
 @Dao
 interface PathwayDao {
