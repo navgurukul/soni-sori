@@ -15,6 +15,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
 class CourseContentActivityViewModel(
     private val learnRepo: LearnRepo,
@@ -35,30 +36,44 @@ class CourseContentActivityViewModel(
     init {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            learnRepo.fetchCourseContentDataWithCourse(courseId, pathwayId, selectedLanguage)
-                .combine(
-                    learnRepo.getCoursesDataByPathway(
-                        pathwayId,
-                        false
+            combine(
+                learnRepo.fetchCourseContentDataWithCourse(courseId, pathwayId, selectedLanguage),
+                learnRepo.getCoursesDataByPathway(pathwayId, false),
+                learnRepo.getCompletedContentsIds(courseId)
+            ) { course, courseList, completedContentList ->
+                updateCourseWIthCompletedContent(course, completedContentList)
+                course to courseList
+            }.collect {
+                val course = it.first
+                coursesList = it.second
+                if (course == null) {
+                    setState { copy(isLoading = false) }
+                    _viewEvents.postValue(
+                        CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
                     )
-                ) { course, courseList ->
-                    course to courseList
+                } else {
+                    launchLastSelectedContentOfCourse(course, contentId)
                 }
-                .collect {
-                    val course = it.first
-                    coursesList = it.second
-                    if (course == null) {
-                        setState { copy(isLoading = false) }
-                        _viewEvents.postValue(
-                            CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
-                        )
-                    } else {
-                        launchLastSelectedContentOfCourse(course, contentId)
-                    }
-                }
+            }
 
         }
 
+    }
+
+    private fun updateCourseWIthCompletedContent(course: Course?, completedContentList: CompletedContentsIds) {
+        completedContentList?.assessments?.forEach { assessmentId ->
+            markContentCompletedInCourse(course, assessmentId.toString())
+        }
+        completedContentList?.exercises?.forEach { assessmentId ->
+            markContentCompletedInCourse(course, assessmentId.toString())
+        }
+        completedContentList?.classes?.forEach { assessmentId ->
+            markContentCompletedInCourse(course, assessmentId.toString())
+        }
+    }
+
+    private fun markContentCompletedInCourse(course: Course?, contentId: String) {
+        course?.courseContents?.find { it.id == contentId }?.courseContentProgress = CourseContentProgress.COMPLETED
     }
 
     private suspend fun launchLastSelectedContentOfCourse(course: Course?, contentId: String? = null) {
@@ -100,16 +115,21 @@ class CourseContentActivityViewModel(
             val currentStudyIndex = currentCourse.courseContents.indexOfFirst {
                 it.id == currentStudy?.exerciseId
             }
+            val courseContentType = currentCourse.courseContents[currentStudyIndex].courseContentType
             if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex - 1].id,
                     navigation
                 )
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
+                if (courseContentType == CourseContentType.exercise){
+                    postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
+                }
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex + 1].id,
                     navigation
                 )
+
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
                 val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
                     stringProvider.getString(
@@ -227,6 +247,8 @@ class CourseContentActivityViewModel(
 
     }
 
+
+
     private fun markCourseExerciseCompletedInDb(
         exerciseId: String?
     ) {
@@ -281,6 +303,15 @@ class CourseContentActivityViewModel(
             setState { copy(courseContentList = it, currentContentIndex = selectedIndex) }
         }
     }
+
+    private fun postLearningTrackStatus(contentId: String){
+        viewModelScope.launch {
+                currentCourse.pathwayId?.let { learnRepo.postLearningTrackStatus(it, currentCourse.id, contentId)
+            }
+        }
+        }
+
+
 }
 
 enum class ExerciseNavigation { PREV, NEXT }

@@ -6,11 +6,14 @@ import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.util.ArrayList
 
@@ -205,6 +208,35 @@ class LearnRepo(
         )
     }
 
+    suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
+        val contentList = courseApi.getCompletedContentsIds(courseId)
+
+        updateCompletedContentInDb(contentList)
+
+        return flow { emit(contentList) }
+    }
+
+    suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
+
+        val exerciseDao = database.exerciseDao()
+        val classesDao = database.classDao()
+        val assessmentDao = database.assessmentDao()
+
+        exerciseDao.markExerciseCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.exercises?.map { it.toString() }
+        )
+        classesDao.markClassCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.classes?.map { it.toString() }
+        )
+        assessmentDao.markAssessmentCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.assessments?.map { it.toString() }
+        )
+    }
+
+
     suspend fun saveCourseContentCurrent(currentStudy: CurrentStudy) {
         val currentStudyDao = database.currentStudyDao()
         currentStudyDao.saveCourseContentCurrent(currentStudy)
@@ -314,5 +346,16 @@ class LearnRepo(
 
         }
     }
+
+    suspend fun postLearningTrackStatus(
+        pathwayId: Int,
+        courseId: String,
+        exerciseId: String
+    ){
+        val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
+        courseApi.postLearningTrackStatus(learningTrackStatus)
+    }
+
+
 
 }
