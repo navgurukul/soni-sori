@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.incorrect_output_layout.*
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -18,7 +18,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -38,6 +38,7 @@ class AssessmentFragment : Fragment() {
         parametersOf(args)
     })
     private lateinit var activityViewModel: CourseContentActivityViewModel
+
 
     companion object {
         fun newInstance(
@@ -88,19 +89,12 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.visibility = View.GONE
-                }
-                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowRetryOnce -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.correctOutputLayout.root.visibility = View.GONE
-                    setupIncorrectOutputLayout(it.list, it.attemptResponse)
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.correctOutputLayout.root.visibility = View.GONE
-                    initIncorrectRV(it.list)
                     isContentRvClickable = false
-
+                    initIncorrectRV(it.list)
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                 }
             }
         }
@@ -138,39 +132,6 @@ class AssessmentFragment : Fragment() {
             }
         }
 
-    private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>, attemptResponse: AttemptResponse?) {
-        mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-            selectedOption?.let {
-                isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
-                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-            }
-            mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-            mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-            initIncorrectRV(list)
-            isContentRvClickable = false
-            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-
-        }
-        if (attemptResponse != null) {
-            if (attemptResponse.attemptCount < 2){
-                mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                    isContentRvClickable = true
-                    mBinding.incorrectOutputLayout.visibility =  View.GONE
-                    fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
-                }
-            } else{
-                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
-                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-                initIncorrectRV(list)
-                isContentRvClickable = false
-            }
-        }
-
-    }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
         val newList = list?.toMutableList()?.map {
@@ -202,7 +163,7 @@ class AssessmentFragment : Fragment() {
         }, {
 
         } ,{
-            if(isContentRvClickable ) {
+            if(isContentRvClickable) {
                 selectedOption = it
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE

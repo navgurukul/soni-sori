@@ -85,6 +85,8 @@ class PlaygroundViewModel(
             PlaygroundTypes.TYPING_APP -> _viewEvents.setValue(PlaygroundViewEvents.OpenTypingApp)
             PlaygroundTypes.PYTHON -> _viewEvents.postValue(PlaygroundViewEvents.OpenPythonPlayground)
             PlaygroundTypes.PYTHON_FILE -> _viewEvents.setValue(PlaygroundViewEvents.OpenPythonPlaygroundWithFile(playgroundItemModel.file))
+            PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
+
         }
     }
 
@@ -100,6 +102,8 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenTypingApp : PlaygroundViewEvents()
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
+    object OpenScratch : PlaygroundViewEvents()
+
 }
 
 sealed class PlaygroundActions: ViewModelAction{
