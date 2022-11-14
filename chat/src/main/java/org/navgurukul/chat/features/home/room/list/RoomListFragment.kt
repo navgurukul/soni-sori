@@ -116,15 +116,6 @@ class RoomListFragment : BaseFragment(), RoomSummaryController.Listener {
 
 
     private fun handleSelectRoom(event: RoomListViewEvents.SelectRoom) {
-        if(event.roomSummary.roomId=="!mpKUsizojzHSvioqKx:navgurukul.org"){
-            Toast.makeText(activity?.applicationContext, "Test", Toast.LENGTH_LONG).show()
-
-//            fun Context.toast(message: CharSequence) =
-//                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-//            fun myFun(context: Context) {
-//                context.toast("You Are into the war")
-//            }
-        }
         navigator.openRoom(requireActivity(), event.roomSummary.roomId)
     }
 

@@ -37,17 +37,20 @@ class PythonEditorActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.python_playground_menu, menu)
-        for (i in 0 until menu!!.size()) {
-            val menuItem = menu!!.getItem(i)
-            val spannable = SpannableString(
-                menu!!.getItem(i).title.toString()
-            )
-            spannable.setSpan(
-                ForegroundColorSpan(Color.WHITE),
-                0, spannable.length, 0
-            )
-            menuItem.title = spannable
+        menu?.let{
+            for (i in 0 until it.size()) {
+                val menuItem = it.getItem(i)
+                val spannable = SpannableString(
+                    it.getItem(i).title.toString()
+                )
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.WHITE),
+                    0, spannable.length, 0
+                )
+                menuItem.title = spannable
+            }
         }
+
         return true
     }
 
