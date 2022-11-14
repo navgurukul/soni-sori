@@ -1,13 +1,17 @@
 package org.merakilearn.ui.profile
 
 import android.app.AlertDialog
+import android.app.Application
+import android.content.Context
 import android.provider.Settings.Global.getString
+import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.BuildConfig
+import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.ClassesRepo
@@ -15,11 +19,14 @@ import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.ui.onboarding.OnBoardingPagesEvents
+import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
+import org.navgurukul.learn.ui.learn.LearnFragmentViewEvents
 import org.navgurukul.playground.repo.PythonRepository
 import java.io.File
 import java.io.IOException
@@ -32,9 +39,12 @@ class ProfileViewModel(
     private val userRepo: UserRepo,
     private val classesRepo: ClassesRepo,
     private val settingsRepo: SettingsRepo,
-    private val config: Config
+    private val config: Config,
+    private val installReferrerManager: InstallReferrerManager,
+    private var part: String ="",
 ) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState(serverUrl = settingsRepo.serverBaseUrl)) {
     private var isEnrolled: Boolean = false
+
 
     companion object {
         const val PARTNER_ID = "partner_id"
@@ -88,6 +98,23 @@ class ProfileViewModel(
             is ProfileViewActions.ExploreOpportunityClicked -> openURL()
             is ProfileViewActions.DropOut -> dropOut(action.batchId)
             is ProfileViewActions.RefreshPage -> getEnrolledBatches()
+        }
+    }
+    fun checkPartner(): Boolean {
+        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
+        val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+        val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
+
+
+        val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
+        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
+        ProfileViewEvents.ShowToast("$partnerIdValue")
+        if(partnerIdValue!=null){
+            userRepo.getPartnerData(partnerIdValue)
+            return true
+        }
+        else{
+            return false
         }
     }
 

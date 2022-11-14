@@ -9,6 +9,7 @@ import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.PartnerDataApi
 import org.merakilearn.datasource.network.model.UserUpdate
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -146,5 +147,8 @@ class UserRepo(
             FirebaseCrashlytics.getInstance().recordException(ex)
             false
         }
+    }
+    fun getPartnerData(id: String){
+        saralApi.getPartner(id)
     }
 }

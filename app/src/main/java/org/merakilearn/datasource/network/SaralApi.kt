@@ -42,7 +42,7 @@ interface SaralApi {
 
     @GET("users/EnrolledBatches")
     suspend fun getEnrolledBatches():Response<List<Batches>>
-    @GET("/apiDocs/partners/35")
-    fun getPartner(@Query ("id")id:String) : Response<List<PartnerDataApi>>
+    @GET("partners/{partnerID}")
+    fun getPartner(@Path(value = "partnerID") id:String?): PartnerDataApi
 
 }

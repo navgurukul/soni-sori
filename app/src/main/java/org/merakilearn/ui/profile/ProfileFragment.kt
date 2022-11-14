@@ -12,14 +12,12 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -35,25 +33,23 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
-import org.merakilearn.ui.adapter.SavedFileAdapter
+import org.merakilearn.ui.adapter.EnrolledBatchAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
+import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.chat.core.glide.GlideApp
-import org.navgurukul.commonui.platform.GridSpacingDecorator
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
-import org.merakilearn.ui.adapter.EnrolledBatchAdapter
-import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
-import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
-import java.io.File
 
-class ProfileFragment : Fragment() {
+
+class ProfileFragment : Fragment(){
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
     private val userRepo: UserRepo by inject()
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private lateinit var mBinding: FragmentProfileBinding
     private lateinit var mAdapter: EnrolledBatchAdapter
+//    var partnet=1
 
 
     override fun onCreateView(
@@ -61,16 +57,19 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+//        (activity as OnBoardingPagesViewModel?)?.checkPartner()
+//        (this.activity as OnBoardingPagesViewModel?)?.checkPartner()
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return mBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override  fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initSwipeRefresh()
 
         initShowEnrolledBatches()
+        viewModel.checkPartner()
 
         btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)

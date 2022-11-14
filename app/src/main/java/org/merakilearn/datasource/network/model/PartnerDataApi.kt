@@ -1,10 +1,16 @@
 package org.merakilearn.datasource.network.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class PartnerDataApi(
-    val description: String,
-    val logo: String,
-    val name: String,
-    val website_link: String
+    @Json(name = "description")
+    val description: String?=null,
+    @Json(name = "logo")
+    val logo: String?=null,
+    @Json(name = "name")
+    val name: String?=null,
+    @Json(name = "website_link")
+    val websiteLink: String?=null
 )

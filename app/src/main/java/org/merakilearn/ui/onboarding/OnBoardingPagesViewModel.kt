@@ -1,6 +1,5 @@
 package org.merakilearn.ui.onboarding
 
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -27,6 +26,7 @@ class OnBoardingPagesViewModel(
     private val installReferrerManager: InstallReferrerManager,
     private val preferences: CorePreferences,
     private val config: Config
+
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
     companion object{
@@ -107,7 +107,7 @@ class OnBoardingPagesViewModel(
             setState { copy(isLoading = false) }
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
-                checkPartner()
+//                checkPartner()
 
             } else {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
@@ -121,13 +121,13 @@ class OnBoardingPagesViewModel(
             val fakeUserLoginResponse = loginRepository.performFakeSignUp()
             setState { copy(isLoading = false) }
             fakeUserLoginResponse?.let {
-                checkPartner()
+//                checkPartner()
             } ?: run {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }
         }
     }
-    private fun checkPartner(){
+    fun checkPartner() {
         val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
         val partnerIdPattern= Regex("[^$PARTNER_ID:]\\d+")
         val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
@@ -136,13 +136,13 @@ class OnBoardingPagesViewModel(
         val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
 
 
-        if(partnerIdValue!=null){
-            setAnalytics(partnerIdValue,partnerNameValue!!)
-            getPathwayForResidentialProgram()
-        }
-        else{
-            _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
-        }
+//        if(partnerIdValue!=null){
+//            setAnalytics(partnerIdValue,partnerNameValue!!)
+//            getPathwayForResidentialProgram()
+//        }
+//        else{
+////            _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+//        }
     }
 
     private fun setAnalytics( partner_id:String,partner_name:String) {
