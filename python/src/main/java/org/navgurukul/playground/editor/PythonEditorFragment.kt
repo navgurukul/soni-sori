@@ -45,8 +45,8 @@ class PythonEditorFragment : BaseFragment() {
     private val layoutInput: View by lazy { requireView().findViewById(R.id.layoutInput) }
     private val controlsContainer: ViewGroup by lazy { requireView().findViewById(R.id.control_buttons_container) }
     private val ibEnter: MaterialButton by lazy { requireView().findViewById(R.id.ibEnter) }
-    private lateinit var etFileName:TextInputLayout
-    private lateinit var alertDialog:AlertDialog
+    private lateinit var etFileName: TextInputLayout
+    private lateinit var alertDialog: AlertDialog
 
     private val sheetBehavior: BottomSheetBehavior<View> by lazy {
         BottomSheetBehavior.from(
@@ -119,10 +119,9 @@ class PythonEditorFragment : BaseFragment() {
                         // If bottom sheet is expanded, collapse it on back button
                         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
-                    if(!viewModel.viewState.value!!.fileSaved&&viewModel.viewState.value!!.code.isNotEmpty()) {
+                    if (!(viewModel.viewState.value!!.fileSaved) && (viewModel.viewState.value!!.code.isNotEmpty())) {
                         showFileNotSavedDialog()
-                    }
-                    else {
+                    } else {
                         isEnabled = false
                         requireActivity().onBackPressed()
                     }
@@ -132,11 +131,10 @@ class PythonEditorFragment : BaseFragment() {
     }
 
 
-
     private fun showFileNameError(message: String) {
-        etFileName.isErrorEnabled=true
-        etFileName.error= message
-        etFileName.editText?.addTextChangedListener (object :TextWatcher {
+        etFileName.isErrorEnabled = true
+        etFileName.error = message
+        etFileName.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -145,13 +143,14 @@ class PythonEditorFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                etFileName.isErrorEnabled=false
+                etFileName.isErrorEnabled = false
             }
         })
     }
 
     private fun createControlButtons() {
-        val controls = listOf(R.string.tab to R.string.tab_unicode,
+        val controls = listOf(
+            R.string.tab to R.string.tab_unicode,
             R.string.bracket_open to R.string.bracket_open,
             R.string.bracket_close to R.string.bracket_close,
             R.string.control_double_quotes to R.string.control_double_quotes,
@@ -163,7 +162,9 @@ class PythonEditorFragment : BaseFragment() {
         val layoutInflater = LayoutInflater.from(context)
         controls.forEach {
             val button: MaterialButton =
-                layoutInflater.inflate(R.layout.control_button, controlsContainer, false) as MaterialButton
+                layoutInflater.inflate(R.layout.control_button,
+                    controlsContainer,
+                    false) as MaterialButton
             button.text = getString(it.first)
             button.setOnClickListener { _ ->
                 if (etCode.isCursorVisible) {
@@ -233,23 +234,23 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showDialogForFileName() {
-        val inputContainer :View = getLayoutInflater().inflate(R.layout.alert_edit_text,null)
+        val inputContainer: View = getLayoutInflater().inflate(R.layout.alert_edit_text, null)
         etFileName = inputContainer.findViewById(R.id.input)
         val btnSave: View = inputContainer.findViewById(R.id.save)
         val btnCancel: View = inputContainer.findViewById(R.id.cancel)
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(inputContainer)
         builder.setCancelable(false)
-        alertDialog  = builder.create()
+        alertDialog = builder.create()
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
 
 
-        btnSave.setOnClickListener{
+        btnSave.setOnClickListener {
             viewModel.handle(PythonEditorViewActions.OnFileNameEntered(etFileName.editText?.text.toString()))
         }
-        btnCancel.setOnClickListener{
-            if(alertDialog.isShowing) {
+        btnCancel.setOnClickListener {
+            if (alertDialog.isShowing) {
                 alertDialog.dismiss()
             }
         }
@@ -257,12 +258,12 @@ class PythonEditorFragment : BaseFragment() {
         alertDialog.show()
     }
 
-    private fun showCodeSavedDialog(closeDialog:Boolean){
-        if(closeDialog){
+    private fun showCodeSavedDialog(closeDialog: Boolean) {
+        if (closeDialog) {
             alertDialog.dismiss()
         }
-        val view:View = getLayoutInflater().inflate(R.layout.alert_file_saved,null)
-        val builder:AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        val view: View = getLayoutInflater().inflate(R.layout.alert_file_saved, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setView(view)
         alertDialog = builder.create()
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -272,16 +273,19 @@ class PythonEditorFragment : BaseFragment() {
 
         Handler().postDelayed({
             alertDialog.dismiss()
-        },1000)
+        }, 1000)
 
     }
 
-    private fun showFileNotSavedDialog(){
-        val fileNotSavedDialog = AlertDialog.Builder(requireContext())
-        fileNotSavedDialog.setTitle("File not saved")
-        fileNotSavedDialog.setMessage("Do you want to continue without saving? You may loose your work!")
-        fileNotSavedDialog.setCancelable(true)
-        fileNotSavedDialog.setPositiveButton("Don't Save"){ dialog, which ->
+    private fun showFileNotSavedDialog() {
+
+        val fileNotSavedDialog = AlertDialog.Builder(requireContext()).apply {
+            setTitle("File not saved")
+            setMessage("Do you want to continue without saving? You may loose your work!")
+            setCancelable(true)
+        }
+
+        fileNotSavedDialog.setPositiveButton("Don't Save") { dialog, which ->
             if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 // If bottom sheet is expanded, collapse it on back button
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -289,11 +293,12 @@ class PythonEditorFragment : BaseFragment() {
             viewModel.viewState.value!!.fileSaved = true
             requireActivity().onBackPressed()
         }
-        fileNotSavedDialog.setNegativeButton("Save"){ dialog, which ->
+
+        fileNotSavedDialog.setNegativeButton("Save") { dialog, which ->
             viewModel.handle(PythonEditorViewActions.OnSaveAction)
         }
-        fileNotSavedDialog.setNeutralButton("Cancel"){
-            dialog, which ->
+
+        fileNotSavedDialog.setNeutralButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
         fileNotSavedDialog.show()
