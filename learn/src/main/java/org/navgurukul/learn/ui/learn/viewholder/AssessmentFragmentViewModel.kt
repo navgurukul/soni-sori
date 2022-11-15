@@ -197,6 +197,7 @@ class AssessmentFragmentViewModel (
     private fun getAttemptStatus(assessmentId: Int){
         viewModelScope.launch {
             setState { copy(isLoading = false) }
+            val attemptResponse = learnRepo.getStudentResult(assessmentId)
             val attemptStatus = learnRepo.getStudentResult(assessmentId).attemptStatus
             if (attemptStatus == AttemptStatus.CORRECT){
                 updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
