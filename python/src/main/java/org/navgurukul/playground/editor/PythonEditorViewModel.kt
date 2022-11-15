@@ -286,7 +286,7 @@ data class PythonEditorViewState(
     val codeResponse: CodeResponseModel? = null,
     val inputEnabled: Boolean = false,
     val fileName:String = "",
-    val fileSaved: Boolean = false,
+    var fileSaved: Boolean = false,
     val title:String=" "
 ) : ViewState
 
