@@ -49,6 +49,13 @@ class CourseContentAdapter(callback: (CourseContents) -> Unit) :
     ) {
         val layoutId =
             when (progress) {
+                CourseContentProgress.COMPLETED_RESELECT ->{
+                    when(contentContentType){
+                        CourseContentType.exercise -> R.drawable.ic_type_text_complete_reselect
+                        CourseContentType.class_topic -> R.drawable.ic_type_class_complete_reselect
+                        CourseContentType.assessment -> R.drawable.ic_type_question_complete_reselect
+                    }
+                }
                 CourseContentProgress.COMPLETED -> {
                     when(contentContentType){
                         CourseContentType.exercise -> R.drawable.ic_type_text_complete

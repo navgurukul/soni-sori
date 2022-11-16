@@ -28,7 +28,7 @@ enum class CourseContentType{
 }
 
 enum class CourseContentProgress{
-    NOT_STARTED, IN_PROGRESS, COMPLETED
+    NOT_STARTED, IN_PROGRESS, COMPLETED, COMPLETED_RESELECT
 }
 
 
