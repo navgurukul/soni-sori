@@ -36,7 +36,7 @@ class FileChooserActivity : AppCompatActivity() {
         val file: File?
         val navigator: MerakiNavigator by inject()
 
-        if (action!!.compareTo(Intent.ACTION_VIEW) == 0) {
+        if (action?.compareTo(Intent.ACTION_VIEW) == 0) {
             val scheme = intent.scheme
             if (scheme != null) {
                 when {

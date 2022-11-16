@@ -39,46 +39,7 @@
                 <data android:host="*" />
                 <data android:mimeType="*/*" />
 
-                <!-- <data android:pathPattern=".*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
-                <!-- <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.sb3" /> -->
-
             </intent-filter>
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.VIEW"/> -->
-            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
-            <!-- <data android:host="com.whatsapp.provider.media"/> -->
-            <!-- <data android:scheme="file"/> -->
-            <!-- <data android:scheme="content"/> -->
-            <!-- <data android:mimeType="*/*"/> -->
-            <!-- </intent-filter> -->
-
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.VIEW"/> -->
-            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
-            <!-- <data android:host="com.google.android.gm.sapi"/> -->
-            <!-- <data android:scheme="file"/> -->
-            <!-- <data android:scheme="content"/> -->
-            <!-- <data android:mimeType="*/*"/> -->
-            <!-- </intent-filter> -->
-
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.VIEW"/> -->
-            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
-            <!-- <data android:host="com.google.android.apps.docs.storage.legacy"/> -->
-            <!-- <data android:scheme="file"/> -->
-            <!-- <data android:scheme="content"/> -->
-            <!-- <data android:mimeType="*/*"/> -->
-            <!-- </intent-filter> -->
 
         </activity>
         <activity

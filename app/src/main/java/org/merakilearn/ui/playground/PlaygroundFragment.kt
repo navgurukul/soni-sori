@@ -17,6 +17,7 @@ import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
 import org.merakilearn.ui.ScratchActivity
+import org.merakilearn.util.Constants
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -73,7 +74,7 @@ class PlaygroundFragment : BaseFragment() {
                 }
                 is PlaygroundViewEvents.OpenScratchWithFile -> {
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
-                    intent.putExtra("file", it.file)
+                    intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
                     startActivity(intent)
                 }
             }

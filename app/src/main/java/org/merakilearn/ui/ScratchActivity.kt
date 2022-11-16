@@ -21,6 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.repo.ScratchRepositoryImpl
+import org.merakilearn.util.Constants
 import java.io.File
 
 class ScratchActivity : AppCompatActivity() {
@@ -44,7 +45,7 @@ class ScratchActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         scratchRepository = ScratchRepositoryImpl(this)
-        file = intent.extras?.get("file") as File?
+        file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()
@@ -136,41 +137,49 @@ class ScratchActivity : AppCompatActivity() {
 
     private fun showCodeSaveDialog() {
         val view: View = layoutInflater.inflate(R.layout.alert_save, null);
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Save Scratch File")
-        alertDialog.setIcon(R.drawable.ic_scratch)
-        alertDialog.setCancelable(false);
-        alertDialog.setMessage("You may loose your progress if you exit without saving")
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setTitle("Save Scratch File")
+            setIcon(R.drawable.ic_scratch)
+            setCancelable(false);
+            setMessage("You may loose your progress if you exit without saving")
+        }
 
-        val fileName: EditText = view.findViewById(R.id.fileName);
-        if (file != null) {
-            fileName.setText(file!!.name.removeSuffix(".sb3"))
+        val fileName: EditText = view.findViewById(R.id.fileName)
+        file?.let {
+            with(fileName) { setText(it.name.removeSuffix(".sb3")) }
             savedFile = true
         }
         alertDialog.setPositiveButton("Save") { dialog, which ->
             GlobalScope.launch(Dispatchers.Main) {
-                if (fileName.text.isNotEmpty()) {
-                    if (!savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3")) {
-                        scratchRepository.saveScratchFile(datalinksave,
-                            fileName.text.trim().toString(),
-                            false)
-                        dialog.dismiss()
-                        showCodeSavedDialog()
-                    } else if (savedFile) {
-                        scratchRepository.saveScratchFile(datalinksave,
-                            fileName.text.trim().toString(),
-                            true)
-                        dialog.dismiss()
-                        showCodeSavedDialog()
-                    } else {
+                when {
+                    fileName.text.isNotEmpty() -> {
+                        when {
+                            !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    false)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            savedFile -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    true)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            else -> {
+                                Toast.makeText(this@ScratchActivity,
+                                    "This file already exists, try a different name",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    else -> {
                         Toast.makeText(this@ScratchActivity,
-                            "This file already exists, try a different name",
+                            "File name cannot be empty",
                             Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this@ScratchActivity,
-                        "File name cannot be empty",
-                        Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -182,11 +191,12 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     private fun showCodeSavedDialog() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("File Saved")
-        alertDialog.setIcon(R.drawable.ic_scratch);
-        alertDialog.setCancelable(true)
-        alertDialog.setMessage("Your File has been saved")
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setTitle("File Saved")
+            setIcon(R.drawable.ic_scratch);
+            setCancelable(true)
+            setMessage("Your File has been saved")
+        }
         alertDialog.setPositiveButton("OK") { dialog, which ->
             dialog.dismiss()
         }
