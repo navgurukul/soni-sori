@@ -149,7 +149,7 @@ object FirebaseDependencies {
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
     const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
-    const val perfKtx ="com.google.firebase:firebase-perf-ktx:20.0.6"
+    const val perfKtx = "com.google.firebase:firebase-perf-ktx:20.0.6"
 }
 
 object RetrofitDependencies {
@@ -171,8 +171,8 @@ object BuildConfigVersions {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
     const val targetSdkVersion = 31
-    const val versionCode = 55
-    const val versionName = "1.5.25"
+    const val versionCode = 57
+    const val versionName = "1.5.27"
     const val applicationId = "org.merakilearn"
 }
 
@@ -186,7 +186,8 @@ object Classpath {
     const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
-    const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
+    const val firebasePerf =
+        "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
 }
 
 object Plugins {

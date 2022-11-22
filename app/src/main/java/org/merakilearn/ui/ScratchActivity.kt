@@ -1,13 +1,13 @@
 package org.merakilearn.ui
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
-import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.JsResult
@@ -24,6 +24,7 @@ import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.util.Constants
 import java.io.File
 
+
 class ScratchActivity : AppCompatActivity() {
 
     lateinit var webView: WebView
@@ -39,6 +40,10 @@ class ScratchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        //window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         setContentView(R.layout.activity_scratch)
 
         progressBar = findViewById(R.id.progressBar2)
@@ -88,14 +93,13 @@ class ScratchActivity : AppCompatActivity() {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            //webView.loadUrl("javascript:Scratch.getBase64StringFromWeb(globalBase64String);")
             return super.onConsoleMessage(consoleMessage)
         }
 
     }
 
     inner class WebViewClient : android.webkit.WebViewClient() {
-        // Load the URL
+
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             view.loadUrl(url)
             return false
@@ -109,15 +113,17 @@ class ScratchActivity : AppCompatActivity() {
                 loadSavedFile(file)
             }
 
-            if (progressBar.visibility == View.VISIBLE)
-                progressBar.visibility = View.GONE
         }
 
     }
 
     fun loadSavedFile(file: File?) {
 
+        if (progressBar.visibility == View.VISIBLE)
+            progressBar.visibility = View.GONE
+
         webView.loadUrl("javascript:openLoaderScreen();")
+
         if (file != null) {
             savedFileName = file.name
             datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
@@ -126,7 +132,7 @@ class ScratchActivity : AppCompatActivity() {
             datalinkload = Base64.encodeToString(application.assets.open(
                 "defaultMerakiScratchFile.sb3").readBytes(), Base64.DEFAULT)
         }
-        progressBar.visibility = View.VISIBLE
+
         webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -136,11 +142,11 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     private fun showCodeSaveDialog() {
-        val view: View = layoutInflater.inflate(R.layout.alert_save, null);
+        val view: View = layoutInflater.inflate(R.layout.alert_save, null)
         val alertDialog = AlertDialog.Builder(this).apply {
             setTitle("Save Scratch File")
             setIcon(R.drawable.ic_scratch)
-            setCancelable(false);
+            setCancelable(false)
             setMessage("You may loose your progress if you exit without saving")
         }
 
@@ -193,7 +199,7 @@ class ScratchActivity : AppCompatActivity() {
     private fun showCodeSavedDialog() {
         val alertDialog = AlertDialog.Builder(this).apply {
             setTitle("File Saved")
-            setIcon(R.drawable.ic_scratch);
+            setIcon(R.drawable.ic_scratch)
             setCancelable(true)
             setMessage("Your File has been saved")
         }
@@ -202,4 +208,5 @@ class ScratchActivity : AppCompatActivity() {
         }
         alertDialog.show()
     }
+
 }

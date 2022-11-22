@@ -134,7 +134,7 @@ class SaralSyncService : SyncService() {
                 0
             )
         } else {
-            PendingIntent.getService(this, 0, newPeriodicIntent(this, sessionId, timeout, delay), 0)
+            PendingIntent.getService(this, 0, newPeriodicIntent(this, sessionId, timeout, delay), 0 or PendingIntent.FLAG_IMMUTABLE)
         }
         val firstMillis = System.currentTimeMillis() + delay * 1000L
         val alarmMgr = getSystemService<AlarmManager>()!!
@@ -160,12 +160,12 @@ class SaralSyncService : SyncService() {
                     0
                 )
             } else {
-                PendingIntent.getService(
-                    applicationContext,
-                    0,
-                    newPeriodicNetworkBackIntent(applicationContext, sessionId, timeout, delay),
-                    0
-                )
+                    PendingIntent.getService(
+                        applicationContext,
+                        0,
+                        newPeriodicNetworkBackIntent(applicationContext, sessionId, timeout, delay),
+                        0 or PendingIntent.FLAG_IMMUTABLE
+                    )
             }
             val firstMillis = System.currentTimeMillis() + delay * 1000L
             val alarmMgr = ContextCompat.getSystemService<AlarmManager>(
