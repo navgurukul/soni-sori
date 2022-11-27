@@ -131,18 +131,14 @@ class SaralSyncService : SyncService() {
                 this,
                 0,
                 newPeriodicIntent(this, sessionId, timeout, delay),
-                0
+                0 or PendingIntent.FLAG_IMMUTABLE
             )
         } else {
             PendingIntent.getService(this, 0, newPeriodicIntent(this, sessionId, timeout, delay), 0 or PendingIntent.FLAG_IMMUTABLE)
         }
         val firstMillis = System.currentTimeMillis() + delay * 1000L
         val alarmMgr = getSystemService<AlarmManager>()!!
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
-        } else {
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
-        }
+        alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
     }
 
     class RestartWhenNetworkOn(appContext: Context, workerParams: WorkerParameters) :
@@ -157,7 +153,7 @@ class SaralSyncService : SyncService() {
                     applicationContext,
                     0,
                     newPeriodicNetworkBackIntent(applicationContext, sessionId, timeout, delay),
-                    0
+                    0 or PendingIntent.FLAG_IMMUTABLE
                 )
             } else {
                     PendingIntent.getService(
@@ -172,11 +168,7 @@ class SaralSyncService : SyncService() {
                 applicationContext,
                 AlarmManager::class.java
             )!!
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
-            } else {
-                alarmMgr.set(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
-            }
+            alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, firstMillis, pendingIntent)
             // Indicate whether the work finished successfully with the Result
             return Result.success()
         }

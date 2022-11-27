@@ -198,28 +198,6 @@ class NotificationUtils constructor(
 
         notification.flags = notification.flags or Notification.FLAG_NO_CLEAR
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // some devices crash if this field is not set
-            // even if it is deprecated
-
-            // setLatestEventInfo() is deprecated on Android M, so we try to use
-            // reflection at runtime, to avoid compiler error: "Cannot resolve method.."
-            try {
-                val deprecatedMethod = notification.javaClass
-                    .getMethod("setLatestEventInfo",
-                        Context::class.java,
-                        CharSequence::class.java,
-                        CharSequence::class.java,
-                        PendingIntent::class.java)
-                deprecatedMethod.invoke(notification,
-                    context,
-                    stringProvider.getString(R.string.app_name),
-                    stringProvider.getString(subTitleResId),
-                    pi)
-            } catch (ex: Exception) {
-                Timber.e(ex, "## buildNotification(): Exception - setLatestEventInfo() Msg=")
-            }
-        }
         return notification
     }
 
@@ -341,7 +319,7 @@ class NotificationUtils constructor(
                             stringProvider.getString(R.string.action_quick_reply),
                             replyPendingIntent)
                             .addRemoteInput(remoteInput)
-                            .build()?.let {
+                            .build().let {
                                 addAction(it)
                             }
                     }
@@ -487,7 +465,7 @@ class NotificationUtils constructor(
         return TaskStackBuilder.create(context)
             .addNextIntentWithParentStack(merakiNavigator.homeLauncherIntent(context, false))
             .addNextIntent(roomIntentTap)
-            .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+            .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun buildOpenHomePendingIntentForSummary(): PendingIntent {
