@@ -14,7 +14,7 @@ buildscript {
         classpath(Classpath.googleServices)
         classpath(Classpath.firebaseCrashlytics)
         classpath(Classpath.realm)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
         classpath(Classpath.firebasePerf)
 
         // NOTE: Do not place your application dependencies here; they belong

@@ -1,3 +1,4 @@
+include(":scratch")
 include (":typing")
 include (":core")
 include (":commonUI")

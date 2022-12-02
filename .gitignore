@@ -11,3 +11,4 @@ app/release
 /captures
 .externalNativeBuild
 .cxx
+/scratch/src/main/assets/

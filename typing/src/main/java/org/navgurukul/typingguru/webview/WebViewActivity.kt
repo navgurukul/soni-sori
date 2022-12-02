@@ -22,22 +22,22 @@ class WebViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
 
-        webview.webViewClient = MyBrowser {
+        webView.webViewClient = MyBrowser {
             viewModel.handle(WebViewActivityViewEvents.OnNavigate(it))
         }
 
         setSupportActionBar(toolbar)
 
         toolbar.setNavigationOnClickListener {
-            if (webview.canGoBack()) {
-                webview.goBack()
+            if (webView.canGoBack()) {
+                webView.goBack()
             } else {
                 finish()
             }
         }
 
         viewModel.viewState.observe(this, {
-            it?.url?.let { url -> webview.loadUrl(url) }
+            it?.url?.let { url -> webView.loadUrl(url) }
         })
     }
 
