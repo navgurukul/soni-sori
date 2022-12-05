@@ -9,10 +9,7 @@ import android.os.Looper
 import android.util.Base64
 import android.view.View
 import android.view.WindowManager
-import android.webkit.ConsoleMessage
-import android.webkit.JavascriptInterface
-import android.webkit.JsResult
-import android.webkit.WebView
+import android.webkit.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -33,6 +30,9 @@ class ScratchActivity : AppCompatActivity() {
     lateinit var webView: WebView
     lateinit var progressBar: ProgressBar
     lateinit var scratchRepository: ScratchRepositoryImpl
+
+    lateinit var myRequest: PermissionRequest
+
     var file: File? = null
     var savedFile: Boolean = false
     var savedFileName: String = ""
@@ -44,7 +44,8 @@ class ScratchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_scratch)
 
@@ -69,8 +70,8 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
-    fun onSave(myIds: String) {
-        datalinksave = myIds
+    fun onSave(globalBase64String: String) {
+        datalinksave =globalBase64String
         showCodeSaveDialog()
     }
 
@@ -81,12 +82,21 @@ class ScratchActivity : AppCompatActivity() {
         onBackPressed()
     }
 
-    @JavascriptInterface
-    fun onMicrophoneRequested() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+    override fun onBackPressed() {
+        if (webView.canGoBack())
+            webView.goBack()
+        else
+            super.onBackPressed()
+    }
+
+    fun askForPermission(origin: String, permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(applicationContext,
+                permission)
+            != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+            ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+        } else {
+            myRequest.grant(myRequest.resources)
         }
     }
 
@@ -94,28 +104,20 @@ class ScratchActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            0 -> {
+            101 -> {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    Toast.makeText(this, "Permissions Granted", Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this, "Permissions Denied", Toast.LENGTH_LONG)
-                        .show()
+                    myRequest.grant(myRequest.resources)
                 }
-                return
             }
         }
     }
 
-    // Overriding WebViewClient functions
     inner class WebChromeClient : android.webkit.WebChromeClient() {
 
         override fun onJsAlert(
@@ -132,6 +134,18 @@ class ScratchActivity : AppCompatActivity() {
             return super.onConsoleMessage(consoleMessage)
         }
 
+        override fun onPermissionRequest(request: PermissionRequest) {
+            myRequest = request
+            for (permission in request.resources) {
+                when (permission) {
+                    "android.webkit.resource.AUDIO_CAPTURE" -> {
+                        askForPermission(request.origin.toString(),
+                            Manifest.permission.RECORD_AUDIO,
+                            101)
+                    }
+                }
+            }
+        }
     }
 
     inner class WebViewClient : android.webkit.WebViewClient() {

@@ -91,6 +91,7 @@ val networkModule = module {
         }
         okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
         okHttpClientBuilder.readTimeout(5, TimeUnit.MINUTES)
+        okHttpClientBuilder.writeTimeout(5, TimeUnit.MINUTES)
 
         return okHttpClientBuilder.build()
     }

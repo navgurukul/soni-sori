@@ -83,7 +83,6 @@ object MaterialDesignDependencies {
 }
 
 object OkReplayDependencies {
-
     const val espresso = "com.airbnb.okreplay:espresso:${Versions.okReplay}"
     const val okReplayNoOp = "com.airbnb.okreplay:noop:${Versions.okReplay}"
     const val okReplay = "com.airbnb.okreplay:okreplay:${Versions.okReplay}"
@@ -172,8 +171,8 @@ object BuildConfigVersions {
     const val compileSdkVersion = 31
     const val minSdkVersion = 23
     const val targetSdkVersion = 31
-    const val versionCode = 61
-    const val versionName = "1.5.31"
+    const val versionCode = 63
+    const val versionName = "1.5.33"
     const val applicationId = "org.merakilearn"
 }
 
