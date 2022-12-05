@@ -140,11 +140,11 @@ class AssessmentFragment : Fragment() {
 
     private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>, attemptResponse: AttemptResponse?) {
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-            selectedOption?.let {
-                isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
-                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-            }
+//            selectedOption?.let {
+//                isContentRvClickable = false
+//                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
+//                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+//            }
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
             mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
             initIncorrectRV(list)

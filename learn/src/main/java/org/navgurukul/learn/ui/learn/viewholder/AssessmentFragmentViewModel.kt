@@ -83,13 +83,13 @@ class AssessmentFragmentViewModel (
                             option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
-                    setState {
-                        copy(assessmentContentListForUI = currentStateList)
-                    }
-                    updateListInLocalDb(currentStateList)
                 }
             }
 
+        setState {
+            copy(assessmentContentListForUI = currentStateList)
+        }
+        updateListInLocalDb(currentStateList)
     }
 
     private fun showCorrectOnIncorrect(){
@@ -110,10 +110,11 @@ class AssessmentFragmentViewModel (
                             option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
-                    setState {
-                        copy(assessmentContentListForUI = currentState.assessmentContentListForUI)
-                    }
                 }
+            }
+
+            setState {
+                copy(assessmentContentListForUI = currentState.assessmentContentListForUI)
             }
         }
 
@@ -125,8 +126,8 @@ class AssessmentFragmentViewModel (
         }
     }
 
-    private suspend fun updateListAttemptStatus(assessmentId: Int, newViewState: OptionViewState){
-        selectedOption = learnRepo.getStudentResult(assessmentId).selectedOption
+    private fun updateListAttemptStatus(optionSelected: Int?, assessmentId: Int, newViewState: OptionViewState){
+        selectedOption = optionSelected
         val currentState = viewState.value!!
         currentState.assessmentContentListForUI.forEach {
             if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
@@ -138,9 +139,9 @@ class AssessmentFragmentViewModel (
                         option.viewState = OptionViewState.NOT_SELECTED
                     }
                 }
-                setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
             }
         }
+        setState { copy(assessmentContentListForUI = currentState.assessmentContentListForUI) }
     }
 
     private fun fetchAssessmentContent(
@@ -234,10 +235,10 @@ class AssessmentFragmentViewModel (
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
             val attemptStatus = attemptResponse.attemptStatus
             if (attemptStatus == AttemptStatus.CORRECT){
-                updateListAttemptStatus(assessmentId,OptionViewState.CORRECT)
+                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
             } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                updateListAttemptStatus(assessmentId,OptionViewState.INCORRECT)
+                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
             }
         }
@@ -255,8 +256,9 @@ class AssessmentFragmentViewModel (
 
 
     private fun getAssessmentListForUI(content: List<BaseCourseContent>): List<BaseCourseContent>{
-        return content.filterNot { it.component == COMPONENT_SOLUTION ||
-                it.component == COMPONENT_OUTPUT }
+        return content.filterNot {
+            it.component == COMPONENT_SOLUTION || it.component == COMPONENT_OUTPUT
+        }
     }
 
     private fun showOutputScreen(clickedOption: OptionResponse, content: List<BaseCourseContent>? = null){
@@ -271,10 +273,10 @@ class AssessmentFragmentViewModel (
 
     private fun postResultOnSubmit(clickedOption: OptionResponse){
         if (isOptionSelectedCorrect(clickedOption)){
-            postStudentResult(args.contentId.toInt(), Status.Pass,clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Pass, clickedOption.id)
         }
         else{
-            postStudentResult(args.contentId.toInt(), Status.Fail,clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Fail, clickedOption.id)
         }
     }
 
