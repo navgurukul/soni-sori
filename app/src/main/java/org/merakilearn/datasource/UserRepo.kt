@@ -148,7 +148,11 @@ class UserRepo(
             false
         }
     }
-    fun getPartnerData(id: String){
-        saralApi.getPartner(id)
+    fun getPartnerData(id: Int?) : PartnerDataApi{
+        return try {
+            saralApi.getPartner(id)
+        }catch (ex:Exception){
+            throw ex
+        }
     }
 }

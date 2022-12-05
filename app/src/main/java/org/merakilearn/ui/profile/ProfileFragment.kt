@@ -42,9 +42,7 @@ import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 
-
-abstract class ProfileFragment() : Fragment(){
-//    private val partnerDataApi: PartnerDataApi,
+class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
     private val userRepo: UserRepo by inject()
@@ -73,7 +71,7 @@ abstract class ProfileFragment() : Fragment(){
         initSwipeRefresh()
 
         initShowEnrolledBatches()
-        viewModel.checkPartner()
+//        viewModel.checkPartner()
 
         btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
@@ -107,6 +105,9 @@ abstract class ProfileFragment() : Fragment(){
                 is ProfileViewEvents.BatchSelectClicked ->{
                    dropOut(it.batch)
                 }
+                is ProfileViewEvents.ShowPartnerData ->{
+                    partnerData(it.partnerData)
+                }
             }
         }
 
@@ -135,6 +136,10 @@ abstract class ProfileFragment() : Fragment(){
         mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
             showDropOutDialog(batches)
         }
+    }
+
+    private fun partnerData(partnerData: PartnerDataApi){
+        mBinding.partnerName.text = partnerData.name
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {

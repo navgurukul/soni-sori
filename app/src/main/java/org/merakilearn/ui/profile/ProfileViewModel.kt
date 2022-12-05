@@ -19,6 +19,7 @@ import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.PartnerDataApi
 import org.merakilearn.ui.onboarding.OnBoardingPagesEvents
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -56,6 +57,12 @@ class ProfileViewModel(
     init {
         val appVersionText = BuildConfig.VERSION_NAME
         user = userRepo.getCurrentUser()!!
+        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
+        val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+        val partnerIdValue = partnerIdPattern.find(decodeReferrer,0)?.value
+
+        checkPartner("35")
+
         setState {
             copy(
                 appVersionText = appVersionText,
@@ -100,20 +107,18 @@ class ProfileViewModel(
             is ProfileViewActions.RefreshPage -> getEnrolledBatches()
         }
     }
-    fun checkPartner(): Boolean {
-        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-        val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
-
-
-        val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
+    private fun checkPartner(partnerId : String?) {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
 //        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
 //        ProfileViewEvents.ShowToast("$partnerIdValue")
-        return if(partnerIdValue!=null){
-            userRepo.getPartnerData(partnerIdValue)
-            true
-        } else{
-            false
+        if(partnerId!=null){
+            val partenerData = userRepo.getPartnerData(partnerId.toInt())
+                 _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partenerData))
         }
+        }
+
+
     }
 
     private fun dropOut(batchId: Int){
@@ -286,6 +291,7 @@ sealed class ProfileViewEvents : ViewEvents {
     object RestartApp : ProfileViewEvents()
     data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
     data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataApi): ProfileViewEvents()
 }
 
 sealed class ProfileViewActions : ViewModelAction {
