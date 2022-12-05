@@ -103,18 +103,16 @@ class ProfileViewModel(
     fun checkPartner(): Boolean {
         val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
         val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
-        val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
 
 
         val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
-        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
-        ProfileViewEvents.ShowToast("$partnerIdValue")
-        if(partnerIdValue!=null){
+//        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
+//        ProfileViewEvents.ShowToast("$partnerIdValue")
+        return if(partnerIdValue!=null){
             userRepo.getPartnerData(partnerIdValue)
-            return true
-        }
-        else{
-            return false
+            true
+        } else{
+            false
         }
     }
 
