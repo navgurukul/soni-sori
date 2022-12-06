@@ -4,13 +4,13 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PartnerDataApi(
+data class PartnerDataResponse(
     @Json(name = "description")
-    val description: String?="null",
+    val description: String?= null,
     @Json(name = "logo")
-    val logo: String?="null",
+    val logo: String?= null,
     @Json(name = "name")
-    val name: String?="null",
+    val name: String?= null,
     @Json(name = "website_link")
-    val websiteLink: String?="null"
+    val websiteLink: String?= null
 )

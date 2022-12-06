@@ -79,8 +79,6 @@
                     app:layout_constraintTop_toTopOf="@id/tvName"
                     app:layout_constraintWidth_default="wrap" />
 
-
-
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/groupServerUrl"
                     android:layout_width="wrap_content"
@@ -124,11 +122,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
                 <ImageView
+                    android:id="@+id/partnerImage"
                     android:layout_width="300dp"
                     android:layout_height="200dp"
-                    android:id="@+id/partnerImage"
                     android:layout_marginStart="@dimen/spacing_4x"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:src="@drawable/ic_book"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"/>
                 <TextView
@@ -138,8 +137,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
                     android:layout_marginTop="@dimen/spacing_2x"
-                    android:text="@string/partnerName"
-                    android:visibility="gone"
+                    tools:text="@string/partnerName"
+                    android:visibility="visible"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/partnerImage" />
@@ -150,8 +149,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
                     android:layout_marginTop="@dimen/spacing_2x"
-                    android:text="@string/partnerDesc"
-                    android:visibility="gone"
+                    tools:text= "@string/partnerDesc"
+                    android:visibility="visible"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/partnerName" />

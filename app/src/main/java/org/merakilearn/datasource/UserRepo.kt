@@ -9,7 +9,7 @@ import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.datasource.network.model.PartnerDataApi
+import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -148,9 +148,10 @@ class UserRepo(
             false
         }
     }
-    fun getPartnerData(id: Int?) : PartnerDataApi{
+
+    suspend fun getPartnerData(partnerId: Int?) : PartnerDataResponse{
         return try {
-            saralApi.getPartner(id)
+            saralApi.getPartnerData(partnerId)
         }catch (ex:Exception){
             throw ex
         }

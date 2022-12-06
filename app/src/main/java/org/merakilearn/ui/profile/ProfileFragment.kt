@@ -12,18 +12,19 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_enrolled_batch.view.*
 import org.koin.android.ext.android.inject
@@ -34,13 +35,18 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
-import org.merakilearn.datasource.network.model.PartnerDataApi
-import org.merakilearn.ui.adapter.EnrolledBatchAdapter
+import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
-import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
+import org.merakilearn.ui.adapter.EnrolledBatchAdapter
+import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
+import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
+import java.io.File
 
 class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
@@ -51,27 +57,21 @@ class ProfileFragment : Fragment() {
     private lateinit var mAdapter: EnrolledBatchAdapter
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        (activity as OnBoardingPagesViewModel?)?.checkPartner()
-//        (this.activity as OnBoardingPagesViewModel?)?.checkPartner()
-
-
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return mBinding.root
     }
 
-    override  fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initSwipeRefresh()
 
         initShowEnrolledBatches()
-//        viewModel.checkPartner()
 
         btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
@@ -79,10 +79,6 @@ class ProfileFragment : Fragment() {
         viewModel.viewState.observe(viewLifecycleOwner) {
             it?.let { updateState(it) }
         }
-//        if(viewModel.checkPartner()){
-//            partnerDesc.text = partnerDataApi.description
-//            partnerName.text=partnerDataApi.name
-//        }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
@@ -137,9 +133,9 @@ class ProfileFragment : Fragment() {
             showDropOutDialog(batches)
         }
     }
-
-    private fun partnerData(partnerData: PartnerDataApi){
+    private fun partnerData(partnerData: PartnerDataResponse){
         mBinding.partnerName.text = partnerData.name
+        println("partenerName ${partnerData.name}")
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {
@@ -190,7 +186,7 @@ class ProfileFragment : Fragment() {
         }
 
         it.userEmail?.let {
-            mBinding.tvEmail.text = it
+            mBinding.tvEmail.setText(it)
         }
 
         if(it.batches.isEmpty()){
@@ -321,7 +317,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showDropOutDialog(batches: Batches){
-        val alertLayout: View =  layoutInflater.inflate(R.layout.dialog_dropout, null)
+        val alertLayout: View =  getLayoutInflater().inflate(R.layout.dialog_dropout, null)
         val btnStay: View = alertLayout.findViewById(R.id.btnStay)
         val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
