@@ -26,7 +26,6 @@ class OnBoardingPagesViewModel(
     private val installReferrerManager: InstallReferrerManager,
     private val preferences: CorePreferences,
     private val config: Config
-
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
     companion object{
@@ -56,29 +55,13 @@ class OnBoardingPagesViewModel(
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems))
             }
             is OnBoardingPagesAction.PageSelected -> {
-                var isLoginLayoutVisible =
+                val isLoginLayoutVisible =
                     action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 1
                 setState {
                     copy(
                         isLoginLayoutVisible = isLoginLayoutVisible,
                         isNavLayoutVisible = !isLoginLayoutVisible
                     )
-                }
-                if(isLoginLayoutVisible){
-                    setState {
-                        copy(
-                            isLoginLayoutVisible = isLoginLayoutVisible,
-                            isNavLayoutVisible = !isLoginLayoutVisible
-                        )
-                    }
-                }
-                else{
-                    setState {
-                        copy(
-                            isLoginLayoutVisible = true,
-                            isNavLayoutVisible = true
-                        )
-                    }
                 }
             }
         }
@@ -107,8 +90,7 @@ class OnBoardingPagesViewModel(
             setState { copy(isLoading = false) }
             if (loginResponse != null) {
                 installReferrerManager.checkReferrer()
-//                checkPartner()
-
+                checkPartner()
             } else {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
@@ -121,13 +103,13 @@ class OnBoardingPagesViewModel(
             val fakeUserLoginResponse = loginRepository.performFakeSignUp()
             setState { copy(isLoading = false) }
             fakeUserLoginResponse?.let {
-//                checkPartner()
+                checkPartner()
             } ?: run {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
             }
         }
     }
-    fun checkPartner() {
+    private fun checkPartner(){
         val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
         val partnerIdPattern= Regex("[^$PARTNER_ID:]\\d+")
         val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
@@ -136,13 +118,13 @@ class OnBoardingPagesViewModel(
         val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
 
 
-//        if(partnerIdValue!=null){
-//            setAnalytics(partnerIdValue,partnerNameValue!!)
-//            getPathwayForResidentialProgram()
-//        }
-//        else{
-////            _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
-//        }
+        if(partnerIdValue!=null){
+            setAnalytics(partnerIdValue,partnerNameValue!!)
+            getPathwayForResidentialProgram()
+        }
+        else{
+            _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+        }
     }
 
     private fun setAnalytics( partner_id:String,partner_name:String) {

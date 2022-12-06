@@ -21,22 +21,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.UserRepo
-import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
-import java.net.URLDecoder
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -44,9 +38,6 @@ class ProfileActivity : AppCompatActivity() {
     private val viewModel: ProfileViewModel by viewModel()
     private val merakiNavigator: MerakiNavigator by inject()
     private val userRepo: UserRepo by inject()
-    private lateinit var  installReferrerManager: InstallReferrerManager
-    var part: Int =0
-    var id:String =""
 
     companion object {
         fun launch(context: Context) {
@@ -57,17 +48,14 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkPartner()
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
 
         if (!userRepo.isUserLoggedIn() || userRepo.isFakeLogin()) {
-            checkPartner()
             OnBoardingActivity.restartApp(this, true)
             return
         }
 
         btnPrivacyPolicy.setOnClickListener {
-
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
@@ -106,38 +94,6 @@ class ProfileActivity : AppCompatActivity() {
 
         initSavedFile()
         initToolBar()
-    }
-
-    private fun getmydata() {
-        val retrofit=
-            Retrofit.Builder()
-                .baseUrl("https://dev-api.navgurukul.org/apiDocs/")
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build()
-                .create(SaralApi::class.java)
-//                .create(Sara)
-//        val retrofitData=retrofit.getPartner(id)
-
-    }
-
-    private fun checkPartner() {
-
-            val decodeReferrer=
-                URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-            val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
-            val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
-
-            val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
-            val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
-
-
-        if(partnerIdValue!=null){
-            part= 1
-            id=partnerIdValue
-        } else{
-            part = 2
-        }
-
     }
 
     private fun showUpdateServerDialog(serverUrl: String) {
@@ -255,20 +211,6 @@ class ProfileActivity : AppCompatActivity() {
                 .into(mBinding.ivProfile)
 
             mBinding.ivProfile.setTag(R.id.ivProfile, it.profilePic)
-        }
-        if(part==2){
-//            mBinding.title.visibility=View.GONE
-//            mBinding.partnerImage.visibility=View.GONE
-//            mBinding.partnerName.visibility=View.GONE
-//            mBinding.partnerDesc.visibility=View.GONE
-
-        }
-        if(part==1){
-            mBinding.title.visibility=View.VISIBLE
-            mBinding.partnerImage.visibility=View.VISIBLE
-            mBinding.partnerName.visibility=View.VISIBLE
-            mBinding.partnerDesc.visibility=View.VISIBLE
-
         }
 
         if (it.showServerUrl) {

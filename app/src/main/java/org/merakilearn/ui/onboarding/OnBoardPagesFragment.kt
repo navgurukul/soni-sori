@@ -84,8 +84,8 @@ class OnBoardPagesFragment : BaseFragment() {
         onBoardingData: OnBoardingData,
         onBoardingTranslations: OnBoardingTranslations
     ) {
-//        next.text = onBoardingTranslations.nextText
-//        skip.text = onBoardingTranslations.skipText
+        next.text = onBoardingTranslations.nextText
+        skip.text = onBoardingTranslations.skipText
         login_with_google.text = onBoardingTranslations.loginWithGoogleText
         skip_login.text = onBoardingTranslations.skipLoginText
 
@@ -112,13 +112,13 @@ class OnBoardPagesFragment : BaseFragment() {
             viewPager2.currentItem = 1
             viewPager2.currentItem = 0
 
-//            skip.setOnClickListener {
-//                viewModel.handle(OnBoardingPagesAction.Skip(onBoardPagesAdapter.itemCount))
-//            }
-//
-//            next.setOnClickListener {
-//                viewModel.handle(OnBoardingPagesAction.Next(viewPager2.currentItem))
-//            }
+            skip.setOnClickListener {
+                viewModel.handle(OnBoardingPagesAction.Skip(onBoardPagesAdapter.itemCount))
+            }
+
+            next.setOnClickListener {
+                viewModel.handle(OnBoardingPagesAction.Next(viewPager2.currentItem))
+            }
         }
 
     }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import org.merakilearn.R
@@ -33,10 +32,6 @@ class OnBoardPagesAdapter(
         val translation = onBoardingTranslations.onBoardingPageDataListTexts[position]
         holder.header.text = translation.header
         holder.desc.text = translation.description
-        if(position==1){
-            val musha=holder.header.text
-            Toast.makeText(context,"$musha",Toast.LENGTH_SHORT).show()
-        }
 
         val onBoardingData = onBoardingData.onBoardingPagesList[position]
 
@@ -55,10 +50,10 @@ class OnBoardPagesAdapter(
 
 
     enum class Images(@DrawableRes val id: Int) {
-        PYTHON(R.drawable.on_boarding_mobile),
-        INTERVIEW(R.drawable.on_boarding_interactive_classes),
-        INTERACTIVE(R.drawable.on_boarding_develop),
-        OPPORTUNITIES(R.drawable.on_boarding_develop)
+        PYTHON(R.drawable.on_boarding_learn_python),
+        INTERVIEW(R.drawable.on_boarding_job_interview),
+        INTERACTIVE(R.drawable.on_boarding_book_lover),
+        OPPORTUNITIES(R.drawable.on_boarding_opportunities)
     }
 }
 

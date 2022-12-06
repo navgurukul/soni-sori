@@ -3,38 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_4x">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
-        android:layout_width="413dp"
-        android:layout_height="730dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skip"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:textColor="?textSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/skip_english" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/next"
+        app:layout_constraintStart_toEndOf="@id/skip"
         app:tabBackground="@drawable/tab_pager_selector"
         app:tabGravity="center"
-        android:layout_marginBottom="80dp"
-        app:tabIndicatorHeight="0dp"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:tabIndicatorHeight="0dp" />
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:textColor="@color/green_progress_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/next_english" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/nav_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:constraint_referenced_ids=" tab_layout" />
-
+        app:constraint_referenced_ids="next, tab_layout, skip" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/login_layout"
@@ -45,9 +64,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_with_google"
-        android:layout_margin="10dp"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_2x"
         android:insetTop="0dp"
@@ -55,9 +73,9 @@
         android:text="@string/continue_with_google_english"
         android:textAllCaps="false"
         android:textColor="@color/green_progress_color"
-        android:visibility="gone"
         app:icon="@drawable/google_icon"
         app:iconGravity="textStart"
+        android:visibility="gone"
         app:iconPadding="@dimen/spacing_4x"
         app:iconTint="@android:color/transparent"
         app:iconTintMode="add"
@@ -72,11 +90,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetTop="0dp"
+        android:visibility="gone"
         android:insetBottom="0dp"
         android:text="@string/skip_login_english"
         android:textAllCaps="false"
         android:textColor="?textSecondary"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

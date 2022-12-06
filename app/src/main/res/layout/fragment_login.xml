@@ -57,7 +57,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="@dimen/spacing_2x"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/continue_with_google_english"

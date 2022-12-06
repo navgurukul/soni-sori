@@ -15,7 +15,6 @@ object Versions {
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
-    const val gson="2.5.0"
 }
 
 object RxJavaDependencies {
@@ -161,7 +160,6 @@ object RetrofitDependencies {
     const val logging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
     const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    const val gson=" com.squareup.retrofit2:converter-gson:${Versions.gson}"
 }
 
 object ArrowPreferences {
