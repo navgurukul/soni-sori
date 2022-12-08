@@ -1,24 +1,29 @@
 package org.navgurukul.learn.ui.learn
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
+import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.webkit.MimeTypeMap
 import android.widget.Toast
-import androidx.core.content.FileProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,12 +55,12 @@ import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
 import org.navgurukul.learn.util.toDate
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.InputStream
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
+import android.content.Context.DOWNLOAD_SERVICE as DOWNLOAD_SERVICE1
+
 
 class LearnFragment : Fragment(){
 
@@ -86,6 +91,18 @@ class LearnFragment : Fragment(){
         initSwipeRefresh()
 
         configureToolbar()
+
+        val builder = StrictMode.VmPolicy.Builder();
+        builder.detectFileUriExposure()
+
+        val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val permissionCheck = ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+               MODE_ENABLE_WRITE_AHEAD_LOGGING )
+        }
 
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
@@ -240,46 +257,61 @@ class LearnFragment : Fragment(){
         override fun onPostExecute(result: InputStream?) {
             mypdfView.fromStream(result).load()
             }
+
         }
 
     private fun generatePDF(pdfUrl : String){
-        val download= context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val PdfUri = Uri.parse(pdfUrl)
-        val getPdf = DownloadManager.Request(PdfUri)
-        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        download.enqueue(getPdf)
-        Toast.makeText(context,"Download Started", Toast.LENGTH_LONG).show()
 
+//        val download= context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+//        val PdfUri = Uri.parse(pdfUrl)
+//        val getPdf = DownloadManager.Request(PdfUri)
+//        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+//        download.enqueue(getPdf)
+//        Toast.makeText(context,"Download Started", Toast.LENGTH_LONG).show()
     }
 
     private fun showShareIntent(pdfUrl:String) {
         val outputFile = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "dhanu"
+           "a7dc6704-47ac-46a7-a3d5-e7b4c4eb4ccd.pdf"
         )
+        val uri = Uri.fromFile(outputFile)
 
-        val pdfUri : Uri = FileProvider.getUriForFile(
-                requireContext(),
-                "org.merakilearn.provider_paths",
-                outputFile
-            )
-
-//        Log.d("pdfUrl","$pdfUrl")
-        Log.d("uritext","$pdfUri")
-        val url = requireContext().contentResolver.getType(pdfUri)
-        val extention = MimeTypeMap.getSingleton().getExtensionFromMimeType(url)
-        Log.d("geturl", "$url")
-        Log.d("getExtenstion","$extention")
-//        } else {
-//            pdfUri = Uri.fromFile(outputFile)
-//        }
         val share = Intent()
         share.action = Intent.ACTION_SEND
         share.type = "application/pdf"
-        val pdf = Uri.parse(pdfUrl)
-        share.putExtra(Intent.EXTRA_TEXT,pdf)
-        share.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        startActivity(Intent.createChooser(share, "Share"))
+        share.putExtra(Intent.EXTRA_STREAM, uri)
+
+        requireActivity().startActivity(share)
+
+
+//        val outputFile = File(
+//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+//            "dhanu"
+//        )
+//
+//        val pdfUri : Uri = FileProvider.getUriForFile(
+//                requireContext(),
+//                "org.merakilearn.provider_paths",
+//                outputFile
+//            )
+//
+////        Log.d("pdfUrl","$pdfUrl")
+//        Log.d("uritext","$pdfUri")
+//        val url = requireContext().contentResolver.getType(pdfUri)
+//        val extention = MimeTypeMap.getSingleton().getExtensionFromMimeType(url)
+//        Log.d("geturl", "$url")
+//        Log.d("getExtenstion","$extention")
+////        } else {
+////            pdfUri = Uri.fromFile(outputFile)
+////        }
+//        val share = Intent()
+//        share.action = Intent.ACTION_SEND
+//        share.type = "application/pdf"
+//        val pdf = Uri.parse(pdfUrl)
+//        share.putExtra(Intent.EXTRA_TEXT,pdf)
+//        share.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//        startActivity(Intent.createChooser(share, "Share"))
 
     }
 
