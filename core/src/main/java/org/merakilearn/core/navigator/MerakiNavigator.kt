@@ -37,6 +37,18 @@ class MerakiNavigator(
         }
     }
 
+    private val hyperAppModuleNavigator: HyperAppModuleNavigator? by lazy {
+        val serviceIterator = ServiceLoader.load(
+            HyperAppModuleNavigator::class.java,
+            HyperAppModuleNavigator::class.java.classLoader
+        ).iterator()
+        if (serviceIterator.hasNext()) {
+            serviceIterator.next()
+        } else {
+            null
+        }
+    }
+
     fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
 
@@ -117,6 +129,26 @@ class MerakiNavigator(
 
     }
 
+    fun launchHyperApp(activity: FragmentActivity, mode: Mode) {
+        if (dynamicFeatureModuleManager.isInstalled(HYPER_MODULE_NAME)) {
+            typingAppModuleNavigator?.launchTypingApp(activity, mode)
+        } else {
+            val progress = ProgressDialog(activity).apply {
+                setCancelable(false)
+                setMessage(activity.getString(R.string.installing_module_message))
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                show()
+            }
+            dynamicFeatureModuleManager.installModule(HYPER_MODULE_NAME, {
+                progress.dismiss()
+                typingAppModuleNavigator?.launchTypingApp(activity, mode)
+            }, {
+                progress.dismiss()
+            })
+        }
+
+    }
+
     private fun startActivity(
         context: Context,
         intent: Intent,
@@ -179,6 +211,7 @@ class MerakiNavigator(
         const val TYPING_DEEPLINK = "/typing"
         const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
+        const val HYPER_MODULE_NAME = "hyper"
 
         private fun isMerakiUrl(url: String): Boolean {
             return try {

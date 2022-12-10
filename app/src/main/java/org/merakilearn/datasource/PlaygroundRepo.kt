@@ -23,7 +23,11 @@ class PlaygroundRepo {
                 name="Scratch",
                 iconResource = R.drawable.ic_scratch_cat,
             ),
-
+            PlaygroundItemModel(
+                PlaygroundTypes.HYPER,
+                name="Hyper",
+                iconResource = R.drawable.ic_hyper,
+            )
         )
     }
 }

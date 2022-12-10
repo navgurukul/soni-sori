@@ -17,6 +17,7 @@ import org.merakilearn.ui.ScratchActivity
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
+import org.navgurukul.learn.ui.common.toast
 import java.io.File
 
 class PlaygroundFragment : BaseFragment() {
@@ -70,6 +71,10 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
+                is PlaygroundViewEvents.OpenHyper ->{
+                    toast("hyper")
+                    navigator.launchHyperApp(requireActivity(),Mode.Playground)
+                }
             }
         })
 

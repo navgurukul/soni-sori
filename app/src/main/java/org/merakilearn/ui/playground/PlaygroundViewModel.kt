@@ -1,5 +1,6 @@
 package org.merakilearn.ui.playground
 
+import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class PlaygroundViewModel(
             PlaygroundTypes.PYTHON -> _viewEvents.postValue(PlaygroundViewEvents.OpenPythonPlayground)
             PlaygroundTypes.PYTHON_FILE -> _viewEvents.setValue(PlaygroundViewEvents.OpenPythonPlaygroundWithFile(playgroundItemModel.file))
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
-
+            PlaygroundTypes.HYPER -> _viewEvents.postValue(PlaygroundViewEvents.OpenHyper)
         }
     }
 
@@ -103,7 +104,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
-
+    object OpenHyper : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions: ViewModelAction{

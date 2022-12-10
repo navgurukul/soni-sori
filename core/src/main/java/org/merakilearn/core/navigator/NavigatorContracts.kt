@@ -34,3 +34,7 @@ sealed class Mode: Parcelable {
 interface TypingAppModuleNavigator {
     fun launchTypingApp(activity: FragmentActivity, mode : Mode)
 }
+
+interface HyperAppModuleNavigator {
+    fun launchHyperApp(activity: FragmentActivity, mode : Mode)
+}
