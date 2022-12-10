@@ -4,31 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_4x">
+    android:padding="@dimen/spacing_half_x">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_8x"
+        android:layout_width="413dp"
+        android:layout_height="415dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@null"
-        android:src="@drawable/on_boarding_book_lover"
-        app:layout_constraintBottom_toTopOf="@id/header"
+        android:layout_marginTop="-40dp"
+        android:src="@drawable/on_boarding_mobile"
+        app:layout_constraintBottom_toTopOf="@+id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/header"
         style="?textAppearanceHeadline5"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_4x"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/learn_python_header_english"
         android:textAlignment="center"
         android:textColor="?textPrimary"
-        app:layout_constraintBottom_toTopOf="@id/desc"
+        app:layout_constraintBottom_toTopOf="@+id/desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
@@ -36,12 +38,12 @@
     <TextView
         android:id="@+id/desc"
         style="?textAppearanceBody2"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/learn_python_desc_english"
         android:textAlignment="center"
         android:textColor="?textPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
