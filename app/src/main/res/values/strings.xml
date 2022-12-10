@@ -91,7 +91,9 @@
 
     <string name="opportunities">Opportunities</string>
     <string name="partnerName">Partner Name</string>
+    <string name="partnerInfo">Your learning is sponsored by:</string>
     <string name="partnerDesc">Partner Desc</string>
+    <string name="partnerWebsite">Website</string>
     <string name="title">Your learning is supported by:</string>
     <string name="opportunities_desc">Curated list of admission tests, grants, advanced courses and mentorship to skyrocket your career</string>
     <string name="explore_opportunities">Explore Opportunities</string>

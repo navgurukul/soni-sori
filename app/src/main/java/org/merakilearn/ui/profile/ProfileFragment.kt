@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -43,6 +44,7 @@ import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 import org.merakilearn.ui.adapter.EnrolledBatchAdapter
+import org.merakilearn.ui.onboarding.OnBoardPagesAdapter
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
@@ -134,8 +136,16 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun partnerData(partnerData: PartnerDataResponse){
+        mBinding.title.visibility=View.VISIBLE
+        mBinding.partnerName.visibility=View.VISIBLE
         mBinding.partnerName.text = partnerData.name
-        println("partenerName ${partnerData.name}")
+        mBinding.partnerDesc.visibility=View.VISIBLE
+        mBinding.partnerDesc.text=partnerData.description
+        mBinding.partnerImage.visibility=View.VISIBLE
+        Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
+        mBinding.partnerWebsite.visibility=View.VISIBLE
+        mBinding.partnerWebsite.text=partnerData.websiteLink
+
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {

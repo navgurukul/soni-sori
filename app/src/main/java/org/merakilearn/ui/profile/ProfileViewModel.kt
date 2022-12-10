@@ -54,7 +54,6 @@ class ProfileViewModel(
         val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
         val partnerIdValue = partnerIdPattern.find(decodeReferrer,0)?.value
 
-        checkPartner("35")
 
         setState {
             copy(
@@ -64,12 +63,16 @@ class ProfileViewModel(
                 profilePic = user.profilePicture
             )
         }
+        if(partnerIdValue!=null) {
+
+            checkPartner(partnerIdValue)
+        }
 
         viewModelScope.launch {
             updateFiles()
         }
         getEnrolledBatches()
-        checkPartner("35")
+//        checkPartner(partnerIdValue)
     }
 
     fun handle(action: ProfileViewActions) {
@@ -126,10 +129,11 @@ class ProfileViewModel(
     private fun checkPartner(partnerId : String?) {
         viewModelScope.launch {
             setState { copy(isLoading = false) }
-            val partnerData = userRepo.getPartnerData(partnerId?.toInt())
+
 //        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
 //        ProfileViewEvents.ShowToast("$partnerIdValue")
             if(partnerId != null){
+                val partnerData = userRepo.getPartnerData(partnerId?.toInt())
                 _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
             }
         }

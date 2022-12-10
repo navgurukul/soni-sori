@@ -126,10 +126,11 @@
                     android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:layout_marginStart="@dimen/spacing_4x"
-                    android:visibility="visible"
-                    android:src="@drawable/ic_book"
+                    android:visibility="gone"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"/>
+
                 <TextView
                     android:id="@+id/partnerName"
                     style="?textAppearanceEmphasized1"
@@ -138,22 +139,35 @@
                     android:layout_marginStart="@dimen/spacing_4x"
                     android:layout_marginTop="@dimen/spacing_2x"
                     tools:text="@string/partnerName"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/partnerImage" />
                 <TextView
                     android:id="@+id/partnerDesc"
-                    style="?textAppearanceEmphasized2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
                     android:layout_marginTop="@dimen/spacing_2x"
                     tools:text= "@string/partnerDesc"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/partnerName" />
+                <TextView
+                    android:id="@+id/partnerWebsite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_4x"
+                    android:layout_marginTop="@dimen/spacing_2x"
+
+                    android:layout_marginEnd="8dp"
+                    tools:text= "@string/partnerWebsite"
+                    android:visibility="gone"
+                    android:textAppearance="?textAppearanceEmphasized2"
+                    android:textColor="@color/green_progress_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/partnerDesc" />
 
                 <TextView
                     android:id="@+id/opportunityTitle"
@@ -165,7 +179,7 @@
                     android:text="@string/opportunities"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerDesc" />
+                    app:layout_constraintTop_toBottomOf="@id/partnerWebsite" />
 
                 <TextView
                     android:id="@+id/opportunityDescription"
