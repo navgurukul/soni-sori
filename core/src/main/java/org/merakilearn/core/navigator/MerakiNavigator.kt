@@ -131,7 +131,7 @@ class MerakiNavigator(
 
     fun launchHyperApp(activity: FragmentActivity, mode: Mode) {
         if (dynamicFeatureModuleManager.isInstalled(HYPER_MODULE_NAME)) {
-            typingAppModuleNavigator?.launchTypingApp(activity, mode)
+            hyperAppModuleNavigator?.launchHyperApp(activity, mode)
         } else {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
@@ -141,7 +141,7 @@ class MerakiNavigator(
             }
             dynamicFeatureModuleManager.installModule(HYPER_MODULE_NAME, {
                 progress.dismiss()
-                typingAppModuleNavigator?.launchTypingApp(activity, mode)
+                hyperAppModuleNavigator?.launchHyperApp(activity, mode)
             }, {
                 progress.dismiss()
             })

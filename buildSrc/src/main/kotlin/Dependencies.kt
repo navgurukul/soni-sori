@@ -201,4 +201,5 @@ object Plugins {
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
+    const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
 }
