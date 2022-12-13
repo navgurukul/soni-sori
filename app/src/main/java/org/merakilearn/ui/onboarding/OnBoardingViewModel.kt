@@ -42,8 +42,7 @@ class OnBoardingViewModel(
             val decodeReferrer= URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
             val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
 
-//           val partnerId=partnerIdPattern.find(decodeReferrer,0)?.value
-            val partnerId=35
+           val partnerId=partnerIdPattern.find(decodeReferrer,0)?.value
             if(partnerId!=null){
                 val partnerData = userRepo.getPartnerData(partnerId?.toInt())
                 _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
