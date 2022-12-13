@@ -45,7 +45,7 @@ class OnBoardPagesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return onBoardingData.onBoardingPagesList.size
+        return onBoardingData.onBoardingPagesList.size - 1
     }
 
 

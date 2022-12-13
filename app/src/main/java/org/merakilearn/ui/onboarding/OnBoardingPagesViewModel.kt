@@ -52,11 +52,11 @@ class OnBoardingPagesViewModel(
                 setState {
                     copy(isLoginLayoutVisible = true, isNavLayoutVisible = false)
                 }
-                _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems))
+                _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems - 1))
             }
             is OnBoardingPagesAction.PageSelected -> {
                 val isLoginLayoutVisible =
-                    action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 1
+                    action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 2
                 setState {
                     copy(
                         isLoginLayoutVisible = isLoginLayoutVisible,
