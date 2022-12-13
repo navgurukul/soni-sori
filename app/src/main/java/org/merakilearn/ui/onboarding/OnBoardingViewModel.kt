@@ -1,19 +1,24 @@
 package org.merakilearn.ui.onboarding
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
+import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.navgurukul.commonui.platform.*
+import java.net.URLDecoder
 
 class OnBoardingViewModel(
     onBoardingActivityArgs: OnBoardingActivityArgs?,
-    userRepo: UserRepo,
+    private val userRepo: UserRepo,
     private val config: Config,
-    private val corePreferences: CorePreferences
+    private val corePreferences: CorePreferences,
+    private val installReferrerManager: InstallReferrerManager
 ) :
     BaseViewModel<OnBoardingViewEvents, OnBoardingViewState>(OnBoardingViewState()) {
 
@@ -32,6 +37,27 @@ class OnBoardingViewModel(
             }
         }
     }
+    private fun checkPartner(){
+        viewModelScope.launch {
+            val decodeReferrer= URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
+            val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+
+//           val partnerId=partnerIdPattern.find(decodeReferrer,0)?.value
+            val partnerId=35
+            if(partnerId!=null){
+                val partnerData = userRepo.getPartnerData(partnerId?.toInt())
+                _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
+            }
+            else{
+                _viewEvents.setValue(
+                    OnBoardingViewEvents.ShowCourseSelectionScreen
+                )
+            }
+        }
+
+
+    }
+
 
     enum class Language(val code: String) {
         ENGLISH("en"), HINDI("hi")
@@ -52,7 +78,7 @@ class OnBoardingViewModel(
     fun handle(action: OnBoardingViewActions) {
         when (action) {
             OnBoardingViewActions.NavigateNextFromOnBoardingScreen -> _viewEvents.setValue(
-                OnBoardingViewEvents.ShowCourseSelectionScreen
+            OnBoardingViewEvents.ShowPartnerScreen
             )
             is OnBoardingViewActions.SelectLanguage -> {
                 corePreferences.selectedLanguage = action.language.code
@@ -64,9 +90,19 @@ class OnBoardingViewModel(
                 corePreferences.lastSelectedPathWayId = action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
             }
+
             is OnBoardingViewActions.OpenHomeScreen ->{
                 corePreferences.lastSelectedPathWayId=action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId =action.pathwayId))
+            }
+            is OnBoardingViewActions.GetPartnerData->{
+                checkPartner()
+            }
+            is OnBoardingViewActions.NavigateNextFromPartnerDataScreen->{
+                _viewEvents.setValue(
+                    OnBoardingViewEvents.ShowCourseSelectionScreen
+                )
+
             }
         }
     }
@@ -78,6 +114,8 @@ sealed class OnBoardingViewEvents : ViewEvents {
     object ShowCourseSelectionScreen : OnBoardingViewEvents()
     object ShowOnBoardingPages : OnBoardingViewEvents()
     object ShowLoginScreen : OnBoardingViewEvents()
+    object ShowPartnerScreen:OnBoardingViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse): OnBoardingViewEvents()
 }
 
 sealed class OnBoardingViewActions : ViewModelAction {
@@ -85,7 +123,10 @@ sealed class OnBoardingViewActions : ViewModelAction {
     data class SelectLanguage(val language: OnBoardingViewModel.Language) : OnBoardingViewActions()
     data class SelectCourse(val pathwayId: Int) : OnBoardingViewActions()
     data class OpenHomeScreen(val pathwayId:Int):OnBoardingViewActions()
+    object GetPartnerData:OnBoardingViewActions()
+    object NavigateNextFromPartnerDataScreen:OnBoardingViewActions()
 }
+
 
 data class OnBoardingViewState(
     val onBoardingData: OnBoardingData? = null,

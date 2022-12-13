@@ -37,7 +37,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get()) }
+    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { PlaygroundViewModel(get(),get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->

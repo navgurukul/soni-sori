@@ -94,6 +94,10 @@ class OnBoardingActivity : AppCompatActivity() {
                     LoginFragment.newInstance(),
                     LoginFragment.TAG
                 )
+                OnBoardingViewEvents.ShowPartnerScreen->showFragment(
+                    PartnerFragment.newInstance(),
+                    PartnerFragment.TAG
+                )
             }
         }
 
