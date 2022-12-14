@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/spacing_4x">
+    android:layout_height="match_parent">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
@@ -60,6 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:padding="@dimen/spacing_2x"
         app:constraint_referenced_ids="login_with_google" />
 
     <com.google.android.material.button.MaterialButton
@@ -68,6 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_2x"
+        android:layout_marginLeft="@dimen/spacing_3x"
+        android:layout_marginRight="@dimen/spacing_3x"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/continue_with_google_english"

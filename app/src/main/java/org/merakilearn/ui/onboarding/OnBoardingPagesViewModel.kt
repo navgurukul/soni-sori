@@ -29,7 +29,7 @@ class OnBoardingPagesViewModel(
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
     companion object{
-        const val PARTNER_ID="partner_id"
+        const val PARTNER_ID = "partner_id"
     }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -110,16 +110,16 @@ class OnBoardingPagesViewModel(
         }
     }
     private fun checkPartner(){
-        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
+        val decodeReferrer= URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
         val partnerIdPattern= Regex("[^$PARTNER_ID:]\\d+")
         val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
 
-        val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
-        val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
+        val partnerIdValue = partnerIdPattern.find(decodeReferrer,0)?.value
+        val partnerNameValue = partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
 
 
-        if(partnerIdValue!=null){
-            setAnalytics(partnerIdValue,partnerNameValue!!)
+        if(partnerIdValue != null){
+            setAnalytics(partnerIdValue, partnerNameValue!!)
             getPathwayForResidentialProgram()
         }
         else{
@@ -127,10 +127,10 @@ class OnBoardingPagesViewModel(
         }
     }
 
-    private fun setAnalytics( partner_id:String,partner_name:String) {
+    private fun setAnalytics( partner_id:String, partner_name:String) {
         firebaseAnalytics= Firebase.analytics
-        firebaseAnalytics.setUserProperty("partner_id",partner_id)
-        firebaseAnalytics.setUserProperty("partner_name",partner_name)
+        firebaseAnalytics.setUserProperty("partner_id", partner_id)
+        firebaseAnalytics.setUserProperty("partner_name", partner_name)
     }
 
     private fun getPathwayForResidentialProgram() {
