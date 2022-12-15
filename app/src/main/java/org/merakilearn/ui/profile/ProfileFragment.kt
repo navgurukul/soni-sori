@@ -136,15 +136,17 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun partnerData(partnerData: PartnerDataResponse){
-        mBinding.title.visibility=View.VISIBLE
-        mBinding.partnerName.visibility=View.VISIBLE
-        mBinding.partnerName.text = partnerData.name
-        mBinding.partnerDesc.visibility=View.VISIBLE
-        mBinding.partnerDesc.text=partnerData.description
-        mBinding.partnerImage.visibility=View.VISIBLE
-        Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
-        mBinding.partnerWebsite.visibility=View.VISIBLE
-        mBinding.partnerWebsite.text=partnerData.websiteLink
+        if(partnerData.name!=null && partnerData.websiteLink!=null && partnerData.description!=null && partnerData.logo!=null) {
+            mBinding.title.visibility = View.VISIBLE
+            mBinding.partnerName.visibility = View.VISIBLE
+            mBinding.partnerName.text = partnerData.name
+            mBinding.partnerDesc.visibility = View.VISIBLE
+            mBinding.partnerDesc.text = partnerData.description
+            mBinding.partnerImage.visibility = View.VISIBLE
+            Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
+            mBinding.partnerWebsite.visibility = View.VISIBLE
+            mBinding.partnerWebsite.text = partnerData.websiteLink
+        }
 
     }
 
