@@ -54,11 +54,11 @@ class PlaygroundFragment : BaseFragment() {
         if (isLoading) showLoading() else dismissLoadingDialog()
         recycler_view.adapter = adapter
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.setData(it.playgroundsList)
-        })
+        }
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, {
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
                     requireContext()
@@ -71,12 +71,11 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
-                is PlaygroundViewEvents.OpenHyper ->{
-                    toast("hyper")
-                    navigator.launchHyperApp(requireActivity(),Mode.Playground)
+                is PlaygroundViewEvents.OpenHyper -> {
+                    navigator.launchHyperApp(requireActivity(), Mode.Playground)
                 }
             }
-        })
+        }
 
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.title_playground),

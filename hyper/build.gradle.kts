@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinJetbrainAndroid)
+    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinKapt)
 }
 android {
     namespace = "org.navgurukul.hyper"
@@ -24,9 +26,35 @@ android {
 
 dependencies {
     implementation(project(":app"))
-    implementation("androidx.core:core-ktx:1.7.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
-    androidTestImplementation("androidx.annotation:annotation:1.5.0")
+    implementation(project(":core"))
+
+    kapt(MiscellaneousDependencies.AutoService)
+    implementation(MiscellaneousDependencies.AutoService)
+
+    // Koin for Kotlin
+    implementation(KoinDependencies.koinAndroid)
+    implementation(KoinDependencies.koinViewModel)
+
+    //to get dynamic feature module
+    implementation(GooglePlayDependencies.playCore)
+
+    implementation(KotlinDependencies.kotlin)
+
+    //androidx
+    implementation(AndroidxDependencies.coreKtx)
+    implementation(AndroidxDependencies.appcompat)
+    implementation(MaterialDesignDependencies.materialDesign)
+    implementation(AndroidxDependencies.constraintLayout)
+    implementation(AndroidxDependencies.legacyV4)
+
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+
+    //test
+    testImplementation(TestDependencies.jUnit)
+
+    //androidTest
+    androidTestImplementation(TestDependencies.androidxJUnit)
+    androidTestImplementation(TestDependencies.espresso)
+    androidTestImplementation(TestDependencies.annotation)
 }
