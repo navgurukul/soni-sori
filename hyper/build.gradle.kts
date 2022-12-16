@@ -1,18 +1,20 @@
 plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinJetbrainAndroid)
+    id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id(Plugins.githubBenManes)
+    id(Plugins.gmsOSSLicense)
 }
 android {
     namespace = "org.navgurukul.hyper"
-    compileSdk = 32
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        minSdk = 21
+        minSdk = BuildConfigVersions.minSdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -22,6 +24,12 @@ android {
             )
         }
     }
+
+//    packagingOptions {
+//        exclude("**/*.txt")
+//        exclude("**/*.xml")
+//        exclude( "**/*.properties")
+//    }
 }
 
 dependencies {
@@ -30,22 +38,35 @@ dependencies {
 
     kapt(MiscellaneousDependencies.AutoService)
     implementation(MiscellaneousDependencies.AutoService)
-
-    // Koin for Kotlin
-    implementation(KoinDependencies.koinAndroid)
-    implementation(KoinDependencies.koinViewModel)
-
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 
     implementation(KotlinDependencies.kotlin)
-
     //androidx
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.appcompat)
     implementation(MaterialDesignDependencies.materialDesign)
     implementation(AndroidxDependencies.constraintLayout)
-    implementation(AndroidxDependencies.legacyV4)
+
+    implementation(AndroidxDependencies.lifecycleExtensions)
+    implementation(AndroidxDependencies.lifecyclerRuntime)
+    kapt(AndroidxDependencies.lifecyclerCompiler)
+
+    implementation(AndroidxDependencies.multidex)
+    implementation(AndroidxDependencies.preference)
+
+    implementation (MiscellaneousDependencies.nanohttpd)
+    implementation (MiscellaneousDependencies.jsoup)
+    implementation (MiscellaneousDependencies.uaUtils)
+    implementation(MiscellaneousDependencies.jgit)
+//    {
+//        exclude(module: 'httpclient')
+//        exclude group: 'org.apache.httpcomponents',
+//        exclude group: "org.apache.httpcomponents", module: "httpclient"
+//    }
+
+    implementation (GooglePlayDependencies.playServicesLicenses)
+    implementation (MiscellaneousDependencies.mpchart)
 
     // Logging
     implementation(MiscellaneousDependencies.timber)

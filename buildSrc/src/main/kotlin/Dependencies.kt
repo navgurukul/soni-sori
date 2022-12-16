@@ -15,6 +15,13 @@ object Versions {
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
+    const val multidex = "2.0.1"
+    const val nanohttpd = "2.3.1"
+    const val jsoup = "1.11.3"
+    const val uaUtils = "1.21"
+    const val jgit = "3.7.1.201504261725-r" // no-update
+    const val playServicesLicensesPlugin = "16.0.0"
+    const val  mpchart = "3.0.3"
 }
 
 object RxJavaDependencies {
@@ -65,6 +72,8 @@ object AndroidxDependencies {
         "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
+    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_extensions}"
+    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
         "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
@@ -76,6 +85,7 @@ object AndroidxDependencies {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
     const val browser = "androidx.browser:browser:1.3.0"
+    const val multidex = "androidx.multidex:multidex:${Versions.multidex}"
 }
 
 object MaterialDesignDependencies {
@@ -92,6 +102,7 @@ object OkReplayDependencies {
 object GooglePlayDependencies {
     const val playCore = "com.google.android.play:core:1.10.0"
     const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
+    const val playServicesLicenses =  "com.google.android.gms:play-services-oss-licenses:${Versions.playServicesLicensesPlugin}"
 }
 
 object GMSDependencies {
@@ -139,6 +150,11 @@ object MiscellaneousDependencies {
     const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
+    const val nanohttpd = "org.nanohttpd:nanohttpd-webserver:${Versions.nanohttpd}"
+    const val jgit = "org.eclipse.jgit:org.eclipse.jgit:${Versions.nanohttpd}"
+    const val jsoup = "org.jsoup:jsoup:${Versions.nanohttpd}"
+    const val uaUtils  = "eu.bitwalker:UserAgentUtils:${Versions.nanohttpd}"
+    const val  mpchart = "com.github.PhilJay:MPAndroidChart:${Versions.mpchart}"
 }
 
 object FirebaseDependencies {
@@ -187,6 +203,9 @@ object Classpath {
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
+
+   const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"
+   const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.1"
 }
 
 object Plugins {
@@ -202,4 +221,6 @@ object Plugins {
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
     const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
+    const val githubBenManes = "com.github.ben-manes.versions"
+    const val gmsOSSLicense = "com.google.android.gms.oss-licenses-plugin"
 }
