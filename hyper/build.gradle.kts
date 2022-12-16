@@ -25,11 +25,11 @@ android {
         }
     }
 
-//    packagingOptions {
-//        exclude("**/*.txt")
-//        exclude("**/*.xml")
-//        exclude( "**/*.properties")
-//    }
+    packagingOptions {
+        exclude("**/*.txt")
+        exclude("**/*.xml")
+        exclude( "**/*.properties")
+    }
 }
 
 dependencies {
