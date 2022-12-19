@@ -56,6 +56,7 @@ class PartnerFragment : Fragment() {
     private fun partnerData(partnerData: PartnerDataResponse) {
         mBinding.header.visibility=View.VISIBLE
         mBinding.desc.visibility=View.VISIBLE
+        mBinding.image.visibility=View.VISIBLE
         mBinding.continueToCourseSelection.visibility=View.VISIBLE
 
         mBinding.header.text=partnerData.name

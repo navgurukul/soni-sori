@@ -136,7 +136,11 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun partnerData(partnerData: PartnerDataResponse){
-        if(partnerData.name!=null && partnerData.websiteLink!=null && partnerData.description!=null && partnerData.logo!=null) {
+        if(partnerData.name!=null  && partnerData.description!=null && partnerData.logo!=null) {
+            if(partnerData.websiteLink!=null){
+                mBinding.partnerWebsite.visibility = View.VISIBLE
+                mBinding.partnerWebsite.text = partnerData.websiteLink
+            }
             mBinding.title.visibility = View.VISIBLE
             mBinding.partnerName.visibility = View.VISIBLE
             mBinding.partnerName.text = partnerData.name
@@ -144,8 +148,7 @@ class ProfileFragment : Fragment() {
             mBinding.partnerDesc.text = partnerData.description
             mBinding.partnerImage.visibility = View.VISIBLE
             Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
-            mBinding.partnerWebsite.visibility = View.VISIBLE
-            mBinding.partnerWebsite.text = partnerData.websiteLink
+
         }
 
     }
