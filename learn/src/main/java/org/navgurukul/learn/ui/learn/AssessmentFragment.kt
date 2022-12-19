@@ -32,8 +32,8 @@ class AssessmentFragment : Fragment() {
     private lateinit var contentAdapter: ExerciseContentAdapter
     private var isContentRvClickable = true
     private lateinit var correctAdapter: ExerciseContentAdapter
-    private lateinit var inCorrectAdapter : ExerciseContentAdapter
-    private var selectedOption : OptionResponse? = null
+    private lateinit var inCorrectAdapter: ExerciseContentAdapter
+    private var selectedOption: OptionResponse? = null
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -45,7 +45,7 @@ class AssessmentFragment : Fragment() {
             isLast: Boolean,
             isCompleted: Boolean,
             courseId: String,
-            assessmentId : String,
+            assessmentId: String,
             courseContentType: CourseContentType,
         ): AssessmentFragment {
             return AssessmentFragment().apply {
@@ -62,12 +62,13 @@ class AssessmentFragment : Fragment() {
 
         const val TAG = "AssessmentFragment"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_assessment, container , false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_assessment, container, false)
         return mBinding.root
     }
 
@@ -78,7 +79,8 @@ class AssessmentFragment : Fragment() {
         mBinding.correctOutputLayout.root.visibility = View.GONE
         mBinding.incorrectOutputLayout.visibility = View.GONE
 
-        activityViewModel = ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
+        activityViewModel =
+            ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
 
         initContentRv()
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -95,7 +97,7 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     setupIncorrectOutputLayout(it.list, it.attemptResponse)
                 }
-                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput -> {
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
@@ -127,22 +129,33 @@ class AssessmentFragment : Fragment() {
         }
     }
 
-    private fun setUpSubmitAnswer(){
-        mBinding.btnSubmit.setOnClickListener{
+    private fun setUpSubmitAnswer() {
+        mBinding.btnSubmit.setOnClickListener {
             mBinding.btnSubmit.visibility = View.GONE
             selectedOption?.let {
                 isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
+                fragmentViewModel.handle(
+                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
+                        it
+                    )
+                )
                 activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
             }
-            }
         }
+    }
 
-    private fun setupIncorrectOutputLayout(list: List<BaseCourseContent>, attemptResponse: AttemptResponse?) {
+    private fun setupIncorrectOutputLayout(
+        list: List<BaseCourseContent>,
+        attemptResponse: AttemptResponse?
+    ) {
         mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
             selectedOption?.let {
                 isContentRvClickable = false
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(it))
+                fragmentViewModel.handle(
+                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
+                        it
+                    )
+                )
                 activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
             }
             mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
@@ -153,14 +166,14 @@ class AssessmentFragment : Fragment() {
 
         }
         if (attemptResponse != null) {
-            if (attemptResponse.attemptCount < 2){
+            if (attemptResponse.attemptCount < 2) {
                 mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                 mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                     isContentRvClickable = true
-                    mBinding.incorrectOutputLayout.visibility =  View.GONE
+                    mBinding.incorrectOutputLayout.visibility = View.GONE
                     fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                 }
-            } else{
+            } else {
                 mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
                 mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                 mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
@@ -174,11 +187,11 @@ class AssessmentFragment : Fragment() {
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
         val newList = list?.toMutableList()?.map {
-            if(it.component == BaseCourseContent.COMPONENT_OPTIONS){
+            if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                 (it as OptionsBaseCourseContent).copy(
-                    value = it.value.toMutableList().map{ it.copy() }
+                    value = it.value.toMutableList().map { it.copy() }
                 )
-            }else{
+            } else {
                 it
             }
         }
@@ -196,19 +209,24 @@ class AssessmentFragment : Fragment() {
         }
     }
 
-    private fun initContentRv(){
-        contentAdapter = ExerciseContentAdapter(this.requireContext(),{
+    private fun initContentRv() {
+        contentAdapter = ExerciseContentAdapter(this.requireContext(), {
 
         }, {
 
-        } ,{
-            if(isContentRvClickable ) {
+        }, {
+            if (isContentRvClickable) {
                 selectedOption = it
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
+                fragmentViewModel.handle(
+                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(
+                        it
+                    )
+                )
                 mBinding.btnSubmit.visibility = View.VISIBLE
             }
         })
-        val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerViewAsses.layoutManager = layoutManager
         mBinding.recyclerViewAsses.adapter = contentAdapter
         mBinding.recyclerViewAsses.addItemDecoration(
@@ -218,16 +236,18 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun initCorrectRV(list: List<BaseCourseContent>) {
-        correctAdapter = ExerciseContentAdapter(this.requireContext(),{}, {} ,{})
-        val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        correctAdapter = ExerciseContentAdapter(this.requireContext(), {}, {}, {})
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
         correctAdapter.submitList(getNewReferencedList(list))
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
-        inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{}, {})
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        inCorrectAdapter = ExerciseContentAdapter(this.requireContext(), {}, {}, {})
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
         inCorrectAdapter.submitList(getNewReferencedList(list))
