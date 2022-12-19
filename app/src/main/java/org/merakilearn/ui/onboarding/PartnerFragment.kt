@@ -46,6 +46,7 @@ class PartnerFragment : Fragment() {
             when (it) {
                 is OnBoardingViewEvents.ShowPartnerData ->{
                     partnerData(it.partnerData)
+
             }
             
         }
@@ -53,9 +54,14 @@ class PartnerFragment : Fragment() {
     }
 
     private fun partnerData(partnerData: PartnerDataResponse) {
+        mBinding.header.visibility=View.VISIBLE
+        mBinding.desc.visibility=View.VISIBLE
+        mBinding.continueToCourseSelection.visibility=View.VISIBLE
+
         mBinding.header.text=partnerData.name
         Glide.with(this).load(partnerData.logo).into(mBinding.image)
         mBinding.desc.text=partnerData.description
+
         mBinding.continueToCourseSelection.setOnClickListener{
             viewModel.handle(OnBoardingViewActions.NavigateNextFromPartnerDataScreen)
         }
