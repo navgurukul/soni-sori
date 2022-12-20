@@ -225,9 +225,13 @@ class LearnFragmentViewModel(
 
     private fun getCertificatePdf(completedPortion: Int){
         viewModelScope.launch {
-            val certificatePdfUrl = learnRepo.getCertificate().url
-            println("certificateUrl $certificatePdfUrl")
-            _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl, completedPortion))
+            try {
+                val certificatePdfUrl = learnRepo.getCertificate().url
+                println("certificateUrl $certificatePdfUrl")
+                _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl, completedPortion))
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
         }
     }
     fun selectBatch(batch: Batch) {
