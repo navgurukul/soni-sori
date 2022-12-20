@@ -10,6 +10,7 @@
 
         <ImageView
             android:id="@+id/image"
+            android:visibility="gone"
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
@@ -30,6 +31,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/partnerName"
             android:textAlignment="center"
+            android:visibility="gone"
             android:textColor="?textPrimary"
             app:layout_constraintBottom_toTopOf="@+id/desc"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +46,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/partnerDesc"
             android:textAlignment="center"
+            android:visibility="gone"
             android:textColor="?textPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +62,7 @@
             android:layout_marginBottom="@dimen/spacing_2x"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:visibility="gone"
             android:text="Continue"
             android:textAllCaps="false"
             android:textColor="@color/green_progress_color"
