@@ -50,9 +50,10 @@ class ProfileViewModel(
     init {
         val appVersionText = BuildConfig.VERSION_NAME
         user = userRepo.getCurrentUser()!!
-        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-        val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
-        val partnerIdValue = partnerIdPattern.find(decodeReferrer,0)?.value
+        val decodeReferrer =
+            URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+        val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+        val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
 
 
         setState {
@@ -63,7 +64,7 @@ class ProfileViewModel(
                 profilePic = user.profilePicture
             )
         }
-        if(partnerIdValue!=null) {
+        if (partnerIdValue != null) {
 
             checkPartner(partnerIdValue)
         }
@@ -105,7 +106,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun dropOut(batchId: Int){
+    private fun dropOut(batchId: Int) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
             val result = classesRepo.enrollToClass(batchId, true)
@@ -126,13 +127,10 @@ class ProfileViewModel(
         }
     }
 
-    private fun checkPartner(partnerId : String?) {
+    private fun checkPartner(partnerId: String?) {
         viewModelScope.launch {
             setState { copy(isLoading = false) }
-
-//        _viewEvents.setValue(ProfileViewEvents.ShowToast("$partnerIdValue"))
-//        ProfileViewEvents.ShowToast("$partnerIdValue")
-            if(partnerId != null){
+            if (partnerId != null) {
                 val partnerData = userRepo.getPartnerData(partnerId?.toInt())
                 _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
             }
@@ -244,7 +242,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun getEnrolledBatches(){
+    private fun getEnrolledBatches() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
             val batches = classesRepo.getEnrolledBatches()
@@ -254,13 +252,14 @@ class ProfileViewModel(
                         batches = it
                     )
                 }
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
                 }
             }
         }
     }
-    fun selectBatch(batches: Batches){
+
+    fun selectBatch(batches: Batches) {
         _viewEvents.postValue(ProfileViewEvents.BatchSelectClicked(batches))
     }
 }
@@ -288,9 +287,9 @@ sealed class ProfileViewEvents : ViewEvents {
     class OpenUrl(val url: String) : ProfileViewEvents()
     class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
     object RestartApp : ProfileViewEvents()
-    data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
-    data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
-    data class ShowPartnerData(val partnerData: PartnerDataResponse): ProfileViewEvents()
+    data class ShowEnrolledBatches(val batches: List<Batches>) : ProfileViewEvents()
+    data class BatchSelectClicked(val batch: Batches) : ProfileViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse) : ProfileViewEvents()
 }
 
 sealed class ProfileViewActions : ViewModelAction {
@@ -306,5 +305,5 @@ sealed class ProfileViewActions : ViewModelAction {
     object ResetServerUrl : ProfileViewActions()
     object PrivacyPolicyClicked : ProfileViewActions()
     object RefreshPage : ProfileViewActions()
-    data class DropOut(val batchId : Int): ProfileViewActions()
+    data class DropOut(val batchId: Int) : ProfileViewActions()
 }

@@ -171,6 +171,7 @@
                     android:textAppearance="?textAppearanceEmphasized2"
                     android:textColor="@color/green_progress_color"
                     android:autoLink="web"
+                    android:visibility="gone"
                     android:textColorLink="@color/green_progress_color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

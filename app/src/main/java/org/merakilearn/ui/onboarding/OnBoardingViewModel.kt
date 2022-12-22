@@ -37,25 +37,25 @@ class OnBoardingViewModel(
             }
         }
     }
-    private fun checkPartner(){
+
+    private fun checkPartner() {
         viewModelScope.launch {
-            val decodeReferrer= URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-            val partnerIdPattern= Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+            val decodeReferrer =
+                URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+            val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
 
-            val partnerId=partnerIdPattern.find(decodeReferrer,0)?.value
-            Log.e("partner",partnerId.toString())
+            val partnerId = partnerIdPattern.find(decodeReferrer, 0)?.value
 
-            if(partnerId!=null){
-                val partnerData = userRepo.getPartnerData(partnerId?.toInt())
-                if(partnerData.websiteLink==null || partnerData.logo==null || partnerData.description==null){
+            if (partnerId != null) {
+                val partnerData = userRepo.getPartnerData(partnerId.trim().toInt())
+                if (partnerData.name == null || partnerData.logo == null || partnerData.description == null) {
                     _viewEvents.setValue(
                         OnBoardingViewEvents.ShowCourseSelectionScreen
                     )
-                }else {
+                } else {
                     _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
                 }
-            }
-            else{
+            } else {
                 _viewEvents.setValue(
                     OnBoardingViewEvents.ShowCourseSelectionScreen
                 )
@@ -85,7 +85,7 @@ class OnBoardingViewModel(
     fun handle(action: OnBoardingViewActions) {
         when (action) {
             OnBoardingViewActions.NavigateNextFromOnBoardingScreen -> _viewEvents.setValue(
-            OnBoardingViewEvents.ShowPartnerScreen
+                OnBoardingViewEvents.ShowPartnerScreen
             )
             is OnBoardingViewActions.SelectLanguage -> {
                 corePreferences.selectedLanguage = action.language.code
@@ -98,14 +98,14 @@ class OnBoardingViewModel(
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
             }
 
-            is OnBoardingViewActions.OpenHomeScreen ->{
-                corePreferences.lastSelectedPathWayId=action.pathwayId
-                _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId =action.pathwayId))
+            is OnBoardingViewActions.OpenHomeScreen -> {
+                corePreferences.lastSelectedPathWayId = action.pathwayId
+                _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
             }
-            is OnBoardingViewActions.GetPartnerData->{
+            is OnBoardingViewActions.GetPartnerData -> {
                 checkPartner()
             }
-            is OnBoardingViewActions.NavigateNextFromPartnerDataScreen->{
+            is OnBoardingViewActions.NavigateNextFromPartnerDataScreen -> {
                 _viewEvents.setValue(
                     OnBoardingViewEvents.ShowCourseSelectionScreen
                 )
@@ -121,17 +121,17 @@ sealed class OnBoardingViewEvents : ViewEvents {
     object ShowCourseSelectionScreen : OnBoardingViewEvents()
     object ShowOnBoardingPages : OnBoardingViewEvents()
     object ShowLoginScreen : OnBoardingViewEvents()
-    object ShowPartnerScreen:OnBoardingViewEvents()
-    data class ShowPartnerData(val partnerData: PartnerDataResponse): OnBoardingViewEvents()
+    object ShowPartnerScreen : OnBoardingViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse) : OnBoardingViewEvents()
 }
 
 sealed class OnBoardingViewActions : ViewModelAction {
     object NavigateNextFromOnBoardingScreen : OnBoardingViewActions()
     data class SelectLanguage(val language: OnBoardingViewModel.Language) : OnBoardingViewActions()
     data class SelectCourse(val pathwayId: Int) : OnBoardingViewActions()
-    data class OpenHomeScreen(val pathwayId:Int):OnBoardingViewActions()
-    object GetPartnerData:OnBoardingViewActions()
-    object NavigateNextFromPartnerDataScreen:OnBoardingViewActions()
+    data class OpenHomeScreen(val pathwayId: Int) : OnBoardingViewActions()
+    object GetPartnerData : OnBoardingViewActions()
+    object NavigateNextFromPartnerDataScreen : OnBoardingViewActions()
 }
 
 

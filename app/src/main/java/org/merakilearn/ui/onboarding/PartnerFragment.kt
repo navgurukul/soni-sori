@@ -16,7 +16,6 @@ import org.merakilearn.databinding.FragmentPartnerBinding
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 
 
-
 class PartnerFragment : Fragment() {
     private lateinit var mBinding: FragmentPartnerBinding
     private val viewModel: OnBoardingViewModel by sharedViewModel()
@@ -25,8 +24,6 @@ class PartnerFragment : Fragment() {
         const val TAG = "PartnerFragment"
         fun newInstance() = PartnerFragment()
     }
-
-
 
 
     override fun onCreateView(
@@ -41,29 +38,29 @@ class PartnerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.handle(OnBoardingViewActions.GetPartnerData)
 
-        viewModel.viewEvents.observe(viewLifecycleOwner){
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
 
             when (it) {
-                is OnBoardingViewEvents.ShowPartnerData ->{
+                is OnBoardingViewEvents.ShowPartnerData -> {
                     partnerData(it.partnerData)
 
+                }
+
             }
-            
-        }
         }
     }
 
     private fun partnerData(partnerData: PartnerDataResponse) {
-        mBinding.header.visibility=View.VISIBLE
-        mBinding.desc.visibility=View.VISIBLE
-        mBinding.image.visibility=View.VISIBLE
-        mBinding.continueToCourseSelection.visibility=View.VISIBLE
+        mBinding.header.visibility = View.VISIBLE
+        mBinding.desc.visibility = View.VISIBLE
+        mBinding.image.visibility = View.VISIBLE
+        mBinding.continueToCourseSelection.visibility = View.VISIBLE
 
-        mBinding.header.text=partnerData.name
+        mBinding.header.text = partnerData.name
         Glide.with(this).load(partnerData.logo).into(mBinding.image)
-        mBinding.desc.text=partnerData.description
+        mBinding.desc.text = partnerData.description
 
-        mBinding.continueToCourseSelection.setOnClickListener{
+        mBinding.continueToCourseSelection.setOnClickListener {
             viewModel.handle(OnBoardingViewActions.NavigateNextFromPartnerDataScreen)
         }
     }
