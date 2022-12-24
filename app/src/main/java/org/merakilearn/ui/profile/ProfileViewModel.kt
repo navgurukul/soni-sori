@@ -129,14 +129,16 @@ class ProfileViewModel(
 
     private fun checkPartner(partnerId: String?) {
         viewModelScope.launch {
-            setState { copy(isLoading = false) }
-            if (partnerId != null) {
-                val partnerData = userRepo.getPartnerData(partnerId?.toInt())
-                _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+            try {
+                setState { copy(isLoading = false) }
+                if (partnerId != null) {
+                    val partnerData = userRepo.getPartnerData(partnerId?.toInt())
+                    _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
             }
         }
-
-
     }
 
     private fun updateServerUrl(serverUrl: String) {

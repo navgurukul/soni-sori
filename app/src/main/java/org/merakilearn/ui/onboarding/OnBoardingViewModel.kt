@@ -40,6 +40,7 @@ class OnBoardingViewModel(
 
     private fun checkPartner() {
         viewModelScope.launch {
+            try {
             val decodeReferrer =
                 URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
             val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
@@ -60,9 +61,13 @@ class OnBoardingViewModel(
                     OnBoardingViewEvents.ShowCourseSelectionScreen
                 )
             }
+            }catch (e : Exception){
+                e.printStackTrace()
+                _viewEvents.setValue(
+                    OnBoardingViewEvents.ShowCourseSelectionScreen
+                )
+            }
         }
-
-
     }
 
 
