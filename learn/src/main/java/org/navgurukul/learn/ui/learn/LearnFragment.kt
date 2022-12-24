@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
@@ -23,7 +22,6 @@ import android.view.Window
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -54,12 +52,12 @@ import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
+import org.navgurukul.learn.util.FileDownloader.downloadFile
 import org.navgurukul.learn.util.toDate
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
-import android.content.Context.DOWNLOAD_SERVICE as DOWNLOAD_SERVICE1
 
 
 class LearnFragment : Fragment(){
@@ -261,6 +259,11 @@ class LearnFragment : Fragment(){
         }
 
     private fun generatePDF(pdfUrl : String){
+        try {
+            DownloadFile(context).execute(pdfUrl, "certificate.pdf");
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+        }
 
 //        val download= context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 //        val PdfUri = Uri.parse(pdfUrl)
@@ -269,6 +272,28 @@ class LearnFragment : Fragment(){
 //        download.enqueue(getPdf)
 //        Toast.makeText(context,"Download Started", Toast.LENGTH_LONG).show()
     }
+
+    private class DownloadFile(private val context: Context?) :
+        AsyncTask<String?, Void?, Void?>() {
+
+
+        override fun doInBackground(vararg p0: String?): Void? {
+            val fileUrl = p0[0] // -> http://maven.apache.org/maven-1.x/maven.pdf
+            val fileName = p0[1] // -> maven.pdf
+            val extStorageDirectory = context?.filesDir
+            val folder = File(extStorageDirectory, "certificate")
+            folder.mkdir()
+            val pdfFile = File(folder, fileName)
+            try {
+                pdfFile.createNewFile()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            downloadFile(context,fileUrl, pdfFile)
+            return null
+        }
+    }
+
 
     private fun showShareIntent(pdfUrl:String) {
         val outputFile = File(
