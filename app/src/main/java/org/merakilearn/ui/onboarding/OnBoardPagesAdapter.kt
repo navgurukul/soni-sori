@@ -45,7 +45,7 @@ class OnBoardPagesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return onBoardingData.onBoardingPagesList.size - 1
+        return onBoardingData.onBoardingPagesList.size
     }
 
 
@@ -53,7 +53,6 @@ class OnBoardPagesAdapter(
         PYTHON(R.drawable.on_boarding_mobile),
         INTERVIEW(R.drawable.on_boarding_develop),
         INTERACTIVE(R.drawable.on_boarding_interactive_classes),
-        OPPORTUNITIES(R.drawable.on_boarding_opportunities)
     }
 }
 

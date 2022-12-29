@@ -48,10 +48,6 @@
                         {
                             "header":"Develop and Hone Your Soft Skills",
                             "description":"With our Spoken English and typing courses"
-                        },
-                        {
-                            "header":"Opportunities of the Future",
-                            "description":"It doesn't end with Meraki. Take the next step in your career"
                         }
                     ],
                     "on_boarding_pathway_list_names":[
@@ -79,10 +75,6 @@
                         {
                             "header":"विश्वास के साथ सफल साक्षात्कार दें",
                             "description":"हमारे अंग्रेजी बोलवचन एवं टाइपिंग पाठ्यक्रम के साथ"
-                        },
-                        {
-                            "header":"भविष्य के शुभ अवसर",
-                            "description":"पढ़ाई मेराकी तक ही सीमित नहीं। अपने पेशे का अगला कदम चुने"
                         }
                     ],
                     "on_boarding_pathway_list_names":[
@@ -107,11 +99,6 @@
                     {
                         "image":{
                             "local": "INTERVIEW"
-                        }
-                    },
-                    {
-                        "image":{
-                            "local":"OPPORTUNITIES"
                         }
                     }
                     ],
