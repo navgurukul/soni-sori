@@ -56,6 +56,7 @@ class AssessmentFragmentViewModel (
             }
             is AssessmentFragmentViewActions.SeeExplanationClicked -> {
                 postResultOnSubmit(action.selectedOptionResponse)
+                showCorrectOnIncorrect()
             }
 
             is AssessmentFragmentViewActions.OptionSelected ->{

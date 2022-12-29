@@ -162,7 +162,7 @@ class AssessmentFragment : Fragment() {
             mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
             initIncorrectRV(list)
             isContentRvClickable = false
-            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
+//            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
 
         }
         if (attemptResponse != null) {
