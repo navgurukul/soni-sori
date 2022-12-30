@@ -45,7 +45,7 @@ interface SaralApi {
 
     @GET("partners/{partnerID}")
     suspend fun getPartnerData(
-        @Path(value = "partnerID") partnerID: Int?
+        @Path(value = "partnerID") partnerID: Int
     ): PartnerDataResponse
 
 }
