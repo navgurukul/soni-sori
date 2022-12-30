@@ -43,4 +43,9 @@ interface SaralApi {
     @GET("users/EnrolledBatches")
     suspend fun getEnrolledBatches():Response<List<Batches>>
 
+    @GET("partners/{partnerID}")
+    suspend fun getPartnerData(
+        @Path(value = "partnerID") partnerID: Int
+    ): PartnerDataResponse
+
 }
