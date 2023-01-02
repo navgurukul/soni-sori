@@ -8,6 +8,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.BuildConfig
+import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.datasource.ClassesRepo
@@ -15,6 +16,8 @@ import org.merakilearn.datasource.SettingsRepo
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -32,7 +35,8 @@ class ProfileViewModel(
     private val userRepo: UserRepo,
     private val classesRepo: ClassesRepo,
     private val settingsRepo: SettingsRepo,
-    private val config: Config
+    private val config: Config,
+    installReferrerManager: InstallReferrerManager
 ) : BaseViewModel<ProfileViewEvents, ProfileViewState>(ProfileViewState(serverUrl = settingsRepo.serverBaseUrl)) {
     private var isEnrolled: Boolean = false
 
@@ -46,6 +50,12 @@ class ProfileViewModel(
     init {
         val appVersionText = BuildConfig.VERSION_NAME
         user = userRepo.getCurrentUser()!!
+        val decodeReferrer =
+            URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+        val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+        val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
+
+
         setState {
             copy(
                 appVersionText = appVersionText,
@@ -54,11 +64,16 @@ class ProfileViewModel(
                 profilePic = user.profilePicture
             )
         }
+        if (partnerIdValue != null) {
+
+            checkPartner(partnerIdValue)
+        }
 
         viewModelScope.launch {
             updateFiles()
         }
         getEnrolledBatches()
+//        checkPartner(partnerIdValue)
     }
 
     fun handle(action: ProfileViewActions) {
@@ -91,7 +106,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun dropOut(batchId: Int){
+    private fun dropOut(batchId: Int) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
             val result = classesRepo.enrollToClass(batchId, true)
@@ -108,6 +123,20 @@ class ProfileViewModel(
             } else {
                 setState { copy(isLoading = false) }
                 _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
+            }
+        }
+    }
+
+    private fun checkPartner(partnerId: String?) {
+        viewModelScope.launch {
+            try {
+                setState { copy(isLoading = false) }
+                if (partnerId != null) {
+                    val partnerData = userRepo.getPartnerData(partnerId?.toInt())
+                    _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
             }
         }
     }
@@ -215,7 +244,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun getEnrolledBatches(){
+    private fun getEnrolledBatches() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
             val batches = classesRepo.getEnrolledBatches()
@@ -225,13 +254,14 @@ class ProfileViewModel(
                         batches = it
                     )
                 }
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
                 }
             }
         }
     }
-    fun selectBatch(batches: Batches){
+
+    fun selectBatch(batches: Batches) {
         _viewEvents.postValue(ProfileViewEvents.BatchSelectClicked(batches))
     }
 }
@@ -259,8 +289,9 @@ sealed class ProfileViewEvents : ViewEvents {
     class OpenUrl(val url: String) : ProfileViewEvents()
     class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
     object RestartApp : ProfileViewEvents()
-    data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
-    data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
+    data class ShowEnrolledBatches(val batches: List<Batches>) : ProfileViewEvents()
+    data class BatchSelectClicked(val batch: Batches) : ProfileViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse) : ProfileViewEvents()
 }
 
 sealed class ProfileViewActions : ViewModelAction {
@@ -276,5 +307,5 @@ sealed class ProfileViewActions : ViewModelAction {
     object ResetServerUrl : ProfileViewActions()
     object PrivacyPolicyClicked : ProfileViewActions()
     object RefreshPage : ProfileViewActions()
-    data class DropOut(val batchId : Int): ProfileViewActions()
+    data class DropOut(val batchId: Int) : ProfileViewActions()
 }
