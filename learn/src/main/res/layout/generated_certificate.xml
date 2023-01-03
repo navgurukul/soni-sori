@@ -16,10 +16,11 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/python_certificate" />
 
-    <com.github.barteksc.pdfviewer.PDFView
+    <ImageView
         android:id="@+id/idPDFView"
         android:layout_width="328dp"
         android:layout_height="230dp"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="@dimen/spacing_5x"
         android:padding="@dimen/spacing_2x"

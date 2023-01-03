@@ -1,38 +1,43 @@
 package org.navgurukul.learn.ui.learn
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
+import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.pdf.PdfRenderer
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Bundle
-import android.os.Environment
-import android.os.StrictMode
+import android.os.*
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
 import kotlinx.android.synthetic.main.generated_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.gradle.testkit.runner.internal.GradleProvider.uri
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
@@ -53,14 +58,15 @@ import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
 import org.navgurukul.learn.util.FileDownloader.downloadFile
+import org.navgurukul.learn.util.PdfQuality
 import org.navgurukul.learn.util.toDate
-import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 
-class LearnFragment : Fragment(){
+class LearnFragment : Fragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
@@ -68,7 +74,7 @@ class LearnFragment : Fragment(){
     private lateinit var mClassAdapter: UpcomingEnrolAdapater
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
-    lateinit var pdfView: PDFView
+    lateinit var pdfView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,12 +100,16 @@ class LearnFragment : Fragment(){
         builder.detectFileUriExposure()
 
         val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val permissionCheck = ContextCompat.checkSelfPermission(requireContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissionCheck = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
+            ActivityCompat.requestPermissions(
+                requireActivity(),
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-               MODE_ENABLE_WRITE_AHEAD_LOGGING )
+                MODE_ENABLE_WRITE_AHEAD_LOGGING
+            )
         }
 
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
@@ -116,26 +126,26 @@ class LearnFragment : Fragment(){
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
-            if(!it.classes.isEmpty()){
+            if (!it.classes.isEmpty()) {
                 mBinding.upcoming.root.isVisible = true
                 initUpcomingRecyclerView(it.classes)
                 mBinding.enrolledButFinished.root.isVisible = false
-            }else{
+            } else {
                 mBinding.upcoming.root.isVisible = false
             }
-            if(!it.batches.isEmpty()){
+            if (!it.batches.isEmpty()) {
                 mBinding.batchCard.root.isVisible = true
                 setUpUpcomingData(it.batches.first())
-            }else{
+            } else {
                 mBinding.batchCard.root.isVisible = false
             }
 
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
-            if (it.shouldShowCertificate == true){
+            if (it.shouldShowCertificate == true) {
                 mBinding.certificate.visibility = View.VISIBLE
-            }else {
+            } else {
                 mBinding.certificate.visibility = View.GONE
             }
         }
@@ -157,33 +167,33 @@ class LearnFragment : Fragment(){
                         "OpenLanguageSelectionSheet"
                     )
                 }
-                 is LearnFragmentViewEvents.OpenBatchSelectionSheet -> {
+                is LearnFragmentViewEvents.OpenBatchSelectionSheet -> {
                     LearnBatchSelectionSheet().show(
                         parentFragmentManager,
                         "LearnBatchesSelectionSheet"
                     )
                 }
-                is LearnFragmentViewEvents.BatchSelectClicked ->{
+                is LearnFragmentViewEvents.BatchSelectClicked -> {
                     showEnrolDialog(it.batch)
                 }
-                is LearnFragmentViewEvents.ShowUpcomingBatch ->{
+                is LearnFragmentViewEvents.ShowUpcomingBatch -> {
                     setUpUpcomingData(it.batch)
                     mBinding.batchCard.root.visibility = View.VISIBLE
                     mBinding.upcoming.root.visibility = View.GONE
                 }
-                is LearnFragmentViewEvents.ShowUpcomingClasses ->{
+                is LearnFragmentViewEvents.ShowUpcomingClasses -> {
                     initUpcomingRecyclerView(it.classes)
                     mBinding.upcoming.root.visibility = View.VISIBLE
                     mBinding.batchCard.root.visibility = View.GONE
                     mBinding.enrolledButFinished.root.visibility = View.GONE
 
                 }
-                is LearnFragmentViewEvents.ShowCompletedStatus ->{
+                is LearnFragmentViewEvents.ShowCompletedStatus -> {
                     mBinding.enrolledButFinished.root.visibility = View.VISIBLE
                     mBinding.upcoming.root.visibility = View.GONE
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
-                    getCertificate(it.pdfUrl,it.getCompletedPortion)
+                    getCertificate(it.pdfUrl, it.getCompletedPortion)
                 }
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
@@ -208,19 +218,22 @@ class LearnFragment : Fragment(){
         }
     }
 
-    private fun getCertificate(pdfUrl : String, completedPortion: Int){
+    private fun getCertificate(pdfUrl: String, completedPortion: Int) {
         mBinding.certificate.setOnClickListener {
-            if (completedPortion != 100){
+            if (completedPortion != 100) {
                 val dialog = BottomSheetDialog(requireContext())
                 val view = layoutInflater.inflate(R.layout.generated_certificate, null)
                 pdfView = view.idPDFView
                 view.tvDownload.setOnClickListener {
-                    generatePDF(pdfUrl)
+                    savePdf()
                 }
                 view.tvShare.setOnClickListener {
                     showShareIntent(pdfUrl)
                 }
-                RetrievePDFFromURL(pdfView).execute(pdfUrl)
+                CoroutineScope(Dispatchers.IO).launch {
+                    download(pdfUrl, pdfView)
+                }
+                //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
                 println("required completed portion in fragment $completedPortion")
                 dialog.setCancelable(true)
                 dialog.setContentView(view)
@@ -233,81 +246,171 @@ class LearnFragment : Fragment(){
         }
     }
 
-    class RetrievePDFFromURL(pdfView: PDFView) :
-        AsyncTask<String, Void, InputStream>() {
-        @SuppressLint("StaticFieldLeak")
-        val mypdfView: PDFView = pdfView
-        override fun doInBackground(vararg params: String?): InputStream? {
-            var inputStream: InputStream? = null
-            try {
-                val url = URL(params.get(0))
-                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
-                if (urlConnection.responseCode == 200) {
-                    inputStream = BufferedInputStream(urlConnection.inputStream)
-                }
-            }
-            catch (e: Exception) {
-                e.printStackTrace()
-                return null;
-            }
-            return inputStream;
-        }
-        override fun onPostExecute(result: InputStream?) {
-            mypdfView.fromStream(result).load()
-            }
+//    class RetrievePDFFromURL(pdfView: PDFView) :
+//        AsyncTask<String, Void, InputStream>() {
+//        @SuppressLint("StaticFieldLeak")
+//        val mypdfView: PDFView = pdfView
+//        override fun doInBackground(vararg params: String?): InputStream? {
+//            var inputStream: InputStream? = null
+//            try {
+//                val url = URL(params.get(0))
+//                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+//                if (urlConnection.responseCode == 200) {
+//                    inputStream = BufferedInputStream(urlConnection.inputStream)
+//                }
+//            }
+//            catch (e: Exception) {
+//                e.printStackTrace()
+//                return null;
+//            }
+//            return inputStream;
+//        }
+//        override fun onPostExecute(result: InputStream?) {
+//            mypdfView.fromStream(result).load()
+//            }
+//
+//        }
 
-        }
+    private fun savePdf() {
+//        val resolver = requireActivity().contentResolver
+//        var pdfUri : Uri? = null
+//        lateinit var outputStream: OutputStream
+//
+//        val fileName = "certificate.pdf" // -> maven.pdf
+//        val extStorageDirectory = context?.filesDir
+//        val folder = File(extStorageDirectory, "certificate")
+//        val mCardStmtFile = File(folder, fileName)
 
-    private fun generatePDF(pdfUrl : String){
+//        context?.let {
+//            val fileUri: Uri = FileProvider.getUriForFile(it, "org.merakilearn.provider", mCardStmtFile)
+//
+//            val pfd: ParcelFileDescriptor = ParcelFileDescriptor.open(mCardStmtFile,
+//                ParcelFileDescriptor.MODE_READ_ONLY
+//            )
+//
+//            try {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                    val contentValues = ContentValues()
+//                    contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "meraki_certificate")
+//                    contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+//                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Meraki")
+//                    pdfUri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+//                    outputStream = resolver.openOutputStream(pdfUri!!)!!
+//                } else {
+//                    val imageUri = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/Meraki")
+//                    val image = File(imageUri, "meraki_certificate")
+//                    outputStream = FileOutputStream(image)
+//                }
+//
+//            } catch (e : IOException) {
+//                // Don't leave an orphan entry in the MediaStore
+//                throw e;
+//            } finally {
+//                outputStream.close()
+//            }
+//            Toast.makeText(requireContext(),"Certificate Save",Toast.LENGTH_SHORT).show()
+//        }
+    }
+
+    private fun download(pdfUrl: String, pdfView: ImageView) {
+        val fileUrl = pdfUrl // -> http://maven.apache.org/maven-1.x/maven.pdf
+        val fileName = "certificate.pdf" // -> maven.pdf
+        val extStorageDirectory = context?.filesDir
+        val folder = File(extStorageDirectory, "certificate")
+        folder.mkdir()
+        val pdfFile = File(folder, fileName)
         try {
-            DownloadFile(context).execute(pdfUrl, "certificate.pdf");
-        } catch (ex: IOException) {
-            ex.printStackTrace()
+            pdfFile.createNewFile()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
 
-//        val download= context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-//        val PdfUri = Uri.parse(pdfUrl)
-//        val getPdf = DownloadManager.Request(PdfUri)
-//        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-//        download.enqueue(getPdf)
-//        Toast.makeText(context,"Download Started", Toast.LENGTH_LONG).show()
-    }
-
-    private class DownloadFile(private val context: Context?) :
-        AsyncTask<String?, Void?, Void?>() {
-
-
-        override fun doInBackground(vararg p0: String?): Void? {
-            val fileUrl = p0[0] // -> http://maven.apache.org/maven-1.x/maven.pdf
-            val fileName = p0[1] // -> maven.pdf
-            val extStorageDirectory = context?.filesDir
-            val folder = File(extStorageDirectory, "certificate")
-            folder.mkdir()
-            val pdfFile = File(folder, fileName)
-            try {
-                pdfFile.createNewFile()
-            } catch (e: IOException) {
-                e.printStackTrace()
+        if (downloadFile(context, fileUrl, pdfFile)) {
+            showCertificate(pdfView)
+        } else {
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(context, "something went wrong", Toast.LENGTH_LONG).show()
             }
-            downloadFile(context,fileUrl, pdfFile)
-            return null
         }
+
     }
 
 
-    private fun showShareIntent(pdfUrl:String) {
-        val outputFile = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-           "a7dc6704-47ac-46a7-a3d5-e7b4c4eb4ccd.pdf"
+    private fun showCertificate(pdfView: ImageView) {
+
+        val pdfQuality = PdfQuality.NORMAL
+
+        val fileName = "certificate.pdf" // -> maven.pdf
+        val extStorageDirectory = context?.filesDir
+        val folder = File(extStorageDirectory, "certificate")
+        val mCardStmtFile = File(folder, fileName)
+
+        context?.let {
+            val fileUri: Uri = FileProvider.getUriForFile(
+                it,
+                "org.merakilearn.provider",
+                mCardStmtFile
+            )
+
+            // We will get a page from the PDF file by calling openPage
+            val fileDescriptor = ParcelFileDescriptor.open(
+                mCardStmtFile,
+                ParcelFileDescriptor.MODE_READ_ONLY
+            )
+
+            val mPdfRenderer = PdfRenderer(fileDescriptor)
+            ///mPdfRenderer.pageCount
+            val mPdfPage = mPdfRenderer.openPage(0)
+
+            // Create a new bitmap and render the page contents on to it
+            val bitmap = Bitmap.createBitmap(
+                mPdfPage.width * pdfQuality.ratio,
+                mPdfPage.height * pdfQuality.ratio,
+                Bitmap.Config.ARGB_8888
+            )
+
+            mPdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+
+            // Set the bitmap in the ImageView so we can view it
+            CoroutineScope(Dispatchers.Main).launch {
+                pdfView.setImageBitmap(bitmap)
+            }
+        }
+    }
+
+    private fun showShareIntent(pdfUrl: String) {
+        val fileName = "certificate.pdf" // -> maven.pdf
+        val extStorageDirectory = context?.filesDir
+        val folder = File(extStorageDirectory, "certificate")
+        val file = File(folder, fileName)
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "application/pdf"
+
+        val fileUri: Uri = FileProvider.getUriForFile(
+            requireContext(),
+            "org.merakilearn.provider",
+            file
         )
-        val uri = Uri.fromFile(outputFile)
 
-        val share = Intent()
-        share.action = Intent.ACTION_SEND
-        share.type = "application/pdf"
-        share.putExtra(Intent.EXTRA_STREAM, uri)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+       // requireContext().startActivity(Intent.createChooser(shareIntent, "Share with Your Friends..."))
+        requireContext().startActivity(shareIntent)
 
-        requireActivity().startActivity(share)
+
+//        val outputFile = File(
+//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+//            "a7dc6704-47ac-46a7-a3d5-e7b4c4eb4ccd.pdf"
+//        )
+//        val uri = Uri.fromFile(outputFile)
+//
+//        val share = Intent()
+//        share.action = Intent.ACTION_SEND
+//        share.type = "application/pdf"
+//        share.putExtra(Intent.EXTRA_STREAM, uri)
+//
+//        requireActivity().startActivity(share)
 
 
 //        val outputFile = File(
@@ -342,10 +445,10 @@ class LearnFragment : Fragment(){
 
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text =batch.sanitizedType()+" :"
+        tvType.text = batch.sanitizedType() + " :"
         tvTitleBatch.text = batch.title
         tvBatchDate.text = batch.dateRange()
-        tvText.text = "Can't start on "+ batch.startTime?.toDate()
+        tvText.text = "Can't start on " + batch.startTime?.toDate()
         tvBtnEnroll.setOnClickListener {
             showEnrolDialog(batch)
         }
@@ -360,8 +463,9 @@ class LearnFragment : Fragment(){
             viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
         }
     }
+
     private fun showEnrolDialog(batch: Batch) {
-        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
+        val alertLayout: View = getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
         val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
         val btnBack: View = alertLayout.findViewById(R.id.btnback)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
@@ -377,7 +481,7 @@ class LearnFragment : Fragment(){
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id?:0, true))
+            viewModel.handle(LearnFragmentViewActions.PrimaryAction(batch.id ?: 0, true))
             btAlertDialog?.dismiss()
         }
         btnBack.setOnClickListener {
@@ -388,15 +492,18 @@ class LearnFragment : Fragment(){
     }
 
     private fun configureToolbar(
-        subtitle: String? = null, attachClickListener: Boolean = false,
-        selectedLanguage: String? = null, languageClickListener: Boolean = false, pathwayIcon : String? = null
+        subtitle: String? = null,
+        attachClickListener: Boolean = false,
+        selectedLanguage: String? = null,
+        languageClickListener: Boolean = false,
+        pathwayIcon: String? = null
     ) {
         (activity as? ToolbarConfigurable)?.let {
             if (subtitle != null) {
                 it.configure(
                     subtitle,
                     R.attr.textPrimary,
-                    subtitle="",
+                    subtitle = "",
                     onClickListener = if (attachClickListener) {
                         {
                             viewModel.handle(LearnFragmentViewActions.ToolbarClicked)
@@ -429,16 +536,21 @@ class LearnFragment : Fragment(){
         mBinding.swipeContainer.setOnRefreshListener(screenRefreshListener)
     }
 
-    private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>){
-        mClassAdapter = UpcomingEnrolAdapater{
+    private fun initUpcomingRecyclerView(upcomingClassList: List<CourseClassContent>) {
+        mClassAdapter = UpcomingEnrolAdapater {
             val viewState = viewModel.viewState.value
             viewState?.let { state ->
                 val pathwayId = state.pathways[state.currentPathwayIndex].id
-                if(it.type == ClassType.doubt_class)
+                if (it.type == ClassType.doubt_class)
                     ClassActivity.start(requireContext(), it)
-                else if(it.type == ClassType.revision)
-                    CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.parentId?:it.id)
-                else{
+                else if (it.type == ClassType.revision)
+                    CourseContentActivity.start(
+                        requireContext(),
+                        it.courseId,
+                        pathwayId,
+                        it.parentId ?: it.id
+                    )
+                else {
                     CourseContentActivity.start(requireContext(), it.courseId, pathwayId, it.id)
                 }
             }
