@@ -3,7 +3,6 @@ package org.navgurukul.learn.ui.learn
 import android.Manifest
 import android.app.AlertDialog
 import android.app.DownloadManager
-import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING
 import android.content.Intent
@@ -13,8 +12,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
-import android.os.*
-import android.provider.MediaStore
+import android.os.Bundle
+import android.os.ParcelFileDescriptor
+import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +37,6 @@ import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.gradle.testkit.runner.internal.GradleProvider.uri
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
@@ -61,9 +60,7 @@ import org.navgurukul.learn.util.FileDownloader.downloadFile
 import org.navgurukul.learn.util.PdfQuality
 import org.navgurukul.learn.util.toDate
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 
 
 class LearnFragment : Fragment() {
@@ -225,7 +222,7 @@ class LearnFragment : Fragment() {
                 val view = layoutInflater.inflate(R.layout.generated_certificate, null)
                 pdfView = view.idPDFView
                 view.tvDownload.setOnClickListener {
-                    savePdf()
+                    generatePDF(pdfUrl)
                 }
                 view.tvShare.setOnClickListener {
                     showShareIntent(pdfUrl)
@@ -246,70 +243,13 @@ class LearnFragment : Fragment() {
         }
     }
 
-//    class RetrievePDFFromURL(pdfView: PDFView) :
-//        AsyncTask<String, Void, InputStream>() {
-//        @SuppressLint("StaticFieldLeak")
-//        val mypdfView: PDFView = pdfView
-//        override fun doInBackground(vararg params: String?): InputStream? {
-//            var inputStream: InputStream? = null
-//            try {
-//                val url = URL(params.get(0))
-//                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
-//                if (urlConnection.responseCode == 200) {
-//                    inputStream = BufferedInputStream(urlConnection.inputStream)
-//                }
-//            }
-//            catch (e: Exception) {
-//                e.printStackTrace()
-//                return null;
-//            }
-//            return inputStream;
-//        }
-//        override fun onPostExecute(result: InputStream?) {
-//            mypdfView.fromStream(result).load()
-//            }
-//
-//        }
-
-    private fun savePdf() {
-//        val resolver = requireActivity().contentResolver
-//        var pdfUri : Uri? = null
-//        lateinit var outputStream: OutputStream
-//
-//        val fileName = "certificate.pdf" // -> maven.pdf
-//        val extStorageDirectory = context?.filesDir
-//        val folder = File(extStorageDirectory, "certificate")
-//        val mCardStmtFile = File(folder, fileName)
-
-//        context?.let {
-//            val fileUri: Uri = FileProvider.getUriForFile(it, "org.merakilearn.provider", mCardStmtFile)
-//
-//            val pfd: ParcelFileDescriptor = ParcelFileDescriptor.open(mCardStmtFile,
-//                ParcelFileDescriptor.MODE_READ_ONLY
-//            )
-//
-//            try {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                    val contentValues = ContentValues()
-//                    contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "meraki_certificate")
-//                    contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-//                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Meraki")
-//                    pdfUri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
-//                    outputStream = resolver.openOutputStream(pdfUri!!)!!
-//                } else {
-//                    val imageUri = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/Meraki")
-//                    val image = File(imageUri, "meraki_certificate")
-//                    outputStream = FileOutputStream(image)
-//                }
-//
-//            } catch (e : IOException) {
-//                // Don't leave an orphan entry in the MediaStore
-//                throw e;
-//            } finally {
-//                outputStream.close()
-//            }
-//            Toast.makeText(requireContext(),"Certificate Save",Toast.LENGTH_SHORT).show()
-//        }
+    private fun generatePDF(pdfUrl: String) {
+        val download = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val pdfUri = Uri.parse(pdfUrl)
+        val getPdf = DownloadManager.Request(pdfUri)
+        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        download.enqueue(getPdf)
+        Toast.makeText(context, "Download Started", Toast.LENGTH_LONG).show()
     }
 
     private fun download(pdfUrl: String, pdfView: ImageView) {
@@ -395,7 +335,7 @@ class LearnFragment : Fragment() {
 
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-       // requireContext().startActivity(Intent.createChooser(shareIntent, "Share with Your Friends..."))
+        // requireContext().startActivity(Intent.createChooser(shareIntent, "Share with Your Friends..."))
         requireContext().startActivity(shareIntent)
 
 
