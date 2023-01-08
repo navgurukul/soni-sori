@@ -5,7 +5,6 @@ plugins {
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
     id(Plugins.githubBenManes)
- //   id(Plugins.gmsOSSLicense)
 }
 android {
     namespace = "org.navgurukul.webIDE"
@@ -55,15 +54,14 @@ dependencies {
     implementation(AndroidxDependencies.multidex)
     implementation(AndroidxDependencies.preference)
 
-//    implementation (MiscellaneousDependencies.nanohttpd)
-//    implementation (MiscellaneousDependencies.jsoup)
-//    implementation (MiscellaneousDependencies.uaUtils)
-//    implementation(MiscellaneousDependencies.jgit)
-//    {
-//        exclude(module: 'httpclient')
-//        exclude group: 'org.apache.httpcomponents',
-//        exclude group: "org.apache.httpcomponents", module: "httpclient"
-//    }
+    implementation (MiscellaneousDependencies.nanohttpd)
+    implementation (MiscellaneousDependencies.jsoup)
+    implementation (MiscellaneousDependencies.uaUtils)
+    implementation(MiscellaneousDependencies.jgit) {
+        exclude(module= "httpclient")
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+    }
 
 //    implementation (GooglePlayDependencies.playServicesLicenses)
     implementation (MiscellaneousDependencies.mpchart)

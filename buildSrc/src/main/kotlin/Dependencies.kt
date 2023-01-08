@@ -17,10 +17,10 @@ object Versions {
     const val epoxy_version = "3.11.0"
     const val multidex = "2.0.1"
     const val nanohttpd = "2.3.1"
-    const val jsoup = "1.11.3"
+    const val jsoup = "1.15.3"
     const val uaUtils = "1.21"
-    const val jgit = "3.7.1.201504261725-r" // no-update
-    const val playServicesLicensesPlugin = "16.0.0"
+    const val jgit = "6.4.0.202211300538-r" // no-update
+    const val playServicesLicensesPlugin = "17.0.0"
     const val  mpchart = "3.0.3"
 }
 
@@ -151,10 +151,10 @@ object MiscellaneousDependencies {
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
     const val nanohttpd = "org.nanohttpd:nanohttpd-webserver:${Versions.nanohttpd}"
-    const val jgit = "org.eclipse.jgit:org.eclipse.jgit:${Versions.nanohttpd}"
-    const val jsoup = "org.jsoup:jsoup:${Versions.nanohttpd}"
-    const val uaUtils  = "eu.bitwalker:UserAgentUtils:${Versions.nanohttpd}"
-    const val  mpchart = "com.github.PhilJay:MPAndroidChart:${Versions.mpchart}"
+    const val jgit = "org.eclipse.jgit:org.eclipse.jgit:${Versions.jgit}"
+    const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
+    const val uaUtils  = "eu.bitwalker:UserAgentUtils:${Versions.uaUtils}"
+    const val mpchart = "com.github.PhilJay:MPAndroidChart:${Versions.mpchart}"
 }
 
 object FirebaseDependencies {
@@ -205,7 +205,6 @@ object Classpath {
     const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
 
    const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"
-   const val ossLicenses = "com.google.android.gms:oss-licenses-plugin:0.10.1"
 }
 
 object Plugins {
@@ -222,5 +221,4 @@ object Plugins {
     const val perf = "com.google.firebase.firebase-perf"
     const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
     const val githubBenManes = "com.github.ben-manes.versions"
-    const val gmsOSSLicense = "com.google.android.gms.oss-licenses-plugin"
 }
