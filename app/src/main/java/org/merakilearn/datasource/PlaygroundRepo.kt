@@ -24,8 +24,8 @@ class PlaygroundRepo {
                 iconResource = R.drawable.ic_scratch_cat,
             ),
             PlaygroundItemModel(
-                PlaygroundTypes.HYPER,
-                name="Hyper",
+                PlaygroundTypes.WEB_DEV_IDE,
+                name="webIDE",
                 iconResource = R.drawable.ic_hyper,
             )
         )

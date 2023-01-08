@@ -87,7 +87,7 @@ class PlaygroundViewModel(
             PlaygroundTypes.PYTHON -> _viewEvents.postValue(PlaygroundViewEvents.OpenPythonPlayground)
             PlaygroundTypes.PYTHON_FILE -> _viewEvents.setValue(PlaygroundViewEvents.OpenPythonPlaygroundWithFile(playgroundItemModel.file))
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
-            PlaygroundTypes.HYPER -> _viewEvents.postValue(PlaygroundViewEvents.OpenHyper)
+            PlaygroundTypes.WEB_DEV_IDE -> _viewEvents.postValue(PlaygroundViewEvents.OpenWebIDE)
         }
     }
 
@@ -104,7 +104,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
-    object OpenHyper : PlaygroundViewEvents()
+    object OpenWebIDE : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions: ViewModelAction{

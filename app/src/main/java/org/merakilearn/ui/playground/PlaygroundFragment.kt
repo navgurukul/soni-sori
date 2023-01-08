@@ -71,8 +71,8 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
-                is PlaygroundViewEvents.OpenHyper -> {
-                    navigator.launchHyperApp(requireActivity(), Mode.Playground)
+                is PlaygroundViewEvents.OpenWebIDE -> {
+                    navigator.launchWebIDEApp(requireActivity(), Mode.Playground)
                 }
             }
         }

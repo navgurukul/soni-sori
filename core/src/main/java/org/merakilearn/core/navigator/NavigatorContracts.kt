@@ -35,6 +35,6 @@ interface TypingAppModuleNavigator {
     fun launchTypingApp(activity: FragmentActivity, mode : Mode)
 }
 
-interface HyperAppModuleNavigator {
-    fun launchHyperApp(activity: FragmentActivity, mode : Mode)
+interface WebIDEAppModuleNavigator {
+    fun launchWebIDEApp(activity: FragmentActivity, mode : Mode)
 }

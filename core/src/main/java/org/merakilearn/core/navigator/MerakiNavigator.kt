@@ -37,10 +37,10 @@ class MerakiNavigator(
         }
     }
 
-    private val hyperAppModuleNavigator: HyperAppModuleNavigator? by lazy {
+    private val webIDEAppModuleNavigator: WebIDEAppModuleNavigator? by lazy {
         val serviceIterator = ServiceLoader.load(
-            HyperAppModuleNavigator::class.java,
-            HyperAppModuleNavigator::class.java.classLoader
+            WebIDEAppModuleNavigator::class.java,
+            WebIDEAppModuleNavigator::class.java.classLoader
         ).iterator()
         if (serviceIterator.hasNext()) {
             serviceIterator.next()
@@ -129,9 +129,9 @@ class MerakiNavigator(
 
     }
 
-    fun launchHyperApp(activity: FragmentActivity, mode: Mode) {
-        if (dynamicFeatureModuleManager.isInstalled(HYPER_MODULE_NAME)) {
-            hyperAppModuleNavigator?.launchHyperApp(activity, mode)
+    fun launchWebIDEApp(activity: FragmentActivity, mode: Mode) {
+        if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
+            webIDEAppModuleNavigator?.launchWebIDEApp(activity, mode)
         } else {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
@@ -139,9 +139,9 @@ class MerakiNavigator(
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 show()
             }
-            dynamicFeatureModuleManager.installModule(HYPER_MODULE_NAME, {
+            dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
                 progress.dismiss()
-                hyperAppModuleNavigator?.launchHyperApp(activity, mode)
+                webIDEAppModuleNavigator?.launchWebIDEApp(activity, mode)
             }, {
                 progress.dismiss()
             })
@@ -211,7 +211,7 @@ class MerakiNavigator(
         const val TYPING_DEEPLINK = "/typing"
         const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
-        const val HYPER_MODULE_NAME = "hyper"
+        const val WEB_DEV_MODULE_NAME = "webIDE"
 
         private fun isMerakiUrl(url: String): Boolean {
             return try {
