@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.Context
@@ -11,6 +12,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.pdf.PdfRenderer
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
@@ -20,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -31,7 +34,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
+import kotlinx.android.synthetic.main.fragment_learn.*
 import kotlinx.android.synthetic.main.generated_certificate.view.*
+import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import kotlinx.coroutines.CoroutineScope
@@ -88,6 +93,10 @@ class LearnFragment : Fragment() {
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+        mBinding.certificate.visibility = View.GONE
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
 
         initSwipeRefresh()
 
@@ -109,6 +118,14 @@ class LearnFragment : Fragment() {
             )
         }
 
+        if (!isConnected) {
+            // Show custom screen
+            empty_state_view.visibility = View.VISIBLE
+        } else {
+            // Hide custom screen
+            empty_state_view.visibility = View.GONE
+        }
+
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
@@ -123,6 +140,8 @@ class LearnFragment : Fragment() {
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
+//            mBinding.certificate.isVisible = it.shouldShowCertificate
+
             if (!it.classes.isEmpty()) {
                 mBinding.upcoming.root.isVisible = true
                 initUpcomingRecyclerView(it.classes)
@@ -217,7 +236,12 @@ class LearnFragment : Fragment() {
 
     private fun getCertificate(pdfUrl: String, completedPortion: Int) {
         mBinding.certificate.setOnClickListener {
-            if (completedPortion != 100) {
+            val imageView: ImageView = mBinding.certificate.ivCertificateLogo
+            val textCertificate : TextView = mBinding.certificate.txtCertificate
+            val textView : TextView = mBinding.certificate.locked_status
+            if (completedPortion == 100) {
+                imageView.setImageResource(R.drawable.ic_certificate)
+                textView.isVisible = false
                 val dialog = BottomSheetDialog(requireContext())
                 val view = layoutInflater.inflate(R.layout.generated_certificate, null)
                 pdfView = view.idPDFView
@@ -236,6 +260,8 @@ class LearnFragment : Fragment() {
                 dialog.setContentView(view)
                 dialog.show()
             } else {
+                textView.isVisible = true
+                imageView.setImageResource(R.drawable.grey_icon_certificate)
                 println("required completed portion in fragment $completedPortion")
                 Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
             }
@@ -335,51 +361,7 @@ class LearnFragment : Fragment() {
 
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        // requireContext().startActivity(Intent.createChooser(shareIntent, "Share with Your Friends..."))
         requireContext().startActivity(shareIntent)
-
-
-//        val outputFile = File(
-//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-//            "a7dc6704-47ac-46a7-a3d5-e7b4c4eb4ccd.pdf"
-//        )
-//        val uri = Uri.fromFile(outputFile)
-//
-//        val share = Intent()
-//        share.action = Intent.ACTION_SEND
-//        share.type = "application/pdf"
-//        share.putExtra(Intent.EXTRA_STREAM, uri)
-//
-//        requireActivity().startActivity(share)
-
-
-//        val outputFile = File(
-//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-//            "dhanu"
-//        )
-//
-//        val pdfUri : Uri = FileProvider.getUriForFile(
-//                requireContext(),
-//                "org.merakilearn.provider_paths",
-//                outputFile
-//            )
-//
-////        Log.d("pdfUrl","$pdfUrl")
-//        Log.d("uritext","$pdfUri")
-//        val url = requireContext().contentResolver.getType(pdfUri)
-//        val extention = MimeTypeMap.getSingleton().getExtensionFromMimeType(url)
-//        Log.d("geturl", "$url")
-//        Log.d("getExtenstion","$extention")
-////        } else {
-////            pdfUri = Uri.fromFile(outputFile)
-////        }
-//        val share = Intent()
-//        share.action = Intent.ACTION_SEND
-//        share.type = "application/pdf"
-//        val pdf = Uri.parse(pdfUrl)
-//        share.putExtra(Intent.EXTRA_TEXT,pdf)
-//        share.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-//        startActivity(Intent.createChooser(share, "Share"))
 
     }
 

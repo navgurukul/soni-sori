@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/navigation_learn"
-        android:icon="@drawable/ic_whiteboard"
+        android:icon="@drawable/ic_learn"
         android:title="@string/title_learn" />
 
     <item
@@ -19,12 +19,12 @@
 
     <item
         android:id="@+id/navigation_playground"
-        android:icon="@drawable/ic_playground"
+        android:icon="@drawable/ic_play"
         android:title="@string/title_playground" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/ic_person"
         android:title="@string/profile" />
 
 </menu>

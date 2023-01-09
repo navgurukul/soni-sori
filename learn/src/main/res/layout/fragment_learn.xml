@@ -91,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:layout_marginBottom="@dimen/spacing_3x"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerviewCourse"
                     app:layout_constraintStart_toStartOf="parent"
                     layout="@layout/item_certificate"/>
@@ -139,7 +140,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="@dimen/spacing_4x"
                     style="?textAppearanceBody2"
-                    android:text="Have you completed the overview?"/>
+                    android:text="@string/have_you_completed_the_overview"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonTakeTest"

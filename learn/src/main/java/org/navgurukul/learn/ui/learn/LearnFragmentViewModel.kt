@@ -87,7 +87,7 @@ class LearnFragmentViewModel(
             checkedStudentEnrolment(pathway.id)
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo,
+                    setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false,
                         showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }

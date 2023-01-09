@@ -160,6 +160,8 @@
     <string name="get_certificate">GET Certificate</string>
     <string name="share_to_friends">Share to friends</string>
     <string name="complete_course">Please complete all the courses to unlock Python certificate</string>
+    <string name="have_you_completed_the_overview">Have you completed the overview?</string>
+    <string name="locked">(Locked)</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
