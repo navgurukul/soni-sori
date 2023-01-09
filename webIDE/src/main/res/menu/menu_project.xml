@@ -1,0 +1,120 @@
+<!--
+   Copyright 2016 Geetesh Kalakoti <kalakotig@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_import_file"
+        android:title="@string/import_not_java"
+        app:showAsAction="never" />
+
+    <item
+        android:title="@string/git"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/action_git_init"
+                android:title="@string/git_init"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_add"
+                android:title="@string/git_add"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_commit"
+                android:title="@string/git_commit"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_push"
+                android:title="Push"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_pull"
+                android:title="Pull"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_log"
+                android:title="@string/git_log"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_diff"
+                android:title="Diff"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_status"
+                android:title="@string/git_status"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_git_branch"
+                android:title="@string/branch"
+                app:showAsAction="never">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/action_git_branch_new"
+                        android:title="@string/new_not_java"
+                        app:showAsAction="never" />
+
+                    <item
+                        android:id="@+id/action_git_branch_remove"
+                        android:title="@string/remove"
+                        app:showAsAction="never" />
+
+                    <item
+                        android:id="@+id/action_git_branch_checkout"
+                        android:title="@string/checkout"
+                        app:showAsAction="never" />
+
+                </menu>
+
+            </item>
+
+            <item
+                android:id="@+id/action_git_remote"
+                android:title="@string/remote"
+                app:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/action_analyze"
+        android:title="Analyze"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_run"
+        android:title="@string/run_project"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about_project"
+        app:showAsAction="never" />
+
+</menu>
