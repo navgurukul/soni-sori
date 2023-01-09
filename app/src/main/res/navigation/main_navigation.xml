@@ -6,12 +6,6 @@
     app:startDestination="@+id/navigation_learn">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="org.merakilearn.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
         android:id="@+id/navigation_chat"
         android:name="org.navgurukul.chat.features.home.room.list.RoomListFragment"
         android:label="@string/title_chat"
