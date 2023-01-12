@@ -1,6 +1,7 @@
 package org.navgurukul.webide.ui.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,8 +10,10 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_splash.*
+import org.merakilearn.core.extentions.toBundle
+import org.merakilearn.core.navigator.Mode
 import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.ActivitySplashBinding
 import org.navgurukul.webide.extensions.*
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get
@@ -18,15 +21,18 @@ import org.navgurukul.webide.util.ui.FontsOverride
 
 class SplashActivity : ThemedActivity() {
 
+    private lateinit var binding : ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         FontsOverride.setDefaultFont(applicationContext,
                 "MONOSPACE", "fonts/Inconsolata-Regular.ttf")
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
-        hyperLogo.animate().alpha(1F).setDuration(1000).onAnimationStop {
+        binding.hyperLogo.animate().alpha(1F).setDuration(1000).onAnimationStop {
             setupPermissions()
         }
     }
@@ -43,7 +49,7 @@ class SplashActivity : ThemedActivity() {
     }
 
     private fun showPermissionSnack() {
-        splashLayout.snack(R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE) {
+        binding.splashLayout.snack(R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE) {
             action("GRANT") {
                 dismiss()
                 startActivityForResult(Intent().apply {
@@ -90,6 +96,11 @@ class SplashActivity : ThemedActivity() {
     }
 
     companion object {
+            fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
+                return Intent(context, SplashActivity::class.java).apply {
+                    putExtras(MainActivityArgs(mode, retake).toBundle()!!)
+                }
+        }
 
         private const val WRITE_PERMISSION_REQUEST = 0
     }

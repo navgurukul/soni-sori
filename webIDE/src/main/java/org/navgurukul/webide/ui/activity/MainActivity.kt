@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,14 +19,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_clone.view.*
-import kotlinx.android.synthetic.main.dialog_create.view.*
-import kotlinx.android.synthetic.main.dialog_import.view.*
-import kotlinx.android.synthetic.main.widget_toolbar.*
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.ActivityIntroBinding
+import org.navgurukul.webIDE.databinding.ActivityMainBinding
+import org.navgurukul.webIDE.databinding.DialogCloneBinding
+import org.navgurukul.webIDE.databinding.DialogCreateBinding
+import org.navgurukul.webIDE.databinding.DialogImportBinding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startActivityForResult
 import org.navgurukul.webide.extensions.startAndFinish
@@ -59,10 +60,13 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
     private lateinit var projectIcon: ImageView
     private lateinit var prefs: SharedPreferences
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-      ///  setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.include.toolbar)
 
         prefs = defaultPrefs(this)
         contents = File(Constants.HYPER_ROOT).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(name) }
@@ -73,144 +77,144 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
         }
 
         DataValidator.removeBroken(contentsList!!)
-//        projectAdapter = ProjectAdapter(this, contentsList!!, coordinatorLayout, projectList)
+        projectAdapter = ProjectAdapter(this, contentsList!!, binding.coordinatorLayout, binding.projectList)
         val layoutManager = LinearLayoutManager(this)
-//        projectList.layoutManager = layoutManager
-//        projectList.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
-//        projectList.itemAnimator = DefaultItemAnimator()
-   //     projectList.adapter = projectAdapter
-//        cloneButton.setOnClickListener {
-//            val choices = arrayOf("Create a new project", "Clone a repository", "Import an external project")
-//            AlertDialog.Builder(this@MainActivity)
-//                    .setTitle("Would you like to...")
-//                    .setAdapter(ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
-//                        when (i) {
-//                            0 -> {
-//                                val rootView = View.inflate(this@MainActivity, R.layout.dialog_create, null)
-//                                rootView.typeSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
-//                                rootView.typeSpinner.setSelection(prefs["type", 0]!!)
-//                                rootView.nameLayout.editText!!.setText(prefs["name", ""])
-//                                rootView.authorLayout.editText!!.setText(prefs["author", ""])
-//                                rootView.descLayout.editText!!.setText(prefs["description", ""])
-//                                rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
-//
-//                                projectIcon = rootView.faviconImage
-//                                rootView.defaultIcon.isChecked = true
-//                                rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
-//                                    if (isChecked) {
-//                                        projectIcon.setImageResource(R.drawable.ic_launcher)
-//                                        imageStream = null
-//                                    }
-//                                }
-//
-//                                rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
-//                                    if (isChecked) {
-//                                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-//                                        intent.type = "image/*"
-//                                        startActivityForResult(intent, SELECT_ICON)
-//                                    }
-//                                }
-//
-//                                val createDialog = AlertDialog.Builder(this@MainActivity)
-//                                        .setTitle("Create a new project")
-//                                        .setView(rootView)
-//                                        .setPositiveButton("CREATE", null)
-//                                        .setNegativeButton("CANCEL", null)
-//                                        .create()
-//
-//                                createDialog.show()
-//                                createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-//                                    if (DataValidator.validateCreate(this@MainActivity, rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
-//                                        val name = rootView.nameLayout.editText!!.text.toString()
-//                                        val author = rootView.authorLayout.editText!!.text.toString()
-//                                        val description = rootView.descLayout.editText!!.text.toString()
-//                                        val keywords = rootView.keyLayout.editText!!.text.toString()
-//                                        val type = rootView.typeSpinner.selectedItemPosition
-//
-//                                        prefs["name"] = name
-//                                        prefs["author"] = author
-//                                        prefs["description"] = description
-//                                        prefs["keywords"] = keywords
-//                                        prefs["type"] = type
-//
-//                                        ProjectManager.generate(
-//                                                this@MainActivity,
-//                                                name,
-//                                                author,
-//                                                description,
-//                                                keywords,
-//                                                imageStream,
-//                                                projectAdapter,
-//                                                coordinatorLayout,
-//                                                type
-//                                        )
-//
-//                                        createDialog.dismiss()
-//                                    }
-//                                }
-//                            }
-//                            1 -> {
-//                                val cloneView = View.inflate(this@MainActivity, R.layout.dialog_clone, null)
-//                                cloneView.cloneName.setText(prefs["clone_name", ""])
-//                                cloneView.cloneUrl.setText(prefs["remote", ""])
-//                                val cloneDialog = AlertDialog.Builder(this@MainActivity)
-//                                        .setTitle("Clone a repository")
-//                                        .setView(cloneView)
-//                                        .setPositiveButton("CLONE", null)
-//                                        .setNegativeButton(R.string.cancel, null)
-//                                        .create()
-//
-//                                cloneDialog.show()
-//                                cloneDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-//                                    if (DataValidator.validateClone(this@MainActivity, cloneView.cloneName, cloneView.cloneUrl)) {
-//                                        var remoteStr = cloneView.cloneUrl.text.toString()
-//                                        if (!remoteStr.contains("://")) {
-//                                            remoteStr = "https://$remoteStr"
-//                                        }
-//
-//                                        val cloneName = cloneView.cloneName.text.toString()
-//                                        prefs["clone_name"] = cloneName
-//                                        prefs["remote"] = remoteStr
-//
-//                                        GitWrapper.clone(
-//                                                this@MainActivity,
-//                                                coordinatorLayout,
-//                                                File(Constants.HYPER_ROOT + File.separator + cloneName),
-//                                                projectAdapter,
-//                                                remoteStr,
-//                                                cloneView.cloneUsername.text.toString(),
-//                                                cloneView.clonePassword.text.toString()
-//                                        )
-//
-//                                        cloneDialog.dismiss()
-//                                    }
-//                                }
-//                            }
-//                            2 -> {
-//                                val intent = Intent(Intent.ACTION_GET_CONTENT)
-//                                intent.type = "file/*"
-//                                intent.resolveActivity(packageManager)?.let {
-//                                    startActivityForResult(intent, IMPORT_PROJECT)
-//                                }
-//                            }
-//                        }
-//                    }
-//                    .show()
-//        }
+        binding.projectList.layoutManager = layoutManager
+        binding.projectList.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+        binding.projectList.itemAnimator = DefaultItemAnimator()
+        binding.projectList.adapter = projectAdapter
+        binding.cloneButton.setOnClickListener {
+            val choices = arrayOf("Create a new project", "Clone a repository", "Import an external project")
+            AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Would you like to...")
+                    .setAdapter(ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
+                        when (i) {
+                            0 -> {
+                                val rootView = DialogCreateBinding.inflate(LayoutInflater.from(this@MainActivity))
+                                rootView.typeSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+                                rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+                                rootView.nameLayout.editText!!.setText(prefs["name", ""])
+                                rootView.authorLayout.editText!!.setText(prefs["author", ""])
+                                rootView.descLayout.editText!!.setText(prefs["description", ""])
+                                rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
-//        projectList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    cloneButton.show()
-//                }
-//
-//                super.onScrollStateChanged(recyclerView, newState)
-//            }
-//
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                if (dy > 0 || dy < 0 && cloneButton.isShown) cloneButton.hide()
-//            }
-//        })
+                                projectIcon = rootView.faviconImage
+                                rootView.defaultIcon.isChecked = true
+                                rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
+                                    if (isChecked) {
+                                        projectIcon.setImageResource(R.drawable.ic_launcher)
+                                        imageStream = null
+                                    }
+                                }
+
+                                rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
+                                    if (isChecked) {
+                                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+                                        intent.type = "image/*"
+                                        startActivityForResult(intent, SELECT_ICON)
+                                    }
+                                }
+
+                                val createDialog = AlertDialog.Builder(this@MainActivity)
+                                        .setTitle("Create a new project")
+                                        .setView(rootView.root)
+                                        .setPositiveButton("CREATE", null)
+                                        .setNegativeButton("CANCEL", null)
+                                        .create()
+
+                                createDialog.show()
+                                createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                    if (DataValidator.validateCreate(this@MainActivity, rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
+                                        val name = rootView.nameLayout.editText!!.text.toString()
+                                        val author = rootView.authorLayout.editText!!.text.toString()
+                                        val description = rootView.descLayout.editText!!.text.toString()
+                                        val keywords = rootView.keyLayout.editText!!.text.toString()
+                                        val type = rootView.typeSpinner.selectedItemPosition
+
+                                        prefs["name"] = name
+                                        prefs["author"] = author
+                                        prefs["description"] = description
+                                        prefs["keywords"] = keywords
+                                        prefs["type"] = type
+
+                                        ProjectManager.generate(
+                                                this@MainActivity,
+                                                name,
+                                                author,
+                                                description,
+                                                keywords,
+                                                imageStream,
+                                                projectAdapter,
+                                            binding.coordinatorLayout,
+                                                type
+                                        )
+
+                                        createDialog.dismiss()
+                                    }
+                                }
+                            }
+                            1 -> {
+                                val cloneView = DialogCloneBinding.inflate(LayoutInflater.from(this@MainActivity))
+                                cloneView.cloneName.setText(prefs["clone_name", ""])
+                                cloneView.cloneUrl.setText(prefs["remote", ""])
+                                val cloneDialog = AlertDialog.Builder(this@MainActivity)
+                                        .setTitle("Clone a repository")
+                                        .setView(cloneView.root)
+                                        .setPositiveButton("CLONE", null)
+                                        .setNegativeButton(R.string.cancel, null)
+                                        .create()
+
+                                cloneDialog.show()
+                                cloneDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                    if (DataValidator.validateClone(this@MainActivity, cloneView.cloneName, cloneView.cloneUrl)) {
+                                        var remoteStr = cloneView.cloneUrl.text.toString()
+                                        if (!remoteStr.contains("://")) {
+                                            remoteStr = "https://$remoteStr"
+                                        }
+
+                                        val cloneName = cloneView.cloneName.text.toString()
+                                        prefs["clone_name"] = cloneName
+                                        prefs["remote"] = remoteStr
+
+                                        GitWrapper.clone(
+                                                this@MainActivity,
+                                                binding.coordinatorLayout,
+                                                File(Constants.HYPER_ROOT + File.separator + cloneName),
+                                                projectAdapter,
+                                                remoteStr,
+                                                cloneView.cloneUsername.text.toString(),
+                                                cloneView.clonePassword.text.toString()
+                                        )
+
+                                        cloneDialog.dismiss()
+                                    }
+                                }
+                            }
+                            2 -> {
+                                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                                intent.type = "file/*"
+                                intent.resolveActivity(packageManager)?.let {
+                                    startActivityForResult(intent, IMPORT_PROJECT)
+                                }
+                            }
+                        }
+                    }
+                    .show()
+        }
+
+        binding.projectList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    binding.cloneButton.show()
+                }
+
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 || dy < 0 && binding.cloneButton.isShown) binding.cloneButton.hide()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -252,7 +256,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
             IMPORT_PROJECT -> if (resultCode == Activity.RESULT_OK) {
                 val fileUri = data!!.data!!
                 val file = File(fileUri.path)
-                val rootView = View.inflate(this@MainActivity, R.layout.dialog_import, null)
+                val rootView = DialogImportBinding.inflate(LayoutInflater.from(this@MainActivity))
                 rootView.impTypeSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
                 rootView.impTypeSpinner.setSelection(prefs["type", 0]!!)
 
@@ -264,7 +268,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                 val createDialog = AlertDialog.Builder(this@MainActivity)
                         .setTitle("Import an external project")
                         .setIcon(R.drawable.ic_action_import)
-                        .setView(rootView)
+                        .setView(rootView.root)
                         .setPositiveButton("IMPORT", null)
                         .setNegativeButton("CANCEL", null)
                         .create()
@@ -292,7 +296,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                                 description,
                                 keywords,
                                 projectAdapter,
-                                coordinatorLayout)
+                                binding.coordinatorLayout)
 
                         createDialog.dismiss()
                     }
@@ -313,16 +317,16 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
             }
         }
 
-        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, coordinatorLayout, projectList)
-        projectList.adapter = projectAdapter
+        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        binding.projectList.adapter = projectAdapter
         return true
     }
 
     override fun onClose(): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
         DataValidator.removeBroken(contentsList!!)
-        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, coordinatorLayout, projectList)
-        projectList.adapter = projectAdapter
+        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        binding.projectList.adapter = projectAdapter
         return false
     }
 

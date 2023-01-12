@@ -1,17 +1,19 @@
 package org.navgurukul.webide.ui.activity
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.widget_toolbar.*
 import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.ActivitySettingsBinding
 import org.navgurukul.webide.ui.fragment.SettingsFragment
 
 class SettingsActivity : ThemedActivity() {
 
+    private lateinit var binding : ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        setSupportActionBar(toolbar)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.include.toolbar)
 
         supportFragmentManager
                 .beginTransaction()

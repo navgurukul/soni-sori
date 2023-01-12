@@ -2,22 +2,23 @@ package org.navgurukul.webide.ui.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_analyze.*
-import kotlinx.android.synthetic.main.widget_toolbar.*
-import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.ActivityAnalyzeBinding
 import org.navgurukul.webide.ui.adapter.AnalyzeAdapter
 import org.navgurukul.webide.ui.fragment.analyze.AnalyzeFileFragment
 import java.io.File
 
 class AnalyzeActivity : ThemedActivity() {
 
+    private lateinit var binding : ActivityAnalyzeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_analyze)
-        toolbar.title = File(intent.getStringExtra("project_file")).name
-        setSupportActionBar(toolbar)
-        setupPager(analyzePager)
-        analyzeTabs.setupWithViewPager(analyzePager)
+        binding = ActivityAnalyzeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.include.toolbar.title = File(intent.getStringExtra("project_file")).name
+        setSupportActionBar(binding.include.toolbar)
+        setupPager(binding.analyzePager)
+        binding.analyzeTabs.setupWithViewPager(binding.analyzePager)
     }
 
     private fun setupPager(analyzePager: ViewPager?) {

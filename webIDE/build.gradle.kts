@@ -34,6 +34,10 @@ android {
         exclude("**/*.xml")
         exclude( "**/*.properties")
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {

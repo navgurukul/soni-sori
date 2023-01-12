@@ -25,8 +25,8 @@ class PlaygroundRepo {
             ),
             PlaygroundItemModel(
                 PlaygroundTypes.WEB_DEV_IDE,
-                name="webIDE",
-                iconResource = R.drawable.ic_hyper,
+                name="HTML/CSS/JS",
+                iconResource = R.drawable.ic_web_icon,
             )
         )
     }

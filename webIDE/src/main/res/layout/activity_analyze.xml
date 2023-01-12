@@ -27,7 +27,9 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <include layout="@layout/widget_toolbar" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/widget_toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/analyzeTabs"

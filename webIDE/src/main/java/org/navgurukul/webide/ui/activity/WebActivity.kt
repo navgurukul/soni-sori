@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,12 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_web.*
-import kotlinx.android.synthetic.main.dialog_input_single.view.*
-import kotlinx.android.synthetic.main.sheet_logs.view.*
-import kotlinx.android.synthetic.main.sheet_web_settings.view.*
-import kotlinx.android.synthetic.main.widget_toolbar.*
 import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.ActivityWebBinding
+import org.navgurukul.webIDE.databinding.DialogInputSingleBinding
+import org.navgurukul.webIDE.databinding.SheetLogsBinding
+import org.navgurukul.webIDE.databinding.SheetWebSettingsBinding
 import org.navgurukul.webide.ui.adapter.LogsAdapter
 import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs
@@ -37,6 +37,8 @@ class WebActivity : ThemedActivity() {
     private lateinit var localUrl: String
     private lateinit var localWithoutIndex: String
 
+    private lateinit var binding : ActivityWebBinding
+
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,24 +51,24 @@ class WebActivity : ThemedActivity() {
         } catch (e: IOException) {
             Timber.e(e)
         }
-
-        setContentView(R.layout.activity_web)
+        binding = ActivityWebBinding.inflate(LayoutInflater.from(this@WebActivity))
+        setContentView(binding.root)
         val indexFile = ProjectManager.getIndexFile(project)
         val indexPath = ProjectManager.getRelativePath(indexFile!!, project)
 
-        toolbar.title = project
-        setSupportActionBar(toolbar)
-        webView.settings.javaScriptEnabled = true
+        binding.include.toolbar.title = project
+        setSupportActionBar(binding.include.toolbar)
+        binding.webView.settings.javaScriptEnabled = true
         localUrl = if (NetworkUtils.server!!.wasStarted() && NetworkUtils.server!!.isAlive && NetworkUtils.ipAddress != null)
             "http://${NetworkUtils.ipAddress}:${HyperServer.PORT_NUMBER}/$indexPath"
         else
             intent.getStringExtra("localUrl")!!
 
         localWithoutIndex = localUrl.substring(0, localUrl.length - 10)
-        webView.loadUrl(localUrl)
-        webView.webChromeClient = object : WebChromeClient() {
+        binding.webView.loadUrl(localUrl)
+        binding.webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
-                loadingProgress.progress = newProgress
+                binding.loadingProgress.progress = newProgress
             }
 
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
@@ -98,14 +100,14 @@ class WebActivity : ThemedActivity() {
             }
         }
 
-        webView.webViewClient = object : WebViewClient() {
+        binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, localUrl: String) {
                 super.onPageFinished(view, localUrl)
-                webView.animate().alpha(1F)
+                binding.webView.animate().alpha(1F)
             }
         }
 
-        toolbar.subtitle = localUrl
+        binding.include.toolbar.subtitle = localUrl
     }
 
     override fun onDestroy() {
@@ -123,29 +125,29 @@ class WebActivity : ThemedActivity() {
         val prefs = defaultPrefs(this)
         when (item.itemId) {
             R.id.refresh -> {
-                webView.animate().alpha(0F)
-                webView.reload()
+                binding.webView.animate().alpha(0F)
+                binding.webView.reload()
                 return true
             }
             R.id.user_agent -> {
                 val selectedI = IntArray(1)
-                val current = webView.settings.userAgentString
+                val current = binding.webView.settings.userAgentString
                 val agents = LinkedList(Arrays.asList(*Constants.USER_AGENTS))
                 if (!agents.contains(current)) agents.add(0, current)
                 val parsedAgents = NetworkUtils.parseUAList(agents)
                 AlertDialog.Builder(this)
                         .setTitle("Change User Agent")
                         .setSingleChoiceItems(parsedAgents.toTypedArray(), parsedAgents.indexOf(NetworkUtils.parseUA(current))) { _, i -> selectedI[0] = i }
-                        .setPositiveButton("UPDATE") { _, _ -> webView.settings.userAgentString = agents[selectedI[0]] }
-                        .setNeutralButton("RESET") { _, _ -> webView.settings.userAgentString = null }
+                        .setPositiveButton("UPDATE") { _, _ -> binding.webView.settings.userAgentString = agents[selectedI[0]] }
+                        .setNeutralButton("RESET") { _, _ -> binding.webView.settings.userAgentString = null }
                         .setNegativeButton("CUSTOM") { _, _ ->
-                            val rootView = View.inflate(this@WebActivity, R.layout.dialog_input_single, null)
+                            val rootView = DialogInputSingleBinding.inflate(LayoutInflater.from(this@WebActivity))
                             rootView.inputText.hint = "Custom agent string"
                             rootView.inputText.setText(current)
                             AlertDialog.Builder(this@WebActivity)
                                     .setTitle("Custom User Agent")
-                                    .setView(rootView)
-                                    .setPositiveButton("UPDATE") { _, _ -> webView.settings.userAgentString = rootView.inputText.text.toString() }
+                                    .setView(rootView.root)
+                                    .setPositiveButton("UPDATE") { _, _ -> binding.webView.settings.userAgentString = rootView.inputText.text.toString() }
                                     .setNegativeButton(R.string.cancel, null)
                                     .show()
                         }
@@ -158,10 +160,10 @@ class WebActivity : ThemedActivity() {
                 return true
             }
             R.id.web_logs -> {
-                val layoutLog = View.inflate(this, R.layout.sheet_logs, null)
+                val layoutLog = SheetLogsBinding.inflate(LayoutInflater.from(this@WebActivity))
                 val darkTheme = prefs["dark_theme", false]!!
                 if (darkTheme) {
-                    layoutLog.setBackgroundColor(-0xcccccd)
+                    layoutLog.root.setBackgroundColor(-0xcccccd)
                 }
 
                 val manager = LinearLayoutManager(this)
@@ -172,57 +174,57 @@ class WebActivity : ThemedActivity() {
                 layoutLog.logsList.adapter = adapter
 
                 val dialogLog = BottomSheetDialog(this)
-                dialogLog.setContentView(layoutLog)
+                dialogLog.setContentView(layoutLog.root)
                 dialogLog.show()
                 return true
             }
             R.id.web_settings -> {
-                val layout = View.inflate(this, R.layout.sheet_web_settings, null)
+                val layout = SheetWebSettingsBinding.inflate(LayoutInflater.from(this@WebActivity))
                 if (prefs["dark_theme", false]!!) {
-                    layout.setBackgroundColor(-0xcccccd)
+                    layout.root.setBackgroundColor(-0xcccccd)
                 }
 
-                layout.allowContentAccess.isChecked = webView.settings.allowContentAccess
-                layout.allowFileAccess.isChecked = webView.settings.allowFileAccess
-                layout.blockNetworkImage.isChecked = webView.settings.blockNetworkImage
-                layout.blockNetworkLoads.isChecked = webView.settings.blockNetworkLoads
-                layout.builtInZoomControls.isChecked = webView.settings.builtInZoomControls
-                layout.database.isChecked = webView.settings.databaseEnabled
-                layout.displayZoomControls.isChecked = webView.settings.displayZoomControls
-                layout.domStorage.isChecked = webView.settings.domStorageEnabled
-                layout.jsCanOpenWindows.isChecked = webView.settings.javaScriptCanOpenWindowsAutomatically
-                layout.jsEnabled.isChecked = webView.settings.javaScriptEnabled
-                layout.loadOverview.isChecked = webView.settings.loadWithOverviewMode
-                layout.imageLoad.isChecked = webView.settings.loadsImagesAutomatically
-                layout.wideView.isChecked = webView.settings.useWideViewPort
+                layout.allowContentAccess.isChecked = binding.webView.settings.allowContentAccess
+                layout.allowFileAccess.isChecked = binding.webView.settings.allowFileAccess
+                layout.blockNetworkImage.isChecked = binding.webView.settings.blockNetworkImage
+                layout.blockNetworkLoads.isChecked = binding.webView.settings.blockNetworkLoads
+                layout.builtInZoomControls.isChecked = binding.webView.settings.builtInZoomControls
+                layout.database.isChecked = binding.webView.settings.databaseEnabled
+                layout.displayZoomControls.isChecked = binding.webView.settings.displayZoomControls
+                layout.domStorage.isChecked = binding.webView.settings.domStorageEnabled
+                layout.jsCanOpenWindows.isChecked = binding.webView.settings.javaScriptCanOpenWindowsAutomatically
+                layout.jsEnabled.isChecked = binding.webView.settings.javaScriptEnabled
+                layout.loadOverview.isChecked = binding.webView.settings.loadWithOverviewMode
+                layout.imageLoad.isChecked = binding.webView.settings.loadsImagesAutomatically
+                layout.wideView.isChecked = binding.webView.settings.useWideViewPort
 
-                layout.allowContentAccess.setOnCheckedChangeListener { _, isChecked -> webView.settings.allowContentAccess = isChecked }
-                layout.allowFileAccess.setOnCheckedChangeListener { _, isChecked -> webView.settings.allowFileAccess = isChecked }
-                layout.blockNetworkImage.setOnCheckedChangeListener { _, isChecked -> webView.settings.blockNetworkImage = isChecked }
-                layout.blockNetworkLoads.setOnCheckedChangeListener { _, isChecked -> webView.settings.blockNetworkLoads = isChecked }
-                layout.builtInZoomControls.setOnCheckedChangeListener { _, isChecked -> webView.settings.builtInZoomControls = isChecked }
-                layout.database.setOnCheckedChangeListener { _, isChecked -> webView.settings.databaseEnabled = isChecked }
-                layout.displayZoomControls.setOnCheckedChangeListener { _, isChecked -> webView.settings.displayZoomControls = isChecked }
-                layout.domStorage.setOnCheckedChangeListener { _, isChecked -> webView.settings.domStorageEnabled = isChecked }
-                layout.jsCanOpenWindows.setOnCheckedChangeListener { _, isChecked -> webView.settings.javaScriptCanOpenWindowsAutomatically = isChecked }
-                layout.jsEnabled.setOnCheckedChangeListener { _, isChecked -> webView.settings.javaScriptEnabled = isChecked }
-                layout.loadOverview.setOnCheckedChangeListener { _, isChecked -> webView.settings.loadWithOverviewMode = isChecked }
-                layout.imageLoad.setOnCheckedChangeListener { _, isChecked -> webView.settings.loadsImagesAutomatically = isChecked }
-                layout.wideView.setOnCheckedChangeListener { _, isChecked -> webView.settings.useWideViewPort = isChecked }
+                layout.allowContentAccess.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.allowContentAccess = isChecked }
+                layout.allowFileAccess.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.allowFileAccess = isChecked }
+                layout.blockNetworkImage.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.blockNetworkImage = isChecked }
+                layout.blockNetworkLoads.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.blockNetworkLoads = isChecked }
+                layout.builtInZoomControls.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.builtInZoomControls = isChecked }
+                layout.database.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.databaseEnabled = isChecked }
+                layout.displayZoomControls.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.displayZoomControls = isChecked }
+                layout.domStorage.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.domStorageEnabled = isChecked }
+                layout.jsCanOpenWindows.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.javaScriptCanOpenWindowsAutomatically = isChecked }
+                layout.jsEnabled.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.javaScriptEnabled = isChecked }
+                layout.loadOverview.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.loadWithOverviewMode = isChecked }
+                layout.imageLoad.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.loadsImagesAutomatically = isChecked }
+                layout.wideView.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.useWideViewPort = isChecked }
 
 
                 if (Build.VERSION.SDK_INT >= 16) {
-                    layout.allowFileAccessFromFileUrls.isChecked = webView.settings.allowFileAccessFromFileURLs
-                    layout.allowUniversalAccessFromFileUrls.isChecked = webView.settings.allowUniversalAccessFromFileURLs
-                    layout.allowFileAccessFromFileUrls.setOnCheckedChangeListener { _, isChecked -> webView.settings.allowFileAccessFromFileURLs = isChecked }
-                    layout.allowUniversalAccessFromFileUrls.setOnCheckedChangeListener { _, isChecked -> webView.settings.allowUniversalAccessFromFileURLs = isChecked }
+                    layout.allowFileAccessFromFileUrls.isChecked = binding.webView.settings.allowFileAccessFromFileURLs
+                    layout.allowUniversalAccessFromFileUrls.isChecked = binding.webView.settings.allowUniversalAccessFromFileURLs
+                    layout.allowFileAccessFromFileUrls.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.allowFileAccessFromFileURLs = isChecked }
+                    layout.allowUniversalAccessFromFileUrls.setOnCheckedChangeListener { _, isChecked -> binding.webView.settings.allowUniversalAccessFromFileURLs = isChecked }
                 } else {
                     layout.allowFileAccessFromFileUrls.visibility = View.GONE
                     layout.allowUniversalAccessFromFileUrls.visibility = View.GONE
                 }
 
                 val dialog = BottomSheetDialog(this)
-                dialog.setContentView(layout)
+                dialog.setContentView(layout.root)
                 dialog.show()
                 return true
             }

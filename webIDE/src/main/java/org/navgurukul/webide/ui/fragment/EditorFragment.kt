@@ -9,9 +9,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_editor.*
 import org.navgurukul.webIDE.R
-import org.navgurukul.webide.extensions.inflate
+import org.navgurukul.webIDE.databinding.FragmentEditorBinding
 import org.navgurukul.webide.extensions.string
 import org.navgurukul.webide.ui.widget.Editor
 import org.navgurukul.webide.util.editor.ResourceHelper
@@ -23,6 +22,9 @@ import java.io.IOException
 
 class EditorFragment : Fragment() {
 
+    private var _binding: FragmentEditorBinding? = null
+    private val binding get() = _binding!!
+
     private var location: String? = null
     private var file: File? = null
 
@@ -31,6 +33,7 @@ class EditorFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentEditorBinding.inflate(inflater,container,false)
         location = requireArguments().getString("location")
         file = File(location)
         if (!file!!.exists()) {
@@ -44,53 +47,53 @@ class EditorFragment : Fragment() {
             return textView
         }
 
-        return container?.inflate(R.layout.fragment_editor)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         file?.let {
             val filename = it.name
-            fileContent.fileEnding = filename.substringAfterLast('.', "")
+            binding.fileContent.fileEnding = filename.substringAfterLast('.', "")
             if (filename.endsWith(".html") || filename == "imports.txt") {
 //                setSymbol(fileContent, symbolTab, "\t\t")
-                setSymbol(fileContent, symbolOne, "<")
-                setSymbol(fileContent, symbolTwo, "/")
-                setSymbol(fileContent, symbolThree, ">")
-                setSymbol(fileContent, symbolFour, "\"")
-                setSymbol(fileContent, symbolFive, "=")
-                setSymbol(fileContent, symbolSix, "!")
-                setSymbol(fileContent, symbolSeven, "-")
-                setSymbol(fileContent, symbolEight, "/")
+                setSymbol(binding.fileContent, binding.symbolOne, "<")
+                setSymbol(binding.fileContent, binding.symbolTwo, "/")
+                setSymbol(binding.fileContent, binding.symbolThree, ">")
+                setSymbol(binding.fileContent, binding.symbolFour, "\"")
+                setSymbol(binding.fileContent, binding.symbolFive, "=")
+                setSymbol(binding.fileContent, binding.symbolSix, "!")
+                setSymbol(binding.fileContent, binding.symbolSeven, "-")
+                setSymbol(binding.fileContent, binding.symbolEight, "/")
             } else if (filename.endsWith(".css")) {
 //                setSymbol(fileContent, symbolTab, "\t\t\t\t")
-                setSymbol(fileContent, symbolOne, "{")
-                setSymbol(fileContent, symbolTwo, "}")
-                setSymbol(fileContent, symbolThree, ":")
-                setSymbol(fileContent, symbolFour, ",")
-                setSymbol(fileContent, symbolFive, "#")
-                setSymbol(fileContent, symbolSix, ".")
-                setSymbol(fileContent, symbolSeven, ";")
-                setSymbol(fileContent, symbolEight, "-")
+                setSymbol(binding.fileContent, binding.symbolOne, "{")
+                setSymbol(binding.fileContent, binding.symbolTwo, "}")
+                setSymbol(binding.fileContent, binding.symbolThree, ":")
+                setSymbol(binding.fileContent, binding.symbolFour, ",")
+                setSymbol(binding.fileContent, binding.symbolFive, "#")
+                setSymbol(binding.fileContent, binding.symbolSix, ".")
+                setSymbol(binding.fileContent, binding.symbolSeven, ";")
+                setSymbol(binding.fileContent, binding.symbolEight, "-")
             } else if (filename.endsWith(".js")) {
 //                setSymbol(fileContent, symbolTab, "\t\t\t\t")
-                setSymbol(fileContent, symbolOne, "{")
-                setSymbol(fileContent, symbolTwo, "}")
-                setSymbol(fileContent, symbolThree, "(")
-                setSymbol(fileContent, symbolFour, ")")
-                setSymbol(fileContent, symbolFive, "!")
-                setSymbol(fileContent, symbolSix, "=")
-                setSymbol(fileContent, symbolSeven, ":")
-                setSymbol(fileContent, symbolEight, "?")
+                setSymbol(binding.fileContent, binding.symbolOne, "{")
+                setSymbol(binding.fileContent, binding.symbolTwo, "}")
+                setSymbol(binding.fileContent, binding.symbolThree, "(")
+                setSymbol(binding.fileContent, binding.symbolFour, ")")
+                setSymbol(binding.fileContent, binding.symbolFive, "!")
+                setSymbol(binding.fileContent, binding.symbolSix, "=")
+                setSymbol(binding.fileContent, binding.symbolSeven, ":")
+                setSymbol(binding.fileContent, binding.symbolEight, "?")
             }
 
             val contents = getContents(location!!)
             //fileContent.setText(contents)
-            fileContent.setText(contents)
-            fileContent.onTextChangedListener = object : Editor.OnTextChangedListener {
+            binding.fileContent.setText(contents)
+            binding.fileContent.onTextChangedListener = object : Editor.OnTextChangedListener {
                 override fun onTextChanged(text: String) {
                     try {
-                        it.writeText(fileContent.string())
+                        it.writeText(binding.fileContent.string())
                     } catch (e: IOException) {
                         Timber.wtf(e)
                     }
@@ -135,5 +138,10 @@ class EditorFragment : Fragment() {
         fun newInstance(args: Bundle) = EditorFragment().apply {
             arguments = args
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

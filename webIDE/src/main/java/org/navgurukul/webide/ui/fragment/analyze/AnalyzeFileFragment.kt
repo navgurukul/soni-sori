@@ -18,10 +18,8 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ViewPortHandler
-import kotlinx.android.synthetic.main.fragment_analyze_file.*
-import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.FragmentAnalyzeFileBinding
 import org.navgurukul.webide.extensions.compatColor
-import org.navgurukul.webide.extensions.inflate
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get
 import org.navgurukul.webide.util.project.ProjectManager
@@ -34,8 +32,13 @@ class AnalyzeFileFragment : Fragment() {
     private lateinit var projectDir: File
     internal lateinit var activity: FragmentActivity
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            container?.inflate(R.layout.fragment_analyze_file)
+    private var _binding: FragmentAnalyzeFileBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentAnalyzeFileBinding.inflate(inflater,container,false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,31 +64,35 @@ class AnalyzeFileFragment : Fragment() {
             pieColors.add(c)
 
         pieColors.add(ColorTemplate.getHoloBlue())
-        pieChart.description.isEnabled = false
-        pieChart.setExtraOffsets(8f, 12f, 8f, 8f)
-        pieChart.dragDecelerationFrictionCoef = 0.95f
-        pieChart.isDrawHoleEnabled = true
-        pieChart.setHoleColor(0x00000000)
-        pieChart.setTransparentCircleColor(if (darkTheme) lightColor else darkColor)
-        pieChart.setTransparentCircleAlpha(110)
-        pieChart.holeRadius = 58f
-        pieChart.transparentCircleRadius = 61f
-        pieChart.rotationAngle = 0f
-        pieChart.isRotationEnabled = false
-        pieChart.isHighlightPerTapEnabled = true
+        binding.pieChart.apply {
+            description.isEnabled = false
+            setExtraOffsets(8f, 12f, 8f, 8f)
+            dragDecelerationFrictionCoef = 0.95f
+            isDrawHoleEnabled = true
+            setHoleColor(0x00000000)
+            setTransparentCircleColor(if (darkTheme) lightColor else darkColor)
+            setTransparentCircleAlpha(110)
+            holeRadius = 58f
+            transparentCircleRadius = 61f
+            rotationAngle = 0f
+            isRotationEnabled = false
+            isHighlightPerTapEnabled = true
+        }
 
         var byteSize = 0L
         projectDir.walkTopDown().forEach { byteSize += it.length() }
-        pieChart.centerText = ProjectManager.humanReadableByteCount(byteSize)
+        binding.pieChart.centerText = ProjectManager.humanReadableByteCount(byteSize)
 
-        pieChart.setCenterTextSize(48f)
-        pieChart.setCenterTextColor(if (darkTheme) darkColor else lightColor)
-        pieChart.setDrawCenterText(true)
-        pieChart.setDrawEntryLabels(false)
+        binding.pieChart.apply {
+            setCenterTextSize(48f)
+            setCenterTextColor(if (darkTheme) darkColor else lightColor)
+            setDrawCenterText(true)
+            setDrawEntryLabels(false)
+        }
 
         setData(false)
 
-        val pieLegend = pieChart.legend
+        val pieLegend = binding.pieChart.legend
         pieLegend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         pieLegend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         pieLegend.orientation = Legend.LegendOrientation.VERTICAL
@@ -98,14 +105,14 @@ class AnalyzeFileFragment : Fragment() {
         pieLegend.typeface = Typeface.DEFAULT_BOLD
         pieLegend.textColor = if (darkTheme) darkColor else lightColor
 
-        switchFile.setOnCheckedChangeListener { _, b ->
+        binding.switchFile.setOnCheckedChangeListener { _, b ->
             if (b) {
-                sizeText!!.animate().alpha(1f)
-                countText!!.animate().alpha(0.4f)
+                binding.sizeText!!.animate().alpha(1f)
+                binding.countText!!.animate().alpha(0.4f)
                 setData(false)
             } else {
-                countText!!.animate().alpha(1f)
-                sizeText!!.animate().alpha(0.4f)
+                binding.countText!!.animate().alpha(1f)
+                binding.sizeText!!.animate().alpha(0.4f)
                 setData(true)
             }
         }
@@ -140,7 +147,7 @@ class AnalyzeFileFragment : Fragment() {
             pieData.setValueTextColor(-0x7b000000)
             pieData.setValueTextSize(20f)
             pieData.setValueTypeface(Typeface.DEFAULT_BOLD)
-            pieChart.data = pieData
+            binding.pieChart.data = pieData
         } else {
             val entries = ArrayList<PieEntry>()
             val files = projectDir.listFiles()
@@ -169,12 +176,12 @@ class AnalyzeFileFragment : Fragment() {
             pieData.setValueTextColor(-0x7b000000)
             pieData.setValueTextSize(16f)
             pieData.setValueTypeface(Typeface.DEFAULT_BOLD)
-            pieChart.data = pieData
+            binding.pieChart.data = pieData
         }
 
-        pieChart.highlightValues(null)
-        pieChart.invalidate()
-        pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad)
+        binding.pieChart.highlightValues(null)
+        binding.pieChart.invalidate()
+        binding.pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad)
     }
 
     private inner class SizeValueFormatter : IValueFormatter {
@@ -186,5 +193,10 @@ class AnalyzeFileFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as FragmentActivity
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

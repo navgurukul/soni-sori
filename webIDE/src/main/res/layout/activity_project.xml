@@ -34,7 +34,9 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <include layout="@layout/widget_toolbar" />
+            <include
+                android:id="@+id/include"
+                layout="@layout/widget_toolbar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,7 +48,7 @@
 
     </RelativeLayout>
 
-    <io.geeteshk.hyper.ui.widget.ScrimInsetsFrameLayout
+    <org.navgurukul.webide.ui.widget.ScrimInsetsFrameLayout
         android:id="@+id/insetsLayout"
         android:layout_width="304dp"
         android:layout_height="match_parent"
@@ -117,6 +119,6 @@
 
         </LinearLayout>
 
-    </io.geeteshk.hyper.ui.widget.ScrimInsetsFrameLayout>
+    </org.navgurukul.webide.ui.widget.ScrimInsetsFrameLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
