@@ -10,10 +10,10 @@ object Styles {
 
     fun getThemeInt(context: Context): Int {
         val prefs = defaultPrefs(context)
-        return if (prefs["dark_theme", false]!!) {
-            R.style.AppTheme_Dark
-        } else {
-            R.style.AppTheme
-        }
+//        return if (prefs["dark_theme", false]!!) {
+           return R.style.AppTheme_Dark
+//        } else {
+//            R.style.AppTheme
+//        }
     }
 }
