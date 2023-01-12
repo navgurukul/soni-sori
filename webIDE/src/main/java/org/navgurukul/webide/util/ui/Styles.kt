@@ -11,9 +11,9 @@ object Styles {
     fun getThemeInt(context: Context): Int {
         val prefs = defaultPrefs(context)
         return if (prefs["dark_theme", false]!!) {
-            R.style.Hyper_Dark
+            R.style.AppTheme_Dark
         } else {
-            R.style.Hyper
+            R.style.AppTheme
         }
     }
 }
