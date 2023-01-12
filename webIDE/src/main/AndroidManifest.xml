@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.navgurukul.webide">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <dist:module
         dist:instant="false"
         dist:title="@string/title_webIDE">
@@ -13,9 +17,7 @@
         <dist:fusing dist:include="true" />
     </dist:module>
 
-    <application
-        android:usesCleartextTraffic="true"
-        tools:targetApi="m">
+    <application>
 
         <activity
             android:name=".ui.activity.SplashActivity"

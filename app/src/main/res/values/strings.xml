@@ -118,7 +118,7 @@
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
     <string name="stay_enrolled">Stay Enrolled</string>
-    <string name="title_webIDE">WebIDE</string>
-    <string name="title_web">Web</string>
+    <string name="title_webIDE">HTML/CSS/JS</string>
+    <string name="title_web">HTML/CSS/JS</string>
 
 </resources>

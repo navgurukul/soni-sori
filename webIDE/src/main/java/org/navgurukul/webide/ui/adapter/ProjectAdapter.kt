@@ -3,15 +3,14 @@ package org.navgurukul.webide.ui.adapter
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_project.view.*
 import org.navgurukul.webIDE.R
-import org.navgurukul.webide.extensions.inflate
+import org.navgurukul.webIDE.databinding.ItemProjectBinding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.extensions.withFlags
@@ -36,7 +35,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
         projects.sort()
-        val itemView = parent.inflate(R.layout.item_project)
+        val itemView = ItemProjectBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ProjectHolder(itemView)
     }
 
@@ -45,15 +44,15 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
     override fun getItemCount(): Int = projects.size
 
-    inner class ProjectHolder(var view: View) : RecyclerView.ViewHolder(view) {
+    inner class ProjectHolder(var binding: ItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(project: String, position: Int) {
-            with (view) {
+            with (binding) {
                 val properties = HtmlParser.getProperties(project)
                 title.text = properties[0]
                 author.text = properties[1]
                 desc.text = properties[2]
-                favicon.setImageBitmap(ProjectManager.getFavicon(context, project))
+                favicon.setImageBitmap(ProjectManager.getFavicon(binding.root.context, project))
 
                 projectLayout.setOnClickListener {
                     with (mainContext) {
@@ -68,8 +67,8 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
                 }
 
                 projectLayout.setOnLongClickListener {
-                    AlertDialog.Builder(context)
-                            .setTitle("${context.getString(R.string.delete)} $project?")
+                    AlertDialog.Builder(binding.root.context)
+                            .setTitle("${binding.root.context.getString(R.string.delete)} $project?")
                             .setMessage(R.string.change_undone)
                             .setPositiveButton(R.string.delete) { _, _ ->
                                 ProjectManager.deleteProject(project)

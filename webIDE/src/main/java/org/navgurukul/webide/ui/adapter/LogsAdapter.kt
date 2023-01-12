@@ -1,19 +1,17 @@
 package org.navgurukul.webide.ui.adapter
 
 import android.graphics.Color
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.ConsoleMessage
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_log.view.*
-import org.navgurukul.webIDE.R
-import org.navgurukul.webide.extensions.inflate
+import org.navgurukul.webIDE.databinding.ItemLogBinding
 
 class LogsAdapter(private val localWithoutIndex: String, private val jsLogs: List<ConsoleMessage>, private val darkTheme: Boolean) : RecyclerView.Adapter<LogsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val rootView = parent.inflate(R.layout.item_log)
+        val rootView = ItemLogBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(rootView)
     }
 
@@ -21,7 +19,7 @@ class LogsAdapter(private val localWithoutIndex: String, private val jsLogs: Lis
 
     override fun getItemCount(): Int = jsLogs.size
 
-    inner class ViewHolder(private var v: View) : RecyclerView.ViewHolder(v) {
+    inner class ViewHolder(private var v: ItemLogBinding) : RecyclerView.ViewHolder(v.root) {
 
         fun bind(consoleMessage: ConsoleMessage) {
             with (v) {

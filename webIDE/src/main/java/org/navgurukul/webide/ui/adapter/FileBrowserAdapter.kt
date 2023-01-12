@@ -1,15 +1,17 @@
 package org.navgurukul.webide.ui.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.dialog_input_single.view.*
-import kotlinx.android.synthetic.main.item_file_browser.view.*
 import org.navgurukul.webIDE.R
+import org.navgurukul.webIDE.databinding.DialogInputSingleBinding
+import org.navgurukul.webIDE.databinding.ItemFileBrowserBinding
+import org.navgurukul.webIDE.databinding.ItemFileRootBinding
 import org.navgurukul.webide.extensions.*
 import org.navgurukul.webide.ui.viewmodel.ProjectViewModel
 import org.navgurukul.webide.util.Constants
@@ -26,8 +28,8 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
     private var fileList: Array<File> = currentDir.listFiles()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        TYPE_UP -> RootHolder(parent.inflate(R.layout.item_file_root))
-        else -> ViewHolder(parent.inflate(R.layout.item_file_browser))
+        TYPE_UP -> RootHolder(ItemFileRootBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        else -> ViewHolder(ItemFileBrowserBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -53,11 +55,11 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
     }
 
     private fun createFile() {
-        val newFileRootView = View.inflate(context, R.layout.dialog_input_single, null)
+        val newFileRootView = DialogInputSingleBinding.inflate(LayoutInflater.from(context))
         newFileRootView.inputText.setHint(R.string.file_name)
         val newFileDialog = AlertDialog.Builder(context)
                 .setTitle("New file")
-                .setView(newFileRootView)
+                .setView(newFileRootView.root)
                 .setPositiveButton(R.string.create, null)
                 .setNegativeButton(R.string.cancel, null)
                 .create()
@@ -82,12 +84,12 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
     }
 
     private fun createFolder() {
-        val newFolderRootView = View.inflate(context, R.layout.dialog_input_single, null)
+        val newFolderRootView =  DialogInputSingleBinding.inflate(LayoutInflater.from(context))
         newFolderRootView.inputText.setHint(R.string.folder_name)
 
         val newFolderDialog = AlertDialog.Builder(context)
                 .setTitle("New folder")
-                .setView(newFolderRootView)
+                .setView(newFolderRootView.root)
                 .setPositiveButton(R.string.create, null)
                 .setNegativeButton(R.string.cancel, null)
                 .create()
@@ -112,13 +114,14 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
     }
 
     private fun renameFile(file: File) {
-        val renameRootView = View.inflate(context, R.layout.dialog_input_single, null)
+
+        val renameRootView =  DialogInputSingleBinding.inflate(LayoutInflater.from(context))
         renameRootView.inputText.setHint(R.string.new_name)
         renameRootView.inputText.setText(file.name)
 
         val renameDialog = AlertDialog.Builder(context)
                 .setTitle("Rename ${file.name}")
-                .setView(renameRootView)
+                .setView(renameRootView.root)
                 .setPositiveButton("RENAME", null)
                 .setNegativeButton(R.string.cancel, null)
                 .create()
@@ -180,7 +183,7 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
                 .show()
     }
 
-    inner class RootHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class RootHolder(itemView: ItemFileRootBinding) : RecyclerView.ViewHolder(itemView.root) {
 
         fun bind() = with (itemView) {
 
@@ -217,13 +220,12 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
         }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(private val binding: ItemFileBrowserBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(file: File) = with (itemView) {
+        fun bind(file: File) = with (binding) {
             ResourceHelper.setIcon(fileBrowserIcon, file, 0xFF448AFF.toInt())
             fileBrowserName.text = file.name
-
-            setOnClickListener {
+            root.setOnClickListener {
                 if (file.isDirectory) {
                     currentDir = file
                 } else {
@@ -233,7 +235,7 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
                 updateFiles()
             }
 
-            setOnLongClickListener {
+            root.setOnLongClickListener {
                 val menu = PopupMenu(context, it)
                 menu.menuInflater.inflate(R.menu.menu_file_options, menu.menu)
 

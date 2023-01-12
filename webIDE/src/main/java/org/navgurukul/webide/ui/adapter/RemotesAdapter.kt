@@ -1,15 +1,15 @@
 package org.navgurukul.webide.ui.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_pull.view.*
-import kotlinx.android.synthetic.main.item_remote.view.*
 import org.navgurukul.webIDE.R
-import org.navgurukul.webide.extensions.inflate
+import org.navgurukul.webIDE.databinding.DialogPullBinding
+import org.navgurukul.webIDE.databinding.ItemRemoteBinding
 import org.navgurukul.webide.git.GitWrapper
 import java.io.File
 import java.util.*
@@ -19,7 +19,7 @@ class RemotesAdapter(private val mainContext: Context, private val remotesView: 
     private val remotesList: ArrayList<String>? = GitWrapper.getRemotes(remotesView, repo)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RemotesHolder {
-        val view = parent.inflate(R.layout.item_remote)
+        val view = ItemRemoteBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return RemotesHolder(view)
     }
 
@@ -33,28 +33,29 @@ class RemotesAdapter(private val mainContext: Context, private val remotesView: 
         notifyDataSetChanged()
     }
 
-    inner class RemotesHolder(var rootView: View) : RecyclerView.ViewHolder(rootView) {
+    inner class RemotesHolder(var rootView: ItemRemoteBinding) : RecyclerView.ViewHolder(rootView.root) {
 
         fun bind(remote: String) {
             with (rootView) {
                 remoteName.text = remote
                 remoteUrl.text = GitWrapper.getRemoteUrl(remotesView, repo, remote)
 
-                setOnClickListener {
-                    val pullView = View.inflate(context, R.layout.dialog_pull, null)
+                root.setOnClickListener {
+
+                    val pullView =  DialogPullBinding.inflate(LayoutInflater.from(root.context))
                     pullView.remotesSpinner.adapter = ArrayAdapter(mainContext, android.R.layout.simple_list_item_1, remotesList!!)
                     AlertDialog.Builder(mainContext)
                             .setTitle("Fetch from remote")
-                            .setView(pullView)
+                            .setView(pullView.root)
                             .setPositiveButton("FETCH") { dialogInterface, _ ->
                                 dialogInterface.dismiss()
-                                GitWrapper.fetch(context, remotesView, repo, pullView.remotesSpinner.selectedItem as String, pullView.pullUsername.text.toString(), pullView.pullPassword.text.toString())
+                                GitWrapper.fetch(root.context, remotesView, repo, pullView.remotesSpinner.selectedItem as String, pullView.pullUsername.text.toString(), pullView.pullPassword.text.toString())
                             }
                             .setNegativeButton(R.string.cancel, null)
                             .show()
                 }
 
-                setOnLongClickListener {
+                root.setOnLongClickListener {
                     AlertDialog.Builder(mainContext)
                             .setTitle("Remove $remote?")
                             .setMessage("This remote will be removed permanently.")
