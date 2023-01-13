@@ -17,12 +17,16 @@ class ColorReader {
             val defsArr = JSONArray(jsonString)
             for (i in 0 until defsArr.length()) {
                 val obj = defsArr.getJSONObject(i)
-                colorDefs.add(
+                try{
+                    colorDefs.add(
                         newColorDef(
-                                obj.getString("id"),
-                                obj.getString("pattern"),
-                                obj.getString("color"),
-                                obj.getString("dark")))
+                            obj.getString("id"),
+                            obj.getString("pattern"),
+                            obj.getString("color"),
+                            obj.getString("dark")))
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
             }
 
             return colorDefs
