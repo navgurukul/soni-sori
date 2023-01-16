@@ -92,7 +92,7 @@ class Editor constructor(context: Context, attrs: AttributeSet? = null) :
         }
 
     init {
-        darkTheme = prefs.getBoolean("dark_theme_editor", false)
+        darkTheme = prefs.getBoolean("dark_theme_editor", true)
         colors = context.resources.getIntArray(
             if (darkTheme) {
                 R.array.code_dark
@@ -362,12 +362,6 @@ class Editor constructor(context: Context, attrs: AttributeSet? = null) :
                 if (x + width / 2 > width) {
                     x = width / 2
                 }
-
-                dropDownVerticalOffset = baseline - bottom
-                dropDownHorizontalOffset = x
-
-                dropDownHeight = height / 3
-                dropDownWidth = width / 2
             }
 
             override fun afterTextChanged(e: Editable) {

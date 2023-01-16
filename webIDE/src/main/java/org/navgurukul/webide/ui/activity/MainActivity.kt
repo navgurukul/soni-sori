@@ -229,7 +229,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> startActivityForResult<SettingsActivity>(SETTINGS_CODE)
+         //   R.id.action_settings -> startActivityForResult<SettingsActivity>(SETTINGS_CODE)
             else -> return super.onOptionsItemSelected(item)
         }
 

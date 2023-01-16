@@ -88,8 +88,8 @@ class EditorFragment : Fragment() {
             }
 
             val contents = getContents(location!!)
-            //fileContent.setText(contents)
-            binding.fileContent.setTextHighlighted(contents)
+            binding.fileContent.setText(contents)
+          //  binding.fileContent.setTextHighlighted(contents)
             binding.fileContent.onTextChangedListener = object : Editor.OnTextChangedListener {
                 override fun onTextChanged(text: String) {
                     try {
