@@ -7,11 +7,6 @@
         android:title="@string/title_learn" />
 
     <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_chat_help"
-        android:title="@string/title_chat" />
-
-    <item
         android:id="@+id/navigation_playground"
         android:icon="@drawable/ic_playground"
         android:title="@string/title_playground" />
