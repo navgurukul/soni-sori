@@ -40,7 +40,7 @@ class SplashActivity : ThemedActivity() {
     private fun startIntro() {
         val prefs = defaultPrefs(this)
         val classTo = if (prefs["intro_done", false]!!) {
-            MainActivity::class.java
+            WebIdeHomeActivity::class.java
         } else {
             IntroActivity::class.java
         }
@@ -98,7 +98,7 @@ class SplashActivity : ThemedActivity() {
     companion object {
             fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
                 return Intent(context, SplashActivity::class.java).apply {
-                    putExtras(MainActivityArgs(mode, retake).toBundle()!!)
+                    putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
                 }
         }
 

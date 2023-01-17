@@ -9,7 +9,6 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
@@ -22,13 +21,11 @@ import kotlinx.android.parcel.Parcelize
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivityIntroBinding
-import org.navgurukul.webIDE.databinding.ActivityMainBinding
+import org.navgurukul.webIDE.databinding.ActivityWebIdeHomeBinding
 import org.navgurukul.webIDE.databinding.DialogCloneBinding
 import org.navgurukul.webIDE.databinding.DialogCreateBinding
 import org.navgurukul.webIDE.databinding.DialogImportBinding
 import org.navgurukul.webide.extensions.intentFor
-import org.navgurukul.webide.extensions.startActivityForResult
 import org.navgurukul.webide.extensions.startAndFinish
 import org.navgurukul.webide.git.GitWrapper
 import org.navgurukul.webide.ui.adapter.ProjectAdapter
@@ -45,12 +42,12 @@ import java.io.InputStream
 import java.util.*
 
 @Parcelize
-data class MainActivityArgs(
+data class WebIdeHomeActivityArgs(
     val mode: Mode,
     val retake: Boolean = false
 ) : Parcelable
 
-class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private var contents: Array<String>? = null
     private var contentsList: ArrayList<String>? = null
@@ -60,11 +57,11 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
     private lateinit var projectIcon: ImageView
     private lateinit var prefs: SharedPreferences
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityWebIdeHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityWebIdeHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.include.toolbar)
 
@@ -85,13 +82,13 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
         binding.projectList.adapter = projectAdapter
         binding.cloneButton.setOnClickListener {
             val choices = arrayOf("Create a new project", "Clone a repository", "Import an external project")
-            AlertDialog.Builder(this@MainActivity)
+            AlertDialog.Builder(this@WebIdeHomeActivity)
                     .setTitle("Would you like to...")
-                    .setAdapter(ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
+                    .setAdapter(ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
                         when (i) {
                             0 -> {
-                                val rootView = DialogCreateBinding.inflate(LayoutInflater.from(this@MainActivity))
-                                rootView.typeSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+                                val rootView = DialogCreateBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                                rootView.typeSpinner.adapter = ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
                                 rootView.typeSpinner.setSelection(prefs["type", 0]!!)
                                 rootView.nameLayout.editText!!.setText(prefs["name", ""])
                                 rootView.authorLayout.editText!!.setText(prefs["author", ""])
@@ -115,7 +112,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                                     }
                                 }
 
-                                val createDialog = AlertDialog.Builder(this@MainActivity)
+                                val createDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
                                         .setTitle("Create a new project")
                                         .setView(rootView.root)
                                         .setPositiveButton("CREATE", null)
@@ -124,7 +121,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
 
                                 createDialog.show()
                                 createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                    if (DataValidator.validateCreate(this@MainActivity, rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
+                                    if (DataValidator.validateCreate(this@WebIdeHomeActivity, rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
                                         val name = rootView.nameLayout.editText!!.text.toString()
                                         val author = rootView.authorLayout.editText!!.text.toString()
                                         val description = rootView.descLayout.editText!!.text.toString()
@@ -138,7 +135,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                                         prefs["type"] = type
 
                                         ProjectManager.generate(
-                                                this@MainActivity,
+                                                this@WebIdeHomeActivity,
                                                 name,
                                                 author,
                                                 description,
@@ -154,10 +151,10 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                                 }
                             }
                             1 -> {
-                                val cloneView = DialogCloneBinding.inflate(LayoutInflater.from(this@MainActivity))
+                                val cloneView = DialogCloneBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
                                 cloneView.cloneName.setText(prefs["clone_name", ""])
                                 cloneView.cloneUrl.setText(prefs["remote", ""])
-                                val cloneDialog = AlertDialog.Builder(this@MainActivity)
+                                val cloneDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
                                         .setTitle("Clone a repository")
                                         .setView(cloneView.root)
                                         .setPositiveButton("CLONE", null)
@@ -166,7 +163,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
 
                                 cloneDialog.show()
                                 cloneDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                    if (DataValidator.validateClone(this@MainActivity, cloneView.cloneName, cloneView.cloneUrl)) {
+                                    if (DataValidator.validateClone(this@WebIdeHomeActivity, cloneView.cloneName, cloneView.cloneUrl)) {
                                         var remoteStr = cloneView.cloneUrl.text.toString()
                                         if (!remoteStr.contains("://")) {
                                             remoteStr = "https://$remoteStr"
@@ -177,7 +174,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                                         prefs["remote"] = remoteStr
 
                                         GitWrapper.clone(
-                                                this@MainActivity,
+                                                this@WebIdeHomeActivity,
                                                 binding.coordinatorLayout,
                                                 File(Constants.HYPER_ROOT + File.separator + cloneName),
                                                 projectAdapter,
@@ -243,21 +240,21 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                 try {
                     val selectedImage = data!!.data
                     selectedImage?.let {
-                        imageStream = this@MainActivity.contentResolver.openInputStream(selectedImage)
-                        projectIcon.setImageBitmap(ResourceHelper.decodeUri(this@MainActivity, selectedImage))
+                        imageStream = this@WebIdeHomeActivity.contentResolver.openInputStream(selectedImage)
+                        projectIcon.setImageBitmap(ResourceHelper.decodeUri(this@WebIdeHomeActivity, selectedImage))
                     }
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
             }
 
-            SETTINGS_CODE -> startAndFinish(intentFor<MainActivity>())
+            SETTINGS_CODE -> startAndFinish(intentFor<WebIdeHomeActivity>())
 
             IMPORT_PROJECT -> if (resultCode == Activity.RESULT_OK) {
                 val fileUri = data!!.data!!
                 val file = File(fileUri.path)
-                val rootView = DialogImportBinding.inflate(LayoutInflater.from(this@MainActivity))
-                rootView.impTypeSpinner.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+                val rootView = DialogImportBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                rootView.impTypeSpinner.adapter = ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
                 rootView.impTypeSpinner.setSelection(prefs["type", 0]!!)
 
                 rootView.impNameLayout.editText!!.setText(file.parentFile.name)
@@ -265,7 +262,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
                 rootView.impDescLayout.editText!!.setText(prefs["description", ""])
                 rootView.impKeyLayout.editText!!.setText(prefs["keywords", ""])
 
-                val createDialog = AlertDialog.Builder(this@MainActivity)
+                val createDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
                         .setTitle("Import an external project")
                         .setIcon(R.drawable.ic_action_import)
                         .setView(rootView.root)
@@ -275,7 +272,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
 
                 createDialog.show()
                 createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    if (DataValidator.validateCreate(this@MainActivity, rootView.impNameLayout, rootView.impAuthorLayout, rootView.impDescLayout, rootView.impKeyLayout)) {
+                    if (DataValidator.validateCreate(this@WebIdeHomeActivity, rootView.impNameLayout, rootView.impAuthorLayout, rootView.impDescLayout, rootView.impKeyLayout)) {
                         val name = rootView.impNameLayout.editText!!.text.toString()
                         val author = rootView.impAuthorLayout.editText!!.text.toString()
                         val description = rootView.impDescLayout.editText!!.text.toString()
@@ -317,7 +314,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
             }
         }
 
-        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        projectAdapter = ProjectAdapter(this@WebIdeHomeActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
         binding.projectList.adapter = projectAdapter
         return true
     }
@@ -325,7 +322,7 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
     override fun onClose(): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
         DataValidator.removeBroken(contentsList!!)
-        projectAdapter = ProjectAdapter(this@MainActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        projectAdapter = ProjectAdapter(this@WebIdeHomeActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
         binding.projectList.adapter = projectAdapter
         return false
     }
@@ -337,8 +334,8 @@ class MainActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchVie
         private const val IMPORT_PROJECT = 102
 
         fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
-            return Intent(context, MainActivity::class.java).apply {
-                putExtras(MainActivityArgs(mode, retake).toBundle()!!)
+            return Intent(context, WebIdeHomeActivity::class.java).apply {
+                putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
             }
         }
     }

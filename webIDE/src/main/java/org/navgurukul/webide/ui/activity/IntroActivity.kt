@@ -80,7 +80,7 @@ class IntroActivity : AppCompatActivity() {
 
     private fun endIntro() {
         defaultPrefs(this)["intro_done"] = true
-        startAndFinish(intentFor<MainActivity>().withFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        startAndFinish(intentFor<WebIdeHomeActivity>().withFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 
     private fun addBottomDots(currentPage: Int) {
