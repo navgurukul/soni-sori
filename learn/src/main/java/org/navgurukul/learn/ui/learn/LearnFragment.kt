@@ -93,10 +93,6 @@ class LearnFragment : Fragment() {
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-        mBinding.certificate.visibility = View.GONE
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
 
         initSwipeRefresh()
 
@@ -105,7 +101,6 @@ class LearnFragment : Fragment() {
         val builder = StrictMode.VmPolicy.Builder();
         builder.detectFileUriExposure()
 
-        val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val permissionCheck = ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -116,14 +111,6 @@ class LearnFragment : Fragment() {
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 MODE_ENABLE_WRITE_AHEAD_LOGGING
             )
-        }
-
-        if (!isConnected) {
-            // Show custom screen
-            empty_state_view.visibility = View.VISIBLE
-        } else {
-            // Hide custom screen
-            empty_state_view.visibility = View.GONE
         }
 
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
