@@ -44,8 +44,8 @@ dependencies {
     implementation(project(":app"))
     implementation(project(":core"))
 
-    kapt(MiscellaneousDependencies.AutoService)
-    implementation(MiscellaneousDependencies.AutoService)
+//    kapt(MiscellaneousDependencies.AutoService)
+//    implementation(MiscellaneousDependencies.AutoService)
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 

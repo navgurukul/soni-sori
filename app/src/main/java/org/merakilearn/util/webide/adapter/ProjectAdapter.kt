@@ -1,6 +1,7 @@
 package org.merakilearn.util.webide.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -51,15 +52,14 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
                 favicon.setImageResource(R.drawable.ic_web_file)
 
                 projectLayout.setOnClickListener {
-//                    with (mainContext) {
-//                        (this as AppCompatActivity).startActivityForResult(
-//                                intentFor<ProjectActivity>("project" to project)
-//                                    .withFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK).apply {
-//                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                                            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-//                                        }
-//                                    }, 0)
-//                    }
+                    var intent: Intent? = null
+                    try {
+                        intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
+                        intent.putExtra("project" ,project)
+                        context.startActivity(intent)
+                    } catch (e: ClassNotFoundException) {
+                        e.printStackTrace()
+                    }
                 }
 
                 projectLayout.setOnLongClickListener {
