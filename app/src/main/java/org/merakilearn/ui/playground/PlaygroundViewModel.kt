@@ -105,6 +105,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
     object OpenWebIDE : PlaygroundViewEvents()
+    object OpenDialogToCreateWebProject : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions: ViewModelAction{
