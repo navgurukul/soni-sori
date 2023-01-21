@@ -2,6 +2,7 @@ package org.merakilearn.util.webide.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -25,8 +26,14 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
     }
 
     fun remove(position: Int) {
-        projects.removeAt(position)
-        notifyItemRemoved(position)
+        try {
+            projects.removeAt(position)
+        }catch (e : Exception){
+            e.printStackTrace()
+            projects.clear()
+        }
+
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
