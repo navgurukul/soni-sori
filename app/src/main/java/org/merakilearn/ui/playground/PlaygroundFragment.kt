@@ -135,77 +135,78 @@ class PlaygroundFragment : BaseFragment() {
     }
 
     private fun openDialogToCreateProject() {
-        val choices = arrayOf("Create a new project")
-        AlertDialog.Builder(requireContext())
-            .setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, choices)) { _, i ->
-                when (i) {
-                    0 -> {
-                        val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
-                        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
-                        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
-                        rootView.nameLayout.editText!!.setText(prefs["name", ""])
-                        rootView.authorLayout.editText!!.setText(prefs["author", ""])
-                        rootView.descLayout.editText!!.setText(prefs["description", ""])
-                        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
+        val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
+        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+        rootView.nameLayout.editText!!.setText(prefs["name", ""])
+        rootView.authorLayout.editText!!.setText(prefs["author", ""])
+        rootView.descLayout.editText!!.setText(prefs["description", ""])
+        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
-                        projectIcon = rootView.faviconImage
-                        rootView.defaultIcon.isChecked = true
-                        rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
-                            if (isChecked) {
-                                projectIcon.setImageResource(R.drawable.ic_launcher)
-                                imageStream = null
-                            }
-                        }
-
-                        rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
-                            if (isChecked) {
-                                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                                intent.type = "image/*"
-                                startActivityForResult(intent, SELECT_ICON)
-                            }
-                        }
-
-                        val createDialog = AlertDialog.Builder(requireContext())
-                            .setTitle("Create a new project")
-                            .setView(rootView)
-                            .setPositiveButton("CREATE", null)
-                            .setNegativeButton("CANCEL", null)
-                            .create()
-
-                        createDialog.show()
-                        createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
-                                val name = rootView.nameLayout.editText!!.text.toString()
-                                val author = rootView.authorLayout.editText!!.text.toString()
-                                val description = rootView.descLayout.editText!!.text.toString()
-                                val keywords = rootView.keyLayout.editText!!.text.toString()
-                                val type = rootView.typeSpinner.selectedItemPosition
-
-                                prefs["name"] = name
-                                prefs["author"] = author
-                                prefs["description"] = description
-                                prefs["keywords"] = keywords
-                                prefs["type"] = type
-
-                                ProjectManager.generate(
-                                    requireContext(),
-                                    name,
-                                    author,
-                                    description,
-                                    keywords,
-                                    imageStream,
-                                    projectAdapter,
-                                    coordinatorLayout,
-                                    type
-                                )
-
-                                createDialog.dismiss()
-                            }
-                        }
-                    }
-                }
+        projectIcon = rootView.faviconImage
+        rootView.defaultIcon.isChecked = true
+        rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                projectIcon.setImageResource(R.drawable.ic_launcher)
+                imageStream = null
             }
-            .show()
+        }
+
+        rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                startActivityForResult(intent, SELECT_ICON)
+            }
+        }
+
+        val createDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Create a new project")
+            .setView(rootView)
+            .setPositiveButton("CREATE", null)
+            .setNegativeButton("CANCEL", null)
+            .create()
+
+        createDialog.show()
+        createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
+                val name = rootView.nameLayout.editText!!.text.toString()
+                val author = rootView.authorLayout.editText!!.text.toString()
+                val description = rootView.descLayout.editText!!.text.toString()
+                val keywords = rootView.keyLayout.editText!!.text.toString()
+                val type = rootView.typeSpinner.selectedItemPosition
+
+                prefs["name"] = name
+                prefs["author"] = author
+                prefs["description"] = description
+                prefs["keywords"] = keywords
+                prefs["type"] = type
+
+               val projectName = ProjectManager.generate(
+                    requireContext(),
+                    name,
+                    author,
+                    description,
+                    keywords,
+                    imageStream,
+                    projectAdapter,
+                    coordinatorLayout,
+                    type
+                )
+                projectAdapter.notifyDataSetChanged()
+
+                var intent: Intent? = null
+                try {
+                    intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
+                    intent.putExtra("project" ,projectName)
+                    context?.startActivity(intent)
+                } catch (e: ClassNotFoundException) {
+                    e.printStackTrace()
+                }
+
+                createDialog.dismiss()
+            }
+        }
     }
 
     private fun showUpPopMenu(file: File, view: View) {

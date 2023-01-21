@@ -23,7 +23,7 @@ object ProjectManager {
 
     val TYPES = arrayOf("Default")
 
-    fun generate(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?, adapter: ProjectAdapter, view: View, type: Int) {
+    fun generate(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?, adapter: ProjectAdapter, view: View, type: Int): String {
         var nameNew = name
         var counter = 1
         while (File(Constants.HYPER_ROOT + File.separator + nameNew).exists()) {
@@ -42,6 +42,7 @@ object ProjectManager {
         } else {
             view.snack(R.string.project_fail, Snackbar.LENGTH_SHORT)
         }
+        return nameNew
     }
 
     private fun generateDefault(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?): Boolean {
