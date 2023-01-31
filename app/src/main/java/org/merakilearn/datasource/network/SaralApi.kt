@@ -47,5 +47,7 @@ interface SaralApi {
     suspend fun getPartnerData(
         @Path(value = "partnerID") partnerID: Int
     ): PartnerDataResponse
+    @GET("users/me")
+    suspend fun getPartner(): UserDetail
 
 }

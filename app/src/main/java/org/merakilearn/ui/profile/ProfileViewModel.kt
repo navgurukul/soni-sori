@@ -73,7 +73,10 @@ class ProfileViewModel(
             updateFiles()
         }
         getEnrolledBatches()
-//        checkPartner(partnerIdValue)
+//        viewModelScope.launch {
+//            userRepo.getPartner()
+//        }
+
     }
 
     fun handle(action: ProfileViewActions) {
