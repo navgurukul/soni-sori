@@ -78,7 +78,10 @@ class ProfileViewModel(
         viewModelScope.launch {
             userRepo.getPartner()
             val id=user.partner_id.toString()
-            checkPartner(id)
+            if(id!=null){
+                checkPartner(id)
+            }
+
             Log.e("mahesh",user.email.toString())
             Log.e("error",user.partner_id.toString())
         }
