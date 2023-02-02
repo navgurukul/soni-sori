@@ -41,13 +41,14 @@ interface SaralApi {
     suspend fun getResidentialProgramPathway(): ResidentialProgramPathwayResponse
 
     @GET("users/EnrolledBatches")
-    suspend fun getEnrolledBatches():Response<List<Batches>>
+    suspend fun getEnrolledBatches(): Response<List<Batches>>
 
     @GET("partners/{partnerID}")
     suspend fun getPartnerData(
         @Path(value = "partnerID") partnerID: Int
     ): PartnerDataResponse
+
     @GET("users/me")
-    suspend fun getPartner(): UserDetail
+    suspend fun getPartner(): UserUpdateContainer
 
 }
