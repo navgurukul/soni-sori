@@ -3,6 +3,7 @@ package org.merakilearn.ui.playground
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -27,6 +28,7 @@ import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.webide.Constants
 import org.merakilearn.util.webide.Prefs
+import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.adapter.ProjectAdapter
 import org.merakilearn.util.webide.project.DataValidator
 import org.merakilearn.util.webide.project.ProjectManager
@@ -115,14 +117,14 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun setUpRecyclerViewForWebFiles() {
         prefs = Prefs.defaultPrefs(requireContext())
-        contents = File(Constants.HYPER_ROOT).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(name) }
+        contents = File(requireContext().ROOT_PATH()).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(requireContext(),name) }
         contentsList = if (contents != null) {
             ArrayList(Arrays.asList(*contents!!))
         } else {
             ArrayList()
         }
 
-        DataValidator.removeBroken(contentsList!!)
+        DataValidator.removeBroken(requireContext(),contentsList!!)
 
         projectAdapter = ProjectAdapter(requireContext(), contentsList!!, coordinatorLayout, projectList)
 
@@ -182,6 +184,7 @@ class PlaygroundFragment : BaseFragment() {
                 prefs["keywords"] = keywords
                 prefs["type"] = type
 
+                Log.i("TAG",requireActivity().ROOT_PATH())
                val projectName = ProjectManager.generate(
                     requireContext(),
                     name,

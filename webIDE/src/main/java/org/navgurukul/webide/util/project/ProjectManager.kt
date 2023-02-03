@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webIDE.R
 import org.navgurukul.webide.extensions.copyInputStreamToFile
 import org.navgurukul.webide.extensions.snack
@@ -26,7 +27,7 @@ object ProjectManager {
     fun generate(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?, adapter: ProjectAdapter, view: View, type: Int) {
         var nameNew = name
         var counter = 1
-        while (File(Constants.HYPER_ROOT + File.separator + nameNew).exists()) {
+        while (File(context.ROOT_PATH() + File.separator + nameNew).exists()) {
             nameNew = "$name($counter)"
             counter++
         }
@@ -45,7 +46,7 @@ object ProjectManager {
     }
 
     private fun generateDefault(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?): Boolean {
-        val projectFile = File("${Constants.HYPER_ROOT}/$name")
+        val projectFile = File("${context.ROOT_PATH()}/$name")
         val cssFile = File(projectFile, "css")
         val jsFile = File(projectFile, "js")
         try {
@@ -62,7 +63,7 @@ object ProjectManager {
             if (stream == null) {
                 copyIcon(context, name)
             } else {
-                copyIcon(name, stream)
+                copyIcon(context,name, stream)
             }
         } catch (e: IOException) {
             Timber.e(e)
@@ -76,12 +77,12 @@ object ProjectManager {
         val file = File(fileStr)
         var nameNew = name
         var counter = 1
-        while (File(Constants.HYPER_ROOT + File.separator + nameNew).exists()) {
+        while (File(context.ROOT_PATH() + File.separator + nameNew).exists()) {
             nameNew = file.name + "(" + counter + ")"
             counter++
         }
 
-        val outFile = File(Constants.HYPER_ROOT + File.separator + nameNew)
+        val outFile = File(context.ROOT_PATH() + File.separator + nameNew)
         try {
             outFile.mkdirs()
             file.copyRecursively(outFile)
@@ -100,11 +101,11 @@ object ProjectManager {
         view.snack(R.string.project_success, Snackbar.LENGTH_SHORT)
     }
 
-    fun isValid(string: String): Boolean = getIndexFile(string) != null
+    fun isValid(context: Context,string: String): Boolean = getIndexFile(context,string) != null
 
-    fun deleteProject(name: String) {
+    fun deleteProject(context: Context,name: String) {
         try {
-            File("${Constants.HYPER_ROOT}/$name").deleteRecursively()
+            File("${context.ROOT_PATH()}/$name").deleteRecursively()
         } catch (e: IOException) {
             Timber.e(e)
         }
@@ -114,14 +115,14 @@ object ProjectManager {
     private fun getFaviconFile(dir: File) =
             dir.walkTopDown().filter { it.name == "favicon.ico" }.firstOrNull()
 
-    fun getIndexFile(project: String) =
-            File("${Constants.HYPER_ROOT}/$project").walkTopDown()
+    fun getIndexFile(context: Context,project: String) =
+            File("${context.ROOT_PATH()}/$project").walkTopDown()
                     .filter { it.name == "index.html" }.firstOrNull()
 
-    fun getRelativePath(file: File, projectName: String) = file.path.replace(File("${Constants.HYPER_ROOT}/$projectName").path, "")
+    fun getRelativePath(context: Context,file: File, projectName: String) = file.path.replace(File("${context.ROOT_PATH()}/$projectName").path, "")
 
     fun getFavicon(context: Context, name: String): Bitmap {
-        val faviconFile = getFaviconFile(File(Constants.HYPER_ROOT + File.separator + name))
+        val faviconFile = getFaviconFile(File(context.ROOT_PATH() + File.separator + name))
         return if (faviconFile != null) {
             BitmapFactory.decodeFile(faviconFile.path)
         } else {
@@ -133,7 +134,7 @@ object ProjectManager {
         try {
             val manager = context.assets
             val stream = manager.open("web/favicon.ico")
-            val output = File(Constants.HYPER_ROOT + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
+            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
             output.copyInputStreamToFile(stream)
             stream.close()
         } catch (e: Exception) {
@@ -141,9 +142,9 @@ object ProjectManager {
         }
     }
 
-    private fun copyIcon(name: String, stream: InputStream) {
+    private fun copyIcon(context: Context,name: String, stream: InputStream) {
         try {
-            val output = File(Constants.HYPER_ROOT + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
+            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
             output.copyInputStreamToFile(stream)
             stream.close()
         } catch (e: Exception) {
@@ -194,7 +195,7 @@ object ProjectManager {
     fun importFile(context: Context, name: String, fileUri: Uri, fileName: String): Boolean {
         try {
             val inputStream = context.contentResolver.openInputStream(fileUri)
-            val output = File(Constants.HYPER_ROOT + File.separator + name + File.separator + fileName)
+            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + fileName)
             output.copyInputStreamToFile(inputStream!!)
             inputStream.close()
         } catch (e: Exception) {

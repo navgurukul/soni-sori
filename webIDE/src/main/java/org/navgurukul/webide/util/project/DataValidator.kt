@@ -46,11 +46,11 @@ object DataValidator {
         return true
     }
 
-    fun removeBroken(objectsList: ArrayList<*>) {
+    fun removeBroken(context: Context,objectsList: ArrayList<*>) {
         val iterator = objectsList.iterator()
         while (iterator.hasNext()) {
             val string = iterator.next() as String
-            if (!ProjectManager.isValid(string)) {
+            if (!ProjectManager.isValid(context,string)) {
                 iterator.remove()
             }
         }

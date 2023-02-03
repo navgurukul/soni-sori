@@ -43,7 +43,7 @@ class WebActivity : ThemedActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         val project = intent.getStringExtra("name")
-        NetworkUtils.server = HyperServer(project!!)
+        NetworkUtils.server = HyperServer(this,project!!)
         super.onCreate(savedInstanceState)
 
         try {
@@ -53,8 +53,8 @@ class WebActivity : ThemedActivity() {
         }
         binding = ActivityWebBinding.inflate(LayoutInflater.from(this@WebActivity))
         setContentView(binding.root)
-        val indexFile = ProjectManager.getIndexFile(project)
-        val indexPath = ProjectManager.getRelativePath(indexFile!!, project)
+        val indexFile = ProjectManager.getIndexFile(this,project)
+        val indexPath = ProjectManager.getRelativePath(this,indexFile!!, project)
 
         binding.include.toolbar.title = project
         setSupportActionBar(binding.include.toolbar)

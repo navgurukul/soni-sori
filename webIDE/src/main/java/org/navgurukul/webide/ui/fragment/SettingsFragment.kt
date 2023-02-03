@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webide.util.Prefs.get
 import org.navgurukul.webide.util.Prefs.set
 import org.navgurukul.webIDE.R
@@ -51,7 +52,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         val factoryReset = preferenceManager.findPreference<Preference>("factory_reset")
-        val files = File(Constants.HYPER_ROOT).list()
+        val files = File(requireContext().ROOT_PATH()).list()
         factoryReset!!.isEnabled = files != null && files.isNotEmpty()
         factoryReset.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             AlertDialog.Builder(requireActivity())
@@ -59,7 +60,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     .setMessage("Are you sure you want to delete ALL of your projects? This change cannot be undone!")
                     .setPositiveButton("RESET") { _, _ ->
                         try {
-                            File(Constants.HYPER_ROOT).walkTopDown().forEach { it -> it.deleteRecursively() }
+                            File(requireContext().ROOT_PATH()).walkTopDown().forEach { it -> it.deleteRecursively() }
                             factoryReset.isEnabled = false
                         } catch (e: IOException) {
                             Timber.e(e)

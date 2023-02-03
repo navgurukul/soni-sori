@@ -44,6 +44,7 @@ import org.navgurukul.webide.ui.viewmodel.ProjectViewModel
 import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get
+import org.navgurukul.webide.util.ROOT_PATH
 import org.navgurukul.webide.util.net.HtmlParser
 import org.navgurukul.webide.util.project.ProjectManager
 import java.io.File
@@ -69,15 +70,15 @@ class ProjectActivity : ThemedActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         projectName = intent.getStringExtra("project")!!
-        projectDir = File("${Constants.HYPER_ROOT}/$projectName")
-        indexFile = ProjectManager.getIndexFile(projectName)!!
+        projectDir = File("${this.ROOT_PATH()}/$projectName")
+        indexFile = ProjectManager.getIndexFile(this,projectName)!!
 
         super.onCreate(savedInstanceState)
         binding = ActivityProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         prefs = defaultPrefs(this)
-        props = HtmlParser.getProperties(projectName)
+        props = HtmlParser.getProperties(this,projectName)
         fileAdapter = FileAdapter(this, ArrayList())
 
         projectViewModel = ViewModelProviders.of(this).get(ProjectViewModel::class.java)
@@ -108,7 +109,7 @@ class ProjectActivity : ThemedActivity() {
             setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
             setStatusBarBackgroundColor(this@ProjectActivity.compatColor(R.color.colorPrimaryDark))
             onDrawerOpened {
-                props = HtmlParser.getProperties(projectName)
+                props = HtmlParser.getProperties(this@ProjectActivity,projectName)
                 binding.headerTitle.text = props[0]
                 binding.headerDesc.text = props[1]
             }
@@ -453,7 +454,7 @@ class ProjectActivity : ThemedActivity() {
     }
 
     private fun showAbout() {
-        props = HtmlParser.getProperties(projectName)
+        props = HtmlParser.getProperties(this,projectName)
         with (BottomSheetDialog(this)) {
             val sheetAboutBinding = SheetAboutBinding.inflate(LayoutInflater.from(this@ProjectActivity))
             setContentView(sheetAboutBinding.root)

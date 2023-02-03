@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webIDE.R
 import org.navgurukul.webIDE.databinding.DialogInputSingleBinding
 import org.navgurukul.webIDE.databinding.ItemFileBrowserBinding
@@ -23,7 +24,7 @@ import java.io.IOException
 
 class FileBrowserAdapter(private val context: Context, private val projectName: String, private val mainView: View, private val projectViewModel: ProjectViewModel, private val listener: (File) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var currentDir = File(Constants.HYPER_ROOT, projectName)
+    private var currentDir = File(context.ROOT_PATH(), projectName)
 
     private var fileList: Array<File> = currentDir.listFiles()
 

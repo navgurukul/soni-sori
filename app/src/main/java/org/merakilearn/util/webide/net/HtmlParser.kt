@@ -1,5 +1,6 @@
 package org.merakilearn.util.webide.net
 
+import android.content.Context
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.merakilearn.util.webide.project.ProjectManager
@@ -8,15 +9,15 @@ import java.io.IOException
 
 object HtmlParser {
 
-    private fun getSoup(name: String): Document? = try {
-        Jsoup.parse(ProjectManager.getIndexFile(name), "UTF-8")
+    private fun getSoup(context: Context,name: String): Document? = try {
+        Jsoup.parse(ProjectManager.getIndexFile(context,name), "UTF-8")
     } catch (e: IOException) {
         Timber.e(e)
         null
     }
 
-    fun getProperties(projName: String): Array<String?> {
-        val soup = getSoup(projName)
+    fun getProperties(context: Context,projName: String): Array<String?> {
+        val soup = getSoup(context,projName)
         val properties = arrayOfNulls<String>(4)
 
         soup?.let {

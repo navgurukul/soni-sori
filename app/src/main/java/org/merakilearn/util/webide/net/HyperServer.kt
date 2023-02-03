@@ -1,25 +1,29 @@
 package org.merakilearn.util.webide.net
 
+import android.content.Context
 import fi.iki.elonen.NanoHTTPD
 import org.merakilearn.util.webide.Constants
+import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.project.ProjectManager
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class HyperServer(private val project: String) : NanoHTTPD(PORT_NUMBER) {
+class HyperServer(
+    private val context: Context,
+    private val project: String) : NanoHTTPD(PORT_NUMBER) {
 
     override fun serve(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
         var uri = session.uri
         val mimeType = getMimeType(uri)
 
         if (uri == "/") {
-            val indexFile = ProjectManager.getIndexFile(project)
-            uri = "/${ProjectManager.getRelativePath(indexFile!!, project)}"
+            val indexFile = ProjectManager.getIndexFile(context ,project)
+            uri = "/${ProjectManager.getRelativePath(context,indexFile!!, project)}"
         }
 
         return try {
-            NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, mimeType, File("${Constants.HYPER_ROOT}/$project$uri").readText())
+            NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, mimeType, File("${context.ROOT_PATH()}/$project$uri").readText())
         } catch (e: IOException) {
             Timber.e(e)
             NanoHTTPD.newFixedLengthResponse(e.toString())

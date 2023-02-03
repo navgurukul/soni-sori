@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.parcel.Parcelize
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webIDE.R
 import org.navgurukul.webIDE.databinding.ActivityWebIdeHomeBinding
 import org.navgurukul.webIDE.databinding.DialogCloneBinding
@@ -66,14 +67,14 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
         setSupportActionBar(binding.include.toolbar)
 
         prefs = defaultPrefs(this)
-        contents = File(Constants.HYPER_ROOT).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(name) }
+        contents = File(this.ROOT_PATH()).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(this,name) }
         contentsList = if (contents != null) {
             ArrayList(Arrays.asList(*contents!!))
         } else {
             ArrayList()
         }
 
-        DataValidator.removeBroken(contentsList!!)
+        DataValidator.removeBroken(this,contentsList!!)
         projectAdapter = ProjectAdapter(this, contentsList!!, binding.coordinatorLayout, binding.projectList)
         val layoutManager = LinearLayoutManager(this)
         binding.projectList.layoutManager = layoutManager
@@ -176,7 +177,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
                                         GitWrapper.clone(
                                                 this@WebIdeHomeActivity,
                                                 binding.coordinatorLayout,
-                                                File(Constants.HYPER_ROOT + File.separator + cloneName),
+                                                File(this.ROOT_PATH() + File.separator + cloneName),
                                                 projectAdapter,
                                                 remoteStr,
                                                 cloneView.cloneUsername.text.toString(),
@@ -306,7 +307,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
 
     override fun onQueryTextChange(newText: String): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
-        DataValidator.removeBroken(contentsList!!)
+        DataValidator.removeBroken(this,contentsList!!)
         val iterator = contentsList!!.iterator()
         while (iterator.hasNext()) {
             if (!iterator.next().toLowerCase(Locale.getDefault()).contains(newText)) {
@@ -321,7 +322,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
 
     override fun onClose(): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
-        DataValidator.removeBroken(contentsList!!)
+        DataValidator.removeBroken(this,contentsList!!)
         projectAdapter = ProjectAdapter(this@WebIdeHomeActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
         binding.projectList.adapter = projectAdapter
         return false

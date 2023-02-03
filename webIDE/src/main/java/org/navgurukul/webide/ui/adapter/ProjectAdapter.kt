@@ -48,7 +48,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
         fun bind(project: String, position: Int) {
             with (binding) {
-                val properties = HtmlParser.getProperties(project)
+                val properties = HtmlParser.getProperties(mainContext,project)
                 title.text = properties[0]
                 author.text = properties[1]
                 desc.text = properties[2]
@@ -71,7 +71,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
                             .setTitle("${binding.root.context.getString(R.string.delete)} $project?")
                             .setMessage(R.string.change_undone)
                             .setPositiveButton(R.string.delete) { _, _ ->
-                                ProjectManager.deleteProject(project)
+                                ProjectManager.deleteProject(mainContext ,project)
                                 remove(position)
                                 layout.snack("Deleted $project.")
                             }

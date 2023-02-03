@@ -7,6 +7,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.ui.adapter.ProjectAdapter
+import org.navgurukul.webide.util.ROOT_PATH
 import org.navgurukul.webide.util.project.ProjectManager
 import timber.log.Timber
 import java.io.File
@@ -37,7 +38,7 @@ class CloneTask internal constructor(context: WeakReference<Context>, view: Weak
 
     override fun onPostExecute(aBoolean: Boolean?) {
         if (aBoolean!!) {
-            if (!ProjectManager.isValid(repo.name)) {
+            if (!ProjectManager.isValid(context.get()!!,repo.name)) {
                 builder.setContentText("The repo was successfully cloned but it doesn't seem to be a webIDE project.")
             } else {
                 projectAdapter.insert(repo.path.substring(repo.path.lastIndexOf("/") + 1, repo.path.length))
