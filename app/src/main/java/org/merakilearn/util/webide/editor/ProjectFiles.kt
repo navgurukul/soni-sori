@@ -10,13 +10,10 @@ class ProjectFiles {
         fun readTextFromAsset(context: Context, name: String) =
                 context.assets.open(name).bufferedReader().use { it.readText() }
 
-        fun getHtml(context: Context, type: String, name: String, author: String, description: String, keywords: String) =
+        fun getHtml(context: Context, type: String, name: String) =
                 readTextFromAsset(context, "files/$type/index.html")
                         .replace(
-                                "@name" to  name,
-                                "@author" to author,
-                                "@description" to description,
-                                "@keywords" to keywords)
+                                "@name" to  name)
 
         fun getCss(context: Context, type: String) =
                 readTextFromAsset(context, "files/$type/style.css")

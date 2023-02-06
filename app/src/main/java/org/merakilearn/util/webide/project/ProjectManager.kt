@@ -26,9 +26,6 @@ object ProjectManager {
     fun generate(
         context: Context,
         name: String,
-        author: String,
-        description: String,
-        keywords: String,
         stream: InputStream?,
         adapter: ProjectAdapter,
         view: View,
@@ -43,7 +40,7 @@ object ProjectManager {
 
         var status = false
         when (type) {
-            0 -> status = generateDefault(context, nameNew, author, description, keywords, stream)
+            0 -> status = generateDefault(context, nameNew, stream)
         }
 
         if (status) {
@@ -58,9 +55,6 @@ object ProjectManager {
     private fun generateDefault(
         context: Context,
         name: String,
-        author: String,
-        description: String,
-        keywords: String,
         stream: InputStream?
     ): Boolean {
         val projectFile = File("${context.ROOT_PATH()}/$name")
@@ -77,10 +71,7 @@ object ProjectManager {
                 ProjectFiles.getHtml(
                     context,
                     "default",
-                    name,
-                    author,
-                    description,
-                    keywords
+                    name
                 )
             )
             File(cssFile, "style.css").writeText(ProjectFiles.getCss(context, "default"))
@@ -128,10 +119,7 @@ object ProjectManager {
                     ProjectFiles.getHtml(
                         context,
                         "import",
-                        nameNew,
-                        author,
-                        description,
-                        keywords
+                        nameNew
                     )
                 )
             }

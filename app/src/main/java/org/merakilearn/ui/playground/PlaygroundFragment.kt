@@ -138,29 +138,29 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun openDialogToCreateProject() {
         val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
-        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
-        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+//        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+//        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
         rootView.nameLayout.editText!!.setText(prefs["name", ""])
-        rootView.authorLayout.editText!!.setText(prefs["author", ""])
-        rootView.descLayout.editText!!.setText(prefs["description", ""])
-        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
+//        rootView.authorLayout.editText!!.setText(prefs["author", ""])
+//        rootView.descLayout.editText!!.setText(prefs["description", ""])
+//        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
         projectIcon = rootView.faviconImage
-        rootView.defaultIcon.isChecked = true
-        rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                projectIcon.setImageResource(R.drawable.ic_launcher)
-                imageStream = null
-            }
-        }
+//        rootView.defaultIcon.isChecked = true
+//        rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                projectIcon.setImageResource(R.drawable.ic_launcher)
+//                imageStream = null
+//            }
+//        }
 
-        rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "image/*"
-                startActivityForResult(intent, SELECT_ICON)
-            }
-        }
+//        rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                val intent = Intent(Intent.ACTION_GET_CONTENT)
+//                intent.type = "image/*"
+//                startActivityForResult(intent, SELECT_ICON)
+//            }
+//        }
 
         val createDialog = AlertDialog.Builder(requireContext())
             .setTitle("Create a new project")
@@ -171,30 +171,27 @@ class PlaygroundFragment : BaseFragment() {
 
         createDialog.show()
         createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
+            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
                 val name = rootView.nameLayout.editText!!.text.toString()
-                val author = rootView.authorLayout.editText!!.text.toString()
-                val description = rootView.descLayout.editText!!.text.toString()
-                val keywords = rootView.keyLayout.editText!!.text.toString()
-                val type = rootView.typeSpinner.selectedItemPosition
+//                val author = rootView.authorLayout.editText!!.text.toString()
+//                val description = rootView.descLayout.editText!!.text.toString()
+//                val keywords = rootView.keyLayout.editText!!.text.toString()
+//                val type = rootView.typeSpinner.selectedItemPosition
 
                 prefs["name"] = name
-                prefs["author"] = author
-                prefs["description"] = description
-                prefs["keywords"] = keywords
-                prefs["type"] = type
+//                prefs["author"] = author
+//                prefs["description"] = description
+//                prefs["keywords"] = keywords
+                prefs["type"] = 0
 
                 Log.i("TAG",requireActivity().ROOT_PATH())
                val projectName = ProjectManager.generate(
                     requireContext(),
                     name,
-                    author,
-                    description,
-                    keywords,
                     imageStream,
                     projectAdapter,
                     coordinatorLayout,
-                    type
+                    0
                 )
                 projectAdapter.notifyDataSetChanged()
 
