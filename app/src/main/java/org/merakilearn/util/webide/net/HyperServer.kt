@@ -2,7 +2,7 @@ package org.merakilearn.util.webide.net
 
 import android.content.Context
 import fi.iki.elonen.NanoHTTPD
-import org.merakilearn.util.webide.Constants
+import org.merakilearn.util.webide.WebConstants
 import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.project.ProjectManager
 import timber.log.Timber
