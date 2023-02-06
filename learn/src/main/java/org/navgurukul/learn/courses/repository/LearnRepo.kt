@@ -6,6 +6,7 @@ import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -218,6 +219,15 @@ class LearnRepo(
                 e.printStackTrace()
             }
         }
+
+        return flow {
+            val contentList = courseApi.getCompletedContentsIds(courseId)
+            updateCompletedContentInDb(contentList)
+            emit(contentList)
+        }.catch { e ->
+            throw e
+        }
+
     }
 
     suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
@@ -276,7 +286,11 @@ class LearnRepo(
     }
 
     suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
-            return courseApi.getRevisionClasses(classId)
+            return try {
+                courseApi.getRevisionClasses(classId)
+            }catch (ex: Exception){
+                throw ex
+            }
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
@@ -287,18 +301,30 @@ class LearnRepo(
 
     suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
         if(LearnUtils.isOnline(application)) {
-            return courseApi.getBatchesAsync(pathwayId)
+            return try {
+                courseApi.getBatchesAsync(pathwayId)
+            } catch (ex: Exception){
+                throw ex
+            }
         }
         return null
     }
 
 
     suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
-        return courseApi.getUpcomingClass(pathwayId)
+        return try {
+            courseApi.getUpcomingClass(pathwayId)
+        } catch (ex: Exception){
+            throw ex
+        }
     }
 
     suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
-       return courseApi.getStudentResult(assessmentId)
+       return try {
+           courseApi.getStudentResult(assessmentId)
+       } catch (ex: Exception){
+           throw ex
+       }
     }
 
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
@@ -339,10 +365,9 @@ class LearnRepo(
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
             courseApi.postStudentResult(studentResult)
-        } catch (e: Exception){
-            e.printStackTrace()
+        } catch (ex: Exception){
+            throw ex
         }
-
     }
 
     suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
@@ -361,13 +386,12 @@ class LearnRepo(
         courseId: String,
         exerciseId: String
     ){
+        val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
         try {
-            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
             courseApi.postLearningTrackStatus(learningTrackStatus)
-        } catch (e: Exception){
-            e.printStackTrace()
+        } catch (ex: Exception){
+            throw ex
         }
-
     }
 
 

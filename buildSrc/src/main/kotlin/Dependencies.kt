@@ -56,7 +56,7 @@ object DaggerDependencies {
 object AndroidxDependencies {
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     const val slidingPaneLayout = "androidx.slidingpanelayout:slidingpanelayout:1.1.0"
-    const val work = "androidx.work:work-runtime-ktx:2.4.0"
+    const val work = "androidx.work:work-runtime-ktx:2.7.1"
     const val emoji = "androidx.emoji:emoji:1.0.0"
     const val preference = "androidx.preference:preference:1.1.1"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
@@ -93,7 +93,6 @@ object MaterialDesignDependencies {
 }
 
 object OkReplayDependencies {
-
     const val espresso = "com.airbnb.okreplay:espresso:${Versions.okReplay}"
     const val okReplayNoOp = "com.airbnb.okreplay:noop:${Versions.okReplay}"
     const val okReplay = "com.airbnb.okreplay:okreplay:${Versions.okReplay}"
@@ -106,6 +105,7 @@ object GooglePlayDependencies {
 }
 
 object GMSDependencies {
+    const val base = "com.google.android.gms:play-services-base:18.1.0"
     const val auth = "com.google.android.gms:play-services-auth:18.1.0"
 }
 
@@ -160,12 +160,12 @@ object MiscellaneousDependencies {
 object FirebaseDependencies {
     const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
     const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
-    const val messaging = "com.google.firebase:firebase-messaging:20.2.4"
+    const val messaging = "com.google.firebase:firebase-messaging:23.0.0"
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
     const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
     const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
-    const val perfKtx ="com.google.firebase:firebase-perf-ktx:20.0.6"
+    const val perfKtx = "com.google.firebase:firebase-perf-ktx:20.0.6"
 }
 
 object RetrofitDependencies {
@@ -184,11 +184,11 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 30
-    const val minSdkVersion = 21
-    const val targetSdkVersion = 30
-    const val versionCode = 36
-    const val versionName = "1.5.6"
+    const val compileSdkVersion = 31
+    const val minSdkVersion = 23
+    const val targetSdkVersion = 31
+    const val versionCode = 63
+    const val versionName = "1.5.33"
     const val applicationId = "org.merakilearn"
 }
 
