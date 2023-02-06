@@ -153,4 +153,5 @@
     <string name="dark_theme">Night Mode</string>
     <string name="dark_theme_desc">Put a little less stress on your eyes.</string>
     <string name="about_project">About</string>
+    <string name="enter_project_name">Enter Project Name</string>
 </resources>
