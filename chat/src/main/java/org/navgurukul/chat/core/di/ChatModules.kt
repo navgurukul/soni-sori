@@ -74,7 +74,6 @@ val viewModelModules = module {
     viewModel { RoomProfileSharedActionViewModel() }
     viewModel { RoomListQuickActionsSharedActionViewModel() }
     viewModel { (displayReactionsViewState : DisplayReactionsViewState) -> ViewReactionsViewModel(displayReactionsViewState, get(), get()) }
-    viewModel { (roomListViewState : RoomListViewState) -> RoomListViewModel(roomListViewState, get(), get()) }
     viewModel { (roomMemberListViewState : RoomMemberListViewState) -> RoomMemberListViewModel(roomMemberListViewState, RoomMemberSummaryComparator(), get()) }
     viewModel { (roomListQuickActionsState : RoomListQuickActionsState) -> RoomListQuickActionsViewModel(roomListQuickActionsState, get()) }
     viewModel { (roomId : String) -> RequireActiveMembershipViewModel(roomId, get(), get()) }

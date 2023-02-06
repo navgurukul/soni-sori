@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,6 +36,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
+import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
@@ -42,6 +44,7 @@ import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 import org.merakilearn.ui.adapter.EnrolledBatchAdapter
+import org.merakilearn.ui.onboarding.OnBoardPagesAdapter
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
 import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
@@ -88,7 +91,8 @@ class ProfileFragment : Fragment() {
                     showUpdateServerDialog(it.serverUrl)
                 }
                 is ProfileViewEvents.ShareText -> shareCode(it)
-                ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(requireActivity(),
+                ProfileViewEvents.RestartApp -> OnBoardingActivity.restartApp(
+                    requireActivity(),
                     clearNotification = true
                 )
                 is ProfileViewEvents.OpenUrl -> {
@@ -97,8 +101,11 @@ class ProfileFragment : Fragment() {
                 is ProfileViewEvents.ShowEnrolledBatches -> {
                     mAdapter.submitList(it.batches)
                 }
-                is ProfileViewEvents.BatchSelectClicked ->{
-                   dropOut(it.batch)
+                is ProfileViewEvents.BatchSelectClicked -> {
+                    dropOut(it.batch)
+                }
+                is ProfileViewEvents.ShowPartnerData -> {
+                    partnerData(it.partnerData)
                 }
             }
         }
@@ -124,10 +131,28 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun dropOut(batches: Batches){
+    private fun dropOut(batches: Batches) {
         mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
             showDropOutDialog(batches)
         }
+    }
+
+    private fun partnerData(partnerData: PartnerDataResponse) {
+        if (partnerData.name != null && partnerData.description != null && partnerData.logo != null) {
+            if (partnerData.websiteLink != null) {
+                mBinding.partnerWebsite.visibility = View.VISIBLE
+                mBinding.partnerWebsite.text = partnerData.websiteLink
+            }
+            mBinding.title.visibility = View.VISIBLE
+            mBinding.partnerName.visibility = View.VISIBLE
+            mBinding.partnerName.text = partnerData.name
+            mBinding.partnerDesc.visibility = View.VISIBLE
+            mBinding.partnerDesc.text = partnerData.description
+            mBinding.partnerImage.visibility = View.VISIBLE
+            Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
+
+        }
+
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {
@@ -181,10 +206,10 @@ class ProfileFragment : Fragment() {
             mBinding.tvEmail.setText(it)
         }
 
-        if(it.batches.isEmpty()){
+        if (it.batches.isEmpty()) {
             mBinding.tvEnrolledText.visibility = View.GONE
             mBinding.rvEnrolledBatch.visibility = View.GONE
-        }else{
+        } else {
             mBinding.tvEnrolledText.visibility = View.VISIBLE
             mBinding.rvEnrolledBatch.visibility = View.VISIBLE
         }
@@ -249,8 +274,7 @@ class ProfileFragment : Fragment() {
     }
 
 
-
-    private fun initShowEnrolledBatches(){
+    private fun initShowEnrolledBatches() {
         mAdapter = EnrolledBatchAdapter {
             viewModel.selectBatch(it)
         }
@@ -271,10 +295,15 @@ class ProfileFragment : Fragment() {
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             ).apply {
-                setDrawable(AppCompatResources.getDrawable(requireContext(), org.navgurukul.learn.R.drawable.divider)!!)
+                setDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        org.navgurukul.learn.R.drawable.divider
+                    )!!
+                )
             })
     }
-    
+
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),
@@ -284,7 +313,7 @@ class ProfileFragment : Fragment() {
             null,
             null, null,
             true,
-            )
+        )
 
 
         val view = requireActivity().findViewById<ImageView>(R.id.headerLogOut)
@@ -308,8 +337,8 @@ class ProfileFragment : Fragment() {
             }.create().show()
     }
 
-    private fun showDropOutDialog(batches: Batches){
-        val alertLayout: View =  getLayoutInflater().inflate(R.layout.dialog_dropout, null)
+    private fun showDropOutDialog(batches: Batches) {
+        val alertLayout: View = getLayoutInflater().inflate(R.layout.dialog_dropout, null)
         val btnStay: View = alertLayout.findViewById(R.id.btnStay)
         val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())

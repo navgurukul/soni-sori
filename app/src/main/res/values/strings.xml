@@ -90,14 +90,19 @@
 
 
     <string name="opportunities">Opportunities</string>
+    <string name="partnerName">Partner Name</string>
+    <string name="partnerInfo">Your learning is sponsored by:</string>
+    <string name="partnerDesc">Partner Desc</string>
+    <string name="partnerWebsite">Website</string>
+    <string name="title">Your learning is supported by:</string>
     <string name="opportunities_desc">Curated list of admission tests, grants, advanced courses and mentorship to skyrocket your career</string>
     <string name="explore_opportunities">Explore Opportunities</string>
     <string name="edit">Edit</string>
 
     <string name="select_language_english">Please select the language you are comfortable to study in</string>
     <string name="select_language_hindi">कृपया अपनी पढ़ाई के लिए पसंदीदा भाषा को चुने </string>
-    <string name="english">English</string>
-    <string name="hindi">"हिन्दी "</string>
+    <string name="english"><b>ABC</b>\n\nEnglish</string>
+    <string name="hindi"><b>कखग</b>\n\nहिन्दी</string>
     <string name="skip_login_english">Skip Login</string>
     <string name="skip_login_hindi">लॉगिन छोड़ें</string>
     <string name="skip_english">Skip</string>

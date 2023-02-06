@@ -19,7 +19,6 @@ import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.*
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
-import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.OnBoardingActivityArgs
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
@@ -35,10 +34,9 @@ import java.util.concurrent.TimeUnit
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
     viewModel { PlaygroundViewModel(get(),get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(

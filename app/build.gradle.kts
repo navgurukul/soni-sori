@@ -10,6 +10,7 @@ plugins {
     id(Plugins.gms)
     id(Plugins.crashlytics)
     id(Plugins.perf)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {

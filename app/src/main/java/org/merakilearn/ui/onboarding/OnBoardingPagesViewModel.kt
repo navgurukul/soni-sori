@@ -1,5 +1,6 @@
 package org.merakilearn.ui.onboarding
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -28,9 +29,10 @@ class OnBoardingPagesViewModel(
     private val config: Config
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
-    companion object{
-        const val PARTNER_ID="partner_id"
+    companion object {
+        const val PARTNER_ID = "partner_id"
     }
+
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     fun handle(action: OnBoardingPagesAction) {
@@ -109,39 +111,47 @@ class OnBoardingPagesViewModel(
             }
         }
     }
-    private fun checkPartner(){
-        val decodeReferrer=URLDecoder.decode(installReferrerManager.userRepo.installReferrer?:"","UTF-8")
-        val partnerIdPattern= Regex("[^$PARTNER_ID:]\\d+")
-        val partnerNamePattern= Regex("utm_medium=\\D+utm_content")
 
-        val partnerIdValue=partnerIdPattern.find(decodeReferrer,0)?.value
-        val partnerNameValue=partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")?.removeSuffix("&utm_content")
+    private fun checkPartner() {
+        val decodeReferrer =
+            URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+        val partnerIdPattern = Regex("[^$PARTNER_ID:]\\d+")
+        val partnerNamePattern = Regex("utm_medium=\\D+utm_content")
+
+        val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
+        val partnerNameValue =
+            partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")
+                ?.removeSuffix("&utm_content")
 
 
-        if(partnerIdValue!=null){
-            setAnalytics(partnerIdValue,partnerNameValue!!)
+
+
+        if (partnerIdValue != null) {
+
+            setAnalytics(partnerIdValue, partnerNameValue)
             getPathwayForResidentialProgram()
-        }
-        else{
+        } else {
             _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
         }
     }
 
-    private fun setAnalytics( partner_id:String,partner_name:String) {
-        firebaseAnalytics= Firebase.analytics
-        firebaseAnalytics.setUserProperty("partner_id",partner_id)
-        firebaseAnalytics.setUserProperty("partner_name",partner_name)
+
+    private fun setAnalytics(partner_id: String, partner_name: String?) {
+        firebaseAnalytics = Firebase.analytics
+        firebaseAnalytics.setUserProperty("partner_id", partner_id)
+        firebaseAnalytics.setUserProperty("partner_name", partner_name)
     }
 
     private fun getPathwayForResidentialProgram() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val residentialProgramPathwayIdResponse = loginRepository.getPathwayForResidentialProgram()
+            val residentialProgramPathwayIdResponse =
+                loginRepository.getPathwayForResidentialProgram()
             setState { copy(isLoading = false) }
 
             residentialProgramPathwayIdResponse?.let {
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenHomePage(it.id))
-            }?:run{ _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection)
+            } ?: run { _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
 }
