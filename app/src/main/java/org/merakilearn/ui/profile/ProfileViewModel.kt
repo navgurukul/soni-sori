@@ -67,7 +67,6 @@ class ProfileViewModel(
             )
         }
         if (partnerIdValue != null) {
-
             checkPartner(partnerIdValue)
         }
 
@@ -75,15 +74,9 @@ class ProfileViewModel(
             updateFiles()
         }
         getEnrolledBatches()
-        viewModelScope.launch {
-            userRepo.getPartner()
-            val id=user.partner_id.toString()
-            if(id!=null){
-                checkPartner(id)
-            }
-
-            Log.e("mahesh",user.email.toString())
-            Log.e("error",user.partner_id.toString())
+        val id = user.partner_id.toString()
+        if(id != null){
+            checkPartner(id)
         }
 
     }

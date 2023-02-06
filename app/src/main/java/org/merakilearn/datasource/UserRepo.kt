@@ -154,11 +154,4 @@ class UserRepo(
             throw ex
         }
     }
-    suspend fun getPartner() : UserUpdateContainer {
-        return try {
-            saralApi.getPartner()
-        }catch (ex:Exception){
-            throw ex
-        }
-    }
 }
