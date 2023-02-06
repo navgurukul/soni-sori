@@ -6,4 +6,8 @@
     <item
         android:id="@+id/shareSavedFile"
         android:title="@string/share" />
+
+    <item
+        android:id="@+id/exportSavedFile"
+        android:title="@string/export" />
 </menu>

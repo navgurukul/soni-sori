@@ -40,7 +40,6 @@ class ScratchActivity : AppCompatActivity() {
     var datalinkload: String = ""
     var datalinksave: String = ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,7 +70,7 @@ class ScratchActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onSave(globalBase64String: String) {
-        datalinksave =globalBase64String
+        datalinksave = globalBase64String
         showCodeSaveDialog()
     }
 
@@ -162,9 +161,7 @@ class ScratchActivity : AppCompatActivity() {
                 loadSavedFileCalled = true
                 loadSavedFile(file)
             }
-
         }
-
     }
 
     fun loadSavedFile(file: File?) {
@@ -245,6 +242,7 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.setView(view)
         alertDialog.show()
     }
+
 
     private fun showCodeSavedDialog() {
         val alertDialog = AlertDialog.Builder(this).apply {
