@@ -37,9 +37,17 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
+    viewModel { (args: OnBoardingActivityArgs?) ->
+        OnBoardingViewModel(
+            args,
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { PlaygroundViewModel(get(),get()) }
+    viewModel { PlaygroundViewModel(get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,
@@ -97,35 +105,87 @@ val networkModule = module {
             .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
             .add(
                 PolymorphicJsonAdapterFactory.of(BaseCourseContent::class.java, "component")
-                .withSubtype(ImageBaseCourseContent::class.java, BaseCourseContent.COMPONENT_IMAGE)
-                .withSubtype(TextBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TEXT)
-                .withSubtype(LinkBaseCourseContent::class.java, BaseCourseContent.COMPONENT_LINK)
+                    .withSubtype(
+                        ImageBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_IMAGE
+                    )
+                    .withSubtype(
+                        TextBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_TEXT
+                    )
+                    .withSubtype(
+                        LinkBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_LINK
+                    )
 //                .withSubtype(CodeExerciseSlugDetail::class.java, ExerciseSlugDetail.TYPE_SOLUTION)
-                .withSubtype(CodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_CODE)
-                .withSubtype(QuestionCodeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_CODE)
-                .withSubtype(QuestionExpressionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_QUESTION_EXPRESSION)
-                .withSubtype(BlockQuoteBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BLOCK_QUOTE)
-                .withSubtype(HeaderBaseCourseContent::class.java, BaseCourseContent.COMPONENT_HEADER)
-                .withSubtype(TableBaseCourseContent::class.java, BaseCourseContent.COMPONENT_TABLE)
-                .withSubtype(BannerBaseCourseContent::class.java, BaseCourseContent.COMPONENT_BANNER)
-                .withSubtype(SolutionBaseCourseContent::class.java, BaseCourseContent.COMPONENT_SOLUTION)
-                    .withSubtype(OptionsBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OPTIONS)
-                .withSubtype(OutputBaseCourseContent::class.java, BaseCourseContent.COMPONENT_OUTPUT)
-                .withSubtype(YoutubeBaseCourseContent::class.java, BaseCourseContent.COMPONENT_YOUTUBE_VIDEO)
-                .withSubtype(UnknownBaseCourseContent::class.java, BaseCourseContent.COMPONENT_UNKNOWN)
-                .withDefaultValue(UnknownBaseCourseContent())
+                    .withSubtype(
+                        CodeBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_CODE
+                    )
+                    .withSubtype(
+                        QuestionCodeBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_QUESTION_CODE
+                    )
+                    .withSubtype(
+                        QuestionExpressionBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_QUESTION_EXPRESSION
+                    )
+                    .withSubtype(
+                        BlockQuoteBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_BLOCK_QUOTE
+                    )
+                    .withSubtype(
+                        HeaderBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_HEADER
+                    )
+                    .withSubtype(
+                        TableBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_TABLE
+                    )
+                    .withSubtype(
+                        BannerBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_BANNER
+                    )
+                    .withSubtype(
+                        SolutionBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_SOLUTION
+                    )
+                    .withSubtype(
+                        OptionsBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_OPTIONS
+                    )
+                    .withSubtype(
+                        OutputBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_OUTPUT
+                    )
+                    .withSubtype(
+                        YoutubeBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_YOUTUBE_VIDEO
+                    )
+                    .withSubtype(
+                        UnknownBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_UNKNOWN
+                    )
+                    .withDefaultValue(UnknownBaseCourseContent())
             )
             .add(
                 PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
                     .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
                     .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
-                    .withSubtype(CourseAssessmentContent::class.java, CourseContentType.assessment.name)
+                    .withSubtype(
+                        CourseAssessmentContent::class.java,
+                        CourseContentType.assessment.name
+                    )
             )
             .build()
     }
 
 
-    fun provideRetrofit(factory: Moshi, client: OkHttpClient, settingsRepo: SettingsRepo): Retrofit {
+    fun provideRetrofit(
+        factory: Moshi,
+        client: OkHttpClient,
+        settingsRepo: SettingsRepo
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(settingsRepo.serverBaseUrl)
             .addConverterFactory(MoshiConverterFactory.create(factory))

@@ -147,10 +147,10 @@ class UserRepo(
         }
     }
 
-    suspend fun getPartnerData(partnerId: Int) : PartnerDataResponse{
+    suspend fun getPartnerData(partnerId: Int): PartnerDataResponse {
         return try {
             saralApi.getPartnerData(partnerId)
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             throw ex
         }
     }

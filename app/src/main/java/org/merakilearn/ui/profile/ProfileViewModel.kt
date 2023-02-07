@@ -75,7 +75,7 @@ class ProfileViewModel(
         }
         getEnrolledBatches()
         val id = user.partner_id.toString()
-        if(id != null){
+        if (id != null) {
             checkPartner(id)
         }
 
@@ -140,7 +140,7 @@ class ProfileViewModel(
                     val partnerData = userRepo.getPartnerData(partnerId?.toInt())
                     _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
                 }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
