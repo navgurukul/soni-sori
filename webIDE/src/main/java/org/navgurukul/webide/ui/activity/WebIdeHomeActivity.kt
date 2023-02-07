@@ -24,7 +24,7 @@ import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webIDE.R
 import org.navgurukul.webIDE.databinding.ActivityWebIdeHomeBinding
 import org.navgurukul.webIDE.databinding.DialogCloneBinding
-import org.navgurukul.webIDE.databinding.DialogCreateBinding
+import org.navgurukul.webIDE.databinding.DialogCreate2Binding
 import org.navgurukul.webIDE.databinding.DialogImportBinding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startAndFinish
@@ -88,7 +88,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
                     .setAdapter(ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
                         when (i) {
                             0 -> {
-                                val rootView = DialogCreateBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                                val rootView = DialogCreate2Binding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
                                 rootView.typeSpinner.adapter = ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
                                 rootView.typeSpinner.setSelection(prefs["type", 0]!!)
                                 rootView.nameLayout.editText!!.setText(prefs["name", ""])

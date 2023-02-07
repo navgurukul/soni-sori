@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.MultiAutoCompleteTextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
-import kotlinx.android.synthetic.main.dialog_refactor.view.*
+import kotlinx.android.synthetic.main.dialog_refactor_2.view.*
 import org.navgurukul.webIDE.R
 import org.navgurukul.webide.util.editor.Highlighter
 import org.navgurukul.webide.util.editor.ResourceHelper
@@ -395,7 +395,7 @@ class Editor constructor(context: Context, attrs: AttributeSet? = null) :
             when (item.itemId) {
                 1 -> {
                     val selected = selectedString
-                    val layout = View.inflate(context, R.layout.dialog_refactor, null)
+                    val layout = View.inflate(context, R.layout.dialog_refactor_2, null)
 
                     layout.replaceFrom.setText(selected)
 

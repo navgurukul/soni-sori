@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ItemProjectBinding
+import org.navgurukul.webIDE.databinding.ItemProject2Binding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.extensions.withFlags
@@ -35,7 +35,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
         projects.sort()
-        val itemView = ItemProjectBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val itemView = ItemProject2Binding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ProjectHolder(itemView)
     }
 
@@ -44,7 +44,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
     override fun getItemCount(): Int = projects.size
 
-    inner class ProjectHolder(var binding: ItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ProjectHolder(var binding: ItemProject2Binding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(project: String, position: Int) {
             with (binding) {
