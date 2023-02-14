@@ -1,22 +1,27 @@
 package org.merakilearn.util.webide.adapter
 
-import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_project.view.*
 import org.merakilearn.R
+import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.extension.inflate
 import org.merakilearn.extension.snack
 import org.merakilearn.util.webide.net.HtmlParser
 import org.merakilearn.util.webide.project.ProjectManager
-import java.util.*
 
-class ProjectAdapter(private val mainContext: Context, private val projects: ArrayList<String>, private val layout: CoordinatorLayout, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ProjectAdapter.ProjectHolder>() {
+class ProjectAdapter(
+    private val mainContext: FragmentActivity,
+    private val navigator: MerakiNavigator,
+    private val projects: ArrayList<String>,
+    private val layout: CoordinatorLayout,
+    private val recyclerView: RecyclerView
+) : RecyclerView.Adapter<ProjectAdapter.ProjectHolder>() {
 
     fun insert(project: String) {
         projects.add(project)
@@ -28,7 +33,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
     fun remove(position: Int) {
         try {
             projects.removeAt(position)
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             projects.clear()
         }
@@ -43,15 +48,15 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
     }
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) =
-            holder.bind(projects[holder.adapterPosition], holder.adapterPosition)
+        holder.bind(projects[holder.adapterPosition], holder.adapterPosition)
 
     override fun getItemCount(): Int = projects.size
 
     inner class ProjectHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(project: String, position: Int) {
-            with (view) {
-                val properties = HtmlParser.getProperties(context,project)
+            with(view) {
+                val properties = HtmlParser.getProperties(context, project)
                 title.text = properties[0]
 //                author.text = properties[1]
 //                desc.text = properties[2]
@@ -61,9 +66,7 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
                 projectLayout.setOnClickListener {
                     var intent: Intent? = null
                     try {
-                        intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
-                        intent.putExtra("project" ,project)
-                        context.startActivity(intent)
+                        navigator.launchWebIDEApp(mainContext, project)
                     } catch (e: ClassNotFoundException) {
                         e.printStackTrace()
                     }
@@ -71,15 +74,15 @@ class ProjectAdapter(private val mainContext: Context, private val projects: Arr
 
                 projectLayout.setOnLongClickListener {
                     AlertDialog.Builder(view.context)
-                            .setTitle("${view.context.getString(R.string.delete)} $project?")
-                            .setMessage(R.string.change_undone)
-                            .setPositiveButton(R.string.delete) { _, _ ->
-                                ProjectManager.deleteProject(context,project)
-                                remove(position)
-                                layout.snack("Deleted $project.")
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
+                        .setTitle("${view.context.getString(R.string.delete)} $project?")
+                        .setMessage(R.string.change_undone)
+                        .setPositiveButton(R.string.delete) { _, _ ->
+                            ProjectManager.deleteProject(context, project)
+                            remove(position)
+                            layout.snack("Deleted $project.")
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
 
                     true
                 }

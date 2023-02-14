@@ -43,9 +43,10 @@ android {
 dependencies {
     implementation(project(":app"))
     implementation(project(":core"))
+    implementation(project(mapOf("path" to ":commonUI")))
 
-//    kapt(MiscellaneousDependencies.AutoService)
-//    implementation(MiscellaneousDependencies.AutoService)
+    kapt(MiscellaneousDependencies.AutoService)
+    implementation(MiscellaneousDependencies.AutoService)
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 

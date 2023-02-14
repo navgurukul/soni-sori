@@ -129,9 +129,9 @@ class MerakiNavigator(
 
     }
 
-    fun launchWebIDEApp(activity: FragmentActivity, mode: Mode) {
+    fun launchWebIDEApp(activity: FragmentActivity, projectName: String) {
         if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
-            webIDEAppModuleNavigator?.launchWebIDEApp(activity, mode)
+            webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
         } else {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
@@ -141,7 +141,7 @@ class MerakiNavigator(
             }
             dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
                 progress.dismiss()
-                webIDEAppModuleNavigator?.launchWebIDEApp(activity, mode)
+                webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
             }, {
                 progress.dismiss()
             })
