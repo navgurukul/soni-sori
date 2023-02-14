@@ -1,7 +1,6 @@
 package org.navgurukul.webide.ui.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,8 +9,6 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import org.merakilearn.core.extentions.toBundle
-import org.merakilearn.core.navigator.Mode
 import org.navgurukul.webIDE.R
 import org.navgurukul.webIDE.databinding.ActivitySplashBinding
 import org.navgurukul.webide.extensions.*
@@ -21,11 +18,13 @@ import org.navgurukul.webide.util.ui.FontsOverride
 
 class SplashActivity : ThemedActivity() {
 
-    private lateinit var binding : ActivitySplashBinding
+    private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        FontsOverride.setDefaultFont(applicationContext,
-                "MONOSPACE", "fonts/Inconsolata-Regular.ttf")
+        FontsOverride.setDefaultFont(
+            applicationContext,
+            "MONOSPACE", "fonts/Inconsolata-Regular.ttf"
+        )
 
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -49,7 +48,10 @@ class SplashActivity : ThemedActivity() {
     }
 
     private fun showPermissionSnack() {
-        binding.splashLayout.snack(R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE) {
+        binding.splashLayout.snack(
+            R.string.permission_storage_rationale,
+            Snackbar.LENGTH_INDEFINITE
+        ) {
             action("GRANT") {
                 dismiss()
                 startActivityForResult(Intent().apply {
@@ -61,22 +63,34 @@ class SplashActivity : ThemedActivity() {
     }
 
     private fun setupPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            ) {
                 showPermissionSnack()
             } else {
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        WRITE_PERMISSION_REQUEST)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    WRITE_PERMISSION_REQUEST
+                )
             }
         } else {
             startIntro()
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == WRITE_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -96,11 +110,11 @@ class SplashActivity : ThemedActivity() {
     }
 
     companion object {
-            fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
-                return Intent(context, SplashActivity::class.java).apply {
-                    putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
-                }
-        }
+//            fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
+//                return Intent(context, SplashActivity::class.java).apply {
+//                    putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
+//                }
+//        }
 
         private const val WRITE_PERMISSION_REQUEST = 0
     }

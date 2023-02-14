@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import org.merakilearn.R
@@ -84,6 +85,8 @@ object ProjectManager {
             }
         } catch (e: IOException) {
             Timber.e(e)
+            Log.i("TAG", e.message.toString())
+            e.printStackTrace()
             return false
         }
 

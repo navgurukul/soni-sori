@@ -1,11 +1,9 @@
 package org.navgurukul.webide.ui.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -17,9 +15,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.parcel.Parcelize
-import org.merakilearn.core.extentions.toBundle
-import org.merakilearn.core.navigator.Mode
 import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webIDE.R
 import org.navgurukul.webIDE.databinding.ActivityWebIdeHomeBinding
@@ -30,10 +25,9 @@ import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startAndFinish
 import org.navgurukul.webide.git.GitWrapper
 import org.navgurukul.webide.ui.adapter.ProjectAdapter
-import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs
-import org.navgurukul.webide.util.Prefs.set
 import org.navgurukul.webide.util.Prefs.get
+import org.navgurukul.webide.util.Prefs.set
 import org.navgurukul.webide.util.editor.ResourceHelper
 import org.navgurukul.webide.util.project.DataValidator
 import org.navgurukul.webide.util.project.ProjectManager
@@ -42,13 +36,14 @@ import java.io.File
 import java.io.InputStream
 import java.util.*
 
-@Parcelize
-data class WebIdeHomeActivityArgs(
-    val mode: Mode,
-    val retake: Boolean = false
-) : Parcelable
+//@Parcelize
+//data class WebIdeHomeActivityArgs(
+//    val mode: Mode,
+//    val retake: Boolean = false
+//) : Parcelable
 
-class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener,
+    SearchView.OnCloseListener {
 
     private var contents: Array<String>? = null
     private var contentsList: ArrayList<String>? = null
@@ -67,137 +62,173 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
         setSupportActionBar(binding.include.toolbar)
 
         prefs = defaultPrefs(this)
-        contents = File(this.ROOT_PATH()).list { dir, name -> dir.isDirectory && name != ".git" && ProjectManager.isValid(this,name) }
+        contents = File(this.ROOT_PATH()).list { dir, name ->
+            dir.isDirectory && name != ".git" && ProjectManager.isValid(
+                this,
+                name
+            )
+        }
         contentsList = if (contents != null) {
             ArrayList(Arrays.asList(*contents!!))
         } else {
             ArrayList()
         }
 
-        DataValidator.removeBroken(this,contentsList!!)
-        projectAdapter = ProjectAdapter(this, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        DataValidator.removeBroken(this, contentsList!!)
+        projectAdapter =
+            ProjectAdapter(this, contentsList!!, binding.coordinatorLayout, binding.projectList)
         val layoutManager = LinearLayoutManager(this)
         binding.projectList.layoutManager = layoutManager
-        binding.projectList.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+        binding.projectList.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                layoutManager.orientation
+            )
+        )
         binding.projectList.itemAnimator = DefaultItemAnimator()
         binding.projectList.adapter = projectAdapter
         binding.cloneButton.setOnClickListener {
-            val choices = arrayOf("Create a new project", "Clone a repository", "Import an external project")
+            val choices =
+                arrayOf("Create a new project", "Clone a repository", "Import an external project")
             AlertDialog.Builder(this@WebIdeHomeActivity)
-                    .setTitle("Would you like to...")
-                    .setAdapter(ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, choices)) { _, i ->
-                        when (i) {
-                            0 -> {
-                                val rootView = DialogCreate2Binding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
-                                rootView.typeSpinner.adapter = ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
-                                rootView.typeSpinner.setSelection(prefs["type", 0]!!)
-                                rootView.nameLayout.editText!!.setText(prefs["name", ""])
-                                rootView.authorLayout.editText!!.setText(prefs["author", ""])
-                                rootView.descLayout.editText!!.setText(prefs["description", ""])
-                                rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
+                .setTitle("Would you like to...")
+                .setAdapter(
+                    ArrayAdapter(
+                        this@WebIdeHomeActivity,
+                        android.R.layout.simple_list_item_1,
+                        choices
+                    )
+                ) { _, i ->
+                    when (i) {
+                        0 -> {
+                            val rootView =
+                                DialogCreateBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                            rootView.typeSpinner.adapter = ArrayAdapter(
+                                this@WebIdeHomeActivity,
+                                android.R.layout.simple_list_item_1,
+                                ProjectManager.TYPES
+                            )
+                            rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+                            rootView.nameLayout.editText!!.setText(prefs["name", ""])
+                            rootView.authorLayout.editText!!.setText(prefs["author", ""])
+                            rootView.descLayout.editText!!.setText(prefs["description", ""])
+                            rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
-                                projectIcon = rootView.faviconImage
-                                rootView.defaultIcon.isChecked = true
-                                rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
-                                    if (isChecked) {
-                                        projectIcon.setImageResource(R.drawable.ic_launcher)
-                                        imageStream = null
-                                    }
-                                }
-
-                                rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
-                                    if (isChecked) {
-                                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-                                        intent.type = "image/*"
-                                        startActivityForResult(intent, SELECT_ICON)
-                                    }
-                                }
-
-                                val createDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
-                                        .setTitle("Create a new project")
-                                        .setView(rootView.root)
-                                        .setPositiveButton("CREATE", null)
-                                        .setNegativeButton("CANCEL", null)
-                                        .create()
-
-                                createDialog.show()
-                                createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                    if (DataValidator.validateCreate(this@WebIdeHomeActivity, rootView.nameLayout, rootView.authorLayout, rootView.descLayout, rootView.keyLayout)) {
-                                        val name = rootView.nameLayout.editText!!.text.toString()
-                                        val author = rootView.authorLayout.editText!!.text.toString()
-                                        val description = rootView.descLayout.editText!!.text.toString()
-                                        val keywords = rootView.keyLayout.editText!!.text.toString()
-                                        val type = rootView.typeSpinner.selectedItemPosition
-
-                                        prefs["name"] = name
-                                        prefs["author"] = author
-                                        prefs["description"] = description
-                                        prefs["keywords"] = keywords
-                                        prefs["type"] = type
-
-                                        ProjectManager.generate(
-                                                this@WebIdeHomeActivity,
-                                                name,
-                                                author,
-                                                description,
-                                                keywords,
-                                                imageStream,
-                                                projectAdapter,
-                                            binding.coordinatorLayout,
-                                                type
-                                        )
-
-                                        createDialog.dismiss()
-                                    }
+                            projectIcon = rootView.faviconImage
+                            rootView.defaultIcon.isChecked = true
+                            rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
+                                if (isChecked) {
+                                    projectIcon.setImageResource(R.drawable.ic_launcher)
+                                    imageStream = null
                                 }
                             }
-                            1 -> {
-                                val cloneView = DialogCloneBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
-                                cloneView.cloneName.setText(prefs["clone_name", ""])
-                                cloneView.cloneUrl.setText(prefs["remote", ""])
-                                val cloneDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
-                                        .setTitle("Clone a repository")
-                                        .setView(cloneView.root)
-                                        .setPositiveButton("CLONE", null)
-                                        .setNegativeButton(R.string.cancel, null)
-                                        .create()
 
-                                cloneDialog.show()
-                                cloneDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                    if (DataValidator.validateClone(this@WebIdeHomeActivity, cloneView.cloneName, cloneView.cloneUrl)) {
-                                        var remoteStr = cloneView.cloneUrl.text.toString()
-                                        if (!remoteStr.contains("://")) {
-                                            remoteStr = "https://$remoteStr"
-                                        }
-
-                                        val cloneName = cloneView.cloneName.text.toString()
-                                        prefs["clone_name"] = cloneName
-                                        prefs["remote"] = remoteStr
-
-                                        GitWrapper.clone(
-                                                this@WebIdeHomeActivity,
-                                                binding.coordinatorLayout,
-                                                File(this.ROOT_PATH() + File.separator + cloneName),
-                                                projectAdapter,
-                                                remoteStr,
-                                                cloneView.cloneUsername.text.toString(),
-                                                cloneView.clonePassword.text.toString()
-                                        )
-
-                                        cloneDialog.dismiss()
-                                    }
+                            rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
+                                if (isChecked) {
+                                    val intent = Intent(Intent.ACTION_GET_CONTENT)
+                                    intent.type = "image/*"
+                                    startActivityForResult(intent, SELECT_ICON)
                                 }
                             }
-                            2 -> {
-                                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                                intent.type = "file/*"
-                                intent.resolveActivity(packageManager)?.let {
-                                    startActivityForResult(intent, IMPORT_PROJECT)
+
+                            val createDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
+                                .setTitle("Create a new project")
+                                .setView(rootView.root)
+                                .setPositiveButton("CREATE", null)
+                                .setNegativeButton("CANCEL", null)
+                                .create()
+
+                            createDialog.show()
+                            createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                if (DataValidator.validateCreate(
+                                        this@WebIdeHomeActivity,
+                                        rootView.nameLayout,
+                                        rootView.authorLayout,
+                                        rootView.descLayout,
+                                        rootView.keyLayout
+                                    )
+                                ) {
+                                    val name = rootView.nameLayout.editText!!.text.toString()
+                                    val author = rootView.authorLayout.editText!!.text.toString()
+                                    val description = rootView.descLayout.editText!!.text.toString()
+                                    val keywords = rootView.keyLayout.editText!!.text.toString()
+                                    val type = rootView.typeSpinner.selectedItemPosition
+
+                                    prefs["name"] = name
+                                    prefs["author"] = author
+                                    prefs["description"] = description
+                                    prefs["keywords"] = keywords
+                                    prefs["type"] = type
+
+                                    ProjectManager.generate(
+                                        this@WebIdeHomeActivity,
+                                        name,
+                                        author,
+                                        description,
+                                        keywords,
+                                        imageStream,
+                                        projectAdapter,
+                                        binding.coordinatorLayout,
+                                        type
+                                    )
+
+                                    createDialog.dismiss()
                                 }
                             }
                         }
+                        1 -> {
+                            val cloneView =
+                                DialogCloneBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                            cloneView.cloneName.setText(prefs["clone_name", ""])
+                            cloneView.cloneUrl.setText(prefs["remote", ""])
+                            val cloneDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
+                                .setTitle("Clone a repository")
+                                .setView(cloneView.root)
+                                .setPositiveButton("CLONE", null)
+                                .setNegativeButton(R.string.cancel, null)
+                                .create()
+
+                            cloneDialog.show()
+                            cloneDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                if (DataValidator.validateClone(
+                                        this@WebIdeHomeActivity,
+                                        cloneView.cloneName,
+                                        cloneView.cloneUrl
+                                    )
+                                ) {
+                                    var remoteStr = cloneView.cloneUrl.text.toString()
+                                    if (!remoteStr.contains("://")) {
+                                        remoteStr = "https://$remoteStr"
+                                    }
+
+                                    val cloneName = cloneView.cloneName.text.toString()
+                                    prefs["clone_name"] = cloneName
+                                    prefs["remote"] = remoteStr
+
+                                    GitWrapper.clone(
+                                        this@WebIdeHomeActivity,
+                                        binding.coordinatorLayout,
+                                        File(this.ROOT_PATH() + File.separator + cloneName),
+                                        projectAdapter,
+                                        remoteStr,
+                                        cloneView.cloneUsername.text.toString(),
+                                        cloneView.clonePassword.text.toString()
+                                    )
+
+                                    cloneDialog.dismiss()
+                                }
+                            }
+                        }
+                        2 -> {
+                            val intent = Intent(Intent.ACTION_GET_CONTENT)
+                            intent.type = "file/*"
+                            intent.resolveActivity(packageManager)?.let {
+                                startActivityForResult(intent, IMPORT_PROJECT)
+                            }
+                        }
                     }
-                    .show()
+                }
+                .show()
         }
 
         binding.projectList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -227,7 +258,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-         //   R.id.action_settings -> startActivityForResult<SettingsActivity>(SETTINGS_CODE)
+            //   R.id.action_settings -> startActivityForResult<SettingsActivity>(SETTINGS_CODE)
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -241,8 +272,14 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
                 try {
                     val selectedImage = data!!.data
                     selectedImage?.let {
-                        imageStream = this@WebIdeHomeActivity.contentResolver.openInputStream(selectedImage)
-                        projectIcon.setImageBitmap(ResourceHelper.decodeUri(this@WebIdeHomeActivity, selectedImage))
+                        imageStream =
+                            this@WebIdeHomeActivity.contentResolver.openInputStream(selectedImage)
+                        projectIcon.setImageBitmap(
+                            ResourceHelper.decodeUri(
+                                this@WebIdeHomeActivity,
+                                selectedImage
+                            )
+                        )
                     }
                 } catch (e: Exception) {
                     Timber.e(e)
@@ -254,8 +291,13 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
             IMPORT_PROJECT -> if (resultCode == Activity.RESULT_OK) {
                 val fileUri = data!!.data!!
                 val file = File(fileUri.path)
-                val rootView = DialogImportBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
-                rootView.impTypeSpinner.adapter = ArrayAdapter(this@WebIdeHomeActivity, android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+                val rootView =
+                    DialogImportBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                rootView.impTypeSpinner.adapter = ArrayAdapter(
+                    this@WebIdeHomeActivity,
+                    android.R.layout.simple_list_item_1,
+                    ProjectManager.TYPES
+                )
                 rootView.impTypeSpinner.setSelection(prefs["type", 0]!!)
 
                 rootView.impNameLayout.editText!!.setText(file.parentFile.name)
@@ -264,16 +306,23 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
                 rootView.impKeyLayout.editText!!.setText(prefs["keywords", ""])
 
                 val createDialog = AlertDialog.Builder(this@WebIdeHomeActivity)
-                        .setTitle("Import an external project")
-                        .setIcon(R.drawable.ic_action_import)
-                        .setView(rootView.root)
-                        .setPositiveButton("IMPORT", null)
-                        .setNegativeButton("CANCEL", null)
-                        .create()
+                    .setTitle("Import an external project")
+                    .setIcon(R.drawable.ic_action_import)
+                    .setView(rootView.root)
+                    .setPositiveButton("IMPORT", null)
+                    .setNegativeButton("CANCEL", null)
+                    .create()
 
                 createDialog.show()
                 createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    if (DataValidator.validateCreate(this@WebIdeHomeActivity, rootView.impNameLayout, rootView.impAuthorLayout, rootView.impDescLayout, rootView.impKeyLayout)) {
+                    if (DataValidator.validateCreate(
+                            this@WebIdeHomeActivity,
+                            rootView.impNameLayout,
+                            rootView.impAuthorLayout,
+                            rootView.impDescLayout,
+                            rootView.impKeyLayout
+                        )
+                    ) {
                         val name = rootView.impNameLayout.editText!!.text.toString()
                         val author = rootView.impAuthorLayout.editText!!.text.toString()
                         val description = rootView.impDescLayout.editText!!.text.toString()
@@ -287,14 +336,15 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
                         prefs["type"] = type
 
                         ProjectManager.importProject(
-                                this,
-                                file.parentFile.path,
-                                name,
-                                author,
-                                description,
-                                keywords,
-                                projectAdapter,
-                                binding.coordinatorLayout)
+                            this,
+                            file.parentFile.path,
+                            name,
+                            author,
+                            description,
+                            keywords,
+                            projectAdapter,
+                            binding.coordinatorLayout
+                        )
 
                         createDialog.dismiss()
                     }
@@ -307,7 +357,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
 
     override fun onQueryTextChange(newText: String): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
-        DataValidator.removeBroken(this,contentsList!!)
+        DataValidator.removeBroken(this, contentsList!!)
         val iterator = contentsList!!.iterator()
         while (iterator.hasNext()) {
             if (!iterator.next().toLowerCase(Locale.getDefault()).contains(newText)) {
@@ -315,15 +365,25 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
             }
         }
 
-        projectAdapter = ProjectAdapter(this@WebIdeHomeActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        projectAdapter = ProjectAdapter(
+            this@WebIdeHomeActivity,
+            contentsList!!,
+            binding.coordinatorLayout,
+            binding.projectList
+        )
         binding.projectList.adapter = projectAdapter
         return true
     }
 
     override fun onClose(): Boolean {
         contentsList = ArrayList(Arrays.asList(*contents!!))
-        DataValidator.removeBroken(this,contentsList!!)
-        projectAdapter = ProjectAdapter(this@WebIdeHomeActivity, contentsList!!, binding.coordinatorLayout, binding.projectList)
+        DataValidator.removeBroken(this, contentsList!!)
+        projectAdapter = ProjectAdapter(
+            this@WebIdeHomeActivity,
+            contentsList!!,
+            binding.coordinatorLayout,
+            binding.projectList
+        )
         binding.projectList.adapter = projectAdapter
         return false
     }
@@ -334,10 +394,10 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener, Sea
         private const val SETTINGS_CODE = 101
         private const val IMPORT_PROJECT = 102
 
-        fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
-            return Intent(context, WebIdeHomeActivity::class.java).apply {
-                putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
-            }
-        }
+//        fun newIntent(context: Context, mode: Mode, retake: Boolean = false): Intent {
+//            return Intent(context, WebIdeHomeActivity::class.java).apply {
+//                putExtras(WebIdeHomeActivityArgs(mode, retake).toBundle()!!)
+//            }
+//        }
     }
 }
