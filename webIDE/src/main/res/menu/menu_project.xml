@@ -4,7 +4,8 @@
     <item
         android:id="@+id/action_import_file"
         android:title="@string/import_not_java"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
 
     <item
         android:title="@string/git"
@@ -90,7 +91,8 @@
     <item
         android:id="@+id/action_analyze"
         android:title="Analyze"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_run"
