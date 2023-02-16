@@ -11,7 +11,6 @@ import org.navgurukul.webIDE.R
 import org.navgurukul.webide.extensions.copyInputStreamToFile
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.ui.adapter.ProjectAdapter
-import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.editor.ProjectFiles
 import timber.log.Timber
 import java.io.File
@@ -24,7 +23,17 @@ object ProjectManager {
 
     val TYPES = arrayOf("Default")
 
-    fun generate(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?, adapter: ProjectAdapter, view: View, type: Int) {
+    fun generate(
+        context: Context,
+        name: String,
+        author: String,
+        description: String,
+        keywords: String,
+        stream: InputStream?,
+        adapter: ProjectAdapter,
+        view: View,
+        type: Int
+    ) {
         var nameNew = name
         var counter = 1
         while (File(context.ROOT_PATH() + File.separator + nameNew).exists()) {
@@ -45,7 +54,14 @@ object ProjectManager {
         }
     }
 
-    private fun generateDefault(context: Context, name: String, author: String, description: String, keywords: String, stream: InputStream?): Boolean {
+    private fun generateDefault(
+        context: Context,
+        name: String,
+        author: String,
+        description: String,
+        keywords: String,
+        stream: InputStream?
+    ): Boolean {
         val projectFile = File("${context.ROOT_PATH()}/$name")
         val cssFile = File(projectFile, "css")
         val jsFile = File(projectFile, "js")
@@ -56,14 +72,23 @@ object ProjectManager {
             cssFile.mkdirs()
             jsFile.mkdirs()
 
-            File(projectFile, "index.html").writeText(ProjectFiles.getHtml(context, "default", name, author, description, keywords))
+            File(projectFile, "index.html").writeText(
+                ProjectFiles.getHtml(
+                    context,
+                    "default",
+                    name,
+                    author,
+                    description,
+                    keywords
+                )
+            )
             File(cssFile, "style.css").writeText(ProjectFiles.getCss(context, "default"))
             File(jsFile, "main.js").writeText(ProjectFiles.getJs(context, "default"))
 
             if (stream == null) {
                 copyIcon(context, name)
             } else {
-                copyIcon(context,name, stream)
+                copyIcon(context, name, stream)
             }
         } catch (e: IOException) {
             Timber.e(e)
@@ -73,7 +98,16 @@ object ProjectManager {
         return true
     }
 
-    fun importProject(context: Context, fileStr: String, name: String, author: String, description: String, keywords: String, adapter: ProjectAdapter, view: View) {
+    fun importProject(
+        context: Context,
+        fileStr: String,
+        name: String,
+        author: String,
+        description: String,
+        keywords: String,
+        adapter: ProjectAdapter,
+        view: View
+    ) {
         val file = File(fileStr)
         var nameNew = name
         var counter = 1
@@ -89,7 +123,16 @@ object ProjectManager {
 
             val index = File(outFile, "index.html")
             if (!index.exists()) {
-                index.writeText(ProjectFiles.getHtml(context, "import", nameNew, author, description, keywords))
+                index.writeText(
+                    ProjectFiles.getHtml(
+                        context,
+                        "import",
+                        nameNew,
+                        author,
+                        description,
+                        keywords
+                    )
+                )
             }
         } catch (e: IOException) {
             Timber.e(e)
@@ -101,9 +144,9 @@ object ProjectManager {
         view.snack(R.string.project_success, Snackbar.LENGTH_SHORT)
     }
 
-    fun isValid(context: Context,string: String): Boolean = getIndexFile(context,string) != null
+    fun isValid(context: Context, string: String): Boolean = getIndexFile(context, string) != null
 
-    fun deleteProject(context: Context,name: String) {
+    fun deleteProject(context: Context, name: String) {
         try {
             File("${context.ROOT_PATH()}/$name").deleteRecursively()
         } catch (e: IOException) {
@@ -113,13 +156,18 @@ object ProjectManager {
     }
 
     private fun getFaviconFile(dir: File) =
-            dir.walkTopDown().filter { it.name == "favicon.ico" }.firstOrNull()
+        dir.walkTopDown().filter { it.name == "favicon.ico" }.firstOrNull()
 
-    fun getIndexFile(context: Context,project: String) =
-            File("${context.ROOT_PATH()}/$project").walkTopDown()
-                    .filter { it.name == "index.html" }.firstOrNull()
+    fun getIndexFile(context: Context, project: String) =
+        File("${context.ROOT_PATH()}/$project").walkTopDown()
+            .filter { it.name == "index.html" }.firstOrNull()
 
-    fun getRelativePath(context: Context,file: File, projectName: String) = file.path.replace(File("${context.ROOT_PATH()}/$projectName").path, "")
+    fun getAllFile(context: Context, project: String) =
+        File("${context.ROOT_PATH()}/$project").walkTopDown()
+            .filter { it.name == "main.js" || it.name == "style.css" || it.name == "favicon.ico"}
+
+    fun getRelativePath(context: Context, file: File, projectName: String) =
+        file.path.replace(File("${context.ROOT_PATH()}/$projectName").path, "")
 
     fun getFavicon(context: Context, name: String): Bitmap {
         val faviconFile = getFaviconFile(File(context.ROOT_PATH() + File.separator + name))
@@ -134,7 +182,8 @@ object ProjectManager {
         try {
             val manager = context.assets
             val stream = manager.open("web/favicon.ico")
-            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
+            val output =
+                File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
             output.copyInputStreamToFile(stream)
             stream.close()
         } catch (e: Exception) {
@@ -142,9 +191,10 @@ object ProjectManager {
         }
     }
 
-    private fun copyIcon(context: Context,name: String, stream: InputStream) {
+    private fun copyIcon(context: Context, name: String, stream: InputStream) {
         try {
-            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
+            val output =
+                File(context.ROOT_PATH() + File.separator + name + File.separator + "images" + File.separator + "favicon.ico")
             output.copyInputStreamToFile(stream)
             stream.close()
         } catch (e: Exception) {
@@ -195,7 +245,8 @@ object ProjectManager {
     fun importFile(context: Context, name: String, fileUri: Uri, fileName: String): Boolean {
         try {
             val inputStream = context.contentResolver.openInputStream(fileUri)
-            val output = File(context.ROOT_PATH() + File.separator + name + File.separator + fileName)
+            val output =
+                File(context.ROOT_PATH() + File.separator + name + File.separator + fileName)
             output.copyInputStreamToFile(inputStream!!)
             inputStream.close()
         } catch (e: Exception) {
@@ -211,6 +262,11 @@ object ProjectManager {
         if (bytes < unit) return bytes.toString() + " B"
         val exp = (Math.log(bytes.toDouble()) / Math.log(unit.toDouble())).toInt()
         val pre = "kMGTPE"[exp - 1] + ""
-        return String.format(Locale.getDefault(), "%.1f %sB", bytes / Math.pow(unit.toDouble(), exp.toDouble()), pre)
+        return String.format(
+            Locale.getDefault(),
+            "%.1f %sB",
+            bytes / Math.pow(unit.toDouble(), exp.toDouble()),
+            pre
+        )
     }
 }

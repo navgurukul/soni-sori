@@ -102,7 +102,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener,
                     when (i) {
                         0 -> {
                             val rootView =
-                                DialogCreateBinding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
+                                DialogCreate2Binding.inflate(LayoutInflater.from(this@WebIdeHomeActivity))
                             rootView.typeSpinner.adapter = ArrayAdapter(
                                 this@WebIdeHomeActivity,
                                 android.R.layout.simple_list_item_1,

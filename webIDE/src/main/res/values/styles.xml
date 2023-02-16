@@ -1,9 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="symbolColor">@android:color/white</item>
@@ -11,9 +11,9 @@
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccentNight</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar.Dark</item>
         <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="symbolColor">@android:color/white</item>
@@ -23,14 +23,14 @@
     <style name="AppTheme.Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorAccent">@android:color/white</item>
     </style>
 
     <style name="AppTheme.Toolbar.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorAccent">@android:color/white</item>
     </style>
 

@@ -24,11 +24,10 @@ import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
-import org.merakilearn.util.webide.Prefs.get
-import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.adapter.ProjectAdapter
 import org.merakilearn.util.webide.project.DataValidator
@@ -71,7 +70,7 @@ class PlaygroundFragment : BaseFragment() {
                 val viewState = viewModel.viewState.value
                 viewState?.let { state ->
                     if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
-                        ScratchActivity.start(requireContext())
+                      //  ScratchActivity.start(requireContext())
                     }
                 }
                 if (isLongClick)

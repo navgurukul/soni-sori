@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -82,6 +83,9 @@ class ProjectActivity : BaseActivity() {
             arrayListOf(indexFile.path)
         }
 
+        ProjectManager.getAllFile(this, projectName).forEach {
+            projectViewModel.addOpenFile(it.path)
+        }
         fileSpinner = Spinner(this).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
