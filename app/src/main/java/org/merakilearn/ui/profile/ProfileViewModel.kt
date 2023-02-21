@@ -74,7 +74,7 @@ class ProfileViewModel(
             updateFiles()
         }
         getEnrolledBatches()
-        val id = user.partner_id.toString()
+        val id = user.partnerId.toString()
         if (id != null) {
             checkPartner(id)
         }
@@ -288,29 +288,29 @@ data class ProfileViewState(
     val batches: List<Batches> = arrayListOf(),
 ) : ViewState
 
-sealed class ProfileViewEvents : ViewEvents {
-    class ShowToast(val text: String, val finishActivity: Boolean = false) : ProfileViewEvents()
-    class ShareText(val text: String) : ProfileViewEvents()
-    class OpenUrl(val url: String) : ProfileViewEvents()
-    class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
-    object RestartApp : ProfileViewEvents()
-    data class ShowEnrolledBatches(val batches: List<Batches>) : ProfileViewEvents()
-    data class BatchSelectClicked(val batch: Batches) : ProfileViewEvents()
-    data class ShowPartnerData(val partnerData: PartnerDataResponse) : ProfileViewEvents()
+sealed class ProfileViewEvents: ViewEvents {
+    class ShowToast(val text: String, val finishActivity: Boolean = false): ProfileViewEvents()
+    class ShareText(val text: String): ProfileViewEvents()
+    class OpenUrl(val url: String): ProfileViewEvents()
+    class ShowUpdateServerDialog(val serverUrl: String): ProfileViewEvents()
+    object RestartApp: ProfileViewEvents()
+    data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
+    data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse): ProfileViewEvents()
 }
 
-sealed class ProfileViewActions : ViewModelAction {
-    object ExpandFileList : ProfileViewActions()
-    object LogOut : ProfileViewActions()
-    object EditProfileClicked : ProfileViewActions()
-    class DeleteFile(val file: File) : ProfileViewActions()
-    class ShareFile(val file: File) : ProfileViewActions()
+sealed class ProfileViewActions: ViewModelAction {
+    object ExpandFileList: ProfileViewActions()
+    object LogOut: ProfileViewActions()
+    object EditProfileClicked: ProfileViewActions()
+    class DeleteFile(val file: File): ProfileViewActions()
+    class ShareFile(val file: File): ProfileViewActions()
     class UpdateProfile(val userName: String, val email: String) : ProfileViewActions()
-    object ExploreOpportunityClicked : ProfileViewActions()
-    object UpdateServerUrlClicked : ProfileViewActions()
-    class UpdateServerUrl(val serverUrl: String) : ProfileViewActions()
-    object ResetServerUrl : ProfileViewActions()
-    object PrivacyPolicyClicked : ProfileViewActions()
-    object RefreshPage : ProfileViewActions()
-    data class DropOut(val batchId: Int) : ProfileViewActions()
+    object ExploreOpportunityClicked: ProfileViewActions()
+    object UpdateServerUrlClicked: ProfileViewActions()
+    class UpdateServerUrl(val serverUrl: String): ProfileViewActions()
+    object ResetServerUrl: ProfileViewActions()
+    object PrivacyPolicyClicked: ProfileViewActions()
+    object RefreshPage: ProfileViewActions()
+    data class DropOut(val batchId: Int): ProfileViewActions()
 }

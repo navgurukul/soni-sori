@@ -46,6 +46,6 @@ data class LoginResponse(
         @Json(name = "rolesList")
         var rolesList: List<Any?>? = emptyList(),
         @Json(name = "partner_id")
-        val partner_id: Int? = null,
+        val partnerId: Int? = null,
     )
 }
