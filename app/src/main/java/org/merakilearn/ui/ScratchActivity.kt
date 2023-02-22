@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.merakilearn.R
 import org.merakilearn.datasource.UserRepo
@@ -220,22 +221,36 @@ class ScratchActivity : AppCompatActivity() {
                         when {
                             !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
                                 Log.d("going here", "On scratchActivity")
-                                scratchViewModel.postFile(datalinksave, fileName.text.trim().toString())
+                                val fileName = fileName.text.trim().toString()
+                                val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,fileName)
+                                }
+
+                                if(isSuccess){
+                                    dialog.dismiss()
+                                    showCodeSavedDialog()
+                                }
+                                else{
+                                    dialog.dismiss()
+                                }
 
 //                                scratchRepository.saveScratchFile(datalinksave,
 //                                    fileName.text.trim().toString(),
 //                                    false)
-                                dialog.dismiss()
-                                showCodeSavedDialog()
+
                             }
                             savedFile -> {
                                 Log.d("going here 2", "On Activity")
-                                scratchViewModel.postFile(datalinksave, fileName.text.trim().toString())
-//                                scratchRepository.saveScratchFile(datalinksave,
-//                                    fileName.text.trim().toString(),
-//                                    true)
-                                dialog.dismiss()
-                                showCodeSavedDialog()
+                                val fileName = fileName.text.trim().toString()
+                                val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,fileName)
+                                }
+
+                                if(isSuccess){
+                                    dialog.dismiss()
+                                    showCodeSavedDialog()
+                                }
+                                else{
+                                    dialog.dismiss()
+                                }
                             }
                             else -> {
                                 Toast.makeText(this@ScratchActivity,

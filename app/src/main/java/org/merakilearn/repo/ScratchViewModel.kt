@@ -73,13 +73,14 @@ class ScratchViewModel(
 //
 //    }
 
-    fun postFile( base64String: String, projectName: String) {
+    fun postFile( base64String: String, projectName: String)
+        : Boolean {
         val file = convertBase64StringToFile(base64String)
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
                 "file",
-                file.name,
+                projectName,
                 RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
             )
             .addFormDataPart(
@@ -90,6 +91,7 @@ class ScratchViewModel(
 
         val request = Request.Builder()
             .url("https://dev-api.navgurukul.org/scratch/FileUploadS3")
+            .addHeader("Authorization", "Bearer ${userRepo.getAuthToken()}")
             .post(requestBody)
             .build()
 
@@ -98,9 +100,13 @@ class ScratchViewModel(
 
         if (response.isSuccessful) {
             val responseBody = response.body?.string()
+            Log.w("ScratchViewModel", "Success -- ${responseBody}")
             println(responseBody)
+            return true
         } else {
+            Log.w("ScratchViewModel", "Request failed with code ${response.code}")
             println("Request failed with code ${response.code}")
+            return false
         }
     }
 
