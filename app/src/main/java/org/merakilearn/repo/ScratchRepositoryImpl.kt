@@ -1,14 +1,14 @@
 package org.merakilearn.repo
 
 import android.content.Context
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.realm.internal.Keep
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.navgurukul.playground.repo.PythonRepositoryImpl
 import java.io.*
-import java.util.*
 import android.util.Base64
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import org.merakilearn.datasource.UserRepo
 
 @Keep
 class ScratchRepositoryImpl(
@@ -62,6 +62,8 @@ class ScratchRepositoryImpl(
             val bfile = Base64.decode(base64Str, Base64.DEFAULT)
             bos.write(bfile)
             println("File Saved")
+            val requestFile = RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
+
 
         } catch (e: FileNotFoundException) {
             throw e

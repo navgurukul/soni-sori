@@ -5,14 +5,15 @@ import androidx.core.content.edit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.datasource.network.model.PartnerDataResponse
-import org.merakilearn.datasource.network.model.UserUpdate
+import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
+import retrofit2.Call
+import java.io.File
 
 class UserRepo(
     private val saralApi: SaralApi,
@@ -153,6 +154,30 @@ class UserRepo(
         return try {
             saralApi.getPartnerData(partnerId)
         }catch (ex:Exception){
+            throw ex
+        }
+    }
+
+    fun uploadScratchFile(file: File, projectName: String): Call<ResponseBody> {
+        return try {
+            saralApi.uploadFileToS3(file, projectName)
+        } catch (ex : Exception){
+            throw ex
+        }
+    }
+
+    suspend fun getScratchFiles(userID : Int) : List<GetScratchesResponse> {
+        return try {
+            saralApi.getScratchFiles(userID)
+        } catch (ex : Exception){
+            throw ex
+        }
+    }
+
+    suspend fun getScratchProject(projectId : Int) : GetScratchesResponse{
+        return try {
+            saralApi.getScratchProject(projectId)
+        } catch (ex :Exception){
             throw ex
         }
     }

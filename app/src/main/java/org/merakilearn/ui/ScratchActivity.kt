@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.webkit.*
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -19,8 +19,11 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.merakilearn.R
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.repo.ScratchRepositoryImpl
+import org.merakilearn.repo.ScratchViewModel
 import org.merakilearn.util.Constants
 import java.io.File
 
@@ -30,7 +33,9 @@ class ScratchActivity : AppCompatActivity() {
     lateinit var webView: WebView
     lateinit var progressBar: ProgressBar
     lateinit var scratchRepository: ScratchRepositoryImpl
+    lateinit var scratchViewModel: ScratchViewModel
 
+    private val userRepo: UserRepo by inject()
     lateinit var myRequest: PermissionRequest
 
     var file: File? = null
@@ -55,6 +60,8 @@ class ScratchActivity : AppCompatActivity() {
         scratchRepository = ScratchRepositoryImpl(this)
         file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
 
+        scratchViewModel = ScratchViewModel(this, userRepo)
+
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
@@ -70,8 +77,9 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
+
     fun onSave(globalBase64String: String) {
-        datalinksave =globalBase64String
+        datalinksave = globalBase64String
         showCodeSaveDialog()
     }
 
@@ -211,16 +219,21 @@ class ScratchActivity : AppCompatActivity() {
                     fileName.text.isNotEmpty() -> {
                         when {
                             !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
-                                scratchRepository.saveScratchFile(datalinksave,
-                                    fileName.text.trim().toString(),
-                                    false)
+                                Log.d("going here", "On scratchActivity")
+                                scratchViewModel.postFile(datalinksave, fileName.text.trim().toString())
+
+//                                scratchRepository.saveScratchFile(datalinksave,
+//                                    fileName.text.trim().toString(),
+//                                    false)
                                 dialog.dismiss()
                                 showCodeSavedDialog()
                             }
                             savedFile -> {
-                                scratchRepository.saveScratchFile(datalinksave,
-                                    fileName.text.trim().toString(),
-                                    true)
+                                Log.d("going here 2", "On Activity")
+                                scratchViewModel.postFile(datalinksave, fileName.text.trim().toString())
+//                                scratchRepository.saveScratchFile(datalinksave,
+//                                    fileName.text.trim().toString(),
+//                                    true)
                                 dialog.dismiss()
                                 showCodeSavedDialog()
                             }

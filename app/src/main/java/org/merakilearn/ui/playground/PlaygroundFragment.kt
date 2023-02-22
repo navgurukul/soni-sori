@@ -3,6 +3,8 @@ package org.merakilearn.ui.playground
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64.DEFAULT
+import android.util.Base64.encodeToString
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -21,14 +23,22 @@ import org.merakilearn.util.Constants
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.InputStream
+import java.net.URL
 import java.net.URLConnection
+import java.util.*
 
 class PlaygroundFragment : BaseFragment() {
 
     private val viewModel: PlaygroundViewModel by viewModel()
     private val navigator: MerakiNavigator by inject()
     var isLoading: Boolean = false
+
+    private var scratchFile : Array<String>? = null
+    private var scratchFileList: ArrayList<String>? = null
+//    private lateinit var projectAdapter: ProjectAdapter
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -79,6 +89,7 @@ class PlaygroundFragment : BaseFragment() {
                 }
             }
         }
+
 
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.title_playground),

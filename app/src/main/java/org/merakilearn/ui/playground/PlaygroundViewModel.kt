@@ -8,6 +8,7 @@ import org.merakilearn.datasource.PlaygroundRepo
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.repo.ScratchRepository
+import org.merakilearn.repo.ScratchViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -18,7 +19,8 @@ import java.io.File
 class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
-    private val scratchRepository: ScratchRepository
+    private val scratchRepository: ScratchRepository,
+    private val viewModel: ScratchViewModel
 ) :
     BaseViewModel<PlaygroundViewEvents, PlaygroundViewState>(PlaygroundViewState()) {
 
@@ -40,29 +42,35 @@ class PlaygroundViewModel(
         viewModelScope.launch {
             setList()
         }
+
+
     }
 
     private fun filterList() {
-        val list = playgroundsList ?: return
-        viewModelScope.launch(Dispatchers.Default) {
-            val filterList = list.filter {
-                val filterQuery = currentQuery?.let { currentQuery ->
-                    if (currentQuery.isNotEmpty()) {
-                        val wordsToCompare = (it.name).split(" ") + it.file.name.replaceAfterLast("_", "").removeSuffix("_").split(" ")
-                        wordsToCompare.find { word ->
-                            word.startsWith(
-                                currentQuery,
-                                true
-                            )
-                        } != null
-                    } else {
-                        true
-                    }
-                } ?: true
+        if (::playgroundsList.isInitialized) {
+            val list = playgroundsList ?: return
+            viewModelScope.launch(Dispatchers.Default) {
+                val filterList = list.filter {
+                    val filterQuery = currentQuery?.let { currentQuery ->
+                        if (currentQuery.isNotEmpty()) {
+                            val wordsToCompare =
+                                (it.name).split(" ") + it.file.name.replaceAfterLast("_", "")
+                                    .removeSuffix("_").split(" ")
+                            wordsToCompare.find { word ->
+                                word.startsWith(
+                                    currentQuery,
+                                    true
+                                )
+                            } != null
+                        } else {
+                            true
+                        }
+                    } ?: true
 
-                return@filter filterQuery
+                    return@filter filterQuery
+                }
+                updateState(filterList)
             }
-            updateState(filterList)
         }
     }
 
@@ -81,11 +89,13 @@ class PlaygroundViewModel(
                 file = file,
                 iconResource = R.drawable.ic_saved_file))
         }
-        val savedFiles2 = scratchRepository.fetchSavedFiles()
+        val savedFiles2 = viewModel.fetchSavedFiles()
+//        val savedFiles2 = scratchRepository.fetchSavedFiles()
         for (file in savedFiles2) {
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.SCRATCH_FILE,
-                name = file.name.removeSuffix(".sb3"),
-                file = file,
+//                name = file.name.removeSuffix(".sb3"),
+                name = file.projectName.removeSuffix(".sb3"),
+//                file = file.scratch_url,
                 iconResource = R.drawable.ic_scratch))
         }
 
