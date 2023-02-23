@@ -1,18 +1,20 @@
 package org.merakilearn.ui
 
 import android.Manifest
+import java.util.Base64
 import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,10 +29,12 @@ import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.repo.ScratchViewModel
 import org.merakilearn.util.Constants
 import java.io.File
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 
 class ScratchActivity : AppCompatActivity() {
-
+    lateinit var s3link : String
     lateinit var webView: WebView
     lateinit var progressBar: ProgressBar
     lateinit var scratchRepository: ScratchRepositoryImpl
@@ -47,6 +51,7 @@ class ScratchActivity : AppCompatActivity() {
     var datalinksave: String = ""
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,7 +64,9 @@ class ScratchActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         scratchRepository = ScratchRepositoryImpl(this)
-        file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
+//        file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
+        s3link = intent.extras?.getString(Constants.INTENT_EXTRA_KEY_FILE).toString()
+
 
         scratchViewModel = ScratchViewModel(this, userRepo)
 
@@ -164,6 +171,7 @@ class ScratchActivity : AppCompatActivity() {
             return false
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
 
@@ -176,21 +184,24 @@ class ScratchActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadSavedFile(file: File?) {
 
         if (progressBar.visibility == View.VISIBLE)
             progressBar.visibility = View.GONE
 
         webView.loadUrl("javascript:openLoaderScreen();")
+        val base64 = s3LinkToBase64(s3link)
 
         if (file != null) {
             savedFileName = file.name
-            datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
+            datalinkload = base64
         } else {
             savedFileName = "defaultMerakiScratchFile.sb3"
-            datalinkload = Base64.encodeToString(application.assets.open(
-                "defaultMerakiScratchFile.sb3").readBytes(), Base64.DEFAULT)
+            datalinkload = Base64.getEncoder().encodeToString(application.assets.open(
+                "defaultMerakiScratchFile.sb3").readBytes())
         }
+
 
         webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
 
@@ -199,6 +210,22 @@ class ScratchActivity : AppCompatActivity() {
         }, 5000)
 
     }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun s3LinkToBase64(s3Link: String): String {
+        // Extract the S3 key from the link by decoding the URL-encoded string
+        val key = URLDecoder.decode(s3Link.substringAfterLast("/"),
+            StandardCharsets.UTF_8.toString()
+        )
+
+        // Encode the key as a Base64 string using the method reference syntax
+        val base64Key = Base64.getEncoder().encodeToString(key.toByteArray())
+
+        return base64Key
+    }
+
 
     private fun showCodeSaveDialog() {
         val view: View = layoutInflater.inflate(R.layout.alert_save, null)

@@ -96,7 +96,8 @@ class PlaygroundViewModel(
 //                name = file.name.removeSuffix(".sb3"),
                 name = file.projectName.removeSuffix(".sb3"),
 //                file = file.scratch_url,
-                iconResource = R.drawable.ic_scratch))
+                iconResource = R.drawable.ic_scratch,
+                s3link = file.s3link))
         }
 
         updateState(playgroundsList)
@@ -110,7 +111,7 @@ class PlaygroundViewModel(
                 playgroundItemModel.file))
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(
-                playgroundItemModel.file))
+                playgroundItemModel.s3link))
         }
     }
 
@@ -128,7 +129,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
-    class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
+    class OpenScratchWithFile(val s3link: String) : PlaygroundViewEvents()
 
 }
 

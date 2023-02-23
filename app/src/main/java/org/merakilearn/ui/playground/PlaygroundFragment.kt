@@ -83,8 +83,11 @@ class PlaygroundFragment : BaseFragment() {
                     startActivity(intent)
                 }
                 is PlaygroundViewEvents.OpenScratchWithFile -> {
+                    Toast.makeText(requireContext(), it.s3link, Toast.LENGTH_SHORT).show()
+                    //accessing s3link from the list for particular project
+
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
-                    intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
+                    intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.s3link)
                     startActivity(intent)
                 }
             }

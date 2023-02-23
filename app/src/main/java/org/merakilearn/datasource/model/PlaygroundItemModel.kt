@@ -8,6 +8,7 @@ data class PlaygroundItemModel(
     val name: String = "",
     val file: File = File(" "),
     @DrawableRes val iconResource: Int,
+    val s3link: String = ""
 )
 
 enum class PlaygroundTypes {
