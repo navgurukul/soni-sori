@@ -28,3 +28,14 @@ data class GetScratchesResponse(
     @Json(name = "updatedAt")
     val updateAt : String
 )
+
+@JsonClass(generateAdapter = true)
+data class DeleteScratchResponse(
+    @Json(name = "count")
+    val count : Int,
+    @Json(name = "status")
+    val status : String,
+    @Json(name = "message")
+    val message : String
+
+)

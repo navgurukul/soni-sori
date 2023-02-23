@@ -5,8 +5,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.datasource.PlaygroundRepo
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.datasource.network.model.GetScratchesResponse
 import org.merakilearn.repo.ScratchRepository
 import org.merakilearn.repo.ScratchViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -20,12 +22,16 @@ class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
     private val scratchRepository: ScratchRepository,
-    private val viewModel: ScratchViewModel
+    private val viewModel: ScratchViewModel,
+    private val userRepo: UserRepo,
 ) :
     BaseViewModel<PlaygroundViewEvents, PlaygroundViewState>(PlaygroundViewState()) {
 
+    private lateinit var project : GetScratchesResponse
     private var currentQuery: String? = null
     private lateinit var playgroundsList: MutableList<PlaygroundItemModel>
+    var file: File? = null
+    var projectId : String = ""
 
     fun handle(action: PlaygroundActions) {
         when (action) {
@@ -42,7 +48,6 @@ class PlaygroundViewModel(
         viewModelScope.launch {
             setList()
         }
-
 
     }
 
@@ -90,13 +95,14 @@ class PlaygroundViewModel(
                 iconResource = R.drawable.ic_saved_file))
         }
         val savedFiles2 = viewModel.fetchSavedFiles()
-//        val savedFiles2 = scratchRepository.fetchSavedFiles()
         for (file in savedFiles2) {
+            project = file
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.SCRATCH_FILE,
 //                name = file.name.removeSuffix(".sb3"),
                 name = file.projectName.removeSuffix(".sb3"),
 //                file = file.scratch_url,
-                iconResource = R.drawable.ic_scratch))
+                iconResource = R.drawable.ic_scratch)
+            )
         }
 
         updateState(playgroundsList)
@@ -111,6 +117,8 @@ class PlaygroundViewModel(
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(
                 playgroundItemModel.file))
+            //            PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(project.s3link, project.projectId))
+
         }
     }
 
@@ -121,6 +129,21 @@ class PlaygroundViewModel(
             init()
         }
     }
+
+//    private fun getScratchProject(): Boolean {
+//        return try {
+//            viewModelScope.launch {
+//                project = userRepo.getScratchProject(projectId)
+//                val s3Url = project.s3link
+//            }
+//            true
+//        } catch (e : Exception){
+//            println("Request failed with exception: $e")
+//            false
+//        }
+//    }
+
+
 }
 
 sealed class PlaygroundViewEvents : ViewEvents {

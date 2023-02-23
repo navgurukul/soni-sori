@@ -1,12 +1,14 @@
 package org.merakilearn.repo
 
-import android.content.Context
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.DeleteScratchResponse
 import org.merakilearn.datasource.network.model.GetScratchesResponse
 import org.merakilearn.datasource.network.model.LoginResponse
 import java.io.*
@@ -14,33 +16,12 @@ import java.nio.charset.Charset
 
 
 class ScratchViewModel(
-    private val context : Context,
     private val userRepo: UserRepo,
 ): ViewModel() {
     private val DIRECTORY_NAME = "Scratch"
 
 
-    private val user: LoginResponse.User
-
-    init {
-        user = userRepo.getCurrentUser()!!
-    }
-
-//     suspend fun fetchSavedFiles(): Array<File> {
-//        return withContext(Dispatchers.IO) {
-//            val directory = File(
-//                context.getExternalFilesDir(null),
-//                ScratchRepositoryImpl.DIRECTORY_NAME
-//            ).also {
-//                it.mkdirs()
-//            }
-//            directory.listFiles() ?: emptyArray()
-//
-//            try {
-//                userRepo.getScratchFiles(user.id.toInt())
-//            }
-//        }
-//    }
+    private val user: LoginResponse.User = userRepo.getCurrentUser()!!
 
     suspend fun fetchSavedFiles(): List<GetScratchesResponse>{
            return try {
@@ -50,30 +31,22 @@ class ScratchViewModel(
             }
     }
 
-    suspend fun getScratchProject(projectId : Int) : GetScratchesResponse {
+    suspend fun getScratchProject(projectId: String) {
+        viewModelScope.launch {
+            userRepo.getScratchProject(projectId).s3link
+        }
+
+    }
+
+    suspend fun deleteScratchProject(projectId : String): DeleteScratchResponse {
         return try {
-            userRepo.getScratchProject(projectId)
+            userRepo.deleteScratchProject(projectId)
         }catch (e : Exception){
             throw e
         }
     }
 
-//    suspend fun saveScratchFile(base64Str: String, fileName: String, existingFile: Boolean) {
-////        var finalFileName = ""
-////        finalFileName = "$fileName.sb3"
-////        val file = convertBase64StringToFile(base64Str)
-////
-////        try {
-////            userRepo.uploadScratchFile(file, fileName)
-////        }catch (e: Exception){
-////
-////        }
-//
-//
-//
-//    }
-
-    fun postFile( base64String: String, projectName: String)
+    fun postFile( base64String: String, projectName: String,existingFile: Boolean)
         : Boolean {
         val file = convertBase64StringToFile(base64String)
         val requestBody = MultipartBody.Builder()
@@ -110,14 +83,12 @@ class ScratchViewModel(
         }
     }
 
-    fun convertBase64StringToFile(base64String: String): File {
+     private fun convertBase64StringToFile(base64String: String): File {
         val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
         val fileContent = decodedBytes.toString(Charset.defaultCharset())
         val file = File.createTempFile("sb3", null)
         file.writeText(fileContent)
         return file
     }
-
-
 
 }
