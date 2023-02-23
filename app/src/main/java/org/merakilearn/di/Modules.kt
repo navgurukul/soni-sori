@@ -43,8 +43,8 @@ val viewModelModule = module {
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { PlaygroundViewModel( get(),get(), get(),get()) }
-    viewModel { ScratchViewModel(get(), get()) }
+    viewModel { PlaygroundViewModel( get(),get(), get(),get(),get()) }
+    viewModel { ScratchViewModel(get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,

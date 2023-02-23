@@ -1,44 +1,32 @@
 package org.merakilearn.ui.playground
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Base64.DEFAULT
-import android.util.Base64.encodeToString
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.repo.ScratchViewModel
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.InputStream
-import java.net.URL
-import java.net.URLConnection
-import java.util.*
 
 class PlaygroundFragment : BaseFragment() {
 
     private val viewModel: PlaygroundViewModel by viewModel()
     private val navigator: MerakiNavigator by inject()
+    private val scratchViewModel : ScratchViewModel by viewModel()
     var isLoading: Boolean = false
-
-    private var scratchFile : Array<String>? = null
-    private var scratchFileList: ArrayList<String>? = null
-//    private lateinit var projectAdapter: ProjectAdapter
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -142,5 +130,11 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.handle(PlaygroundActions.RefreshLayout)
     }
 
+//    fun openScratchWithFile(file: File, projectId : String){
+//        viewModel.getScratchProject(projectId)
+//        val intent = Intent(requireContext(), ScratchActivity::class.java)
+//        intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, file)
+//        startActivity(intent)
+//    }
 
 }

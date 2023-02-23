@@ -174,9 +174,16 @@ class UserRepo(
         }
     }
 
-    suspend fun getScratchProject(projectId : Int) : GetScratchesResponse{
+    suspend fun getScratchProject(projectId: String) : GetScratchesResponse{
         return try {
-            saralApi.getScratchProject(projectId)
+            saralApi.getScratchProject(projectId.toInt())
+        } catch (ex :Exception){
+            throw ex
+        }
+    }
+    suspend fun deleteScratchProject(projectId: String) : DeleteScratchResponse{
+        return try {
+            saralApi.deleteScratchProject(projectId)
         } catch (ex :Exception){
             throw ex
         }

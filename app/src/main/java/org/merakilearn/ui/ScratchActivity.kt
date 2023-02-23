@@ -266,7 +266,6 @@ class ScratchActivity : AppCompatActivity() {
 
                             }
                             savedFile -> {
-                                Log.d("going here 2", "On Activity")
                                 val fileName = fileName.text.trim().toString()
                                 val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,fileName)
                                 }

@@ -67,4 +67,8 @@ interface SaralApi {
         @Path(value = "project_id" )projectId : Int
     ) : GetScratchesResponse
 
+    @DELETE("scratch/{project_id}")
+    suspend fun deleteScratchProject(
+        @Path(value = "project_id") projectId: String
+    ) : DeleteScratchResponse
 }
