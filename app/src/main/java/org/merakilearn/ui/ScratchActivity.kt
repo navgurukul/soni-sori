@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
@@ -25,11 +26,7 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.repo.ScratchViewModel
 import org.merakilearn.util.Constants
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
-import java.nio.charset.Charset
 
 
 class ScratchActivity : AppCompatActivity() {
@@ -48,8 +45,6 @@ class ScratchActivity : AppCompatActivity() {
     var loadSavedFileCalled: Boolean = false
     var datalinkload: String = ""
     var datalinksave: String = ""
-    var datalinksave2: String = ""
-    var s3url : String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,10 +61,7 @@ class ScratchActivity : AppCompatActivity() {
         scratchRepository = ScratchRepositoryImpl(this)
         file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
 
-//        s3url = intent.getStringExtra(Constants.INTENT_EXTRA_KEY_FILE).toString()
-//        file = convertBase64StringToFile(datalinksave2)
-
-        scratchViewModel = ScratchViewModel(userRepo)
+        scratchViewModel = ScratchViewModel(this, userRepo)
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()
@@ -193,8 +185,7 @@ class ScratchActivity : AppCompatActivity() {
 
         if (file != null) {
             savedFileName = file.name
-            datalinkload = datalinksave2
-
+            datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
         } else {
             savedFileName = "defaultMerakiScratchFile.sb3"
             datalinkload = Base64.encodeToString(application.assets.open(
@@ -229,10 +220,11 @@ class ScratchActivity : AppCompatActivity() {
                     fileName.text.isNotEmpty() -> {
                         when {
                             !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
-                                val projectName = fileName.text.trim().toString()
-                                val isSuccess = withContext(Dispatchers.IO){
-                                    scratchViewModel.postFile(datalinksave, projectName, false)
+                                Log.d("going here", "On scratchActivity")
+                                val fileName = fileName.text.trim().toString()
+                                val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,fileName)
                                 }
+
                                 if(isSuccess){
                                     dialog.dismiss()
                                     showCodeSavedDialog()
@@ -241,10 +233,14 @@ class ScratchActivity : AppCompatActivity() {
                                     dialog.dismiss()
                                 }
 
+//                                scratchRepository.saveScratchFile(datalinksave,
+//                                    fileName.text.trim().toString(),
+//                                    false)
+
                             }
                             savedFile -> {
-                                val projectName = fileName.text.trim().toString()
-                                val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,projectName, true)
+                                val fileName = fileName.text.trim().toString()
+                                val isSuccess = withContext(Dispatchers.IO){ scratchViewModel.postFile(datalinksave,fileName)
                                 }
 
                                 if(isSuccess){
@@ -290,27 +286,4 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-//    private fun convertBase64StringToFile(base64String: String): File {
-//        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-//        val fileContent = decodedBytes.toString(Charset.defaultCharset())
-//        val file = File.createTempFile("sb3", null)
-//        file.writeText(fileContent)
-//        return file
-//    }
-//
-//    fun s3UrlToBase64() {
-//        val url = URL(s3url)
-//        val conn = url.openConnection() as HttpURLConnection
-//        conn.requestMethod = "GET"
-//        val inputStream = conn.inputStream
-//        val outputStream = ByteArrayOutputStream()
-//        val buffer = ByteArray(1024)
-//        var length: Int
-//        while (inputStream.read(buffer).also { length = it } != -1) {
-//            outputStream.write(buffer, 0, length)
-//        }
-//        val data = outputStream.toByteArray()
-//        datalinksave2 = Base64.encodeToString(data, Base64.DEFAULT)
-//
-//    }
 }

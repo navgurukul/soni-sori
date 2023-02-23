@@ -1,14 +1,12 @@
 package org.merakilearn.repo
 
+import android.content.Context
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.merakilearn.datasource.UserRepo
-import org.merakilearn.datasource.network.model.DeleteScratchResponse
 import org.merakilearn.datasource.network.model.GetScratchesResponse
 import org.merakilearn.datasource.network.model.LoginResponse
 import java.io.*
@@ -16,7 +14,8 @@ import java.nio.charset.Charset
 
 
 class ScratchViewModel(
-    private val userRepo: UserRepo,
+    private val context: Context,
+    private val userRepo: UserRepo
 ): ViewModel() {
     private val DIRECTORY_NAME = "Scratch"
 
@@ -31,22 +30,15 @@ class ScratchViewModel(
             }
     }
 
-    suspend fun getScratchProject(projectId: String) {
-        viewModelScope.launch {
-            userRepo.getScratchProject(projectId).s3link
-        }
-
-    }
-
-    suspend fun deleteScratchProject(projectId : String): DeleteScratchResponse {
+    suspend fun getScratchProject(projectId : Int) : GetScratchesResponse {
         return try {
-            userRepo.deleteScratchProject(projectId)
+            userRepo.getScratchProject(projectId.toString())
         }catch (e : Exception){
             throw e
         }
     }
 
-    fun postFile( base64String: String, projectName: String,existingFile: Boolean)
+    fun postFile( base64String: String, projectName: String)
         : Boolean {
         val file = convertBase64StringToFile(base64String)
         val requestBody = MultipartBody.Builder()
