@@ -259,18 +259,18 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showDialogToOverrideCode() {
-        AlertDialog.Builder(requireContext()).setMessage(getString(R.string.replace_code))
-            .setPositiveButton(
-                getString(android.R.string.ok)
-            ) { dialog, _ ->
-                dialog.dismiss()
+//        AlertDialog.Builder(requireContext()).setMessage(getString(R.string.replace_code))
+//            .setPositiveButton(
+//                getString(android.R.string.ok)
+//            ) { dialog, _ ->
+//                dialog.dismiss()
                 viewModel.handle(PythonEditorViewActions.OnOverrideCode)
-            }.setNegativeButton(
-                getString(android.R.string.cancel)
-            ) { dialog, _ ->
-                dialog.dismiss()
-            }.setCancelable(false)
-            .create().show()
+//            }.setNegativeButton(
+//                getString(android.R.string.cancel)
+//            ) { dialog, _ ->
+//                dialog.dismiss()
+//            }.setCancelable(false)
+//            .create().show()
     }
 
     private fun createBottomSheet() {
