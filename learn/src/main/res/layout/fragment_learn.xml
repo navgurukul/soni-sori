@@ -86,15 +86,6 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_course" />
 
-                <include
-                    android:id="@+id/certificate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_3x"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerviewCourse"
-                    app:layout_constraintStart_toStartOf="parent"
-                    layout="@layout/item_certificate"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ProgressBar
@@ -139,7 +130,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="@dimen/spacing_4x"
                     style="?textAppearanceBody2"
-                    android:text="@string/have_you_completed_the_overview"/>
+                    android:text="Have you completed the overview?"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonTakeTest"
