@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
@@ -71,6 +72,12 @@ class ScratchActivity : AppCompatActivity() {
     fun onSave(globalBase64String: String) {
         datalinksave = globalBase64String
         showCodeSaveDialog()
+    }
+
+    @JavascriptInterface
+    fun returnFile(): String {
+        datalinkload = Base64.encodeToString(file!!.readBytes(), 2)
+        return datalinkload
     }
 
     @JavascriptInterface
@@ -182,17 +189,23 @@ class ScratchActivity : AppCompatActivity() {
         webView.loadUrl("javascript:openLoaderScreen();")
 
         if (file != null) {
+            Log.d("going here test", "testing 1");
             savedFileName = file.name
             datalinkload = Base64.encodeToString(file.readBytes(), 2)
-            val fileUri = Uri.fromFile(file)
-            webView.loadUrl("javascript:loadProjectUsingFile(" + fileUri.toString() + ")")
+            Log.d("datalinkload", datalinkload)
+            webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName +"')")
+//            val fileUri = Uri.fromFile(file)
+//            webView.loadUrl("javascript:loadProjectUsingFile()")
         } else {
+            Log.d("going here test", "testing 2");
             savedFileName = "defaultFile.sb3"
             datalinkload = Base64.encodeToString(application.assets.open(
                 "defaultFile.sb3").readBytes(), 2)
         }
 
-//        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+        Log.d("exited loop", "exiting here");
+        Log.d("savedFile", savedFileName);
+        Log.d("dataLinkLoad", datalinkload);
 
 
 
