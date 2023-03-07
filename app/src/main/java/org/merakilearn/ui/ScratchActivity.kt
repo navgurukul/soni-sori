@@ -3,6 +3,7 @@ package org.merakilearn.ui
 import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -183,13 +184,17 @@ class ScratchActivity : AppCompatActivity() {
         if (file != null) {
             savedFileName = file.name
             datalinkload = Base64.encodeToString(file.readBytes(), 2)
+            val fileUri = Uri.fromFile(file)
+            webView.loadUrl("javascript:loadProjectUsingFile(" + fileUri.toString() + ")")
         } else {
             savedFileName = "defaultFile.sb3"
             datalinkload = Base64.encodeToString(application.assets.open(
                 "defaultFile.sb3").readBytes(), 2)
         }
 
-        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+//        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+
+
 
         Handler(Looper.getMainLooper()).postDelayed({
             webView.loadUrl("javascript:closeLoaderScreen();")
