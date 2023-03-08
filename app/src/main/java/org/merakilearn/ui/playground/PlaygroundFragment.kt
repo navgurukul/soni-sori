@@ -1,8 +1,11 @@
 package org.merakilearn.ui.playground
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -21,6 +24,7 @@ import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
+import java.io.OutputStream
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -28,6 +32,7 @@ class PlaygroundFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
     private val scratchViewModel : ScratchViewModel by viewModel()
     var isLoading: Boolean = false
+    lateinit var exportFile: File
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -107,6 +112,18 @@ class PlaygroundFragment : BaseFragment() {
                     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     startActivity(Intent.createChooser(intent, "Share File"))
                 }
+                R.id.exportSavedFile -> {
+                    var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
+                    if(mimeType.isNullOrEmpty())
+                        mimeType = "application/octet-stream"
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = mimeType
+                        putExtra(Intent.EXTRA_TITLE, file.name)
+                        exportFile = file
+                    }
+                    startActivityForResult(intent, 100)
+                }
             }
             true
         }
@@ -126,6 +143,26 @@ class PlaygroundFragment : BaseFragment() {
                 return false
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+            val fileUri = data!!.data
+            try {
+                val outputStream = requireContext().contentResolver.openOutputStream(fileUri!!)
+                outputStream?.write(exportFile.readBytes())
+                outputStream?.close()
+                Toast.makeText(requireContext(),"File exported successfully!", Toast.LENGTH_SHORT).show()
+            }
+            catch (e: Exception){
+                Toast.makeText(requireContext(),"File exported incorrectly!", Toast.LENGTH_SHORT).show()
+                println(e.localizedMessage)
+            }
+        } else if (requestCode == 100 && resultCode != Activity.RESULT_OK){
+            Toast.makeText(requireContext(), "File export failed!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onResume() {

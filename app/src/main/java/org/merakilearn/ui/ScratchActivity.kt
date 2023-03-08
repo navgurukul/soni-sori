@@ -4,10 +4,12 @@ import android.Manifest
 import java.util.Base64
 import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.webkit.*
@@ -42,7 +44,6 @@ class ScratchActivity : AppCompatActivity() {
 
     private val userRepo: UserRepo by inject()
     lateinit var myRequest: PermissionRequest
-
     var file: File? = null
     var savedFile: Boolean = false
     var savedFileName: String = ""
@@ -92,17 +93,22 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
+    fun returnFile(): String {
+        datalinkload = Base64.encodeToString(file!!.readBytes(), 2)
+        return datalinkload
+    }
+
+    @JavascriptInterface
+    fun showAlertOnExit(globalBase64String: String) {
+        datalinksave = globalBase64String
+        showCodeSaveDialog2()
+    }
+
+    @JavascriptInterface
     fun onBack() {
         Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
-    }
-
-    override fun onBackPressed() {
-        if (webView.canGoBack())
-            webView.goBack()
-        else
-            super.onBackPressed()
     }
 
     fun askForPermission(origin: String, permission: String, requestCode: Int) {
@@ -125,6 +131,13 @@ class ScratchActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             101 -> {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    myRequest.grant(myRequest.resources)
+                }
+            }
+            102 -> {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -159,6 +172,11 @@ class ScratchActivity : AppCompatActivity() {
                             Manifest.permission.RECORD_AUDIO,
                             101)
                     }
+                    "android.webkit.resource.VIDEO_CAPTURE" -> {
+                        askForPermission(request.origin.toString(),
+                            Manifest.permission.CAMERA,
+                            102)
+                    }
                 }
             }
         }
@@ -179,31 +197,36 @@ class ScratchActivity : AppCompatActivity() {
                 loadSavedFileCalled = true
                 loadSavedFile(file)
             }
-
         }
-
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun loadSavedFile(file: File?) {
 
         if (progressBar.visibility == View.VISIBLE)
             progressBar.visibility = View.GONE
 
         webView.loadUrl("javascript:openLoaderScreen();")
-        val base64 = s3LinkToBase64(s3link)
 
         if (file != null) {
+            Log.d("going here test", "testing 1");
             savedFileName = file.name
-            datalinkload = base64
+            datalinkload = Base64.encodeToString(file.readBytes(), 2)
+            Log.d("datalinkload", datalinkload)
+            webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName +"')")
+//            val fileUri = Uri.fromFile(file)
+//            webView.loadUrl("javascript:loadProjectUsingFile()")
         } else {
-            savedFileName = "defaultMerakiScratchFile.sb3"
-            datalinkload = Base64.getEncoder().encodeToString(application.assets.open(
-                "defaultMerakiScratchFile.sb3").readBytes())
+            Log.d("going here test", "testing 2");
+            savedFileName = "defaultFile.sb3"
+            datalinkload = Base64.encodeToString(application.assets.open(
+                "defaultFile.sb3").readBytes(), 2)
         }
 
+        Log.d("exited loop", "exiting here");
+        Log.d("savedFile", savedFileName);
+        Log.d("dataLinkLoad", datalinkload);
 
-        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+
 
         Handler(Looper.getMainLooper()).postDelayed({
             webView.loadUrl("javascript:closeLoaderScreen();")
@@ -299,6 +322,63 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.setView(view)
         alertDialog.show()
     }
+
+    private fun showCodeSaveDialog2() {
+        val view: View = layoutInflater.inflate(R.layout.alert_save, null)
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setTitle("Save Scratch File")
+            setIcon(R.drawable.ic_scratch)
+            setCancelable(false)
+            setMessage("You may loose your progress if you exit without saving")
+        }
+
+        val fileName: EditText = view.findViewById(R.id.fileName)
+        file?.let {
+            with(fileName) { setText(it.name.removeSuffix(".sb3")) }
+            savedFile = true
+        }
+        alertDialog.setPositiveButton("Save") { dialog, which ->
+            GlobalScope.launch(Dispatchers.Main) {
+                when {
+                    fileName.text.isNotEmpty() -> {
+                        when {
+                            !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    false)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            savedFile -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    true)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            else -> {
+                                Toast.makeText(this@ScratchActivity,
+                                    "This file already exists, try a different name",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(this@ScratchActivity,
+                            "File name cannot be empty",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        alertDialog.setNegativeButton("Don't Save") { dialog, which ->
+            dialog.dismiss()
+            onBackPressed()
+        }
+        alertDialog.setView(view)
+        alertDialog.show()
+    }
+
 
     private fun showCodeSavedDialog() {
         val alertDialog = AlertDialog.Builder(this).apply {
