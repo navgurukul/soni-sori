@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundItemModel
+import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.datasource.model.PlaygroundTypes.*
 import org.merakilearn.repo.ScratchViewModel
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
@@ -41,7 +45,7 @@ class PlaygroundFragment : BaseFragment() {
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
                 if (isLongClick)
-                    showUpPopMenu(playgroundItemModel.file, view)
+                    showUpPopMenu(playgroundItemModel.file, view, playgroundItemModel.type)
                 else
                     viewModel.selectPlayground(playgroundItemModel)
 
@@ -88,12 +92,13 @@ class PlaygroundFragment : BaseFragment() {
         )
     }
 
-    private fun showUpPopMenu(file: File, view: View) {
+    private fun showUpPopMenu(file: File, view: View, playgroundTypes: PlaygroundTypes) {
         val popup = PopupMenu(requireContext(), view)
         popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
+                R.id.delete -> if(playgroundTypes == SCRATCH_FILE){
+                    viewModel.handle(PlaygroundActions.DeleteScratchFile) }else{ viewModel.handle(PlaygroundActions.DeleteFile(file))}
                 R.id.shareSavedFile -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/x-python"
@@ -130,6 +135,7 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.handle(PlaygroundActions.RefreshLayout)
     }
 
+//
 //    fun openScratchWithFile(file: File, projectId : String){
 //        viewModel.getScratchProject(projectId)
 //        val intent = Intent(requireContext(), ScratchActivity::class.java)

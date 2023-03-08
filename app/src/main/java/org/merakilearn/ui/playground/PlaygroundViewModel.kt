@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.datasource.PlaygroundRepo
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.repo.ScratchRepository
@@ -20,12 +21,14 @@ class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
     private val scratchRepository: ScratchRepository,
-    private val viewModel: ScratchViewModel
+    private val viewModel: ScratchViewModel,
+    private val userRepo:  UserRepo
 ) :
     BaseViewModel<PlaygroundViewEvents, PlaygroundViewState>(PlaygroundViewState()) {
 
     private var currentQuery: String? = null
     private lateinit var playgroundsList: MutableList<PlaygroundItemModel>
+    private var projectId : String = ""
 
     fun handle(action: PlaygroundActions) {
         when (action) {
@@ -35,6 +38,7 @@ class PlaygroundViewModel(
             }
             is PlaygroundActions.RefreshLayout -> init()
             is PlaygroundActions.DeleteFile -> deleteFile(action.file)
+            is PlaygroundActions.DeleteScratchFile -> deleteScratchFile()
         }
     }
 
@@ -92,12 +96,13 @@ class PlaygroundViewModel(
         val savedFiles2 = viewModel.fetchSavedFiles()
 //        val savedFiles2 = scratchRepository.fetchSavedFiles()
         for (file in savedFiles2) {
-            playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.SCRATCH_FILE,
-//                name = file.name.removeSuffix(".sb3"),
+            projectId = file.projectId
+            playgroundsList.add(PlaygroundItemModel(
+                PlaygroundTypes.SCRATCH_FILE,
                 name = file.projectName.removeSuffix(".sb3"),
-//                file = file.scratch_url,
                 iconResource = R.drawable.ic_scratch,
-                s3link = file.s3link))
+                s3link = file.s3link,
+            ))
         }
 
         updateState(playgroundsList)
@@ -122,6 +127,13 @@ class PlaygroundViewModel(
             init()
         }
     }
+
+    private fun deleteScratchFile(){
+        viewModelScope.launch {
+            userRepo.deleteScratchProject(projectId)
+            init()
+        }
+    }
 }
 
 sealed class PlaygroundViewEvents : ViewEvents {
@@ -137,6 +149,7 @@ sealed class PlaygroundActions : ViewModelAction {
     data class Query(val query: String?) : PlaygroundActions()
     object RefreshLayout : PlaygroundActions()
     class DeleteFile(val file: File) : PlaygroundActions()
+    object DeleteScratchFile : PlaygroundActions()
 }
 
 data class PlaygroundViewState(

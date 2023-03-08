@@ -1,10 +1,10 @@
 package org.merakilearn.repo
 
-import android.content.Context
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import okhttp3.*
+import okhttp3.Headers.Companion.headersOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.GetScratchesResponse
@@ -14,7 +14,6 @@ import java.nio.charset.Charset
 
 
 class ScratchViewModel(
-    private val context: Context,
     private val userRepo: UserRepo
 ): ViewModel() {
     private val DIRECTORY_NAME = "Scratch"
@@ -40,6 +39,7 @@ class ScratchViewModel(
 
     fun postFile( base64String: String, projectName: String)
         : Boolean {
+
         val file = convertBase64StringToFile(base64String)
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
@@ -48,14 +48,25 @@ class ScratchViewModel(
                 projectName,
                 RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
             )
-            .addFormDataPart(
-                "project_name",
-                projectName
+            .addPart(
+                headersOf("Content-Disposition", "form-data; name=\"project_name\""),
+                RequestBody.create(null, projectName)
             )
+//            .addFormDataPart(
+//                "project_name",
+//                projectName
+//            )
             .build()
 
-        val request = Request.Builder()
-            .url("https://dev-api.navgurukul.org/scratch/FileUploadS3")
+//        val request = Request.Builder()
+//            .url("https://dev-api.navgurukul.org/scratch/FileUploadS3")
+//            .addHeader("Authorization", "Bearer ${userRepo.getAuthToken()}")
+//            .post(requestBody)
+//            .build()
+
+        val request = userRepo.uploadScratchFile(requestBody, projectName)
+            .request()
+            .newBuilder()
             .addHeader("Authorization", "Bearer ${userRepo.getAuthToken()}")
             .post(requestBody)
             .build()

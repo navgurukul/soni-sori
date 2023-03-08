@@ -68,7 +68,7 @@ class ScratchActivity : AppCompatActivity() {
         s3link = intent.extras?.getString(Constants.INTENT_EXTRA_KEY_FILE).toString()
 
 
-        scratchViewModel = ScratchViewModel(this, userRepo)
+        scratchViewModel = ScratchViewModel(userRepo)
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()

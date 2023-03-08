@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
@@ -13,7 +14,6 @@ import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import retrofit2.Call
-import java.io.File
 
 class UserRepo(
     private val saralApi: SaralApi,
@@ -158,7 +158,7 @@ class UserRepo(
         }
     }
 
-    fun uploadScratchFile(file: File, projectName: String): Call<ResponseBody> {
+    fun uploadScratchFile(file: MultipartBody.Part, projectName: String): Call<ResponseBody> {
         return try {
             saralApi.uploadFileToS3(file, projectName)
         } catch (ex : Exception){

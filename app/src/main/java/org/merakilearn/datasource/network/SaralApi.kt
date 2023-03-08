@@ -1,11 +1,11 @@
 package org.merakilearn.datasource.network
 
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.model.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 
 
 interface SaralApi {
@@ -53,8 +53,8 @@ interface SaralApi {
     @Multipart
     @POST("scratch/FileUploadS3")
     fun uploadFileToS3(
-        @Part file: File,
-        @Part("project_name") projectName: String
+        @Part file: MultipartBody.Part,
+        @Path(value = "project_name") projectName: String
     ): Call<ResponseBody>
 
     @GET("scratch/FileUploadS3/{userId_scratch}")
