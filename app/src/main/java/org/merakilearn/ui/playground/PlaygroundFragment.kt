@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -75,7 +76,9 @@ class PlaygroundFragment : BaseFragment() {
                     //accessing s3link from the list for particular project
 
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
-                    intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.s3link)
+                    intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
+                    intent.putExtra(Constants.INTENT_EXTRA_KEY_S3, it.s3link)
+
                     startActivity(intent)
                 }
             }

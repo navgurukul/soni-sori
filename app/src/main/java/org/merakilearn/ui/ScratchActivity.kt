@@ -64,8 +64,8 @@ class ScratchActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         scratchRepository = ScratchRepositoryImpl(this)
-//        file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
-        s3link = intent.extras?.getString(Constants.INTENT_EXTRA_KEY_FILE).toString()
+        file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
+        s3link = intent.extras?.getString(Constants.INTENT_EXTRA_KEY_S3).toString()
 
 
         scratchViewModel = ScratchViewModel(this, userRepo)
