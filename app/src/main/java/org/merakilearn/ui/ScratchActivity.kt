@@ -9,7 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Base64
+//import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.webkit.*
@@ -92,9 +92,10 @@ class ScratchActivity : AppCompatActivity() {
         showCodeSaveDialog()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @JavascriptInterface
     fun returnFile(): String {
-        datalinkload = Base64.encodeToString(file!!.readBytes(), 2)
+        datalinkload = Base64.getEncoder().encodeToString(file!!.readBytes())
         return datalinkload
     }
 
@@ -200,6 +201,7 @@ class ScratchActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadSavedFile(file: File?) {
 
         if (progressBar.visibility == View.VISIBLE)
@@ -207,24 +209,25 @@ class ScratchActivity : AppCompatActivity() {
 
         webView.loadUrl("javascript:openLoaderScreen();")
 
-        if (file != null) {
-            Log.d("going here test", "testing 1");
+        Log.d("s3link", s3link)
+
+        if (s3link != null || s3link != "") {
+            Log.d("going here s3link", "testing 1");
+            webView.loadUrl("javascript:loadProjectUsingS3Url('" + s3link +"')")
+            s3link = "";
+        }
+        else if(file != null){
+            Log.d("going here test", file.toString());
             savedFileName = file.name
-            datalinkload = Base64.encodeToString(file.readBytes(), 2)
-            Log.d("datalinkload", datalinkload)
             webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName +"')")
-//            val fileUri = Uri.fromFile(file)
-//            webView.loadUrl("javascript:loadProjectUsingFile()")
-        } else {
+        }
+        else {
             Log.d("going here test", "testing 2");
             savedFileName = "defaultFile.sb3"
-            datalinkload = Base64.encodeToString(application.assets.open(
-                "defaultFile.sb3").readBytes(), 2)
+            datalinkload = Base64.getEncoder().encodeToString(application.assets.open(
+                "defaultFile.sb3").readBytes())
+            webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName +"', '" + datalinkload + "')")
         }
-
-        Log.d("exited loop", "exiting here");
-        Log.d("savedFile", savedFileName);
-        Log.d("dataLinkLoad", datalinkload);
 
 
 
