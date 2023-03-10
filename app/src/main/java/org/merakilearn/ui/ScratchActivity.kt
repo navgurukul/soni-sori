@@ -3,12 +3,10 @@ package org.merakilearn.ui
 import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
@@ -75,12 +73,6 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
-    fun returnFile(): String {
-        datalinkload = Base64.encodeToString(file!!.readBytes(), 2)
-        return datalinkload
-    }
-
-    @JavascriptInterface
     fun showAlertOnExit(globalBase64String: String) {
         datalinksave = globalBase64String
         showCodeSaveDialog2()
@@ -91,6 +83,11 @@ class ScratchActivity : AppCompatActivity() {
         Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
+    }
+
+    @JavascriptInterface
+    fun returnFile(): String{
+        return datalinkload
     }
 
     fun askForPermission(origin: String, permission: String, requestCode: Int) {
@@ -189,25 +186,15 @@ class ScratchActivity : AppCompatActivity() {
         webView.loadUrl("javascript:openLoaderScreen();")
 
         if (file != null) {
-            Log.d("going here test", "testing 1");
             savedFileName = file.name
             datalinkload = Base64.encodeToString(file.readBytes(), 2)
-            Log.d("datalinkload", datalinkload)
-            webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName +"')")
-//            val fileUri = Uri.fromFile(file)
-//            webView.loadUrl("javascript:loadProjectUsingFile()")
         } else {
-            Log.d("going here test", "testing 2");
             savedFileName = "defaultFile.sb3"
             datalinkload = Base64.encodeToString(application.assets.open(
                 "defaultFile.sb3").readBytes(), 2)
         }
 
-        Log.d("exited loop", "exiting here");
-        Log.d("savedFile", savedFileName);
-        Log.d("dataLinkLoad", datalinkload);
-
-
+        webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName + "')")
 
         Handler(Looper.getMainLooper()).postDelayed({
             webView.loadUrl("javascript:closeLoaderScreen();")
