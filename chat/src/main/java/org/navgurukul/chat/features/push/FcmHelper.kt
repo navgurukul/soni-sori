@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.core.content.edit
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.pushers.PushersManager
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
@@ -54,11 +54,11 @@ class FcmHelper {
         // 'app should always check the device for a compatible Google Play services APK before accessing Google Play services features'
         if (checkPlayServices(activity)) {
             try {
-                FirebaseInstanceId.getInstance().instanceId
-                        .addOnSuccessListener(activity) { instanceIdResult ->
-                            storeFcmToken(activity, instanceIdResult.token)
+                FirebaseMessaging.getInstance().token
+                        .addOnSuccessListener(activity) { it ->
+                            storeFcmToken(activity, it)
                             if (registerPusher) {
-                                pushersManager.registerPusherWithFcmKey(instanceIdResult.token)
+                                pushersManager.registerPusherWithFcmKey(it)
                             }
                         }
                         .addOnFailureListener(activity) { e -> Timber.e(e, "## ensureFcmTokenIsRetrieved() : failed") }

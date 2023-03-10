@@ -79,6 +79,9 @@ dependencies {
     // Work
     implementation(AndroidxDependencies.work)
 
+    //GMS
+    implementation(GMSDependencies.base)
+
     // Network
     implementation(RetrofitDependencies.retrofit)
     implementation(RetrofitDependencies.moshiConverter)

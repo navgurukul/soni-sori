@@ -54,7 +54,9 @@
                         "Python",
                         "Javascript",
                         "Spoken English",
-                        "Typing Guru"
+                        "Typing Guru",
+                        "Scratch (CEL)",
+                        "Residential Info"
                     ]
                 },
                 "hi":{
@@ -81,7 +83,9 @@
                         "पायथन",
                         "जावास्क्रिप्ट",
                         "अंग्रेजी बोलवचन",
-                        "टाइपिंग गुरु"
+                        "टाइपिंग गुरु",
+                        "टाइपिंग ",
+                        "आवासीय कार्यक्रमों की जानकारी-ट्रैक"
                     ]
                     }
                 },
@@ -110,13 +114,13 @@
                         }
                     },
                     {
-                        "id":2,
+                        "id":4,
                         "image":{
                             "local": "JAVASCRIPT"
                         }
                     },
                     {
-                        "id":5,
+                        "id":2,
                         "image":{
                             "local": "ENGLISH"
                         }
@@ -125,6 +129,18 @@
                         "id":3,
                         "image":{
                             "local": "TYPING"
+                        }
+                    },
+                    {
+                        "id":6,
+                        "image":{
+                            "local": "SCRATCH"
+                        }
+                    },
+                    {
+                        "id":5,
+                        "image":{
+                            "local": "RESIDENTIAL"
                         }
                     }
                     ]

@@ -1,5 +1,6 @@
 package org.merakilearn.di
 
+import android.app.Application
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -19,6 +20,8 @@ import org.merakilearn.core.navigator.AppModuleNavigator
 import org.merakilearn.datasource.*
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
+import org.merakilearn.repo.ScratchRepository
+import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.OnBoardingActivityArgs
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
@@ -37,7 +40,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
-    viewModel { PlaygroundViewModel(get(),get()) }
+    viewModel { PlaygroundViewModel( get(),get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,
@@ -86,6 +89,7 @@ val networkModule = module {
         }
         okHttpClientBuilder.connectTimeout(5, TimeUnit.MINUTES)
         okHttpClientBuilder.readTimeout(5, TimeUnit.MINUTES)
+        okHttpClientBuilder.writeTimeout(5, TimeUnit.MINUTES)
 
         return okHttpClientBuilder.build()
     }
@@ -151,6 +155,12 @@ val repositoryModule = module {
             get(),
         )
     }
+
+    fun providePlaygroundRepository(application: Application): ScratchRepository {
+        return ScratchRepositoryImpl(application)
+    }
+
+    single { providePlaygroundRepository(androidApplication()) }
 }
 
 val appModules =

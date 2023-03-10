@@ -16,8 +16,9 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:overScrollMode="never"
+                app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
@@ -31,8 +32,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/spacing_1x"
-                        android:paddingTop="@dimen/spacing_2x"
                         android:overScrollMode="never"
+                        android:paddingTop="@dimen/spacing_2x"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
@@ -41,18 +42,18 @@
                         layout="@layout/incorrect_output_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:visibility="visible"
                         android:layout_marginTop="@dimen/spacing_2x"
-                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"
+                        tools:visibility="visible" />
 
                     <include
                         android:id="@+id/correct_output_layout"
                         layout="@layout/item_output_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:visibility="visible"
                         android:layout_marginTop="@dimen/spacing_2x"
-                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"/>
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_asses"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
