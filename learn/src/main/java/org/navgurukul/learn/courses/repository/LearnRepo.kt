@@ -210,15 +210,15 @@ class LearnRepo(
     }
 
     suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
-
         return flow {
-            val contentList = courseApi.getCompletedContentsIds(courseId)
-            updateCompletedContentInDb(contentList)
-            emit(contentList)
-        }.catch { e ->
-            throw e
+            try {
+                val contentList = courseApi.getCompletedContentsIds(courseId)
+                updateCompletedContentInDb(contentList)
+                emit(contentList)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-
     }
 
     suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
@@ -356,8 +356,8 @@ class LearnRepo(
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
             courseApi.postStudentResult(studentResult)
-        } catch (ex: Exception){
-            throw ex
+        } catch (e: Exception){
+            e.printStackTrace()
         }
     }
 
@@ -368,7 +368,7 @@ class LearnRepo(
                 currentStateList as List<CourseAssessmentContent?>
             )
         }catch (e: Exception){
-
+            e.printStackTrace()
         }
     }
 
@@ -377,12 +377,13 @@ class LearnRepo(
         courseId: String,
         exerciseId: String
     ){
-        val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
         try {
+            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
             courseApi.postLearningTrackStatus(learningTrackStatus)
-        } catch (ex: Exception){
-            throw ex
+        } catch (e: Exception){
+            e.printStackTrace()
         }
+
     }
 
 

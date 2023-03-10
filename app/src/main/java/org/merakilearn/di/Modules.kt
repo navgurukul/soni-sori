@@ -22,7 +22,6 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.repo.ScratchRepository
 import org.merakilearn.repo.ScratchRepositoryImpl
-import org.merakilearn.ui.home.HomeViewModel
 import org.merakilearn.ui.onboarding.LoginViewModel
 import org.merakilearn.ui.onboarding.OnBoardingActivityArgs
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
@@ -41,7 +40,6 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { PlaygroundViewModel( get(),get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(

@@ -17,10 +17,6 @@ data class LoginResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class User(
-        @Json(name = "chat_id")
-        val chatId: String?,
-        @Json(name = "chat_password")
-        val chatPassword: String?,
         @Json(name = "center")
         var center: Any?,
         @Json(name = "created_at")
