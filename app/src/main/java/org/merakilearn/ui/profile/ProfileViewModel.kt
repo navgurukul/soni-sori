@@ -2,6 +2,7 @@ package org.merakilearn.ui.profile
 
 import android.app.AlertDialog
 import android.provider.Settings.Global.getString
+import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -244,19 +245,23 @@ class ProfileViewModel(
         }
     }
 
-    private fun getEnrolledBatches() {
+    private fun getEnrolledBatches(){
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val batches = classesRepo.getEnrolledBatches()
-            batches?.let {
-                setState {
-                    copy(
-                        batches = it
-                    )
+            try {
+                val batches = classesRepo.getEnrolledBatches()
+                batches?.let {
+                    setState {
+                        copy(
+                            batches = it
+                        )
+                    }
+                    if (it.isNotEmpty()) {
+                        _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
+                    }
                 }
-                if (it.isNotEmpty()) {
-                    _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
-                }
+            }catch (e:Exception){
+                Log.e("Exception",e.toString())
             }
         }
     }
