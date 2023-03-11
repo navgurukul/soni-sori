@@ -116,7 +116,7 @@ class PlaygroundViewModel(
                 playgroundItemModel.file))
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(
-                playgroundItemModel.s3link))
+                playgroundItemModel.s3link, playgroundItemModel.file))
         }
     }
 
@@ -141,7 +141,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
-    class OpenScratchWithFile(val s3link: String) : PlaygroundViewEvents()
+    class OpenScratchWithFile(val s3link: String, val file: File) : PlaygroundViewEvents()
 
 }
 
