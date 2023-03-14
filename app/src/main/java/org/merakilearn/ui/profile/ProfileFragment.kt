@@ -143,7 +143,7 @@ class ProfileFragment : Fragment() {
                 mBinding.partnerWebsite.visibility = View.VISIBLE
                 mBinding.partnerWebsite.text = partnerData.websiteLink
             }
-            viewPartnerData(partnerData)
+            viewPartnerData()
             mBinding.partnerName.text = partnerData.name
             mBinding.partnerDesc.text = partnerData.description
             Glide.with(this).load(partnerData.logo).into(mBinding.partnerImage)
@@ -152,7 +152,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun viewPartnerData(partnerData: PartnerDataResponse) {
+    private fun viewPartnerData() {
         mBinding.title.visibility = View.VISIBLE
         mBinding.partnerName.visibility = View.VISIBLE
         mBinding.partnerDesc.visibility = View.VISIBLE

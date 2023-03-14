@@ -52,7 +52,6 @@ class PartnerFragment : Fragment() {
 
     private fun partnerData(partnerData: PartnerDataResponse) {
         viewPartnerData()
-
         mBinding.header.text = partnerData.name
         Glide.with(this).load(partnerData.logo).into(mBinding.image)
         mBinding.desc.text = partnerData.description

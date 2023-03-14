@@ -27,7 +27,7 @@ data class OnBoardingActivityArgs(
     val showLoginFragment: Boolean = false
 ) : Parcelable
 
-class OnBoardingActivity: AppCompatActivity() {
+class OnBoardingActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityOnBoardingBinding
 
     private val appOpenDelegate: AppOpenDelegate by inject()
@@ -94,7 +94,7 @@ class OnBoardingActivity: AppCompatActivity() {
                     LoginFragment.newInstance(),
                     LoginFragment.TAG
                 )
-                OnBoardingViewEvents.ShowPartnerScreen->showFragment(
+                OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
                     PartnerFragment.newInstance(),
                     PartnerFragment.TAG
                 )
