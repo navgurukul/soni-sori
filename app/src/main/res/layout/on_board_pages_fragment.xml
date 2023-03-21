@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/spacing_4x">
+    android:layout_height="match_parent">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
@@ -22,6 +21,8 @@
         android:layout_height="wrap_content"
         android:textAllCaps="false"
         android:textColor="?textSecondary"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginBottom="@dimen/spacing_4x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/skip_english" />
@@ -36,7 +37,8 @@
         app:layout_constraintStart_toEndOf="@id/skip"
         app:tabBackground="@drawable/tab_pager_selector"
         app:tabGravity="center"
-        app:tabIndicatorHeight="0dp" />
+        app:tabIndicatorHeight="0dp"
+        android:layout_marginBottom="@dimen/spacing_4x"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
@@ -47,7 +49,9 @@
         android:textColor="@color/green_progress_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="@string/next_english" />
+        tools:text="@string/next_english"
+        android:layout_marginBottom="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"/>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/nav_layout"
@@ -60,6 +64,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
         app:constraint_referenced_ids="login_with_google" />
 
     <com.google.android.material.button.MaterialButton
@@ -67,7 +74,6 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_2x"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/continue_with_google_english"
@@ -76,6 +82,9 @@
         app:icon="@drawable/google_icon"
         app:iconGravity="textStart"
         android:visibility="gone"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
         app:iconPadding="@dimen/spacing_4x"
         app:iconTint="@android:color/transparent"
         app:iconTintMode="add"
@@ -91,6 +100,7 @@
         android:layout_height="wrap_content"
         android:insetTop="0dp"
         android:visibility="gone"
+        android:layout_marginBottom="@dimen/spacing_4x"
         android:insetBottom="0dp"
         android:text="@string/skip_login_english"
         android:textAllCaps="false"

@@ -2,8 +2,11 @@ package org.navgurukul.playground.editor
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -34,6 +37,20 @@ class PythonEditorActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.python_playground_menu, menu)
+        menu?.let{
+            for (i in 0 until it.size()) {
+                val menuItem = it.getItem(i)
+                val spannable = SpannableString(
+                    it.getItem(i).title.toString()
+                )
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.WHITE),
+                    0, spannable.length, 0
+                )
+                menuItem.title = spannable
+            }
+        }
+
         return true
     }
 
