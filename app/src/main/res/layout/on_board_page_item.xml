@@ -28,7 +28,7 @@
         style="?textAppearanceHeadline5"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"
         android:text="@string/learn_python_header_english"
         android:textAlignment="center"
@@ -44,7 +44,7 @@
         style="?textAppearanceBody2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/learn_python_desc_english"
         android:textAlignment="center"
         android:textColor="?textPrimary"
@@ -52,6 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header"
-        android:paddingBottom="70dp"/>
+        android:paddingBottom="80dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
