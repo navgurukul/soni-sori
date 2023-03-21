@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -87,7 +88,7 @@ class LearnFragmentViewModel(
             checkedStudentEnrolment(pathway.id)
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false,
+                    setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
                         showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
@@ -201,7 +202,7 @@ class LearnFragmentViewModel(
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
             val classes = learnRepo.getUpcomingClass(pathwayId)
-            classes?.let {
+            classes.let {
                 setState {
                     copy(
                         classes = it,

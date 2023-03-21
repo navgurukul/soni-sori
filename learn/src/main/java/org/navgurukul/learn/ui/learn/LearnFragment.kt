@@ -17,6 +17,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.os.StrictMode
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,7 +128,6 @@ class LearnFragment : Fragment() {
             )
             mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
-//            mBinding.certificate.isVisible = it.shouldShowCertificate
 
             if (!it.classes.isEmpty()) {
                 mBinding.upcoming.root.isVisible = true
@@ -146,11 +146,12 @@ class LearnFragment : Fragment() {
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
-            if (it.shouldShowCertificate == true) {
+            if (it.code == "PRGPYT"){
                 mBinding.certificate.visibility = View.VISIBLE
             } else {
                 mBinding.certificate.visibility = View.GONE
             }
+
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -224,7 +225,6 @@ class LearnFragment : Fragment() {
     private fun getCertificate(pdfUrl: String, completedPortion: Int) {
         mBinding.certificate.setOnClickListener {
             val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-            val textCertificate : TextView = mBinding.certificate.txtCertificate
             val textView : TextView = mBinding.certificate.locked_status
             if (completedPortion == 100) {
                 imageView.setImageResource(R.drawable.ic_certificate)
@@ -357,7 +357,7 @@ class LearnFragment : Fragment() {
         tvType.text = batch.sanitizedType() + " :"
         tvTitleBatch.text = batch.title
         tvBatchDate.text = batch.dateRange()
-        tvText.text = "Can't start on " + batch.startTime?.toDate()
+        tvText.text = "Can't start on ${batch.startTime?.toDate()}"
         tvBtnEnroll.setOnClickListener {
             showEnrolDialog(batch)
         }

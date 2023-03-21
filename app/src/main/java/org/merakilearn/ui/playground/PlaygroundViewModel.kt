@@ -41,27 +41,30 @@ class PlaygroundViewModel(
     }
 
     private fun filterList() {
-        val list = playgroundsList ?: return
-        viewModelScope.launch(Dispatchers.Default){
-            val filterList=list.filter {
-                val filterQuery= currentQuery?.let{ currentQuery ->
-                    if(currentQuery.isNotEmpty()){
-                        val wordsToCompare = (it.name).split(" ") + it.file.name.replaceAfterLast("_", "").removeSuffix("_").split(" ")
-                        wordsToCompare.find { word ->
-                            word.startsWith(
-                                currentQuery,
-                                true
-                            )
-                        }!=null
-                    } else {
-                        true
-                    }
-                } ?: true
+        if (::playgroundsList.isInitialized) {
+            val list = playgroundsList ?: return
+            viewModelScope.launch(Dispatchers.Default){
+                val filterList=list.filter {
+                    val filterQuery= currentQuery?.let{ currentQuery ->
+                        if(currentQuery.isNotEmpty()){
+                            val wordsToCompare = (it.name).split(" ") + it.file.name.replaceAfterLast("_", "").removeSuffix("_").split(" ")
+                            wordsToCompare.find { word ->
+                                word.startsWith(
+                                    currentQuery,
+                                    true
+                                )
+                            }!=null
+                        } else {
+                            true
+                        }
+                    } ?: true
 
-                return@filter filterQuery
+                    return@filter filterQuery
+                }
+                updateState(filterList)
             }
-            updateState(filterList)
         }
+
     }
 
     private fun updateState(list: List<PlaygroundItemModel>) {
@@ -71,8 +74,8 @@ class PlaygroundViewModel(
     }
 
     private suspend fun setList() {
-        playgroundsList=repository.getAllPlaygrounds().toMutableList()
-        val savedFiles= pythonRepository.fetchSavedFiles()
+        playgroundsList = repository.getAllPlaygrounds().toMutableList()
+        val savedFiles = pythonRepository.fetchSavedFiles()
         for(file in savedFiles){
             playgroundsList.add(PlaygroundItemModel(PlaygroundTypes.PYTHON_FILE, name = "",file= file, iconResource = R.drawable.ic_saved_file))
         }

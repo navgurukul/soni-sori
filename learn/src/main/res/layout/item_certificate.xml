@@ -15,10 +15,10 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/certificate"
+        android:id="@+id/txtCertificate"
         style="?textAppearanceBody2"
-        android:layout_width="match_parent"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/spacing_4x"
         android:text="@string/python_certificate"
         android:layout_height="wrap_content"/>
@@ -26,9 +26,9 @@
     <TextView
         android:id="@+id/locked_status"
         style="?textAppearanceBody2"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
         android:layout_marginTop="@dimen/spacing_4x"
         android:text="@string/locked"
         android:layout_height="wrap_content"/>
