@@ -26,10 +26,12 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.merakilearn.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/fileprovider" />
+                android:resource="@xml/fileprovider"
+                tools:replace="android:resource"/>
         </provider>
         <activity
             android:name=".FileChooserActivity"
