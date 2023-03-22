@@ -6,11 +6,15 @@ import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.util.ArrayList
 
@@ -91,6 +95,11 @@ class LearnRepo(
                     it.courseName = result.course.name
                     if(it.courseContentType == CourseContentType.exercise) {
                         it as CourseExerciseContent
+                        it.lang =
+                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                                ?: language
+                    }else if (it.courseContentType == CourseContentType.class_topic){
+                        it as CourseClassContent
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
@@ -201,9 +210,46 @@ class LearnRepo(
                     assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
                 }catch (ex: Exception){
                 }
+                try {
+                    assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
+                }catch (ex: Exception){
+                }
             }
         )
     }
+
+    suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
+        return flow {
+            try {
+                val contentList = courseApi.getCompletedContentsIds(courseId)
+                updateCompletedContentInDb(contentList)
+                emit(contentList)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
+
+        val exerciseDao = database.exerciseDao()
+        val classesDao = database.classDao()
+        val assessmentDao = database.assessmentDao()
+
+        exerciseDao.markExerciseCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.exercises?.map { it.toString() }
+        )
+        classesDao.markClassCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.classes?.map { it.toString() }
+        )
+        assessmentDao.markAssessmentCompleted(
+            CourseContentProgress.COMPLETED.name,
+            contentList.assessments?.map { it.toString() }
+        )
+    }
+
 
     suspend fun saveCourseContentCurrent(currentStudy: CurrentStudy) {
         val currentStudyDao = database.currentStudyDao()
@@ -240,7 +286,11 @@ class LearnRepo(
     }
 
     suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
-            return courseApi.getRevisionClasses(classId)
+            return try {
+                courseApi.getRevisionClasses(classId)
+            }catch (ex: Exception){
+                throw ex
+            }
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
@@ -251,14 +301,30 @@ class LearnRepo(
 
     suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
         if(LearnUtils.isOnline(application)) {
-            return courseApi.getBatchesAsync(pathwayId)
+            return try {
+                courseApi.getBatchesAsync(pathwayId)
+            } catch (ex: Exception){
+                throw ex
+            }
         }
         return null
     }
 
 
     suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
-        return courseApi.getUpcomingClass(pathwayId)
+        return try {
+            courseApi.getUpcomingClass(pathwayId)
+        } catch (ex: Exception){
+            throw ex
+        }
+    }
+
+    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
+       return try {
+           courseApi.getStudentResult(assessmentId)
+       } catch (ex: Exception){
+           throw ex
+       }
     }
 
     suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
@@ -300,8 +366,12 @@ class LearnRepo(
         status: Status,
         selectedOption: Int?
     ){
-        val studentResult = StudentResult(assessmentId, status,selectedOption)
-        courseApi.postStudentResult(studentResult)
+        try {
+            val studentResult = StudentResult(assessmentId, status, selectedOption)
+            courseApi.postStudentResult(studentResult)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
@@ -311,8 +381,24 @@ class LearnRepo(
                 currentStateList as List<CourseAssessmentContent?>
             )
         }catch (e: Exception){
-
+            e.printStackTrace()
         }
     }
+
+    suspend fun postLearningTrackStatus(
+        pathwayId: Int,
+        courseId: String,
+        exerciseId: String
+    ){
+        try {
+            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
+            courseApi.postLearningTrackStatus(learningTrackStatus)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+
+    }
+
+
 
 }

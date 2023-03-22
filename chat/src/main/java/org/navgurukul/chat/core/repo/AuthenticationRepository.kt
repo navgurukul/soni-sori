@@ -85,7 +85,9 @@ class AuthenticationRepository(
                 )
             }
         } ?: run {
-            return false
+            activeSessionHolder.clearActiveSession()
+            doLocalCleanup()
+            return true
         }
     }
 

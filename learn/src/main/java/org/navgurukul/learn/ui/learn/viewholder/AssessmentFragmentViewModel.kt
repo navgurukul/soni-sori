@@ -255,7 +255,6 @@ class AssessmentFragmentViewModel (
                 item.value = item.value.toMutableList().map{ it.copy(viewState = OptionViewState.NOT_SELECTED) }
             }
         }
-        setState { copy(assessmentContentListForUI = assessmentContentListForUI) }
     }
 
 
@@ -280,7 +279,7 @@ class AssessmentFragmentViewModel (
             postStudentResult(args.contentId.toInt(), Status.Pass, clickedOption.id)
         }
         else{
-            postStudentResult(args.contentId.toInt(), Status.Fail, clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Fail,clickedOption.id)
         }
     }
 

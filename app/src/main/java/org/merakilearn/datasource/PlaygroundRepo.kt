@@ -17,7 +17,13 @@ class PlaygroundRepo {
                 PlaygroundTypes.TYPING_APP,
                 name="Typing",
                 iconResource = R.drawable.ic_icon_typing,
-            )
+            ),
+            PlaygroundItemModel(
+                PlaygroundTypes.SCRATCH,
+                name="Scratch",
+                iconResource = R.drawable.ic_scratch_cat,
+            ),
+
         )
     }
 }

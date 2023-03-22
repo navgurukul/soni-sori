@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 
 interface SaralApi {
-    @POST("users/auth/google")
+    @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("classes")
@@ -42,5 +42,10 @@ interface SaralApi {
 
     @GET("users/EnrolledBatches")
     suspend fun getEnrolledBatches():Response<List<Batches>>
+
+    @GET("partners/{partnerID}")
+    suspend fun getPartnerData(
+        @Path(value = "partnerID") partnerID: Int
+    ): PartnerDataResponse
 
 }

@@ -69,7 +69,7 @@ class MerakiMessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val channelId = getString(R.string.default_notification_channel_id)
@@ -98,21 +98,23 @@ class MerakiMessagingService : FirebaseMessagingService() {
         Glide.with(this)
             .asBitmap()
             .load(imageUrl)
-            .into(object: CustomTarget<Bitmap>() {
+            .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     notificationBuilder.setLargeIcon(resource)
                     notificationManager.notify(0, notificationBuilder.build())
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
-                    AppCompatResources.getDrawable(this@MerakiMessagingService, R.mipmap.ic_launcher)?.let {
+                    AppCompatResources.getDrawable(this@MerakiMessagingService,
+                        R.mipmap.ic_launcher)?.let {
                         notificationBuilder.setLargeIcon(it.toBitmap())
                     }
                     notificationManager.notify(0, notificationBuilder.build())
                 }
 
                 override fun onLoadFailed(errorDrawable: Drawable?) {
-                    AppCompatResources.getDrawable(this@MerakiMessagingService, R.mipmap.ic_launcher)?.let {
+                    AppCompatResources.getDrawable(this@MerakiMessagingService,
+                        R.mipmap.ic_launcher)?.let {
                         notificationBuilder.setLargeIcon(it.toBitmap())
                     }
                     notificationManager.notify(0, notificationBuilder.build())

@@ -7,8 +7,9 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 9
+const val DB_VERSION = 10
 
 @Dao
 interface PathwayDao {
@@ -70,7 +71,11 @@ interface ExerciseDao {
 
     @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id = :exerciseId")
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
+
+    @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id in (:exerciseIdList) ")
+    suspend fun markExerciseCompleted(exerciseProgress: String,exerciseIdList : List<String>?)
 }
+
 
 @Dao
 interface CurrentStudyDao {
@@ -100,6 +105,36 @@ interface ClassDao {
 
     @Query("Update course_class set courseContentProgress = :contentProgress where id = :classId")
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
+
+    @Query("Update course_class set courseContentProgress = :classProgress where id in (:classIdList) ")
+    suspend fun markClassCompleted(classProgress: String,classIdList : List<String>?)
+
+}
+
+@Dao
+interface AssessmentDao{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveCourseAssessmentCurrent(course: CurrentStudy)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAssessment(course: List<CourseAssessmentContent?>?)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent?>?)
+
+    @Query("select * from course_assessment where id = :assessmentId and lang= :lang")
+    fun getAssessmentById(assessmentId: String, lang: String): LiveData<CourseAssessmentContent>
+
+    @Query("select * from course_assessment where courseId = :courseId and lang = :lang")
+    suspend fun getAllAssessmentForCourse(courseId: String, lang: String): List<CourseAssessmentContent>
+
+    @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
+    suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
+
+    @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
+    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
+
+
 }
 
 @Dao

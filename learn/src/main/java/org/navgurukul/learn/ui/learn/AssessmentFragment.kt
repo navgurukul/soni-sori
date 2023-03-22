@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.incorrect_output_layout.*
+import androidx.fragment.app.activityViewModels
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -19,6 +20,7 @@ import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
@@ -45,7 +47,7 @@ class AssessmentFragment : Fragment() {
             isLast: Boolean,
             isCompleted: Boolean,
             courseId: String,
-            assessmentId: String,
+            assessmentId : String,
             courseContentType: CourseContentType,
         ): AssessmentFragment {
             return AssessmentFragment().apply {
@@ -79,8 +81,7 @@ class AssessmentFragment : Fragment() {
         mBinding.correctOutputLayout.root.visibility = View.GONE
         mBinding.incorrectOutputLayout.visibility = View.GONE
 
-        activityViewModel =
-            ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
+        activityViewModel = ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
 
         initContentRv()
         fragmentViewModel.viewEvents.observe(viewLifecycleOwner) {
