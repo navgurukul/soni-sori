@@ -327,10 +327,6 @@ class LearnRepo(
        }
     }
 
-    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
-       return courseApi.getStudentResult(assessmentId)
-    }
-
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {
@@ -398,7 +394,5 @@ class LearnRepo(
         }
 
     }
-
-
 
 }

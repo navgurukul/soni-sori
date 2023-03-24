@@ -131,31 +131,11 @@ interface AssessmentDao{
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 
+
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
     suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 
 
-}
-
-@Dao
-interface AssessmentDao{
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCourseAssessmentCurrent(course: CurrentStudy)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAssessment(course: List<CourseAssessmentContent?>?)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent?>?)
-
-    @Query("select * from course_assessment where id = :assessmentId and lang= :lang")
-    fun getAssessmentById(assessmentId: String, lang: String): LiveData<CourseAssessmentContent>
-
-    @Query("select * from course_assessment where courseId = :courseId and lang = :lang")
-    suspend fun getAllAssessmentForCourse(courseId: String, lang: String): List<CourseAssessmentContent>
-
-    @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
-    suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
