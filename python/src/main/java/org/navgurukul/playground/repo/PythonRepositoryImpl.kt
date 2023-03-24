@@ -126,6 +126,35 @@ class PythonRepositoryImpl(
         return finalFileName
     }
 
+    override fun updateName(code: String,fileName: String, existingFile: Boolean,oldName:String): String {
+        var finalFileName =fileName
+        try {
+            val directory = File(
+                context.getExternalFilesDir(null),
+                DIRECTORY_NAME
+
+            ).also {
+                it.mkdirs()
+            }
+            val old=oldName
+            val new=fileName
+            if (directory.exists()) {
+                val from: File = File(directory, old)
+                val to: File = File(directory, new)
+                if (from.exists())
+                    from.renameTo(to)
+            }
+            finalFileName = if(existingFile) fileName else fileName + "_" +  ".py"
+
+
+        } catch (ex: IOException) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+        }
+        return finalFileName
+    }
+
+
+
     override suspend fun isFileNamePresent(fileName:String): Boolean{
         val list=fetchSavedFiles()
         for(file_name in list) {
