@@ -249,19 +249,23 @@ class ProfileViewModel(
         }
     }
 
-    private fun getEnrolledBatches() {
+    private fun getEnrolledBatches(){
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val batches = classesRepo.getEnrolledBatches()
-            batches?.let {
-                setState {
-                    copy(
-                        batches = it
-                    )
+            try {
+                val batches = classesRepo.getEnrolledBatches()
+                batches?.let {
+                    setState {
+                        copy(
+                            batches = it
+                        )
+                    }
+                    if (it.isNotEmpty()) {
+                        _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
+                    }
                 }
-                if (it.isNotEmpty()) {
-                    _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
-                }
+            }catch (e:Exception){
+                Log.e("Exception",e.toString())
             }
         }
     }

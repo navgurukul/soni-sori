@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn.adapter
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import org.navgurukul.learn.R.*
@@ -40,6 +41,11 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.tvOption.text = item.value
+
+        binding.tvOption.text = HtmlCompat.fromHtml(
+            item.value
+                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
 
         when(item.viewState){
             OptionViewState.SELECTED -> {
