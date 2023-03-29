@@ -75,4 +75,20 @@
     <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
         <item name="elevationOverlayEnabled">false</item>
     </style>
+
+    <style name="button_rounded">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/spacing_3x</item>
+        <item name="android:paddingBottom">@dimen/spacing_3x</item>
+        <item name="android:paddingEnd">@dimen/spacing_2x</item>
+        <item name="android:paddingStart">@dimen/spacing_2x</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_1x</item>
+        <item name="android:background">@drawable/button_rounded</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/green_progress_color</item>
+    </style>
 </resources>
