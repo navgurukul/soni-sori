@@ -40,6 +40,8 @@ data class LoginResponse(
         @Json(name = "profile_picture")
         var profilePicture: String?,
         @Json(name = "rolesList")
-        var rolesList: List<Any?>? = emptyList()
+        var rolesList: List<Any?>? = emptyList(),
+        @Json(name = "partner_id")
+        val partnerId: Int? = null,
     )
 }

@@ -18,6 +18,7 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.datasource.network.model.UserUpdateContainer
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -66,7 +67,6 @@ class ProfileViewModel(
             )
         }
         if (partnerIdValue != null) {
-
             checkPartner(partnerIdValue)
         }
 
@@ -74,7 +74,11 @@ class ProfileViewModel(
             updateFiles()
         }
         getEnrolledBatches()
-//        checkPartner(partnerIdValue)
+        val id = user.partnerId.toString()
+        if (id != null) {
+            checkPartner(id)
+        }
+
     }
 
     fun handle(action: ProfileViewActions) {
@@ -136,7 +140,7 @@ class ProfileViewModel(
                     val partnerData = userRepo.getPartnerData(partnerId?.toInt())
                     _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
                 }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -288,23 +292,23 @@ data class ProfileViewState(
     val batches: List<Batches> = arrayListOf(),
 ) : ViewState
 
-sealed class ProfileViewEvents : ViewEvents {
-    class ShowToast(val text: String, val finishActivity: Boolean = false) : ProfileViewEvents()
-    class ShareText(val text: String) : ProfileViewEvents()
-    class OpenUrl(val url: String) : ProfileViewEvents()
-    class ShowUpdateServerDialog(val serverUrl: String) : ProfileViewEvents()
-    object RestartApp : ProfileViewEvents()
-    data class ShowEnrolledBatches(val batches: List<Batches>) : ProfileViewEvents()
-    data class BatchSelectClicked(val batch: Batches) : ProfileViewEvents()
-    data class ShowPartnerData(val partnerData: PartnerDataResponse) : ProfileViewEvents()
+sealed class ProfileViewEvents: ViewEvents {
+    class ShowToast(val text: String, val finishActivity: Boolean = false): ProfileViewEvents()
+    class ShareText(val text: String): ProfileViewEvents()
+    class OpenUrl(val url: String): ProfileViewEvents()
+    class ShowUpdateServerDialog(val serverUrl: String): ProfileViewEvents()
+    object RestartApp: ProfileViewEvents()
+    data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
+    data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
+    data class ShowPartnerData(val partnerData: PartnerDataResponse): ProfileViewEvents()
 }
 
-sealed class ProfileViewActions : ViewModelAction {
-    object ExpandFileList : ProfileViewActions()
-    object LogOut : ProfileViewActions()
-    object EditProfileClicked : ProfileViewActions()
-    class DeleteFile(val file: File) : ProfileViewActions()
-    class ShareFile(val file: File) : ProfileViewActions()
+sealed class ProfileViewActions: ViewModelAction {
+    object ExpandFileList: ProfileViewActions()
+    object LogOut: ProfileViewActions()
+    object EditProfileClicked: ProfileViewActions()
+    class DeleteFile(val file: File): ProfileViewActions()
+    class ShareFile(val file: File): ProfileViewActions()
     class UpdateProfile(val userName: String, val email: String) : ProfileViewActions()
     object ExploreOpportunityClicked : ProfileViewActions()
     object UpdateServerUrlClicked : ProfileViewActions()

@@ -105,7 +105,7 @@ data class CodeBaseCourseContent(
         @Json(name = "title")
         val title: String? = null,
         @Json(name = "type")
-        val codeTypes: CodeType,
+        val codeTypes: CodeType? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -157,7 +157,7 @@ data class QuestionCodeBaseCourseContent(
         @Json(name = "title")
         val title: String? = null,
         @Json(name = "type")
-        val codeTypes: CodeType,
+        val codeTypes: CodeType? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -171,7 +171,7 @@ data class QuestionExpressionBaseCourseContent(
         @Json(name = "title")
         val title: String? = null,
         @Json(name = "type")
-        val codeTypes: CodeType,
+        val codeTypes: CodeType? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ) : BaseCourseContent
@@ -219,7 +219,7 @@ data class BannerAction(
         @Json(name = "url")
         val url: String?,
         @Json(name = "label")
-        var label: String?,
+        var label: String? = null,
         @Json(name = "data")
         var data: String?,
         @Json(name = "icon")

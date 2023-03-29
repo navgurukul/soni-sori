@@ -148,6 +148,8 @@ dependencies {
     //androidTest
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
+    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+
 }
 
 tasks.register<Download>("downloadBundleTools") {
