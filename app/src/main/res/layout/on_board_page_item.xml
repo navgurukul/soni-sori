@@ -8,24 +8,27 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="413dp"
-        android:layout_height="415dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
         android:layout_marginBottom="16dp"
         android:contentDescription="@null"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/on_boarding_mobile"
         app:layout_constraintBottom_toTopOf="@+id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:paddingBottom="30dp"
+        />
 
     <TextView
         android:id="@+id/header"
         style="?textAppearanceHeadline5"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"
         android:text="@string/learn_python_header_english"
         android:textAlignment="center"
@@ -33,6 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
 
     <TextView
@@ -40,12 +44,14 @@
         style="?textAppearanceBody2"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/learn_python_desc_english"
         android:textAlignment="center"
         android:textColor="?textPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        android:paddingBottom="80dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
