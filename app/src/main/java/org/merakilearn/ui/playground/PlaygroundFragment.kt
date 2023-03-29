@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.DocumentsContract
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.PopupMenu
@@ -11,7 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
 import kotlinx.android.synthetic.main.fragment_playground.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -31,6 +40,9 @@ class PlaygroundFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
     var isLoading: Boolean = false
     lateinit var exportFile: File
+    val ACCESS_KEY = "AKIA3YAIMTT5NMBWXJUY"
+    val SECRET_KEY = "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"
+    val BUCKET_NAME = "chanakya-dev"
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -116,6 +128,20 @@ class PlaygroundFragment : BaseFragment() {
                     }
                     startActivityForResult(intent, 100)
                 }
+                R.id.saveToServer -> {
+                    Log.d("FILE UPLOADED","File uploaded savedTo server file ${file}")
+//                    viewModel.handle(PlaygroundActions.uploadScratchFile(file, BUCKET_NAME, ACCESS_KEY, SECRET_KEY))
+
+                    uploadFileToS3(file, BUCKET_NAME, ACCESS_KEY, SECRET_KEY)
+
+//                    viewModel.handle(PlaygroundActions.PostFile(file, file.name))
+                    Log.d("FILE UPLOADED","File uploaded successfully origin file ${file}")
+                    Log.d("FILE UPLOADED","File uploaded successfully origin bucket ${BUCKET_NAME}")
+                    Log.d("FILE UPLOADED","File uploaded successfully origin access ${ACCESS_KEY}")
+                    Log.d("FILE UPLOADED","File uploaded successfully origin secreat ${SECRET_KEY}")
+
+
+                }
             }
             true
         }
@@ -162,5 +188,31 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.handle(PlaygroundActions.RefreshLayout)
     }
 
+
+    private fun uploadFileToS3(file: File, bucketName: String, accessKey: String, secretKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
+                val credentials = BasicAWSCredentials(accessKey, secretKey)
+                val s3Client = AmazonS3Client(credentials)
+                s3Client.setRegion(region)
+                val metadata = ObjectMetadata()
+                metadata.contentType = "application/vnd.android.package-archive"
+                metadata.contentLength = file.length()
+                val putObjectRequest = PutObjectRequest(bucketName, "scratch/${file.name}", file)
+                Log.d("FILE UPLOADED","File uploaded successfully origin putObjecetRequest ${putObjectRequest}")
+                Log.d("FILE UPLOADED","File uploaded successfully origin PutObjecetRequest ${PutObjectRequest(bucketName, file.name, file)}")
+                putObjectRequest.metadata = metadata
+                s3Client.putObject(putObjectRequest)
+                val objectMetadata = s3Client.getObjectMetadata(bucketName, file.name)
+                Log.d("FILE UPLOADED","File uploaded successfully. ETag: ${objectMetadata.eTag}")
+            }catch (e: Exception) {
+                Log.e("FILE UPLOADED", "Failed to upload file: ${e.message}")
+            }
+
+        }
+
+    }
 
 }

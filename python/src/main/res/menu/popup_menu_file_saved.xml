@@ -10,4 +10,8 @@
     <item
         android:id="@+id/exportSavedFile"
         android:title="@string/export" />
+
+    <item
+        android:id="@+id/saveToServer"
+        android:title="Share as URL" />
 </menu>
