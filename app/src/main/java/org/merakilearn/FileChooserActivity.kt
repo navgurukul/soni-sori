@@ -166,7 +166,12 @@ class FileChooserActivity : AppCompatActivity() {
     }
 
     private fun getExtensionFromName(fileName: String): String {
-        return fileName.substring(fileName.lastIndexOf("."), fileName.length)
+        val firstIndex = fileName.lastIndexOf(".")
+        return if(firstIndex != -1){
+            fileName.substring(firstIndex, fileName.length)
+        }else{
+            "Invalid file name"
+        }
     }
 
 }
