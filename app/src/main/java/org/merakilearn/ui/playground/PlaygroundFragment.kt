@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -38,7 +37,6 @@ import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
 import java.io.InputStream
 import java.util.*
-import java.io.OutputStream
 
 class PlaygroundFragment : BaseFragment() {
     private val viewModel: PlaygroundViewModel by viewModel()
@@ -150,6 +148,24 @@ class PlaygroundFragment : BaseFragment() {
             coordinatorLayout,
             recycler_view
         )
+        val adapter =
+            PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
+
+                val viewState = viewModel.viewState.value
+                viewState?.let { state ->
+                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
+                        //  ScratchActivity.start(requireContext())
+                    }
+                }
+                if (isLongClick)
+                    showUpPopMenu(playgroundItemModel.file, view)
+                else
+                    viewModel.selectPlayground(playgroundItemModel)
+
+            }
+        val layoutManager = GridLayoutManager(requireContext(), 4)
+        recycler_view.layoutManager = layoutManager
+        recycler_view.adapter = projectAdapter
 
 
 
