@@ -5,6 +5,42 @@ function loadProjectUsingBase64(filename, fileData) {
     window.dispatchEvent(loadProject);
 }
 
+function loadProjectUsingS3Url(url) {
+    const loadProject = new CustomEvent("LOAD_PROJECT_USING_S3URL");
+    loadProject.url = url;
+    window.dispatchEvent(loadProject);
+}
+
+function loadProjectUsingFileName(filename) {
+    const loadProject = new CustomEvent("LOAD_PROJECT_USING_FILENAME");
+    loadProject.filename = filename;
+    window.dispatchEvent(loadProject);
+}
+
+function postFile(token, filename) {
+    console.log("Scratch--> POSTFILE 1");
+    const postFile = new CustomEvent("POST_FILE");
+    postFile.token = token;
+    postFile.filename = filename;
+    window.dispatchEvent(postFile);
+}
+
+function convertBase64ToFile(base64String, filename, token) {
+    console.log("Scratch--> CONVERTBASE64TOFILE 1");
+    const convertBase64ToFile = new CustomEvent("CONVERT_BASE64_TO_FILE");
+    convertBase64ToFile.base64 = base64String;
+    convertBase64ToFile.filename = filename;
+    convertBase64ToFile.token = token;
+    window.dispatchEvent(convertBase64ToFile);
+}
+
+function deleteProject(projectId) {
+    const deleteProject = new CustomEvent("DELETE_PROJECT");
+    const projectId = Scratch.getProjectIdString();
+    deleteProject.projectId = projectId;
+    window.dispatchEvent(deleteProject);
+}
+
 function downloadBlob(filename, blob) {
     //convert unit8array to blob
     var blob = new Blob([blob]);
@@ -28,10 +64,12 @@ function downloadBlob(filename, blob) {
             base64data = reader.result;
             const base64String = base64data.split(",")[1];
             // assign to base64 string to global variable
+            console.log("calling here");
             const globalBase64 = new CustomEvent(
                 "ASSIGN_BASE64DATA_TO_VARIABLE"
             );
             globalBase64.base64 = base64String;
+            convertBase64ToFile(base64String, "randomTestFile");
             window.dispatchEvent(globalBase64);
 
             // downloadLink.href = base64data; //url
