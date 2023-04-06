@@ -148,21 +148,6 @@ class PlaygroundFragment : BaseFragment() {
             coordinatorLayout,
             recycler_view
         )
-        val adapter =
-            PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
-
-                val viewState = viewModel.viewState.value
-                viewState?.let { state ->
-                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
-                        //  ScratchActivity.start(requireContext())
-                    }
-                }
-                if (isLongClick)
-                    showUpPopMenu(playgroundItemModel.file, view)
-                else
-                    viewModel.selectPlayground(playgroundItemModel)
-
-            }
         val layoutManager = GridLayoutManager(requireContext(), 4)
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = projectAdapter
