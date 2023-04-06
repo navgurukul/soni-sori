@@ -148,14 +148,10 @@ class PlaygroundFragment : BaseFragment() {
             navigator,
             contentsList!!,
             coordinatorLayout,
-            projectList
+            recycler_view
         )
 
-        val layoutManager = GridLayoutManager(requireContext(), 4)
-        projectList.layoutManager = layoutManager
-        val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        projectList.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
-        projectList.adapter = projectAdapter
+
 
     }
 
