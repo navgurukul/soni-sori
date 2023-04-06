@@ -131,7 +131,8 @@ class MerakiNavigator(
 
     fun launchWebIDEApp(activity: FragmentActivity, projectName: String) {
         if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
-            webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
+            navigateToWebModule(activity,projectName)
+//            webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
         } else {
             val progress = ProgressDialog(activity).apply {
                 setCancelable(false)
@@ -141,12 +142,20 @@ class MerakiNavigator(
             }
             dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
                 progress.dismiss()
-                webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
+                navigateToWebModule(activity,projectName)
+//                webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
             }, {
                 progress.dismiss()
             })
         }
 
+    }
+
+    private fun navigateToWebModule(activity: FragmentActivity, projectName: String) {
+        val intent = Intent()
+        intent.putExtra("project", projectName)
+        intent.setClassName("org.merakilearn","org.navgurukul.webide.ui.activity.ProjectActivity")
+        activity.startActivity(intent)
     }
 
     private fun startActivity(
