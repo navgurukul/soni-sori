@@ -10,6 +10,7 @@ import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.datasource.network.model.TempCredentialResponse
 import org.merakilearn.datasource.network.model.UserUpdate
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -153,6 +154,14 @@ class UserRepo(
         return try {
             saralApi.getPartnerData(partnerId)
         }catch (ex:Exception){
+            throw ex
+        }
+    }
+
+    suspend fun getTempCredential() : TempCredentialResponse{
+        return try {
+            saralApi.getTempCredential()
+        } catch (ex:Exception){
             throw ex
         }
     }

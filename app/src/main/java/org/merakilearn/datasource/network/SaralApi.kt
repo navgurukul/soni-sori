@@ -48,4 +48,6 @@ interface SaralApi {
         @Path(value = "partnerID") partnerID: Int
     ): PartnerDataResponse
 
+    @GET("scratch/uploadCredentials")
+    suspend fun getTempCredential() : TempCredentialResponse
 }
