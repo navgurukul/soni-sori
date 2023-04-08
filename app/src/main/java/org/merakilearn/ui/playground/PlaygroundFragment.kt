@@ -150,7 +150,7 @@ class PlaygroundFragment : BaseFragment() {
         )
         val layoutManager = GridLayoutManager(requireContext(), 4)
         recycler_view.layoutManager = layoutManager
-        recycler_view.adapter = projectAdapter
+//        recycler_view.adapter = projectAdapter
 
 
 
