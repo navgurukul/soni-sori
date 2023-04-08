@@ -21,6 +21,7 @@
     <string name="export">Export</string>
     <string name="rename">Rename</string>
     <string name="save">Save</string>
+    <string name="shareAsUrl">ShareAsUrl</string>
 
     <string name="cancel_alert">Cancel</string>
     <string name="save_file_hint">Hello World… </string>

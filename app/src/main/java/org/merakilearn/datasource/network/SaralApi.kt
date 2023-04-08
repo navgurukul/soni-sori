@@ -2,6 +2,7 @@ package org.merakilearn.datasource.network
 
 import okhttp3.ResponseBody
 import org.merakilearn.datasource.network.model.*
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -47,4 +48,7 @@ interface SaralApi {
     suspend fun getPartnerData(
         @Path(value = "partnerID") partnerID: Int
     ): PartnerDataResponse
+
+    @GET("scratch/uploadCredentials")
+    suspend fun getUploadCredentials(): UploadCredentials
 }

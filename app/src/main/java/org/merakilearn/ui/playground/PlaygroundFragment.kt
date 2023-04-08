@@ -116,6 +116,7 @@ class PlaygroundFragment : BaseFragment() {
                     }
                     startActivityForResult(intent, 100)
                 }
+                R.id.shareAsUrl -> viewModel.handle(PlaygroundActions.ShareAsUrl(file))
             }
             true
         }

@@ -1,12 +1,23 @@
 package org.merakilearn.ui.playground
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.amazonaws.auth.AWSCredentials
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.BasicSessionCredentials
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import org.merakilearn.R
 import org.merakilearn.datasource.PlaygroundRepo
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.datasource.network.model.UploadCredentials
 import org.merakilearn.repo.ScratchRepository
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -33,6 +44,7 @@ class PlaygroundViewModel(
             }
             is PlaygroundActions.RefreshLayout -> init()
             is PlaygroundActions.DeleteFile -> deleteFile(action.file)
+            is PlaygroundActions.ShareAsUrl -> shareAsUrl(action.file)
         }
     }
 
@@ -114,6 +126,70 @@ class PlaygroundViewModel(
             init()
         }
     }
+
+    private fun shareAsUrl(file: File){
+        viewModelScope.launch {
+            val response = repository.getUploadCredentials()
+            response?.data?.let {
+                uploadObjectToS3(
+                    file,
+                    it.Bucket,
+                    it.Credentials.AccessKeyId,
+                    it.Credentials.SecretAccessKey,
+                    it.Credentials.SessionToken
+                )
+            }
+        }
+    }
+
+    private fun uploadObjectToS3(file: File,bucket: String, accessKey: String, secretAccessKey: String, sessionToken: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
+                val credentials = BasicSessionCredentials(accessKey, secretAccessKey, sessionToken)
+                val s3Client = AmazonS3Client(credentials)
+                s3Client.setRegion(region)
+                val metadata = ObjectMetadata()
+                metadata.contentType = "application/vnd.android.package-archive"
+                metadata.contentLength = file.length()
+                val putObjectRequest = PutObjectRequest(bucket , "scratch/${file.name}", file)
+                Log.d("FILE UPLOADED","File uploaded successfully origin putObjecetRequest ${putObjectRequest}")
+                Log.d("FILE UPLOADED","File uploaded successfully origin PutObjecetRequest ${PutObjectRequest(bucket, file.name, file)}")
+                putObjectRequest.metadata = metadata
+                s3Client.putObject(putObjectRequest)
+                val objectMetadata = s3Client.getObjectMetadata(bucket, file.name)
+                Log.d("FILE UPLOADED","File uploaded successfully. ETag: ${objectMetadata.eTag}")
+            }catch (e: Exception) {
+                Log.e("FILE UPLOADED", "Failed to upload file: ${e.message}")
+            }
+        }
+    }
+
+    private fun uploadFileToS3(file: File, bucketName: String, accessKey: String, secretKey: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
+                val credentials = BasicAWSCredentials(accessKey, secretKey)
+                val s3Client = AmazonS3Client(credentials)
+                s3Client.setRegion(region)
+                val metadata = ObjectMetadata()
+                metadata.contentType = "application/vnd.android.package-archive"
+                metadata.contentLength = file.length()
+                val putObjectRequest = PutObjectRequest(bucketName, "scratch/${file.name}", file)
+                Log.d("FILE UPLOADED","File uploaded successfully origin putObjecetRequest ${putObjectRequest}")
+                Log.d("FILE UPLOADED","File uploaded successfully origin PutObjecetRequest ${PutObjectRequest(bucketName, file.name, file)}")
+                putObjectRequest.metadata = metadata
+                s3Client.putObject(putObjectRequest)
+                val objectMetadata = s3Client.getObjectMetadata(bucketName, file.name)
+                Log.d("FILE UPLOADED","File uploaded successfully. ETag: ${objectMetadata.eTag}")
+            }catch (e: Exception) {
+                Log.e("FILE UPLOADED", "Failed to upload file: ${e.message}")
+            }
+
+        }
+
+    }
 }
 
 sealed class PlaygroundViewEvents : ViewEvents {
@@ -129,6 +205,8 @@ sealed class PlaygroundActions : ViewModelAction {
     data class Query(val query: String?) : PlaygroundActions()
     object RefreshLayout : PlaygroundActions()
     class DeleteFile(val file: File) : PlaygroundActions()
+
+    class ShareAsUrl(val file: File) : PlaygroundActions()
 }
 
 data class PlaygroundViewState(

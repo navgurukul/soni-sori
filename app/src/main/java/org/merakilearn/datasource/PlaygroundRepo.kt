@@ -1,10 +1,17 @@
 package org.merakilearn.datasource
 
+import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.merakilearn.R
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.datasource.network.SaralApi
+import org.merakilearn.datasource.network.model.UploadCredentials
+import timber.log.Timber
 
-class PlaygroundRepo {
+class PlaygroundRepo(
+    private val api: SaralApi
+) {
 
     fun getAllPlaygrounds(): List<PlaygroundItemModel> {
         return arrayListOf(
@@ -25,5 +32,15 @@ class PlaygroundRepo {
             ),
 
         )
+    }
+
+    suspend fun getUploadCredentials(): UploadCredentials? {
+        return try {
+            val response = api.getUploadCredentials()
+            response
+        } catch (ex: Exception) {
+            Timber.tag("PLAYGROUND_REPO").e(ex, "getUploadCredentials: ")
+            null
+        }
     }
 }
