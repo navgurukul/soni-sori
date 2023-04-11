@@ -1,13 +1,20 @@
 package org.navgurukul.learn.ui.learn
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,7 +26,10 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.databinding.ItemPathwayBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
+private val scheduler = Executors.newSingleThreadScheduledExecutor()
 class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +80,9 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
-            dismiss()
+            scheduler.schedule({
+                dismiss()
+            }, 1000, TimeUnit.MILLISECONDS)
         })
     }
 }
@@ -87,6 +99,8 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
             }
         }
     ) {
+
+
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemPathwayBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -100,12 +114,36 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
-        val thumbnail = Glide.with(holder.itemView)
-            .load(R.drawable.ic_typing_icon)
-        Glide.with(binding.ivPathwayIcon)
-            .load(item.logo)
-            .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
-            .thumbnail(thumbnail)
-            .into(binding.ivPathwayIcon)
+        val context = binding.root.context
+        val placeholderDrawable = ContextCompat.getDrawable(context, R.drawable.ic_typing_icon)
+        val requestOptions = RequestOptions()
+            .override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size))
+            .placeholder(placeholderDrawable)
+            .error(placeholderDrawable)
+//        val thumbnail = Glide.with(holder.itemView)
+//            .load(R.drawable.ic_typing_icon)
+//        Glide.with(binding.ivPathwayIcon)
+//            .load(item.logo)
+//            .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
+//            .thumbnail(thumbnail)
+//            .into(binding.ivPathwayIcon)
+        if (isConnectedToNetwork(context)) {
+            Glide.with(binding.ivPathwayIcon)
+                .load(item.logo)
+                .apply(requestOptions)
+                .thumbnail(Glide.with(holder.itemView).load(R.drawable.ic_typing_icon))
+                .into(binding.ivPathwayIcon)
+        } else {
+            binding.ivPathwayIcon.setImageDrawable(placeholderDrawable)
+        }
+
     }
+    private fun isConnectedToNetwork(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
 }
