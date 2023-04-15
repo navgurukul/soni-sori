@@ -136,15 +136,17 @@ class PlaygroundViewModel(
                     it.Bucket,
                     it.Credentials.AccessKeyId,
                     it.Credentials.SecretAccessKey,
-                    it.Credentials.SessionToken
+                    it.Credentials.SessionToken,
+                    it.Key
                 )
             }
         }
     }
 
-    private fun uploadObjectToS3(file: File,bucket: String, accessKey: String, secretAccessKey: String, sessionToken: String){
+    private fun uploadObjectToS3(file: File,bucket: String, accessKey: String, secretAccessKey: String, sessionToken: String, key: String){
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d("REQ","File: ${file.name}, Bucket: $bucket, Access Key: $accessKey, Secret Key: $secretAccessKey, Token: $sessionToken, Key: $key");
                 val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
                 val credentials = BasicSessionCredentials(accessKey, secretAccessKey, sessionToken)
                 val s3Client = AmazonS3Client(credentials)
@@ -152,13 +154,9 @@ class PlaygroundViewModel(
                 val metadata = ObjectMetadata()
                 metadata.contentType = "application/vnd.android.package-archive"
                 metadata.contentLength = file.length()
-                val putObjectRequest = PutObjectRequest(bucket , "scratch/${file.name}", file)
-                Log.d("FILE UPLOADED","File uploaded successfully origin putObjecetRequest ${putObjectRequest}")
-                Log.d("FILE UPLOADED","File uploaded successfully origin PutObjecetRequest ${PutObjectRequest(bucket, file.name, file)}")
+                val putObjectRequest = PutObjectRequest(bucket , key, file)
                 putObjectRequest.metadata = metadata
                 s3Client.putObject(putObjectRequest)
-                val objectMetadata = s3Client.getObjectMetadata(bucket, file.name)
-                Log.d("FILE UPLOADED","File uploaded successfully. ETag: ${objectMetadata.eTag}")
             }catch (e: Exception) {
                 Log.e("FILE UPLOADED", "Failed to upload file: ${e.message}")
             }
