@@ -2,6 +2,7 @@ package org.navgurukul.webide.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -189,7 +190,7 @@ class WebActivity : ThemedActivity() {
                 val layoutLog = SheetLogsBinding.inflate(LayoutInflater.from(this@WebActivity))
                 val darkTheme = prefs["dark_theme", false]!!
                 if (darkTheme) {
-                    layoutLog.root.setBackgroundColor(-0xcccccd)
+                    layoutLog.root.setBackgroundColor(Color.parseColor("#343433"))
                 }
 
                 val manager = LinearLayoutManager(this)
