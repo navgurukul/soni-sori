@@ -51,4 +51,10 @@ interface SaralApi {
 
     @GET("scratch/uploadCredentials")
     suspend fun getUploadCredentials(): UploadCredentials
+
+    @PUT("scratch/withoutFile/{projectId}")
+    suspend fun updateSuccessS3Upload(
+        @Path("projectId") projectId: String,
+        @Body projectNameAndUrl: ProjectNameAndUrl
+    ): UpdateSuccessS3UploadResponse
 }
