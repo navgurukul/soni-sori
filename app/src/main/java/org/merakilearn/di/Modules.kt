@@ -9,7 +9,6 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
@@ -41,7 +40,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
-    viewModel { PlaygroundViewModel( get(),get(), get(),androidContext()) }
+    viewModel { PlaygroundViewModel( get(),get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,

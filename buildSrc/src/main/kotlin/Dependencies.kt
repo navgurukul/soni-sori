@@ -15,13 +15,6 @@ object Versions {
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
-    const val multidex = "2.0.1"
-    const val nanohttpd = "2.3.1"
-    const val jsoup = "1.15.3"
-    const val uaUtils = "1.21"
-    const val jgit = "6.4.0.202211300538-r" // no-update
-    const val playServicesLicensesPlugin = "17.0.0"
-    const val  mpchart = "3.0.3"
 }
 
 object RxJavaDependencies {
@@ -72,8 +65,6 @@ object AndroidxDependencies {
         "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
-    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_extensions}"
-    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
         "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
@@ -85,7 +76,6 @@ object AndroidxDependencies {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
     const val browser = "androidx.browser:browser:1.3.0"
-    const val multidex = "androidx.multidex:multidex:${Versions.multidex}"
 }
 
 object MaterialDesignDependencies {
@@ -101,7 +91,6 @@ object OkReplayDependencies {
 object GooglePlayDependencies {
     const val playCore = "com.google.android.play:core:1.10.0"
     const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
-    const val playServicesLicenses =  "com.google.android.gms:play-services-oss-licenses:${Versions.playServicesLicensesPlugin}"
 }
 
 object GMSDependencies {
@@ -150,11 +139,6 @@ object MiscellaneousDependencies {
     const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
-    const val nanohttpd = "org.nanohttpd:nanohttpd-webserver:${Versions.nanohttpd}"
-    const val jgit = "org.eclipse.jgit:org.eclipse.jgit:${Versions.jgit}"
-    const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
-    const val uaUtils  = "eu.bitwalker:UserAgentUtils:${Versions.uaUtils}"
-    const val mpchart = "com.github.PhilJay:MPAndroidChart:${Versions.mpchart}"
 }
 
 object FirebaseDependencies {
@@ -195,16 +179,15 @@ object BuildConfigVersions {
 object Classpath {
     const val gradle = "com.android.tools.build:gradle:7.0.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-    const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
+
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
     const val python = "com.chaquo.python:gradle:10.0.1"
     const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
-    const val firebasePerf= "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
-
-   const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"
+    const val firebasePerf =
+        "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
 }
 
 object Plugins {
@@ -219,6 +202,4 @@ object Plugins {
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
-    const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
-    const val githubBenManes = "com.github.ben-manes.versions"
 }

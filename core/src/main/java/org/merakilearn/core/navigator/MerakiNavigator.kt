@@ -37,18 +37,6 @@ class MerakiNavigator(
         }
     }
 
-    private val webIDEAppModuleNavigator: WebIDEAppModuleNavigator? by lazy {
-        val serviceIterator = ServiceLoader.load(
-            WebIDEAppModuleNavigator::class.java,
-            WebIDEAppModuleNavigator::class.java.classLoader
-        ).iterator()
-        if (serviceIterator.hasNext()) {
-            serviceIterator.next()
-        } else {
-            null
-        }
-    }
-
     fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
 
@@ -129,26 +117,6 @@ class MerakiNavigator(
 
     }
 
-    fun launchWebIDEApp(activity: FragmentActivity, projectName: String) {
-        if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
-            webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
-        } else {
-            val progress = ProgressDialog(activity).apply {
-                setCancelable(false)
-                setMessage(activity.getString(R.string.installing_module_message))
-                setProgressStyle(ProgressDialog.STYLE_SPINNER)
-                show()
-            }
-            dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
-                progress.dismiss()
-                webIDEAppModuleNavigator?.launchWebIDEApp(activity, projectName)
-            }, {
-                progress.dismiss()
-            })
-        }
-
-    }
-
     private fun startActivity(
         context: Context,
         intent: Intent,
@@ -211,7 +179,6 @@ class MerakiNavigator(
         const val TYPING_DEEPLINK = "/typing"
         const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
-        const val WEB_DEV_MODULE_NAME = "webIDE"
 
         private fun isMerakiUrl(url: String): Boolean {
             return try {
