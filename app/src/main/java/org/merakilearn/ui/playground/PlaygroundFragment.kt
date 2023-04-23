@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -38,7 +37,6 @@ import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
 import java.io.InputStream
 import java.util.*
-import java.io.OutputStream
 
 class PlaygroundFragment : BaseFragment() {
     private val viewModel: PlaygroundViewModel by viewModel()
@@ -148,14 +146,13 @@ class PlaygroundFragment : BaseFragment() {
             navigator,
             contentsList!!,
             coordinatorLayout,
-            projectList
+            recycler_view
         )
-
         val layoutManager = GridLayoutManager(requireContext(), 4)
-        projectList.layoutManager = layoutManager
-        val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        projectList.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
-        projectList.adapter = projectAdapter
+        recycler_view.layoutManager = layoutManager
+//        recycler_view.adapter = projectAdapter
+
+
 
     }
 
