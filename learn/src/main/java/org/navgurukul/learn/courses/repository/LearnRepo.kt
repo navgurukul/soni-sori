@@ -219,15 +219,6 @@ class LearnRepo(
                 e.printStackTrace()
             }
         }
-
-        return flow {
-            val contentList = courseApi.getCompletedContentsIds(courseId)
-            updateCompletedContentInDb(contentList)
-            emit(contentList)
-        }.catch { e ->
-            throw e
-        }
-
     }
 
     suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
@@ -327,6 +318,13 @@ class LearnRepo(
        }
     }
 
+    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
+        return courseApi.getCompletedPortionData(pathwayId)
+    }
+
+    suspend fun getCertificate(): CertificateResponse{
+        return courseApi.getCertificate()
+    }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {
@@ -365,8 +363,8 @@ class LearnRepo(
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
             courseApi.postStudentResult(studentResult)
-        } catch (ex: Exception){
-            throw ex
+        } catch (e: Exception){
+            e.printStackTrace()
         }
     }
 
@@ -386,12 +384,13 @@ class LearnRepo(
         courseId: String,
         exerciseId: String
     ){
-        val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
         try {
+            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
             courseApi.postLearningTrackStatus(learningTrackStatus)
-        } catch (ex: Exception){
-            throw ex
+        } catch (e: Exception){
+            e.printStackTrace()
         }
+
     }
 
 

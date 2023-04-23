@@ -219,7 +219,7 @@ data class BannerAction(
         @Json(name = "url")
         val url: String?,
         @Json(name = "label")
-        var label: String?,
+        var label: String? = null,
         @Json(name = "data")
         var data: String?,
         @Json(name = "icon")

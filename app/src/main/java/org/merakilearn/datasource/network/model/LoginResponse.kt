@@ -17,10 +17,6 @@ data class LoginResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class User(
-        @Json(name = "chat_id")
-        val chatId: String?,
-        @Json(name = "chat_password")
-        val chatPassword: String?,
         @Json(name = "center")
         var center: Any?,
         @Json(name = "created_at")
@@ -44,6 +40,8 @@ data class LoginResponse(
         @Json(name = "profile_picture")
         var profilePicture: String?,
         @Json(name = "rolesList")
-        var rolesList: List<Any?>? = emptyList()
+        var rolesList: List<Any?>? = emptyList(),
+        @Json(name = "partner_id")
+        val partnerId: Int? = null,
     )
 }
