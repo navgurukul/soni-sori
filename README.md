@@ -9,6 +9,15 @@ She was awarded Front Line Defenders award in 2018.
 # Saral App
 This application is meant to help users to learn Programming from wherever they are in vernacular languages with a group of learners that we identify and group them with.
 
+#SetUp project 
+Installation
+Before you can use this project, you must have Python installed on your system.
+If you don't already have it installed, you can download it from the official Python website: https://www.python.org/downloads/
+
+Once you have installed Python, you can clone this repository to your local machine using the following command: https://github.com/navgurukul/soni-sori
+
+or using the command: git clone https://github.com/navgurukul/soni-sori.git
+
 ## Chaquopy Setup
 Add the following parameters in the local.properties file
 ``` 
