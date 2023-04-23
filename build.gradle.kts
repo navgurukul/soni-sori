@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath(Classpath.gradle)
         classpath(Classpath.kotlin)
+        classpath(Classpath.kotlinExtensions)
         // Newer versions may be available: please check here:
         // https://chaquo.com/chaquopy/doc/current/changelog.html
         classpath(Classpath.python)
@@ -16,7 +17,7 @@ buildscript {
         classpath(Classpath.realm)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
         classpath(Classpath.firebasePerf)
-
+        classpath(Classpath.benManes)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

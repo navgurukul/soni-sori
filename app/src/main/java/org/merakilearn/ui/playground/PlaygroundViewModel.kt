@@ -128,11 +128,9 @@ class PlaygroundViewModel(
                 )
             )
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
-            PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(
-                PlaygroundViewEvents.OpenScratchWithFile(
-                    playgroundItemModel.file
-                )
-            )
+            PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratchWithFile(
+                playgroundItemModel.file))
+            PlaygroundTypes.WEB_DEV_IDE -> _viewEvents.postValue(PlaygroundViewEvents.OpenDialogToCreateWebProject)
         }
     }
 
@@ -218,6 +216,8 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
+    object OpenWebIDE : PlaygroundViewEvents()
+    object OpenDialogToCreateWebProject : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
 
 }

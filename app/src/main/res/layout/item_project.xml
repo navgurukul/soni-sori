@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/projectLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:gravity="center">
+
+        <ImageView
+            android:id="@+id/favicon"
+            android:layout_width="@dimen/spacing_10x"
+            android:layout_height="@dimen/spacing_10x"
+            android:contentDescription="@string/create_favicon"
+            android:background="@drawable/playground_item_background"
+            tools:src="@drawable/python_logo"
+            android:scaleType="fitCenter" />
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_toEndOf="@+id/favicon"-->
+<!--            android:layout_toRightOf="@id/favicon"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/author"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="4dp"-->
+<!--                android:layout_marginLeft="8dp"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:alpha="0.75" />-->
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?textAppearanceSubtitle2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_playground_icon"
+                android:layout_margin="@dimen/spacing_2x"
+                tools:text="File"/>
+
+<!--            <TextView-->
+<!--                android:id="@+id/desc"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="4dp"-->
+<!--                android:layout_marginLeft="8dp"-->
+<!--                android:layout_marginStart="8dp" />-->
+
+<!--        </LinearLayout>-->
+
+</LinearLayout>
