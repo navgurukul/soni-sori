@@ -23,14 +23,19 @@ interface PlaygroundModuleNavigator {
     fun openPlaygroundWithFileContent(context: Context, file: File): Intent
 }
 
-sealed class Mode: Parcelable {
+sealed class Mode : Parcelable {
     @Parcelize
     object Playground : Mode()
+
     @Parcelize
     @JsonClass(generateAdapter = true)
     data class Course(val content: List<Char>, val code: String) : Mode()
 }
 
 interface TypingAppModuleNavigator {
-    fun launchTypingApp(activity: FragmentActivity, mode : Mode)
+    fun launchTypingApp(activity: FragmentActivity, mode: Mode)
+}
+
+interface WebIDEAppModuleNavigator {
+    fun launchWebIDEApp(activity: FragmentActivity, projectName: String)
 }
