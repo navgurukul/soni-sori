@@ -11,5 +11,5 @@ data class PlaygroundItemModel(
 )
 
 enum class PlaygroundTypes {
-    PYTHON, TYPING_APP, PYTHON_FILE, SCRATCH, SCRATCH_FILE,WEB_DEV_IDE
+    PYTHON, TYPING_APP, PYTHON_FILE, SCRATCH, SCRATCH_FILE
 }

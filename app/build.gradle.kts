@@ -62,7 +62,6 @@ android {
     }
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
-    dynamicFeatures += setOf(":webIDE")
 }
 
 dependencies {
@@ -141,11 +140,6 @@ dependencies {
     //Google play
     implementation(GooglePlayDependencies.playCore)
     implementation(GooglePlayDependencies.installReferrer)
-
-    //for webide
-    implementation (MiscellaneousDependencies.uaUtils)
-    implementation (MiscellaneousDependencies.nanohttpd)
-    implementation (MiscellaneousDependencies.jsoup)
 
 
     //test
