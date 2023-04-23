@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.merakilearn">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.MICROPHONE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MerakiApp"
@@ -25,18 +26,36 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.merakilearn.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/fileprovider" />
+                android:resource="@xml/fileprovider"
+                tools:replace="android:resource"/>
         </provider>
         <activity
             android:name=".FileChooserActivity"
             android:exported="true">
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="scratch.merakilearn.org"
+                    android:scheme="https" />
+
+                <data
+                    android:host="scratch.merakilearn.org"
+                    android:scheme="http" />
+
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="file" />
                 <data android:scheme="content" />

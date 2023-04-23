@@ -1,18 +1,21 @@
 package org.merakilearn.ui
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.net.Uri
+import android.os.*
 import android.util.Base64
 import android.view.View
-import android.view.WindowManager
 import android.webkit.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,19 +35,18 @@ class ScratchActivity : AppCompatActivity() {
     lateinit var scratchRepository: ScratchRepositoryImpl
 
     lateinit var myRequest: PermissionRequest
-
     var file: File? = null
+    var s3Url: String = ""
     var savedFile: Boolean = false
     var savedFileName: String = ""
     var loadSavedFileCalled: Boolean = false
     var datalinkload: String = ""
     var datalinksave: String = ""
+    private var fileChooserResultLauncher = createFileChooserResultLauncher()
+    private var fileChooserValueCallback: ValueCallback<Array<Uri>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//            WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_scratch)
 
@@ -53,6 +55,10 @@ class ScratchActivity : AppCompatActivity() {
 
         scratchRepository = ScratchRepositoryImpl(this)
         file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
+
+        if(!intent.getStringExtra("s3Url").isNullOrEmpty()){
+            s3Url = intent.getStringExtra("s3Url").toString()
+        }
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()
@@ -64,6 +70,7 @@ class ScratchActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
         webView.settings.allowFileAccess = true
         webView.settings.allowFileAccessFromFileURLs = true
+        webView.settings.allowUniversalAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Scratch")
 
     }
@@ -75,17 +82,21 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
+    fun showAlertOnExit(globalBase64String: String) {
+        datalinksave = globalBase64String
+        showCodeSaveDialog2()
+    }
+
+    @JavascriptInterface
     fun onBack() {
         Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
     }
 
-    override fun onBackPressed() {
-        if (webView.canGoBack())
-            webView.goBack()
-        else
-            super.onBackPressed()
+    @JavascriptInterface
+    fun returnFile(): String{
+        return datalinkload
     }
 
     fun askForPermission(origin: String, permission: String, requestCode: Int) {
@@ -114,6 +125,13 @@ class ScratchActivity : AppCompatActivity() {
                     myRequest.grant(myRequest.resources)
                 }
             }
+            102 -> {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    myRequest.grant(myRequest.resources)
+                }
+            }
         }
     }
 
@@ -126,6 +144,20 @@ class ScratchActivity : AppCompatActivity() {
             result: JsResult?,
         ): Boolean {
             println("Data is passed")
+            return true
+        }
+
+        override fun onShowFileChooser(
+            webView: WebView?,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: FileChooserParams?
+        ): Boolean {
+            try {
+                fileChooserValueCallback = filePathCallback;
+                fileChooserResultLauncher.launch(fileChooserParams?.createIntent())
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this@ScratchActivity, "Error opening file chooser: $e", Toast.LENGTH_LONG).show()
+            }
             return true
         }
 
@@ -142,7 +174,22 @@ class ScratchActivity : AppCompatActivity() {
                             Manifest.permission.RECORD_AUDIO,
                             101)
                     }
+                    "android.webkit.resource.VIDEO_CAPTURE" -> {
+                        askForPermission(request.origin.toString(),
+                            Manifest.permission.CAMERA,
+                            102)
+                    }
                 }
+            }
+        }
+    }
+
+    private fun createFileChooserResultLauncher(): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                fileChooserValueCallback?.onReceiveValue(arrayOf(Uri.parse(it?.data?.dataString)));
+            } else {
+                fileChooserValueCallback?.onReceiveValue(null)
             }
         }
     }
@@ -157,11 +204,29 @@ class ScratchActivity : AppCompatActivity() {
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
 
-            if (!loadSavedFileCalled) {
+            if (!loadSavedFileCalled && s3Url.isEmpty()) {
                 loadSavedFileCalled = true
                 loadSavedFile(file)
+            } else if (!loadSavedFileCalled && s3Url.isNotEmpty()) {
+                loadSavedFileCalled = true
+                loadS3Url(s3Url)
             }
         }
+
+    }
+
+    fun loadS3Url(s3Url: String){
+
+        if (progressBar.visibility == View.VISIBLE)
+            progressBar.visibility = View.GONE
+
+        webView.loadUrl("javascript:openLoaderScreen();")
+        webView.loadUrl("javascript:loadProjectUsingS3Url('" + s3Url + "');")
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            webView.loadUrl("javascript:closeLoaderScreen();")
+        }, 5000)
+
     }
 
     fun loadSavedFile(file: File?) {
@@ -173,14 +238,14 @@ class ScratchActivity : AppCompatActivity() {
 
         if (file != null) {
             savedFileName = file.name
-            datalinkload = Base64.encodeToString(file.readBytes(), Base64.DEFAULT)
+            datalinkload = Base64.encodeToString(file.readBytes(), 2)
         } else {
-            savedFileName = "defaultMerakiScratchFile.sb3"
+            savedFileName = "defaultFile.sb3"
             datalinkload = Base64.encodeToString(application.assets.open(
-                "defaultMerakiScratchFile.sb3").readBytes(), Base64.DEFAULT)
+                "defaultFile.sb3").readBytes(), 2)
         }
 
-        webView.loadUrl("javascript:loadProjectUsingBase64('" + savedFileName + "','" + datalinkload + "')")
+        webView.loadUrl("javascript:loadProjectUsingFileName('" + savedFileName + "')")
 
         Handler(Looper.getMainLooper()).postDelayed({
             webView.loadUrl("javascript:closeLoaderScreen();")
@@ -238,6 +303,62 @@ class ScratchActivity : AppCompatActivity() {
         }
         alertDialog.setNegativeButton("Don't Save") { dialog, which ->
             dialog.dismiss()
+        }
+        alertDialog.setView(view)
+        alertDialog.show()
+    }
+
+    private fun showCodeSaveDialog2() {
+        val view: View = layoutInflater.inflate(R.layout.alert_save, null)
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setTitle("Save Scratch File")
+            setIcon(R.drawable.ic_scratch)
+            setCancelable(false)
+            setMessage("You may loose your progress if you exit without saving")
+        }
+
+        val fileName: EditText = view.findViewById(R.id.fileName)
+        file?.let {
+            with(fileName) { setText(it.name.removeSuffix(".sb3")) }
+            savedFile = true
+        }
+        alertDialog.setPositiveButton("Save") { dialog, which ->
+            GlobalScope.launch(Dispatchers.Main) {
+                when {
+                    fileName.text.isNotEmpty() -> {
+                        when {
+                            !savedFile && !scratchRepository.isFileNamePresent(fileName.text.toString() + ".sb3") -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    false)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            savedFile -> {
+                                scratchRepository.saveScratchFile(datalinksave,
+                                    fileName.text.trim().toString(),
+                                    true)
+                                dialog.dismiss()
+                                showCodeSavedDialog()
+                            }
+                            else -> {
+                                Toast.makeText(this@ScratchActivity,
+                                    "This file already exists, try a different name",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(this@ScratchActivity,
+                            "File name cannot be empty",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        alertDialog.setNegativeButton("Don't Save") { dialog, which ->
+            dialog.dismiss()
+            onBackPressed()
         }
         alertDialog.setView(view)
         alertDialog.show()

@@ -1,6 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
-
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -64,6 +64,8 @@ class LearnFragmentViewModel(
                                 languages = currentPathway!!.supportedLanguages,
                                 selectedLanguage = selectedLanguage,
                                 logo = currentPathway!!.logo,
+                                code = currentPathway!!.code,
+                                shouldShowCertificate = currentPathway!!.shouldShowCertificate,
                                 showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
                                         ?: true
                                 ) false else true
@@ -71,6 +73,7 @@ class LearnFragmentViewModel(
                         }
                         currentPathway?.let {
                             checkedStudentEnrolment(it.id)
+                            getCertificate(it.id)
                         }
                     } else {
                         setState { copy(loading = false) }
@@ -85,7 +88,7 @@ class LearnFragmentViewModel(
             checkedStudentEnrolment(pathway.id)
             learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
                 it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo,
+                    setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
                         showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
@@ -199,7 +202,7 @@ class LearnFragmentViewModel(
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
             val classes = learnRepo.getUpcomingClass(pathwayId)
-            classes?.let {
+            classes.let {
                 setState {
                     copy(
                         classes = it,
@@ -214,6 +217,24 @@ class LearnFragmentViewModel(
         }
     }
 
+    private fun getCertificate(pathwayId: Int){
+        viewModelScope.launch {
+            val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
+            getCertificatePdf(completedData)
+        }
+    }
+
+    private fun getCertificatePdf(completedPortion: Int){
+        viewModelScope.launch {
+            try {
+                val certificatePdfUrl = learnRepo.getCertificate().url
+                println("certificateUrl $certificatePdfUrl")
+                _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl, completedPortion))
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+        }
+    }
     fun selectBatch(batch: Batch) {
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
     }
@@ -251,9 +272,11 @@ data class LearnFragmentViewState(
     val selectedLanguage: String? = null,
     val languages: List<Language> = arrayListOf(),
     val logo: String? = null,
+    val code : String ? = null,
     val showTakeTestButton: Boolean = false,
     val menuId: Int? = null,
-    val classId: Int = 0
+    val classId: Int = 0,
+    var shouldShowCertificate: Boolean = false
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
@@ -270,7 +293,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
         LearnFragmentViewEvents()
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
     object EnrolledSuccessfully : LearnFragmentViewEvents()
-
+    class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int) : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {

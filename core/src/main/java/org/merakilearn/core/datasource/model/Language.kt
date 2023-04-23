@@ -9,5 +9,5 @@ data class Language(
     @Json(name = "code")
     val code: String?,
     @Json(name = "label")
-    val label: String?
+    val label: String? = null
 )
