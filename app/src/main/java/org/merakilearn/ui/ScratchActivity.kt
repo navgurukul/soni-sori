@@ -161,12 +161,6 @@ class ScratchActivity : AppCompatActivity() {
             return true
         }
 
-        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            Log.d("Scratch", "${consoleMessage.message()} -- From line " +
-              "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
-            return true
-        }
-
         override fun onPermissionRequest(request: PermissionRequest) {
             myRequest = request
             for (permission in request.resources) {

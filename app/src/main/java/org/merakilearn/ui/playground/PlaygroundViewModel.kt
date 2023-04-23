@@ -175,7 +175,7 @@ class PlaygroundViewModel(
                 i.type = "text/plain"
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
                 i.putExtra(Intent.EXTRA_TEXT,
-                    "Follow the url to open the shared scratch project: \n \n$shareUrl"
+                    "Hi, I've made a scratch project using MerakiLearn. You can view it here or remix it to create your own.\n\n$shareUrl"
                 )
                 context.startActivity(Intent.createChooser(i, "Share File"))
             }
