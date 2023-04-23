@@ -29,8 +29,9 @@ object Highlighter {
             super.run()
             try {
                 clearSpans(editable)
+                codeView.post {
                 defs.forEach { editable.color(it.pattern, if (darkTheme) { it.dark } else { it.color }) }
-                codeView.post { codeView.text = editable }
+                 codeView.text = editable }
             } catch (e: InterruptedException) {
                 Timber.d(e)
             }

@@ -52,56 +52,60 @@ class EditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        file?.let {
-            val filename = it.name
-            binding.fileContent.fileEnding = filename.substringAfterLast('.', "")
-            if (filename.endsWith(".html") || filename == "imports.txt") {
+        binding.let {
+            file?.let {
+
+                val filename = it.name
+                binding.fileContent.fileEnding = filename.substringAfterLast('.', "")
+                if (filename.endsWith(".html") || filename == "imports.txt") {
 //                setSymbol(fileContent, symbolTab, "\t\t")
-                setSymbol(binding.fileContent, binding.symbolOne, "<")
-                setSymbol(binding.fileContent, binding.symbolTwo, "/")
-                setSymbol(binding.fileContent, binding.symbolThree, ">")
-                setSymbol(binding.fileContent, binding.symbolFour, "\"")
-                setSymbol(binding.fileContent, binding.symbolFive, "=")
-                setSymbol(binding.fileContent, binding.symbolSix, "!")
-                setSymbol(binding.fileContent, binding.symbolSeven, "-")
-                setSymbol(binding.fileContent, binding.symbolEight, "/")
-            } else if (filename.endsWith(".css")) {
+                    setSymbol(binding.fileContent, binding.symbolOne, "<")
+                    setSymbol(binding.fileContent, binding.symbolTwo, "/")
+                    setSymbol(binding.fileContent, binding.symbolThree, ">")
+                    setSymbol(binding.fileContent, binding.symbolFour, "\"")
+                    setSymbol(binding.fileContent, binding.symbolFive, "=")
+                    setSymbol(binding.fileContent, binding.symbolSix, "!")
+                    setSymbol(binding.fileContent, binding.symbolSeven, "-")
+                    setSymbol(binding.fileContent, binding.symbolEight, "/")
+                } else if (filename.endsWith(".css")) {
 //                setSymbol(fileContent, symbolTab, "\t\t\t\t")
-                setSymbol(binding.fileContent, binding.symbolOne, "{")
-                setSymbol(binding.fileContent, binding.symbolTwo, "}")
-                setSymbol(binding.fileContent, binding.symbolThree, ":")
-                setSymbol(binding.fileContent, binding.symbolFour, ",")
-                setSymbol(binding.fileContent, binding.symbolFive, "#")
-                setSymbol(binding.fileContent, binding.symbolSix, ".")
-                setSymbol(binding.fileContent, binding.symbolSeven, ";")
-                setSymbol(binding.fileContent, binding.symbolEight, "-")
-            } else if (filename.endsWith(".js")) {
+                    setSymbol(binding.fileContent, binding.symbolOne, "{")
+                    setSymbol(binding.fileContent, binding.symbolTwo, "}")
+                    setSymbol(binding.fileContent, binding.symbolThree, ":")
+                    setSymbol(binding.fileContent, binding.symbolFour, ",")
+                    setSymbol(binding.fileContent, binding.symbolFive, "#")
+                    setSymbol(binding.fileContent, binding.symbolSix, ".")
+                    setSymbol(binding.fileContent, binding.symbolSeven, ";")
+                    setSymbol(binding.fileContent, binding.symbolEight, "-")
+                } else if (filename.endsWith(".js")) {
 //                setSymbol(fileContent, symbolTab, "\t\t\t\t")
-                setSymbol(binding.fileContent, binding.symbolOne, "{")
-                setSymbol(binding.fileContent, binding.symbolTwo, "}")
-                setSymbol(binding.fileContent, binding.symbolThree, "(")
-                setSymbol(binding.fileContent, binding.symbolFour, ")")
-                setSymbol(binding.fileContent, binding.symbolFive, "!")
-                setSymbol(binding.fileContent, binding.symbolSix, "=")
-                setSymbol(binding.fileContent, binding.symbolSeven, ":")
-                setSymbol(binding.fileContent, binding.symbolEight, "?")
-            }
+                    setSymbol(binding.fileContent, binding.symbolOne, "{")
+                    setSymbol(binding.fileContent, binding.symbolTwo, "}")
+                    setSymbol(binding.fileContent, binding.symbolThree, "(")
+                    setSymbol(binding.fileContent, binding.symbolFour, ")")
+                    setSymbol(binding.fileContent, binding.symbolFive, "!")
+                    setSymbol(binding.fileContent, binding.symbolSix, "=")
+                    setSymbol(binding.fileContent, binding.symbolSeven, ":")
+                    setSymbol(binding.fileContent, binding.symbolEight, "?")
+                }
 
-            val contents = getContents(location!!)
-            binding.fileContent.setText(contents)
-          //  binding.fileContent.setTextHighlighted(contents)
-            binding.fileContent.onTextChangedListener = object : Editor.OnTextChangedListener {
-                override fun onTextChanged(text: String) {
-                    try {
-                        it.writeText(binding.fileContent.string())
-                    } catch (e: IOException) {
-                        Timber.wtf(e)
+                val contents = getContents(location!!)
+                binding.fileContent.setText(contents)
+                //  binding.fileContent.setTextHighlighted(contents)
+                binding.fileContent.onTextChangedListener = object : Editor.OnTextChangedListener {
+                    override fun onTextChanged(text: String) {
+                        try {
+                            it.writeText(binding.fileContent.string())
+                        } catch (e: IOException) {
+                            Timber.wtf(e)
+                        }
+
                     }
-
                 }
             }
         }
     }
+
 
     private fun setSymbol(editor: Editor, button: Button?, symbol: String) {
         button!!.text = symbol
