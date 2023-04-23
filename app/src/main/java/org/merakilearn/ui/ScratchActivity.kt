@@ -1,17 +1,21 @@
 package org.merakilearn.ui
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.net.Uri
+import android.os.*
 import android.util.Base64
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,17 +36,17 @@ class ScratchActivity : AppCompatActivity() {
 
     lateinit var myRequest: PermissionRequest
     var file: File? = null
+    var s3Url: String = ""
     var savedFile: Boolean = false
     var savedFileName: String = ""
     var loadSavedFileCalled: Boolean = false
     var datalinkload: String = ""
     var datalinksave: String = ""
+    private var fileChooserResultLauncher = createFileChooserResultLauncher()
+    private var fileChooserValueCallback: ValueCallback<Array<Uri>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//            WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_scratch)
 
@@ -51,6 +55,10 @@ class ScratchActivity : AppCompatActivity() {
 
         scratchRepository = ScratchRepositoryImpl(this)
         file = intent.extras?.get(Constants.INTENT_EXTRA_KEY_FILE) as File?
+
+        if(!intent.getStringExtra("s3Url").isNullOrEmpty()){
+            s3Url = intent.getStringExtra("s3Url").toString()
+        }
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = WebViewClient()
@@ -62,6 +70,7 @@ class ScratchActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
         webView.settings.allowFileAccess = true
         webView.settings.allowFileAccessFromFileURLs = true
+        webView.settings.allowUniversalAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Scratch")
 
     }
@@ -138,6 +147,20 @@ class ScratchActivity : AppCompatActivity() {
             return true
         }
 
+        override fun onShowFileChooser(
+            webView: WebView?,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: FileChooserParams?
+        ): Boolean {
+            try {
+                fileChooserValueCallback = filePathCallback;
+                fileChooserResultLauncher.launch(fileChooserParams?.createIntent())
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this@ScratchActivity, "Error opening file chooser: $e", Toast.LENGTH_LONG).show()
+            }
+            return true
+        }
+
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
             return super.onConsoleMessage(consoleMessage)
         }
@@ -161,6 +184,16 @@ class ScratchActivity : AppCompatActivity() {
         }
     }
 
+    private fun createFileChooserResultLauncher(): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                fileChooserValueCallback?.onReceiveValue(arrayOf(Uri.parse(it?.data?.dataString)));
+            } else {
+                fileChooserValueCallback?.onReceiveValue(null)
+            }
+        }
+    }
+
     inner class WebViewClient : android.webkit.WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -171,11 +204,29 @@ class ScratchActivity : AppCompatActivity() {
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
 
-            if (!loadSavedFileCalled) {
+            if (!loadSavedFileCalled && s3Url.isEmpty()) {
                 loadSavedFileCalled = true
                 loadSavedFile(file)
+            } else if (!loadSavedFileCalled && s3Url.isNotEmpty()) {
+                loadSavedFileCalled = true
+                loadS3Url(s3Url)
             }
         }
+
+    }
+
+    fun loadS3Url(s3Url: String){
+
+        if (progressBar.visibility == View.VISIBLE)
+            progressBar.visibility = View.GONE
+
+        webView.loadUrl("javascript:openLoaderScreen();")
+        webView.loadUrl("javascript:loadProjectUsingS3Url('" + s3Url + "');")
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            webView.loadUrl("javascript:closeLoaderScreen();")
+        }, 5000)
+
     }
 
     fun loadSavedFile(file: File?) {

@@ -145,7 +145,10 @@ class PlaygroundViewModel(
     }
 
     private fun shareAsUrl(file: File, context: Context) {
-
+        if(file.extension != "sb3"){
+            Toast.makeText(context,"Sorry!, currently we can only share scratch files", Toast.LENGTH_LONG).show()
+            return
+        }
         viewModelScope.launch {
             Toast.makeText(
                 context,
@@ -171,7 +174,9 @@ class PlaygroundViewModel(
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "text/plain"
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
-                i.putExtra(Intent.EXTRA_TEXT, shareUrl + "\n" + shareUrl2)
+                i.putExtra(Intent.EXTRA_TEXT,
+                    "Follow the url to open the shared scratch project: \n \n$shareUrl"
+                )
                 context.startActivity(Intent.createChooser(i, "Share File"))
             }
         }
