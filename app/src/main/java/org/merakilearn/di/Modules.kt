@@ -198,7 +198,7 @@ val repositoryModule = module {
     single { Config() }
     single { ClassesRepo(get()) }
     single { SettingsRepo(get()) }
-    single { PlaygroundRepo() }
+    single { PlaygroundRepo(get()) }
     single {
         UserRepo(
             get(),
