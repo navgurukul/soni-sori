@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
@@ -139,8 +140,8 @@ class ScratchActivity : AppCompatActivity() {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            Log.d("Scratch", "${consoleMessage.message()} -- From line " +
-              "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
+            Log.d("Scratch", "${consoleMessage?.message()} -- From line " +
+              "${consoleMessage?.lineNumber()} of ${consoleMessage?.sourceId()}")
             return true
         }
 

@@ -269,7 +269,7 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
                     return false
                 }
 
-                override fun onDoubleTap(e: MotionEvent?): Boolean {
+                override fun onDoubleTap(e: MotionEvent): Boolean {
                     return super.onDoubleTap(e)
                 }
             })
