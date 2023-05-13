@@ -2,13 +2,14 @@
 plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
     id(Plugins.gms)
 }
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
+
+    namespace = "org.navgurukul.typingguru"
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
@@ -23,6 +24,10 @@ android {
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

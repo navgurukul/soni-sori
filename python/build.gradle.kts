@@ -1,12 +1,13 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
     id(Plugins.python)
 }
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
+
+    namespace = "org.navgurukul.playground"
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
@@ -27,6 +28,10 @@ android {
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

@@ -5,7 +5,7 @@ import de.undercouch.gradle.tasks.download.Download
 plugins {
     id(Plugins.application)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+    id("de.undercouch.download") version "5.4.0"
     id(Plugins.kotlinKapt)
     id(Plugins.gms)
     id(Plugins.crashlytics)
@@ -15,7 +15,7 @@ plugins {
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
-
+    namespace = "org.merakilearn"
     defaultConfig {
         applicationId = BuildConfigVersions.applicationId
         minSdk = BuildConfigVersions.minSdkVersion
@@ -47,6 +47,8 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
+        buildConfig = true
     }
 
     packagingOptions {

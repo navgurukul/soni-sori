@@ -1,7 +1,6 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
     id(Plugins.realm)
 }
@@ -12,6 +11,8 @@ kapt {
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
+
+    namespace = "org.navgurukul.chat"
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
@@ -27,6 +28,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

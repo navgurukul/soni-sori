@@ -1,11 +1,12 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
 }
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
+
+    namespace = "org.navgurukul.commonui"
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
@@ -13,6 +14,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildFeatures{
+        viewBinding = true
     }
 
     buildTypes {

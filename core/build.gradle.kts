@@ -1,12 +1,13 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
 }
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
+
+    namespace = "org.merakilearn.core"
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
@@ -25,6 +26,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     compileOptions {

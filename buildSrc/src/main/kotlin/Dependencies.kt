@@ -7,7 +7,7 @@ object Versions {
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
     const val markdown = "4.5.1"
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.8.21"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
     const val room = "2.4.0-alpha03"
@@ -177,13 +177,13 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:7.0.2"
+    const val gradle = "com.android.tools.build:gradle:8.0.0"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:10.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
+    const val python = "com.chaquo.python:gradle:14.0.2"
+    const val realm = "io.realm:realm-gradle-plugin:10.15.1"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
@@ -195,7 +195,6 @@ object Plugins {
     const val library = "com.android.library"
     const val dynamicFeature = "com.android.dynamic-feature"
     const val kotlinAndroid = "kotlin-android"
-    const val kotlinExtensions = "kotlin-android-extensions"
     const val kotlinKapt = "kotlin-kapt"
     const val gms = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"

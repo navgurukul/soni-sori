@@ -1,14 +1,13 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
     id("org.jetbrains.kotlin.android")
 }
 
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
-
+    namespace = "org.merakilearn.learn"
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
         targetSdk = BuildConfigVersions.targetSdkVersion
@@ -30,6 +29,11 @@ android {
         getByName("debug") {
             buildConfigField("int", "VERSION_CODE", "${BuildConfigVersions.versionCode}")
         }
+
+        buildFeatures {
+            viewBinding = true
+            buildConfig = true
+        }
     }
 
     compileOptions {
@@ -43,6 +47,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
