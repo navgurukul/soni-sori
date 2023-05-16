@@ -2,11 +2,12 @@ package org.navgurukul.commonui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.view_jump_to_read_marker.view.*
 import org.navgurukul.commonui.R
+import org.navgurukul.commonui.databinding.ViewJumpToReadMarkerBinding
 
 class JumpToReadMarkerView @JvmOverloads constructor(
         context: Context,
@@ -20,18 +21,20 @@ class JumpToReadMarkerView @JvmOverloads constructor(
     }
 
     var callback: Callback? = null
+    lateinit var binding : ViewJumpToReadMarkerBinding
 
     init {
         setupView()
     }
 
     private fun setupView() {
-        inflate(context, R.layout.view_jump_to_read_marker, this)
+        binding = ViewJumpToReadMarkerBinding.inflate(LayoutInflater.from(this.context), this)
+        View.inflate(context, R.layout.view_jump_to_read_marker, this)
         setBackgroundColor(ContextCompat.getColor(context, R.color.notification_accent_color))
-        jumpToReadMarkerLabelView.setOnClickListener {
+        binding.jumpToReadMarkerLabelView.setOnClickListener {
             callback?.onJumpToReadMarkerClicked()
         }
-        closeJumpToReadMarkerView.setOnClickListener {
+        binding.closeJumpToReadMarkerView.setOnClickListener {
             visibility = View.INVISIBLE
             callback?.onClearReadMarkerClicked()
         }

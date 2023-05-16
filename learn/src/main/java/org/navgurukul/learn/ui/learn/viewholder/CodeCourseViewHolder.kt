@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeType
