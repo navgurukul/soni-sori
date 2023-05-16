@@ -8,10 +8,10 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
+import org.merakilearn.datasource.network.UserUpdateName
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
-import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -86,10 +86,14 @@ class UserRepo(
 
     suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
-            val response = saralApi.initUserUpdateAsync(
-                UserUpdate(user.name, referrer)
-            )
-            saveUserResponse(response.user)
+            val response = referrer?.let { UserUpdateName(user.name, null, it) }?.let {
+                saralApi.updateProfileName(
+                    it
+                )
+            }
+            if (response != null) {
+                saveUserResponse(response.user)
+            }
             true
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
