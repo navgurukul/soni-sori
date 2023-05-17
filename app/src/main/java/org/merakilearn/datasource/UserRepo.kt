@@ -84,13 +84,9 @@ class UserRepo(
         }
     }
 
-    suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
+    suspend fun updateProfile(user: LoginResponse.User): Boolean {
         return try {
-            val response = referrer?.let { UserUpdateName(user.name, null, it) }?.let {
-                saralApi.updateProfileName(
-                    it
-                )
-            }
+            val response = saralApi.updateProfileName(user.id.toInt(),UserUpdateName(user.name,user.profilePicture,user.email))
             if (response != null) {
                 saveUserResponse(response.user)
             }
@@ -100,6 +96,20 @@ class UserRepo(
             false
         }
     }
+
+
+//    suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
+//        return try {
+//            val response = saralApi.initUserUpdateAsync(
+//                UserUpdate(user.name)
+//            )
+//            saveUserResponse(response.user)
+//            true
+//        } catch (ex: Exception) {
+//            FirebaseCrashlytics.getInstance().recordException(ex)
+//            false
+//        }
+//    }
 
     fun getAuthToken() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN, null)}"
 
