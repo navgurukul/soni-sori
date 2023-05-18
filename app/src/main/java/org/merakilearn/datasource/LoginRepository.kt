@@ -10,7 +10,6 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.ResidentialProgramPathwayResponse
-import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
 class LoginRepository(
@@ -19,7 +18,6 @@ class LoginRepository(
     private val courseDb: CoursesDatabase,
     private val userRepo: UserRepo,
     private val corePreferences: CorePreferences,
-    private val authenticationRepository: AuthenticationRepository
 ) {
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
@@ -71,7 +69,6 @@ class LoginRepository(
             withContext(Dispatchers.IO) {
                 courseDb.clearAllTables()
                 PreferenceManager.getDefaultSharedPreferences(application).edit().clear().apply()
-                authenticationRepository.logout()
             }
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)

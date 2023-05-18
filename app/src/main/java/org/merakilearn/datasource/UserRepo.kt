@@ -12,14 +12,12 @@ import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
 import org.merakilearn.datasource.network.model.*
-import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
 class UserRepo(
     private val saralApi: SaralApi,
     private val preferences: SharedPreferences,
     private val courseDb: CoursesDatabase,
-    private val authenticationRepository: AuthenticationRepository
 ) {
 
     companion object {
@@ -135,14 +133,9 @@ class UserRepo(
     suspend fun logOut(): Boolean {
         return try {
             withContext(Dispatchers.IO) {
-                val result = authenticationRepository.logout()
-                if (result) {
-                    courseDb.clearAllTables()
-                    preferences.edit { clear() }
-                    true
-                } else {
-                    false
-                }
+                courseDb.clearAllTables()
+                preferences.edit { clear() }
+                true
             }
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)

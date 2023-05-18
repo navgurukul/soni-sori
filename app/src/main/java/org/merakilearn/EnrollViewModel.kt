@@ -10,7 +10,7 @@ import org.merakilearn.util.toDate
 import org.merakilearn.util.toDay
 import org.merakilearn.util.toDisplayableInterval
 import org.merakilearn.util.toTime
-import org.navgurukul.chat.core.resources.ColorProvider
+import org.navgurukul.learn.util.ColorProvider
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
