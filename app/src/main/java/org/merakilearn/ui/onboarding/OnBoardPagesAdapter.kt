@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
-import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.glide.GlideApp
 
 class OnBoardPagesAdapter(
     private val onBoardingData: OnBoardingData,

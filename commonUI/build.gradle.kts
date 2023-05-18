@@ -1,7 +1,9 @@
+
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id(Plugins.kotlinKapt)
 }
 
 android {
@@ -69,5 +71,11 @@ dependencies {
     implementation(RxJavaDependencies.rxBinding)
 
     implementation(MiscellaneousDependencies.shimmer)
+
+    //Glide
+    implementation(GlideDependencies.glide)
+    implementation(GlideDependencies.okhttp)
+    kapt(GlideDependencies.glideCompiler)
+
 
 }

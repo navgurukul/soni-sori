@@ -26,7 +26,7 @@ import org.merakilearn.databinding.ActivityProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.learn.ui.common.toast
 import java.io.File

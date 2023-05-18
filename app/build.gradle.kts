@@ -69,7 +69,6 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
 
     //modules
     implementation(project(":learn"))

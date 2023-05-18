@@ -31,7 +31,7 @@ import org.merakilearn.ui.profile.ProfileActivity
 import org.merakilearn.ui.profile.ProfileFragment
 import org.merakilearn.ui.profile.ProfileViewActions
 import org.merakilearn.ui.profile.ProfileViewModel
-import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.learn.courses.db.models.Pathway
@@ -143,16 +143,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         firebaseAnalytics.setUserId(currentUser.id)
 
-        val thumbnail = GlideApp.with(this)
-            .load(R.drawable.illus_default_avatar)
-            .apply(requestOptions)
-
-        GlideApp.with(it)
-            .load(currentUser.profilePicture)
-            .apply(requestOptions)
-            .thumbnail(thumbnail)
-            .transform(CircleCrop())
-            .into(it)
+//        val thumbnail = GlideApp.with(this)
+//            .load(R.drawable.illus_default_avatar)
+//            .apply(requestOptions)
+//
+//        GlideApp.with(it)
+//            .load(currentUser.profilePicture)
+//            .apply(requestOptions)
+//            .thumbnail(thumbnail)
+//            .transform(CircleCrop())
+//            .into(it)
 
         it.setOnClickListener {
             if (userRepo.isFakeLogin())

@@ -37,7 +37,7 @@ import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.glide.GlideApp
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast

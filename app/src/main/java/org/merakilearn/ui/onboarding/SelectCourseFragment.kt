@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
-import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
 
 class SelectCourseFragment : BaseFragment() {
