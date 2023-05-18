@@ -35,7 +35,7 @@ class MerakiApp : Application() {
         startKoin {
             androidContext(this@MerakiApp)
             androidLogger()
-            modules(appModules + chatModules + learnModules + playgroundModules + commonUIModules + coreModules)
+            modules(appModules + learnModules + playgroundModules + commonUIModules + coreModules)
         }
 
         val builder: FirebaseOptions.Builder = FirebaseOptions.Builder()

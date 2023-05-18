@@ -20,7 +20,6 @@ import java.util.*
 
 class MerakiNavigator(
     private val appModuleNavigator: AppModuleNavigator,
-    private val chatModuleNavigator: ChatModuleNavigator,
     private val playgroundModuleNavigator: PlaygroundModuleNavigator,
     private val dynamicFeatureModuleManager: DynamicFeatureModuleManager
 ) {
@@ -56,23 +55,8 @@ class MerakiNavigator(
         )
     }
 
-    fun openRoomProfile(context: Context, roomId: String) {
-        startActivity(
-            context,
-            chatModuleNavigator.launchIntentForRoomProfile(context, roomId),
-            false
-        )
-    }
-
     fun openHome(context: Context, clearNotification: Boolean) =
         startActivity(context, homeLauncherIntent(context, clearNotification), false)
-
-    fun openRoomIntent(context: Context, roomId: String) =
-        chatModuleNavigator.launchIntentForRoom(context, roomId)
-
-    fun openRoom(context: Context, roomId: String, buildTask: Boolean = false) {
-        startActivity(context, openRoomIntent(context, roomId), buildTask)
-    }
 
     fun openDeepLink(fragmentActivity: FragmentActivity, deepLink: String, data: String? = null) {
         val uri = Uri.parse(deepLink)
