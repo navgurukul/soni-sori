@@ -34,6 +34,10 @@ class EnrolledBatchAdapter(val callback: (Batches) -> Unit):
        val binding = holder.binding
         binding.tvBatchTitle.text = item.title
         binding.tvPathwayTitle.text = item.pathwayName
+
+        binding.btnCross.setOnClickListener {
+
+        }
         binding.root.setOnClickListener {
             callback.invoke(item)
         }

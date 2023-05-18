@@ -12,8 +12,6 @@ import androidx.core.app.NavUtils
 import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_discover_enroll.*
-import kotlinx.android.synthetic.main.content_class_detail.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

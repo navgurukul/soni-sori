@@ -9,7 +9,6 @@ import android.os.Parcelable
 import android.view.View
 import android.view.Window
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.layout_keyboard_dialog.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs

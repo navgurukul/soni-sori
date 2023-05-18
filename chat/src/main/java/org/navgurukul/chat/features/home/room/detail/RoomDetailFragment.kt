@@ -41,8 +41,6 @@ import org.matrix.android.sdk.api.util.toMatrixItem
 import org.matrix.android.sdk.internal.crypto.model.event.EncryptedEventContent
 import org.matrix.android.sdk.internal.crypto.model.event.WithHeldCode
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_room_detail.*
-import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.fragmentScope

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import kotlinx.android.synthetic.main.activity_web_view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R

@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_table_body.view.*
-import kotlinx.android.synthetic.main.item_table_header.view.*
 import org.navgurukul.commonui.platform.BaseViewHolder
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.ItemTableBodyBinding

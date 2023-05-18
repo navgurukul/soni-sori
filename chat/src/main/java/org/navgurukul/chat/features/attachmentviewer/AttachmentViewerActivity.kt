@@ -16,7 +16,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.activity_attachment_viewer.*
 import org.navgurukul.chat.R
 import java.lang.ref.WeakReference
 import kotlin.math.abs

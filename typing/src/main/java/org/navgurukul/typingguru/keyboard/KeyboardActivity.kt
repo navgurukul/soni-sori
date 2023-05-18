@@ -12,7 +12,6 @@ import android.widget.Toast
 import android.graphics.drawable.ColorDrawable
 import android.graphics.Color
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_keyboard.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.activityArgs

@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.italic
 import org.matrix.android.sdk.api.failure.MatrixError
 import org.matrix.android.sdk.api.session.events.model.Event
-import kotlinx.android.synthetic.main.view_notification_area.view.*
 import me.gujun.android.span.span
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.navgurukul.chat.R

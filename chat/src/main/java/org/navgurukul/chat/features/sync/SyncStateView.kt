@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import org.matrix.android.sdk.api.session.sync.SyncState
-import kotlinx.android.synthetic.main.view_sync_state.view.*
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.utils.isAirplaneModeOn
 

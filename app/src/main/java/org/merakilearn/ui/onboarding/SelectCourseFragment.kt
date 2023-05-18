@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData

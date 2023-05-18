@@ -34,12 +34,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
-import kotlinx.android.synthetic.main.item_certificate.view.*
-import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

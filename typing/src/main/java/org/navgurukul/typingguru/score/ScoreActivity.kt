@@ -7,7 +7,6 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_score.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.activityArgs

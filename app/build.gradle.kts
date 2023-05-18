@@ -11,6 +11,7 @@ plugins {
     id(Plugins.crashlytics)
     id(Plugins.perf)
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {

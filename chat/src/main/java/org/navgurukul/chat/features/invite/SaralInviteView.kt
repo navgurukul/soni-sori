@@ -8,7 +8,6 @@ import androidx.core.view.updateLayoutParams
 import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
 import org.matrix.android.sdk.api.session.user.model.User
 import org.matrix.android.sdk.api.util.toMatrixItem
-import kotlinx.android.synthetic.main.saral_invite_view.view.*
 import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.R
 import org.navgurukul.chat.features.home.AvatarRenderer

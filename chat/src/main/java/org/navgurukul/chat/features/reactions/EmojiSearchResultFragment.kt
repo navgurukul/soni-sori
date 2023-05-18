@@ -3,7 +3,6 @@ package org.navgurukul.chat.features.reactions
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_generic_recycler.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.chat.R

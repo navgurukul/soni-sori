@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
-import kotlinx.android.synthetic.main.activity_big_image_viewer.*
 import org.koin.android.ext.android.inject
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R

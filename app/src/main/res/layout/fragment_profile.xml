@@ -248,6 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_4x"
                     android:layout_marginTop="@dimen/spacing_4x"
+                    tools:listitem="@layout/item_enrolled_batch"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvEnrolledText" />
 

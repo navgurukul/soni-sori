@@ -13,7 +13,6 @@ import androidx.core.text.toSpannable
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.navgurukul.chat.R
 import org.navgurukul.commonui.themes.ThemeUtils
 
