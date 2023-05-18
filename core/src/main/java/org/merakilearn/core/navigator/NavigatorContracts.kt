@@ -13,11 +13,6 @@ interface AppModuleNavigator {
     fun launchIntentForOnBoardingActivity(context: Context, clearNotification: Boolean): Intent
 }
 
-interface ChatModuleNavigator {
-    fun launchIntentForRoom(context: Context, roomId: String): Intent
-    fun launchIntentForRoomProfile(context: Context, roomId: String): Intent
-}
-
 interface PlaygroundModuleNavigator {
     fun launchPlaygroundActivity(context: Context, code: String?): Intent
     fun openPlaygroundWithFileContent(context: Context, file: File): Intent
