@@ -89,10 +89,6 @@ dependencies {
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
-    // Matrix
-    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
-    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
-
     //Navigation
     implementation(AndroidxDependencies.navigationFragment)
     implementation(AndroidxDependencies.navigationUI)

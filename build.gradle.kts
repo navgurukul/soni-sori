@@ -28,6 +28,7 @@ allprojects {
         mavenCentral()
         jcenter()
         // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
+        // We aren't using the OLM library anymore
         maven(url = uri("https://jitpack.io"))
         maven(url = uri("https://dl.bintray.com/amulyakhare/maven"))
         maven(url = uri("https://oss.sonatype.org/content/repositories/snapshots/"))

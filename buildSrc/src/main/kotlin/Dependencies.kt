@@ -128,7 +128,6 @@ object MiscellaneousDependencies {
     const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
     const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
     const val eventBus = "org.greenrobot:eventbus:3.1.1"
-    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
     const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
     const val span = "me.gujun.android:span:1.7"
     const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:1.0.3"
