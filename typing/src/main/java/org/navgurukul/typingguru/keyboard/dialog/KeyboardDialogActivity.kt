@@ -26,6 +26,7 @@ class KeyboardDialogActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
 
         with(window) {
             requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)

@@ -176,14 +176,14 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:8.0.0"
+    const val gradle = "com.android.tools.build:gradle:8.0.1"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
     const val python = "com.chaquo.python:gradle:14.0.2"
     const val realm = "io.realm:realm-gradle-plugin:10.15.1"
-    const val googleServices = "com.google.gms:google-services:4.3.4"
+    const val googleServices = "com.google.gms:google-services:4.3.15"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
         "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"

@@ -5,10 +5,10 @@ import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.BuildConfig
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.merakilearn.BuildConfig
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
@@ -137,8 +137,9 @@ class ProfileViewModel(
             try {
                 setState { copy(isLoading = false) }
                 if (partnerId != null) {
-                    val partnerData = userRepo.getPartnerData(partnerId?.toInt())
-                    _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                    val partnerData = partnerId?.toInt()?.let { userRepo.getPartnerData(it) }
+                    partnerData?.let { ProfileViewEvents.ShowPartnerData(it) }
+                        ?.let { _viewEvents.postValue(it) }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
