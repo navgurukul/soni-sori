@@ -8,7 +8,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.utils.CorePreferences
 
 private val module = module {
-    single { MerakiNavigator(get(), get(),get(), get()) }
+    single { MerakiNavigator(get(), get(),get()) }
     single { CorePreferences(get()) }
     single { DynamicFeatureModuleManager(SplitInstallManagerFactory.create(androidApplication())) }
 }
