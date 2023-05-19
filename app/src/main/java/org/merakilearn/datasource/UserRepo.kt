@@ -86,10 +86,8 @@ class UserRepo(
 
     suspend fun updateProfile(user: LoginResponse.User): Boolean {
         return try {
-            val response = saralApi.updateProfileName(user.id.toInt(),UserUpdateName(user.name,user.profilePicture,user.email))
-            if (response != null) {
-                saveUserResponse(response.user)
-            }
+            val response = saralApi.updateProfileName(user.id.toInt(),UserUpdateName(user.name,user.profilePicture))
+            saveUserResponse(response.user)
             true
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
