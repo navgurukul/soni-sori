@@ -10,16 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.Status
-import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
@@ -77,7 +76,7 @@ class AssessmentFragment : Fragment() {
 
         mBinding.btnSubmit.visibility = View.GONE
         mBinding.correctOutputLayout.root.visibility = View.GONE
-        mBinding.incorrectOutputLayout.visibility = View.GONE
+        mBinding.incorrectOutputLayout.root.visibility = View.GONE
 
         activityViewModel = ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
 
@@ -93,13 +92,13 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput->{
                     isContentRvClickable = false
                     initIncorrectRV(it.list)
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                 }
             }
         }
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.root.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             showErrorScreen(it.isError)
 
@@ -173,7 +172,7 @@ class AssessmentFragment : Fragment() {
         mBinding.recyclerViewAsses.layoutManager = layoutManager
         mBinding.recyclerViewAsses.adapter = contentAdapter
         mBinding.recyclerViewAsses.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_1x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_1x), 0)
         )
         setUpSubmitAnswer()
     }

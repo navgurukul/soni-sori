@@ -4,10 +4,11 @@ import android.app.Activity
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.dialog_confirmation_with_reason.view.*
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.DialogConfirmationWithReasonBinding
 
 object ConfirmationDialogBuilder {
+    private lateinit var binding: DialogConfirmationWithReasonBinding
 
     fun show(activity: Activity,
              askForReason: Boolean,

@@ -16,8 +16,8 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.activity_attachment_viewer.*
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.ActivityAttachmentViewerBinding
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 
@@ -61,6 +61,7 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
 //                || !externalTransitionImageView.isRectVisible
 //                || !isAtStartPosition
 
+    private lateinit var mBinding : ActivityAttachmentViewerBinding
     private var isImagePagerIdle = true
 
     fun setSourceProvider(sourceProvider: AttachmentSourceProvider) {

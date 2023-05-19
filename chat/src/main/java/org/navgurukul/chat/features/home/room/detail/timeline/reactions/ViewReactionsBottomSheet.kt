@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.bumptech.glide.load.model.DataUrlLoader
+import com.google.android.gms.common.util.DataUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_generic_list_with_title.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -16,6 +17,7 @@ import org.merakilearn.core.extentions.fragmentArgs
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
+import org.navgurukul.chat.databinding.BottomSheetGenericListBinding
 import org.navgurukul.chat.features.home.room.detail.timeline.action.EventSharedAction
 import org.navgurukul.chat.features.home.room.detail.timeline.action.MessageSharedActionDataSource
 import org.navgurukul.chat.features.home.room.detail.timeline.action.TimelineEventFragmentArgs
@@ -36,6 +38,7 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     private val epoxyController: ViewReactionsEpoxyController by inject()
+    private lateinit var mBinding : BottomSheetGenericListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

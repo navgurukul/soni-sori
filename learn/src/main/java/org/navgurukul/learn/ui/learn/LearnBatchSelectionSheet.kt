@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.batch_selection_sheet.recycler_view
-import kotlinx.android.synthetic.main.batch_selection_sheet.tv_title
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.BatchSelectionSheetBinding
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.R
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionAdapter
 
 class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
@@ -24,13 +23,15 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var adapter: BatchSelectionAdapter
+    private lateinit var mBinding: BatchSelectionSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.batch_selection_sheet, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.batch_selection_sheet, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,28 +42,30 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        tv_title.text = getString(R.string.more_batch)
+        mBinding.tvTitle.text = getString(org.navgurukul.commonui.R.string.more_batch)
 
         adapter = BatchSelectionAdapter {
             viewModel.selectBatch(it)
         }
 
 
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
-            SpaceItemDecoration(
-                requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
-                ), 0
+        mBinding.apply {
+            recyclerView.adapter = adapter
+            recyclerView.addItemDecoration(
+                SpaceItemDecoration(
+                    requireContext().resources.getDimensionPixelSize(
+                        org.navgurukul.commonui.R.dimen.spacing_3x
+                    ), 0
+                )
             )
-        )
-        recycler_view.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            ).apply {
-                setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
-            })
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                ).apply {
+                    setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
+                })
+        }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.batches.take(3))

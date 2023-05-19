@@ -2,8 +2,11 @@ package org.merakilearn.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -12,10 +15,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.android.synthetic.main.on_board_pages_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
+import org.merakilearn.databinding.OnBoardPagesFragmentBinding
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.commonui.platform.BaseFragment
@@ -31,6 +34,7 @@ class OnBoardPagesFragment : BaseFragment() {
 
     private val viewModel: OnBoardingPagesViewModel by viewModel()
     private val onBoardingViewModel: OnBoardingViewModel by sharedViewModel()
+    private lateinit var mBinding : OnBoardPagesFragmentBinding
 
     private val googleSignInClient: GoogleSignInClient by lazy {
         GoogleSignIn.getClient(
@@ -45,13 +49,21 @@ class OnBoardPagesFragment : BaseFragment() {
 
     override fun getLayoutResId(): Int = R.layout.on_board_pages_fragment
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.on_board_pages_fragment, container, false)
+        return mBinding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        skip_login.setOnClickListener {
+        mBinding.skipLogin.setOnClickListener {
             viewModel.handle(OnBoardingPagesAction.InitiateFakeSignUp)
         }
-        login_with_google.setOnClickListener {
+        mBinding.loginWithGoogle.setOnClickListener {
             signInWithGoogle()
         }
 
@@ -62,8 +74,8 @@ class OnBoardPagesFragment : BaseFragment() {
                 configurePages(it.onBoardingData, it.onBoardingTranslations)
             }
 
-            nav_layout.isVisible = it.isNavLayoutVisible
-            login_layout.isVisible = it.isLoginLayoutVisible
+            mBinding.navLayout.isVisible = it.isNavLayoutVisible
+            mBinding.loginLayout.isVisible = it.isLoginLayoutVisible
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -75,7 +87,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 is OnBoardingPagesEvents.OpenCourseSelection -> onBoardingViewModel.handle(
                     OnBoardingViewActions.NavigateNextFromOnBoardingScreen
                 )
-                is OnBoardingPagesEvents.NavigateToItem -> viewPager2.currentItem = it.item
+                is OnBoardingPagesEvents.NavigateToItem -> mBinding.viewPager2.currentItem = it.item
             }
         }
     }
@@ -84,10 +96,11 @@ class OnBoardPagesFragment : BaseFragment() {
         onBoardingData: OnBoardingData,
         onBoardingTranslations: OnBoardingTranslations
     ) {
+        mBinding.apply {
         next.text = onBoardingTranslations.nextText
         skip.text = onBoardingTranslations.skipText
-        login_with_google.text = onBoardingTranslations.loginWithGoogleText
-        skip_login.text = onBoardingTranslations.skipLoginText
+        loginWithGoogle.text = onBoardingTranslations.loginWithGoogleText
+        skipLogin.text = onBoardingTranslations.skipLoginText
 
         if (viewPager2.adapter == null) {
             val onBoardPagesAdapter =
@@ -98,7 +111,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 )
 
             viewPager2.adapter = onBoardPagesAdapter
-            TabLayoutMediator(tab_layout, viewPager2) { _, _ -> }.attach()
+            TabLayoutMediator(tabLayout, viewPager2) { _, _ -> }.attach()
             (viewPager2.getChildAt(0) as RecyclerView).overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER
 
@@ -120,7 +133,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 viewModel.handle(OnBoardingPagesAction.Next(viewPager2.currentItem))
             }
         }
-
+    }
     }
 
     private fun signInWithGoogle() {

@@ -4,18 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
-import kotlinx.android.synthetic.main.activity_big_image_viewer.*
 import org.koin.android.ext.android.inject
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
+import org.navgurukul.chat.databinding.ActivityBigImageViewerBinding
 
 /**
  * Simple Activity to display an avatar in fullscreen
  */
 class BigImageViewerActivity : ChatBaseActivity() {
     val sessionHolder: ActiveSessionHolder by inject()
+    private lateinit var mBinding : ActivityBigImageViewerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

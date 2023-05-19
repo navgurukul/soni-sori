@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -55,7 +54,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        btnPrivacyPolicy.setOnClickListener {
+        mBinding.btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
 
@@ -81,10 +80,12 @@ class ProfileActivity : AppCompatActivity() {
                 is ProfileViewEvents.OpenUrl -> {
                     merakiNavigator.openCustomTab(it.url, this)
                 }
+
+                else -> {}
             }
         }
 
-        explore_opportunity.setOnClickListener{
+        mBinding.explore_opportunity.setOnClickListener{
             viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
         }
 
@@ -112,7 +113,7 @@ class ProfileActivity : AppCompatActivity() {
             }
             .create()
         alert.setOnShowListener {
-            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+            val margin = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
             inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 marginEnd = margin
                 marginStart = margin
@@ -225,7 +226,7 @@ class ProfileActivity : AppCompatActivity() {
         val adapter = SavedFileAdapter { file, view ->
             showPopupMenu(file, view)
         }
-        val padding = resources.getDimensionPixelSize(R.dimen.spacing_2x)
+        val padding = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_2x)
         mBinding.recyclerview.layoutManager = GridLayoutManager(this, 2)
         mBinding.recyclerview.addItemDecoration(GridSpacingDecorator(padding, padding, 2))
         mBinding.recyclerview.adapter = adapter

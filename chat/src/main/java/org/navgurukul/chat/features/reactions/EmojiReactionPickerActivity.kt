@@ -18,12 +18,12 @@ import com.google.android.material.tabs.TabLayout
 import com.jakewharton.rxbinding3.widget.queryTextChanges
 import org.navgurukul.chat.features.reactions.data.EmojiDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_emoji_reaction_picker.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.EmojiCompatFontProvider
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.ActivityEmojiReactionPickerBinding
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -44,6 +44,7 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     private val emojiDataSource: EmojiDataSource by inject()
 
     private val searchResultViewModel: EmojiSearchResultViewModel by viewModel()
+    private lateinit var mBinding :ActivityEmojiReactionPickerBinding
 
     private var tabLayoutSelectionListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(tab: TabLayout.Tab) {

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -83,8 +82,8 @@ class PlaygroundFragment : BaseFragment() {
         }
 
         (activity as? ToolbarConfigurable)?.configure(
-            getString(R.string.title_playground),
-            R.attr.textPrimary
+            getString(org.navgurukul.playground.R.string.title_playground),
+            org.navgurukul.commonui.R.attr.textPrimary
         )
     }
 

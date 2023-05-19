@@ -26,8 +26,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.item_enrolled_batch.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -75,7 +73,7 @@ class ProfileFragment : Fragment() {
 
         initShowEnrolledBatches()
 
-        btnPrivacyPolicy.setOnClickListener {
+        mBinding.btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
         viewModel.viewState.observe(viewLifecycleOwner) {
@@ -110,7 +108,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        explore_opportunity.setOnClickListener {
+        mBinding.exploreOpportunity.setOnClickListener {
             viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
         }
         mBinding.serverUrlValue.setOnClickListener {
@@ -132,7 +130,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun dropOut(batches: Batches) {
-        mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
+       mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
             showDropOutDialog(batches)
         }
     }
@@ -189,7 +187,7 @@ class ProfileFragment : Fragment() {
             }
             .create()
         alert.setOnShowListener {
-            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+            val margin = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
             inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 marginEnd = margin
                 marginStart = margin
@@ -286,16 +284,16 @@ class ProfileFragment : Fragment() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.rvEnrolledBatch.layoutManager = layoutManager
-        rvEnrolledBatch.adapter = mAdapter
+        mBinding.rvEnrolledBatch.adapter = mAdapter
 
-        rvEnrolledBatch.addItemDecoration(
+        mBinding.rvEnrolledBatch.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    org.navgurukul.learn.R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )
-        rvEnrolledBatch.addItemDecoration(
+        mBinding.rvEnrolledBatch.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
@@ -303,7 +301,7 @@ class ProfileFragment : Fragment() {
                 setDrawable(
                     AppCompatResources.getDrawable(
                         requireContext(),
-                        org.navgurukul.learn.R.drawable.divider
+                        org.merakilearn.learn.R.drawable.divider
                     )!!
                 )
             })
@@ -312,7 +310,7 @@ class ProfileFragment : Fragment() {
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),
-            R.attr.textPrimary,
+            org.navgurukul.commonui.R.attr.textPrimary,
             false,
             null,
             null,

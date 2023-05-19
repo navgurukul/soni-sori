@@ -2,7 +2,6 @@ package org.merakilearn.ui.onboarding
 
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.select_language_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
 import org.navgurukul.commonui.platform.BaseFragment

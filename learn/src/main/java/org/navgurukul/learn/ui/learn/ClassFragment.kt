@@ -15,17 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.android.synthetic.main.batches_in_exercise.*
-import kotlinx.android.synthetic.main.class_course_detail.*
-import kotlinx.android.synthetic.main.class_course_detail.tvDate
-import kotlinx.android.synthetic.main.class_course_detail.tvFacilatorName
-import kotlinx.android.synthetic.main.fragment_class.*
-import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.layout_revision_dialog.view.*
-import kotlinx.android.synthetic.main.revision_class.*
-import kotlinx.android.synthetic.main.revision_selection_sheet.*
-import kotlinx.android.synthetic.main.revision_selection_sheet.btnRevision
-import kotlinx.android.synthetic.main.revision_selection_sheet.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,11 +24,11 @@ import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
-import org.navgurukul.learn.databinding.FragmentClassBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
@@ -99,10 +88,12 @@ class ClassFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mBinding.revisionList.visibility = View.GONE
-        mBinding.classDetail.visibility = View.GONE
-        mBinding.batchFragment.visibility = View.GONE
-        revision_list.visibility = View.GONE
+        mBinding.apply {
+            revisionList.visibility = View.GONE
+            classDetail.visibility = View.GONE
+            batchFragment.visibility = View.GONE
+            revisionList.visibility = View.GONE
+        }
         revision_class_data.visibility = View.GONE
 
         initScreenRefresh()
@@ -187,6 +178,8 @@ class ClassFragment: Fragment() {
                 is LearnFragmentViewEvents.EnrolledSuccessfully ->{
                     screenRefreshListener?.onRefresh()
                 }
+
+                else -> {}
             }
         }
     }
@@ -216,7 +209,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupJoinButton(){
-        joinBatchBtn.setOnClickListener {
+        mBinding.joinBatchBtn.setOnClickListener {
             selectedBatch?.let { it1 -> showEnrolDialog(it1) }
         }
     }
@@ -251,7 +244,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun setUpRevisionClassData(revisionClass: CourseClassContent){
-        tvRevDate.text = revisionClass.timeDateRange()
+        mBinding.tvRevDate.text = revisionClass.timeDateRange()
         tvRevFacilatorName.text = revisionClass.facilitator?.name
         setUpRevisionJoinBtn(revisionClass)
         btnDropOut.setOnClickListener {

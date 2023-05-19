@@ -11,11 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.italic
 import org.matrix.android.sdk.api.failure.MatrixError
 import org.matrix.android.sdk.api.session.events.model.Event
-import kotlinx.android.synthetic.main.view_notification_area.view.*
 import me.gujun.android.span.span
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.error.ResourceLimitErrorFormatter
+import org.navgurukul.chat.databinding.ViewNotificationAreaBinding
 import org.navgurukul.commonui.themes.ThemeUtils
 import timber.log.Timber
 
@@ -31,6 +31,7 @@ class NotificationAreaView @JvmOverloads constructor(
 
     var delegate: Delegate? = null
     private var state: State = State.Initial
+    private lateinit var mBinding : ViewNotificationAreaBinding
 
     init {
         setupView()
@@ -61,7 +62,7 @@ class NotificationAreaView @JvmOverloads constructor(
     // PRIVATE METHODS ****************************************************************************************************************************************
 
     private fun setupView() {
-        inflate(context, R.layout.view_notification_area, this)
+        mBinding = inflate(this, R.layout.view_notification_area, container this)
         minimumHeight = resources.getDimensionPixelSize(R.dimen.notification_area_minimum_height)
     }
 

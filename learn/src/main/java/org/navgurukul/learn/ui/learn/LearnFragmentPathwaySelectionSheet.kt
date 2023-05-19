@@ -12,12 +12,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.ItemPathwayBinding
+import org.merakilearn.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Pathway
-import org.navgurukul.learn.databinding.ItemPathwayBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
@@ -29,13 +29,15 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var adapter: PathwaySelectionAdapter
+    private lateinit var mBinding : LearnSelectionSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
+        mBinding = DataBindingUtil.inflate( inflater, R.layout.learn_selection_sheet, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,15 +51,15 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         adapter = PathwaySelectionAdapter {
             viewModel.selectPathway(it)
         }
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
+        mBinding.recyclerView.adapter = adapter
+        mBinding.recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )
-        recycler_view.addItemDecoration(
+        mBinding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
@@ -101,7 +103,7 @@ class PathwaySelectionAdapter(val callback: (Pathway) -> Unit) :
             callback.invoke(item)
         }
         val thumbnail = Glide.with(holder.itemView)
-            .load(R.drawable.ic_typing_icon)
+            .load(org.navgurukul.commonui.R.drawable.ic_typing_icon)
         Glide.with(binding.ivPathwayIcon)
             .load(item.logo)
             .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))

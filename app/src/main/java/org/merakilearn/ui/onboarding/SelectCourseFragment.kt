@@ -6,9 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
+import org.merakilearn.databinding.SelectCourseFragmentBinding
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.chat.core.glide.GlideApp
@@ -16,6 +16,7 @@ import org.navgurukul.commonui.platform.BaseFragment
 
 class SelectCourseFragment : BaseFragment() {
 
+    private lateinit var mBinding : SelectCourseFragmentBinding
     companion object {
         fun newInstance() = SelectCourseFragment()
         val TAG = SelectCourseFragment::class.java.name
@@ -27,6 +28,7 @@ class SelectCourseFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mBinding = SelectCourseFragmentBinding.bind(view)
 
         viewModel.viewState.observe(viewLifecycleOwner, {
             if (it.onBoardingData != null && it.onBoardingTranslations != null) {
@@ -37,14 +39,14 @@ class SelectCourseFragment : BaseFragment() {
 
     private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
 
-        select_course_heading.text = translations.selectCourseHeader
+        mBinding.selectCourseHeading.text = translations.selectCourseHeader
 
-        val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+        val padding = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
         val width = (resources.displayMetrics.widthPixels - (padding * 2) - padding) / 2
         onBoardingData.onBoardingPathwayList.forEachIndexed { index, pathway ->
 
 
-            val customView = layoutInflater.inflate(R.layout.course_card, constraint_layout, false)
+            val customView = layoutInflater.inflate(R.layout.course_card, mBinding.constraintLayout, false)
             customView.id = View.generateViewId()
 
             customView.findViewById<TextView>(R.id.course_text).text =
@@ -59,11 +61,11 @@ class SelectCourseFragment : BaseFragment() {
                 imageView.setImageResource(DefaultLogos.valueOf(pathway.image.local!!).id)
             }
 
-            constraint_layout.addView(
+            mBinding.constraintLayout.addView(
                 customView,
                 ConstraintLayout.LayoutParams(width, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             )
-            flow_constraint.referencedIds += customView.id
+            mBinding.flowConstraint.referencedIds += customView.id
 
             customView.setOnClickListener {
                 viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
@@ -77,7 +79,7 @@ class SelectCourseFragment : BaseFragment() {
         TYPING(R.drawable.ic_icon_typing),
         ENGLISH(R.drawable.ic_icon_language),
         JAVASCRIPT(R.drawable.ic_javascript_logo),
-        SCRATCH(R.drawable.ic_scratch_cat),
+        SCRATCH(org.navgurukul.commonui.R.drawable.ic_scratch_cat),
         RESIDENTIAL(R.drawable.residential_icon)
     }
 

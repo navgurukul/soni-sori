@@ -11,8 +11,6 @@ import org.matrix.android.sdk.api.session.room.notification.RoomNotificationStat
 import org.matrix.android.sdk.api.util.MatrixItem
 import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_room_profile.*
-import kotlinx.android.synthetic.main.view_stub_room_profile_header.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.datasource.model.Language
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.ItemLanguageBinding
+import org.merakilearn.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.R
-import org.navgurukul.learn.databinding.ItemLanguageBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
@@ -27,13 +27,15 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var adapter: LanguageSelectionAdapter
+    private lateinit var mBinding : LearnSelectionSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
+        mBinding = DataBindingUtil.inflate( inflater, R.layout.learn_selection_sheet, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,20 +46,20 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        tv_title.text = getString(R.string.select_language)
+        mBinding.tvTitle.text = getString(R.string.select_language)
 
         adapter = LanguageSelectionAdapter {
             viewModel.selectLanguage(it)
         }
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
+        mBinding.recyclerView.adapter = adapter
+        mBinding.recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )
-        recycler_view.addItemDecoration(
+        mBinding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL

@@ -3,6 +3,7 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinKapt)
     id(Plugins.realm)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 kapt {

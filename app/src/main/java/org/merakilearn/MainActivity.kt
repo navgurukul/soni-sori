@@ -11,6 +11,7 @@ import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -18,13 +19,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
+import org.merakilearn.databinding.ActivityMainBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
@@ -32,7 +33,6 @@ import org.merakilearn.ui.profile.ProfileActivity
 import org.merakilearn.ui.profile.ProfileFragment
 import org.merakilearn.ui.profile.ProfileViewActions
 import org.merakilearn.ui.profile.ProfileViewModel
-import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.learn.courses.db.models.Pathway
@@ -81,16 +81,17 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     private val appOpenDelegate: AppOpenDelegate by inject()
     private val mainActivityArgs: MainActivityArgs by activityArgs()
     private val userRepo: UserRepo by inject()
-    private val learnRepo: LearnRepo by inject()
+    private lateinit var mBinding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        nav_view.setupWithNavController(navHostFragment.navController)
+        mBinding.navView.setupWithNavController(navHostFragment.navController)
 
         if (mainActivityArgs.selectedPathwayId != null) {
             navHostFragment.navController.navigate(R.id.navigation_learn)
@@ -180,24 +181,30 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         showPathwayIcon : Boolean,
         pathwayIcon: String?
     ) {
-        headerTitle.text = title
-        headerTitle.setTextColor(getThemedColor(colorRes))
+        mBinding.apply {
+            headerTitle.text = title
+            headerTitle.setTextColor(getThemedColor(colorRes))
 
         subtitle?.let {
-            headerSubtitle.text = subtitle
-            headerSubtitle.isVisible = true
+            mBinding.apply {
+                headerSubtitle.text = subtitle
+                headerSubtitle.isVisible = true
+            }
         } ?: run {
-            headerSubtitle.isVisible = false
+            mBinding.headerSubtitle.isVisible = false
         }
 
         action?.let {
-            headerAction.text = action
-            headerAction.isVisible = true
-            actionOnClickListener?.let { listener ->
-                headerActionClickArea.setOnClickListener {
-                    listener.onClick(it)
+            mBinding.apply {
+                headerAction.text = action
+                headerAction.isVisible = true
+                actionOnClickListener?.let { listener ->
+                    headerActionClickArea.setOnClickListener {
+                        listener.onClick(it)
+                    }
                 }
             }
+
         } ?: run {
             headerAction.isVisible = false
         }
@@ -218,5 +225,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 listener.onClick(it)
             }
         }
+    }
     }
 }

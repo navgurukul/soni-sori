@@ -34,12 +34,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
-import kotlinx.android.synthetic.main.item_certificate.view.*
-import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,16 +41,16 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.FragmentLearnBinding
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
-import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.courses.network.model.sanitizedType
-import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -94,6 +88,7 @@ class LearnFragment : Fragment() {
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+
 
         initSwipeRefresh()
 
@@ -253,7 +248,9 @@ class LearnFragment : Fragment() {
                 Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
             }
 
+            }
         }
+
     }
 
     private fun generatePDF(pdfUrl: String) {
@@ -352,9 +349,8 @@ class LearnFragment : Fragment() {
 
     }
 
-
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text = batch.sanitizedType() + " :"
+        tvType.text = "${batch.sanitizedType()} + :"
         tvTitleBatch.text = batch.title
         tvBatchDate.text = batch.dateRange()
         tvText.text = "Can't start on ${batch.startTime?.toDate()}"
@@ -411,7 +407,7 @@ class LearnFragment : Fragment() {
             if (subtitle != null) {
                 it.configure(
                     subtitle,
-                    R.attr.textPrimary,
+                    org.navgurukul.commonui.R.attr.textPrimary,
                     subtitle = "",
                     onClickListener = if (attachClickListener) {
                         {
@@ -466,8 +462,8 @@ class LearnFragment : Fragment() {
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewUpcoming.layoutManager = layoutManager
-        recyclerViewUpcoming.adapter = mClassAdapter
+        mBinding.recyclerViewUpcoming.layoutManager = layoutManager
+        mBinding.recyclerViewUpcoming.adapter = mClassAdapter
 
         mClassAdapter.submitList(upcomingClassList)
     }

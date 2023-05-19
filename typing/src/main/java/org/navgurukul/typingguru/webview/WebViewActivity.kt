@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import kotlinx.android.synthetic.main.activity_web_view.*
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typingguru.R
+import org.navgurukul.typingguru.databinding.ActivityWebViewBinding
 
 class WebViewActivity : BaseActivity() {
 
@@ -17,27 +19,31 @@ class WebViewActivity : BaseActivity() {
     }
 
     private val viewModel: WebViewActivityViewModel by viewModel()
+    private lateinit var mBinding : ActivityWebViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_web_view)
 
-        webview.webViewClient = MyBrowser {
+        mBinding.webview.webViewClient = MyBrowser {
             viewModel.handle(WebViewActivityViewEvents.OnNavigate(it))
         }
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(mBinding.toolbar)
 
-        toolbar.setNavigationOnClickListener {
-            if (webview.canGoBack()) {
-                webview.goBack()
-            } else {
-                finish()
+        mBinding.apply {
+            toolbar.setNavigationOnClickListener {
+                if (webview.canGoBack()) {
+                    webview.goBack()
+                } else {
+                    finish()
+                }
             }
         }
 
+
         viewModel.viewState.observe(this, {
-            it?.url?.let { url -> webview.loadUrl(url) }
+            it?.url?.let { url -> mBinding.webview.loadUrl(url) }
         })
     }
 
