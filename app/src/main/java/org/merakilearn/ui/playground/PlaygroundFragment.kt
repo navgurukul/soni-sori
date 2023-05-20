@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.databinding.FragmentPlaygroundBinding
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.navgurukul.commonui.platform.BaseFragment
@@ -30,16 +31,17 @@ class PlaygroundFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
     var isLoading: Boolean = false
     lateinit var exportFile: File
+    private lateinit var mBinding : FragmentPlaygroundBinding
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.layoutManager = GridLayoutManager(context, 4)
+        mBinding.recyclerView.layoutManager = GridLayoutManager(context, 4)
         initSearchListener()
 
-        val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
+        val spacings = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_3x)
+        mBinding.recyclerView.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
@@ -50,7 +52,7 @@ class PlaygroundFragment : BaseFragment() {
 
             }
         if (isLoading) showLoading() else dismissLoadingDialog()
-        recycler_view.adapter = adapter
+        mBinding.recyclerView.adapter = adapter
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.setData(it.playgroundsList)
@@ -89,11 +91,11 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
+        popup.menuInflater.inflate(org.navgurukul.playground.R.menu.popup_menu_file_saved, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
-                R.id.shareSavedFile -> {
+                org.navgurukul.playground.R.id.shareSavedFile -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/x-python"
                     val uri = FileProvider.getUriForFile(requireContext(),"org.merakilearn.fileprovider",file)
@@ -103,7 +105,7 @@ class PlaygroundFragment : BaseFragment() {
                     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     startActivity(Intent.createChooser(intent, "Share File"))
                 }
-                R.id.exportSavedFile -> {
+                org.navgurukul.playground.R.id.exportSavedFile -> {
                     var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
                     if(mimeType.isNullOrEmpty())
                         mimeType = "application/octet-stream"
@@ -122,7 +124,7 @@ class PlaygroundFragment : BaseFragment() {
     }
 
     private fun initSearchListener() {
-        search_view.setOnQueryTextListener(object :
+        mBinding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.handle(PlaygroundActions.Query(query))

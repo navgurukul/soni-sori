@@ -26,6 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -61,7 +62,6 @@ import org.navgurukul.learn.util.PdfQuality
 import org.navgurukul.learn.util.toDate
 import java.io.File
 import java.io.IOException
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 
 class LearnFragment : Fragment() {
@@ -143,9 +143,9 @@ class LearnFragment : Fragment() {
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
             if (it.code == "PRGPYT"){
-                mBinding.certificate.visibility = View.VISIBLE
+                mBinding.certificate.itemCertificate.visibility = View.VISIBLE
             } else {
-                mBinding.certificate.visibility = View.GONE
+                mBinding.certificate.itemCertificate.visibility = View.GONE
             }
 
         }
@@ -219,37 +219,40 @@ class LearnFragment : Fragment() {
     }
 
     private fun getCertificate(pdfUrl: String, completedPortion: Int) {
-        mBinding.certificate.setOnClickListener {
-            val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-            val textView : TextView = mBinding.certificate.locked_status
-            if (completedPortion == 100) {
-                imageView.setImageResource(R.drawable.ic_certificate)
-                textView.isVisible = false
-                val dialog = BottomSheetDialog(requireContext())
-                val view = layoutInflater.inflate(R.layout.generated_certificate, null)
-                pdfView = view.idPDFView
-                view.tvDownload.setOnClickListener {
-                    generatePDF(pdfUrl)
+        mBinding.certificate.apply {
+            itemCertificate.setOnClickListener {
+                val imageView: ImageView = ivCertificateLogo
+                val textView : TextView = lockedStatus
+                if (completedPortion == 100) {
+                    imageView.setImageResource(R.drawable.ic_certificate)
+                    textView.isVisible = false
+                    val dialog = BottomSheetDialog(requireContext())
+                    val view = layoutInflater.inflate(R.layout.generated_certificate, null)
+                    pdfView = view.idPDFView
+                    view.tvDownload.setOnClickListener {
+                        generatePDF(pdfUrl)
+                    }
+                    view.tvShare.setOnClickListener {
+                        showShareIntent(pdfUrl)
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        download(pdfUrl, pdfView)
+                    }
+                    //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
+                    println("required completed portion in fragment $completedPortion")
+                    dialog.setCancelable(true)
+                    dialog.setContentView(view)
+                    dialog.show()
+                } else {
+                    textView.isVisible = true
+                    imageView.setImageResource(R.drawable.grey_icon_certificate)
+                    println("required completed portion in fragment $completedPortion")
+                    Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
                 }
-                view.tvShare.setOnClickListener {
-                    showShareIntent(pdfUrl)
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    download(pdfUrl, pdfView)
-                }
-                //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
-                println("required completed portion in fragment $completedPortion")
-                dialog.setCancelable(true)
-                dialog.setContentView(view)
-                dialog.show()
-            } else {
-                textView.isVisible = true
-                imageView.setImageResource(R.drawable.grey_icon_certificate)
-                println("required completed portion in fragment $completedPortion")
-                Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
-            }
 
             }
+        }
+
         }
 
     }

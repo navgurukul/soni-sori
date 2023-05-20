@@ -88,13 +88,14 @@ class ClassFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         mBinding.apply {
-            revisionList.visibility = View.GONE
-            classDetail.visibility = View.GONE
-            batchFragment.visibility = View.GONE
-            revisionList.visibility = View.GONE
+            revisionList.revisionSelectionSheet.visibility = View.GONE
+            classDetail.classCourseDetails.visibility = View.GONE
+            batchFragment.batchesInExercise.visibility = View.GONE
+            revisionList.revisionClassData.revisionClass.visibility = View.GONE
         }
-        revision_class_data.visibility = View.GONE
+
 
         initScreenRefresh()
 
@@ -111,36 +112,45 @@ class ClassFragment: Fragment() {
                         toast("No revision classes found at the moment. Please come back later.")
                     }
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
-                    mBinding.revisionList.visibility = View.VISIBLE
-                    mBinding.classDetail.visibility = View.GONE
-                    mBinding.revisionList.list_ofRevision.visibility = View.VISIBLE
-                    mBinding.revisionList.revision_class_data.visibility = View.GONE
-                    mBinding.batchFragment.visibility = View.GONE
+                    mBinding.apply {
+                        revisionList.revisionSelectionSheet.visibility = View.VISIBLE
+                        classDetail.classCourseDetails.visibility = View.GONE
+                        revisionList.listOfRevision.visibility = View.VISIBLE
+                        revisionList.revisionClassData.revisionClass.visibility = View.GONE
+                        batchFragment.batchesInExercise.visibility = View.GONE
+                    }
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowRevisionClassToJoin -> {
                     setUpRevisionClassData(it.revisionClass)
                     enrollViewModel.handle(EnrollViewActions.RequestPageLoad(it.revisionClass))
                     fragmentViewModel.viewState.value?.classContent?.let { it1 -> setupClassHeaderDeatils(it1) }
-                    mBinding.revisionList.visibility = View.VISIBLE
-                    mBinding.classDetail.visibility = View.GONE
-                    mBinding.revisionList.revision_class_data.visibility = View.VISIBLE
-                    mBinding.revisionList.list_ofRevision.visibility = View.GONE
-                    mBinding.batchFragment.visibility = View.GONE
+                    mBinding.apply {
+                        revisionList.revisionSelectionSheet.visibility = View.VISIBLE
+                        classDetail.classCourseDetails.visibility = View.GONE
+                        revisionList.revisionClassData.revisionClass.visibility = View.VISIBLE
+                        revisionList.listOfRevision.visibility = View.GONE
+                        batchFragment.batchesInExercise.visibility = View.GONE
+                    }
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowClassData ->{
                     setUpClassData(it.courseClass)
-                    enrollViewModel.handle(EnrollViewActions.RequestPageLoad(it.courseClass))
-                    mBinding.classDetail.visibility = View.VISIBLE
-                    mBinding.revisionList.visibility = View.GONE
-                    mBinding.batchFragment.visibility = View.GONE
+                    mBinding.apply {
+                        enrollViewModel.handle(EnrollViewActions.RequestPageLoad(it.courseClass))
+                        classDetail.classCourseDetails.visibility = View.VISIBLE
+                        revisionList.revisionSelectionSheet.visibility = View.GONE
+                        batchFragment.batchesInExercise.visibility = View.GONE
+                    }
+
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.ShowBatches ->{
                     initRecyclerViewBatch(it.batches)
                     mBinding.tvClassDetail.visibility= View.GONE
-                    mBinding.batchFragment.visibility = View.VISIBLE
+                    mBinding.batchFragment.batchesInExercise.visibility = View.VISIBLE
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
@@ -148,7 +158,7 @@ class ClassFragment: Fragment() {
         }
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.progressBarButton.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
         }
 
@@ -169,7 +179,7 @@ class ClassFragment: Fragment() {
         }
 
         enrollViewModel.viewState.observe(viewLifecycleOwner){
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.progressBarButton.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             updateState(it)
         }
         learnViewModel.viewEvents.observe(viewLifecycleOwner){
@@ -209,7 +219,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupJoinButton(){
-        mBinding.joinBatchBtn.setOnClickListener {
+        mBinding.batchFragment.joinBatchBtn.setOnClickListener {
             selectedBatch?.let { it1 -> showEnrolDialog(it1) }
         }
     }
@@ -232,42 +242,54 @@ class ClassFragment: Fragment() {
     }
 
     private fun updateState(it: EnrollViewState) {
-        val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) btnRevision else tvBtnJoin
+        mBinding.apply {
+            val button = if (selectedRevisionClass != null || it.type ==  ClassType.revision.name.capitalizeWords() ) revisionList.btnRevision else classDetail.tvBtnJoin
 
-        it.primaryActionBackgroundColor?.let {
-            button.setBackgroundColor(it)
+            it.primaryActionBackgroundColor?.let {
+                button.setBackgroundColor(it)
+            }
+            it.primaryAction?.let {
+                button.isVisible = true
+                button.text = it
+            }
         }
-        it.primaryAction?.let {
-            button.isVisible = true
-            button.text = it
-        }
+
     }
 
     private fun setUpRevisionClassData(revisionClass: CourseClassContent){
-        mBinding.tvRevDate.text = revisionClass.timeDateRange()
-        tvRevFacilatorName.text = revisionClass.facilitator?.name
-        setUpRevisionJoinBtn(revisionClass)
-        btnDropOut.setOnClickListener {
-            showDropoutDialog(revisionClass)
+        mBinding.revisionList.revisionClassData.apply {
+            tvRevDate.text = revisionClass.timeDateRange()
+            tvRevFacilatorName.text = revisionClass.facilitator?.name
+            setUpRevisionJoinBtn(revisionClass)
+            btnDropOut.setOnClickListener {
+                showDropoutDialog(revisionClass)
+            }
         }
+
     }
 
 
     private fun setUpClassData(courseClass : CourseClassContent){
-        setupClassHeaderDeatils(courseClass)
-        tvDate.text = courseClass.timeDateRange()
-        tvFacilatorName.text = courseClass.facilitator?.name
+        mBinding.classDetail.apply {
+            setupClassHeaderDeatils(courseClass)
+            tvDate.text = courseClass.timeDateRange()
+            tvFacilatorName.text = courseClass.facilitator?.name
 
-        tvBtnJoin.setOnClickListener {
-            enrollViewModel.handle(EnrollViewActions.PrimaryAction(courseClass, true))
+            tvBtnJoin.setOnClickListener {
+                enrollViewModel.handle(EnrollViewActions.PrimaryAction(courseClass, true))
+            }
         }
+
     }
 
     private fun setupClassHeaderDeatils(courseClass: CourseClassContent) {
-        completeText.text = "Completed on "+courseClass.startTime.toDate()
-        tvSubTitle.text = courseClass.subTitle ?: ""
-        tvClassType.text = courseClass.type.name.capitalizeWords()
-        tvClassLanguage.text = courseClass.displayableLanguage()
+        mBinding.revisionList.completeText.text = "Completed on "+courseClass.startTime.toDate()
+        mBinding.apply {
+            tvSubTitle.text = courseClass.subTitle ?: ""
+            tvClassType.text = courseClass.type.name.capitalizeWords()
+            tvClassLanguage.text = courseClass.displayableLanguage()
+        }
+
     }
 
 
@@ -278,8 +300,8 @@ class ClassFragment: Fragment() {
             selectedBatch = it
         }
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
-        recyclerviewBatch.layoutManager = layoutManager
-        recyclerviewBatch.adapter = mClassAdapter
+        mBinding.batchFragment.recyclerviewBatch.layoutManager = layoutManager
+        mBinding.batchFragment.recyclerviewBatch.adapter = mClassAdapter
         mClassAdapter.submitList(batches.take(3))
         setupJoinButton()
     }
@@ -292,8 +314,8 @@ class ClassFragment: Fragment() {
             selectedRevisionClass = it
         }
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recycler_view.layoutManager = layoutManager
-        recycler_view.adapter = mRevisionAdapter
+        mBinding.revisionList.recyclerView.layoutManager = layoutManager
+        mBinding.revisionList.recyclerView.adapter = mRevisionAdapter
         mRevisionAdapter.submitList(revisionClass)
         setUpRevisionEnrollBtn()
     }
