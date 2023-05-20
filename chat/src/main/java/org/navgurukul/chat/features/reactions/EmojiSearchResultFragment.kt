@@ -8,6 +8,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
+import org.navgurukul.chat.databinding.FragmentGenericRecyclerBinding
 import org.navgurukul.commonui.platform.BaseFragment
 
 class EmojiSearchResultFragment: BaseFragment(), ReactionClickListener {
@@ -19,11 +20,13 @@ class EmojiSearchResultFragment: BaseFragment(), ReactionClickListener {
     private val viewModel: EmojiSearchResultViewModel by sharedViewModel()
 
     private val sharedViewModel: EmojiChooserViewModel by sharedViewModel()
+    private lateinit var binding : FragmentGenericRecyclerBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentGenericRecyclerBinding.bind(view)
         epoxyController.listener = this
-        recyclerView.configureWith(epoxyController, showDivider = true)
+        binding.recyclerView.configureWith(epoxyController, showDivider = true)
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             epoxyController.setData(it)
         })
@@ -31,7 +34,7 @@ class EmojiSearchResultFragment: BaseFragment(), ReactionClickListener {
 
     override fun onDestroyView() {
         epoxyController.listener = null
-        recyclerView.cleanup()
+        binding.recyclerView.cleanup()
         super.onDestroyView()
     }
 

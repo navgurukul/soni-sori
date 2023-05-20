@@ -13,6 +13,7 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayout
 import com.jakewharton.rxbinding3.widget.queryTextChanges
@@ -60,7 +61,7 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_emoji_reaction_picker)
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_emoji_reaction_picker )
 
         initUiAndData()
 
@@ -70,7 +71,7 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     }
 
     private fun initUiAndData() {
-        configureToolbar(emojiPickerToolbar)
+        configureToolbar(mBinding.emojiPickerToolbar)
         emojiCompatFontProvider.let {
             EmojiDrawView.configureTextPaint(this, it.typeface)
             it.addListener(this)
@@ -80,22 +81,25 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
 
         emojiDataSource.rawData.categories.forEach { category ->
             val s = category.emojis[0]
-            tabs.newTab()
+            mBinding.tabs.newTab()
                     .also { tab ->
                         tab.text = emojiDataSource.rawData.emojis[s]!!.emoji
                         tab.contentDescription = category.name
                     }
                     .also { tab ->
-                        tabs.addTab(tab)
+                        mBinding.tabs.addTab(tab)
                     }
         }
-        tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
+        mBinding.tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
 
         viewModel.currentSection.observe(this, Observer { section ->
             section?.let {
-                tabs.removeOnTabSelectedListener(tabLayoutSelectionListener)
-                tabs.getTabAt(it)?.select()
-                tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
+                mBinding.apply {
+                    tabs.removeOnTabSelectedListener(tabLayoutSelectionListener)
+                    tabs.getTabAt(it)?.select()
+                    tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
+                }
+
             }
         })
 
@@ -110,9 +114,12 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
             }
         })
 
-        emojiPickerWholeListFragmentContainer.isVisible = true
-        emojiPickerFilteredListFragmentContainer.isVisible = false
-        tabs.isVisible = true
+        mBinding.apply {
+            emojiPickerWholeListFragmentContainer.isVisible = true
+            emojiPickerFilteredListFragmentContainer.isVisible = false
+            tabs.isVisible = true
+        }
+
     }
 
     override fun compatibilityFontUpdate(typeface: Typeface?) {
@@ -135,13 +142,13 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
                     searchView.isIconified = false
                     searchView.requestFocusFromTouch()
                     // we want to force the tool bar as visible even if hidden with scroll flags
-                    emojiPickerToolbar.minimumHeight = getActionBarSize()
+                    mBinding.emojiPickerToolbar.minimumHeight = getActionBarSize()
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                     // when back, clear all search
-                    emojiPickerToolbar.minimumHeight = 0
+                    mBinding.emojiPickerToolbar.minimumHeight = 0
                     searchView.setQuery("", true)
                     return true
                 }
@@ -163,7 +170,7 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     private fun getActionBarSize(): Int {
         return try {
             val typedValue = TypedValue()
-            theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)
+            theme.resolveAttribute(io.noties.markwon.R.attr.actionBarSize, typedValue, true)
             TypedValue.complexToDimensionPixelSize(typedValue.data, resources.displayMetrics)
         } catch (e: Exception) {
             // Timber.e(e, "Unable to get color")
@@ -172,16 +179,19 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     }
 
     private fun onQueryText(query: String) {
-        if (query.isEmpty()) {
-            tabs.isVisible = true
-            emojiPickerWholeListFragmentContainer.isVisible = true
-            emojiPickerFilteredListFragmentContainer.isVisible = false
-        } else {
-            tabs.isVisible = false
-            emojiPickerWholeListFragmentContainer.isVisible = false
-            emojiPickerFilteredListFragmentContainer.isVisible = true
-            searchResultViewModel.handle(EmojiSearchAction.UpdateQuery(query))
+        mBinding.apply {
+            if (query.isEmpty()) {
+                tabs.isVisible = true
+                emojiPickerWholeListFragmentContainer.isVisible = true
+                emojiPickerFilteredListFragmentContainer.isVisible = false
+            } else {
+                tabs.isVisible = false
+                emojiPickerWholeListFragmentContainer.isVisible = false
+                emojiPickerFilteredListFragmentContainer.isVisible = true
+                searchResultViewModel.handle(EmojiSearchAction.UpdateQuery(query))
+            }
         }
+
     }
 
     companion object {

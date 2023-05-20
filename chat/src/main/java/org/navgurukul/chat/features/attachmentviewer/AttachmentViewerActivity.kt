@@ -14,6 +14,7 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.databinding.DataBindingUtil
 import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import org.navgurukul.chat.R
@@ -33,11 +34,14 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
 
     private var overlayView: View? = null
         set(value) {
-            if (value == overlayView) return
-            overlayView?.let { rootContainer.removeView(it) }
-            rootContainer.addView(value)
-            value?.updatePadding(top = topInset, bottom = bottomInset)
-            field = value
+            mBinding.apply {
+                if (value == overlayView) return
+                overlayView?.let { rootContainer.removeView(it) }
+                rootContainer.addView(value)
+                value?.updatePadding(top = topInset, bottom = bottomInset)
+                field = value
+            }
+
         }
 
     private lateinit var swipeDismissHandler: SwipeToDismissHandler
@@ -80,17 +84,17 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
         window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
 
-        setContentView(R.layout.activity_attachment_viewer)
-        attachmentPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_attachment_viewer )
+        mBinding.attachmentPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         attachmentsAdapter = AttachmentsAdapter()
-        attachmentPager.adapter = attachmentsAdapter
-        imageTransitionView = transitionImageView
+        mBinding.attachmentPager.adapter = attachmentsAdapter
+        imageTransitionView = mBinding.transitionImageView
         transitionImageContainer = findViewById(R.id.transitionImageContainer)
-        pager2 = attachmentPager
+        pager2 = mBinding.attachmentPager
         directionDetector = createSwipeDirectionDetector()
         gestureDetector = createGestureDetector()
 
-        attachmentPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        mBinding.attachmentPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 isImagePagerIdle = state == ViewPager2.SCROLL_STATE_IDLE
             }
@@ -101,12 +105,14 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
         })
 
         swipeDismissHandler = createSwipeToDismissHandler()
-        rootContainer.setOnTouchListener(swipeDismissHandler)
-        rootContainer.viewTreeObserver.addOnGlobalLayoutListener { swipeDismissHandler.translationLimit = dismissContainer.height / 4 }
+        mBinding.apply {
+            rootContainer.setOnTouchListener(swipeDismissHandler)
+            rootContainer.viewTreeObserver.addOnGlobalLayoutListener { swipeDismissHandler.translationLimit = dismissContainer.height / 4 }
+        }
 
         scaleDetector = createScaleGestureDetector()
 
-        ViewCompat.setOnApplyWindowInsetsListener(rootContainer) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.rootContainer) { _, insets ->
             overlayView?.updatePadding(top = insets.systemWindowInsetTop, bottom = insets.systemWindowInsetBottom)
             topInset = insets.systemWindowInsetTop
             bottomInset = insets.systemWindowInsetBottom
@@ -155,7 +161,7 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
         if (swipeDirection == null && (scaleDetector.isInProgress || ev.pointerCount > 1 || wasScaled)) {
             wasScaled = true
 //            Log.v("ATTACHEMENTS", "dispatch to pager")
-            return attachmentPager.dispatchTouchEvent(ev)
+            return mBinding.attachmentPager.dispatchTouchEvent(ev)
         }
 
         // Log.v("ATTACHEMENTS", "is current item scaled ${isScaled()}")
@@ -179,19 +185,25 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
     }
 
     private fun handleEventActionDown(event: MotionEvent) {
-        swipeDirection = null
-        wasScaled = false
-        attachmentPager.dispatchTouchEvent(event)
+        mBinding.apply {
+            swipeDirection = null
+            wasScaled = false
+            attachmentPager.dispatchTouchEvent(event)
 
-        swipeDismissHandler.onTouch(rootContainer, event)
-        isOverlayWasClicked = dispatchOverlayTouch(event)
+            swipeDismissHandler.onTouch(rootContainer, event)
+            isOverlayWasClicked = dispatchOverlayTouch(event)
+        }
+
     }
 
     private fun handleEventActionUp(event: MotionEvent) {
-//        wasDoubleTapped = false
-        swipeDismissHandler.onTouch(rootContainer, event)
-        attachmentPager.dispatchTouchEvent(event)
-        isOverlayWasClicked = dispatchOverlayTouch(event)
+        mBinding.apply {
+            //        wasDoubleTapped = false
+            swipeDismissHandler.onTouch(rootContainer, event)
+            attachmentPager.dispatchTouchEvent(event)
+            isOverlayWasClicked = dispatchOverlayTouch(event)
+        }
+
     }
 
     private fun handleSingleTap(event: MotionEvent, isOverlayWasClicked: Boolean) {
@@ -203,17 +215,20 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
     }
 
     private fun toggleOverlayViewVisibility() {
-        if (systemUiVisibility) {
-            // we hide
-            TransitionManager.beginDelayedTransition(rootContainer)
-            hideSystemUI()
-            overlayView?.isVisible = false
-        } else {
-            // we show
-            TransitionManager.beginDelayedTransition(rootContainer)
-            showSystemUI()
-            overlayView?.isVisible = true
+        mBinding.apply {
+            if (systemUiVisibility) {
+                // we hide
+                TransitionManager.beginDelayedTransition(rootContainer)
+                hideSystemUI()
+                overlayView?.isVisible = false
+            } else {
+                // we show
+                TransitionManager.beginDelayedTransition(rootContainer)
+                showSystemUI()
+                overlayView?.isVisible = true
+            }
         }
+
     }
 
     private fun handleTouchIfNotScaled(event: MotionEvent): Boolean {
@@ -223,11 +238,11 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
         return when (swipeDirection) {
             SwipeDirection.Up, SwipeDirection.Down -> {
                 if (isSwipeToDismissAllowed && !wasScaled && isImagePagerIdle) {
-                    swipeDismissHandler.onTouch(rootContainer, event)
+                    swipeDismissHandler.onTouch(mBinding.rootContainer, event)
                 } else true
             }
             SwipeDirection.Left, SwipeDirection.Right -> {
-                attachmentPager.dispatchTouchEvent(event)
+                mBinding.attachmentPager.dispatchTouchEvent(event)
             }
             else                                      -> true
         }
@@ -235,8 +250,10 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
 
     private fun handleSwipeViewMove(translationY: Float, translationLimit: Int) {
         val alpha = calculateTranslationAlpha(translationY, translationLimit)
-        backgroundView.alpha = alpha
-        dismissContainer.alpha = alpha
+        mBinding.apply {
+            backgroundView.alpha = alpha
+            dismissContainer.alpha = alpha
+        }
         overlayView?.alpha = alpha
     }
 
@@ -250,7 +267,7 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
 
     private fun createSwipeToDismissHandler()
             : SwipeToDismissHandler = SwipeToDismissHandler(
-            swipeView = dismissContainer,
+            swipeView = mBinding.dismissContainer,
             shouldAnimateDismiss = { shouldAnimateDismiss() },
             onDismiss = { animateClose() },
             onSwipeViewMove = ::handleSwipeViewMove)

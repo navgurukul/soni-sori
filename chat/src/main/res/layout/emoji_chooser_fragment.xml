@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/emojiRecyclerView"
@@ -10,3 +11,4 @@
     tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
     tools:listitem="@layout/grid_item_emoji"
     tools:spanCount="10" />
+</layout>

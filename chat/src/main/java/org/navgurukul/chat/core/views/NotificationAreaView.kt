@@ -62,7 +62,7 @@ class NotificationAreaView @JvmOverloads constructor(
     // PRIVATE METHODS ****************************************************************************************************************************************
 
     private fun setupView() {
-        mBinding = inflate(this, R.layout.view_notification_area, container this)
+        inflate(context, R.layout.view_notification_area, this)
         minimumHeight = resources.getDimensionPixelSize(R.dimen.notification_area_minimum_height)
     }
 

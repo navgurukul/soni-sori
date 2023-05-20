@@ -7,6 +7,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
+import org.navgurukul.chat.databinding.EmojiChooserFragmentBinding
 import org.navgurukul.commonui.platform.BaseFragment
 
 class EmojiChooserFragment : BaseFragment(),
@@ -18,14 +19,16 @@ class EmojiChooserFragment : BaseFragment(),
     private val viewModel: EmojiChooserViewModel by sharedViewModel()
 
     private val emojiRecyclerAdapter: EmojiRecyclerAdapter by inject()
+    private lateinit var binding : EmojiChooserFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = EmojiChooserFragmentBinding.bind(view)
         emojiRecyclerAdapter.reactionClickListener = this
         emojiRecyclerAdapter.interactionListener = this
 
-        emojiRecyclerView.adapter = emojiRecyclerAdapter
+        binding.emojiRecyclerView.adapter = emojiRecyclerAdapter
 
         viewModel.moveToSection.observe(viewLifecycleOwner, Observer { section ->
             emojiRecyclerAdapter.scrollToSection(section)
@@ -41,7 +44,7 @@ class EmojiChooserFragment : BaseFragment(),
     }
 
     override fun onDestroyView() {
-        emojiRecyclerView.cleanup()
+        binding.emojiRecyclerView.cleanup()
         emojiRecyclerAdapter.reactionClickListener = null
         emojiRecyclerAdapter.interactionListener = null
         super.onDestroyView()

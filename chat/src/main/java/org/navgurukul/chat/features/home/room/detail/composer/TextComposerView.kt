@@ -10,10 +10,12 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.toSpannable
+import androidx.databinding.DataBindingUtil
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.MergeComposerLayoutBinding
 import org.navgurukul.commonui.themes.ThemeUtils
 
 /**
@@ -54,6 +56,7 @@ class TextComposerView @JvmOverloads constructor(
     private val animationDuration = 100L
 
     val composerAvatarImageView: ImageView
+    private lateinit var binding : MergeComposerLayoutBinding
 
     val text: Editable?
         get() = composerEditText.text

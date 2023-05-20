@@ -34,15 +34,18 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     private val navigator: MerakiNavigator by inject()
     private lateinit var binding : FragmentRoomMemberListBinding
 
+    val roomSetingToolabarBinding = binding.fragmentRoomSetting
     override fun getLayoutResId() = R.layout.fragment_room_member_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentRoomMemberListBinding.bind(view)
         roomMemberListController.callback = this
-        setupToolbar(roomSettingsToolbar)
+
+        setupToolbar(roomSetingToolabarBinding.roomSettingsToolbar)
         setupSearchView()
 //        setupInviteUsersButton()
-      recyclerView.configureWith(roomMemberListController, hasFixedSize = true)
+      roomSetingToolabarBinding.recyclerView.configureWith(roomMemberListController, hasFixedSize = true)
 
         viewModel.viewState.observe(viewLifecycleOwner, {
             setUpWithState(it)
@@ -86,8 +89,9 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
 //    }
 
     private fun setupSearchView() {
-        searchView.queryHint = getString(R.string.search_members_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+        roomSetingToolabarBinding.searchView.queryHint = getString(R.string.search_members_hint)
+        roomSetingToolabarBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
             }
@@ -100,7 +104,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     }
 
     override fun onDestroyView() {
-        recyclerView.cleanup()
+        roomSetingToolabarBinding.recyclerView.cleanup()
         super.onDestroyView()
     }
 
@@ -109,7 +113,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
         renderRoomSummary(viewState)
 //        inviteUsersButton.isVisible = viewState.actionsPermissions.canInvite
         // Display filter only if there are more than 2 members in this room
-        searchViewAppBarLayout.isVisible = viewState.roomSummary()?.otherMemberIds.orEmpty().size > 1
+        roomSetingToolabarBinding.searchViewAppBarLayout.isVisible = viewState.roomSummary()?.otherMemberIds.orEmpty().size > 1
     }
 
     override fun onRoomMemberClicked(roomMember: RoomMemberSummary) {
@@ -134,8 +138,10 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
 
     private fun renderRoomSummary(state: RoomMemberListViewState) {
         state.roomSummary()?.let {
-            roomSettingsToolbarTitleView.text = it.displayName
-            avatarRenderer.render(it.toMatrixItem(), roomSettingsToolbarAvatarImageView)
+            roomSetingToolabarBinding.apply {
+                roomSettingsToolbarTitleView.text = it.displayName
+                avatarRenderer.render(it.toMatrixItem(), roomSettingsToolbarAvatarImageView)
+            }
         }
     }
 }

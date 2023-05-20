@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.load.model.DataUrlLoader
 import com.google.android.gms.common.util.DataUtils
@@ -45,13 +46,15 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_sheet_generic_list_with_title, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_generic_list_with_title, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bottomSheetRecyclerView.configureWith(epoxyController, hasFixedSize = false, showDivider = true)
-        bottomSheetTitle.text = context?.getString(R.string.reactions)
+        val itemBottomsheetBinding = mBinding.bottomSheetRecyclerView
+        mBinding.bottomSheetRecyclerView.configureWith(epoxyController, hasFixedSize = false, showDivider = true)
+        itemBottomsheetBinding.bottomSheetTitle.text = context?.getString(R.string.reactions)
         epoxyController.listener = this
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
@@ -60,7 +63,7 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     override fun onDestroyView() {
-        bottomSheetRecyclerView.cleanup()
+        mBinding.bottomSheetRecyclerView.cleanup()
         epoxyController.listener = null
         super.onDestroyView()
     }

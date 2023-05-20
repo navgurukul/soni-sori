@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.view.Window
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import kotlinx.android.parcel.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -17,6 +19,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseDialogFragment
 import org.navgurukul.typingguru.R
+import org.navgurukul.typingguru.databinding.LayoutKeyboardDialogBinding
 import org.navgurukul.typingguru.keyboard.KeyboardActivity
 import org.navgurukul.typingguru.webview.WebViewActivity
 
@@ -29,6 +32,7 @@ class KeyboardDialogFragment : BaseDialogFragment() {
 
     private val keyboardDialogArgs: KeyboardDialogArgs by fragmentArgs()
     private val viewModel : KeyboardDialogViewModel by viewModel(parameters = { parametersOf(keyboardDialogArgs) })
+    private lateinit var mBinding : LayoutKeyboardDialogBinding
 
     companion object {
         fun newInstance(mode: Mode): KeyboardDialogFragment {
@@ -57,8 +61,9 @@ class KeyboardDialogFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mBinding = LayoutKeyboardDialogBinding.bind(view)
         viewModel.viewState.observe(viewLifecycleOwner, {
-            tv_info.text = it.infoText
+            mBinding.tvInfo.text = it.infoText
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {

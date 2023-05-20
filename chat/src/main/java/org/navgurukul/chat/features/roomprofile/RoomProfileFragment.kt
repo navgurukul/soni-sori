@@ -20,6 +20,8 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.animations.AppBarStateChangeListener
 import org.navgurukul.chat.core.animations.MerakiItemAppBarStateChangeListener
 import org.navgurukul.chat.core.extensions.*
+import org.navgurukul.chat.databinding.FragmentRoomDetailBinding
+import org.navgurukul.chat.databinding.FragmentRoomProfileBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.list.actions.RoomListActionsArgs
 import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsBottomSheet
@@ -46,22 +48,26 @@ class RoomProfileFragment: BaseFragment(),
     private val roomProfileViewModel: RoomProfileViewModel by viewModel(parameters = { parametersOf(RoomProfileViewState(roomProfileArgs.roomId))})
 
     private var appBarStateChangeListener: AppBarStateChangeListener? = null
+    private lateinit var binding: FragmentRoomProfileBinding
 
     override fun getLayoutResId() = R.layout.fragment_room_profile
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val headerView = profileHeaderView.let {
-            it.layoutResource = R.layout.view_stub_room_profile_header
-            it.inflate()
+        binding = FragmentRoomProfileBinding.bind(view)
+        binding.apply {
+            val headerView = profileHeaderView.let {
+                it.layoutResource = R.layout.view_stub_room_profile_header
+                it.inflate()
+            }
         }
-        setupToolbar(profileToolbar)
+
+        setupToolbar(binding.profileToolbar)
         setupRecyclerView()
         appBarStateChangeListener = MerakiItemAppBarStateChangeListener(
-            listOf(profileToolbarAvatarImageView,
-                    profileToolbarTitleView)
-        )
-        profileAppBarLayout.addOnOffsetChangedListener(appBarStateChangeListener)
+            listOf(binding.profileToolbarAvatarImageView,
+                    binding.profileToolbarTitleView))
+        binding.profileAppBarLayout.addOnOffsetChangedListener(appBarStateChangeListener)
         roomProfileViewModel.viewEvents.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RoomProfileViewEvents.Loading          -> showLoading(it.message)
@@ -80,8 +86,10 @@ class RoomProfileFragment: BaseFragment(),
     }
 
     private fun setupLongClicks() {
-        roomProfileNameView.copyOnLongClick()
-        roomProfileAliasView.copyOnLongClick()
+        binding.apply {
+            roomProfileNameView.copyOnLongClick()
+            roomProfileAliasView.copyOnLongClick()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -91,8 +99,8 @@ class RoomProfileFragment: BaseFragment(),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        profileAppBarLayout.removeOnOffsetChangedListener(appBarStateChangeListener)
-        profileRecyclerView.cleanup()
+        binding.profileAppBarLayout.removeOnOffsetChangedListener(appBarStateChangeListener)
+        binding.profileRecyclerView.cleanup()
         appBarStateChangeListener = null
     }
 
@@ -112,7 +120,7 @@ class RoomProfileFragment: BaseFragment(),
                 roomProfileAvatarView.setOnClickListener { view ->
                     onAvatarClicked(view, matrixItem)
                 }
-                profileToolbarAvatarImageView.setOnClickListener { view ->
+                binding.profileToolbarAvatarImageView.setOnClickListener { view ->
                     onAvatarClicked(view, matrixItem)
                 }
             }

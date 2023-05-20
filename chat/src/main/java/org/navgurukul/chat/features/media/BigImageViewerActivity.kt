@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
+import androidx.databinding.DataBindingUtil
 import org.koin.android.ext.android.inject
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.R
@@ -20,9 +21,9 @@ class BigImageViewerActivity : ChatBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_big_image_viewer)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_big_image_viewer )
 
-        setSupportActionBar(bigImageViewerToolbar)
+        setSupportActionBar(mBinding.bigImageViewerToolbar)
         supportActionBar?.apply {
             title = intent.getStringExtra(EXTRA_TITLE)
             setHomeButtonEnabled(true)

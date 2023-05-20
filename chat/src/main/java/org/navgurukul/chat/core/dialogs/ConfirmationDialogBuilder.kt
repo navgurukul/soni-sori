@@ -1,13 +1,16 @@
 package org.navgurukul.chat.core.dialogs
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import org.navgurukul.chat.R
 import org.navgurukul.chat.databinding.DialogConfirmationWithReasonBinding
 
 object ConfirmationDialogBuilder {
+    @SuppressLint("StaticFieldLeak")
     private lateinit var binding: DialogConfirmationWithReasonBinding
 
     fun show(activity: Activity,
