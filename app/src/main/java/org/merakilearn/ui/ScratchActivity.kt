@@ -81,8 +81,8 @@ class ScratchActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
-        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
-        finish()
+//        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
+//        finish()
         onBackPressed()
     }
 
@@ -146,6 +146,7 @@ class ScratchActivity : AppCompatActivity() {
             }
             return true
         }
+
 
         override fun onPermissionRequest(request: PermissionRequest) {
             myRequest = request
@@ -329,6 +330,22 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.setPositiveButton("OK") { dialog, which ->
             dialog.dismiss()
         }
+        alertDialog.show()
+    }
+
+    override fun onBackPressed() {
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setTitle("Exit")
+            setMessage("Are you sure you want to exit?")
+            setPositiveButton("Yes") { dialog, which ->
+                dialog.dismiss()
+                super.onBackPressed()
+            }
+            setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
+            }
+        }
+
         alertDialog.show()
     }
 
