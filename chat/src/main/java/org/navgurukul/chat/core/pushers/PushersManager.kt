@@ -24,7 +24,7 @@ class PushersManager(
                 stringProvider.getString(R.string.pusher_app_id),
                 profileTag,
                 localeProvider.current().language,
-                stringProvider.getString(R.string.app_name),
+                stringProvider.getString(org.navgurukul.commonui.R.string.app_name),
                 currentSession.sessionParams.deviceId ?: "MOBILE",
                 stringProvider.getString(R.string.pusher_http_url),
                 append = false,

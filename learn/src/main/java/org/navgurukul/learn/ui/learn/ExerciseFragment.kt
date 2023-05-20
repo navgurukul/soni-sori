@@ -24,9 +24,9 @@ import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.databinding.FragmentExerciseBinding
+import org.merakilearn.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import java.util.*
@@ -95,7 +95,7 @@ class ExerciseFragment : Fragment() {
         })
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.root.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
 
             if (!it.isError)
@@ -172,7 +172,7 @@ class ExerciseFragment : Fragment() {
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
         mBinding.recyclerViewSlug.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x), 0)
         )
 
     }

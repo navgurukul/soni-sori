@@ -255,7 +255,7 @@ class ProfileFragment : Fragment() {
                 .transform(CircleCrop())
 
             val thumbnail = GlideApp.with(this)
-                .load(R.drawable.illus_default_avatar)
+                .load(org.navgurukul.commonui.R.drawable.illus_default_avatar)
                 .apply(requestOptions)
 
             GlideApp.with(mBinding.ivProfile)

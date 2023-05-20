@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
@@ -56,35 +57,40 @@ class NotificationAreaView @JvmOverloads constructor(
             is State.NoPermissionToPost         -> renderNoPermissionToPost()
             is State.Tombstone                  -> renderTombstone(newState)
             is State.ResourceLimitExceededError -> renderResourceLimitExceededError(newState)
+            else -> { renderHidden() }
         }
     }
 
     // PRIVATE METHODS ****************************************************************************************************************************************
 
     private fun setupView() {
-        inflate(context, R.layout.view_notification_area, this)
+        mBinding = ViewNotificationAreaBinding.inflate(LayoutInflater.from(context), this)
         minimumHeight = resources.getDimensionPixelSize(R.dimen.notification_area_minimum_height)
     }
 
     private fun cleanUp() {
-        roomNotificationMessage.setOnClickListener(null)
-        roomNotificationIcon.setOnClickListener(null)
-        roomNotificationIcon.imageTintList = null
-        setBackgroundColor(Color.TRANSPARENT)
-        roomNotificationMessage.text = null
-        roomNotificationIcon.setImageResource(0)
+        mBinding.apply {
+            roomNotificationMessage.setOnClickListener(null)
+            roomNotificationIcon.setOnClickListener(null)
+            roomNotificationIcon.imageTintList = null
+            setBackgroundColor(Color.TRANSPARENT)
+            roomNotificationMessage.text = null
+            roomNotificationIcon.setImageResource(0)
+        }
     }
 
     private fun renderNoPermissionToPost() {
-        visibility = View.VISIBLE
-        roomNotificationIcon.setImageDrawable(null)
-        val message = span {
-            italic {
-                +resources.getString(R.string.room_do_not_have_permission_to_post)
+        mBinding.apply {
+            visibility = View.VISIBLE
+            roomNotificationIcon.setImageDrawable(null)
+            val message = span {
+                italic {
+                    +resources.getString(R.string.room_do_not_have_permission_to_post)
+                }
             }
+            roomNotificationMessage.text = message
+            roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, org.navgurukul.commonui.R.attr.textSecondary))
         }
-        roomNotificationMessage.text = message
-        roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, R.attr.textSecondary))
     }
 
     private fun renderResourceLimitExceededError(state: State.ResourceLimitExceededError) {
@@ -93,34 +99,39 @@ class NotificationAreaView @JvmOverloads constructor(
         val formatterMode: ResourceLimitErrorFormatter.Mode
         val backgroundColor: Int
         if (state.isSoft) {
-            backgroundColor = R.color.primaryColor
+            backgroundColor = org.navgurukul.commonui.R.color.primaryColor
             formatterMode = ResourceLimitErrorFormatter.Mode.Soft
         } else {
-            backgroundColor = R.color.errorColor
+            backgroundColor = org.navgurukul.commonui.R.color.errorColor
             formatterMode = ResourceLimitErrorFormatter.Mode.Hard
         }
         val message = resourceLimitErrorFormatter.format(state.matrixError, formatterMode, clickable = true)
-        roomNotificationMessage.setTextColor(Color.WHITE)
-        roomNotificationMessage.text = message
-        roomNotificationMessage.movementMethod = LinkMovementMethod.getInstance()
-        roomNotificationMessage.setLinkTextColor(Color.WHITE)
+        mBinding.apply {
+            roomNotificationMessage.setTextColor(Color.WHITE)
+            roomNotificationMessage.text = message
+            roomNotificationMessage.movementMethod = LinkMovementMethod.getInstance()
+            roomNotificationMessage.setLinkTextColor(Color.WHITE)
+        }
         setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
     }
 
     private fun renderTombstone(state: State.Tombstone) {
         visibility = View.VISIBLE
-        roomNotificationIcon.setImageResource(R.drawable.ic_warning)
-        roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, R.attr.colorError))
-        val message = span {
-            +resources.getString(R.string.room_tombstone_versioned_description)
-            +"\n"
-            span(resources.getString(R.string.room_tombstone_continuation_link)) {
-                textDecorationLine = "underline"
-                onClick = { delegate?.onTombstoneEventClicked(state.tombstoneEvent) }
+        mBinding.apply {
+            roomNotificationIcon.setImageResource(R.drawable.ic_warning)
+            roomNotificationIcon.imageTintList =
+                ColorStateList.valueOf(ThemeUtils.getColor(context, com.google.android.material.R.attr.colorError))
+            val message = span {
+                +resources.getString(R.string.room_tombstone_versioned_description)
+                +"\n"
+                span(resources.getString(R.string.room_tombstone_continuation_link)) {
+                    textDecorationLine = "underline"
+                    onClick = { delegate?.onTombstoneEventClicked(state.tombstoneEvent) }
+                }
             }
+            roomNotificationMessage.movementMethod = BetterLinkMovementMethod.getInstance()
+            roomNotificationMessage.text = message
         }
-        roomNotificationMessage.movementMethod = BetterLinkMovementMethod.getInstance()
-        roomNotificationMessage.text = message
     }
 
     private fun renderDefault() {

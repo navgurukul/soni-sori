@@ -34,7 +34,7 @@ abstract class ProfileActionItem : MerakiEpoxyModel<ProfileActionItem.Holder>() 
     var tintIcon: Boolean = true
 
     @EpoxyAttribute
-    var editableRes: Int = R.drawable.ic_arrow_right
+    var editableRes: Int = org.navgurukul.commonui.R.drawable.ic_arrow_right
 
     @EpoxyAttribute
     var accessoryRes: Int = 0
@@ -62,14 +62,14 @@ abstract class ProfileActionItem : MerakiEpoxyModel<ProfileActionItem.Holder>() 
         }
         holder.title.text = title
         val titleTintColor = if (destructive) {
-            ThemeUtils.getColor(holder.view.context, R.attr.colorError)
+            ThemeUtils.getColor(holder.view.context, com.google.android.material.R.attr.colorError)
         } else {
-            ThemeUtils.getColor(holder.view.context, R.attr.textPrimary)
+            ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textPrimary)
         }
         val iconTintColor = if (destructive) {
-            ThemeUtils.getColor(holder.view.context, R.attr.colorError)
+            ThemeUtils.getColor(holder.view.context, com.google.android.material.R.attr.colorError)
         } else {
-            ThemeUtils.getColor(holder.view.context, R.attr.textSecondary)
+            ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textSecondary)
         }
         holder.title.setTextColor(titleTintColor)
         holder.subtitle.setTextOrHide(subtitle)
@@ -103,7 +103,7 @@ abstract class ProfileActionItem : MerakiEpoxyModel<ProfileActionItem.Holder>() 
             val tintColorSecondary = if (destructive) {
                 titleTintColor
             } else {
-                ThemeUtils.getColor(holder.view.context, R.attr.textSecondary)
+                ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textSecondary)
             }
             holder.editable.setImageResource(editableRes)
             ImageViewCompat.setImageTintList(holder.editable, ColorStateList.valueOf(tintColorSecondary))

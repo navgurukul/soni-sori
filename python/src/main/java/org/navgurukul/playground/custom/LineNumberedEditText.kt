@@ -24,8 +24,8 @@ class LineNumberedEditText(
 
     /** the gap between the line number and the left margin of the text  */
     private val lineNumberHorizontalMargin =
-        context.resources.getDimensionPixelSize(R.dimen.spacing_1x)
-    private val lineWidth = context.getThemedUnit(R.attr.borderWidth)
+        context.resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_1x)
+    private val lineWidth = context.getThemedUnit(com.google.android.material.R.attr.borderWidth)
 
     init {
         paint.isAntiAlias = true

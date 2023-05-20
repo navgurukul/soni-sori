@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.Course
-import org.navgurukul.learn.databinding.ItemCourseBinding
+import org.merakilearn.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 

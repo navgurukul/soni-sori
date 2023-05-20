@@ -54,11 +54,11 @@ abstract class BottomSheetRoomPreviewItem : MerakiEpoxyModel<BottomSheetRoomPrev
         if (isFavorite) {
             holder.roomFavorite.contentDescription = stringProvider.getString(R.string.room_list_quick_actions_favorite_remove)
             holder.roomFavorite.setImageResource(R.drawable.ic_star_24dp)
-            tintColor = ThemeUtils.getColor(holder.view.context, R.attr.colorAccent)
+            tintColor = ThemeUtils.getColor(holder.view.context, com.google.android.material.R.attr.colorAccent)
         } else {
             holder.roomFavorite.contentDescription = stringProvider.getString(R.string.room_list_quick_actions_favorite_add)
             holder.roomFavorite.setImageResource(R.drawable.ic_star_24dp)
-            tintColor = ThemeUtils.getColor(holder.view.context, R.attr.textSecondary)
+            tintColor = ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textSecondary)
         }
         ImageViewCompat.setImageTintList(holder.roomFavorite, ColorStateList.valueOf(tintColor))
     }

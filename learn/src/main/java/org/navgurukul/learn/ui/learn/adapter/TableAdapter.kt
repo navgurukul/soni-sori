@@ -35,14 +35,14 @@ class TableAdapter(val noOfRows: Int, val dataList: List<String>): RecyclerView.
     class TableContentViewHolder constructor(bindedItemView: ItemTableBodyBinding): BaseViewHolder<String>(bindedItemView.root){
         override fun onBind(model: String) {
             super.onBind(model)
-            itemView.textValue.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            (itemView as? ItemTableBodyBinding)?.textValue?.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
     }
 
     class TableHeaderViewHolder constructor(bindedItemView: ItemTableHeaderBinding): BaseViewHolder<String>(bindedItemView.root){
         override fun onBind(model: String) {
             super.onBind(model)
-            itemView.textHeader.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            (itemView as? ItemTableHeaderBinding)?.textHeader?.text = HtmlCompat.fromHtml(model, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
     }
 

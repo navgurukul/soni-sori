@@ -2,6 +2,7 @@ package org.navgurukul.chat.features.invite
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
@@ -29,44 +30,49 @@ class SaralInviteView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private val avatarRenderer: AvatarRenderer by inject(AvatarRenderer::class.java)
     var callback: Callback? = null
+    val mBinding: SaralInviteViewBinding
 
     init {
-        View.inflate(context, R.layout.saral_invite_view, this)
-        inviteAcceptView.callback = object : ButtonStateView.Callback {
-            override fun onButtonClicked() {
-                callback?.onAcceptInvite()
+        mBinding = SaralInviteViewBinding.inflate(LayoutInflater.from(context), this)
+        mBinding.apply {
+            inviteAcceptView.callback = object : ButtonStateView.Callback {
+                override fun onButtonClicked() {
+                    callback?.onAcceptInvite()
+                }
+
+                override fun onRetryClicked() {
+                    callback?.onAcceptInvite()
+                }
             }
 
-            override fun onRetryClicked() {
-                callback?.onAcceptInvite()
-            }
-        }
+            inviteRejectView.callback = object : ButtonStateView.Callback {
+                override fun onButtonClicked() {
+                    callback?.onRejectInvite()
+                }
 
-        inviteRejectView.callback = object : ButtonStateView.Callback {
-            override fun onButtonClicked() {
-                callback?.onRejectInvite()
-            }
-
-            override fun onRetryClicked() {
-                callback?.onRejectInvite()
+                override fun onRetryClicked() {
+                    callback?.onRejectInvite()
+                }
             }
         }
     }
 
     fun render(sender: User, mode: Mode = Mode.LARGE, changeMembershipState: ChangeMembershipState) {
-        if (mode == Mode.LARGE) {
-            updateLayoutParams { height = LayoutParams.MATCH_CONSTRAINT }
-            avatarRenderer.render(sender.toMatrixItem(), inviteAvatarView)
-            inviteIdentifierView.text = sender.userId
-            inviteNameView.text = sender.displayName
-            inviteLabelView.text = context.getString(R.string.send_you_invite)
-        } else {
-            updateLayoutParams { height = LayoutParams.WRAP_CONTENT }
-            inviteAvatarView.visibility = View.GONE
-            inviteIdentifierView.visibility = View.GONE
-            inviteNameView.visibility = View.GONE
-            inviteLabelView.text = context.getString(R.string.invited_by, sender.userId)
+        mBinding.apply {
+            if (mode == Mode.LARGE) {
+                updateLayoutParams { height = LayoutParams.MATCH_CONSTRAINT }
+                avatarRenderer.render(sender.toMatrixItem(), inviteAvatarView)
+                inviteIdentifierView.text = sender.userId
+                inviteNameView.text = sender.displayName
+                inviteLabelView.text = context.getString(R.string.send_you_invite)
+            } else {
+                updateLayoutParams { height = LayoutParams.WRAP_CONTENT }
+                inviteAvatarView.visibility = View.GONE
+                inviteIdentifierView.visibility = View.GONE
+                inviteNameView.visibility = View.GONE
+                inviteLabelView.text = context.getString(R.string.invited_by, sender.userId)
+            }
+            InviteButtonStateBinder.bind(inviteAcceptView, inviteRejectView, changeMembershipState)
         }
-        InviteButtonStateBinder.bind(inviteAcceptView, inviteRejectView, changeMembershipState)
     }
 }

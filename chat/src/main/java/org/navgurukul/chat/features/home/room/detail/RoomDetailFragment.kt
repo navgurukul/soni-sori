@@ -10,7 +10,9 @@ import android.os.Parcelable
 import android.text.Spannable
 import android.text.TextUtils
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -20,6 +22,7 @@ import androidx.core.text.buildSpannedString
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,6 +65,7 @@ import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.utils.*
 import org.navgurukul.chat.core.utils.createUIHandler
 import org.navgurukul.chat.core.views.NotificationAreaView
+import org.navgurukul.chat.databinding.FragmentRoomDetailBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
@@ -150,67 +154,116 @@ class RoomDetailFragment : BaseFragment(),
 
     override fun getLayoutResId(): Int = R.layout.fragment_room_detail
 
+    private lateinit var mBinding: FragmentRoomDetailBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_room_detail, container, false)
+        return mBinding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mBinding.apply {
+            setupToolbar(roomToolbar)
+            setupRecyclerView()
+            setupComposer()
+            setupInviteView()
+            setupNotificationView()
+            setupJumpToReadMarkerView()
+            setupJumpToBottomView()
 
-        setupToolbar(roomToolbar)
-        setupRecyclerView()
-        setupComposer()
-        setupInviteView()
-        setupNotificationView()
-        setupJumpToReadMarkerView()
-        setupJumpToBottomView()
-
-        roomToolbarContentView.debouncedClicks {
-            navigator.openRoomProfile(requireActivity(), roomDetailArgs.roomId)
-        }
-
-
-        viewModel.selectSubscribe(RoomDetailViewState::sendMode, RoomDetailViewState::canSendMessage).observe(viewLifecycleOwner, Observer { (mode, canSend) ->
-            if (!canSend) {
-                return@Observer
+            roomToolbarContentView.debouncedClicks {
+                navigator.openRoomProfile(requireActivity(), roomDetailArgs.roomId)
             }
-            when (mode) {
-                is SendMode.REGULAR -> renderRegularMode(mode.text)
-                is SendMode.EDIT    -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_edit, R.string.edit, mode.text)
-                is SendMode.QUOTE   -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_quote, R.string.quote, mode.text)
-                is SendMode.REPLY   -> renderSpecialMode(mode.timelineEvent, R.drawable.ic_reply, R.string.reply, mode.text)
-            }
-        })
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            invalidateState(it)
-        })
 
-        viewModel.selectSubscribe(RoomDetailViewState::syncState).observe(viewLifecycleOwner, Observer { syncState ->
-            syncStateView.render(syncState)
-        })
+            viewModel.selectSubscribe(
+                RoomDetailViewState::sendMode,
+                RoomDetailViewState::canSendMessage
+            ).observe(viewLifecycleOwner, Observer { (mode, canSend) ->
+                if (!canSend) {
+                    return@Observer
+                }
+                when (mode) {
+                    is SendMode.REGULAR -> renderRegularMode(mode.text)
+                    is SendMode.EDIT -> renderSpecialMode(
+                        mode.timelineEvent,
+                        R.drawable.ic_edit,
+                        R.string.edit,
+                        mode.text
+                    )
 
-        viewModel.viewEvents.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is RoomDetailFragmentViewEvents.Failure                          -> showErrorInSnackbar(it.throwable)
-                is RoomDetailFragmentViewEvents.OnNewTimelineEvents              -> scrollOnNewMessageCallback.addNewTimelineEventIds(it.eventIds)
-                is RoomDetailFragmentViewEvents.ActionSuccess                    -> displayRoomDetailActionSuccess(it)
-                is RoomDetailFragmentViewEvents.ActionFailure                    -> displayRoomDetailActionFailure(it)
-                is RoomDetailFragmentViewEvents.ShowMessage                      -> showSnackWithMessage(it.message, Snackbar.LENGTH_LONG)
-                is RoomDetailFragmentViewEvents.NavigateToEvent                  -> navigateToEvent(it)
-                is RoomDetailFragmentViewEvents.OpenDeepLink                     -> openDeepLink(it)
+                    is SendMode.QUOTE -> renderSpecialMode(
+                        mode.timelineEvent,
+                        R.drawable.ic_quote,
+                        R.string.quote,
+                        mode.text
+                    )
+
+                    is SendMode.REPLY -> renderSpecialMode(
+                        mode.timelineEvent,
+                        R.drawable.ic_reply,
+                        R.string.reply,
+                        mode.text
+                    )
+                }
+            })
+
+            viewModel.viewState.observe(viewLifecycleOwner, Observer {
+                invalidateState(it)
+            })
+
+            viewModel.selectSubscribe(RoomDetailViewState::syncState)
+                .observe(viewLifecycleOwner, Observer { syncState ->
+                    syncStateView.render(syncState)
+                })
+
+            viewModel.viewEvents.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is RoomDetailFragmentViewEvents.Failure -> showErrorInSnackbar(it.throwable)
+                    is RoomDetailFragmentViewEvents.OnNewTimelineEvents -> scrollOnNewMessageCallback.addNewTimelineEventIds(
+                        it.eventIds
+                    )
+
+                    is RoomDetailFragmentViewEvents.ActionSuccess -> displayRoomDetailActionSuccess(
+                        it
+                    )
+
+                    is RoomDetailFragmentViewEvents.ActionFailure -> displayRoomDetailActionFailure(
+                        it
+                    )
+
+                    is RoomDetailFragmentViewEvents.ShowMessage -> showSnackWithMessage(
+                        it.message,
+                        Snackbar.LENGTH_LONG
+                    )
+
+                    is RoomDetailFragmentViewEvents.NavigateToEvent -> navigateToEvent(it)
+                    is RoomDetailFragmentViewEvents.OpenDeepLink -> openDeepLink(it)
 //                is RoomDetailFragmentViewEvents.FileTooBigError                  -> displayFileTooBigError(it)
 //                is RoomDetailFragmentViewEvents.DownloadFileState                -> handleDownloadFileState(it)
-                is RoomDetailFragmentViewEvents.JoinRoomCommandSuccess           -> handleJoinedToAnotherRoom(it)
-                is RoomDetailFragmentViewEvents.SendMessageResult                -> renderSendMessageResult(it)
-                is RoomDetailFragmentViewEvents.ShowE2EErrorMessage              -> displayE2eError(it.withHeldCode)
+                    is RoomDetailFragmentViewEvents.JoinRoomCommandSuccess -> handleJoinedToAnotherRoom(
+                        it
+                    )
+
+                    is RoomDetailFragmentViewEvents.SendMessageResult -> renderSendMessageResult(it)
+                    is RoomDetailFragmentViewEvents.ShowE2EErrorMessage -> displayE2eError(it.withHeldCode)
 //                is RoomDetailFragmentViewEvents.DisplayPromptForIntegrationManager  -> displayPromptForIntegrationManager()
 //                is RoomDetailFragmentViewEvents.OpenStickerPicker                -> openStickerPicker(it)
 //                is RoomDetailFragmentViewEvents.DisplayEnableIntegrationsWarning -> displayDisabledIntegrationDialog()
 //                is RoomDetailFragmentViewEvents.OpenIntegrationManager           -> openIntegrationManager()
-                is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
-            }
-        })
+                    is RoomDetailFragmentViewEvents.OpenFile -> startOpenFileIntent(it)
+                    else -> {}
+                }
+            })
 
-        sharedActionDataSource.observe(viewLifecycleOwner, Observer {
-            handleActions(it)
-        })
+            sharedActionDataSource.observe(viewLifecycleOwner, Observer {
+                handleActions(it)
+            })
+        }
     }
 
     private fun openDeepLink(event: RoomDetailFragmentViewEvents.OpenDeepLink) {
@@ -233,49 +286,60 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun invalidateState(state: RoomDetailViewState) {
-        val summary = state.asyncRoomSummary()
-        val subtitle = if (TextUtils.isEmpty(state.typingMessage)) state.subtitle else state.typingMessage
-        renderToolbar(summary, subtitle)
-        val inviter = state.asyncInviter()
-        if (summary?.membership == Membership.JOIN) {
+        mBinding.apply {
+            val summary = state.asyncRoomSummary()
+            val subtitle =
+                if (TextUtils.isEmpty(state.typingMessage)) state.subtitle else state.typingMessage
+            renderToolbar(summary, subtitle)
+            val inviter = state.asyncInviter()
+            if (summary?.membership == Membership.JOIN) {
 //            roomWidgetsBannerView.render(state.activeRoomWidgets())
-            jumpToBottomView.count = summary.notificationCount
-            jumpToBottomView.drawBadge = summary.hasUnreadMessages
-            scrollOnHighlightedEventCallback.timeline = viewModel.timeline
-            timelineEventController.update(state)
-            inviteView.visibility = View.GONE
-            val meMember = state.myRoomMember()
-            val userId = session.myUserId
-            avatarRenderer.render(MatrixItem.UserItem(userId, meMember?.displayName, meMember?.avatarUrl), composerLayout.composerAvatarImageView)
-            if (state.tombstoneEvent == null) {
-                if (state.canSendMessage) {
-                    composerLayout.visibility = View.VISIBLE
+                jumpToBottomView.count = summary.notificationCount
+                jumpToBottomView.drawBadge = summary.hasUnreadMessages
+                scrollOnHighlightedEventCallback.timeline = viewModel.timeline
+                timelineEventController.update(state)
+                inviteView.visibility = View.GONE
+                val meMember = state.myRoomMember()
+                val userId = session.myUserId
+                avatarRenderer.render(
+                    MatrixItem.UserItem(
+                        userId,
+                        meMember?.displayName,
+                        meMember?.avatarUrl
+                    ), composerLayout.composerAvatarImageView
+                )
+                if (state.tombstoneEvent == null) {
+                    if (state.canSendMessage) {
+                        composerLayout.visibility = View.VISIBLE
 //                    composerLayout.setRoomEncrypted(summary.isEncrypted, summary.roomEncryptionTrustLevel)
-                    notificationAreaView.render(NotificationAreaView.State.Hidden)
+                        notificationAreaView.render(NotificationAreaView.State.Hidden)
+                    } else {
+                        composerLayout.visibility = View.GONE
+                        notificationAreaView.render(NotificationAreaView.State.NoPermissionToPost)
+                    }
                 } else {
                     composerLayout.visibility = View.GONE
-                    notificationAreaView.render(NotificationAreaView.State.NoPermissionToPost)
+                    notificationAreaView.render(NotificationAreaView.State.Tombstone(state.tombstoneEvent))
                 }
-            } else {
-                composerLayout.visibility = View.GONE
-                notificationAreaView.render(NotificationAreaView.State.Tombstone(state.tombstoneEvent))
+            } else if (summary?.membership == Membership.INVITE && inviter != null) {
+                inviteView.visibility = View.VISIBLE
+                inviteView.render(inviter, SaralInviteView.Mode.LARGE, state.changeMembershipState)
+                // Intercept click event
+                inviteView.setOnClickListener { }
+            } else if (state.asyncInviter.complete) {
+                activity?.finish()
             }
-        } else if (summary?.membership == Membership.INVITE && inviter != null) {
-            inviteView.visibility = View.VISIBLE
-            inviteView.render(inviter, SaralInviteView.Mode.LARGE, state.changeMembershipState)
-            // Intercept click event
-            inviteView.setOnClickListener { }
-        } else if (state.asyncInviter.complete) {
-            activity?.finish()
         }
     }
 
     private fun renderRegularMode(text: String) {
+        mBinding.apply {
 //        autoCompleter.exitSpecialMode()
-        composerLayout.collapse()
+            composerLayout.collapse()
 
-        updateComposerText(text)
-        composerLayout.sendButton.contentDescription = getString(R.string.send)
+            updateComposerText(text)
+            composerLayout.sendButton.contentDescription = getString(R.string.send)
+        }
     }
 
     private fun handleActions(action: EventSharedAction) {
@@ -326,13 +390,13 @@ class RoomDetailFragment : BaseFragment(),
                 viewModel.handle(RoomDetailAction.UpdateQuickReactAction(action.eventId, action.clickedOn, action.add))
             }
             is EventSharedAction.Edit                       -> {
-                viewModel.handle(RoomDetailAction.EnterEditMode(action.eventId, composerLayout.text.toString()))
+                viewModel.handle(RoomDetailAction.EnterEditMode(action.eventId, mBinding.composerLayout.text.toString()))
             }
             is EventSharedAction.Quote                      -> {
-                viewModel.handle(RoomDetailAction.EnterQuoteMode(action.eventId, composerLayout.text.toString()))
+                viewModel.handle(RoomDetailAction.EnterQuoteMode(action.eventId, mBinding.composerLayout.text.toString()))
             }
             is EventSharedAction.Reply                      -> {
-                viewModel.handle(RoomDetailAction.EnterReplyMode(action.eventId, composerLayout.text.toString()))
+                viewModel.handle(RoomDetailAction.EnterReplyMode(action.eventId, mBinding.composerLayout.text.toString()))
             }
 //            is EventSharedAction.CopyPermalink              -> {
 //                val permalink = PermalinkFactory.createPermalink(roomDetailArgs.roomId, action.eventId)
@@ -399,7 +463,7 @@ class RoomDetailFragment : BaseFragment(),
                                   defaultContent: String) {
 //        autoCompleter.enterSpecialMode()
         // switch to expanded bar
-        composerLayout.composerRelatedMessageTitle.apply {
+        mBinding.composerLayout.composerRelatedMessageTitle.apply {
             text = event.senderInfo.disambiguatedDisplayName
             setTextColor(ContextCompat.getColor(requireContext(), getColorFromUserId(event.root.senderId)))
         }
@@ -412,19 +476,29 @@ class RoomDetailFragment : BaseFragment(),
             val document = parser.parse(messageContent.formattedBody ?: messageContent.body)
             formattedBody = eventHtmlRenderer.render(document)
         }
-        composerLayout.composerRelatedMessageContent.text = (formattedBody ?: nonFormattedBody)
+        mBinding.composerLayout.apply {
+            composerRelatedMessageContent.text = (formattedBody ?: nonFormattedBody)
 
-        updateComposerText(defaultContent)
+            updateComposerText(defaultContent)
 
-        composerLayout.composerRelatedMessageActionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes))
-        composerLayout.sendButton.contentDescription = getString(descriptionRes)
+            composerRelatedMessageActionIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    iconRes
+                )
+            )
+            sendButton.contentDescription = getString(descriptionRes)
 
-        avatarRenderer.render(event.senderInfo.toMatrixItem(), composerLayout.composerRelatedMessageAvatar)
+            avatarRenderer.render(
+                event.senderInfo.toMatrixItem(),
+                composerLayout.composerRelatedMessageAvatar
+            )
 
-        composerLayout.expand {
-            if (isAdded) {
-                // need to do it here also when not using quick reply
-                focusComposerAndShowKeyboard()
+            expand {
+                if (isAdded) {
+                    // need to do it here also when not using quick reply
+                    focusComposerAndShowKeyboard()
+                }
             }
         }
         focusComposerAndShowKeyboard()
@@ -432,7 +506,7 @@ class RoomDetailFragment : BaseFragment(),
 
 
     private fun setupNotificationView() {
-        notificationAreaView.delegate = object : NotificationAreaView.Delegate {
+        mBinding.notificationAreaView.delegate = object : NotificationAreaView.Delegate {
             override fun onTombstoneEventClicked(tombstoneEvent: Event) {
                 viewModel.handle(RoomDetailAction.HandleTombstoneEvent(tombstoneEvent))
             }
@@ -440,32 +514,34 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun setupInviteView() {
-        inviteView.callback = this
+        mBinding.inviteView.callback = this
     }
 
     private fun setupJumpToReadMarkerView() {
-        jumpToReadMarkerView.callback = this
+        mBinding.jumpToReadMarkerView.callback = this
     }
 
     private fun setupJumpToBottomView() {
-        jumpToBottomView.visibility = View.INVISIBLE
-        jumpToBottomView.debouncedClicks {
-            viewModel.handle(RoomDetailAction.ExitTrackingUnreadMessagesState)
+        mBinding.apply {
             jumpToBottomView.visibility = View.INVISIBLE
-            if (!viewModel.timeline.isLive) {
-                scrollOnNewMessageCallback.forceScrollOnNextUpdate()
-                viewModel.timeline.restartWithEventId(null)
-            } else {
-                layoutManager.scrollToPosition(0)
+            jumpToBottomView.debouncedClicks {
+                viewModel.handle(RoomDetailAction.ExitTrackingUnreadMessagesState)
+                jumpToBottomView.visibility = View.INVISIBLE
+                if (!viewModel.timeline.isLive) {
+                    scrollOnNewMessageCallback.forceScrollOnNextUpdate()
+                    viewModel.timeline.restartWithEventId(null)
+                } else {
+                    layoutManager.scrollToPosition(0)
+                }
             }
-        }
 
-        jumpToBottomViewVisibilityManager = JumpToBottomViewVisibilityManager(
-            jumpToBottomView,
-            debouncer,
-            recyclerView,
-            layoutManager
-        )
+            jumpToBottomViewVisibilityManager = JumpToBottomViewVisibilityManager(
+                jumpToBottomView,
+                debouncer,
+                recyclerView,
+                layoutManager
+            )
+        }
     }
 
     private fun setupComposer() {
@@ -473,7 +549,7 @@ class RoomDetailFragment : BaseFragment(),
 
         observerUserTyping()
 
-        composerLayout.callback = object : TextComposerView.Callback {
+        mBinding.composerLayout.callback = object : TextComposerView.Callback {
             override fun onAddAttachment() {
 //                if (!::attachmentTypeSelector.isInitialized) {
 //                    attachmentTypeSelector = AttachmentTypeSelectorView(vectorBaseActivity, vectorBaseActivity.layoutInflater, this@RoomDetailFragment)
@@ -488,14 +564,14 @@ class RoomDetailFragment : BaseFragment(),
                 }
                 if (text.isNotBlank()) {
                     // We collapse ASAP, if not there will be a slight anoying delay
-                    composerLayout.collapse(true)
+                    mBinding.composerLayout.collapse(true)
                     lockSendButton = true
                     viewModel.handle(RoomDetailAction.SendMessage(text, chatPreferences.isMarkdownEnabled()))
                 }
             }
 
             override fun onCloseRelatedMessage() {
-                viewModel.handle(RoomDetailAction.EnterRegularMode(composerLayout.text.toString(), false))
+                viewModel.handle(RoomDetailAction.EnterRegularMode(mBinding.composerLayout.text.toString(), false))
             }
 
             override fun onRichContentSelected(contentUri: Uri): Boolean {
@@ -514,7 +590,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun observerUserTyping() {
-        composerLayout.composerEditText.textChanges()
+        mBinding.composerLayout.composerEditText.textChanges()
             .skipInitialValue()
             .debounce(300, TimeUnit.MILLISECONDS)
             .map { it.isNotEmpty() }
@@ -526,6 +602,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun setupRecyclerView() {
+        mBinding.apply{
         timelineEventController.callback = this
         timelineEventController.timeline = viewModel.timeline
 
@@ -554,7 +631,12 @@ class RoomDetailFragment : BaseFragment(),
                 override fun performQuickReplyOnHolder(model: EpoxyModel<*>) {
                     (model as? AbsMessageItem)?.attributes?.informationData?.let {
                         val eventId = it.eventId
-                        viewModel.handle(RoomDetailAction.EnterReplyMode(eventId, composerLayout.composerEditText.text.toString()))
+                        viewModel.handle(
+                            RoomDetailAction.EnterReplyMode(
+                                eventId,
+                                composerLayout.composerEditText.text.toString()
+                            )
+                        )
                     }
                 }
 
@@ -571,40 +653,48 @@ class RoomDetailFragment : BaseFragment(),
                         is MessageTextItem -> {
                             return (model as AbsMessageItem).attributes.informationData.sendState == SendState.SYNCED
                         }
-                        else               -> false
+
+                        else -> false
                     }
                 }
             }
-            val swipeCallback = RoomMessageTouchHelperCallback(requireContext(), R.drawable.ic_reply, quickReplyHandler)
+            val swipeCallback = RoomMessageTouchHelperCallback(
+                requireContext(),
+                R.drawable.ic_reply,
+                quickReplyHandler
+            )
             val touchHelper = ItemTouchHelper(swipeCallback)
             touchHelper.attachToRecyclerView(recyclerView)
+        }
         }
     }
 
     private fun renderToolbar(roomSummary: RoomSummary?, typingMessage: String?) {
-        roomToolbarBackButton.setOnClickListener {
-            activity?.finish()
-        }
+        mBinding.apply {
+            roomToolbarBackButton.setOnClickListener {
+                activity?.finish()
+            }
 
-        roomToolbarAvatarImageView.setOnClickListener {
-            activity?.finish()
-        }
+            roomToolbarAvatarImageView.setOnClickListener {
+                activity?.finish()
+            }
 
-        if (roomSummary == null) {
-            roomToolbarContentView.isClickable = false
-        } else {
-            roomToolbarContentView.isClickable = roomSummary.membership == Membership.JOIN
-            roomToolbarTitleView.text = roomSummary.displayName
-            avatarRenderer.render(roomSummary.toMatrixItem(), roomToolbarAvatarImageView)
+            if (roomSummary == null) {
+                roomToolbarContentView.isClickable = false
+            } else {
+                roomToolbarContentView.isClickable = roomSummary.membership == Membership.JOIN
+                roomToolbarTitleView.text = roomSummary.displayName
+                avatarRenderer.render(roomSummary.toMatrixItem(), roomToolbarAvatarImageView)
 
-            renderSubTitle(typingMessage, roomSummary.topic)
+                renderSubTitle(typingMessage, roomSummary.topic)
+            }
         }
     }
 
     private fun renderSubTitle(typingMessage: String?, topic: String) {
         // TODO Temporary place to put typing data
         val subtitle = typingMessage?.takeIf { it.isNotBlank() } ?: topic
-        roomToolbarSubtitleView.apply {
+        mBinding.roomToolbarSubtitleView.apply {
             setTextOrHide(subtitle)
         }
     }
@@ -709,8 +799,10 @@ class RoomDetailFragment : BaseFragment(),
             mediaData = mediaData,
             view = view
         ) { pairs ->
-            pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
-            pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+            mBinding.apply {
+                pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
+                pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+            }
         }
     }
 
@@ -725,13 +817,15 @@ class RoomDetailFragment : BaseFragment(),
             mediaData = mediaData,
             view = view
         ) { pairs ->
-            pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
-            pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+            mBinding.apply {
+                pairs.add(Pair(roomToolbar, ViewCompat.getTransitionName(roomToolbar) ?: ""))
+                pairs.add(Pair(composerLayout, ViewCompat.getTransitionName(composerLayout) ?: ""))
+            }
         }
     }
 
     private fun updateJumpToReadMarkerViewVisibility() {
-        jumpToReadMarkerView?.post {
+        mBinding.jumpToReadMarkerView?.post {
             withState(viewModel) {
                 val showJumpToUnreadBanner = when (it.unreadState) {
                     UnreadState.Unknown,
@@ -751,7 +845,7 @@ class RoomDetailFragment : BaseFragment(),
                         }
                     }
                 }
-                jumpToReadMarkerView?.isVisible = showJumpToUnreadBanner
+                mBinding.jumpToReadMarkerView?.isVisible = showJumpToUnreadBanner
             }
         }
     }
@@ -763,7 +857,8 @@ class RoomDetailFragment : BaseFragment(),
      */
     @SuppressLint("SetTextI18n")
     private fun insertUserDisplayNameInTextEditor(userId: String) {
-        val startToCompose = composerLayout.composerEditText.text.isNullOrBlank()
+        mBinding.apply {
+            val startToCompose = composerLayout.composerEditText.text.isNullOrBlank()
 
 //        if (startToCompose
 //            && userId == session.myUserId) {
@@ -778,7 +873,8 @@ class RoomDetailFragment : BaseFragment(),
                     buildSpannedString {
                         append(displayName)
                         setSpan(
-                            PillImageSpan(glideRequests,
+                            PillImageSpan(
+                                glideRequests,
                                 avatarRenderer,
                                 requireContext(),
                                 MatrixItem.UserItem(userId, displayName, roomMember?.avatarUrl)
@@ -797,17 +893,23 @@ class RoomDetailFragment : BaseFragment(),
                             }
                             composerLayout.composerEditText.append(pill)
                         } else {
-                            composerLayout.composerEditText.text?.insert(composerLayout.composerEditText.selectionStart, pill)
+                            composerLayout.composerEditText.text?.insert(
+                                composerLayout.composerEditText.selectionStart,
+                                pill
+                            )
                         }
                     }
                 }
+        }
 //        }
         focusComposerAndShowKeyboard()
     }
 
     private fun focusComposerAndShowKeyboard() {
-        if (composerLayout.isVisible) {
-            composerLayout.composerEditText.showKeyboard(andRequestFocus = true)
+        mBinding.apply {
+            if (composerLayout.isVisible) {
+                composerLayout.composerEditText.showKeyboard(andRequestFocus = true)
+            }
         }
     }
 
@@ -839,7 +941,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     override fun onJumpToReadMarkerClicked() = withState(viewModel) {
-        jumpToReadMarkerView.isVisible = false
+        mBinding..jumpToReadMarkerView.isVisible = false
         if (it.unreadState is UnreadState.HasUnread) {
             viewModel.handle(RoomDetailAction.NavigateToEvent(it.unreadState.firstUnreadEventId, false))
         }
@@ -861,7 +963,7 @@ class RoomDetailFragment : BaseFragment(),
         if (scrollPosition == null) {
             scrollOnHighlightedEventCallback.scheduleScrollTo(action.eventId)
         } else {
-            recyclerView.stopScroll()
+            mBinding.recyclerView.stopScroll()
             layoutManager.scrollToPosition(scrollPosition)
         }
     }
@@ -873,12 +975,16 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun updateComposerText(text: String) {
-        // Do not update if this is the same text to avoid the cursor to move
-        if (text != composerLayout.composerEditText.text.toString()) {
-            // Ignore update to avoid saving a draft
-            composerLayout.composerEditText.setText(text)
-            composerLayout.composerEditText.setSelection(composerLayout.composerEditText.text?.length
-                ?: 0)
+        mBinding.apply {
+            // Do not update if this is the same text to avoid the cursor to move
+            if (text != composerLayout.composerEditText.text.toString()) {
+                // Ignore update to avoid saving a draft
+                composerLayout.composerEditText.setText(text)
+                composerLayout.composerEditText.setSelection(
+                    composerLayout.composerEditText.text?.length
+                        ?: 0
+                )
+            }
         }
     }
 
@@ -890,7 +996,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_as_spam_title)
                             .setMessage(R.string.content_reported_as_spam_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -901,7 +1007,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_as_inappropriate_title)
                             .setMessage(R.string.content_reported_as_inappropriate_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -912,7 +1018,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_title)
                             .setMessage(R.string.content_reported_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -967,9 +1073,9 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun displayRoomDetailActionFailure(result: RoomDetailFragmentViewEvents.ActionFailure) {
         AlertDialog.Builder(requireActivity())
-            .setTitle(R.string.dialog_title_error)
+            .setTitle(org.navgurukul.commonui.R.string.dialog_title_error)
             .setMessage(errorFormatter.toHumanReadable(result.throwable))
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 
@@ -1007,7 +1113,7 @@ class RoomDetailFragment : BaseFragment(),
         AlertDialog.Builder(requireActivity())
             .setTitle(R.string.command_error)
             .setMessage(message)
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 
@@ -1021,7 +1127,7 @@ class RoomDetailFragment : BaseFragment(),
         }
         AlertDialog.Builder(requireActivity())
             .setMessage(msgId)
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 
@@ -1035,7 +1141,7 @@ class RoomDetailFragment : BaseFragment(),
 
         notificationDrawerManager.setCurrentRoom(null)
 
-        viewModel.handle(RoomDetailAction.SaveDraft(composerLayout.composerEditText.text.toString()))
+        viewModel.handle(RoomDetailAction.SaveDraft(mBinding.composerLayout.composerEditText.text.toString()))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1065,7 +1171,7 @@ class RoomDetailFragment : BaseFragment(),
         timelineEventController.removeModelBuildListener(modelBuildListener)
         modelBuildListener = null
         debouncer.cancelAll()
-        recyclerView.cleanup()
+        mBinding.recyclerView.cleanup()
 
         super.onDestroyView()
     }

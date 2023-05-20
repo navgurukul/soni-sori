@@ -30,7 +30,7 @@ abstract class BaseFragment : Fragment() {
     //TODO remove with custom progress dialog
     private var progress: ProgressDialog? = null
 
-    final override fun onCreateView(
+    open override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

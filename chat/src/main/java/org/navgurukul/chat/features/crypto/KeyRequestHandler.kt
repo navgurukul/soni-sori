@@ -159,7 +159,7 @@ class KeyRequestHandler (private val context: Context, private val popupAlertMan
                 R.drawable.ic_key
         )
 
-        alert.colorRes = R.color.notification_accent_color
+        alert.colorRes = org.navgurukul.commonui.R.color.notification_accent_color
 
         val mappingKey = keyForMap(userId, deviceId)
         alert.dismissedAction = Runnable {

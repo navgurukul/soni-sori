@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import org.navgurukul.learn.R.*
+import org.merakilearn.learn.R.*
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionViewState
-import org.navgurukul.learn.databinding.ItemMcqOptionBinding
+import org.merakilearn.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):

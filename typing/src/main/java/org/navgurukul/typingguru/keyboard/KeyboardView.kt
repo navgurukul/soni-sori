@@ -74,7 +74,7 @@ class KeyboardView @JvmOverloads constructor(
 
     private val ridgeColor = ContextCompat.getColor(context, R.color.accuracy_color)
     private val keyBackgroundColorNeutral = ContextCompat.getColor(context, R.color.key_background)
-    private val keyBackgroundColorIncorrect = context.getThemedColor(commonR.attr.colorError)
+    private val keyBackgroundColorIncorrect = context.getThemedColor(com.google.android.material.R.attr.colorError)
     private val keyBackgroundColorActive = ContextCompat.getColor(context, R.color.current_text)
 
     private val leftHandRestingDrawable =

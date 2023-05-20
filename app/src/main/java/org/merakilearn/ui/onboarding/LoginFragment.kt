@@ -50,9 +50,9 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         activity?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                it.window.statusBarColor = ContextCompat.getColor(it, R.color.colorWhite)
+                it.window.statusBarColor = ContextCompat.getColor(it, org.merakilearn.learn.R.color.colorWhite)
             } else {
-                it.window.statusBarColor = ContextCompat.getColor(it, R.color.primaryDarkColor)
+                it.window.statusBarColor = ContextCompat.getColor(it, org.navgurukul.commonui.R.color.primaryDarkColor)
             }
         }
     }

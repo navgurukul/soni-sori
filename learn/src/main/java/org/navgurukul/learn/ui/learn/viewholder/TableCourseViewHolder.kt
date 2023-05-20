@@ -4,7 +4,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.TableBaseCourseContent
 import org.navgurukul.learn.courses.db.models.TableColumn
 import org.navgurukul.commonui.platform.ListSpacingDecoration

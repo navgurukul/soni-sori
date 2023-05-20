@@ -35,7 +35,7 @@ fun TextView.setTextOrHide(newText: CharSequence?, hideWhenBlank: Boolean = true
  */
 fun TextView.setTextWithColoredPart(@StringRes fullTextRes: Int,
                                     @StringRes coloredTextRes: Int,
-                                    @AttrRes colorAttribute: Int = R.attr.colorAccent,
+                                    @AttrRes colorAttribute: Int = com.google.android.material.R.attr.colorAccent,
                                     underline: Boolean = false) {
     val coloredPart = resources.getString(coloredTextRes)
     // Insert colored part into the full text

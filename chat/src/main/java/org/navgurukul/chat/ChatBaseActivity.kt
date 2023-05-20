@@ -18,7 +18,7 @@ open class ChatBaseActivity: AppCompatActivity() {
     private val uiDisposables = CompositeDisposable()
 
     @AttrRes
-    open fun getMenuTint() = R.attr.colorAccent
+    open fun getMenuTint() = com.google.android.material.R.attr.colorAccent
 
     @MenuRes
     open fun getMenuRes() = -1

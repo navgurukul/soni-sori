@@ -26,6 +26,8 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.learn.R
 import org.merakilearn.learn.databinding.FragmentClassBinding
+import org.merakilearn.learn.databinding.LayoutClassinfoDialogBinding
+import org.merakilearn.learn.databinding.LayoutRevisionDialogBinding
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
@@ -322,11 +324,11 @@ class ClassFragment: Fragment() {
 
 
     private fun showEnrolDialog(batch: Batch) {
-        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
-        val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
-        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val alertLayout: LayoutClassinfoDialogBinding =  LayoutClassinfoDialogBinding.inflate(getLayoutInflater(),null, false)
+        val btnAccept: View = alertLayout.btnEnroll
+        val btnBack: View = alertLayout.btnback
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
-        builder.setView(alertLayout)
+        builder.setView(alertLayout.root)
         builder.setCancelable(true)
         val btAlertDialog: AlertDialog? = builder.create()
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -334,7 +336,7 @@ class ClassFragment: Fragment() {
 
         val tvClassTitle = alertLayout.tvClassTitle
         tvClassTitle.text = batch.title
-        val tvBatchDate = alertLayout.tv_Batch_Date
+        val tvBatchDate = alertLayout.tvBatchDate
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
@@ -349,17 +351,17 @@ class ClassFragment: Fragment() {
     }
 
     private fun showRevisionEnrolDialog(revisionClass: CourseClassContent) {
-        val alertLayout: View =  getLayoutInflater().inflate(R.layout.layout_revision_dialog, null)
-        val btnEnroll: View = alertLayout.findViewById(R.id.btnReviEnroll)
-        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val alertLayout: LayoutRevisionDialogBinding =  LayoutRevisionDialogBinding.inflate(getLayoutInflater(),null, false)
+        val btnEnroll: View = alertLayout.btnReviEnroll
+        val btnBack: View = alertLayout.btnback
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
-        builder.setView(alertLayout)
+        builder.setView(alertLayout.root)
         builder.setCancelable(true)
         val btAlertDialog: AlertDialog? = builder.create()
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val tvBatchDate = alertLayout.tv_revision_Date
+        val tvBatchDate = alertLayout.tvRevisionDate
         tvBatchDate.text = revisionClass.timeDateRange()
         val tvFacilitatorName = alertLayout.tvFacilatorName
         tvFacilitatorName.text = "Revision Class by "+ revisionClass.facilitator?.name
@@ -378,6 +380,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun showDropoutDialog(revisionClass: CourseClassContent){
+
         val alertLayout:View = getLayoutInflater().inflate(R.layout.dialog_dropout, null)
         val btnStay: View = alertLayout.findViewById(R.id.btnStay)
         val btnDroupOut: View = alertLayout.findViewById(R.id.btnDroupOut)

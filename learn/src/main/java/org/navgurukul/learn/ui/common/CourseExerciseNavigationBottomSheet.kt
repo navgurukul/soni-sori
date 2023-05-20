@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 
 class CourseExerciseNavigationBottomSheet
 @JvmOverloads constructor(

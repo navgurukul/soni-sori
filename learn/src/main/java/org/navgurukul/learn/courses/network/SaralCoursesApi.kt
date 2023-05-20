@@ -1,7 +1,7 @@
 package org.navgurukul.learn.courses.network
 
 import okhttp3.ResponseBody
-import org.navgurukul.learn.BuildConfig
+import org.merakilearn.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
 import retrofit2.http.*

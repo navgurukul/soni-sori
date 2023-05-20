@@ -78,7 +78,7 @@ class PillImageSpan(private val glideRequests: GlideRequests,
     // Private methods *****************************************************************************
 
     private fun createChipDrawable(): ChipDrawable {
-        val textPadding = context.resources.getDimension(R.dimen.spacing_1x)
+        val textPadding = context.resources.getDimension(org.navgurukul.commonui.R.dimen.spacing_1x)
         val icon = try {
             avatarRenderer.getCachedDrawable(glideRequests, matrixItem)
         } catch (exception: Exception) {

@@ -3,7 +3,7 @@ package org.navgurukul.learn.ui.learn.viewholder
 import android.view.View
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.BlockQuoteBaseCourseContent
 
 class BlockQuoteCourseViewHolder(itemView: View) :

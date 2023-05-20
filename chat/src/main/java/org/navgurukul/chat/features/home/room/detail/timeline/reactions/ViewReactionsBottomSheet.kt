@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.load.model.DataUrlLoader
 import com.google.android.gms.common.util.DataUtils
@@ -46,7 +45,7 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_generic_list_with_title, container, false)
+        mBinding = BottomSheetGenericListBinding.inflate(inflater, container, false)
         return mBinding.root
     }
 

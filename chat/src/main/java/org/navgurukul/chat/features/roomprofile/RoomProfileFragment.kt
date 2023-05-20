@@ -22,6 +22,7 @@ import org.navgurukul.chat.core.animations.MerakiItemAppBarStateChangeListener
 import org.navgurukul.chat.core.extensions.*
 import org.navgurukul.chat.databinding.FragmentRoomDetailBinding
 import org.navgurukul.chat.databinding.FragmentRoomProfileBinding
+import org.navgurukul.chat.databinding.ViewStubRoomProfileHeaderBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.list.actions.RoomListActionsArgs
 import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsBottomSheet
@@ -49,17 +50,15 @@ class RoomProfileFragment: BaseFragment(),
 
     private var appBarStateChangeListener: AppBarStateChangeListener? = null
     private lateinit var binding: FragmentRoomProfileBinding
+    private lateinit var viewStub: ViewStubRoomProfileHeaderBinding
 
     override fun getLayoutResId() = R.layout.fragment_room_profile
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRoomProfileBinding.bind(view)
+        binding = FragmentRoomProfileBinding.inflate(layoutInflater, null, false)
         binding.apply {
-            val headerView = profileHeaderView.let {
-                it.layoutResource = R.layout.view_stub_room_profile_header
-                it.inflate()
-            }
+            viewStub = ViewStubRoomProfileHeaderBinding.inflate(profileHeaderView.layoutInflater)
         }
 
         setupToolbar(binding.profileToolbar)
@@ -86,7 +85,7 @@ class RoomProfileFragment: BaseFragment(),
     }
 
     private fun setupLongClicks() {
-        binding.apply {
+        viewStub.apply {
             roomProfileNameView.copyOnLongClick()
             roomProfileAliasView.copyOnLongClick()
         }
@@ -94,7 +93,7 @@ class RoomProfileFragment: BaseFragment(),
 
     private fun setupRecyclerView() {
         roomProfileController.callback = this
-        profileRecyclerView.configureWith(roomProfileController, hasFixedSize = true, disableItemAnimation = true)
+        binding.profileRecyclerView.configureWith(roomProfileController, hasFixedSize = true, disableItemAnimation = true)
     }
 
     override fun onDestroyView() {
@@ -110,18 +109,20 @@ class RoomProfileFragment: BaseFragment(),
                 Timber.w("The room has been left")
                 activity?.finish()
             } else {
-                roomProfileNameView.text = it.displayName
-                profileToolbarTitleView.text = it.displayName
-                roomProfileAliasView.setTextOrHide(it.canonicalAlias)
-                val matrixItem = it.toMatrixItem()
-                avatarRenderer.render(matrixItem, roomProfileAvatarView)
-                avatarRenderer.render(matrixItem, profileToolbarAvatarImageView)
+                viewStub.apply {
+                    roomProfileNameView.text = it.displayName
+                    binding.profileToolbarTitleView.text = it.displayName
+                    roomProfileAliasView.setTextOrHide(it.canonicalAlias)
+                    val matrixItem = it.toMatrixItem()
+                    avatarRenderer.render(matrixItem, roomProfileAvatarView)
+                    avatarRenderer.render(matrixItem, binding.profileToolbarAvatarImageView)
 
-                roomProfileAvatarView.setOnClickListener { view ->
-                    onAvatarClicked(view, matrixItem)
-                }
-                binding.profileToolbarAvatarImageView.setOnClickListener { view ->
-                    onAvatarClicked(view, matrixItem)
+                    roomProfileAvatarView.setOnClickListener { view ->
+                        onAvatarClicked(view, matrixItem)
+                    }
+                    binding.profileToolbarAvatarImageView.setOnClickListener { view ->
+                        onAvatarClicked(view, matrixItem)
+                    }
                 }
             }
         }

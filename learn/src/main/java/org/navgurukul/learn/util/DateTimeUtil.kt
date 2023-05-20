@@ -1,8 +1,8 @@
 package org.navgurukul.learn.util
 
 import android.text.format.DateUtils
+import org.merakilearn.learn.R
 import org.navgurukul.commonui.resources.StringProvider
-import org.navgurukul.learn.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit

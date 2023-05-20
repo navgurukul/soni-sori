@@ -4,7 +4,7 @@ import android.graphics.Paint
 import android.view.View
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
 

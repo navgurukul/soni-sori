@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.timeDateRange
-import org.navgurukul.learn.databinding.ItemRevisionClassBinding
+import org.merakilearn.learn.databinding.ItemRevisionClassBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class RevisionClassAdapter(val callback: (CourseClassContent) -> Unit) :

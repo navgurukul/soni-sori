@@ -50,7 +50,7 @@ abstract class GenericFooterItem : MerakiEpoxyModel<GenericFooterItem.Holder>() 
         if (textColor != null) {
             holder.text.setTextColor(textColor!!)
         } else {
-            holder.text.setTextColor(ThemeUtils.getColor(holder.view.context, R.attr.textSecondary))
+            holder.text.setTextColor(ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textSecondary))
         }
 
         holder.view.setOnClickListener {

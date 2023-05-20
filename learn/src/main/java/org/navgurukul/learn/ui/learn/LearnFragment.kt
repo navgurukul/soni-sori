@@ -44,6 +44,8 @@ import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.learn.R
 import org.merakilearn.learn.databinding.FragmentLearnBinding
+import org.merakilearn.learn.databinding.GeneratedCertificateBinding
+import org.merakilearn.learn.databinding.LayoutClassinfoDialogBinding
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.courses.db.models.ClassType
@@ -222,12 +224,12 @@ class LearnFragment : Fragment() {
         mBinding.certificate.apply {
             itemCertificate.setOnClickListener {
                 val imageView: ImageView = ivCertificateLogo
-                val textView : TextView = lockedStatus
+                val textView: TextView = lockedStatus
                 if (completedPortion == 100) {
                     imageView.setImageResource(R.drawable.ic_certificate)
                     textView.isVisible = false
                     val dialog = BottomSheetDialog(requireContext())
-                    val view = layoutInflater.inflate(R.layout.generated_certificate, null)
+                    val view = GeneratedCertificateBinding.inflate(layoutInflater, null, false)
                     pdfView = view.idPDFView
                     view.tvDownload.setOnClickListener {
                         generatePDF(pdfUrl)
@@ -241,20 +243,18 @@ class LearnFragment : Fragment() {
                     //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
                     println("required completed portion in fragment $completedPortion")
                     dialog.setCancelable(true)
-                    dialog.setContentView(view)
+                    dialog.setContentView(view.root)
                     dialog.show()
                 } else {
                     textView.isVisible = true
                     imageView.setImageResource(R.drawable.grey_icon_certificate)
                     println("required completed portion in fragment $completedPortion")
-                    Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG)
+                        .show()
                 }
 
             }
         }
-
-        }
-
     }
 
     private fun generatePDF(pdfUrl: String) {
@@ -354,15 +354,17 @@ class LearnFragment : Fragment() {
     }
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text = "${batch.sanitizedType()} + :"
-        tvTitleBatch.text = batch.title
-        tvBatchDate.text = batch.dateRange()
-        tvText.text = "Can't start on ${batch.startTime?.toDate()}"
-        tvBtnEnroll.setOnClickListener {
-            showEnrolDialog(batch)
-        }
-        more_classe.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+        mBinding.batchCard.apply {
+            tvType.text = "${batch.sanitizedType()} + :"
+            tvTitleBatch.text = batch.title
+            tvBatchDate.text = batch.dateRange()
+            tvText.text = "Can't start on ${batch.startTime?.toDate()}"
+            tvBtnEnroll.setOnClickListener {
+                showEnrolDialog(batch)
+            }
+            moreClasse.setOnClickListener {
+                viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+            }
         }
     }
 
@@ -374,11 +376,11 @@ class LearnFragment : Fragment() {
     }
 
     private fun showEnrolDialog(batch: Batch) {
-        val alertLayout: View = getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
-        val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
-        val btnBack: View = alertLayout.findViewById(R.id.btnback)
+        val alertLayout: LayoutClassinfoDialogBinding = LayoutClassinfoDialogBinding.inflate(getLayoutInflater(),null, false)
+        val btnAccept: View = alertLayout.btnEnroll
+        val btnBack: View = alertLayout.btnback
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
-        builder.setView(alertLayout)
+        builder.setView(alertLayout.root)
         builder.setCancelable(true)
         val btAlertDialog: AlertDialog? = builder.create()
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -386,7 +388,7 @@ class LearnFragment : Fragment() {
 
         val tvClassTitle = alertLayout.tvClassTitle
         tvClassTitle.text = batch.title
-        val tvBatchDate = alertLayout.tv_Batch_Date
+        val tvBatchDate = alertLayout.tvBatchDate
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
@@ -466,8 +468,8 @@ class LearnFragment : Fragment() {
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        mBinding.recyclerViewUpcoming.layoutManager = layoutManager
-        mBinding.recyclerViewUpcoming.adapter = mClassAdapter
+        mBinding.upcoming.recyclerViewUpcoming.layoutManager = layoutManager
+        mBinding.upcoming.recyclerViewUpcoming.adapter = mClassAdapter
 
         mClassAdapter.submitList(upcomingClassList)
     }

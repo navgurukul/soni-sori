@@ -3,7 +3,7 @@ package org.navgurukul.learn.util
 import android.content.Context
 import android.net.Uri
 import androidx.preference.PreferenceManager
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 
 object BrowserRedirectHelper {
 

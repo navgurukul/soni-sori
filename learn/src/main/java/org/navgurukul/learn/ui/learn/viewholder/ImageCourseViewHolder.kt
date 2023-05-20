@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.RequestManager
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.ImageBaseCourseContent
 
 

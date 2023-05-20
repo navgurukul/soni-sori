@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
-import org.navgurukul.learn.databinding.ItemBatchBinding
-import org.navgurukul.learn.databinding.ItemBatchExerciseBinding
+import org.merakilearn.learn.databinding.ItemBatchBinding
+import org.merakilearn.learn.databinding.ItemBatchExerciseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class BatchSelectionExerciseAdapter(val callback: (Batch) -> Unit):

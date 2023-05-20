@@ -8,7 +8,7 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.displayableLanguage
 import org.navgurukul.learn.courses.db.models.sanitizedType
@@ -42,13 +42,13 @@ class EnrollViewModel(
 
                 val durationToClassStart = (it.startTime.time - Date().time)
                 var primaryActionBackgroundColor =
-                    colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                    colorProvider.getColorFromAttribute(androidx.appcompat.R.attr.colorPrimary)
                 val primaryAction = if (mClass.isEnrolled) {
                     if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_type_class, it.sanitizedType())
                     } else {
                         primaryActionBackgroundColor =
-                            colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
+                            colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.colorBackgroundDisabled)
                         stringProvider.getString(
                             R.string.starts_in,
                             durationToClassStart.toDisplayableInterval(stringProvider)
@@ -92,7 +92,7 @@ class EnrollViewModel(
                         isLoading = false,
                         primaryAction = stringProvider.getString(R.string.enroll_to_class),
                         menuId = null,
-                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(androidx.appcompat.R.attr.colorPrimary)
                     )
                 }
                 _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
@@ -131,12 +131,12 @@ class EnrollViewModel(
 
                     val durationToClassStart = (classes.startTime.time - Date().time)
                     var primaryActionBackgroundColor =
-                        colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        colorProvider.getColorFromAttribute(androidx.appcompat.R.attr.colorPrimary)
                     val primaryAction = if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_type_class, mClass.sanitizedType())
                     } else {
                         primaryActionBackgroundColor =
-                            colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
+                            colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.colorBackgroundDisabled)
                         stringProvider.getString(
                             R.string.starts_in,
                             durationToClassStart.toDisplayableInterval(stringProvider)

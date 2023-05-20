@@ -18,12 +18,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
+import org.merakilearn.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.displayableLanguage
 import org.navgurukul.learn.courses.db.models.sanitizedType
 import org.navgurukul.learn.courses.db.models.timeDateRange
-import org.navgurukul.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.ui.common.toast
 import java.util.*
 
@@ -69,6 +69,8 @@ class ClassActivity: AppCompatActivity(){
                         Uri.parse(it.link)
                     )
                 )
+
+                else -> { }
             }
         }
 
@@ -92,7 +94,7 @@ class ClassActivity: AppCompatActivity(){
         supportActionBar?.let {
             it.setDisplayShowTitleEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
+            it.setHomeAsUpIndicator(org.navgurukul.commonui.R.drawable.ic_arrow_left)
         }
     }
 

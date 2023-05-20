@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.*
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.typeadapters.Converters
@@ -79,7 +79,7 @@ val repositoryModule = module {
 }
 
 val factoryModule = module{
-    single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
+    single { ColorProvider(ContextThemeWrapper(androidContext(), org.navgurukul.commonui.R.style.AppTheme)) }
 }
 
 val learnModules = arrayListOf(

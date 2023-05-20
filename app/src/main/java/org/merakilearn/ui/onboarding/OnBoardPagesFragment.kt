@@ -54,7 +54,7 @@ class OnBoardPagesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.on_board_pages_fragment, container, false)
+        mBinding = OnBoardPagesFragmentBinding.inflate(inflater, container, false)
         return mBinding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

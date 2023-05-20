@@ -8,7 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import com.google.android.material.button.MaterialButton
 import org.navgurukul.commonui.resources.ResourceResolver
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.BannerAction
 import org.navgurukul.learn.courses.db.models.BannerBaseCourseContent
 import org.navgurukul.learn.ui.common.MerakiButton

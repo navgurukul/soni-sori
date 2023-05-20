@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import org.navgurukul.learn.R
+import org.merakilearn.learn.R
 import org.navgurukul.learn.courses.db.models.CourseContents
 import org.navgurukul.learn.courses.db.models.CourseContentProgress
 import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.databinding.ItemCourseExerciseBinding
+import org.merakilearn.learn.databinding.ItemCourseExerciseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
