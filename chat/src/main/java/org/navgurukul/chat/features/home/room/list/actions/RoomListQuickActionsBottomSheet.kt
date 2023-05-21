@@ -58,7 +58,7 @@ class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bottomSheetRecyclerView.configureWith(
+        mBinding.bottomSheetRecyclerView.configureWith(
             roomListActionsEpoxyController,
             hasFixedSize = false,
             disableItemAnimation = true
@@ -71,7 +71,7 @@ class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     override fun onDestroyView() {
-        bottomSheetRecyclerView.cleanup()
+        mBinding.bottomSheetRecyclerView.cleanup()
         super.onDestroyView()
     }
 

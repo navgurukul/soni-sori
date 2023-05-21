@@ -28,7 +28,7 @@ class RoomMemberListController(
         fun onThreePidInviteClicked(event: Event)
     }
 
-    private val dividerColor = colorProvider.getColorFromAttribute(R.attr.borderColor)
+    private val dividerColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.borderColor)
 
     var callback: Callback? = null
 

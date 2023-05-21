@@ -45,6 +45,8 @@ class ViewReactionsEpoxyController(
                     }
                 }
             }
+
+            else -> {}
         }
     }
 

@@ -110,7 +110,7 @@ class NotificationUtils constructor(
             return
         }
 
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
 
         /**
          * Default notification importance: shows everywhere, makes noise, but does not visually
@@ -176,7 +176,7 @@ class NotificationUtils constructor(
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         val pi = PendingIntent.getActivity(context, 0, i, 0 or PendingIntent.FLAG_IMMUTABLE)
 
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
 
         val builder =
             NotificationCompat.Builder(context, LISTENING_FOR_EVENTS_NOTIFICATION_CHANNEL_ID)
@@ -204,7 +204,7 @@ class NotificationUtils constructor(
 
     fun buildDownloadFileNotification(uri: Uri, fileName: String, mimeType: String): Notification {
         return NotificationCompat.Builder(context, SILENT_NOTIFICATION_CHANNEL_ID)
-            .setGroup(stringProvider.getString(R.string.app_name))
+            .setGroup(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setSmallIcon(R.drawable.ic_download)
             .setContentText(stringProvider.getString(R.string.downloaded_file, fileName))
             .setAutoCancel(true)
@@ -235,10 +235,10 @@ class NotificationUtils constructor(
         lastMessageTimestamp: Long,
         senderDisplayNameForReplyCompat: String?,
                                       tickerText: String): Notification {
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
         val openRoomIntent = buildOpenRoomIntent(roomInfo.roomId)
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = org.navgurukul.commonui.R.drawable.ic_status_bar
 
         val channelID =
             if (roomInfo.shouldBing) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
@@ -265,7 +265,7 @@ class NotificationUtils constructor(
             // Auto-bundling is enabled for 4 or more notifications on API 24+ (N+)
             // devices and all Wear devices. But we want a custom grouping, so we specify the groupID
             // TODO Group should be current user display name
-            .setGroup(stringProvider.getString(R.string.app_name))
+            .setGroup(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
 
             // In order to avoid notification making sound twice (due to the summary notification)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
@@ -347,17 +347,17 @@ class NotificationUtils constructor(
     fun buildRoomInvitationNotification(
         inviteNotifiableEvent: InviteNotifiableEvent,
                                         matrixId: String): Notification {
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = org.navgurukul.commonui.R.drawable.ic_status_bar
 
         val channelID =
             if (inviteNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
         return NotificationCompat.Builder(context, channelID)
-            .setContentTitle(stringProvider.getString(R.string.app_name))
+            .setContentTitle(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setContentText(inviteNotifiableEvent.description)
-            .setGroup(stringProvider.getString(R.string.app_name))
+            .setGroup(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(smallIcon)
             .setColor(accentColor)
@@ -374,7 +374,7 @@ class NotificationUtils constructor(
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
                 addAction(
-                    R.drawable.ic_close,
+                    org.navgurukul.commonui.R.drawable.ic_close,
                     stringProvider.getString(R.string.reject),
                     rejectIntentPendingIntent)
 
@@ -417,17 +417,17 @@ class NotificationUtils constructor(
     fun buildSimpleEventNotification(
         simpleNotifiableEvent: SimpleNotifiableEvent,
                                      matrixId: String): Notification {
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_status_bar
+        val smallIcon = org.navgurukul.commonui.R.drawable.ic_status_bar
 
         val channelID =
             if (simpleNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
         return NotificationCompat.Builder(context, channelID)
-            .setContentTitle(stringProvider.getString(R.string.app_name))
+            .setContentTitle(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setContentText(simpleNotifiableEvent.description)
-            .setGroup(stringProvider.getString(R.string.app_name))
+            .setGroup(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(smallIcon)
             .setColor(accentColor)
@@ -522,20 +522,20 @@ class NotificationUtils constructor(
         compatSummary: String,
         noisy: Boolean,
                                      lastMessageTimestamp: Long): Notification {
-        val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
-        val smallIcon = R.drawable.ic_status_bar
+        val accentColor = ContextCompat.getColor(context, org.navgurukul.commonui.R.color.notification_accent_color)
+        val smallIcon = org.navgurukul.commonui.R.drawable.ic_status_bar
 
         return NotificationCompat.Builder(context,
             if (noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID)
             // used in compat < N, after summary is built based on child notifications
             .setWhen(lastMessageTimestamp)
             .setStyle(style)
-            .setContentTitle(stringProvider.getString(R.string.app_name))
+            .setContentTitle(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setSmallIcon(smallIcon)
             // set content text to support devices running API level < 24
             .setContentText(compatSummary)
-            .setGroup(stringProvider.getString(R.string.app_name))
+            .setGroup(stringProvider.getString(org.navgurukul.commonui.R.string.app_name))
             // set this notification as the summary for the group
             .setGroupSummary(true)
             .setColor(accentColor)

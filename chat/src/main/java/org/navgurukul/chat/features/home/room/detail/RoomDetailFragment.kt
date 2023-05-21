@@ -66,6 +66,7 @@ import org.navgurukul.chat.core.utils.*
 import org.navgurukul.chat.core.utils.createUIHandler
 import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.databinding.FragmentRoomDetailBinding
+import org.navgurukul.chat.databinding.MergeComposerLayoutBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
@@ -151,6 +152,7 @@ class RoomDetailFragment : BaseFragment(),
     private lateinit var jumpToBottomViewVisibilityManager: JumpToBottomViewVisibilityManager
 
     private var modelBuildListener: OnModelBuildFinishedListener? = null
+    private lateinit var  mergeBinding : MergeComposerLayoutBinding
 
     override fun getLayoutResId(): Int = R.layout.fragment_room_detail
 
@@ -161,7 +163,8 @@ class RoomDetailFragment : BaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_room_detail, container, false)
+        mBinding = FragmentRoomDetailBinding.inflate(inflater, container, false)
+        mergeBinding = view?.let { MergeComposerLayoutBinding.bind(it) }!!
         return mBinding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -338,7 +341,7 @@ class RoomDetailFragment : BaseFragment(),
             composerLayout.collapse()
 
             updateComposerText(text)
-            composerLayout.sendButton.contentDescription = getString(R.string.send)
+//            composerLayout.sendButton.contentDescription = getString(R.string.send)
         }
     }
 
@@ -487,11 +490,11 @@ class RoomDetailFragment : BaseFragment(),
                     iconRes
                 )
             )
-            sendButton.contentDescription = getString(descriptionRes)
+//            sendButton.contentDescription = getString(descriptionRes)
 
             avatarRenderer.render(
                 event.senderInfo.toMatrixItem(),
-                composerLayout.composerRelatedMessageAvatar
+            mBinding.composerLayout.composerRelatedMessageAvatar
             )
 
             expand {
@@ -590,22 +593,22 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun observerUserTyping() {
-        mBinding.composerLayout.composerEditText.textChanges()
-            .skipInitialValue()
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .map { it.isNotEmpty() }
-            .subscribe {
-                Timber.d("Typing: User is typing: $it")
-                viewModel.handle(RoomDetailAction.UserIsTyping(it))
-            }
-            .disposeOnDestroyView()
+//        mBinding.composerLayout.composerEditText.textChanges()
+//            .skipInitialValue()
+//            .debounce(300, TimeUnit.MILLISECONDS)
+//            .map { it.isNotEmpty() }
+//            .subscribe {
+//                Timber.d("Typing: User is typing: $it")
+//                viewModel.handle(RoomDetailAction.UserIsTyping(it))
+//            }
+//            .disposeOnDestroyView()
     }
 
     private fun setupRecyclerView() {
-        mBinding.apply{
+
         timelineEventController.callback = this
         timelineEventController.timeline = viewModel.timeline
-
+        mBinding.apply{
         recyclerView.trackItemsVisibilityChange()
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
 
@@ -624,7 +627,8 @@ class RoomDetailFragment : BaseFragment(),
         }
         timelineEventController.addModelBuildListener(modelBuildListener)
         recyclerView.adapter = timelineEventController.adapter
-        recyclerView.addItemDecoration(SpaceItemDecoration(recyclerView.context.resources.getDimensionPixelSize(R.dimen.spacing_2x), 0))
+        recyclerView.addItemDecoration(SpaceItemDecoration(recyclerView.context.resources.getDimensionPixelSize(
+            org.navgurukul.commonui.R.dimen.spacing_2x), 0))
 
         if (chatPreferences.swipeToReplyIsEnabled()) {
             val quickReplyHandler = object : RoomMessageTouchHelperCallback.QuickReplayHandler {
@@ -634,7 +638,7 @@ class RoomDetailFragment : BaseFragment(),
                         viewModel.handle(
                             RoomDetailAction.EnterReplyMode(
                                 eventId,
-                                composerLayout.composerEditText.text.toString()
+                                mergeBinding.composerEditText.text.toString()
                             )
                         )
                     }
@@ -858,7 +862,7 @@ class RoomDetailFragment : BaseFragment(),
     @SuppressLint("SetTextI18n")
     private fun insertUserDisplayNameInTextEditor(userId: String) {
         mBinding.apply {
-            val startToCompose = composerLayout.composerEditText.text.isNullOrBlank()
+            val startToCompose = mergeBinding.composerEditText.text.isNullOrBlank()
 
 //        if (startToCompose
 //            && userId == session.myUserId) {
@@ -879,7 +883,7 @@ class RoomDetailFragment : BaseFragment(),
                                 requireContext(),
                                 MatrixItem.UserItem(userId, displayName, roomMember?.avatarUrl)
                             )
-                                .also { it.bind(composerLayout.composerEditText) },
+                                .also { it.bind(mergeBinding.composerEditText) },
                             0,
                             displayName.length,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -889,12 +893,12 @@ class RoomDetailFragment : BaseFragment(),
                         if (startToCompose) {
                             if (displayName.startsWith("/")) {
                                 // Ensure displayName will not be interpreted as a Slash command
-                                composerLayout.composerEditText.append("\\")
+                                mergeBinding.composerEditText.append("\\")
                             }
-                            composerLayout.composerEditText.append(pill)
+                            mergeBinding.composerEditText.append(pill)
                         } else {
-                            composerLayout.composerEditText.text?.insert(
-                                composerLayout.composerEditText.selectionStart,
+                            mergeBinding.composerEditText.text?.insert(
+                                 mergeBinding.composerEditText.selectionStart,
                                 pill
                             )
                         }
@@ -908,7 +912,7 @@ class RoomDetailFragment : BaseFragment(),
     private fun focusComposerAndShowKeyboard() {
         mBinding.apply {
             if (composerLayout.isVisible) {
-                composerLayout.composerEditText.showKeyboard(andRequestFocus = true)
+                mergeBinding.composerEditText.showKeyboard(andRequestFocus = true)
             }
         }
     }
@@ -941,7 +945,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     override fun onJumpToReadMarkerClicked() = withState(viewModel) {
-        mBinding..jumpToReadMarkerView.isVisible = false
+        mBinding.jumpToReadMarkerView.isVisible = false
         if (it.unreadState is UnreadState.HasUnread) {
             viewModel.handle(RoomDetailAction.NavigateToEvent(it.unreadState.firstUnreadEventId, false))
         }
@@ -975,13 +979,13 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun updateComposerText(text: String) {
-        mBinding.apply {
+        mergeBinding.apply {
             // Do not update if this is the same text to avoid the cursor to move
-            if (text != composerLayout.composerEditText.text.toString()) {
+            if (text != composerEditText.text.toString()) {
                 // Ignore update to avoid saving a draft
-                composerLayout.composerEditText.setText(text)
-                composerLayout.composerEditText.setSelection(
-                    composerLayout.composerEditText.text?.length
+                composerEditText.setText(text)
+                composerEditText.setSelection(
+                   composerEditText.text?.length
                         ?: 0
                 )
             }
@@ -1051,6 +1055,7 @@ class RoomDetailFragment : BaseFragment(),
 //                    }
 //                }.show(parentFragmentManager, "REQ")
 //            }
+            else -> {}
         }
     }
 
@@ -1141,7 +1146,7 @@ class RoomDetailFragment : BaseFragment(),
 
         notificationDrawerManager.setCurrentRoom(null)
 
-        viewModel.handle(RoomDetailAction.SaveDraft(mBinding.composerLayout.composerEditText.text.toString()))
+        viewModel.handle(RoomDetailAction.SaveDraft(mergeBinding.composerEditText.text.toString()))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

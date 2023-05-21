@@ -32,13 +32,13 @@ sealed class EventSharedAction(@StringRes val titleRes: Int,
             EventSharedAction(R.string.reply, R.drawable.ic_reply)
 
     data class Share(val eventId: String, val messageContent: MessageWithAttachmentContent) :
-            EventSharedAction(R.string.share, R.drawable.ic_share)
+            EventSharedAction(R.string.share, org.navgurukul.commonui.R.drawable.ic_share)
 
     data class Save(val eventId: String, val messageContent: MessageWithAttachmentContent) :
             EventSharedAction(R.string.save, R.drawable.ic_material_save)
 
     data class Resend(val eventId: String) :
-            EventSharedAction(R.string.global_retry, R.drawable.ic_refresh_cw)
+            EventSharedAction(org.navgurukul.commonui.R.string.global_retry, R.drawable.ic_refresh_cw)
 
     data class Remove(val eventId: String) :
             EventSharedAction(R.string.remove, R.drawable.ic_trash, true)

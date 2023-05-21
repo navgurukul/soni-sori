@@ -85,7 +85,7 @@ class PillImageSpan(private val glideRequests: GlideRequests,
             avatarRenderer.getPlaceholderDrawable(context, matrixItem)
         }
 
-        return ChipDrawable.createFromResource(ContextThemeWrapper(context, R.style.AppTheme), R.xml.pill_view).apply {
+        return ChipDrawable.createFromResource(ContextThemeWrapper(context, org.navgurukul.commonui.R.style.AppTheme), R.xml.pill_view).apply {
             text = matrixItem.getBestName()
             textEndPadding = textPadding
             textStartPadding = textPadding

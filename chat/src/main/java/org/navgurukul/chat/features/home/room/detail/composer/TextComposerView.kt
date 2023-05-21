@@ -85,7 +85,7 @@ class TextComposerView @JvmOverloads constructor(
             }
 
             composerAvatarImageView = findViewById(R.id.composer_avatar_view)
-            setBackgroundColor(ThemeUtils.getColor(context, R.attr.colorPrimaryVariant))
+            setBackgroundColor(ThemeUtils.getColor(context, com.google.android.material.R.attr.colorPrimaryVariant))
         }
     }
 

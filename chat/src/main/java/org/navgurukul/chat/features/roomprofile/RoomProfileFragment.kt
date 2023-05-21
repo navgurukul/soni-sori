@@ -58,7 +58,7 @@ class RoomProfileFragment: BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRoomProfileBinding.inflate(layoutInflater, null, false)
         binding.apply {
-            viewStub = ViewStubRoomProfileHeaderBinding.inflate(profileHeaderView.layoutInflater)
+//            viewStub = ViewStubRoomProfileHeaderBinding.inflate(profileHeaderView.layoutInflater)
         }
 
         setupToolbar(binding.profileToolbar)

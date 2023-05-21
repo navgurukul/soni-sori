@@ -55,10 +55,10 @@ class EncryptedItemFactory(
                             ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
                     span(message) {
                         textStyle = "italic"
-                        textColor = colorProvider.getColorFromAttribute(R.attr.textSecondary)
+                        textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
                     }
                 } else {
-                    val colorFromAttribute = colorProvider.getColorFromAttribute(R.attr.textSecondary)
+                    val colorFromAttribute = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
                     if (cryptoError == null) {
                         span(stringProvider.getString(R.string.encrypted_message)) {
                             textStyle = "italic"

@@ -38,9 +38,9 @@ class BigImageViewerActivity : ChatBaseActivity() {
         if (uri == null) {
             finish()
         } else {
-            GlideApp.with(imageView)
+            GlideApp.with(mBinding.imageView)
                 .load(uri)
-                .into(imageView)
+                .into(mBinding.imageView)
         }
     }
 

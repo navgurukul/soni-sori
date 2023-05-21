@@ -53,7 +53,7 @@ class ViewReactionsBottomSheet : BottomSheetDialogFragment(),
         super.onViewCreated(view, savedInstanceState)
         val itemBottomsheetBinding = mBinding.bottomSheetRecyclerView
         mBinding.bottomSheetRecyclerView.configureWith(epoxyController, hasFixedSize = false, showDivider = true)
-        itemBottomsheetBinding.bottomSheetTitle.text = context?.getString(R.string.reactions)
+//        itemBottomsheetBinding.bottomSheetTitle.text = context?.getString(R.string.reactions)
         epoxyController.listener = this
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
