@@ -12,14 +12,12 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -35,18 +33,12 @@ import org.merakilearn.databinding.FragmentProfileBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.PartnerDataResponse
-import org.merakilearn.ui.adapter.SavedFileAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
-import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
 import org.merakilearn.ui.adapter.EnrolledBatchAdapter
-import org.merakilearn.ui.onboarding.OnBoardPagesAdapter
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
-import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
-import java.io.File
 
 class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
@@ -130,7 +122,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun dropOut(batches: Batches) {
-       mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
+        (mBinding.rvEnrolledBatch.adapter as EnrolledBatchAdapter).setBtnCross(){
             showDropOutDialog(batches)
         }
     }
@@ -278,9 +270,9 @@ class ProfileFragment : Fragment() {
 
 
     private fun initShowEnrolledBatches() {
-        mAdapter = EnrolledBatchAdapter {
+        mAdapter = EnrolledBatchAdapter({
             viewModel.selectBatch(it)
-        }
+        })
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.rvEnrolledBatch.layoutManager = layoutManager

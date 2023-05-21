@@ -71,8 +71,8 @@ dependencies {
 
     // Lifecycle and Viewmodels
     implementation(AndroidxDependencies.lifecycleExtensions)
-    implementation(AndroidxDependencies.lifecycleViewModel)
-    implementation(AndroidxDependencies.lifecycleLiveData)
+//    implementation(AndroidxDependencies.lifecycleViewModel)
+//    implementation(AndroidxDependencies.lifecycleLiveData)
     implementation(AndroidxDependencies.lifecycleViewModelKtx)
     implementation(AndroidxDependencies.lifecycleLiveDataKtx)
 
