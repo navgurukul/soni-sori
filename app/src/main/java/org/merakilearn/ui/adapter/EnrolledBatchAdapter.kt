@@ -10,7 +10,10 @@ import org.merakilearn.datasource.network.model.Batches
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 
-class EnrolledBatchAdapter(val callback: (Batches) -> Unit):
+class EnrolledBatchAdapter(
+    val callback: (Batches) -> Unit,
+    var btnCrossClickAction: (() -> Unit) ?= null,
+):
     DataBoundListAdapter<Batches, ItemEnrolledBatchBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Batches>(){
             override fun areItemsTheSame(oldItem: Batches, newItem: Batches): Boolean {
@@ -23,6 +26,7 @@ class EnrolledBatchAdapter(val callback: (Batches) -> Unit):
         }
     )
 {
+    private var isBtnCrossClickListenerSet = true
     override fun createBinding(parent: ViewGroup, viewType: Int): ItemEnrolledBatchBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -30,13 +34,23 @@ class EnrolledBatchAdapter(val callback: (Batches) -> Unit):
         )
     }
 
-    override fun bind(holder: DataBoundViewHolder<ItemEnrolledBatchBinding>, item: Batches) {
+    override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemEnrolledBatchBinding>, item: Batches) {
        val binding = holder.binding
         binding.tvBatchTitle.text = item.title
         binding.tvPathwayTitle.text = item.pathwayName
         binding.root.setOnClickListener {
             callback.invoke(item)
         }
+        binding.btnCross.setOnClickListener{
+            if(isBtnCrossClickListenerSet) {
+                btnCrossClickAction?.invoke()
+            }
+        }
+    }
+
+    fun setBtnCross(btnCrossAction: () -> Unit) {
+        isBtnCrossClickListenerSet = true
+        btnCrossClickAction = btnCrossAction
     }
 }
 
