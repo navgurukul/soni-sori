@@ -15,7 +15,7 @@ import org.koin.core.context.startKoin
 import org.merakilearn.core.di.coreModules
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.di.appModules
-import org.navgurukul.chat.core.ChatInitializer
+import org.merakilearn.core.core.ChatInitializer
 import org.navgurukul.chat.core.di.chatModules
 import org.navgurukul.commonui.di.commonUIModules
 import org.navgurukul.learn.di.learnModules
@@ -55,7 +55,7 @@ class MerakiApp : Application() {
         val config: Config by inject()
         config.initialise()
 
-        ChatInitializer.initialise(this)
+        org.merakilearn.core.core.ChatInitializer.initialise(this)
         subscribeToDefaultTopic()
 
         val installReferrerManager: InstallReferrerManager by inject()

@@ -57,12 +57,12 @@ object AndroidxDependencies {
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_extensions}"
-    const val lifecycleLiveData =
-        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_extensions}"
+//    const val lifecycleLiveData =
+//        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_extensions}"
     const val lifecycleViewModelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_extensions}"
-    const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
+//    const val lifecycleViewModel =
+//        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
