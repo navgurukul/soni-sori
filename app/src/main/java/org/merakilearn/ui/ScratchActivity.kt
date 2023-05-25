@@ -334,19 +334,20 @@ class ScratchActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val alertDialog = AlertDialog.Builder(this).apply {
-            setTitle("Exit")
-            setMessage("Are you sure you want to exit?")
-            setPositiveButton("Yes") { dialog, which ->
-                dialog.dismiss()
-                super.onBackPressed()
+        runOnUiThread {
+            val alertDialog = AlertDialog.Builder(this).apply {
+                setTitle("Exit")
+                setMessage("Are you sure you want to exit?")
+                setPositiveButton("Yes") { dialog, which ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
             }
-            setNegativeButton("No") { dialog, which ->
-                dialog.dismiss()
-            }
+
+            alertDialog.show()
         }
-
-        alertDialog.show()
     }
-
 }
