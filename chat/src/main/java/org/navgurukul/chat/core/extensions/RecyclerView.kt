@@ -29,7 +29,7 @@ fun RecyclerView.configureWith(epoxyController: EpoxyController,
     if (showDivider) {
         addItemDecoration(
                 DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                    ContextCompat.getDrawable(context, R.drawable.divider_horizontal)?.let {
+                    ContextCompat.getDrawable(context, R.drawable.bg_unread_highlight)?.let {
                         setDrawable(it)
                     }
                 }

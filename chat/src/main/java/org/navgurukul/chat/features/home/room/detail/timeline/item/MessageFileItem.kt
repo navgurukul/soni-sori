@@ -71,7 +71,7 @@ abstract class MessageFileItem : AbsMessageItem<MessageFileItem.Holder>() {
                 holder.fileDownloadProgress.progress = 100
             } else {
                 contentDownloadStateTrackerBinder.bind(mxcUrl, holder)
-                holder.fileImageView.setImageResource(R.drawable.ic_download)
+                holder.fileImageView.setImageResource(R.drawable.bg_unread_highlight)
                 holder.fileDownloadProgress.progress = 0
             }
         }

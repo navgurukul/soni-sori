@@ -181,7 +181,7 @@ class NotificationUtils constructor(
         val builder =
             NotificationCompat.Builder(context, LISTENING_FOR_EVENTS_NOTIFICATION_CHANNEL_ID)
                 .setContentTitle(stringProvider.getString(subTitleResId))
-                .setSmallIcon(R.drawable.ic_sync)
+                .setSmallIcon(R.drawable.bg_unread_highlight)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setColor(accentColor)
                 .setContentIntent(pi)
@@ -205,7 +205,7 @@ class NotificationUtils constructor(
     fun buildDownloadFileNotification(uri: Uri, fileName: String, mimeType: String): Notification {
         return NotificationCompat.Builder(context, SILENT_NOTIFICATION_CHANNEL_ID)
             .setGroup(stringProvider.getString(R.string.app_name))
-            .setSmallIcon(R.drawable.ic_download)
+            .setSmallIcon(R.drawable.bg_unread_highlight)
             .setContentText(stringProvider.getString(R.string.downloaded_file, fileName))
             .setAutoCancel(true)
             .apply {
@@ -303,7 +303,7 @@ class NotificationUtils constructor(
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
                 addAction(NotificationCompat.Action(
-                    R.drawable.ic_done,
+                    R.drawable.bg_unread_highlight,
                     stringProvider.getString(R.string.action_mark_room_read),
                     markRoomReadPendingIntent))
 
@@ -315,7 +315,7 @@ class NotificationUtils constructor(
                             RemoteInput.Builder(NotificationBroadcastReceiver.KEY_TEXT_REPLY)
                                 .setLabel(stringProvider.getString(R.string.action_quick_reply))
                                 .build()
-                        NotificationCompat.Action.Builder(R.drawable.ic_edit,
+                        NotificationCompat.Action.Builder(R.drawable.bg_unread_highlight,
                             stringProvider.getString(R.string.action_quick_reply),
                             replyPendingIntent)
                             .addRemoteInput(remoteInput)

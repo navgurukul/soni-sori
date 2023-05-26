@@ -53,11 +53,11 @@ abstract class BottomSheetRoomPreviewItem : MerakiEpoxyModel<BottomSheetRoomPrev
         val tintColor: Int
         if (isFavorite) {
             holder.roomFavorite.contentDescription = stringProvider.getString(R.string.room_list_quick_actions_favorite_remove)
-            holder.roomFavorite.setImageResource(R.drawable.ic_star_24dp)
+            holder.roomFavorite.setImageResource(R.drawable.bg_unread_highlight)
             tintColor = ThemeUtils.getColor(holder.view.context, R.attr.colorAccent)
         } else {
             holder.roomFavorite.contentDescription = stringProvider.getString(R.string.room_list_quick_actions_favorite_add)
-            holder.roomFavorite.setImageResource(R.drawable.ic_star_24dp)
+            holder.roomFavorite.setImageResource(R.drawable.bg_unread_highlight)
             tintColor = ThemeUtils.getColor(holder.view.context, R.attr.textSecondary)
         }
         ImageViewCompat.setImageTintList(holder.roomFavorite, ColorStateList.valueOf(tintColor))

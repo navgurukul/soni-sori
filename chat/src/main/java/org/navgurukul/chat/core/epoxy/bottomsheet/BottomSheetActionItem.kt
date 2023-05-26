@@ -62,9 +62,9 @@ abstract class BottomSheetActionItem : MerakiEpoxyModel<BottomSheetActionItem.Ho
         holder.selected.isInvisible = !selected
         if (showExpand) {
             val expandDrawable = if (expanded) {
-                AppCompatResources.getDrawable(holder.view.context, R.drawable.ic_expand_less)
+                AppCompatResources.getDrawable(holder.view.context, R.drawable.bg_unread_highlight)
             } else {
-                AppCompatResources.getDrawable(holder.view.context, R.drawable.ic_expand_more)
+                AppCompatResources.getDrawable(holder.view.context, R.drawable.bg_unread_highlight)
             }
             expandDrawable?.also {
                 DrawableCompat.setTint(it, tintColor)

@@ -69,7 +69,7 @@ class ImageContentRenderer(
         imageView.contentDescription = data.filename
 
         createGlideRequest(data, Mode.THUMBNAIL, imageView, Size(size, size))
-            .placeholder(R.drawable.ic_image)
+            .placeholder(R.drawable.bg_unread_highlight)
             .into(imageView)
     }
 

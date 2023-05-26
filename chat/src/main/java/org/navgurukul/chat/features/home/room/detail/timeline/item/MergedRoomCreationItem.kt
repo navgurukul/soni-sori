@@ -55,14 +55,14 @@ abstract class MergedRoomCreationItem : BasedMergedItem<MergedRoomCreationItem.H
                     holder.e2eTitleDescriptionView.text = holder.expandView.resources.getString(R.string.encryption_enabled_tile_description)
                     holder.e2eTitleDescriptionView.textAlignment = View.TEXT_ALIGNMENT_CENTER
                     holder.e2eTitleTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        ContextCompat.getDrawable(holder.view.context, R.drawable.ic_shield_black),
+                        ContextCompat.getDrawable(holder.view.context, R.drawable.bg_unread_highlight),
                         null, null, null
                     )
                 } else {
                     holder.e2eTitleTextView.text = holder.expandView.resources.getString(R.string.encryption_not_enabled)
                     holder.e2eTitleDescriptionView.text = holder.expandView.resources.getString(R.string.encryption_unknown_algorithm_tile_description)
                     holder.e2eTitleTextView.setCompoundDrawablesWithIntrinsicBounds(
-                        ContextCompat.getDrawable(holder.view.context, R.drawable.ic_shield_warning),
+                        ContextCompat.getDrawable(holder.view.context, R.drawable.bg_unread_highlight),
                         null, null, null
                     )
                 }

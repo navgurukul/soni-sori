@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-
 class KeyRequestHandler (private val context: Context, private val popupAlertManager: PopupAlertManager)
     : GossipingRequestListener,
         VerificationService.Listener {
@@ -156,7 +155,7 @@ class KeyRequestHandler (private val context: Context, private val popupAlertMan
                 alertManagerId(userId, deviceId),
                 context.getString(R.string.key_share_request),
                 dialogText,
-                R.drawable.ic_key
+            R.drawable.bg_unread_highlight
         )
 
         alert.colorRes = R.color.notification_accent_color

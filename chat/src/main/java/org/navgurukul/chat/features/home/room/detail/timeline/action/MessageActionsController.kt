@@ -46,14 +46,14 @@ class MessageActionsController(
             bottomSheetSendStateItem {
                 id("send_state")
                 showProgress(true)
-                text(stringProvider.getString(R.string.event_status_sending_message))
+                text(stringProvider.getString(R.drawable.bg_unread_highlight))
             }
         } else if (state.informationData.sendState.hasFailed()) {
             bottomSheetSendStateItem {
                 id("send_state")
                 showProgress(false)
-                text(stringProvider.getString(R.string.unable_to_send_message))
-                drawableStart(R.drawable.ic_warning_small)
+                text(stringProvider.getString(R.drawable.bg_unread_highlight))
+                drawableStart(R.drawable.bg_unread_highlight)
             }
         }
 
@@ -63,7 +63,7 @@ class MessageActionsController(
                     id("e2e_clear")
                     showProgress(false)
                     text(stringProvider.getString(R.string.unencrypted))
-                    drawableStart(R.drawable.ic_shield_warning_small)
+                    drawableStart(R.drawable.bg_unread_highlight)
                 }
             }
             E2EDecoration.WARN_SENT_BY_UNVERIFIED,
@@ -72,7 +72,7 @@ class MessageActionsController(
                     id("e2e_unverified")
                     showProgress(false)
                     text(stringProvider.getString(R.string.encrypted_unverified))
-                    drawableStart(R.drawable.ic_shield_warning_small)
+                    drawableStart(R.drawable.bg_unread_highlight)
                 }
             }
             else                               -> {

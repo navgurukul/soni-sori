@@ -56,7 +56,7 @@ abstract class ExpandableTextItem : MerakiEpoxyModel<ExpandableTextItem.Holder>(
                 .start()
 
         holder.content.ellipsize = null
-        holder.arrow.setImageResource(R.drawable.ic_expand_less)
+        holder.arrow.setImageResource(R.drawable.bg_unread_highlight)
         holder.arrow.contentDescription = holder.view.context.getString(R.string.merged_events_collapse)
         isExpanded = true
     }
@@ -68,7 +68,7 @@ abstract class ExpandableTextItem : MerakiEpoxyModel<ExpandableTextItem.Holder>(
                 .start()
 
         holder.content.ellipsize = TextUtils.TruncateAt.END
-        holder.arrow.setImageResource(R.drawable.ic_expand_more)
+        holder.arrow.setImageResource(R.drawable.bg_unread_highlight)
         holder.arrow.contentDescription = holder.view.context.getString(R.string.merged_events_expand)
         isExpanded = false
     }

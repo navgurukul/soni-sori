@@ -108,7 +108,7 @@ class NotificationAreaView @JvmOverloads constructor(
 
     private fun renderTombstone(state: State.Tombstone) {
         visibility = View.VISIBLE
-        roomNotificationIcon.setImageResource(R.drawable.ic_warning)
+        roomNotificationIcon.setImageResource(R.drawable.bg_unread_highlight)
         roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, R.attr.colorError))
         val message = span {
             +resources.getString(R.string.room_tombstone_versioned_description)

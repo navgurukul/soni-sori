@@ -45,14 +45,14 @@ class EncryptedItemFactory(
                 val spannableStr = if (chatPreferences.developerMode()) {
                     val errorDescription =
                             if (cryptoError == MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID) {
-                                stringProvider.getString(R.string.notice_crypto_error_unkwown_inbound_session_id)
+                                stringProvider.getString(R.drawable.bg_unread_highlight)
                             } else {
                                 // TODO i18n
                                 cryptoError?.name
                             }
 
-                    val message = stringProvider.getString(R.string.encrypted_message).takeIf { cryptoError == null }
-                            ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
+                    val message = stringProvider.getString(R.drawable.bg_unread_highlight).takeIf { cryptoError == null }
+                            ?: stringProvider.getString(R.drawable.bg_unread_highlight, errorDescription)
                     span(message) {
                         textStyle = "italic"
                         textColor = colorProvider.getColorFromAttribute(R.attr.textSecondary)
@@ -60,7 +60,7 @@ class EncryptedItemFactory(
                 } else {
                     val colorFromAttribute = colorProvider.getColorFromAttribute(R.attr.textSecondary)
                     if (cryptoError == null) {
-                        span(stringProvider.getString(R.string.encrypted_message)) {
+                        span(stringProvider.getString(R.drawable.bg_unread_highlight)) {
                             textStyle = "italic"
                             textColor = colorFromAttribute
                         }
@@ -69,7 +69,7 @@ class EncryptedItemFactory(
                             MXCryptoError.ErrorType.KEYS_WITHHELD -> {
                                 span {
                                     apply {
-                                        drawableProvider.getDrawable(R.drawable.ic_forbidden, colorFromAttribute)?.let {
+                                        drawableProvider.getDrawable(R.drawable.bg_unread_highlight, colorFromAttribute)?.let {
                                             image(it, "baseline")
                                         }
                                     }
@@ -82,7 +82,7 @@ class EncryptedItemFactory(
                             else                                  -> {
                                 span {
                                     apply {
-                                        drawableProvider.getDrawable(R.drawable.ic_clock, colorFromAttribute)?.let {
+                                        drawableProvider.getDrawable(R.drawable.bg_unread_highlight, colorFromAttribute)?.let {
                                             image(it, "baseline")
                                         }
                                     }

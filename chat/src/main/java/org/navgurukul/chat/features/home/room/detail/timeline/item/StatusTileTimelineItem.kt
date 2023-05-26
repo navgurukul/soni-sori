@@ -37,9 +37,9 @@ abstract class StatusTileTimelineItem : AbsBaseMessageItem<StatusTileTimelineIte
         holder.descriptionView.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
         val startDrawable = when (attributes.shieldUIState) {
-            ShieldUIState.GREEN -> R.drawable.ic_shield_trusted
-            ShieldUIState.BLACK -> R.drawable.ic_shield_black
-            ShieldUIState.RED   -> R.drawable.ic_shield_warning
+            ShieldUIState.GREEN -> R.drawable.bg_unread_highlight
+            ShieldUIState.BLACK -> R.drawable.bg_unread_highlight
+            ShieldUIState.RED   -> R.drawable.bg_unread_highlight
         }
 
         holder.titleView.setCompoundDrawablesWithIntrinsicBounds(

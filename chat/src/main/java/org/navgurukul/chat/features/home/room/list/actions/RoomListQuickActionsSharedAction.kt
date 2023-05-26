@@ -14,27 +14,27 @@ sealed class RoomListQuickActionsSharedAction(
 
     data class NotificationsAllNoisy(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_notifications_all_noisy,
-            R.drawable.ic_room_actions_notifications_all_noisy
+        R.drawable.bg_unread_highlight
     )
 
     data class NotificationsAll(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_notifications_all,
-            R.drawable.ic_room_actions_notifications_all
+        R.drawable.bg_unread_highlight
     )
 
     data class NotificationsMentionsOnly(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_notifications_mentions,
-            R.drawable.ic_room_actions_notifications_mentions
+        R.drawable.bg_unread_highlight
     )
 
     data class NotificationsMute(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_notifications_mute,
-            R.drawable.ic_room_actions_notifications_mutes
+        R.drawable.bg_unread_highlight
     )
 
     data class Settings(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_settings,
-            R.drawable.ic_room_actions_settings
+        R.drawable.bg_unread_highlight
     )
 
 //    data class LowPriority(val roomId: String) : RoomListQuickActionsSharedAction(
@@ -43,11 +43,11 @@ sealed class RoomListQuickActionsSharedAction(
 
     data class Favorite(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_favorite_add,
-            R.drawable.ic_star_24dp)
+        R.drawable.bg_unread_highlight)
 
     data class Leave(val roomId: String) : RoomListQuickActionsSharedAction(
             R.string.room_list_quick_actions_leave,
-            R.drawable.ic_room_actions_leave,
+        R.drawable.bg_unread_highlight,
             true
     )
 }

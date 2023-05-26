@@ -97,7 +97,7 @@ private class ContentDownloadUpdater(
         if (animatedDrawable == null) {
             animatedDrawable = AnimatedVectorDrawableCompat.create(
                 holder.view.context,
-                R.drawable.ic_download_anim
+                R.drawable.bg_unread_highlight
             )
             holder.fileImageView.setImageDrawable(animatedDrawable)
             animatedDrawable?.start()
@@ -109,13 +109,13 @@ private class ContentDownloadUpdater(
         stop()
         holder.fileDownloadProgress.isIndeterminate = false
         holder.fileDownloadProgress.progress = 0
-        holder.fileImageView.setImageResource(R.drawable.ic_close_round)
+        holder.fileImageView.setImageResource(R.drawable.bg_unread_highlight)
     }
 
     private fun handleSuccess() {
         stop()
         holder.fileDownloadProgress.isIndeterminate = false
         holder.fileDownloadProgress.progress = 100
-        holder.fileImageView.setImageResource(R.drawable.ic_paperclip)
+        holder.fileImageView.setImageResource(R.drawable.bg_unread_highlight)
     }
 }

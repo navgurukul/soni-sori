@@ -193,7 +193,7 @@ class MessageItemFactory(
             .contentDownloadStateTrackerBinder(contentDownloadStateTrackerBinder)
             .highlighted(highlight)
             .filename(messageContent.body)
-            .iconRes(R.drawable.ic_headphones)
+            .iconRes(R.drawable.bg_unread_highlight)
     }
 
 //    private fun buildVerificationRequestMessageItem(messageContent: MessageVerificationRequestContent,
@@ -252,7 +252,7 @@ class MessageItemFactory(
             .contentDownloadStateTrackerBinder(contentDownloadStateTrackerBinder)
             .highlighted(highlight)
             .filename(messageContent.body)
-            .iconRes(R.drawable.ic_paperclip)
+            .iconRes(R.drawable.bg_unread_highlight)
     }
 
     private fun buildNotHandledMessageItem(

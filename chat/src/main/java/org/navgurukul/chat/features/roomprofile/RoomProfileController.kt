@@ -52,7 +52,7 @@ class RoomProfileController(
             id = "notifications",
             title = stringProvider.getString(R.string.room_profile_section_more_notifications),
             dividerColor = dividerColor,
-            icon = R.drawable.ic_room_profile_notification,
+            icon = R.drawable.bg_unread_highlight,
             action = { callback?.onNotificationsClicked() }
         )
         val numberOfMembers = roomSummary.joinedMembersCount ?: 0
@@ -60,7 +60,7 @@ class RoomProfileController(
             id = "member_list",
             title = stringProvider.getQuantityString(R.plurals.room_profile_section_more_member_list, numberOfMembers, numberOfMembers),
             dividerColor = dividerColor,
-            icon = R.drawable.ic_room_profile_member_list,
+            icon = R.drawable.bg_unread_highlight,
             accessory = 0,
             action = { callback?.onMemberListClicked() }
         )
@@ -70,7 +70,7 @@ class RoomProfileController(
                 id = "banned_list",
                 title = stringProvider.getString(R.string.room_settings_banned_users_title),
                 dividerColor = dividerColor,
-                icon = R.drawable.ic_settings_root_labs,
+                icon = R.drawable.bg_unread_highlight,
                 action = { callback?.onBannedMemberListClicked() }
             )
         }
@@ -84,7 +84,7 @@ class RoomProfileController(
             dividerColor = dividerColor,
             divider = false,
             destructive = true,
-            icon = R.drawable.ic_room_actions_leave,
+            icon = R.drawable.bg_unread_highlight,
             editable = false,
             action = { callback?.onLeaveRoomClicked() }
         )
