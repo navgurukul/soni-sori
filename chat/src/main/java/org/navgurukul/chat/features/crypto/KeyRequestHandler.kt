@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-
 class KeyRequestHandler (private val context: Context, private val popupAlertManager: PopupAlertManager)
     : GossipingRequestListener,
         VerificationService.Listener {
