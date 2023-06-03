@@ -30,8 +30,14 @@ interface SaralApi {
 
     @PUT("users/me")
     suspend fun initUserUpdateAsync(
-        @Body loginResponse: UserUpdate
+        @Body loginResponse: UserUpdate,
     ): UserUpdateContainer
+
+    @PUT("users/{userId}")
+    suspend fun updateProfileName(
+        @Path (value = "userId") userId:Int,
+        @Body loginResponse: UserUpdateName
+    ):UserUpdateNameSafe
 
     @GET("classes/{classId}")
     suspend fun fetchClassDataAsync(

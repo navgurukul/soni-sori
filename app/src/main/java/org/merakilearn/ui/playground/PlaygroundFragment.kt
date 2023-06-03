@@ -1,6 +1,7 @@
 package org.merakilearn.ui.playground
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -93,7 +94,16 @@ class PlaygroundFragment : BaseFragment() {
         popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
+                R.id.delete -> {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Delete file")
+                            .setMessage("Are you sure you want to delete this file?")
+                            .setPositiveButton("Delete") { _, _ ->
+                                viewModel.handle(PlaygroundActions.DeleteFile(file))
+                            }
+                            .setNegativeButton("Cancel", null)
+                            .show()
+                }
                 R.id.shareSavedFile -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/x-python"

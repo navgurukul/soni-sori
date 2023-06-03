@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -92,9 +93,7 @@ class ScratchActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
-        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
-        finish()
-        onBackPressed()
+        onBackPressedDialog()
     }
 
     @JavascriptInterface
@@ -151,8 +150,10 @@ class ScratchActivity : AppCompatActivity() {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            Log.d("Scratch", "${consoleMessage?.message()} -- From line " +
-                    "${consoleMessage?.lineNumber()} of ${consoleMessage?.sourceId()}")
+            if (consoleMessage != null) {
+                Log.d("Scratch", "${consoleMessage.message()} -- From line " +
+                        "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
+            }
             return true
         }
 
@@ -173,6 +174,7 @@ class ScratchActivity : AppCompatActivity() {
             }
             return true
         }
+
 
         override fun onPermissionRequest(request: PermissionRequest) {
             myRequest = request
@@ -387,4 +389,21 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
+    private fun onBackPressedDialog() {
+        runOnUiThread {
+            val alertDialog = AlertDialog.Builder(this).apply {
+                setTitle("Exit")
+                setMessage("Are you sure you want to exit?")
+                setPositiveButton("Yes") { dialog, which ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+            }
+
+            alertDialog.show()
+        }
+    }
 }
