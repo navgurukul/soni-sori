@@ -23,10 +23,8 @@ BaseCourseViewHolder(itemview){
     fun bindView(item: QuestionCodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 
-        codeBody.text = HtmlCompat.fromHtml(
-            item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
-        )
+        codeBody.text = item.value?.replace("<br>", "\n")?.replace("&emsp;", " ")
+
     }
 
 }

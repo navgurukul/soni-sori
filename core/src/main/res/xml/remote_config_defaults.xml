@@ -55,7 +55,6 @@
                         "Javascript",
                         "Spoken English",
                         "Typing Guru",
-                        "Scratch (CEL)",
                         "Residential Info"
                     ]
                 },
@@ -84,7 +83,6 @@
                         "जावास्क्रिप्ट",
                         "अंग्रेजी बोलवचन",
                         "टाइपिंग गुरु",
-                        "टाइपिंग ",
                         "आवासीय कार्यक्रमों की जानकारी-ट्रैक"
                     ]
                     }
@@ -129,12 +127,6 @@
                         "id":3,
                         "image":{
                             "local": "TYPING"
-                        }
-                    },
-                    {
-                        "id":6,
-                        "image":{
-                            "local": "SCRATCH"
                         }
                     },
                     {
