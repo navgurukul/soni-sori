@@ -37,13 +37,13 @@ class EnrollViewModel(
 
                 val durationToClassStart = (it.startTime.time - Date().time)
                 var primaryActionBackgroundColor =
-                    colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                    colorProvider.getColorFromAttribute(androidx.navigation.ui.ktx.R.attr.colorPrimary)
                 val primaryAction = if (isEnrolled) {
                     if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_class)
                     } else {
                         primaryActionBackgroundColor =
-                            colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
+                            colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.colorBackgroundDisabled)
                         stringProvider.getString(
                             R.string.join_class_in,
                             durationToClassStart.toDisplayableInterval(stringProvider)
@@ -107,7 +107,7 @@ class EnrollViewModel(
                         isLoading = false,
                         primaryAction = stringProvider.getString(R.string.enroll_to_class),
                         menuId = null,
-                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(io.noties.markwon.R.attr.colorPrimary)
                     )
                 }
                 _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
@@ -143,12 +143,12 @@ class EnrollViewModel(
 
                     val durationToClassStart = (classes.startTime.time - Date().time)
                     var primaryActionBackgroundColor =
-                        colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        colorProvider.getColorFromAttribute(io.noties.markwon.R.attr.colorPrimary)
                     val primaryAction = if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_class)
                     } else {
                         primaryActionBackgroundColor =
-                            colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
+                            colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.colorBackgroundDisabled)
                         stringProvider.getString(
                             R.string.join_class_in,
                             durationToClassStart.toDisplayableInterval(stringProvider)

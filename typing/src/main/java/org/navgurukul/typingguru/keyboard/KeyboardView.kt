@@ -63,7 +63,7 @@ class KeyboardView @JvmOverloads constructor(
         context.resources.getDimensionPixelSize(commonR.dimen.spacing_3x)
     private val verticalSpacing = context.resources.getDimensionPixelSize(commonR.dimen.spacing_2x)
     private val keyTextSpacing = context.resources.getDimensionPixelSize(commonR.dimen.spacing_2x)
-    private val borderWidth = context.getThemedUnit(commonR.attr.borderWidth)
+    private val borderWidth = context.getThemedUnit(com.google.android.material.R.attr.borderWidth)
     private val ridgeHeight = context.resources.getDimensionPixelSize(R.dimen.ridge_height)
     private val ridgeWidth = context.resources.getDimensionPixelSize(R.dimen.ridge_width)
     private val ridgeBottomMargin =

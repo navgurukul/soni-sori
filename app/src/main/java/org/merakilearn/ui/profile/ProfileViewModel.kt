@@ -137,8 +137,9 @@ class ProfileViewModel(
             try {
                 setState { copy(isLoading = false) }
                 if (partnerId != null) {
-                    val partnerData = userRepo.getPartnerData(partnerId?.toInt())
-                    _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                    val partnerData = partnerId?.toInt()?.let { userRepo.getPartnerData(it) }
+                    partnerData?.let { ProfileViewEvents.ShowPartnerData(it) }
+                        ?.let { _viewEvents.postValue(it) }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

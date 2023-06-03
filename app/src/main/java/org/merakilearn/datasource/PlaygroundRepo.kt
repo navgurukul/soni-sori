@@ -21,7 +21,7 @@ class PlaygroundRepo {
             PlaygroundItemModel(
                 PlaygroundTypes.SCRATCH,
                 name="Scratch",
-                iconResource = R.drawable.ic_scratch_cat,
+                iconResource = org.navgurukul.commonui.R.drawable.ic_scratch_cat,
             ),
 
         )

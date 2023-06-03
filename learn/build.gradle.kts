@@ -71,8 +71,8 @@ dependencies {
 
     // Lifecycle and Viewmodels
     implementation(AndroidxDependencies.lifecycleExtensions)
-//    implementation(AndroidxDependencies.lifecycleViewModel)
-//    implementation(AndroidxDependencies.lifecycleLiveData)
+    implementation(AndroidxDependencies.lifecycleViewModel)
+    implementation(AndroidxDependencies.lifecycleLiveData)
     implementation(AndroidxDependencies.lifecycleViewModelKtx)
     implementation(AndroidxDependencies.lifecycleLiveDataKtx)
 
@@ -86,9 +86,9 @@ dependencies {
     implementation(AndroidxDependencies.roomRuntime)
     implementation(AndroidxDependencies.roomKtx)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
     kapt(AndroidxDependencies.roomCompiler)
 

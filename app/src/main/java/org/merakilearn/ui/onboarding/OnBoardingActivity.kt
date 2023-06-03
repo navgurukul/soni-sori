@@ -98,6 +98,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     PartnerFragment.newInstance(),
                     PartnerFragment.TAG
                 )
+
+                else -> {}
             }
         }
 

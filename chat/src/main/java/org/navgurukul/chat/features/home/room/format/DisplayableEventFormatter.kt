@@ -24,7 +24,7 @@ class DisplayableEventFormatter(
 
         if (timelineEvent.root.isEncrypted()
                 && timelineEvent.root.mxDecryptionResult == null) {
-            return stringProvider.getString(R.string.encrypted_message)
+//            return stringProvider.getString(R.string.encrypted_message)
         }
 
         val senderName = timelineEvent.senderInfo.disambiguatedDisplayName

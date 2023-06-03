@@ -45,24 +45,25 @@ class EncryptedItemFactory(
                 val spannableStr = if (chatPreferences.developerMode()) {
                     val errorDescription =
                             if (cryptoError == MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID) {
-                                stringProvider.getString(R.string.notice_crypto_error_unkwown_inbound_session_id)
+//                                stringProvider.getString(R.string.notice_crypto_error_unkwown_inbound_session_id)
                             } else {
                                 // TODO i18n
                                 cryptoError?.name
                             }
 
-                    val message = stringProvider.getString(R.string.encrypted_message).takeIf { cryptoError == null }
-                            ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
-                    span(message) {
-                        textStyle = "italic"
-                        textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
-                    }
+//                    val message = stringProvider.getString(R.string.encrypted_message).takeIf { cryptoError == null }
+//                            ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
+//                    span(message) {
+//                        textStyle = "italic"
+//                        textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
+//                    }
                 } else {
                     val colorFromAttribute = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
                     if (cryptoError == null) {
-                        span(stringProvider.getString(R.string.encrypted_message)) {
-                            textStyle = "italic"
-                            textColor = colorFromAttribute
+//                        span(stringProvider.getString(R.string.encrypted_message))
+                                                {
+//                            textStyle = "italic"
+//                            textColor = colorFromAttribute
                         }
                     } else {
                         when (cryptoError) {
@@ -101,7 +102,7 @@ class EncryptedItemFactory(
                 return MessageTextItem_()
                         .highlighted(highlight)
                         .attributes(attributes)
-                        .message(spannableStr)
+//                        .message(spannableStr)
                         .movementMethod(createLinkMovementMethod(callback))
             }
             else                                             -> null

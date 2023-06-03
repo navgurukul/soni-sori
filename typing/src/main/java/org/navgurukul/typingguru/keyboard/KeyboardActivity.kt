@@ -19,6 +19,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -30,6 +31,7 @@ import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.score.ScoreActivityArgs
 import org.navgurukul.typingguru.webview.WebViewActivity
 import org.merakilearn.core.extentions.setWidthPercent
+import org.navgurukul.typingguru.databinding.ActivityKeyboardBinding
 
 @Parcelize
 data class KeyboardActivityArgs(
@@ -56,34 +58,37 @@ class KeyboardActivity : BaseActivity() {
     })
 
     private var incorrectKeyJob: Job? = null
+    private lateinit var mBinding : ActivityKeyboardBinding
 
     private val audioManager: AudioManager? by lazy { getSystemService(Context.AUDIO_SERVICE) as? AudioManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_keyboard)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_keyboard )
 
         hideSystemUI()
 
-        viewModel.viewState.observe(this, { state ->
-            course_keys_view.setKeys(state.courseKeys)
-            course_keys_view.currentKeyIndex = state.activeKeyIndex
-            keyboard_view.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
-            progressBar.max = state.maxProgress
-            progressBar.progress = state.currentProgress
-            txt_timer.text = state.timerText
-        })
+        viewModel.viewState.observe(this) { state ->
+            mBinding.apply {
+                courseKeysView.setKeys(state.courseKeys)
+                courseKeysView.currentKeyIndex = state.activeKeyIndex
+                keyboardView.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
+                progressBar.max = state.maxProgress
+                progressBar.progress = state.currentProgress
+               txtTimer.text = state.timerText
+            }
+        }
 
         viewModel.viewEvents.observe(this, {
             when (it) {
                 is KeyboardViewEvent.ShakeKey -> {
-                    course_keys_view.shakeCurrentKey()
+                    mBinding.courseKeysView.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
-                    keyboard_view.incorrectKey = it.key
+                    mBinding.keyboardView.incorrectKey = it.key
                     incorrectKeyJob?.cancel()
                     incorrectKeyJob = lifecycleScope.launch {
                         delay(500)
-                        keyboard_view.incorrectKey = null
+                        mBinding.keyboardView.incorrectKey = null
                     }
                 }
                 is KeyboardViewEvent.OpenScoreActivity -> {
@@ -103,11 +108,11 @@ class KeyboardActivity : BaseActivity() {
             }
         })
 
-        btn_back.setOnClickListener {
+        mBinding.btnBack.setOnClickListener {
             finish()
         }
 
-        btn_settings.setOnClickListener {
+        mBinding.btnSettings.setOnClickListener {
             startActivity(WebViewActivity.newIntent(this))
         }
         if (!keyboardActivityArgs.retake) {

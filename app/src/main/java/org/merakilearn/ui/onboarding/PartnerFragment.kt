@@ -46,6 +46,7 @@ class PartnerFragment : Fragment() {
 
                 }
 
+                else -> {}
             }
         }
     }

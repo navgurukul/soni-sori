@@ -10,6 +10,7 @@ object Versions {
     const val kotlin = "1.8.21"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
+    const val koin_viewModel = "2.2.3"
     const val room = "2.5.1"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
@@ -100,7 +101,7 @@ object GMSDependencies {
 
 object KoinDependencies {
     const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
-    const val koinViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
+    const val koinViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin_viewModel}"
 }
 
 object GlideDependencies {

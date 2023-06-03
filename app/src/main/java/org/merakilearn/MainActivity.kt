@@ -1,6 +1,5 @@
 package org.merakilearn
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -30,13 +29,10 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.ui.profile.ProfileActivity
-import org.merakilearn.ui.profile.ProfileFragment
-import org.merakilearn.ui.profile.ProfileViewActions
-import org.merakilearn.ui.profile.ProfileViewModel
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
-import org.navgurukul.learn.courses.db.models.Pathway
-import org.navgurukul.learn.courses.repository.LearnRepo
+
 
 @Parcelize
 data class MainActivityArgs(
