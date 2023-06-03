@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.*
 import android.util.Base64
 import android.util.Log
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.EditText
@@ -92,8 +93,8 @@ class ScratchActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
-        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
-        finish()
+//        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
+//        finish()
         onBackPressed()
     }
 
@@ -151,8 +152,10 @@ class ScratchActivity : AppCompatActivity() {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            Log.d("Scratch", "${consoleMessage?.message()} -- From line " +
-                    "${consoleMessage?.lineNumber()} of ${consoleMessage?.sourceId()}")
+            if (consoleMessage != null) {
+                Log.d("Scratch", "${consoleMessage.message()} -- From line " +
+                        "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
+            }
             return true
         }
 
@@ -173,6 +176,7 @@ class ScratchActivity : AppCompatActivity() {
             }
             return true
         }
+
 
         override fun onPermissionRequest(request: PermissionRequest) {
             myRequest = request
@@ -387,4 +391,21 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
+    override fun onBackPressed() {
+        runOnUiThread {
+            val alertDialog = AlertDialog.Builder(this).apply {
+                setTitle("Exit")
+                setMessage("Are you sure you want to exit?")
+                setPositiveButton("Yes") { dialog, which ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+            }
+
+            alertDialog.show()
+        }
+    }
 }
