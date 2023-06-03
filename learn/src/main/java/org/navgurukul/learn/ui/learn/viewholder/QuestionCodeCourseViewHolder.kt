@@ -3,10 +3,10 @@ package org.navgurukul.learn.ui.learn.viewholder
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.QuestionCodeBaseCourseContent
+import org.navgurukul.learn.courses.network.model.ConstantString
 
 class QuestionCodeCourseViewHolder(itemview: View):
 BaseCourseViewHolder(itemview){
@@ -23,7 +23,7 @@ BaseCourseViewHolder(itemview){
     fun bindView(item: QuestionCodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
 
-        codeBody.text = item.value?.replace("<br>", "\n")?.replace("&emsp;", " ")
+        codeBody.text = item.value?.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT)?.replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
 
     }
 

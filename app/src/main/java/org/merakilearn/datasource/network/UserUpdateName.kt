@@ -10,10 +10,5 @@ data class UserUpdateName(
     val name:String,
 
     @Json (name = "profile_picture")
-    val profile_picture:String?,
-//
-//    @Json(name = "contact")
-//    val contact:String
-
-
+    val profile_picture:String?
 )

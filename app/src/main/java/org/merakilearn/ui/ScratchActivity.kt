@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -92,9 +93,7 @@ class ScratchActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
-//        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
-//        finish()
-        onBackPressed()
+        onBackPressedDialog()
     }
 
     @JavascriptInterface
@@ -390,7 +389,7 @@ class ScratchActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    override fun onBackPressed() {
+    private fun onBackPressedDialog() {
         runOnUiThread {
             val alertDialog = AlertDialog.Builder(this).apply {
                 setTitle("Exit")

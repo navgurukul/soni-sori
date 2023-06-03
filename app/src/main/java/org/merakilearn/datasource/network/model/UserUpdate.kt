@@ -7,7 +7,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class UserUpdate(
     @Json(name = "name")
-    val name: String,
-//    @Json(name = "referrer")
-//    val referrer: String?
+    val name: String
 )
