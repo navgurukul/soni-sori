@@ -148,8 +148,10 @@ class LearnFragment : Fragment() {
 
             if (it.code == "PRGPYT"){
                 mBinding.certificate.visibility = View.VISIBLE
+                mBinding.dotAdding.visibility = View.VISIBLE
             } else {
                 mBinding.certificate.visibility = View.GONE
+                mBinding.dotAdding.visibility = View.GONE
             }
 
         }

@@ -136,7 +136,6 @@ dependencies {
     //glide
     implementation(GlideDependencies.glide)
     kapt(GlideDependencies.glideCompiler)
-    implementation(GlideDependencies.glideSVG)
 
     //Google play
     implementation(GooglePlayDependencies.playCore)
