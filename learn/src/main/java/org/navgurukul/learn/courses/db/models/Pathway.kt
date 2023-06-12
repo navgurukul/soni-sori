@@ -14,6 +14,9 @@ private val DEFAULT_SUPPORTED_LANGUAGES = listOf(Language("en", "English"))
 @Entity(tableName = "pathway")
 @JsonClass(generateAdapter = true)
 data class Pathway @JvmOverloads constructor(
+    @PrimaryKey(autoGenerate = false)
+    @Json(name = "id")
+    val id: Int,
     @Json(name = "code")
     val code: String,
     @Ignore
@@ -23,9 +26,6 @@ data class Pathway @JvmOverloads constructor(
     val createdAt: String?,
     @Json(name = "description")
     val description: String,
-    @PrimaryKey(autoGenerate = false)
-    @Json(name = "id")
-    val id: Int,
     @Json(name = "name")
     val name: String,
     @Json(name = "logo")
