@@ -6,6 +6,7 @@ object Versions {
     const val moshi_version = "1.12.0"
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
+    const val glide_vector = "2.0.0"
     const val markdown = "4.5.1"
     const val kotlin = "1.5.21"
     const val lifecycle_extensions = "2.2.0"
@@ -107,6 +108,7 @@ object GlideDependencies {
     const val okhttp = "com.github.bumptech.glide:okhttp3-integration:${Versions.glide_version}"
     const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide_version}"
     const val glide = "com.github.bumptech.glide:glide:${Versions.glide_version}"
+    const val vector_glide = "com.github.corouteam:GlideToVectorYou:${Versions.glide_vector}"
 }
 
 object TestDependencies {
