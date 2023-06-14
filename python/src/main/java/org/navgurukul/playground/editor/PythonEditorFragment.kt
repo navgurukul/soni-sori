@@ -1,5 +1,6 @@
 package org.navgurukul.playground.editor
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -359,14 +360,13 @@ class PythonEditorFragment : BaseFragment() {
     }
 
     private fun showFileNotSavedDialog() {
-
         val fileNotSavedDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle("File not saved")
-            setMessage("Do you want to continue without saving? You may loose your work!")
+            setMessage("Do you want to continue without saving? You may lose your work!")
             setCancelable(true)
         }
 
-        fileNotSavedDialog.setPositiveButton("Don't Save") { dialog, which ->
+        fileNotSavedDialog.setPositiveButton("Save".toLowerCase()) { dialog, which ->
             if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 // If bottom sheet is expanded, collapse it on back button
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -375,15 +375,29 @@ class PythonEditorFragment : BaseFragment() {
             requireActivity().onBackPressed()
         }
 
-        fileNotSavedDialog.setNegativeButton("Save") { dialog, which ->
+        fileNotSavedDialog.setNegativeButton("Don't Save".toLowerCase()) { dialog, which ->
             viewModel.handle(PythonEditorViewActions.OnSaveAction)
         }
 
-        fileNotSavedDialog.setNeutralButton("Cancel") { dialog, which ->
+        fileNotSavedDialog.setNeutralButton("Cancel".toLowerCase()) { dialog, which ->
             dialog.dismiss()
         }
-        fileNotSavedDialog.show()
+
+        // Get the AlertDialog instance
+        val alertDialog = fileNotSavedDialog.show()
+
+        // Get the buttons of the AlertDialog
+        val positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        val negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+        val neutralButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
+
+        // Set the text color of the buttons
+        positiveButton.setTextColor(Color.GREEN)
+        negativeButton.setTextColor(Color.RED)
+        neutralButton.setTextColor(Color.GRAY)
     }
+
+
 
     private fun createInput() {
         etInput.doAfterTextChanged {
