@@ -1,6 +1,5 @@
 package org.merakilearn
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +20,6 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
@@ -29,13 +27,10 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.ui.profile.ProfileActivity
-import org.merakilearn.ui.profile.ProfileFragment
-import org.merakilearn.ui.profile.ProfileViewActions
-import org.merakilearn.ui.profile.ProfileViewModel
 import org.navgurukul.chat.core.glide.GlideApp
+import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
-import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 @Parcelize
@@ -207,10 +202,17 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {
-            GlideApp.with(headerIcon)
-                .load(it)
-                .transform(CircleCrop())
-                .into(headerIcon)
+            runOnUiThread {
+                if (it.endsWith(".svg")) {
+                    SvgLoader(this).loadSvgFromUrl(it, headerIcon)
+                }
+                else {
+                    GlideApp.with(headerIcon)
+                        .load(it)
+                        .transform(CircleCrop())
+                        .into(headerIcon)
+                }
+            }
         }
 
         onClickListener?.let { listener ->
