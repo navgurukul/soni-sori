@@ -11,10 +11,7 @@ import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -366,7 +363,11 @@ class PythonEditorFragment : BaseFragment() {
             setCancelable(true)
         }
 
-        fileNotSavedDialog.setPositiveButton("Save".toLowerCase()) { dialog, which ->
+        fileNotSavedDialog.setPositiveButton("Save") { dialog, which ->
+            viewModel.handle(PythonEditorViewActions.OnSaveAction)
+        }
+
+        fileNotSavedDialog.setNegativeButton("Don't Save") { dialog, which ->
             if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 // If bottom sheet is expanded, collapse it on back button
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -375,11 +376,7 @@ class PythonEditorFragment : BaseFragment() {
             requireActivity().onBackPressed()
         }
 
-        fileNotSavedDialog.setNegativeButton("Don't Save".toLowerCase()) { dialog, which ->
-            viewModel.handle(PythonEditorViewActions.OnSaveAction)
-        }
-
-        fileNotSavedDialog.setNeutralButton("Cancel".toLowerCase()) { dialog, which ->
+        fileNotSavedDialog.setNeutralButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
 
@@ -391,11 +388,27 @@ class PythonEditorFragment : BaseFragment() {
         val negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
         val neutralButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
 
-        // Set the text color of the buttons
+        // Swap the positions of Save and Don't Save buttons
+        val negativeButtonLayoutParams = negativeButton.layoutParams as LinearLayout.LayoutParams
+        val positiveButtonLayoutParams = positiveButton.layoutParams as LinearLayout.LayoutParams
+
+        negativeButtonLayoutParams.weight = 1.0f
+        negativeButton.layoutParams = negativeButtonLayoutParams
+
+        positiveButtonLayoutParams.weight = 0.0f
+        positiveButton.layoutParams = positiveButtonLayoutParams
+
+        // Set the text color and lowercase for the buttons
         positiveButton.setTextColor(Color.GREEN)
         negativeButton.setTextColor(Color.RED)
         neutralButton.setTextColor(Color.GRAY)
+
+        positiveButton.text = positiveButton.text.toString().toLowerCase()
+        negativeButton.text = negativeButton.text.toString().toLowerCase()
+        neutralButton.text = neutralButton.text.toString().toLowerCase()
     }
+
+
 
 
 
