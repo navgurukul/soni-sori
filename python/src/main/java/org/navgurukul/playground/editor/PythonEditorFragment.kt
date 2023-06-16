@@ -1,5 +1,6 @@
 package org.navgurukul.playground.editor
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -356,6 +357,7 @@ class PythonEditorFragment : BaseFragment() {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun showFileNotSavedDialog() {
         val fileNotSavedDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle("File not saved")
@@ -388,24 +390,10 @@ class PythonEditorFragment : BaseFragment() {
         val negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
         val neutralButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
 
-        // Swap the positions of Save and Don't Save buttons
-        val negativeButtonLayoutParams = negativeButton.layoutParams as LinearLayout.LayoutParams
-        val positiveButtonLayoutParams = positiveButton.layoutParams as LinearLayout.LayoutParams
-
-        negativeButtonLayoutParams.weight = 1.0f
-        negativeButton.layoutParams = negativeButtonLayoutParams
-
-        positiveButtonLayoutParams.weight = 0.0f
-        positiveButton.layoutParams = positiveButtonLayoutParams
-
         // Set the text color and lowercase for the buttons
-        positiveButton.setTextColor(Color.GREEN)
         negativeButton.setTextColor(Color.RED)
         neutralButton.setTextColor(Color.GRAY)
 
-        positiveButton.text = positiveButton.text.toString().toLowerCase()
-        negativeButton.text = negativeButton.text.toString().toLowerCase()
-        neutralButton.text = neutralButton.text.toString().toLowerCase()
     }
 
 
