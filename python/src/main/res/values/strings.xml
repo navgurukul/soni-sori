@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_playground">Play</string>
+    <string name="title_playground">Practice</string>
     <string name="toast_exit_console">If you want to exit the playground, first exit()
         the console or click on the home up button!</string>
     <string name="output">Output</string>
@@ -21,7 +21,6 @@
     <string name="export">Export</string>
     <string name="rename">Rename</string>
     <string name="save">Save</string>
-    <string name="shareAsUrl">Share File As Url</string>
 
     <string name="cancel_alert">Cancel</string>
     <string name="save_file_hint">Hello World… </string>
