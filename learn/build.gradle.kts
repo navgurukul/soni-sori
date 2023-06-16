@@ -107,7 +107,8 @@ dependencies {
     //glide
     implementation(GlideDependencies.glide)
     kapt(GlideDependencies.glideCompiler)
-    implementation(GlideDependencies.vector_glide)
+    implementation (GlideDependencies.glideSvg)
+
 
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
