@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_playground">Play</string>
+    <string name="title_playground">Practice</string>
     <string name="toast_exit_console">If you want to exit the playground, first exit()
         the console or click on the home up button!</string>
     <string name="output">Output</string>
