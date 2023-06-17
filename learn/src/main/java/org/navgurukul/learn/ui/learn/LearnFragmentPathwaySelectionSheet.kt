@@ -70,8 +70,9 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
-            adapter.submitList(it.pathways)
+        viewModel.viewState.observe(viewLifecycleOwner, { state ->
+            val filteredPathways = state.pathways.filter { it.platform == "both" }
+            adapter.submitList(filteredPathways)
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -100,24 +101,23 @@ class PathwaySelectionAdapter( val context: Context, val callback: (Pathway) -> 
     }
 
     override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
-        val binding = holder.binding
-        binding.pathway = item
-        binding.root.setOnClickListener {
-            callback.invoke(item)
-        }
+            val binding = holder.binding
+            binding.pathway = item
+            binding.root.setOnClickListener {
+                callback.invoke(item)
+            }
 
-        if (item.logo?.endsWith(".svg")!!) {
-            SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
+            if (item.logo?.endsWith(".svg")!!) {
+                SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
+            }
+            else{
+                val thumbnail = Glide.with(holder.itemView)
+                    .load(R.drawable.ic_typing_icon)
+                Glide.with(binding.ivPathwayIcon)
+                    .load(item.logo)
+                    .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
+                    .thumbnail(thumbnail)
+                    .into(binding.ivPathwayIcon)
+            }
         }
-        else{
-            val thumbnail = Glide.with(holder.itemView)
-                .load(R.drawable.ic_typing_icon)
-            Glide.with(binding.ivPathwayIcon)
-                .load(item.logo)
-                .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
-                .thumbnail(thumbnail)
-                .into(binding.ivPathwayIcon)
-        }
-
-    }
 }

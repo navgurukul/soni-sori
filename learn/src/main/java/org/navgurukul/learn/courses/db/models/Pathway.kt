@@ -39,6 +39,8 @@ data class Pathway @JvmOverloads constructor(
     )
     var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES,
     val cta: PathwayCTA?,
+    @Json(name = "platform")
+    val platform : String
 ) {
     val supportedLanguages: List<Language>
         get() = if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES
