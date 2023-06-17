@@ -3,6 +3,7 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.python)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -62,6 +63,8 @@ dependencies {
     implementation(KotlinDependencies.kotlin)
     implementation(KotlinDependencies.coroutinesCore)
     implementation(KotlinDependencies.coroutinesAndroid)
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
 
     //test
     testImplementation(TestDependencies.jUnit)

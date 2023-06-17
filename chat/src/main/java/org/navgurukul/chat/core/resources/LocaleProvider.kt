@@ -6,7 +6,7 @@ import java.util.*
 
 class LocaleProvider (private val resources: Resources) {
 
-    fun current(): Locale {
-        return ConfigurationCompat.getLocales(resources.configuration)[0]
-    }
+//    fun current(): Locale {
+////        return ConfigurationCompat.getLocales(resources.configuration)[0]
+//    }
 }

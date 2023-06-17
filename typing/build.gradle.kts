@@ -5,6 +5,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.gms)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -37,6 +38,8 @@ dependencies {
     implementation(project(":commonUI"))
     implementation(project(":app"))
     implementation(project(":core"))
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
 
     kapt(MiscellaneousDependencies.AutoService)
     implementation(MiscellaneousDependencies.AutoService)

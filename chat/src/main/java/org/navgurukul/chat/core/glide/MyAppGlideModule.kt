@@ -15,16 +15,16 @@ import java.io.InputStream
 @GlideModule
 class MyAppGlideModule : AppGlideModule() {
 
-    private val activeSessionHolder by inject(ActiveSessionHolder::class.java)
+//    private val activeSessionHolder by inject(ActiveSessionHolder::class.java)
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.setLogLevel(Log.ERROR)
     }
 
-    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        registry.append(
-            ImageContentRenderer.Data::class.java,
-                InputStream::class.java,
-                SaralGlideModelLoaderFactory(activeSessionHolder))
-    }
+//    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+//        registry.append(
+//            ImageContentRenderer.Data::class.java,
+//                InputStream::class.java,
+//                SaralGlideModelLoaderFactory(activeSessionHolder))
+//    }
 }

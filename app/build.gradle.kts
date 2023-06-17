@@ -109,6 +109,8 @@ dependencies {
     //Moshi
     implementation(RetrofitDependencies.moshiAdapter)
     implementation(RetrofitDependencies.moshiConverter)
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     kapt(RetrofitDependencies.moshiKapt)
 
     // Room DB

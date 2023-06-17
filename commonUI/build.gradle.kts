@@ -2,6 +2,7 @@ plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -71,5 +72,7 @@ dependencies {
     implementation(RxJavaDependencies.rxBinding)
 
     implementation(MiscellaneousDependencies.shimmer)
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
 
 }

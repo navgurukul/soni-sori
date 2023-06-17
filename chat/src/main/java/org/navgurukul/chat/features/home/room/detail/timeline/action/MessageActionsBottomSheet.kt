@@ -16,7 +16,6 @@ import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.core.scope.KoinScopeComponent
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.fragmentArgs
 import org.navgurukul.chat.R
@@ -49,9 +48,9 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
         timelineEventFragmentArgs.informationData
     ))})
 
-    private val sharedActionDataSource: MessageSharedActionDataSource by lazy {
-        (requireActivity() as KoinScopeComponent).scope.get()
-    }
+//    private val sharedActionDataSource: MessageSharedActionDataSource by lazy {
+//        (requireActivity() as KoinScopeComponent).scope.get()
+//    }
     private lateinit var mBinding : BottomSheetGenericListBinding
 
     override fun onCreateView(
@@ -93,13 +92,13 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     override fun onUrlClicked(url: String, title: String): Boolean {
-        sharedActionDataSource.postValue(EventSharedAction.OnUrlClicked(url, title))
+//        sharedActionDataSource.postValue(EventSharedAction.OnUrlClicked(url, title))
         // Always consume
         return true
     }
 
     override fun onUrlLongClicked(url: String): Boolean {
-        sharedActionDataSource.postValue(EventSharedAction.OnUrlLongClicked(url))
+//        sharedActionDataSource.postValue(EventSharedAction.OnUrlLongClicked(url))
         // Always consume
         return true
     }
@@ -120,7 +119,7 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
                 viewModel.handle(MessageActionsAction.ToggleReportMenu)
             }
         } else {
-            sharedActionDataSource.postValue(eventAction)
+//            sharedActionDataSource.postValue(eventAction)
             dismiss()
         }
     }

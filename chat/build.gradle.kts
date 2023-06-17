@@ -4,6 +4,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.realm)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.android")
 }
 
 kapt {
@@ -70,6 +71,8 @@ dependencies {
 
     // DI
     implementation(DaggerDependencies.dagger)
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     kapt(DaggerDependencies.daggerCompiler)
     compileOnly(DaggerDependencies.assistedInjectAnnotation)
     kapt(DaggerDependencies.assistedInjectProcessor)

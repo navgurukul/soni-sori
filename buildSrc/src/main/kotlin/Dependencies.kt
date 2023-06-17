@@ -9,7 +9,7 @@ object Versions {
     const val markdown = "4.5.1"
     const val kotlin = "1.8.21"
     const val lifecycle_extensions = "2.2.0"
-    const val koin = "2.2.3"
+    const val koin = "3.0.2"
     const val koin_viewModel = "2.2.3"
     const val room = "2.5.1"
     const val retrofit = "2.8.1"

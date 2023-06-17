@@ -3,6 +3,7 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinKapt)
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -59,6 +60,8 @@ dependencies {
     implementation(KotlinDependencies.coroutinesAndroid)
 
     implementation(RetrofitDependencies.moshiAdapter)
+    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     kapt(RetrofitDependencies.moshiKapt)
 
     //to get dynamic feature module

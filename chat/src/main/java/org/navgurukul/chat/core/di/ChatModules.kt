@@ -241,16 +241,16 @@ val factoryModule = module {
 
     factory { MessageActionsController(get(), get(), get()) }
 
-    scope(named<RoomDetailFragment>()) {
-        scoped { TimelineMediaSizeProvider() }
-        scoped { ContentUploadStateTrackerBinder(get(), get(), get()) }
-        scoped { ContentDownloadStateTrackerBinder(get(), get(), get()) }
-        scoped { RoomSummaryHolder() }
-    }
+//    scope(named<RoomDetailFragment>()) {
+//        scoped { TimelineMediaSizeProvider() }
+//        scoped { ContentUploadStateTrackerBinder(get(), get(), get()) }
+//        scoped { ContentDownloadStateTrackerBinder(get(), get(), get()) }
+//        scoped { RoomSummaryHolder() }
+//    }
 
-    scope(named<RoomDetailActivity>()) {
-        scoped { MessageSharedActionDataSource() }
-    }
+//    scope(named<RoomDetailActivity>()) {
+//        scoped { MessageSharedActionDataSource() }
+//    }
 }
 
 val chatModules = arrayListOf(viewModelModules, factoryModule)

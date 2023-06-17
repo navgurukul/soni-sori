@@ -12,10 +12,10 @@ class SaralDateFormatter(
 ) {
 
     private val messageHourFormatter by lazy {
-        DateTimeFormatter.ofPattern("H:mm", localeProvider.current())
+//        DateTimeFormatter.ofPattern("H:mm", localeProvider.current())
     }
     private val messageDayFormatter by lazy {
-        DateTimeFormatter.ofPattern("EEE d MMM", localeProvider.current())
+//        DateTimeFormatter.ofPattern("EEE d MMM", localeProvider.current())
     }
 
     fun formatMessageHour(localDateTime: LocalDateTime): String {
