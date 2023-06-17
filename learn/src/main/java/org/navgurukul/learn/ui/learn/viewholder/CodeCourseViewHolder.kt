@@ -9,6 +9,7 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeType
+import org.navgurukul.learn.courses.network.model.ConstantString
 
 
 class CodeCourseViewHolder(itemView: View) :
@@ -52,10 +53,7 @@ class CodeCourseViewHolder(itemView: View) :
             }
         }
 
-        codeBody.text = HtmlCompat.fromHtml(
-            item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
-        )
+        codeBody.text = item.value?.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT)?.replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
 
     }
 }

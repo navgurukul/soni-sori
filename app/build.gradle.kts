@@ -150,6 +150,9 @@ dependencies {
     androidTestImplementation(TestDependencies.espresso)
     implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
+    implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
+
 }
 
 tasks.register<Download>("downloadBundleTools") {
