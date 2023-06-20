@@ -122,8 +122,14 @@ class PythonEditorFragment : BaseFragment() {
                         // If bottom sheet is expanded, collapse it on back button
                         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
-                    if (!(viewModel.viewState.value!!.fileSaved) && (viewModel.viewState.value!!.code.isNotEmpty())) {
-                        showFileNotSavedDialog()
+                    val isFromCourse = requireActivity().intent.getBooleanExtra("isFromCourse",false)
+                    if (!isFromCourse) {
+                        if (!(viewModel.viewState.value!!.fileSaved) && (viewModel.viewState.value!!.code.isNotEmpty())) {
+                            showFileNotSavedDialog()
+                        } else {
+                            isEnabled = false
+                            requireActivity().onBackPressed()
+                        }
                     } else {
                         isEnabled = false
                         requireActivity().onBackPressed()

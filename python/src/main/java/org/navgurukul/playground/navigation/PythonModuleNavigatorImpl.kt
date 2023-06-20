@@ -9,8 +9,11 @@ import java.io.File
 
 class PythonModuleNavigatorImpl : PlaygroundModuleNavigator {
 
-    override fun launchPlaygroundActivity(context: Context, code: String?): Intent {
-        return PythonEditorActivity.launch(code, context)
+    private var isFromCourse: Boolean = false
+
+    override fun launchPlaygroundActivity(context: Context, code: String?,isFromCourse:Boolean): Intent {
+        this.isFromCourse = isFromCourse
+        return PythonEditorActivity.launch(code, context,isFromCourse)
     }
 
     override fun openPlaygroundWithFileContent(context: Context, file: File): Intent {

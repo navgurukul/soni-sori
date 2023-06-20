@@ -60,7 +60,7 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
-                    requireContext()
+                    requireContext(),null,isFromCourse = false
                 )
                 is PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(
                     requireActivity(),

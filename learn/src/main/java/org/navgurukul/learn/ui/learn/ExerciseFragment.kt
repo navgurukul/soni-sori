@@ -133,7 +133,7 @@ class ExerciseFragment : Fragment() {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     val fromHtml = it.value.replace("<br>", "\n").replace("&emsp;", " ")
-                    merakiNavigator.openPlayground(this.requireContext(), fromHtml)
+                    merakiNavigator.openPlayground(this.requireContext(), fromHtml,isFromCourse = true)
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->
