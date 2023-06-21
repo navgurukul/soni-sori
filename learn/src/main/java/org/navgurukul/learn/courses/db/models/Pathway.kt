@@ -22,7 +22,7 @@ data class Pathway @JvmOverloads constructor(
     @Json(name = "created_at")
     val createdAt: String?,
     @Json(name = "description")
-    val description: String,
+    val description: String?,
     @PrimaryKey(autoGenerate = false)
     @Json(name = "id")
     val id: Int,
