@@ -103,6 +103,11 @@ class LearnRepo(
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
+                    }else if (it.courseContentType == CourseContentType.class_topic){
+                        it as CourseClassContent
+                        it.lang =
+                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
+                                ?: language
                     }else{
                         it as CourseAssessmentContent
                         it.lang =
@@ -200,6 +205,10 @@ class LearnRepo(
                 try {
                     classDao.insertClass(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
                 }catch (ex: Exception) {
+                }
+                try {
+                    assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
+                }catch (ex: Exception){
                 }
                 try {
                     assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
@@ -361,7 +370,7 @@ class LearnRepo(
         selectedOption: Int?
     ){
         try {
-            val studentResult = StudentResult(assessmentId, status,selectedOption)
+            val studentResult = StudentResult(assessmentId, status, selectedOption)
             courseApi.postStudentResult(studentResult)
         } catch (e: Exception){
             e.printStackTrace()
@@ -392,7 +401,5 @@ class LearnRepo(
         }
 
     }
-
-
 
 }

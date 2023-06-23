@@ -132,6 +132,7 @@ interface AssessmentDao{
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id= :assessmentId")
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 
+
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
     suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 

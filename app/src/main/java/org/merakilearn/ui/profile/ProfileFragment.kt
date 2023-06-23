@@ -211,7 +211,7 @@ class ProfileFragment : Fragment() {
             mBinding.tvEmail.setText(it)
         }
 
-        if (it.batches.isEmpty()) {
+        if(it.batches.isEmpty()){
             mBinding.tvEnrolledText.visibility = View.GONE
             mBinding.rvEnrolledBatch.visibility = View.GONE
         } else {
@@ -308,6 +308,7 @@ class ProfileFragment : Fragment() {
                 )
             })
     }
+
 
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(

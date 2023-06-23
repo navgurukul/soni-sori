@@ -91,6 +91,3 @@ interface SaralCoursesApi {
     @GET("certificate")
     suspend fun getCertificate(): CertificateResponse
 }
-
-
-

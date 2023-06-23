@@ -13,13 +13,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:layout_marginStart="@dimen/spacing_5x"
                     android:textColor="@color/colorBlack"
                     app:layout_constraintTop_toTopOf="@+id/bt1"
                     app:layout_constraintStart_toEndOf="@+id/bt1"
-                    tools:text ="Hii my name is dhanshri hii my name is dhanshri Hii my name is dhanshri"/>
+                    tools:text = "Long text"/>
 
                 <TextView
                     android:id="@+id/batchDate"
