@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_playground"
         android:name="org.merakilearn.ui.playground.PlaygroundFragment"
-        android:label="@string/title_playground"
+        android:label="@string/title_practice"
         tools:layout="@layout/fragment_playground" />
 
     <fragment

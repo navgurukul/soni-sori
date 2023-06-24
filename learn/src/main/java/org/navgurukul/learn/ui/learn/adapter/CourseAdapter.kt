@@ -1,7 +1,5 @@
 package org.navgurukul.learn.ui.learn.adapter
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,9 +9,9 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
-import org.navgurukul.commonui.platform.SvgLoader
 
-class CourseAdapter(private val context: Context, val callback: (Course) -> Unit) :
+
+class CourseAdapter(val callback: (Course) -> Unit) :
 
     DataBoundListAdapter<CourseContainer, ItemCourseBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<CourseContainer>() {
@@ -49,21 +47,16 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         return super.getItemViewType(position)
     }
 
-    @SuppressLint("CheckResult")
     override fun bind(holder: DataBoundViewHolder<ItemCourseBinding>, item: CourseContainer) {
         val binding = holder.binding
         binding.course = item.course
 
-        if (item.logo?.endsWith(".svg") == true) {
-            SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivLogo)
-        } else{
-            val thumbnail = Glide.with(holder.itemView)
-                .load(R.drawable.ic_lock)
-            Glide.with(binding.ivLogo)
-                .load(item.logo)
-                .thumbnail(thumbnail)
-                .into(binding.ivLogo)
-        }
+        val thumbnail = Glide.with(holder.itemView)
+            .load(R.drawable.ic_lock)
+        Glide.with(binding.ivLogo)
+            .load(item.logo)
+            .thumbnail(thumbnail)
+            .into(binding.ivLogo)
 
         // TODO set progress from the object
         binding.progressBar.progress = item.course.completedPortion?:0
