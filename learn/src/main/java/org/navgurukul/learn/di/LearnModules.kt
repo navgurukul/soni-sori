@@ -31,9 +31,7 @@ val viewModelModule = module {
 
 val apiModule = module {
     fun provideUserApi(retrofit: Retrofit): SaralCoursesApi {
-        return retrofit
-
-            .create(SaralCoursesApi::class.java)
+        return retrofit.create(SaralCoursesApi::class.java)
     }
     single { provideUserApi(get()) }
 }
