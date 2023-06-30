@@ -74,7 +74,7 @@ dependencies {
     implementation(GlideDependencies.glide)
     implementation(GlideDependencies.okhttp)
     kapt(GlideDependencies.glideCompiler)
-
+    implementation (GlideDependencies.glideSvg)
 
     // Work
     implementation(AndroidxDependencies.work)
