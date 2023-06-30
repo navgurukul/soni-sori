@@ -107,10 +107,10 @@ class PathwaySelectionAdapter( val context: Context, val callback: (Pathway) -> 
                 callback.invoke(item)
             }
 
-            if (item.logo?.endsWith(".svg")!!) {
+            if (item.logo?.endsWith(".svg") == true) {
                 SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
             }
-            else{
+            else {
                 val thumbnail = Glide.with(holder.itemView)
                     .load(R.drawable.ic_typing_icon)
                 Glide.with(binding.ivPathwayIcon)
