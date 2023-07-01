@@ -87,6 +87,15 @@
                     tools:listitem="@layout/item_course" />
 
                 <include
+                    android:id="@+id/dot_adding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/certificate"
+                    android:layout_marginBottom="15dp"
+                    layout="@layout/dot_to_add">
+                </include>
+
+                <include
                     android:id="@+id/certificate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
