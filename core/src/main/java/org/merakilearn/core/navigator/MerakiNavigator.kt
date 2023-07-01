@@ -40,10 +40,10 @@ class MerakiNavigator(
     fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
 
-    fun openPlayground(context: Context, code: String? = null,isFromCourse: Boolean) {
+    fun openPlayground(context: Context, code: String? = null, isFromCourse: Boolean) {
         startActivity(
             context,
-            playgroundModuleNavigator.launchPlaygroundActivity(context, code,isFromCourse),
+            playgroundModuleNavigator.launchPlaygroundActivity(context, code, isFromCourse),
             false
         )
     }
