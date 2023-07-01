@@ -47,7 +47,9 @@ data class Batch(
     val pathway_id : Int?,
     @Ignore
     @Json(name="is_Selected")
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    @Json(name = "last_class_date")
+    var lastClassDate : Date?
 
 ) {
 
@@ -63,4 +65,4 @@ data class Batch(
     )
 }
 fun Batch.sanitizedType(): String = type?.replace("_", " ")?.capitalizeWords() ?: ""
-fun Batch.dateRange(): String = "${startTime?.toDate()} to ${endTime?.toDate()}"
+fun Batch.dateRange(): String = "${startTime?.toDate()} to ${lastClassDate?.toDate()}"
