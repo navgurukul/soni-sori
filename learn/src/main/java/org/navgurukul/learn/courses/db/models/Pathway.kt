@@ -22,7 +22,7 @@ data class Pathway @JvmOverloads constructor(
     @Json(name = "created_at")
     val createdAt: String?,
     @Json(name = "description")
-    val description: String,
+    val description: String?,
     @PrimaryKey(autoGenerate = false)
     @Json(name = "id")
     val id: Int,
@@ -39,6 +39,8 @@ data class Pathway @JvmOverloads constructor(
     )
     var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES,
     val cta: PathwayCTA?,
+    @Json(name = "platform")
+    val platform : String
 ) {
     val supportedLanguages: List<Language>
         get() = if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES

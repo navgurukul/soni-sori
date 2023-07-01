@@ -134,7 +134,7 @@ class ExerciseFragment : Fragment() {
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
                     val fromHtml = it.value.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT).replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
-                    merakiNavigator.openPlayground(this.requireContext(), fromHtml)
+                    merakiNavigator.openPlayground(this.requireContext(), fromHtml, true)
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->

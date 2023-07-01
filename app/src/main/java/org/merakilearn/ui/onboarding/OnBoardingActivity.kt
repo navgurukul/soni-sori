@@ -75,10 +75,6 @@ class OnBoardingActivity : AppCompatActivity() {
 
         viewModel.viewEvents.observe(this) {
             when (it) {
-                OnBoardingViewEvents.ShowSelectLanguageFragment -> showFragment(
-                    SelectLanguageFragment.newInstance(),
-                    SelectLanguageFragment.TAG
-                )
                 is OnBoardingViewEvents.ShowMainScreen -> {
                     MainActivity.launch(this, it.pathwayId)
                     finish()

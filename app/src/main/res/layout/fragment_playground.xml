@@ -13,8 +13,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_half_x"
-            android:background="?borderColor" />
+            android:layout_height="@dimen/spacing_half_x"/>
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"

@@ -1,8 +1,11 @@
 package org.navgurukul.playground.editor
 
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -10,11 +13,9 @@ import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -124,8 +125,14 @@ class PythonEditorFragment : BaseFragment() {
                         // If bottom sheet is expanded, collapse it on back button
                         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
-                    if (!(viewModel.viewState.value!!.fileSaved) && (viewModel.viewState.value!!.code.isNotEmpty())) {
-                        showFileNotSavedDialog()
+                    val isFromCourse = requireActivity().intent.getBooleanExtra("isFromCourse",false)
+                    if (!isFromCourse) {
+                        if (!(viewModel.viewState.value!!.fileSaved) && (viewModel.viewState.value!!.code.isNotEmpty())) {
+                            showFileNotSavedDialog()
+                        } else {
+                            isEnabled = false
+                            requireActivity().onBackPressed()
+                        }
                     } else {
                         isEnabled = false
                         requireActivity().onBackPressed()
@@ -358,15 +365,19 @@ class PythonEditorFragment : BaseFragment() {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun showFileNotSavedDialog() {
-
         val fileNotSavedDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle("File not saved")
-            setMessage("Do you want to continue without saving? You may loose your work!")
+            setMessage("Do you want to continue without saving? You may lose your work!")
             setCancelable(true)
         }
 
-        fileNotSavedDialog.setPositiveButton("Don't Save") { dialog, which ->
+        fileNotSavedDialog.setPositiveButton("Save") { dialog, which ->
+            viewModel.handle(PythonEditorViewActions.OnSaveAction)
+        }
+
+        fileNotSavedDialog.setNegativeButton("Don't Save") { dialog, which ->
             if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 // If bottom sheet is expanded, collapse it on back button
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -375,14 +386,25 @@ class PythonEditorFragment : BaseFragment() {
             requireActivity().onBackPressed()
         }
 
-        fileNotSavedDialog.setNegativeButton("Save") { dialog, which ->
-            viewModel.handle(PythonEditorViewActions.OnSaveAction)
-        }
-
         fileNotSavedDialog.setNeutralButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
-        fileNotSavedDialog.show()
+
+        // Get the AlertDialog instance
+        val alertDialog = fileNotSavedDialog.show()
+
+        val positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        val negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+        val neutralButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
+
+        // Set the text color and lowercase for the buttons
+        negativeButton.setTextColor(Color.RED)
+        neutralButton.setTextColor(Color.GRAY)
+
+        negativeButton.isAllCaps =  false
+        positiveButton.isAllCaps = false
+        neutralButton.isAllCaps = false
+
     }
 
     private fun createInput() {

@@ -150,8 +150,10 @@ class LearnFragment : Fragment() {
 
             if (it.code == "PRGPYT"){
                 mBinding.certificate.visibility = View.VISIBLE
+                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
             } else {
                 mBinding.certificate.visibility = View.GONE
+                mBinding.dotAdding.visibility = View.GONE
             }
 
         }
@@ -475,7 +477,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        mCourseAdapter = CourseAdapter {
+        mCourseAdapter = CourseAdapter(requireContext()) {
             viewModel.selectCourse(it)
         }
         val layoutManager =
