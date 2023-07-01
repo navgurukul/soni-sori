@@ -4,12 +4,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
+import androidx.room.util.TableInfo.Column
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 10
+const val DB_VERSION = 11
 
 @Dao
 interface PathwayDao {
@@ -336,7 +337,14 @@ val MIGRATION_9_10 = object : Migration(9,10){
             "ALTER TABLE `pathway_course` ADD COLUMN 'completed_portion' INTEGER"
         )
     }
+}
 
+val MIGRATION_10_11 = object : Migration(10,11){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `pathway` ADD COLUMN 'platform' TEXT"
+        )
+    }
 }
 
 // When ever we do any change in local db need to write migration script here.

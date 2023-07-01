@@ -475,7 +475,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        mCourseAdapter = CourseAdapter {
+        mCourseAdapter = CourseAdapter(requireContext()) {
             viewModel.selectCourse(it)
         }
         val layoutManager =

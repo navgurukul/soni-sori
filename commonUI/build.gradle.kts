@@ -64,4 +64,9 @@ dependencies {
 
     implementation(MiscellaneousDependencies.shimmer)
 
+    // glide
+    implementation(GlideDependencies.glide)
+    implementation(GlideDependencies.okhttp)
+    implementation ("com.caverock:androidsvg:1.4")
+
 }
