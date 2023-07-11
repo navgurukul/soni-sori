@@ -39,20 +39,29 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getPathways()
-        }, saveCallResult = { data ->
-            data.pathways.forEach { pathway ->
-                pathway.courses.map {
-                    it.pathwayId = pathway.id
-                }
-                courseDao.deleteAllCourses()
-                courseDao.insertCourses(pathway.courses)
+            try {
+                courseApi.getPathways()
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                null
             }
-            pathwayDao.insertPathways(data.pathways)
-
+        }, saveCallResult = { data ->
+            if (data != null) {
+                try {
+                    data.pathways.forEach { pathway ->
+                        pathway.courses.map {
+                            it.pathwayId = pathway.id
+                        }
+                        courseDao.deleteAllCourses()
+                        courseDao.insertCourses(pathway.courses)
+                    }
+                    pathwayDao.insertPathways(data.pathways)
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
         })
     }
-
 
 
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
@@ -62,15 +71,27 @@ class LearnRepo(
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
         }, makeApiCallAsync = {
-            courseApi.getCoursesForPathway(pathwayId, "json")
+            try {
+                courseApi.getCoursesForPathway(pathwayId, "json")
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                null
+            }
         }, saveCallResult = { data ->
-            data.courses.map {
-                it.pathwayId = data.id
-            }.toList()
-            courseDao.deleteAllCourses()
-            courseDao.insertCourses(data.courses)
+            if (data != null) {
+                try {
+                    data.courses.map {
+                        it.pathwayId = data.id
+                    }.toList()
+                    courseDao.deleteAllCourses()
+                    courseDao.insertCourses(data.courses)
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }
         })
     }
+
 
     suspend fun getCourseContentById(
         contentId: String,
@@ -285,9 +306,13 @@ class LearnRepo(
     }
 
     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
-        if(LearnUtils.isOnline(application))
-            statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
-        return statusEnrolled
+        return try {
+            if (LearnUtils.isOnline(application))
+                statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+            statusEnrolled
+        } catch (ex: Exception) {
+            throw ex
+        }
     }
 
     suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
@@ -318,13 +343,22 @@ class LearnRepo(
        }
     }
 
-    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
-        return courseApi.getCompletedPortionData(pathwayId)
+    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion {
+        return try {
+            courseApi.getCompletedPortionData(pathwayId)
+        } catch (ex: Exception) {
+            throw ex
+        }
     }
 
-    suspend fun getCertificate(): CertificateResponse{
-        return courseApi.getCertificate()
+    suspend fun getCertificate(): CertificateResponse {
+        return try {
+            courseApi.getCertificate()
+        } catch (ex: Exception) {
+            throw ex
+        }
     }
+
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         return try {
             if (enrolled) {
@@ -392,7 +426,4 @@ class LearnRepo(
         }
 
     }
-
-
-
 }
