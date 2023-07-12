@@ -93,7 +93,7 @@ class LearnFragment : Fragment() {
         initRecyclerView()
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
 //        mBinding.batchCard.root.visibility = View.GONE
 //        mBinding.upcoming.root.visibility = View.GONE
 
