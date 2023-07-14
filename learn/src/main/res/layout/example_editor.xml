@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/code_background"
+    android:paddingBottom="@dimen/dimen_16_dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/codeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/code_title_background"
+        android:padding="@dimen/dimen_16_dp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hi Title"></TextView>
+
+    <TextView
+        android:id="@+id/codeBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_16_dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/codeTitle"
+        tools:text="Hi Body"/>
+
+    <Button
+        android:id="@+id/resetCode"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/codeBody"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:text="Reset Editor"
+        android:padding="3dp"
+        android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
+        android:layout_marginTop="8dp"
+        android:background= "@drawable/border_reset"
+        android:textColor="@color/green_progress_color"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content">
+    </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorWhite"
+        android:text="Run"
+        android:padding="3dp"
+        android:textAllCaps="false"
+        android:layout_marginEnd="16dp"
+        android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/green_progress_color"
+        android:background="@drawable/border_reset"
+        app:layout_constraintTop_toBottomOf="@id/codeBody"
+        android:layout_height="wrap_content">
+    </Button>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/border_output"
+        android:backgroundTint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetCode">
+
+        <TextView
+            android:id="@+id/out_put_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:drawableLeft="@drawable/ic_baseline_cable_24"
+            android:text=" OutPut"
+            android:textColor="@color/colorBlack"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/Actual_outPut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="8550405
+{'NewYorkCity': 8550405, 'LosAngeles': 3971883, 'Toronto': 2731571, 'Chicago': 2720546, 'Houston': 2296224, 'Montreal': 1704694, 'Calgary': 1239220, 'Vancouver': 631486, 'Boston': 667137}
+<class 'dict'>"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/out_put_txt">
+
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
