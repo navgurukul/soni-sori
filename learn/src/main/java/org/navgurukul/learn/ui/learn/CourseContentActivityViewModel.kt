@@ -143,6 +143,7 @@ class CourseContentActivityViewModel(
                         nextCourseTitle = nextActionTitle
                     )
                 }
+                postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
             }
         }else{
             _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.retry_after_some_time)))

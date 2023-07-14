@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
+import java.net.UnknownHostException
 import java.util.ArrayList
 
 class LearnRepo(
@@ -28,36 +30,44 @@ class LearnRepo(
     var lastUpdatedBatches: List<Batch>? = null
     var statusEnrolled: EnrolResponse? = null
 
+    class OfflineException(message: String) : Exception(message)
 
     fun getPathwayData(forceUpdate: Boolean): Flow<List<Pathway>?> {
-        val pathwayDao = database.pathwayDao()
-        val courseDao = database.courseDao()
-        return networkBoundResourceFlow(loadFromDb = {
-            val data = pathwayDao.getAllPathways()
-            data?.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
-            data
-        }, shouldFetch = { data ->
-            (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
-        }, makeApiCallAsync = {
-            courseApi.getPathways()
-        }, saveCallResult = { data ->
-            data.pathways.forEach { pathway ->
-                pathway.courses.map {
-                    it.pathwayId = pathway.id
+        try {
+            val pathwayDao = database.pathwayDao()
+            val courseDao = database.courseDao()
+            return networkBoundResourceFlow(loadFromDb = {
+                val data = pathwayDao.getAllPathways()
+                data?.map { it.courses = courseDao.getCoursesByPathwayId(it.id) }
+                data
+            }, shouldFetch = { data ->
+                (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
+            }, makeApiCallAsync = {
+                courseApi.getPathways()
+            }, saveCallResult = { data ->
+                data.pathways.forEach { pathway ->
+                    pathway.courses.map {
+                        it.pathwayId = pathway.id
+                    }
+                    courseDao.deleteAllCourses()
+                    courseDao.insertCourses(pathway.courses)
                 }
-                courseDao.deleteAllCourses()
-                courseDao.insertCourses(pathway.courses)
-            }
-            pathwayDao.insertPathways(data.pathways)
+                pathwayDao.insertPathways(data.pathways)
 
-        })
+            })
+        }
+        catch (e : Exception) {
+            throw e
+        }
+
     }
 
 
 
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
-        return networkBoundResourceFlow(loadFromDb = {
+        return networkBoundResourceFlow(
+            loadFromDb = {
             courseDao.getCoursesByPathwayId(pathwayId)
         }, shouldFetch = { data ->
             (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
@@ -139,7 +149,6 @@ class LearnRepo(
             }
         }
 
-
         return when(courseContentType){
             CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, lang).asFlow()
             CourseContentType.class_topic -> classDao.getClassById(contentId, lang).asFlow()
@@ -210,24 +219,26 @@ class LearnRepo(
                     assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
                 }catch (ex: Exception){
                 }
-                try {
-                    assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
-                }catch (ex: Exception){
-                }
             }
         )
     }
 
     suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
-        return flow {
-            try {
-                val contentList = courseApi.getCompletedContentsIds(courseId)
-                updateCompletedContentInDb(contentList)
-                emit(contentList)
-            } catch (e: Exception) {
-                e.printStackTrace()
+            return flow {
+                if (LearnUtils.isOnline(application)) {
+                    try {
+                        val contentList = courseApi.getCompletedContentsIds(courseId)
+                        updateCompletedContentInDb(contentList)
+                        emit(contentList)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    println("Error Occurred!")
+                }
             }
-        }
+
+
     }
 
     suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
@@ -288,7 +299,10 @@ class LearnRepo(
     suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
             return try {
                 courseApi.getRevisionClasses(classId)
-            }catch (ex: Exception){
+            }catch (e: OfflineException) {
+                throw OfflineException("No network connection")
+            }
+            catch (ex: Exception){
                 throw ex
             }
     }
@@ -314,54 +328,91 @@ class LearnRepo(
     suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
         return try {
             courseApi.getUpcomingClass(pathwayId)
-        } catch (ex: Exception){
+        } catch (e: OfflineException) {
+            throw OfflineException("No network connection")
+        }
+        catch (ex: Exception){
             throw ex
         }
     }
 
     suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
-       return try {
-           courseApi.getStudentResult(assessmentId)
-       } catch (ex: Exception){
-           throw ex
-       }
+        if (LearnUtils.isOnline(application)){
+            return try {
+                courseApi.getStudentResult(assessmentId)
+            } catch (ex: Exception){
+                throw ex
+            }
+        } else {
+            throw OfflineException("No network connection")
+        }
+
     }
 
     suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
-        return courseApi.getCompletedPortionData(pathwayId)
+        if (!LearnUtils.isOnline(application)) {
+            // Handle offline scenario here
+            // For example, return a default or empty result indicating no network connection
+            return GetCompletedPortion(pathwayId) // Return default or empty result
+        }
+
+        return try {
+            courseApi.getCompletedPortionData(pathwayId)
+        } catch (ex: UnknownHostException) {
+            Toast.makeText(application, "Check Internet Connectivity!", Toast.LENGTH_LONG).show()
+            // Handle other exceptions if needed
+            throw ex
+        }
     }
 
-    suspend fun getCertificate(): CertificateResponse{
-        return courseApi.getCertificate()
+    suspend fun getCertificate(pathwayCode : String): CertificateResponse{
+            return try {
+                courseApi.getCertificate(pathwayCode)
+            } catch (e: OfflineException) {
+                throw OfflineException("No network connection")
+            }
+            catch (ex: Exception) {
+                throw ex
+            }
+
+
     }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
-        return try {
-            if (enrolled) {
-                courseApi.logOutToClassAsync(classId, shouldRegisterUnregisterAll)
-                updateEnrollStatus(classId, false)
-            } else {
-                courseApi.enrollToClassAsync(classId, mutableMapOf(),shouldRegisterUnregisterAll)
-                updateEnrollStatus(classId, true)
+        if (LearnUtils.isOnline(application)){
+            return try {
+                if (enrolled) {
+                    courseApi.logOutToClassAsync(classId, shouldRegisterUnregisterAll)
+                    updateEnrollStatus(classId, false)
+                } else {
+                    courseApi.enrollToClassAsync(classId, mutableMapOf(),shouldRegisterUnregisterAll)
+                    updateEnrollStatus(classId, true)
+                }
+            } catch (ex: Exception) {
+                false
             }
-        } catch (ex: Exception) {
-            false
         }
+
+        return false
+
     }
 
     private suspend fun updateEnrollStatus(classId: Int, enrolled: Boolean): Boolean {
-        val classes = lastUpdatedBatches ?: return true
-        classes.forEachIndexed loop@ { index, classItem ->
-            if (classId == classItem.id) {
-                val updatedClass = classItem.copy(enrolled = enrolled)
-                lastUpdatedBatches = mutableListOf(*classes.toTypedArray()).apply {
-                    this[index] = updatedClass
-                }
-                _batchFlow.emit(lastUpdatedBatches)
+        if(LearnUtils.isOnline(application)){
+            val classes = lastUpdatedBatches ?: return true
+            classes.forEachIndexed loop@ { index, classItem ->
+                if (classId == classItem.id) {
+                    val updatedClass = classItem.copy(enrolled = enrolled)
+                    lastUpdatedBatches = mutableListOf(*classes.toTypedArray()).apply {
+                        this[index] = updatedClass
+                    }
+                    _batchFlow.emit(lastUpdatedBatches)
 
-                return@loop
+                    return@loop
+                }
             }
+            return true
         }
-        return true
+       return false
     }
 
     suspend fun postStudentResult(
@@ -372,7 +423,10 @@ class LearnRepo(
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
             courseApi.postStudentResult(studentResult)
-        } catch (e: Exception){
+        } catch (e: OfflineException) {
+            throw OfflineException("No network connection")
+        }
+        catch (e: Exception){
             e.printStackTrace()
         }
     }
@@ -396,12 +450,12 @@ class LearnRepo(
         try {
             val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
             courseApi.postLearningTrackStatus(learningTrackStatus)
-        } catch (e: Exception){
+        }catch (e: OfflineException) {
+            throw OfflineException("No network connection")
+        }
+        catch (e: Exception){
             e.printStackTrace()
         }
-
     }
-
-
 
 }

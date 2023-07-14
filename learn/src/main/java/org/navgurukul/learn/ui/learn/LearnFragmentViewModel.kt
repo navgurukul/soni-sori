@@ -73,7 +73,7 @@ class LearnFragmentViewModel(
                         }
                         currentPathway?.let {
                             checkedStudentEnrolment(it.id)
-                            getCertificate(it.id)
+                            getCertificate(it.id, it.code)
                         }
                     } else {
                         setState { copy(loading = false) }
@@ -217,17 +217,17 @@ class LearnFragmentViewModel(
         }
     }
 
-    private fun getCertificate(pathwayId: Int){
+    private fun getCertificate(pathwayId: Int, pathwayCode: String){
         viewModelScope.launch {
             val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-            getCertificatePdf(completedData)
+            getCertificatePdf(completedData, pathwayCode)
         }
     }
 
-    private fun getCertificatePdf(completedPortion: Int){
+    private fun getCertificatePdf(completedPortion: Int, pathwayCode : String){
         viewModelScope.launch {
             try {
-                val certificatePdfUrl = learnRepo.getCertificate().url
+                val certificatePdfUrl = learnRepo.getCertificate(pathwayCode).url
                 println("certificateUrl $certificatePdfUrl")
                 _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl, completedPortion))
             }catch (e : Exception){
@@ -293,7 +293,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
         LearnFragmentViewEvents()
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
     object EnrolledSuccessfully : LearnFragmentViewEvents()
-    class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int) : LearnFragmentViewEvents()
+    class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int ) : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {

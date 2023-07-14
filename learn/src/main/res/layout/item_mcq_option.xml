@@ -29,7 +29,8 @@
                 android:paddingStart="@dimen/spacing_1x"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text ="A. You can not have a chocolate"/>
+                tools:text ="A. You can not have a chocolate"
+                tools:ignore="RtlSymmetry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

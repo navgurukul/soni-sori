@@ -303,11 +303,6 @@ class LearnFragment : Fragment() {
         val mCardStmtFile = File(folder, fileName)
 
         context?.let {
-            val fileUri: Uri = FileProvider.getUriForFile(
-                it,
-                "org.merakilearn.provider",
-                mCardStmtFile
-            )
 
             // We will get a page from the PDF file by calling openPage
             val fileDescriptor = ParcelFileDescriptor.open(
@@ -336,23 +331,28 @@ class LearnFragment : Fragment() {
     }
 
     private fun showShareIntent(pdfUrl: String) {
-        val fileName = "certificate.pdf" // -> maven.pdf
-        val extStorageDirectory = context?.filesDir
-        val folder = File(extStorageDirectory, "certificate")
-        val file = File(folder, fileName)
+        try {
+            val fileName = "certificate.pdf" // -> maven.pdf
+            val extStorageDirectory = context?.filesDir
+            val folder = File(extStorageDirectory, "certificate")
+            val file = File(folder, fileName)
 
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "application/pdf"
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "application/pdf"
 
-        val fileUri: Uri = FileProvider.getUriForFile(
-            requireContext(),
-            "org.merakilearn.provider",
-            file
-        )
+            val fileUri: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "org.merakilearn.provider",
+                file
+            )
 
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        requireContext().startActivity(shareIntent)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            requireContext().startActivity(shareIntent)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(context, "There is some issue to share", Toast.LENGTH_LONG).show()
+        }
 
     }
 

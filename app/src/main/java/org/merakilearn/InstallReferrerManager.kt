@@ -48,7 +48,7 @@ class InstallReferrerManager(val application: Application, val userRepo: UserRep
         if (currentUser != null) {
             val scope = CoroutineScope(Dispatchers.Default)
             scope.launch {
-                if (userRepo.updateProfile(currentUser)) {
+                if (userRepo.updateProfile(currentUser, installReferrer)) {
                     userRepo.installReferrerUploaded = true
                 }
             }
