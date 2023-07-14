@@ -63,7 +63,6 @@ class LearnRepo(
     }
 
 
-
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
         return networkBoundResourceFlow(
@@ -457,5 +456,4 @@ class LearnRepo(
             e.printStackTrace()
         }
     }
-
 }
