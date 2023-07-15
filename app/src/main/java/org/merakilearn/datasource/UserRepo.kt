@@ -84,9 +84,11 @@ class UserRepo(
         }
     }
 
-    suspend fun updateProfile(user: LoginResponse.User): Boolean {
+    suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
-            val response = saralApi.updateProfileName(user.id.toInt(), UserUpdateName(user.name, user.profilePicture))
+            val response = saralApi.initUserUpdateAsync(
+                UserUpdate(user.name, referrer)
+            )
             saveUserResponse(response.user)
             true
         } catch (ex: Exception) {
