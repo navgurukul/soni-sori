@@ -112,11 +112,6 @@ class LearnRepo(
                         it.lang =
                             course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
                                 ?: language
-                    }else if (it.courseContentType == CourseContentType.class_topic){
-                        it as CourseClassContent
-                        it.lang =
-                            course?.let { if (language in course.supportedLanguages) language else course.supportedLanguages[0] }
-                                ?: language
                     }else{
                         it as CourseAssessmentContent
                         it.lang =
