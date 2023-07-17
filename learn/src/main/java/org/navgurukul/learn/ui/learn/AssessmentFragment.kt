@@ -11,6 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.incorrect_output_layout.*
 import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -131,16 +134,19 @@ class AssessmentFragment : Fragment() {
 
     private fun setUpSubmitAnswer() {
         mBinding.btnSubmit.setOnClickListener {
-            mBinding.btnSubmit.visibility = View.GONE
-            selectedOption?.let {
-                isContentRvClickable = false
-                fragmentViewModel.handle(
-                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
-                        it
+            CoroutineScope(Dispatchers.Main).launch {
+                mBinding.btnSubmit.visibility = View.GONE
+                selectedOption?.let {
+                    isContentRvClickable = false
+                    fragmentViewModel.handle(
+                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
+                            it
+                        )
                     )
-                )
-                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+                }
             }
+            initScreenRefresh()
         }
     }
 
@@ -148,41 +154,42 @@ class AssessmentFragment : Fragment() {
         list: List<BaseCourseContent>,
         attemptResponse: AttemptResponse?
     ) {
-        mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-            selectedOption?.let {
-                isContentRvClickable = false
-                fragmentViewModel.handle(
-                    AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
-                        it
+        CoroutineScope(Dispatchers.Main).launch {
+            mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
+                selectedOption?.let {
+                    isContentRvClickable = false
+                    fragmentViewModel.handle(
+                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
+                            it
+                        )
                     )
-                )
-                activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-            }
-            mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-            mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-            initIncorrectRV(list)
-            isContentRvClickable = false
-//            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-
-        }
-        if (attemptResponse != null) {
-            if (attemptResponse.attemptCount < 2) {
-                mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                    isContentRvClickable = true
-                    mBinding.incorrectOutputLayout.visibility = View.GONE
-                    fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
                 }
-            } else {
-                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
                 mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
                 mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-                fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                 initIncorrectRV(list)
                 isContentRvClickable = false
+//            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
+
+            }
+            if (attemptResponse != null) {
+                if (attemptResponse.attemptCount < 2) {
+                    mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+                        isContentRvClickable = true
+                        mBinding.incorrectOutputLayout.visibility = View.GONE
+                        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                    }
+                } else {
+                    mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
+                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+                    mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
+                    fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
+                    initIncorrectRV(list)
+                    isContentRvClickable = false
+                }
             }
         }
-
     }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
