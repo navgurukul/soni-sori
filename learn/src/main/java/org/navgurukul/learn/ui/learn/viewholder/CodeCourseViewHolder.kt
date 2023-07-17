@@ -1,6 +1,9 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
+import android.text.Editable
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,10 +18,10 @@ import org.navgurukul.learn.courses.network.model.ConstantString
 class CodeCourseViewHolder(itemView: View) :
     BaseCourseViewHolder(itemView) {
 
-    private val codeLayout: ConstraintLayout = populateStub(R.layout.item_code_content)
-    private val codeTitle: TextView = codeLayout.findViewById(R.id.codeTitle)
-    private val codeBody: TextView = codeLayout.findViewById(R.id.codeBody)
-    private val imageViewPlay: AppCompatButton = codeLayout.findViewById(R.id.imageViewPlay)
+    private val codeLayout: ConstraintLayout = populateStub(R.layout.example_editor)
+    private val codeTitle: TextView = codeLayout.findViewById(R.id.code_title)
+    private val codeBody:EditText = codeLayout.findViewById(R.id.code_body)
+    private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
 
 
     override val horizontalMargin: Int
@@ -53,7 +56,13 @@ class CodeCourseViewHolder(itemView: View) :
             }
         }
 
-        codeBody.text = item.value?.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT)?.replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
+        val editableText = Editable.Factory.getInstance().newEditable(item.value)
+        editableText.replace(
+            0, editableText.length,
+            editableText.toString().replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT)
+                .replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
+        )
+        codeBody.text = editableText
 
     }
 }

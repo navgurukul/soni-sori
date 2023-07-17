@@ -63,7 +63,7 @@ class ExerciseContentAdapter(
             R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
             R.layout.item_youtube_content -> YoutubeCourseViewHolder(itemView)
             R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(itemView)
-            R.layout.item_code_content -> CodeCourseViewHolder(itemView)
+            R.layout.example_editor -> CodeCourseViewHolder(itemView)
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
             R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
@@ -101,7 +101,7 @@ class ExerciseContentAdapter(
             R.layout.item_block_quote_content ->
                 (holder as BlockQuoteCourseViewHolder).bindView(getItem(position) as BlockQuoteBaseCourseContent)
 
-            R.layout.item_code_content ->
+            R.layout.example_editor ->
                 (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent, mCallback)
 
             R.layout.item_banner_content ->
@@ -133,7 +133,7 @@ class ExerciseContentAdapter(
             is TextBaseCourseContent -> R.layout.item_text_content
             is YoutubeBaseCourseContent -> R.layout.item_youtube_content
             is BlockQuoteBaseCourseContent -> R.layout.item_block_quote_content
-            is CodeBaseCourseContent -> R.layout.item_code_content
+            is CodeBaseCourseContent -> R.layout.example_editor
             is BannerBaseCourseContent -> R.layout.item_banner_content
             is LinkBaseCourseContent -> R.layout.item_link_content
             is QuestionCodeBaseCourseContent -> R.layout.item_question_code_content
