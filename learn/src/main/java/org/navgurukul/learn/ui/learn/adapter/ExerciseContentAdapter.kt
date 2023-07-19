@@ -4,20 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.ui.learn.ExerciseFragment
 import org.navgurukul.learn.ui.learn.viewholder.*
 
+interface CodeExecutionListener {
+    fun executePythonCode(code: String,outputTextView: TextView)
 
+}
 class ExerciseContentAdapter(
     context: Context,
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit,
     optionCallback: ((OptionResponse) -> Unit) ?= null,
+    private val codeExecutionListener: CodeExecutionListener
 
 ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
@@ -63,7 +69,11 @@ class ExerciseContentAdapter(
             R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
             R.layout.item_youtube_content -> YoutubeCourseViewHolder(itemView)
             R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(itemView)
-            R.layout.example_editor -> CodeCourseViewHolder(itemView)
+            R.layout.example_editor -> {
+                val codeViewHolder = CodeCourseViewHolder(itemView)
+                codeViewHolder.setCodeExecutionListener(codeExecutionListener)
+                codeViewHolder
+            }
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
             R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
@@ -101,8 +111,12 @@ class ExerciseContentAdapter(
             R.layout.item_block_quote_content ->
                 (holder as BlockQuoteCourseViewHolder).bindView(getItem(position) as BlockQuoteBaseCourseContent)
 
-            R.layout.example_editor ->
-                (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent, mCallback)
+            R.layout.example_editor ->{
+                (holder as CodeCourseViewHolder).bindView(
+                    getItem(position) as CodeBaseCourseContent,
+                    mCallback,
+                    codeExecutionListener // Pass the codeExecutionListener
+                )}
 
             R.layout.item_banner_content ->
                 (holder as BannerCourseViewHolder).bindView(getItem(position) as BannerBaseCourseContent, mUrlCallback)
@@ -143,3 +157,5 @@ class ExerciseContentAdapter(
         }
     }
 }
+
+

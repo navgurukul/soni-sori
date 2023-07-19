@@ -5,14 +5,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeType
 import org.navgurukul.learn.courses.network.model.ConstantString
+import org.navgurukul.learn.ui.learn.adapter.CodeExecutionListener
 
 
 class CodeCourseViewHolder(itemView: View) :
@@ -22,6 +21,8 @@ class CodeCourseViewHolder(itemView: View) :
     private val codeTitle: TextView = codeLayout.findViewById(R.id.code_title)
     private val codeBody:EditText = codeLayout.findViewById(R.id.code_body)
     private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
+    private val output:TextView = codeLayout.findViewById(R.id.Actual_outPut)
+    private lateinit var codeExecutionListener: CodeExecutionListener
 
 
     override val horizontalMargin: Int
@@ -31,7 +32,15 @@ class CodeCourseViewHolder(itemView: View) :
         super.setHorizontalMargin(horizontalMargin)
     }
 
-    fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
+    fun setCodeExecutionListener(listener: CodeExecutionListener) {
+        codeExecutionListener = listener
+    }
+
+    fun bindView(
+        item: CodeBaseCourseContent,
+        callback: (BaseCourseContent) -> Unit,
+        codeExecutionListener: CodeExecutionListener
+    ) {
         super.bind(item)
 
         if (item.title.isNullOrBlank()) {
@@ -48,7 +57,8 @@ class CodeCourseViewHolder(itemView: View) :
             CodeType.python -> {
                 imageViewPlay.visibility = View.VISIBLE
                 imageViewPlay.setOnClickListener {
-                    callback.invoke(item)
+                    val pythonCode = codeBody.text.toString()
+                    codeExecutionListener.executePythonCode(pythonCode, output)
                 }
             }
             else -> {

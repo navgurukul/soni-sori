@@ -3,6 +3,7 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id(Plugins.python)
     id("org.jetbrains.kotlin.android")
 }
 
@@ -13,6 +14,10 @@ android {
         minSdk = BuildConfigVersions.minSdkVersion
         targetSdk = BuildConfigVersions.targetSdkVersion
 
+        ndk {
+            abiFilters.clear()
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+        }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -50,6 +55,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":commonUI"))
+    implementation(project(":python"))
 
     //kotlin
     implementation(KotlinDependencies.kotlin)
