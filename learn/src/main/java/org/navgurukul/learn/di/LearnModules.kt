@@ -54,6 +54,7 @@ val databaseModule = module {
             .addMigrations(MIGRATION_8_9)
             .addMigrations(MIGRATION_9_10)
             .addMigrations(MIGRATION_10_11)
+            .addMigrations(MIGRATION_11_12)
             .addTypeConverter(Converters(moshi))
             .build()
     }

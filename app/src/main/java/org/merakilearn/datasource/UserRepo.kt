@@ -71,16 +71,20 @@ class UserRepo(
 
     fun getCurrentUser(): LoginResponse.User? {
         val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
-        return if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
-            val fakeUserLoginResponseString =
-                preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-            fakeUserLoginResponseString?.objectify()
-        } else {
-            return if (userLoginResponseString.isNullOrEmpty()) {
-                null
+        return try {
+            if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
+                val fakeUserLoginResponseString =
+                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+                fakeUserLoginResponseString?.objectify()
             } else {
-                userLoginResponseString.objectify()
+                return if (userLoginResponseString.isNullOrEmpty()) {
+                    null
+                } else {
+                    userLoginResponseString.objectify()
+                }
             }
+        } catch (e : Exception){
+            throw IllegalStateException("Current user is null")
         }
     }
 

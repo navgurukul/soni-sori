@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 11
+const val DB_VERSION = 12
 
 @Dao
 interface PathwayDao {
@@ -343,6 +343,14 @@ val MIGRATION_10_11 = object : Migration(10,11){
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL(
             "ALTER TABLE `pathway` ADD COLUMN 'platform' TEXT"
+        )
+    }
+}
+
+val MIGRATION_11_12 = object : Migration(11, 12){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `course_assessment` ADD COLUMN 'assess_attemptCount' INTEGER"
         )
     }
 }
