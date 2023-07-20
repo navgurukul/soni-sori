@@ -7,12 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -28,12 +26,12 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.model.ConstantString
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import java.util.*
-import org.navgurukul.learn.courses.network.model.ConstantString
-import org.navgurukul.learn.ui.learn.adapter.CodeExecutionListener
+
 
 
 @Parcelize
@@ -46,7 +44,7 @@ data class CourseContentArgs(
     val courseContentType: CourseContentType,
 ) : Parcelable
 
-class ExerciseFragment : Fragment(), CodeExecutionListener {
+class ExerciseFragment : Fragment() {
 
     private val args: CourseContentArgs by fragmentArgs()
     private val fragmentViewModel: ExerciseFragmentViewModel by viewModel(parameters = {
@@ -136,7 +134,9 @@ class ExerciseFragment : Fragment(), CodeExecutionListener {
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    executePythonCode(it.value,)
+                    val fromHtml = it.value.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT).replace(
+                        ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
+                    merakiNavigator.openPlayground(this.requireContext(), fromHtml, true)
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->
@@ -178,16 +178,6 @@ class ExerciseFragment : Fragment(), CodeExecutionListener {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
 
-    }
-
-    override fun executePythonCode(code: String,outputTextView: TextView) {
-        if (!Python.isStarted()) {
-            Python.start(AndroidPlatform(requireContext()))
-        }
-        val py = Python.getInstance()
-        val result = py.getModule("__main__").callAttr("__builtins__.exec", code)
-        val outputText = result.toString()
-        outputTextView.text = outputText
     }
 
 }

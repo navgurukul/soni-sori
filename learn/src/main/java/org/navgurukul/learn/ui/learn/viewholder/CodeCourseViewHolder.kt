@@ -11,7 +11,7 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeType
 import org.navgurukul.learn.courses.network.model.ConstantString
-import org.navgurukul.learn.ui.learn.adapter.CodeExecutionListener
+
 
 
 class CodeCourseViewHolder(itemView: View) :
@@ -22,7 +22,6 @@ class CodeCourseViewHolder(itemView: View) :
     private val codeBody:EditText = codeLayout.findViewById(R.id.code_body)
     private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
     private val output:TextView = codeLayout.findViewById(R.id.Actual_outPut)
-    private lateinit var codeExecutionListener: CodeExecutionListener
 
 
     override val horizontalMargin: Int
@@ -32,14 +31,11 @@ class CodeCourseViewHolder(itemView: View) :
         super.setHorizontalMargin(horizontalMargin)
     }
 
-    fun setCodeExecutionListener(listener: CodeExecutionListener) {
-        codeExecutionListener = listener
-    }
+
 
     fun bindView(
         item: CodeBaseCourseContent,
         callback: (BaseCourseContent) -> Unit,
-        codeExecutionListener: CodeExecutionListener
     ) {
         super.bind(item)
 
@@ -57,8 +53,7 @@ class CodeCourseViewHolder(itemView: View) :
             CodeType.python -> {
                 imageViewPlay.visibility = View.VISIBLE
                 imageViewPlay.setOnClickListener {
-                    val pythonCode = codeBody.text.toString()
-                    codeExecutionListener.executePythonCode(pythonCode, output)
+                    callback.invoke(item)
                 }
             }
             else -> {
