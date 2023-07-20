@@ -11,7 +11,8 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeType
 import org.navgurukul.learn.courses.network.model.ConstantString
-
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform
 
 
 class CodeCourseViewHolder(itemView: View) :
@@ -53,7 +54,11 @@ class CodeCourseViewHolder(itemView: View) :
             CodeType.python -> {
                 imageViewPlay.visibility = View.VISIBLE
                 imageViewPlay.setOnClickListener {
-                    callback.invoke(item)
+                    if (item.codeTypes == CodeType.python) {
+                        item.value?.let { pythonCode ->
+                            executePythonCode(pythonCode)
+                        }
+                    }
                 }
             }
             else -> {
@@ -69,6 +74,22 @@ class CodeCourseViewHolder(itemView: View) :
         )
         codeBody.text = editableText
 
+    }
+    private fun executePythonCode(pythonCode: String) {
+        if (!Python.isStarted()) {
+            Python.start(AndroidPlatform(itemView.context))
+        }
+
+        val python = Python.getInstance()
+        val pythonInterpreter = python.getModule("chaquopy.main")
+
+        try {
+            val outputs = pythonInterpreter.callAttr("main", pythonCode)
+
+            output.text = outputs.toString()
+        } catch (e: Exception) {
+            output.text = "Error executing Python code:\n${e.message}"
+        }
     }
 }
 
