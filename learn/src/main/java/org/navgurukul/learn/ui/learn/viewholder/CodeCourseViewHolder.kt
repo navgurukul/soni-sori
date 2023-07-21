@@ -75,7 +75,7 @@ class CodeCourseViewHolder(itemView: View) :
         codeBody.text = editableText
 
     }
-    private fun executePythonCode(pythonCode: String) {
+    private fun executePythonCode(pythonCodeWithTags: String) {
         if (!Python.isStarted()) {
             Python.start(AndroidPlatform(itemView.context))
         }
@@ -83,13 +83,22 @@ class CodeCourseViewHolder(itemView: View) :
         val python = Python.getInstance()
         val pythonInterpreter = python.getModule("chaquopy.main")
 
-        try {
-            val outputs = pythonInterpreter.callAttr("main", pythonCode)
+        // Extract the Python code from the response (remove HTML tags and formatting)
+        val pythonCode = pythonCodeWithTags
+            .replace(Regex("<.*?>"), "")  // Remove all HTML tags
+            .replace("&nbsp;", " ")      // Replace "&nbsp;" with space
+            .trim()                      // Trim any leading or trailing whitespaces
 
-            output.text = outputs.toString()
+        // Split the Python code into individual lines
+        val lines = pythonCode.split("\n")
+
+        try {
+            for (line in lines) {
+                val outputs = pythonInterpreter.callAttr("main", line)
+                output.append(outputs.toString() + "\n")
+            }
         } catch (e: Exception) {
             output.text = "Error executing Python code:\n${e.message}"
         }
     }
 }
-
