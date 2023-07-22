@@ -30,13 +30,15 @@ data class Pathway @JvmOverloads constructor(
     val name: String,
     @Json(name = "logo")
     val logo: String?,
+    @Json(name = "shouldShowCertificate")
+    val shouldShowCertificate : Boolean,
     @Json(name = "lang_available")
     @ColumnInfo(
         name = "supportedLanguages",
         defaultValue = "[{\"code\": \"en\", \"label\": \"English\"}]"
     )
     var languages: List<Language> = DEFAULT_SUPPORTED_LANGUAGES,
-    val cta: PathwayCTA?
+    val cta: PathwayCTA?,
 ) {
     val supportedLanguages: List<Language>
         get() = if (languages.isNotEmpty()) languages else DEFAULT_SUPPORTED_LANGUAGES

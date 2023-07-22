@@ -32,7 +32,6 @@ class LoginRepository(
             val loginRequest =
                 LoginRequest(authToken, id = id, language = corePreferences.selectedLanguage)
             val response = applicationApi.initLoginAsync(loginRequest)
-            authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
             if (isFakeLogin) {
                 userRepo.resetFakeLogin()
             }
@@ -49,7 +48,6 @@ class LoginRepository(
             val loginRequest =
                 LoginRequest(null, language = corePreferences.selectedLanguage)
             val response = applicationApi.initFakeSignUpAsync(loginRequest)
-            authenticationRepository.login(response.user.chatId!!, response.user.chatPassword!!)
             userRepo.saveFakeLoginResponse(response)
             response
         } catch (ex: Exception) {

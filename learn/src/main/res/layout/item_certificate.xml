@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_4x"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/ivCertificateLogo"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/grey_icon_certificate"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtCertificate"
+        style="?textAppearanceBody2"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:text="@string/python_certificate"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/locked_status"
+        style="?textAppearanceBody2"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/spacing_4x"
+        android:text="@string/locked"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

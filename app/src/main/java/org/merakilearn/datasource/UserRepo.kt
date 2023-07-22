@@ -11,6 +11,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
+import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -149,10 +150,10 @@ class UserRepo(
         }
     }
 
-    suspend fun getPartnerData(partnerId: Int) : PartnerDataResponse{
+    suspend fun getPartnerData(partnerId: Int): PartnerDataResponse {
         return try {
             saralApi.getPartnerData(partnerId)
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             throw ex
         }
     }

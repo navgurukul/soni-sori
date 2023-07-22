@@ -59,7 +59,7 @@ class ScratchRepositoryImpl(
             file = File(directory, finalFileName)
             fos = FileOutputStream(file)
             bos = BufferedOutputStream(fos)
-            val bfile = Base64.decode(base64Str, Base64.DEFAULT)
+            val bfile = Base64.decode(base64Str, 2)
             bos.write(bfile)
             println("File Saved")
 
