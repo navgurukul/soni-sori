@@ -23,8 +23,12 @@ class FileAdapter(context: Context, private var openFiles: ArrayList<String>) : 
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         val rootView = ItemFileProjectBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        ResourceHelper.setIcon(rootView.fileIcon, File(openFiles[position]), 0xffffffff.toInt())
-        rootView.fileTitle.text = getPageTitle(position)
+        try {
+            ResourceHelper.setIcon(rootView.fileIcon, File(openFiles[position]), 0xffffffff.toInt())
+            rootView.fileTitle.text = getPageTitle(position)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
         return rootView.root
     }
 
