@@ -6,6 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
+import com.caverock.androidsvg.SVG
+import com.caverock.androidsvg.SVGImageView
 import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
@@ -28,35 +31,40 @@ class SelectCourseFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
-            if (it.onBoardingData != null && it.onBoardingTranslations != null) {
-                setCards(it.onBoardingData, it.onBoardingTranslations)
+        viewModel.viewState.observe(viewLifecycleOwner, { state ->
+            state.onBoardingData?.let { onBoardingData ->
+                state.onBoardingTranslations?.let { translations ->
+                    setCards(onBoardingData, translations)
+                }
             }
         })
     }
 
     private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
-
         select_course_heading.text = translations.selectCourseHeader
 
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
         val width = (resources.displayMetrics.widthPixels - (padding * 2) - padding) / 2
+
         onBoardingData.onBoardingPathwayList.forEachIndexed { index, pathway ->
-
-
             val customView = layoutInflater.inflate(R.layout.course_card, constraint_layout, false)
             customView.id = View.generateViewId()
 
             customView.findViewById<TextView>(R.id.course_text).text =
                 translations.onBoardingPathwayListNames[index]
 
-            val imageView = customView.findViewById<ImageView>(R.id.logo)
-            pathway.image.remote?.let {
-                GlideApp.with(requireContext())
-                    .load(it)
+            val imageView = customView.findViewById<SVGImageView>(R.id.logo)
+
+            pathway.image.remote?.let { remoteSvgUrl ->
+                // Load remote SVG using Glide
+                Glide.with(requireContext())
+                    .`as`(SVG::class.java) // Load SVG
+                    .load(remoteSvgUrl)
                     .into(imageView)
             } ?: run {
-                imageView.setImageResource(DefaultLogos.valueOf(pathway.image.local!!).id)
+                // Load local SVG from resources
+                val defaultLogoId = DefaultLogos.valueOf(pathway.image.local!!).id
+                imageView.setImageResource(defaultLogoId)
             }
 
             constraint_layout.addView(
@@ -68,7 +76,6 @@ class SelectCourseFragment : BaseFragment() {
             customView.setOnClickListener {
                 viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
             }
-
         }
     }
 
@@ -79,5 +86,4 @@ class SelectCourseFragment : BaseFragment() {
         JAVASCRIPT(R.drawable.ic_javascript_logo),
         RESIDENTIAL(R.drawable.residential_icon)
     }
-
 }
