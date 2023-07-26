@@ -366,7 +366,7 @@ val MIGRATION_12_13 = object : Migration(12, 13){
                 " `shortDescription` TEXT," +
                 " `pathwayId` INTEGER," +
                 " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]',"+
-                " `completed_portion` INTEGER," +
+                " `completedPortion` INTEGER," +
                 "PRIMARY KEY(`id`) )"
         )
 
