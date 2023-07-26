@@ -56,5 +56,7 @@ data class OnBoardingPathwayData(
     @Json(name = "image")
     val image: OnBoardingImage,
     @Json(name = "id")
-    val id: Int
+    val id: Int,
+    @Json(name = "name")
+    val name: String = " "
 )
