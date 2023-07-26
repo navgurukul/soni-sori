@@ -59,7 +59,12 @@ class OnBoardingViewModel(
     }
     private fun createOnBoardingData(pathways: List<Pathway>): OnBoardingData {
         val onBoardingPathwayList = pathways.map { pathway ->
-            OnBoardingPathwayData(OnBoardingImage(pathway.logo), pathway.id, pathway.name)
+            OnBoardingPathwayData(
+                OnBoardingImage(pathway.logo),
+                pathway.id,
+                pathway.name,
+                pathway.logo
+            )
         }
         return OnBoardingData(emptyList(), onBoardingPathwayList, emptyMap())
     }
