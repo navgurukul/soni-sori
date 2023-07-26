@@ -19,7 +19,7 @@ data class Course(
     @Json(name = "pathwayId")
     var pathwayId: Int? = null,
     @Json(name = "short_description")
-    var shortDescription: String,
+    var shortDescription: String?,
     @Json(name = "lang_available")
     @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
     var supportedLanguages: List<String> = listOf("en"),

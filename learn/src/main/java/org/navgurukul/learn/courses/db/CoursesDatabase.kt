@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 12
+const val DB_VERSION = 13
 
 @Dao
 interface PathwayDao {
@@ -353,6 +353,25 @@ val MIGRATION_11_12 = object : Migration(11, 12){
             "ALTER TABLE `course_assessment` ADD COLUMN 'assess_attemptCount' INTEGER"
         )
     }
+}
+
+val MIGRATION_12_13 = object : Migration(12, 13){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("DROP TABLE pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, `platform` TEXT NOT NULL, 'shouldShowCertificate' INTEGER NOT NULL, PRIMARY KEY(`id`)) ")
+        database.execSQL("DROP TABLE pathway_course")
+        database.execSQL("CREATE TABLE `pathway_course`(" +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `shortDescription` TEXT," +
+                " `pathwayId` INTEGER," +
+                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]',"+
+                " `completed_portion` INTEGER," +
+                "PRIMARY KEY(`id`) )"
+        )
+
+    }
+
 }
 
 // When ever we do any change in local db need to write migration script here.
