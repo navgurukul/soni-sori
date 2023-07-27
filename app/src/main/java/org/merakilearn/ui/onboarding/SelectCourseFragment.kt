@@ -12,6 +12,8 @@ import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
+import org.navgurukul.commonui.platform.SvgLoader
+import org.merakilearn.datasource.network.model.OnBoardingPathwayData
 
 class SelectCourseFragment : BaseFragment() {
 
@@ -54,11 +56,20 @@ class SelectCourseFragment : BaseFragment() {
                 courseText.text = pathway.name
 
                 val imageView = customView.findViewById<ImageView>(R.id.logo)
+                pathway.logo?.let { logoUrl ->
+                    if (logoUrl.endsWith(".svg")) {
+                        SvgLoader(requireContext()).loadSvgFromUrl(logoUrl, imageView)
+                    } else {
+                        GlideApp.with(requireContext())
+                            .load(logoUrl)
+                            .into(imageView)
+                    }
                 pathway.image.remote?.let {
                     GlideApp.with(requireContext())
                         .load(it)
                         .into(imageView)
                 }
+
 
                 constraint_layout.addView(
                     customView,
