@@ -30,6 +30,8 @@ import org.navgurukul.learn.courses.network.model.ConstantString
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
+import org.navgurukul.playground.editor.PythonEditorArgs
+import org.navgurukul.playground.editor.PythonEditorViewModel
 import java.util.*
 
 
@@ -53,6 +55,7 @@ class ExerciseFragment : Fragment() {
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
+    val pythonEditorViewModel: PythonEditorViewModel by viewModel()
 
     companion object {
         fun newInstance(
@@ -106,6 +109,8 @@ class ExerciseFragment : Fragment() {
 
         initContentRV()
         initScreenRefresh()
+
+
 
     }
 
@@ -177,7 +182,7 @@ class ExerciseFragment : Fragment() {
         mBinding.recyclerViewSlug.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
-
+        contentAdapter.setPythonEditorViewModel(pythonEditorViewModel, viewLifecycleOwner)
     }
 
 }

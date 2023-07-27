@@ -3,6 +3,8 @@ package org.navgurukul.playground.editor
 import android.text.TextUtils
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chaquo.python.Python
 import kotlinx.coroutines.flow.collect
@@ -28,6 +30,9 @@ class PythonEditorViewModel(
         const val PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE = "File \"<string>\","
     }
     var newFile:Boolean=false
+
+    private val _codeResponse = MutableLiveData<CodeResponseModel?>()
+    val codeResponse: LiveData<CodeResponseModel?> = _codeResponse
 
     init {
         val existingCode = ""//pythonRepository.cachedCode

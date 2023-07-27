@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.ui.learn.viewholder.*
+import org.navgurukul.playground.editor.PythonEditorViewModel
 
 
 class ExerciseContentAdapter(
@@ -29,6 +31,8 @@ class ExerciseContentAdapter(
     private val mOptionCallback = optionCallback
     private val mUrlCallback = urlCallback
     private val glideRequests: RequestManager by lazy { Glide.with(context) }
+    private var pythonEditorViewModel: PythonEditorViewModel? = null
+    private lateinit var lifecycleOwner: LifecycleOwner
 
     class ContentDiffCallback : DiffUtil.ItemCallback<BaseCourseContent>() {
         override fun areItemsTheSame(
@@ -45,6 +49,11 @@ class ExerciseContentAdapter(
         ): Boolean {
             return oldItem == newItem
         }
+    }
+    fun setPythonEditorViewModel(viewModel: PythonEditorViewModel, lifecycleOwner: LifecycleOwner) {
+        pythonEditorViewModel = viewModel
+        this.lifecycleOwner = lifecycleOwner
+        notifyDataSetChanged() // Notify adapter after setting the view model
     }
 
     override fun onCreateViewHolder(
@@ -63,7 +72,13 @@ class ExerciseContentAdapter(
             R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
             R.layout.item_youtube_content -> YoutubeCourseViewHolder(itemView)
             R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(itemView)
-            R.layout.example_editor -> CodeCourseViewHolder(itemView)
+            R.layout.example_editor -> {
+                val viewHolder = CodeCourseViewHolder(itemView)
+                if (pythonEditorViewModel != null) {
+                    viewHolder.setViewModel(pythonEditorViewModel!!, lifecycleOwner)
+                }
+                viewHolder
+            }
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
             R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)
