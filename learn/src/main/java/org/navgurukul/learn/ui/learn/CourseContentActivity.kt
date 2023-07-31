@@ -237,6 +237,7 @@ class CourseContentActivity : AppCompatActivity(){
                 ExerciseNavigation.PREV -> android.R.anim.slide_in_left
                 ExerciseNavigation.NEXT -> R.anim.slide_in_to_left
                 null -> android.R.anim.fade_in
+
             }
             setCustomAnimations(
                 enter, 0
