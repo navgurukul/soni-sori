@@ -40,7 +40,7 @@ class SelectCourseFragment : BaseFragment() {
 
     private val addedPathwayIds = mutableSetOf<Int>()
 
-        private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
+    private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
         select_course_heading.text = translations.selectCourseHeader
 
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
@@ -64,27 +64,31 @@ class SelectCourseFragment : BaseFragment() {
                             .load(logoUrl)
                             .into(imageView)
                     }
-                pathway.image.remote?.let {
-                    GlideApp.with(requireContext())
-                        .load(it)
-                        .into(imageView)
-                }
+                    pathway.image.remote?.let {
+                        GlideApp.with(requireContext())
+                            .load(it)
+                            .into(imageView)
+                    }
 
 
-                constraint_layout.addView(
-                    customView,
-                    ConstraintLayout.LayoutParams(width, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-                )
-                flow_constraint.referencedIds += customView.id
+                    constraint_layout.addView(
+                        customView,
+                        ConstraintLayout.LayoutParams(
+                            width,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        )
+                    )
+                    flow_constraint.referencedIds += customView.id
 
-                customView.setOnClickListener {
-                    viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
-                }
+                    customView.setOnClickListener {
+                        viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
+                    }
 
-                addedPathwayIds.add(pathway.id)
+                    addedPathwayIds.add(pathway.id)
 
-                customView.setOnClickListener {
-                    viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
+                    customView.setOnClickListener {
+                        viewModel.handle(OnBoardingViewActions.SelectCourse(pathway.id))
+                    }
                 }
             }
         }
