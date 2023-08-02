@@ -142,6 +142,11 @@ dependencies {
     implementation(GooglePlayDependencies.playCore)
     implementation(GooglePlayDependencies.installReferrer)
 
+    //for webide
+    implementation (MiscellaneousDependencies.uaUtils)
+    implementation (MiscellaneousDependencies.nanohttpd)
+    implementation (MiscellaneousDependencies.jsoup)
+
 
     //test
     testImplementation(TestDependencies.jUnit)

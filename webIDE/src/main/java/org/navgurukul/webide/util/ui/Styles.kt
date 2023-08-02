@@ -1,7 +1,7 @@
 package org.navgurukul.webide.util.ui
 
 import android.content.Context
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get

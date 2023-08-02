@@ -12,7 +12,7 @@ import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.lib.StoredConfig
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.util.StringUtils
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.ui.adapter.ProjectAdapter
 import timber.log.Timber

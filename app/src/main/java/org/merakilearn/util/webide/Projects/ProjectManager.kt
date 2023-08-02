@@ -1,17 +1,18 @@
-package org.navgurukul.webide.util.project
+package org.merakilearn.util.webide.Projects
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import org.merakilearn.R
+import org.merakilearn.extension.copyInputStreamToFile
+import org.merakilearn.extension.snack
 import org.merakilearn.util.webide.ROOT_PATH
-import org.navgurukul.webide.R
-import org.navgurukul.webide.extensions.copyInputStreamToFile
-import org.navgurukul.webide.extensions.snack
-import org.navgurukul.webide.ui.adapter.ProjectAdapter
-import org.navgurukul.webide.util.editor.ProjectFiles
+import org.merakilearn.util.webide.adapter.ProjectAdapter
+import org.merakilearn.util.webide.editor.ProjectFiles
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
@@ -26,14 +27,11 @@ object ProjectManager {
     fun generate(
         context: Context,
         name: String,
-        author: String,
-        description: String,
-        keywords: String,
         stream: InputStream?,
         adapter: ProjectAdapter,
         view: View,
         type: Int
-    ) {
+    ): String {
         var nameNew = name
         var counter = 1
         while (File(context.ROOT_PATH() + File.separator + nameNew).exists()) {
@@ -43,7 +41,7 @@ object ProjectManager {
 
         var status = false
         when (type) {
-            0 -> status = generateDefault(context, nameNew, author, description, keywords, stream)
+            0 -> status = generateDefault(context, nameNew, stream)
         }
 
         if (status) {
@@ -52,14 +50,12 @@ object ProjectManager {
         } else {
             view.snack(R.string.project_fail, Snackbar.LENGTH_SHORT)
         }
+        return nameNew
     }
 
     private fun generateDefault(
         context: Context,
         name: String,
-        author: String,
-        description: String,
-        keywords: String,
         stream: InputStream?
     ): Boolean {
         val projectFile = File("${context.ROOT_PATH()}/$name")
@@ -76,10 +72,7 @@ object ProjectManager {
                 ProjectFiles.getHtml(
                     context,
                     "default",
-                    name,
-                    author,
-                    description,
-                    keywords
+                    name
                 )
             )
             File(cssFile, "style.css").writeText(ProjectFiles.getCss(context, "default"))
@@ -92,6 +85,8 @@ object ProjectManager {
             }
         } catch (e: IOException) {
             Timber.e(e)
+            Log.i("TAG", e.message.toString())
+            e.printStackTrace()
             return false
         }
 
@@ -127,10 +122,7 @@ object ProjectManager {
                     ProjectFiles.getHtml(
                         context,
                         "import",
-                        nameNew,
-                        author,
-                        description,
-                        keywords
+                        nameNew
                     )
                 )
             }
@@ -161,10 +153,6 @@ object ProjectManager {
     fun getIndexFile(context: Context, project: String) =
         File("${context.ROOT_PATH()}/$project").walkTopDown()
             .filter { it.name == "index.html" }.firstOrNull()
-
-    fun getAllFile(context: Context, project: String) =
-        File("${context.ROOT_PATH()}/$project").walkTopDown()
-            .filter { it.name == "main.js" || it.name == "style.css" || it.name == "favicon.ico"}
 
     fun getRelativePath(context: Context, file: File, projectName: String) =
         file.path.replace(File("${context.ROOT_PATH()}/$projectName").path, "")

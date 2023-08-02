@@ -22,4 +22,28 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="code_line_shadow">#10000000</color>
+    <color name="code_number">#a0a0a0</color>
+    <color name="code_bg">#f8f8f8</color>
+    <color name="code_text">#222222</color>
+
+    <color name="code_line_shadow_dark">#10ffffff</color>
+    <color name="code_number_dark">#d3d3d3</color>
+    <color name="code_bg_dark">#222222</color>
+    <color name="code_text_dark">#f8f8f8</color>
+
+    <array name="code_light">
+        <item>@color/code_line_shadow</item>
+        <item>@color/code_number</item>
+        <item>@color/code_bg</item>
+        <item>@color/code_text</item>
+    </array>
+
+    <array name="code_dark">
+        <item>@color/code_line_shadow_dark</item>
+        <item>@color/code_number_dark</item>
+        <item>@color/code_bg_dark</item>
+        <item>@color/code_text_dark</item>
+    </array>
+
 </resources>

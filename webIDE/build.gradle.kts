@@ -1,47 +1,76 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.dynamicFeature)
+    id(Plugins.kotlinJetbrainAndroid)
+    id(Plugins.kotlinAndroid)
+    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinKapt)
+    id(Plugins.githubBenManes)
 }
-
 android {
     namespace = "org.navgurukul.webide"
-    compileSdk = 33
+    compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
-        applicationId = "org.navgurukul.webide"
-        minSdk = 21
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
+        minSdk = BuildConfigVersions.minSdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+
+    packagingOptions {
+        exclude("**/*.txt")
+        exclude("**/*.xml")
+        exclude( "**/*.properties")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
+    implementation(project(":app"))
+    implementation(project(":core"))
+    implementation(project(mapOf("path" to ":commonUI")))
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    kapt(MiscellaneousDependencies.AutoService)
+    implementation(MiscellaneousDependencies.AutoService)
+    //to get dynamic feature module
+    implementation(GooglePlayDependencies.playCore)
+
+    implementation(KotlinDependencies.kotlin)
+    //androidx
+    implementation(AndroidxDependencies.coreKtx)
+    implementation(AndroidxDependencies.appcompat)
+    implementation(MaterialDesignDependencies.materialDesign)
+    implementation(AndroidxDependencies.constraintLayout)
+
+    implementation(AndroidxDependencies.lifecycleExtensions)
+    implementation(AndroidxDependencies.lifecyclerRuntime)
+    kapt(AndroidxDependencies.lifecyclerCompiler)
+
+    implementation(AndroidxDependencies.multidex)
+    implementation(AndroidxDependencies.preference)
+
+    implementation (MiscellaneousDependencies.nanohttpd)
+    implementation (MiscellaneousDependencies.jsoup)
+    implementation (MiscellaneousDependencies.uaUtils)
+    implementation(MiscellaneousDependencies.jgit) {
+        exclude(module= "httpclient")
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+    }
+
+//    implementation (GooglePlayDependencies.playServicesLicenses)
+    implementation (MiscellaneousDependencies.mpchart)
+
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+
+    //test
+    testImplementation(TestDependencies.jUnit)
+
+    //androidTest
+    androidTestImplementation(TestDependencies.androidxJUnit)
+    androidTestImplementation(TestDependencies.espresso)
+    androidTestImplementation(TestDependencies.annotation)
 }

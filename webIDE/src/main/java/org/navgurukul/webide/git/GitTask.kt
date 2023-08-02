@@ -8,7 +8,7 @@ import android.os.Build
 import android.view.View
 import androidx.core.app.NotificationCompat
 import org.eclipse.jgit.lib.BatchingProgressMonitor
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import java.io.File
 import java.lang.ref.WeakReference
 

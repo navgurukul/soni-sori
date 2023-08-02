@@ -2,8 +2,8 @@ package org.navgurukul.webide
 
 import android.app.Application
 import android.content.Context
+import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
-import org.navgurukul.webIDE.BuildConfig
 import timber.log.Timber
 
 class WebIDE : Application() {

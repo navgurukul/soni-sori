@@ -2,7 +2,7 @@ package org.navgurukul.webide.ui.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import org.navgurukul.webIDE.databinding.ActivityAnalyzeBinding
+import org.navgurukul.webide.databinding.ActivityAnalyzeBinding
 import org.navgurukul.webide.ui.adapter.AnalyzeAdapter
 import org.navgurukul.webide.ui.fragment.analyze.AnalyzeFileFragment
 import java.io.File
