@@ -62,6 +62,7 @@ android {
     }
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
+    dynamicFeatures += setOf(":webIDE")
 }
 
 dependencies {

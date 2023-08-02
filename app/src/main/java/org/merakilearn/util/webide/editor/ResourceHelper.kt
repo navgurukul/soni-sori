@@ -9,7 +9,7 @@ import android.net.Uri
 import android.util.TypedValue
 import android.widget.ImageView
 import org.merakilearn.R
-import org.merakilearn.util.webide. Projects.ProjectManager
+import org.merakilearn.util.webide. project.ProjectManager
 import java.io.File
 
 object ResourceHelper {

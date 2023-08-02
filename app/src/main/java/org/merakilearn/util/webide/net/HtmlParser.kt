@@ -3,7 +3,7 @@ package org.merakilearn.util.webide.net
 import android.content.Context
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.merakilearn.util.webide.Projects.ProjectManager
+import org.merakilearn.util.webide.project.ProjectManager
 import timber.log.Timber
 import java.io.IOException
 

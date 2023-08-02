@@ -12,7 +12,7 @@ import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.extension.inflate
 import org.merakilearn.extension.snack
-import org.merakilearn.util.webide.Projects.ProjectManager
+import org.merakilearn.util.webide.project.ProjectManager
 import org.merakilearn.util.webide.net.HtmlParser
 
 class ProjectAdapter(

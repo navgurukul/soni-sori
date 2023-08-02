@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -24,21 +23,19 @@ import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
-import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
 import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.adapter.ProjectAdapter
-import org.merakilearn.util.webide.Projects.DataValidator
-import org.merakilearn.util.webide.Projects.ProjectManager
+import org.merakilearn.util.webide.project.DataValidator
+import org.merakilearn.util.webide.project.ProjectManager
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
 import java.io.InputStream
 import java.util.*
-import java.io.OutputStream
 
 class PlaygroundFragment : BaseFragment() {
 

@@ -1,4 +1,4 @@
-package org.merakilearn.util.webide.Projects
+package org.merakilearn.util.webide.project
 
 import android.content.Context
 import android.graphics.Bitmap
