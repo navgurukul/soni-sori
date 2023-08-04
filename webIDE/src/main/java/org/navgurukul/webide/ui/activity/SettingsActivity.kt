@@ -1,8 +1,9 @@
 package org.navgurukul.webide.ui.activity
 
 import android.os.Bundle
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivitySettingsBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivitySettingsBinding
+
 import org.navgurukul.webide.ui.fragment.SettingsFragment
 
 class SettingsActivity : ThemedActivity() {

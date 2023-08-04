@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.extensions.action
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.util.editor.ResourceHelper

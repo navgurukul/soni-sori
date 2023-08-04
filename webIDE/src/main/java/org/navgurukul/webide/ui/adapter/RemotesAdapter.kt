@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.DialogPullBinding
-import org.navgurukul.webIDE.databinding.ItemRemoteBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.DialogPullBinding
+import org.navgurukul.webide.databinding.ItemRemoteBinding
 import org.navgurukul.webide.git.GitWrapper
 import java.io.File
 import java.util.*

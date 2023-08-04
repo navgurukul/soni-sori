@@ -8,7 +8,7 @@ import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.util.TypedValue
 import android.widget.ImageView
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.util.project.ProjectManager
 import java.io.File
 

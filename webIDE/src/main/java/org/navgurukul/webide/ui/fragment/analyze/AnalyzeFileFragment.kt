@@ -18,7 +18,7 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ViewPortHandler
-import org.navgurukul.webIDE.databinding.FragmentAnalyzeFileBinding
+import org.navgurukul.webide.databinding.FragmentAnalyzeFileBinding
 import org.navgurukul.webide.extensions.compatColor
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get

@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.merakilearn.util.webide.ROOT_PATH
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivityWebIdeHomeBinding
-import org.navgurukul.webIDE.databinding.DialogCloneBinding
-import org.navgurukul.webIDE.databinding.DialogCreate2Binding
-import org.navgurukul.webIDE.databinding.DialogImportBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivityWebIdeHomeBinding
+import org.navgurukul.webide.databinding.DialogCloneBinding
+import org.navgurukul.webide.databinding.DialogCreate2Binding
+import org.navgurukul.webide.databinding.DialogImportBinding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startAndFinish
 import org.navgurukul.webide.git.GitWrapper

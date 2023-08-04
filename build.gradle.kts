@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath(Classpath.gradle)
         classpath(Classpath.kotlin)
+        classpath(Classpath.kotlinExtensions)
         // Newer versions may be available: please check here:
         // https://chaquo.com/chaquopy/doc/current/changelog.html
         classpath(Classpath.python)

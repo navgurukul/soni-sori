@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 
 class ScrimInsetsFrameLayout : FrameLayout {
 

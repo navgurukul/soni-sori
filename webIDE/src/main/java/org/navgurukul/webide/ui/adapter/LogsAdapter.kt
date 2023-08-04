@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.webkit.ConsoleMessage
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
-import org.navgurukul.webIDE.databinding.ItemLogBinding
+import org.navgurukul.webide.databinding.ItemLogBinding
 
 class LogsAdapter(private val localWithoutIndex: String, private val jsLogs: List<ConsoleMessage>, private val darkTheme: Boolean) : RecyclerView.Adapter<LogsAdapter.ViewHolder>() {
 

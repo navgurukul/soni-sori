@@ -9,8 +9,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.FragmentEditorBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.FragmentEditorBinding
 import org.navgurukul.webide.extensions.string
 import org.navgurukul.webide.ui.widget.Editor
 import org.navgurukul.webide.util.editor.ResourceHelper

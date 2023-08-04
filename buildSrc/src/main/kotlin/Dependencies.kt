@@ -102,6 +102,7 @@ object OkReplayDependencies {
 object GooglePlayDependencies {
     const val playCore = "com.google.android.play:core:1.10.0"
     const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
+    const val playServicesLicenses =  "com.google.android.gms:play-services-oss-licenses:${Versions.playServicesLicensesPlugin}"
 }
 
 object GMSDependencies {
@@ -196,7 +197,7 @@ object BuildConfigVersions {
 object Classpath {
     const val gradle = "com.android.tools.build:gradle:7.0.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-
+    const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
     const val python = "com.chaquo.python:gradle:10.0.1"

@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import org.eclipse.jgit.revwalk.RevCommit
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ItemGitLogBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ItemGitLogBinding
 import org.navgurukul.webide.extensions.snack
 
 class GitLogsAdapter(private val gitLogs: List<RevCommit>?) : RecyclerView.Adapter<GitLogsAdapter.ViewHolder>() {

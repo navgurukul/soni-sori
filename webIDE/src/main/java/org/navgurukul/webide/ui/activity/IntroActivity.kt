@@ -9,8 +9,8 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivityIntroBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivityIntroBinding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startAndFinish
 import org.navgurukul.webide.extensions.withFlags

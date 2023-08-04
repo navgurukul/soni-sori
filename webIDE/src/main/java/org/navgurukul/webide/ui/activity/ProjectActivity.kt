@@ -24,8 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import org.navgurukul.commonui.platform.BaseActivity
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.*
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.*
 import org.navgurukul.webide.extensions.*
 import org.navgurukul.webide.git.GitWrapper
 import org.navgurukul.webide.ui.adapter.FileAdapter

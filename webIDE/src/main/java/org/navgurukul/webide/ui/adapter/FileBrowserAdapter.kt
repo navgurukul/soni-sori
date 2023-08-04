@@ -9,10 +9,10 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import org.merakilearn.util.webide.ROOT_PATH
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.DialogInputSingleBinding
-import org.navgurukul.webIDE.databinding.ItemFileBrowserBinding
-import org.navgurukul.webIDE.databinding.ItemFileRootBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.DialogInputSingleBinding
+import org.navgurukul.webide.databinding.ItemFileBrowserBinding
+import org.navgurukul.webide.databinding.ItemFileRootBinding
 import org.navgurukul.webide.extensions.*
 import org.navgurukul.webide.ui.viewmodel.ProjectViewModel
 import org.navgurukul.webide.util.Constants

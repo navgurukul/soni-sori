@@ -6,9 +6,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivityRemotesBinding
-import org.navgurukul.webIDE.databinding.DialogRemoteAddBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivityRemotesBinding
+import org.navgurukul.webide.databinding.DialogRemoteAddBinding
+
 import org.navgurukul.webide.git.GitWrapper
 import org.navgurukul.webide.ui.adapter.RemotesAdapter
 import java.io.File

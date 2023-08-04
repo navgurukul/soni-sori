@@ -9,8 +9,8 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivitySplashBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivitySplashBinding
 import org.navgurukul.webide.extensions.*
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get

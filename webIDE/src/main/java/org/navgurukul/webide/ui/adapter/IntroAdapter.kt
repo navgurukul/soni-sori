@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.ui.fragment.IntroFragment
 
 class IntroAdapter(context: Context, fm: FragmentManager) : FragmentStatePagerAdapter(fm) {

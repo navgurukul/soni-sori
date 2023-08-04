@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.navgurukul.webIDE.databinding.FragmentIntroBinding
+import org.navgurukul.webide.databinding.FragmentIntroBinding
 
 class IntroFragment : Fragment() {
 

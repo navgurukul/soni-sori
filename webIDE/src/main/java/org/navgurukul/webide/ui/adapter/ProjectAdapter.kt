@@ -9,8 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ItemProject2Binding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ItemProject2Binding
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.snack
 import org.navgurukul.webide.extensions.withFlags

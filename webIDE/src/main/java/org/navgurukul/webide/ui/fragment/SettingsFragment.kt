@@ -13,7 +13,7 @@ import androidx.preference.SwitchPreference
 import org.merakilearn.util.webide.ROOT_PATH
 import org.navgurukul.webide.util.Prefs.get
 import org.navgurukul.webide.util.Prefs.set
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.extensions.intentFor
 import org.navgurukul.webide.extensions.startAndFinish
 import org.navgurukul.webide.ui.activity.SettingsActivity

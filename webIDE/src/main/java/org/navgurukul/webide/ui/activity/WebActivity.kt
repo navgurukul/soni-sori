@@ -15,11 +15,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import org.navgurukul.webIDE.R
-import org.navgurukul.webIDE.databinding.ActivityWebBinding
-import org.navgurukul.webIDE.databinding.DialogInputSingleBinding
-import org.navgurukul.webIDE.databinding.SheetLogsBinding
-import org.navgurukul.webIDE.databinding.SheetWebSettingsBinding
+import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.ActivityWebBinding
+import org.navgurukul.webide.databinding.DialogInputSingleBinding
+import org.navgurukul.webide.databinding.SheetLogsBinding
+import org.navgurukul.webide.databinding.SheetWebSettingsBinding
+
 import org.navgurukul.webide.ui.adapter.LogsAdapter
 import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs

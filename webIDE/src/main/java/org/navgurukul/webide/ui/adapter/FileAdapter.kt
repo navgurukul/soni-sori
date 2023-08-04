@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import org.navgurukul.webIDE.databinding.ItemFileProjectBinding
+import org.navgurukul.webide.databinding.ItemFileProjectBinding
 import org.navgurukul.webide.util.editor.ResourceHelper
 import java.io.File
 

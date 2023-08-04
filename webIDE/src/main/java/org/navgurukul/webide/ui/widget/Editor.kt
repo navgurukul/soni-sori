@@ -19,7 +19,7 @@ import android.widget.MultiAutoCompleteTextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
 import kotlinx.android.synthetic.main.dialog_refactor_2.view.*
-import org.navgurukul.webIDE.R
+import org.navgurukul.webide.R
 import org.navgurukul.webide.util.editor.Highlighter
 import org.navgurukul.webide.util.editor.ResourceHelper
 import java.util.*
