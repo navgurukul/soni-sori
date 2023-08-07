@@ -23,6 +23,7 @@ import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
@@ -64,6 +65,13 @@ class PlaygroundFragment : BaseFragment() {
 
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
+
+                val viewState = viewModel.viewState.value
+                viewState?.let { state ->
+                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
+                      //  ScratchActivity.start(requireContext())
+                    }
+                }
                 if (isLongClick)
                     showUpPopMenu(playgroundItemModel.file, view)
                 else
@@ -139,14 +147,13 @@ class PlaygroundFragment : BaseFragment() {
             navigator,
             contentsList!!,
             coordinatorLayout,
-            projectList
+            recycler_view
         )
-
         val layoutManager = GridLayoutManager(requireContext(), 4)
-        projectList.layoutManager = layoutManager
-        val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        projectList.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
-        projectList.adapter = projectAdapter
+        recycler_view.layoutManager = layoutManager
+//        recycler_view.adapter = projectAdapter
+
+
 
     }
 
@@ -160,21 +167,6 @@ class PlaygroundFragment : BaseFragment() {
 //        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
         projectIcon = rootView.faviconImage
-//        rootView.defaultIcon.isChecked = true
-//        rootView.defaultIcon.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                projectIcon.setImageResource(R.drawable.ic_launcher)
-//                imageStream = null
-//            }
-//        }
-
-//        rootView.chooseIcon.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                val intent = Intent(Intent.ACTION_GET_CONTENT)
-//                intent.type = "image/*"
-//                startActivityForResult(intent, SELECT_ICON)
-//            }
-//        }
 
         val createDialog = AlertDialog.Builder(requireContext())
             .setTitle("Create a new project")
@@ -187,15 +179,8 @@ class PlaygroundFragment : BaseFragment() {
         createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
                 val name = rootView.nameLayout.editText!!.text.toString()
-//                val author = rootView.authorLayout.editText!!.text.toString()
-//                val description = rootView.descLayout.editText!!.text.toString()
-//                val keywords = rootView.keyLayout.editText!!.text.toString()
-//                val type = rootView.typeSpinner.selectedItemPosition
 
                 prefs["name"] = name
-//                prefs["author"] = author
-//                prefs["description"] = description
-//                prefs["keywords"] = keywords
                 prefs["type"] = 0
 
                 Log.i("TAG", requireActivity().ROOT_PATH())
