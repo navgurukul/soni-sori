@@ -31,8 +31,12 @@ class PlaygroundRepo(
                 name = "Scratch",
                 iconResource = R.drawable.ic_scratch_cat,
             ),
-
+            PlaygroundItemModel(
+                PlaygroundTypes.WEB_DEV_IDE,
+                name="HTML/CSS/JS",
+                iconResource = R.drawable.ic_web_icon,
             )
+        )
     }
 
     suspend fun getUploadCredentials(): UploadCredentials? {

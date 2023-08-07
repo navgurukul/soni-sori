@@ -1,30 +1,42 @@
 package org.merakilearn.ui.playground
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
+import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.dialog_create.view.*
 import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
+import org.merakilearn.util.webide.Prefs.set
+import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
+import org.merakilearn.util.webide.Prefs
+import org.merakilearn.util.webide.ROOT_PATH
+import org.merakilearn.util.webide.adapter.ProjectAdapter
+import org.merakilearn.util.webide.project.DataValidator
+import org.merakilearn.util.webide.project.ProjectManager
 import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
-import java.io.OutputStream
+import java.io.InputStream
+import java.util.*
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -32,6 +44,14 @@ class PlaygroundFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
     var isLoading: Boolean = false
     lateinit var exportFile: File
+
+    private var contents: Array<String>? = null
+    private var contentsList: ArrayList<String>? = null
+    private lateinit var projectAdapter: ProjectAdapter
+
+    private lateinit var prefs: SharedPreferences
+    private var imageStream: InputStream? = null
+    private lateinit var projectIcon: ImageView
 
     override fun getLayoutResId() = R.layout.fragment_playground
 
@@ -45,6 +65,13 @@ class PlaygroundFragment : BaseFragment() {
 
         val adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
+
+                val viewState = viewModel.viewState.value
+                viewState?.let { state ->
+                    if (playgroundItemModel.type == PlaygroundTypes.SCRATCH) {
+                      //  ScratchActivity.start(requireContext())
+                    }
+                }
                 if (isLongClick)
                     showUpPopMenu(playgroundItemModel.file, view)
                 else
@@ -71,6 +98,12 @@ class PlaygroundFragment : BaseFragment() {
                     requireActivity(),
                     file = it.file
                 )
+                is PlaygroundViewEvents.OpenWebIDE -> {
+                    //   navigator.launchWebIDEApp(requireActivity(), Mode.Playground)
+                }
+                is PlaygroundViewEvents.OpenDialogToCreateWebProject -> {
+                    openDialogToCreateProject()
+                }
                 is PlaygroundViewEvents.OpenScratch -> {
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
                     startActivity(intent)
@@ -87,7 +120,95 @@ class PlaygroundFragment : BaseFragment() {
             getString(R.string.title_playground),
             R.attr.textPrimary
         )
+
+        setUpRecyclerViewForWebFiles()
     }
+
+    private fun setUpRecyclerViewForWebFiles() {
+        prefs = Prefs.defaultPrefs(requireContext())
+        contents = File(requireContext().ROOT_PATH()).list { dir, name ->
+            dir.isDirectory && name != ".git" && ProjectManager.isValid(
+                requireContext(),
+                name
+            )
+        }
+        contentsList = if (contents != null) {
+            ArrayList(Arrays.asList(*contents!!))
+        } else {
+            ArrayList()
+        }
+
+        Log.i("TAG", contentsList!!.size.toString())
+
+        DataValidator.removeBroken(requireContext(), contentsList!!)
+
+        projectAdapter = ProjectAdapter(
+            requireActivity(),
+            navigator,
+            contentsList!!,
+            coordinatorLayout,
+            recycler_view
+        )
+        val layoutManager = GridLayoutManager(requireContext(), 4)
+        recycler_view.layoutManager = layoutManager
+//        recycler_view.adapter = projectAdapter
+
+
+
+    }
+
+    private fun openDialogToCreateProject() {
+        val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
+//        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+//        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+        rootView.nameLayout.editText!!.setText(prefs["name", ""])
+//        rootView.authorLayout.editText!!.setText(prefs["author", ""])
+//        rootView.descLayout.editText!!.setText(prefs["description", ""])
+//        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
+
+        projectIcon = rootView.faviconImage
+
+        val createDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Create a new project")
+            .setView(rootView)
+            .setPositiveButton("CREATE", null)
+            .setNegativeButton("CANCEL", null)
+            .create()
+
+        createDialog.show()
+        createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
+                val name = rootView.nameLayout.editText!!.text.toString()
+
+                prefs["name"] = name
+                prefs["type"] = 0
+
+                Log.i("TAG", requireActivity().ROOT_PATH())
+                val projectName = ProjectManager.generate(
+                    requireContext(),
+                    name,
+                    imageStream,
+                    projectAdapter,
+                    coordinatorLayout,
+                    0
+                )
+                projectAdapter.notifyDataSetChanged()
+
+                //var intent: Intent? = null
+                try {
+                    navigator.launchWebIDEApp(requireActivity(), projectName)
+//                    intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
+//                    intent.putExtra("project" ,projectName)
+//                    context?.startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                createDialog.dismiss()
+            }
+        }
+    }
+
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
@@ -185,5 +306,11 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.handle(PlaygroundActions.RefreshLayout)
     }
 
+    companion object {
+
+        private const val SELECT_ICON = 100
+        private const val SETTINGS_CODE = 101
+        private const val IMPORT_PROJECT = 102
+    }
 
 }

@@ -103,6 +103,18 @@
     <string name="english"><b>ABC</b>\n\nEnglish</string>
     <string name="skip_login_english">Skip Login</string>
     <string name="continue_with_google_english">Continue with Google</string>
+    <string name="name_error">Please enter a name</string>
+    <string name="remote_error">Please enter a remote</string>
+    <string name="replace">Replace</string>
+    <string name="empty_field_no_no">This field cannot be empty</string>
+    <string name="refactor">Refactor</string>
+    <string name="comment">Comment</string>
+    <string name="project_success">Your project has been successfully created!</string>
+    <string name="project_fail">It seems something went wrong while creating the project.</string>
+    <string name="change_undone">This change cannot be undone.</string>
+    <string name="author_error">Please enter an author</string>
+    <string name="desc_error">Please enter a description</string>
+    <string name="keywords_error">Please enter some keywords</string>
 
 
     <string name="learn_python_header_english">Learn Python</string>
@@ -115,5 +127,9 @@
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
     <string name="stay_enrolled">Stay Enrolled</string>
+    <string name="enter_project_name">Enter Project Name</string>
+    <string name="create_favicon">Favicon</string>
+    <string name="replace_from">Replace From</string>
+    <string name="replace_to">Replace To</string>
 
 </resources>

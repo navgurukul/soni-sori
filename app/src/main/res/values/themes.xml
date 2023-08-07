@@ -4,4 +4,10 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:statusBarColor">@color/backgroundColor</item>
     </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+<!--        <item name="toolbarPopupStyle">@style/ThemeOverlay.AppCompat.Dark</item>-->
+<!--        <item name="symbolColor">@android:color/white</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
 </resources>
