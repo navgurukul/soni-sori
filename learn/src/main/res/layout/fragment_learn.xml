@@ -72,7 +72,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:textColor="?textPrimary"
-                    tools:text="Course" />
+                    tools:text="Course"
+                    tools:ignore="RtlSymmetry" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerviewCourse"
