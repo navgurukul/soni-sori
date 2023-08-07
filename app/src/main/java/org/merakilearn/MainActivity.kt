@@ -1,10 +1,12 @@
 package org.merakilearn
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +80,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     private val userRepo: UserRepo by inject()
     private val learnRepo: LearnRepo by inject()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -86,6 +89,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
+        val navController = navHostFragment.navController
+
+        val buttonNavigateToLearnCourse = findViewById<Button>(R.id.buttonNavigateToLearnCourse)
+
+        buttonNavigateToLearnCourse.setOnClickListener {
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+            navController.navigate(R.id.navigation_learn_course)
+        }
+
 
         if (mainActivityArgs.selectedPathwayId != null) {
             navHostFragment.navController.navigate(R.id.navigation_learn)

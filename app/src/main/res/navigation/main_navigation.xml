@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@+id/navigation_learn">
+    <fragment
+        android:id="@+id/navigation_learn_course"
+        android:name="org.navgurukul.learn.ui.learn.LearnCourseFragment"
+        android:label="Learn Course"
+        tools:layout="@layout/fragment_learn_course" />
 
     <fragment
         android:id="@+id/navigation_learn"
