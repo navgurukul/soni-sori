@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .into(it)
 
         it.setOnClickListener {
-            if (userRepo.isFakeLogin())
+            if (userRepo.isUserLoggedIn())
                 OnBoardingActivity.showLoginScreen(this)
             else
                 ProfileActivity.launch(this)
