@@ -16,8 +16,6 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.dialog_create.view.*
 import kotlinx.android.synthetic.main.fragment_playground.*
-import kotlinx.android.synthetic.main.item_project.*
-import kotlinx.android.synthetic.main.item_project.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -26,7 +24,6 @@ import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
 import org.merakilearn.datasource.model.PlaygroundTypes
-import org.merakilearn.extension.snack
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
@@ -75,7 +72,11 @@ class PlaygroundFragment : BaseFragment() {
                     }
                 }
                 if (isLongClick)
-                    showUpPopMenu(playgroundItemModel.file, view)
+                    if (playgroundItemModel.type == PlaygroundTypes.WEB_IDE_FILES){
+                        playgroundItemModel.webFile?.let { showAlertDialogWeb(it) }
+                    } else{
+                        showUpPopMenu(playgroundItemModel.file, view)
+                    }
                 else
                     viewModel.selectPlayground(playgroundItemModel)
 
@@ -101,8 +102,6 @@ class PlaygroundFragment : BaseFragment() {
                     file = it.file
                 )
                 is PlaygroundViewEvents.OpenWebIDE -> {
-                    //   navigator.launchWebIDEApp(requireActivity(), Mode.Playground)
-
                     setUpWebFiles(it.project)
                 }
                 is PlaygroundViewEvents.OpenDialogToCreateWebProject -> {
@@ -138,7 +137,7 @@ class PlaygroundFragment : BaseFragment() {
     private fun openDialogToCreateProject() {
         prefs = Prefs.defaultPrefs(requireContext())
         val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
-        rootView.nameLayout.editText!!.setText(prefs["name", ""])
+        rootView.nameLayout.editText!!.setText("")
 
         projectIcon = rootView.faviconImage
 
@@ -180,6 +179,19 @@ class PlaygroundFragment : BaseFragment() {
         }
     }
 
+    private fun showAlertDialogWeb(project: String){
+            view?.let {
+                AlertDialog.Builder(it.context)
+                    .setTitle("${requireView().context.getString(R.string.delete)} $project?")
+                    .setMessage(R.string.change_undone)
+                    .setPositiveButton(R.string.delete) { _, _ ->
+                        viewModel.handle(PlaygroundActions.DeleteWebFile(project))
+                        Toast.makeText(requireContext(), "Deleted $project.", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+    }
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
@@ -278,7 +290,6 @@ class PlaygroundFragment : BaseFragment() {
     }
 
     companion object {
-
         private const val SELECT_ICON = 100
         private const val SETTINGS_CODE = 101
         private const val IMPORT_PROJECT = 102

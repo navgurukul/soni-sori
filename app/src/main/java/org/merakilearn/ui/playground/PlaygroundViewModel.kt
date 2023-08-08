@@ -50,6 +50,7 @@ class PlaygroundViewModel(
             }
             is PlaygroundActions.RefreshLayout -> init()
             is PlaygroundActions.DeleteFile -> deleteFile(action.file)
+            is PlaygroundActions.DeleteWebFile -> deleteWebFile(action.project)
             is PlaygroundActions.ShareAsUrl -> shareAsUrl(action.file, action.context)
         }
     }
@@ -164,11 +165,9 @@ class PlaygroundViewModel(
             )
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
             PlaygroundTypes.WEB_DEV_IDE -> _viewEvents.postValue(PlaygroundViewEvents.OpenDialogToCreateWebProject)
-            PlaygroundTypes.WEB_IDE_FILES -> playgroundItemModel.webFile?.let {
-                PlaygroundViewEvents.OpenWebIDE(
-                    it
-                )
-            }?.let { _viewEvents.postValue(it) }
+            PlaygroundTypes.WEB_IDE_FILES -> playgroundItemModel.webFile?.let { webFile ->
+                _viewEvents.postValue(PlaygroundViewEvents.OpenWebIDE(webFile))
+            }
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(
                 PlaygroundViewEvents.OpenScratchWithFile(
                     playgroundItemModel.file
@@ -181,6 +180,12 @@ class PlaygroundViewModel(
         viewModelScope.launch {
             scratchRepository.deleteFile(file)
             pythonRepository.deleteFile(file)
+            init()
+        }
+    }
+    private fun deleteWebFile(project: String){
+        viewModelScope.launch {
+            ProjectManager.deleteProject(context, project)
             init()
         }
     }
@@ -269,6 +274,7 @@ sealed class PlaygroundActions : ViewModelAction {
     data class Query(val query: String?) : PlaygroundActions()
     object RefreshLayout : PlaygroundActions()
     class DeleteFile(val file: File) : PlaygroundActions()
+    class DeleteWebFile(val project: String) : PlaygroundActions()
 
     class ShareAsUrl(val file: File, val context: Context) : PlaygroundActions()
 }
