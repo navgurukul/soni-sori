@@ -138,10 +138,11 @@ class PlaygroundViewModel(
                 val file = File(filePath)
                 playgroundsList.add(
                     PlaygroundItemModel(
-                        PlaygroundTypes.WEB_DEV_IDE,
+                        PlaygroundTypes.WEB_IDE_FILES,
                         name = "",
                         file = file, // Update this line
-                        iconResource = R.drawable.ic_web_file
+                        iconResource = R.drawable.ic_web_file,
+                        webFile = filePath
                     )
                 )
             }
@@ -163,6 +164,11 @@ class PlaygroundViewModel(
             )
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
             PlaygroundTypes.WEB_DEV_IDE -> _viewEvents.postValue(PlaygroundViewEvents.OpenDialogToCreateWebProject)
+            PlaygroundTypes.WEB_IDE_FILES -> playgroundItemModel.webFile?.let {
+                PlaygroundViewEvents.OpenWebIDE(
+                    it
+                )
+            }?.let { _viewEvents.postValue(it) }
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(
                 PlaygroundViewEvents.OpenScratchWithFile(
                     playgroundItemModel.file
@@ -253,7 +259,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
-    object OpenWebIDE : PlaygroundViewEvents()
+    class OpenWebIDE(val project : String) : PlaygroundViewEvents()
     object OpenDialogToCreateWebProject : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
 

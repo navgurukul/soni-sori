@@ -16,6 +16,8 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.dialog_create.view.*
 import kotlinx.android.synthetic.main.fragment_playground.*
+import kotlinx.android.synthetic.main.item_project.*
+import kotlinx.android.synthetic.main.item_project.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -24,11 +26,11 @@ import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
 import org.merakilearn.datasource.model.PlaygroundTypes
+import org.merakilearn.extension.snack
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
 import org.merakilearn.util.webide.ROOT_PATH
-import org.merakilearn.util.webide.adapter.ProjectAdapter
 import org.merakilearn.util.webide.project.DataValidator
 import org.merakilearn.util.webide.project.ProjectManager
 import org.navgurukul.commonui.platform.BaseFragment
@@ -47,7 +49,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private var contents: Array<String>? = null
     private var contentsList: ArrayList<String>? = null
-    private lateinit var projectAdapter: ProjectAdapter
+    private lateinit var adapter: PlaygroundAdapter
 
     private lateinit var prefs: SharedPreferences
     private var imageStream: InputStream? = null
@@ -63,7 +65,7 @@ class PlaygroundFragment : BaseFragment() {
         val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
         recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
-        val adapter =
+        adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
 
                 val viewState = viewModel.viewState.value
@@ -100,6 +102,8 @@ class PlaygroundFragment : BaseFragment() {
                 )
                 is PlaygroundViewEvents.OpenWebIDE -> {
                     //   navigator.launchWebIDEApp(requireActivity(), Mode.Playground)
+
+                    setUpWebFiles(it.project)
                 }
                 is PlaygroundViewEvents.OpenDialogToCreateWebProject -> {
                     openDialogToCreateProject()
@@ -121,50 +125,20 @@ class PlaygroundFragment : BaseFragment() {
             R.attr.textPrimary
         )
 
-        setUpRecyclerViewForWebFiles()
     }
 
-    private fun setUpRecyclerViewForWebFiles() {
-        prefs = Prefs.defaultPrefs(requireContext())
-        contents = File(requireContext().ROOT_PATH()).list { dir, name ->
-            dir.isDirectory && name != ".git" && ProjectManager.isValid(
-                requireContext(),
-                name
-            )
-        }
-        contentsList = if (contents != null) {
-            ArrayList(Arrays.asList(*contents!!))
-        } else {
-            ArrayList()
-        }
-
-        Log.i("TAG", contentsList!!.size.toString())
-
-        DataValidator.removeBroken(requireContext(), contentsList!!)
-
-        projectAdapter = ProjectAdapter(
-            requireActivity(),
-            navigator,
-            contentsList!!,
-            coordinatorLayout,
-            recycler_view
-        )
-        val layoutManager = GridLayoutManager(requireContext(), 4)
-        recycler_view.layoutManager = layoutManager
-//        recycler_view.adapter = projectAdapter
-
-
-
+    private fun setUpWebFiles(project : String){
+            try {
+                navigator.launchWebIDEApp(requireActivity(), project)
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+            }
     }
 
     private fun openDialogToCreateProject() {
+        prefs = Prefs.defaultPrefs(requireContext())
         val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
-//        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
-//        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
         rootView.nameLayout.editText!!.setText(prefs["name", ""])
-//        rootView.authorLayout.editText!!.setText(prefs["author", ""])
-//        rootView.descLayout.editText!!.setText(prefs["description", ""])
-//        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
 
         projectIcon = rootView.faviconImage
 
@@ -188,18 +162,15 @@ class PlaygroundFragment : BaseFragment() {
                     requireContext(),
                     name,
                     imageStream,
-                    projectAdapter,
+                    adapter,
                     coordinatorLayout,
                     0
                 )
-                projectAdapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
 
                 //var intent: Intent? = null
                 try {
                     navigator.launchWebIDEApp(requireActivity(), projectName)
-//                    intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
-//                    intent.putExtra("project" ,projectName)
-//                    context?.startActivity(intent)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
