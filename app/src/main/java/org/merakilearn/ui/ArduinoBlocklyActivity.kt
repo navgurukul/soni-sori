@@ -82,7 +82,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         onBackPressed()
     }
 
-    class MyWebViewClient internal constructor(private val activity: Activity) : android.webkit.WebViewClient()  {
+    inner class MyWebViewClient internal constructor(private val activity: Activity) : android.webkit.WebViewClient()  {
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -98,6 +98,12 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            if (progressBar.visibility == View.VISIBLE)
+                progressBar.visibility = View.GONE
         }
     }
 
