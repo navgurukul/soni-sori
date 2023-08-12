@@ -37,7 +37,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         webView.settings.allowFileAccess = true
         webView.settings.allowFileAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Arduino")
-        webView.loadUrl("https://arduino.merd-bhanwaridevi.merakilearn.org/")
+        webView.loadUrl("https://arduino.merd-bhanwaridevi.merakilearn.org/blockly-home")
     }
 
     override fun onRequestPermissionsResult(
@@ -84,13 +84,13 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
     inner class MyWebViewClient internal constructor(private val activity: Activity) : android.webkit.WebViewClient()  {
 
-        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             val url: String = request?.url.toString();
             view?.loadUrl(url)
             return true
         }
 
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
             webView.loadUrl(url)
             return true
