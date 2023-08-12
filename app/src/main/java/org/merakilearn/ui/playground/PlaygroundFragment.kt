@@ -17,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.ui.ArduinoBlocklyActivity
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.navgurukul.commonui.platform.BaseFragment
@@ -77,6 +78,10 @@ class PlaygroundFragment : BaseFragment() {
                 is PlaygroundViewEvents.OpenScratchWithFile -> {
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
                     intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
+                    startActivity(intent)
+                }
+                is PlaygroundViewEvents.OpenArduinoBlockly -> {
+                    val intent = Intent(requireContext(), ArduinoBlocklyActivity::class.java)
                     startActivity(intent)
                 }
             }

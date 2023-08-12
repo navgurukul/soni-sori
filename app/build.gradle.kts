@@ -30,11 +30,11 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
         }
 
         getByName("debug") {
-            buildConfigField("String", "SERVER_URL", "\"https://dev-api.merakilearn.org/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
         }
     }
     compileOptions {

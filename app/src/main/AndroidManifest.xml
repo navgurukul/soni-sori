@@ -13,6 +13,7 @@
 
     <application
         android:name=".MerakiApp"
+        android:hardwareAccelerated="true"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -129,6 +130,14 @@
         </activity>
         <activity
             android:name=".ui.ScratchActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity
+            android:name=".ui.ArduinoBlocklyActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity"
