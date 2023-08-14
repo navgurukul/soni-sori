@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+
         android:name=".MerakiApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
