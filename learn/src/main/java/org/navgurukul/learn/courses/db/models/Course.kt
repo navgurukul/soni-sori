@@ -25,6 +25,7 @@ data class Course(
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
     var completedPortion : Int? = null
+// ... other properties for the new course
 ){
     @Ignore
     @Json(name = "exercises")
