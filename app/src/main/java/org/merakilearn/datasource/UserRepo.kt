@@ -8,10 +8,10 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
+import org.merakilearn.datasource.network.UserUpdateName
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
-import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -71,16 +71,20 @@ class UserRepo(
 
     fun getCurrentUser(): LoginResponse.User? {
         val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
-        return if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
-            val fakeUserLoginResponseString =
-                preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-            fakeUserLoginResponseString?.objectify()
-        } else {
-            return if (userLoginResponseString.isNullOrEmpty()) {
-                null
+        return try {
+            if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
+                val fakeUserLoginResponseString =
+                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+                fakeUserLoginResponseString?.objectify()
             } else {
-                userLoginResponseString.objectify()
+                return if (userLoginResponseString.isNullOrEmpty()) {
+                    null
+                } else {
+                    userLoginResponseString.objectify()
+                }
             }
+        } catch (e : Exception){
+            throw IllegalStateException("Current user is null")
         }
     }
 

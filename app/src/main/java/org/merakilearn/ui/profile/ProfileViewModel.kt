@@ -136,10 +136,17 @@ class ProfileViewModel(
         viewModelScope.launch {
             try {
                 setState { copy(isLoading = false) }
-                if (partnerId != null) {
-                    val partnerData = userRepo.getPartnerData(partnerId?.toInt())
-                    _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                if (!partnerId.isNullOrEmpty()){
+                    val partnerData = partnerId.toIntOrNull()?.let { userRepo.getPartnerData(it) }
+
+                    partnerData?.let {
+                            _viewEvents.postValue(ProfileViewEvents.ShowPartnerData(partnerData))
+                        }
                 }
+                else {
+                    throw IllegalArgumentException("Input string is null")
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

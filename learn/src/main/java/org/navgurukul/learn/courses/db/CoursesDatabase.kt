@@ -4,12 +4,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
+import androidx.room.util.TableInfo.Column
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 10
+const val DB_VERSION = 13
 
 @Dao
 interface PathwayDao {
@@ -335,6 +336,40 @@ val MIGRATION_9_10 = object : Migration(9,10){
         database.execSQL(
             "ALTER TABLE `pathway_course` ADD COLUMN 'completed_portion' INTEGER"
         )
+    }
+}
+
+val MIGRATION_10_11 = object : Migration(10,11){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `pathway` ADD COLUMN 'platform' TEXT"
+        )
+    }
+}
+
+val MIGRATION_11_12 = object : Migration(11, 12){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE `course_assessment` ADD COLUMN 'assess_attemptCount' INTEGER"
+        )
+    }
+}
+
+val MIGRATION_12_13 = object : Migration(12, 13){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("DROP TABLE pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, `platform` TEXT NOT NULL, 'shouldShowCertificate' INTEGER NOT NULL, PRIMARY KEY(`id`)) ")
+        database.execSQL("DROP TABLE pathway_course")
+        database.execSQL("CREATE TABLE `pathway_course`(" +
+                " `id` TEXT NOT NULL," +
+                " `name` TEXT NOT NULL," +
+                " `shortDescription` TEXT," +
+                " `pathwayId` INTEGER," +
+                " `supportedLanguages` TEXT NOT NULL DEFAULT '[\"en\"]',"+
+                " `completedPortion` INTEGER," +
+                "PRIMARY KEY(`id`) )"
+        )
+
     }
 
 }

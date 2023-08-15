@@ -30,6 +30,7 @@ import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import java.util.*
+import org.navgurukul.learn.courses.network.model.ConstantString
 
 
 @Parcelize
@@ -132,8 +133,8 @@ class ExerciseFragment : Fragment() {
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    val fromHtml = it.value.replace("<br>", "\n").replace("&emsp;", " ")
-                    merakiNavigator.openPlayground(this.requireContext(), fromHtml)
+                    val fromHtml = it.value.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT).replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
+                    merakiNavigator.openPlayground(this.requireContext(), fromHtml, true)
                 }
             } else if (it is LinkBaseCourseContent) {
                 it.link?.let { url ->

@@ -1,6 +1,7 @@
 package org.merakilearn.ui.playground
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -60,7 +61,7 @@ class PlaygroundFragment : BaseFragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is PlaygroundViewEvents.OpenPythonPlayground -> navigator.openPlayground(
-                    requireContext()
+                    requireContext(), null, isFromCourse = false
                 )
                 is PlaygroundViewEvents.OpenTypingApp -> navigator.launchTypingApp(
                     requireActivity(),
@@ -93,11 +94,24 @@ class PlaygroundFragment : BaseFragment() {
         popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.delete -> viewModel.handle(PlaygroundActions.DeleteFile(file))
+                R.id.delete -> {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Delete file")
+                            .setMessage("Are you sure you want to delete this file?")
+                            .setPositiveButton("Delete") { _, _ ->
+                                viewModel.handle(PlaygroundActions.DeleteFile(file))
+                            }
+                            .setNegativeButton("Cancel", null)
+                            .show()
+                }
                 R.id.shareSavedFile -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/x-python"
-                    val uri = FileProvider.getUriForFile(requireContext(),"org.merakilearn.fileprovider",file)
+                    val uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "org.merakilearn.fileprovider",
+                        file
+                    )
                     intent.putExtra(Intent.EXTRA_STREAM, uri)
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
                     intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
@@ -105,8 +119,9 @@ class PlaygroundFragment : BaseFragment() {
                     startActivity(Intent.createChooser(intent, "Share File"))
                 }
                 R.id.exportSavedFile -> {
-                    var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
-                    if(mimeType.isNullOrEmpty())
+                    var mimeType =
+                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
+                    if (mimeType.isNullOrEmpty())
                         mimeType = "application/octet-stream"
                     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                         addCategory(Intent.CATEGORY_OPENABLE)
@@ -116,6 +131,13 @@ class PlaygroundFragment : BaseFragment() {
                     }
                     startActivityForResult(intent, 100)
                 }
+                R.id.shareAsUrl -> viewModel.handle(
+                    PlaygroundActions.ShareAsUrl(
+                        file,
+                        requireContext()
+                    )
+                )
+
             }
             true
         }
@@ -140,19 +162,20 @@ class PlaygroundFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             val fileUri = data!!.data
             try {
                 val outputStream = requireContext().contentResolver.openOutputStream(fileUri!!)
                 outputStream?.write(exportFile.readBytes())
                 outputStream?.close()
-                Toast.makeText(requireContext(),"File exported successfully!", Toast.LENGTH_SHORT).show()
-            }
-            catch (e: Exception){
-                Toast.makeText(requireContext(),"File exported incorrectly!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "File exported successfully!", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "File exported incorrectly!", Toast.LENGTH_SHORT)
+                    .show()
                 println(e.localizedMessage)
             }
-        } else if (requestCode == 100 && resultCode != Activity.RESULT_OK){
+        } else if (requestCode == 100 && resultCode != Activity.RESULT_OK) {
             Toast.makeText(requireContext(), "File export failed!", Toast.LENGTH_SHORT).show()
         }
     }

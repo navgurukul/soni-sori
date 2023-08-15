@@ -93,7 +93,9 @@ class LearnFragment : Fragment() {
         initRecyclerView()
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
+        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+//        mBinding.batchCard.root.visibility = View.GONE
+//        mBinding.upcoming.root.visibility = View.GONE
 
         initSwipeRefresh()
 
@@ -148,8 +150,10 @@ class LearnFragment : Fragment() {
 
             if (it.code == "PRGPYT"){
                 mBinding.certificate.visibility = View.VISIBLE
+                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
             } else {
                 mBinding.certificate.visibility = View.GONE
+                mBinding.dotAdding.visibility = View.GONE
             }
 
         }
@@ -299,11 +303,6 @@ class LearnFragment : Fragment() {
         val mCardStmtFile = File(folder, fileName)
 
         context?.let {
-            val fileUri: Uri = FileProvider.getUriForFile(
-                it,
-                "org.merakilearn.provider",
-                mCardStmtFile
-            )
 
             // We will get a page from the PDF file by calling openPage
             val fileDescriptor = ParcelFileDescriptor.open(
@@ -332,23 +331,28 @@ class LearnFragment : Fragment() {
     }
 
     private fun showShareIntent(pdfUrl: String) {
-        val fileName = "certificate.pdf" // -> maven.pdf
-        val extStorageDirectory = context?.filesDir
-        val folder = File(extStorageDirectory, "certificate")
-        val file = File(folder, fileName)
+        try {
+            val fileName = "certificate.pdf" // -> maven.pdf
+            val extStorageDirectory = context?.filesDir
+            val folder = File(extStorageDirectory, "certificate")
+            val file = File(folder, fileName)
 
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "application/pdf"
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "application/pdf"
 
-        val fileUri: Uri = FileProvider.getUriForFile(
-            requireContext(),
-            "org.merakilearn.provider",
-            file
-        )
+            val fileUri: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "org.merakilearn.provider",
+                file
+            )
 
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        requireContext().startActivity(shareIntent)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            requireContext().startActivity(shareIntent)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(context, "There is some issue to share", Toast.LENGTH_LONG).show()
+        }
 
     }
 
@@ -473,7 +477,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        mCourseAdapter = CourseAdapter {
+        mCourseAdapter = CourseAdapter(requireContext()) {
             viewModel.selectCourse(it)
         }
         val layoutManager =

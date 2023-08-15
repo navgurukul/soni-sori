@@ -54,5 +54,4 @@ class InstallReferrerManager(val application: Application, val userRepo: UserRep
             }
         }
     }
-
 }

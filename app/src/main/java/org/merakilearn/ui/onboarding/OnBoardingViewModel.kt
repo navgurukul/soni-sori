@@ -82,7 +82,9 @@ class OnBoardingViewModel(
             if (userRepo.isUserLoggedIn()) {
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen())
             } else {
-                _viewEvents.setValue(OnBoardingViewEvents.ShowSelectLanguageFragment)
+                _viewEvents.setValue(
+                    OnBoardingViewEvents.ShowOnBoardingPages
+                )
             }
         }
     }
@@ -92,12 +94,6 @@ class OnBoardingViewModel(
             OnBoardingViewActions.NavigateNextFromOnBoardingScreen -> _viewEvents.setValue(
                 OnBoardingViewEvents.ShowPartnerScreen
             )
-            is OnBoardingViewActions.SelectLanguage -> {
-                corePreferences.selectedLanguage = action.language.code
-                _viewEvents.setValue(
-                    OnBoardingViewEvents.ShowOnBoardingPages
-                )
-            }
             is OnBoardingViewActions.SelectCourse -> {
                 corePreferences.lastSelectedPathWayId = action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
@@ -132,7 +128,6 @@ sealed class OnBoardingViewEvents : ViewEvents {
 
 sealed class OnBoardingViewActions : ViewModelAction {
     object NavigateNextFromOnBoardingScreen : OnBoardingViewActions()
-    data class SelectLanguage(val language: OnBoardingViewModel.Language) : OnBoardingViewActions()
     data class SelectCourse(val pathwayId: Int) : OnBoardingViewActions()
     data class OpenHomeScreen(val pathwayId: Int) : OnBoardingViewActions()
     object GetPartnerData : OnBoardingViewActions()

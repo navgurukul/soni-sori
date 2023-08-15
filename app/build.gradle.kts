@@ -34,7 +34,7 @@ android {
         }
 
         getByName("debug") {
-            buildConfigField("String", "SERVER_URL", "\"https://dev-api.merakilearn.org/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
         }
     }
     compileOptions {
@@ -136,6 +136,7 @@ dependencies {
     //glide
     implementation(GlideDependencies.glide)
     kapt(GlideDependencies.glideCompiler)
+    implementation (GlideDependencies.glideSvg)
 
     //Google play
     implementation(GooglePlayDependencies.playCore)
@@ -149,6 +150,9 @@ dependencies {
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
     implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+
+    implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
 
 }
 

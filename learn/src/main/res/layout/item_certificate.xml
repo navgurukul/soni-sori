@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center_vertical"
     android:padding="@dimen/spacing_4x"
@@ -10,9 +10,9 @@
     <ImageView
         android:id="@+id/ivCertificateLogo"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/grey_icon_certificate"
-        android:layout_height="wrap_content" />
+        android:src="@drawable/grey_icon_certificate" />
 
     <TextView
         android:id="@+id/txtCertificate"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/spacing_4x"
-        android:text="@string/python_certificate"
+        android:text="Python Certificate"
         android:layout_height="wrap_content"/>
 
     <TextView

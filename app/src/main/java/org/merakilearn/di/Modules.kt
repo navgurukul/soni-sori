@@ -121,10 +121,6 @@ val networkModule = module {
                         BaseCourseContent.COMPONENT_QUESTION_CODE
                     )
                     .withSubtype(
-                        QuestionExpressionBaseCourseContent::class.java,
-                        BaseCourseContent.COMPONENT_QUESTION_EXPRESSION
-                    )
-                    .withSubtype(
                         BlockQuoteBaseCourseContent::class.java,
                         BaseCourseContent.COMPONENT_BLOCK_QUOTE
                     )
@@ -157,6 +153,10 @@ val networkModule = module {
                         BaseCourseContent.COMPONENT_YOUTUBE_VIDEO
                     )
                     .withSubtype(
+                        QuestionExpressionBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_QUESTION_EXPRESSION
+                    )
+                    .withSubtype(
                         UnknownBaseCourseContent::class.java,
                         BaseCourseContent.COMPONENT_UNKNOWN
                     )
@@ -164,12 +164,10 @@ val networkModule = module {
             )
             .add(
                 PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
+                    .withSubtype(CourseAssessmentContent::class.java, CourseContentType.assessment.name)
                     .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
                     .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
-                    .withSubtype(
-                        CourseAssessmentContent::class.java,
-                        CourseContentType.assessment.name
-                    )
+
             )
             .build()
     }
@@ -198,7 +196,7 @@ val repositoryModule = module {
     single { Config() }
     single { ClassesRepo(get()) }
     single { SettingsRepo(get()) }
-    single { PlaygroundRepo() }
+    single { PlaygroundRepo(get()) }
     single {
         UserRepo(
             get(),
