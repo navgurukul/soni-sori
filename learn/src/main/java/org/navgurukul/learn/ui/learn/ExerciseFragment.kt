@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,7 +56,14 @@ class ExerciseFragment : Fragment() {
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
-    val pythonEditorViewModel: PythonEditorViewModel by viewModel()
+    private val viewModel: PythonEditorViewModel by viewModel(parameters = {
+        parametersOf(
+            pythonEditorArgs, ContextCompat.getColor(requireContext(), org.navgurukul.playground.R.color.error_text)
+        )
+    })
+
+    private val pythonEditorArgs: PythonEditorArgs by fragmentArgs()
+
 
     companion object {
         fun newInstance(
@@ -109,8 +117,6 @@ class ExerciseFragment : Fragment() {
 
         initContentRV()
         initScreenRefresh()
-
-
 
     }
 
@@ -182,7 +188,7 @@ class ExerciseFragment : Fragment() {
         mBinding.recyclerViewSlug.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
         )
-        contentAdapter.setPythonEditorViewModel(pythonEditorViewModel, viewLifecycleOwner)
+
     }
 
 }

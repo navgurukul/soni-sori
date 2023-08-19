@@ -17,8 +17,6 @@ import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.*
 import org.navgurukul.learn.util.ColorProvider
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
-import org.navgurukul.playground.editor.PythonEditorArgs
-import org.navgurukul.playground.editor.PythonEditorViewModel
 import retrofit2.Retrofit
 
 val viewModelModule = module{
