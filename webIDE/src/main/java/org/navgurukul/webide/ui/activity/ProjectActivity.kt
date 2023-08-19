@@ -54,7 +54,7 @@ class ProjectActivity : BaseActivity() {
 
     private lateinit var projectName: String
     private lateinit var projectDir: File
-    private lateinit var indexFile: File
+    private var indexFile: File? = null
     private lateinit var props: Array<String?>
     private lateinit var prefs: SharedPreferences
 
@@ -63,98 +63,103 @@ class ProjectActivity : BaseActivity() {
     private lateinit var binding: ActivityProjectBinding
     override fun shouldInstallDynamicModule() = true
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         projectName = intent.getStringExtra("project")!!
         projectDir = File("${this.ROOT_PATH()}/$projectName")
-        indexFile = ProjectManager.getIndexFile(this, projectName)!!
-        setTheme(Styles.getThemeInt(this))
-        super.onCreate(savedInstanceState)
-        binding = ActivityProjectBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        indexFile = ProjectManager.getIndexFile(this, projectName)
+        indexFile?.let{
+            setTheme(Styles.getThemeInt(this))
+            binding = ActivityProjectBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        prefs = defaultPrefs(this)
-        props = HtmlParser.getProperties(this, projectName)
-        fileAdapter = FileAdapter(this, ArrayList())
+            prefs = defaultPrefs(this)
+            props = HtmlParser.getProperties(this, projectName)
+            fileAdapter = FileAdapter(this, ArrayList())
 
-        projectViewModel = ViewModelProviders.of(this).get(ProjectViewModel::class.java)
-        projectViewModel.openFiles.observe(this, Observer { fileAdapter.update(it) })
-        projectViewModel.openFiles.value = if (intent.hasExtra("files")) {
-            intent.getStringArrayListExtra("files")
-        } else {
-            arrayListOf(indexFile.path)
-        }
+            projectViewModel = ViewModelProviders.of(this).get(ProjectViewModel::class.java)
+            projectViewModel.openFiles.observe(this, Observer { fileAdapter.update(it) })
+            projectViewModel.openFiles.value = if (intent.hasExtra("files")) {
+                intent.getStringArrayListExtra("files")
+            } else {
+                arrayListOf(it.path)
+            }
 
-        ProjectManager.getAllFile(this, projectName).forEach {
-            projectViewModel.addOpenFile(it.path)
-        }
-        fileSpinner = Spinner(this).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            ProjectManager.getAllFile(this, projectName).forEach {
+                projectViewModel.addOpenFile(it.path)
+            }
+            fileSpinner = Spinner(this).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                adapter = fileAdapter
+                onItemSelected {
+                    supportFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.editorFragment,
+                            getFragment(projectViewModel.openFiles.value!![it])
+                        )
+                        .commit()
+                }
+            }
+
+            binding.include.toolbar.addView(fileSpinner)
+            setSupportActionBar(binding.include.toolbar)
+            supportActionBar!!.title = ""
+
+            toggle = ActionBarDrawerToggle(
+                this,
+                binding.drawerLayout,
+                binding.include.toolbar,
+                R.string.action_drawer_open,
+                R.string.action_drawer_close
             )
-            adapter = fileAdapter
-            onItemSelected {
-                supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.editorFragment,
-                        getFragment(projectViewModel.openFiles.value!![it])
-                    )
-                    .commit()
+            with(binding.drawerLayout) {
+                addDrawerListener(toggle)
+                setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
+                setStatusBarBackgroundColor(this@ProjectActivity.compatColor(R.color.colorPrimaryDark))
+                onDrawerOpened {
+                    props = HtmlParser.getProperties(this@ProjectActivity, projectName)
+                    binding.headerTitle.text = props[0]
+                    binding.headerDesc.text = props[1]
+                }
             }
-        }
 
-        binding.include.toolbar.addView(fileSpinner)
-        setSupportActionBar(binding.include.toolbar)
-        supportActionBar!!.title = ""
-
-        toggle = ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            binding.include.toolbar,
-            R.string.action_drawer_open,
-            R.string.action_drawer_close
-        )
-        with(binding.drawerLayout) {
-            addDrawerListener(toggle)
-            setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
-            setStatusBarBackgroundColor(this@ProjectActivity.compatColor(R.color.colorPrimaryDark))
-            onDrawerOpened {
-                props = HtmlParser.getProperties(this@ProjectActivity, projectName)
-                binding.headerTitle.text = props[0]
-                binding.headerDesc.text = props[1]
-            }
-        }
-
-        binding.fileBrowser.layoutManager = LinearLayoutManager(this)
-        binding.fileBrowser.itemAnimator = DefaultItemAnimator()
-        adapter = FileBrowserAdapter(this, projectName, binding.drawerLayout, projectViewModel) {
-            if (it.isFile) {
-                if (projectViewModel.openFiles.value!!.contains(it.path)) {
-                    setFragment(it.path, false)
-                    binding.drawerLayout.closeDrawers()
-                } else {
-                    if (!ProjectManager.isBinaryFile(it) || ProjectManager.isImageFile(it)) {
-                        setFragment(it.path, true)
+            binding.fileBrowser.layoutManager = LinearLayoutManager(this)
+            binding.fileBrowser.itemAnimator = DefaultItemAnimator()
+            adapter = FileBrowserAdapter(this, projectName, binding.drawerLayout, projectViewModel) {
+                if (it.isFile) {
+                    if (projectViewModel.openFiles.value!!.contains(it.path)) {
+                        setFragment(it.path, false)
                         binding.drawerLayout.closeDrawers()
                     } else {
-                        binding.drawerLayout.snack(R.string.not_text_file)
+                        if (!ProjectManager.isBinaryFile(it) || ProjectManager.isImageFile(it)) {
+                            setFragment(it.path, true)
+                            binding.drawerLayout.closeDrawers()
+                        } else {
+                            binding.drawerLayout.snack(R.string.not_text_file)
+                        }
                     }
                 }
             }
-        }
 
-        binding.fileBrowser.adapter = adapter
+            binding.fileBrowser.adapter = adapter
 
-        binding.headerIcon.setImageBitmap(ProjectManager.getFavicon(this, projectName))
-        binding.headerTitle.text = props[0]
-        binding.headerDesc.text = props[1]
+            binding.headerIcon.setImageBitmap(ProjectManager.getFavicon(this, projectName))
+            binding.headerTitle.text = props[0]
+            binding.headerDesc.text = props[1]
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.statusBarColor = 0x00000000
-            val description = ActivityManager.TaskDescription(
-                projectName,
-                ProjectManager.getFavicon(this, projectName)
-            )
-            this.setTaskDescription(description)
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.statusBarColor = 0x00000000
+                val description = ActivityManager.TaskDescription(
+                    projectName,
+                    ProjectManager.getFavicon(this, projectName)
+                )
+                this.setTaskDescription(description)
+            }
+        }?: kotlin.run {
+
         }
     }
 
@@ -224,10 +229,12 @@ class ProjectActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_run -> startActivity<WebActivity>(
-                "url" to "file:///${indexFile.path}",
-                "name" to projectName
-            )
+            R.id.action_run -> indexFile?.let{
+                startActivity<WebActivity>(
+                    "url" to "file:///${it.path}",
+                    "name" to projectName
+                )
+            }
 
             R.id.action_import_file -> with(Intent(Intent.ACTION_GET_CONTENT)) {
                 type = "file/*"
