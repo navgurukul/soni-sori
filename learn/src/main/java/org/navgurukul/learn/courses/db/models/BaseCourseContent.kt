@@ -250,6 +250,8 @@ data class OptionResponse(
         val id : Int,
         @Json(name = "value")
         val value: String,
+        @Json(name = "type")
+        val type:String,
         @Ignore
         var viewState: OptionViewState = OptionViewState.NOT_SELECTED
 )
