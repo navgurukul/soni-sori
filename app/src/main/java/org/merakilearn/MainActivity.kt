@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .centerCrop()
             .transform(CircleCrop())
 
-        val thumbnail = GlideApp.with(this)
+        val thumbnail = GlideApp.with(it)
             .load(R.drawable.ic_log_out)
             .apply(requestOptions)
 
