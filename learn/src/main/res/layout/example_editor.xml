@@ -101,6 +101,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
             android:text="outhput"
+            tools:text="StringData"
+            android:visibility="visible"
             android:textColor="@color/colorRed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
