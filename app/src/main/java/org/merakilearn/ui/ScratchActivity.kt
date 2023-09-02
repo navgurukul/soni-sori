@@ -20,7 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -75,7 +74,6 @@ class ScratchActivity : AppCompatActivity() {
         webView.settings.allowUniversalAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Scratch")
         webView.settings.domStorageEnabled = true;
-        webView.settings.setAppCacheEnabled(true);
         webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
     }
 

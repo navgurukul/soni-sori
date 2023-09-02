@@ -31,15 +31,15 @@ fun DrawerLayout.onDrawerOpened(onDrawerOpened: () -> Unit) {
 
 fun ViewPropertyAnimator.onAnimationStop(onAnimationStop: () -> Unit) {
     setListener(object : Animator.AnimatorListener {
-        override fun onAnimationEnd(p0: Animator?) {
+        override fun onAnimationEnd(p0: Animator) {
             onAnimationStop.invoke()
         }
 
-        override fun onAnimationCancel(p0: Animator?) {
+        override fun onAnimationCancel(p0: Animator) {
             onAnimationStop.invoke()
         }
 
-        override fun onAnimationStart(p0: Animator?) {}
-        override fun onAnimationRepeat(p0: Animator?) {}
+        override fun onAnimationStart(p0: Animator) {}
+        override fun onAnimationRepeat(p0: Animator) {}
     })
 }
