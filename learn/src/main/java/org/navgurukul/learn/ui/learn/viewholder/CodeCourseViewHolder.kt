@@ -42,34 +42,20 @@ class CodeCourseViewHolder(itemView: View) :
         }
 
         val py = Python.getInstance()
-        val pyObj = py.getModule("script")
+        val pyObj = py.getModule("pyscript")
 
-        when (item.codeTypes) {
-            CodeType.javascript -> {
-                imageViewPlay.visibility = View.GONE
-            }
-            CodeType.python -> {
-                imageViewPlay.visibility = View.VISIBLE
-                imageViewPlay.setOnClickListener {
+        imageViewPlay.visibility = View.VISIBLE
 
-                    val objs: PyObject = pyObj.callAttr(
-                        "main",codeBody.getText().toString()
-                    )
-
-                    outputTextView.text = objs.toString()
-                    }
-
-            }
-            else -> {
-                imageViewPlay.visibility = View.GONE
-            }
+        imageViewPlay.setOnClickListener {
+            val objs: PyObject = pyObj.callAttr("main", codeBody.text.toString())
+            outputTextView.text = objs.toString()
         }
 
         codeBody.text = HtmlCompat.fromHtml(
-            item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
+            item.value ?: "",
+            HtmlCompat.FROM_HTML_MODE_COMPACT
         ) as Editable?
-
     }
+
 }
 
