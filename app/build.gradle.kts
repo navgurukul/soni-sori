@@ -70,7 +70,7 @@ dependencies {
 
     //modules
     implementation(project(":learn"))
-    implementation(project(":chat"))
+//    implementation(project(":chat"))
     implementation(project(":python"))
     implementation(project(":core"))
     implementation(project(":commonUI"))
