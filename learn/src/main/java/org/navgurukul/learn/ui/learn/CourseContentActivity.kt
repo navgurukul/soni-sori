@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
@@ -155,6 +156,8 @@ class CourseContentActivity : AppCompatActivity(){
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
         }
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     private fun isCurrentContentAssessment(): Boolean {

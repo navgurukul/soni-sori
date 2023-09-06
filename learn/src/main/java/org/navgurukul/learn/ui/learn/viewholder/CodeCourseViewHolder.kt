@@ -23,12 +23,16 @@ class CodeCourseViewHolder(itemView: View) :
 
     private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
     val outputTextView = codeLayout.findViewById<TextView>(R.id.Actual_outPut)
+    val outputTexts = codeLayout.findViewById<TextView>(R.id.out_put_txt)
 
     override val horizontalMargin: Int
         get() = 0
 
     init {
         super.setHorizontalMargin(horizontalMargin)
+        // Initially hide the Output section
+        outputTextView.visibility = View.GONE
+        outputTexts.visibility = View.GONE
     }
 
     fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
@@ -47,6 +51,8 @@ class CodeCourseViewHolder(itemView: View) :
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
+            outputTextView.visibility = View.VISIBLE
+            outputTexts.visibility = View.VISIBLE
             val objs: PyObject = pyObj.callAttr("main", codeBody.text.toString())
             outputTextView.text = objs.toString()
         }

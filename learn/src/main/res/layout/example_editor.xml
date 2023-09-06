@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/code_background"
-    android:paddingBottom="@dimen/dimen_16_dp"
     android:layout_height="wrap_content">
 
     <TextView
@@ -27,6 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="top"
         android:text="codeBody"
+        android:minLines="3"
         android:scrollbars="horizontal|vertical"
         android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"
         android:background="@drawable/border_reset"
@@ -36,21 +36,21 @@
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/code_title" />
 
-<!--    <Button-->
-<!--        android:id="@+id/resetCode"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/code_body"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:text="Reset Editor"-->
-<!--        android:padding="3dp"-->
-<!--        android:drawableLeft="@drawable/ic_baseline_restart_alt_24"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:background= "@drawable/border_reset"-->
-<!--        android:textColor="@color/green_progress_color"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:layout_height="wrap_content">-->
-<!--    </Button>-->
+    <Button
+        android:id="@+id/reset_btn"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/code_body"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="17dp"
+        android:text="Reset"
+        android:textColor="@color/colorWhite"
+        android:padding="4dp"
+        android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
+        android:layout_marginTop="8dp"
+        android:textAllCaps="false"
+        android:background="@drawable/border_reset"
+        android:layout_height="wrap_content">
+    </Button>
 
     <Button
         android:id="@+id/run_btn"
