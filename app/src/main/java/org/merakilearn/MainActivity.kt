@@ -27,7 +27,7 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.merakilearn.ui.profile.ProfileActivity
-import org.navgurukul.commonui.glide.GlideApp
+import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
@@ -116,16 +116,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .centerCrop()
             .transform(CircleCrop())
 
-//        val thumbnail = GlideApp.with(this)
-//            .load(R.drawable.ic_log_out)
-//            .apply(requestOptions)
-//
-//        GlideApp.with(it)
-//            .load(R.drawable.ic_log_out)
-//            .apply(requestOptions)
-//            .thumbnail(thumbnail)
-//            .transform(CircleCrop())
-//            .into(it)
+        val thumbnail = GlideApp.with(this)
+            .load(R.drawable.ic_log_out)
+            .apply(requestOptions)
+
+        GlideApp.with(it)
+            .load(R.drawable.ic_log_out)
+            .apply(requestOptions)
+            .thumbnail(thumbnail)
+            .transform(CircleCrop())
+            .into(it)
 
     }
 
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .into(it)
 
         it.setOnClickListener {
-            if (userRepo.isFakeLogin())
+            if (userRepo.isUserLoggedIn())
                 OnBoardingActivity.showLoginScreen(this)
             else
                 ProfileActivity.launch(this)

@@ -168,7 +168,7 @@ class PlaygroundViewModel(
                     it.Credentials.SecretAccessKey,
                     it.Credentials.SessionToken,
                     it.Key,
-                    it.projectId,
+                    it.project_id,
                     shareUrl2
                 )
                 val i = Intent(Intent.ACTION_SEND)
