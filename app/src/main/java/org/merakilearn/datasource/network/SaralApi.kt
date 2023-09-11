@@ -12,17 +12,17 @@ interface SaralApi {
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @GET("classes")
-    suspend fun getMyClassesAsync(): List<Classes>
+    suspend fun getMyClassesAsync(): List<Classes>  //this one is not in use
 
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
-        @Body hashMap: MutableMap<String, Any>
+        @Body hashMap: MutableMap<String, Any> //repeating
     ): ResponseBody
 
     @DELETE("classes/{classId}/unregister")
     suspend fun logOutToClassAsync(
-        @Path(value = "classId") classId: Int
+        @Path(value = "classId") classId: Int  //repeating
     ): ResponseBody
 
 //    @POST("users/create")
@@ -36,7 +36,7 @@ interface SaralApi {
     @PUT("users/{userId}")
     suspend fun updateProfileName(
         @Path (value = "userId") userId:Int,
-        @Body loginResponse: UserUpdateName
+        @Body loginResponse: UserUpdateName    //this one is not in use
     ):UserUpdateNameSafe
 
     @GET("classes/{classId}")
