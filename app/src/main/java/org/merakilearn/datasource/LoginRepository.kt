@@ -10,7 +10,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.ResidentialProgramPathwayResponse
-import org.navgurukul.chat.core.repo.AuthenticationRepository
+import org.merakilearn.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
 class LoginRepository(
