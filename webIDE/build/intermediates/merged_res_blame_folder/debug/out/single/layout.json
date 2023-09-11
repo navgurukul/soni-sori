@@ -1,0 +1,138 @@
+[
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_pull.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_pull.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_clone.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_clone.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_project_2.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_project_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_analyze_file.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_analyze_file.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_splash.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_web_ide_home.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_web_ide_home.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_project.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_project.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_analyze.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_analyze.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_remote_add.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_remote_add.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_intro.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_intro.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_file_project.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_project.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_web.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_web.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_intro.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_intro.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_file_browser.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_browser.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_input_single.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_input_single.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_refactor_2.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_refactor_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_import.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_import.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_attr.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_attr.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_git_status.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_git_status.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_git_log.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_git_log.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/sheet_about.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_about.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_editor.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_editor.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/widget_toolbar.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/widget_toolbar.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_file_root.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_root.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_push.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_push.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_create_2.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_create_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/sheet_web_settings.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_web_settings.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_remotes.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_remotes.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/sheet_logs.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_logs.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_remote.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_remote.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_settings.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_settings.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_diff.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_diff.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item_log.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_log.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/dialog_git_branch.xml",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_git_branch.xml"
+    }
+]

@@ -265,6 +265,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/afeText"
+                    app:layout_constraintBottom_toTopOf="@id/afeImage"
+                    android:text="in association with"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/afeImage"
+                    app:layout_constraintBottom_toTopOf="@id/btnPrivacyPolicy"
+                    android:src="@drawable/amazlogo_preview"
+                    android:scaleType="fitXY"
+                    android:paddingLeft="@dimen/dimen_40_dp"
+                    android:paddingRight="@dimen/dimen_40_dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrivacyPolicy"
                     style="@style/Widget.MaterialComponents.Button.TextButton"

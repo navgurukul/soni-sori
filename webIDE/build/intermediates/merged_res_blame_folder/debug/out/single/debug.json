@@ -1,0 +1,514 @@
+[
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_widget_toolbar.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/widget_toolbar.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_notices.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_notices.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_project.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_project.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_html.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_html.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_overflow.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_overflow.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_file_project.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_project.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_binary.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_binary.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_fragment_editor.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_editor.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/xml_settings.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/xml/settings.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_drawer_shadow.9.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_factory_reset.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_factory_reset.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_js.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_js.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_intro.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_intro.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_launcher.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_push.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_push.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/menu_menu_main.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/menu/menu_main.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_css.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_css.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_header_bg.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/header_bg.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_tab.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_tab.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_import.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_import.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_image.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_image.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_file.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_file.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_folder.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_folder.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi-v11_ic_git_small.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi-v11/ic_git_small.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_action_import.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_action_import.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_log.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_log.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_night_mode.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_night_mode.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_remotes.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_remotes.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_overflow.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_overflow.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_css.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_css.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_font.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_font.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-nodpi_ic_intro_editor.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-nodpi/ic_intro_editor.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_alert_error.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_alert_error.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_font.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_font.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_web_icon.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_web_icon.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_binary.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_binary.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_action_element_edit.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_action_element_edit.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_font.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_font.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_fragment_analyze_file.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_analyze_file.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_attr.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_attr.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_git_branch.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_git_branch.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_overflow.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_overflow.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_remote_add.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_remote_add.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_html.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_html.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_project_2.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_project_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_folder.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_folder.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_action_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_action_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_js.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_js.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_tab.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_tab.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_analyze.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_analyze.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_create_2.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_create_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi-v11_ic_git_small.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi-v11/ic_git_small.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_html.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_html.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_action_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_action_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_action_import.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_action_import.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_alert_error.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_alert_error.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_sheet_logs.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_logs.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_js.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_js.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_git_status.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_git_status.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_js.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_js.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_pull.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_pull.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_line_numbers.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_line_numbers.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_action_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_action_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_git_log.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_git_log.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_tab.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_tab.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_action_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_action_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_fragment_intro.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/fragment_intro.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/menu_menu_project.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/menu/menu_project.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi-v11_ic_git_small.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi-v11/ic_git_small.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_action_element_edit.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_action_element_edit.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_diff.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_diff.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_drawer_shadow.9.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_action_import.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_action_import.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_file_root.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_root.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/menu_menu_web.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/menu/menu_web.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_js.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_js.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_file.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_file.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_web.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_web.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_alert_error.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_alert_error.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_binary.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_binary.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_ic_dark_theme_code.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/ic_dark_theme_code.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_action_element_edit.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_action_element_edit.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_remote.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_remote.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_action_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_action_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_clone.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_clone.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_file.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_file.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_web_ide_home.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_web_ide_home.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/menu_menu_file_options.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/menu/menu_file_options.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_file.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_file.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_overflow.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_overflow.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_font.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_font.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_css.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_css.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_binary.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_binary.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_folder.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_folder.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_sheet_about.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_about.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_action_element_edit.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_action_element_edit.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_alert_error.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_alert_error.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_drawer_shadow.9.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_drawer_shadow.9.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-mdpi_ic_action_import.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-mdpi/ic_action_import.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_settings.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_settings.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_sheet_web_settings.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/sheet_web_settings.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable_bottom_shadow.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable/bottom_shadow.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi-v11_ic_git_small.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi-v11/ic_git_small.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi_ic_folder.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi/ic_folder.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_html.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_html.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-nodpi_ic_intro_git.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-nodpi/ic_intro_git.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_alert_error.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_alert_error.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-nodpi_ic_intro_done.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-nodpi/ic_intro_done.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_action_element_edit.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_action_element_edit.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_css.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_css.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_binary.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_binary.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_tab.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_tab.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_folder.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_folder.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_tab.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_tab.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_action_import.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_action_import.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_drawer_shadow.9.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_activity_splash.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxhdpi_ic_overflow.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxhdpi/ic_overflow.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_file.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_file.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xxxhdpi-v11_ic_git_small.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xxxhdpi-v11/ic_git_small.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_input_single.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_input_single.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_html.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_html.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_dialog_refactor_2.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/dialog_refactor_2.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-nodpi_ic_intro_logo_n.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-nodpi/ic_intro_logo_n.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-xhdpi_ic_css.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-xhdpi/ic_css.png"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/layout_item_file_browser.xml.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/layout/item_file_browser.xml"
+    },
+    {
+        "merged": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/build/intermediates/merged_res/debug/drawable-hdpi_ic_font.png.flat",
+        "source": "/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/res/drawable-hdpi/ic_font.png"
+    }
+]

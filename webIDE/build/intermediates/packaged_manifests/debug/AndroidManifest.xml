@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    featureSplit="webIDE"
+    package="org.merakilearn"
+    android:versionCode="86"
+    android:versionName="1.5.56" >
+
+    <uses-sdk android:minSdkVersion="23" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_webIDE" >
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application
+        android:debuggable="true"
+        android:extractNativeLibs="false"
+        android:testOnly="true" >
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.WebIdeHomeActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.WebActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name" />
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.ProjectActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:parentActivityName="org.navgurukul.webide.ui.activity.WebIdeHomeActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.WebIdeHomeActivity" />
+        </activity>
+        <activity android:name="org.navgurukul.webide.ui.activity.IntroActivity" />
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.RemotesActivity"
+            android:label="Remotes" />
+        <activity
+            android:name="org.navgurukul.webide.ui.activity.SettingsActivity"
+            android:label="@string/action_settings" />
+        <activity android:name="org.navgurukul.webide.ui.activity.AnalyzeActivity" />
+    </application>
+
+</manifest>

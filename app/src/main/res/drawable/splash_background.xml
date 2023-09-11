@@ -5,6 +5,10 @@
             android:gravity="center"
             android:src="@drawable/splash_icon" />
     </item>
+    <item android:gravity="bottom" android:bottom="100dp" android:left="40dp" android:right="40dp" android:top="40dp">
+      <bitmap
+              android:src="@drawable/splash_afe"/>
+       </item>
 
 
 </layer-list>

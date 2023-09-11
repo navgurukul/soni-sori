@@ -1,0 +1,70 @@
+org/navgurukul/webide/databinding/ActivityAnalyzeBinding.java
+ org.navgurukul.webide.databinding.ActivityAnalyzeBinding
+org/navgurukul/webide/databinding/SheetWebSettingsBinding.java
+ org.navgurukul.webide.databinding.SheetWebSettingsBinding
+org/navgurukul/webide/databinding/DialogPullBinding.java
+ org.navgurukul.webide.databinding.DialogPullBinding
+org/navgurukul/webide/databinding/ActivitySplashBinding.java
+ org.navgurukul.webide.databinding.ActivitySplashBinding
+org/navgurukul/webide/databinding/ActivityProjectBinding.java
+ org.navgurukul.webide.databinding.ActivityProjectBinding
+org/navgurukul/webide/databinding/ActivityWebBinding.java
+ org.navgurukul.webide.databinding.ActivityWebBinding
+org/navgurukul/webide/databinding/ActivityIntroBinding.java
+ org.navgurukul.webide.databinding.ActivityIntroBinding
+org/navgurukul/webide/databinding/ActivitySettingsBinding.java
+ org.navgurukul.webide.databinding.ActivitySettingsBinding
+org/navgurukul/webide/databinding/ItemRemoteBinding.java
+ org.navgurukul.webide.databinding.ItemRemoteBinding
+org/navgurukul/webide/databinding/SheetAboutBinding.java
+ org.navgurukul.webide.databinding.SheetAboutBinding
+org/navgurukul/webide/databinding/FragmentEditorBinding.java
+ org.navgurukul.webide.databinding.FragmentEditorBinding
+org/navgurukul/webide/databinding/WidgetToolbarBinding.java
+ org.navgurukul.webide.databinding.WidgetToolbarBinding
+org/navgurukul/webide/databinding/ActivityWebIdeHomeBinding.java
+ org.navgurukul.webide.databinding.ActivityWebIdeHomeBinding
+org/navgurukul/webide/databinding/ItemFileBrowserBinding.java
+ org.navgurukul.webide.databinding.ItemFileBrowserBinding
+org/navgurukul/webide/databinding/ItemGitStatusBinding.java
+ org.navgurukul.webide.databinding.ItemGitStatusBinding
+org/navgurukul/webide/databinding/SheetLogsBinding.java
+ org.navgurukul.webide.databinding.SheetLogsBinding
+org/navgurukul/webide/databinding/DialogCreate2Binding.java
+ org.navgurukul.webide.databinding.DialogCreate2Binding
+org/navgurukul/webide/databinding/FragmentIntroBinding.java
+ org.navgurukul.webide.databinding.FragmentIntroBinding
+org/navgurukul/webide/databinding/ItemProject2Binding.java
+ org.navgurukul.webide.databinding.ItemProject2Binding
+org/navgurukul/webide/databinding/DialogImportBinding.java
+ org.navgurukul.webide.databinding.DialogImportBinding
+org/navgurukul/webide/databinding/DialogDiffBinding.java
+ org.navgurukul.webide.databinding.DialogDiffBinding
+org/navgurukul/webide/databinding/ItemAttrBinding.java
+ org.navgurukul.webide.databinding.ItemAttrBinding
+org/navgurukul/webide/databinding/DialogPushBinding.java
+ org.navgurukul.webide.databinding.DialogPushBinding
+org/navgurukul/webide/BuildConfig.java
+ org.navgurukul.webide.BuildConfig
+org/navgurukul/webide/databinding/ActivityRemotesBinding.java
+ org.navgurukul.webide.databinding.ActivityRemotesBinding
+org/navgurukul/webide/databinding/ItemFileRootBinding.java
+ org.navgurukul.webide.databinding.ItemFileRootBinding
+org/navgurukul/webide/databinding/DialogRemoteAddBinding.java
+ org.navgurukul.webide.databinding.DialogRemoteAddBinding
+org/navgurukul/webide/databinding/DialogRefactor2Binding.java
+ org.navgurukul.webide.databinding.DialogRefactor2Binding
+org/navgurukul/webide/databinding/DialogCloneBinding.java
+ org.navgurukul.webide.databinding.DialogCloneBinding
+org/navgurukul/webide/databinding/DialogGitBranchBinding.java
+ org.navgurukul.webide.databinding.DialogGitBranchBinding
+org/navgurukul/webide/databinding/FragmentAnalyzeFileBinding.java
+ org.navgurukul.webide.databinding.FragmentAnalyzeFileBinding
+org/navgurukul/webide/databinding/ItemFileProjectBinding.java
+ org.navgurukul.webide.databinding.ItemFileProjectBinding
+org/navgurukul/webide/databinding/ItemGitLogBinding.java
+ org.navgurukul.webide.databinding.ItemGitLogBinding
+org/navgurukul/webide/databinding/DialogInputSingleBinding.java
+ org.navgurukul.webide.databinding.DialogInputSingleBinding
+org/navgurukul/webide/databinding/ItemLogBinding.java
+ org.navgurukul.webide.databinding.ItemLogBinding

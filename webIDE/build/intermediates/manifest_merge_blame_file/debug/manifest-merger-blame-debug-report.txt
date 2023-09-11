@@ -1,0 +1,122 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:dist="http://schemas.android.com/apk/distribution"
+4    featureSplit="webIDE"
+5    package="org.merakilearn"
+6    android:versionCode="86"
+7    android:versionName="1.5.56" >
+8
+9    <uses-sdk android:minSdkVersion="23" />
+9-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:7:5-67
+11-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:7:22-64
+12    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+12-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:8:5-80
+12-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:8:22-77
+13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+13-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:9:5-81
+13-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:9:22-78
+14
+15    <dist:module
+15-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:11:5-18:19
+16        dist:instant="false"
+16-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:12:9-29
+17        dist:title="@string/title_webIDE" >
+17-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:13:9-42
+18        <dist:delivery>
+18-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:14:9-16:25
+19            <dist:on-demand />
+19-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:15:13-31
+20        </dist:delivery>
+21
+22        <dist:fusing dist:include="true" />
+22-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:17:9-44
+22-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:17:22-41
+23    </dist:module>
+24
+25    <application
+25-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:20:5-59:19
+26        android:debuggable="true"
+27        android:extractNativeLibs="false"
+28        android:testOnly="true" >
+29        <activity
+29-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:22:9-31:20
+30            android:name="org.navgurukul.webide.ui.activity.SplashActivity"
+30-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:23:13-55
+31            android:label="@string/app_name"
+31-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:24:13-45
+32            android:screenOrientation="portrait"
+32-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:25:13-49
+33            android:splitName="webIDE" >
+34
+35            <!-- <intent-filter> -->
+36            <!-- <action android:name="android.intent.action.MAIN" /> -->
+37            <!-- <action android:name="android.intent.action.VIEW" /> -->
+38            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+39            <!-- </intent-filter> -->
+40        </activity>
+41        <activity
+41-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:33:9-35:48
+42            android:name="org.navgurukul.webide.ui.activity.WebIdeHomeActivity"
+42-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:34:13-59
+43            android:label="@string/app_name"
+43-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:35:13-45
+44            android:splitName="webIDE" />
+45        <activity
+45-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:36:9-39:48
+46            android:name="org.navgurukul.webide.ui.activity.WebActivity"
+46-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:37:13-52
+47            android:configChanges="orientation|screenSize|keyboardHidden"
+47-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:38:13-74
+48            android:label="@string/app_name"
+48-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:39:13-45
+49            android:splitName="webIDE" />
+50        <activity
+50-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:40:9-50:20
+51            android:name="org.navgurukul.webide.ui.activity.ProjectActivity"
+51-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:41:13-56
+52            android:configChanges="orientation|keyboardHidden|screenSize"
+52-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:42:13-74
+53            android:label="@string/app_name"
+53-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:43:13-45
+54            android:parentActivityName="org.navgurukul.webide.ui.activity.WebIdeHomeActivity"
+54-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:44:13-73
+55            android:splitName="webIDE"
+56            android:windowSoftInputMode="adjustResize|stateHidden" >
+56-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:45:13-67
+57            <meta-data
+57-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:47:13-49:67
+58                android:name="android.support.PARENT_ACTIVITY"
+58-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:48:17-63
+59                android:value=".ui.activity.WebIdeHomeActivity" />
+59-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:49:17-64
+60        </activity>
+61        <activity
+61-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:51:9-63
+62            android:name="org.navgurukul.webide.ui.activity.IntroActivity"
+62-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:51:19-60
+63            android:splitName="webIDE" />
+64        <activity
+64-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:52:9-54:39
+65            android:name="org.navgurukul.webide.ui.activity.RemotesActivity"
+65-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:53:13-56
+66            android:label="Remotes"
+66-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:54:13-36
+67            android:splitName="webIDE" />
+68        <activity
+68-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:55:9-57:55
+69            android:name="org.navgurukul.webide.ui.activity.SettingsActivity"
+69-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:56:13-57
+70            android:label="@string/action_settings"
+70-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:57:13-52
+71            android:splitName="webIDE" />
+72        <activity
+72-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:58:9-65
+73            android:name="org.navgurukul.webide.ui.activity.AnalyzeActivity"
+73-->/Users/surajsahani/StudioProjects/soni-sori/webIDE/src/main/AndroidManifest.xml:58:19-62
+74            android:splitName="webIDE" />
+75    </application>
+76
+77</manifest>

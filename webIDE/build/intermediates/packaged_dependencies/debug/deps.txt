@@ -1,0 +1,9 @@
+:webIDE::debug
+androidx.multidex:multidex
+com.github.PhilJay:MPAndroidChart
+com.google.auto.service:auto-service
+com.google.auto.service:auto-service-annotations
+com.google.auto:auto-common
+com.googlecode.javaewah:JavaEWAH
+org.eclipse.jgit:org.eclipse.jgit
+org.slf4j:slf4j-api
