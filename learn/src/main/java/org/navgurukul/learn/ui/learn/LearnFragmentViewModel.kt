@@ -73,7 +73,6 @@ class LearnFragmentViewModel(
                         }
                         currentPathway?.let {
                             checkedStudentEnrolment(it.id)
-                            getCertificate(it.id, it.code)
                         }
                     } else {
                         setState { copy(loading = false) }
@@ -92,6 +91,7 @@ class LearnFragmentViewModel(
                         showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
+            getCertificate(pathway.id, pathway.code)
         }
     }
 

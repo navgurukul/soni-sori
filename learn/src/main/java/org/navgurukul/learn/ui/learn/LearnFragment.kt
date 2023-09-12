@@ -149,10 +149,17 @@ class LearnFragment : Fragment() {
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
             if (it.code == "PRGPYT"){
-                mBinding.certificate.visibility = View.VISIBLE
+                mBinding.certificate.root.visibility = View.VISIBLE
                 mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
-            } else {
-                mBinding.certificate.visibility = View.GONE
+                mBinding.certificate.txtCertificate.text = "Python Certificate"
+            }
+            else if(it.code == "SCRTHB"){
+                mBinding.certificate.root.visibility = View.VISIBLE
+                mBinding.dotAdding.visibility = View.VISIBLE
+                mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+            }
+            else {
+                mBinding.certificate.root.visibility = View.GONE
                 mBinding.dotAdding.visibility = View.GONE
             }
 
@@ -227,9 +234,9 @@ class LearnFragment : Fragment() {
     }
 
     private fun getCertificate(pdfUrl: String, completedPortion: Int) {
-        mBinding.certificate.setOnClickListener {
+        mBinding.certificate.root.setOnClickListener {
             val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-            val textView : TextView = mBinding.certificate.locked_status
+            val textView : TextView = mBinding.certificate.root.locked_status
             if (completedPortion == 100) {
                 imageView.setImageResource(R.drawable.ic_certificate)
                 textView.isVisible = false
