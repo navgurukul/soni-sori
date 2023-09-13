@@ -57,6 +57,7 @@ import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.courses.network.model.sanitizedType
 import org.navgurukul.learn.databinding.FragmentLearnBinding
+import org.navgurukul.learn.databinding.GeneratedCertificateBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -161,21 +162,11 @@ class LearnFragment : Fragment() {
                     mBinding.dotAdding.visibility = View.VISIBLE
                     mBinding.certificate.txtCertificate.text = "Scratch Certificate"
                 }
+                else -> {
+                    mBinding.certificate.root.visibility = View.GONE
+                    mBinding.dotAdding.visibility = View.GONE
+                }
             }
-//            if (it.code == "PRGPYT"){
-//                mBinding.certificate.root.visibility = View.VISIBLE
-//                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
-//                mBinding.certificate.txtCertificate.text = "Python Certificate"
-//            }
-//            else if(it.code == "SCRTHB"){
-//                mBinding.certificate.root.visibility = View.VISIBLE
-//                mBinding.dotAdding.visibility = View.VISIBLE
-//                mBinding.certificate.txtCertificate.text = "Scratch Certificate"
-//            }
-//            else {
-//                mBinding.certificate.root.visibility = View.GONE
-//                mBinding.dotAdding.visibility = View.GONE
-//            }
 
         }
 
@@ -222,7 +213,7 @@ class LearnFragment : Fragment() {
                     mBinding.upcoming.root.visibility = View.GONE
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
-                    getCertificate(it.pdfUrl, it.getCompletedPortion)
+                    getCertificate(it.pdfUrl, it.getCompletedPortion, it.pathwayName)
                 }
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
@@ -247,20 +238,31 @@ class LearnFragment : Fragment() {
         }
     }
 
-    private fun getCertificate(pdfUrl: String, completedPortion: Int) {
+    private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
+        val imageView: ImageView = mBinding.certificate.ivCertificateLogo
+        val textView : TextView = mBinding.certificate.root.locked_status
+        var binding: GeneratedCertificateBinding
+
+        if (completedPortion == 100){
+            imageView.setImageResource(R.drawable.ic_certificate)
+            textView.isVisible = false
+        } else {
+            imageView.setImageResource(R.drawable.grey_icon_certificate)
+            textView.isVisible = true
+        }
         mBinding.certificate.root.setOnClickListener {
-            val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-            val textView : TextView = mBinding.certificate.root.locked_status
             if (completedPortion == 100) {
                 imageView.setImageResource(R.drawable.ic_certificate)
                 textView.isVisible = false
                 val dialog = BottomSheetDialog(requireContext())
-                val view = layoutInflater.inflate(R.layout.generated_certificate, null)
-                pdfView = view.idPDFView
-                view.tvDownload.setOnClickListener {
+                binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
+                pdfView = binding.idPDFView
+                binding.txtCertificate.text = getString(R.string.text_certificate, pathwayName)
+                binding.txt.text = getString(R.string.certificate_information, pathwayName)
+                binding.tvDownload.setOnClickListener {
                     generatePDF(pdfUrl)
                 }
-                view.tvShare.setOnClickListener {
+                binding.tvShare.setOnClickListener {
                     showShareIntent(pdfUrl)
                 }
                 CoroutineScope(Dispatchers.IO).launch {
@@ -269,12 +271,11 @@ class LearnFragment : Fragment() {
                 //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
                 println("required completed portion in fragment $completedPortion")
                 dialog.setCancelable(true)
-                dialog.setContentView(view)
+                dialog.setContentView(binding.root)
                 dialog.show()
             } else {
                 textView.isVisible = true
                 imageView.setImageResource(R.drawable.grey_icon_certificate)
-                println("required completed portion in fragment $completedPortion")
                 Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
             }
 
