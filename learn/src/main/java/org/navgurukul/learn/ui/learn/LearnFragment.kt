@@ -94,6 +94,7 @@ class LearnFragment : Fragment() {
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+
 //        mBinding.batchCard.root.visibility = View.GONE
 //        mBinding.upcoming.root.visibility = View.GONE
 
@@ -148,20 +149,33 @@ class LearnFragment : Fragment() {
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
-            if (it.code == "PRGPYT"){
-                mBinding.certificate.root.visibility = View.VISIBLE
-                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
-                mBinding.certificate.txtCertificate.text = "Python Certificate"
+
+            when(it.code) {
+                "PRGPYT" -> {
+                    mBinding.certificate.root.visibility = View.VISIBLE
+                    mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
+                    mBinding.certificate.txtCertificate.text = "Python Certificate"
+                }
+                "SCRTHB" -> {
+                    mBinding.certificate.root.visibility = View.VISIBLE
+                    mBinding.dotAdding.visibility = View.VISIBLE
+                    mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+                }
             }
-            else if(it.code == "SCRTHB"){
-                mBinding.certificate.root.visibility = View.VISIBLE
-                mBinding.dotAdding.visibility = View.VISIBLE
-                mBinding.certificate.txtCertificate.text = "Scratch Certificate"
-            }
-            else {
-                mBinding.certificate.root.visibility = View.GONE
-                mBinding.dotAdding.visibility = View.GONE
-            }
+//            if (it.code == "PRGPYT"){
+//                mBinding.certificate.root.visibility = View.VISIBLE
+//                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
+//                mBinding.certificate.txtCertificate.text = "Python Certificate"
+//            }
+//            else if(it.code == "SCRTHB"){
+//                mBinding.certificate.root.visibility = View.VISIBLE
+//                mBinding.dotAdding.visibility = View.VISIBLE
+//                mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+//            }
+//            else {
+//                mBinding.certificate.root.visibility = View.GONE
+//                mBinding.dotAdding.visibility = View.GONE
+//            }
 
         }
 

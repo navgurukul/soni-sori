@@ -91,7 +91,7 @@ class LearnFragmentViewModel(
                         showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
                 }
             }
-            getCertificate(pathway.id, pathway.code)
+            //getCertificate(pathway.id, pathway.code)
         }
     }
 
@@ -108,6 +108,7 @@ class LearnFragmentViewModel(
         }
         corePreferences.lastSelectedPathWayId = pathway.id
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
+        getCertificate(pathway.id, pathway.code)
         refreshCourses(pathway, false)
     }
 
@@ -217,7 +218,7 @@ class LearnFragmentViewModel(
         }
     }
 
-    private fun getCertificate(pathwayId: Int, pathwayCode: String){
+     fun getCertificate(pathwayId: Int, pathwayCode: String){
         viewModelScope.launch {
             val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
             getCertificatePdf(completedData, pathwayCode)
