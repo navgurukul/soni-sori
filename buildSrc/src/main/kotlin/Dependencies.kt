@@ -16,6 +16,13 @@ object Versions {
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
+    const val multidex = "2.0.1"
+    const val nanohttpd = "2.3.1"
+    const val jsoup = "1.15.3"
+    const val uaUtils = "1.21"
+    const val jgit = "6.4.0.202211300538-r" // no-update
+    const val playServicesLicensesPlugin = "17.0.0"
+    const val  mpchart = "3.0.3"
 }
 
 object RxJavaDependencies {
@@ -66,6 +73,8 @@ object AndroidxDependencies {
         "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
+    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_extensions}"
+    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
         "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
@@ -172,7 +181,7 @@ object ArrowPreferences {
 object BuildConfigVersions {
     const val compileSdkVersion = 31
     const val minSdkVersion = 23
-    const val targetSdkVersion = 31
+    const val targetSdkVersion = 30
     const val versionCode = 85
     const val versionName = "1.5.55"
     const val applicationId = "org.merakilearn"
