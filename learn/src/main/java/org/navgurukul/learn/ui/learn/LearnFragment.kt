@@ -276,6 +276,7 @@ class LearnFragment : Fragment() {
             } else {
                 textView.isVisible = true
                 imageView.setImageResource(R.drawable.grey_icon_certificate)
+                println("required completed portion in fragment $completedPortion")
                 Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
             }
 

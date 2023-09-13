@@ -227,6 +227,7 @@ class LearnFragmentViewModel(
 
     private fun getCertificatePdf(completedPortion: Int, pathwayCode : String, pathwayName: String){
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
                 val certificatePdfUrl = learnRepo.getCertificate(pathwayCode).url
                 println("certificateUrl $certificatePdfUrl")
