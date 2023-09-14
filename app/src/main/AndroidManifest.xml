@@ -122,28 +122,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="merakilearn.org"
-                    android:pathPrefix="/me"
-                    android:scheme="https" />
-                <data
-                    android:host="merakilearn.org"
-                    android:pathPrefix="/me"
-                    android:scheme="http" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.ScratchActivity"
             android:exported="true"
             android:label="@string/app_name"
