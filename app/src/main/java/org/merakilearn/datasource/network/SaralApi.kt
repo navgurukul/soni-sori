@@ -11,19 +11,6 @@ interface SaralApi {
     @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
-    @GET("classes")
-    suspend fun getMyClassesAsync(): List<Classes>
-
-    @POST("classes/{classId}/register")
-    suspend fun enrollToClassAsync(
-        @Path(value = "classId") classId: Int,
-        @Body hashMap: MutableMap<String, Any>
-    ): ResponseBody
-
-    @DELETE("classes/{classId}/unregister")
-    suspend fun logOutToClassAsync(
-        @Path(value = "classId") classId: Int
-    ): ResponseBody
 
     @POST("users/create")
     suspend fun initFakeSignUpAsync(@Body loginRequest: LoginRequest): LoginResponse
@@ -33,11 +20,6 @@ interface SaralApi {
         @Body loginResponse: UserUpdate,
     ): UserUpdateContainer
 
-    @PUT("users/{userId}")
-    suspend fun updateProfileName(
-        @Path (value = "userId") userId:Int,
-        @Body loginResponse: UserUpdateName
-    ):UserUpdateNameSafe
 
     @GET("classes/{classId}")
     suspend fun fetchClassDataAsync(
