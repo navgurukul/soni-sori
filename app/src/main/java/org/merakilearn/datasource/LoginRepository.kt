@@ -23,7 +23,6 @@ class LoginRepository(
 ) {
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
-//            val isFakeLogin = userRepo.isFakeLogin()
             val id = if (userRepo.isUserLoggedIn()) {
                 userRepo.getLoginResponseId()
             } else {
@@ -32,9 +31,6 @@ class LoginRepository(
             val loginRequest =
                 LoginRequest(authToken, id = id, language = corePreferences.selectedLanguage)
             val response = applicationApi.initLoginAsync(loginRequest)
-//            if (isFakeLogin) {
-//                userRepo.resetFakeLogin()
-//            }
             userRepo.saveUserLoginResponse(response)
             response
         } catch (ex: Exception) {
@@ -42,20 +38,6 @@ class LoginRepository(
             null
         }
     }
-
-//    suspend fun performFakeSignUp(): LoginResponse? {
-//        return try {
-//            val loginRequest =
-//                LoginRequest(null, language = corePreferences.selectedLanguage)
-//            val response = applicationApi.initFakeSignUpAsync(loginRequest)
-//            userRepo.saveFakeLoginResponse(response)
-//            response
-//        } catch (ex: Exception) {
-//            FirebaseCrashlytics.getInstance().recordException(ex)
-//            null
-//        }
-//    }
-
     suspend fun getPathwayForResidentialProgram(): ResidentialProgramPathwayResponse? {
         return try {
             val response = applicationApi.getResidentialProgramPathway()

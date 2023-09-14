@@ -28,11 +28,11 @@ class SelectCourseFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.viewState.observe(viewLifecycleOwner, {
+        viewModel.viewState.observe(viewLifecycleOwner) {
             if (it.onBoardingData != null && it.onBoardingTranslations != null) {
                 setCards(it.onBoardingData, it.onBoardingTranslations)
             }
-        })
+        }
     }
 
     private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {

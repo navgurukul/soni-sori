@@ -23,8 +23,6 @@ class UserRepo(
 
     companion object {
         private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
-//        private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
-//        private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
         private const val KEY_INSTALL_REFERRER = "KEY_INSTALL_REFERRER"
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
@@ -49,11 +47,6 @@ class UserRepo(
         set(value) {
             preferences.edit { putString(KEY_INSTALL_REFERRER, value) }
         }
-
-//    fun isFakeLogin(): Boolean {
-//        return preferences.getBoolean(KEY_USER_LOGIN, false)
-//    }
-
     fun isUserLoggedIn(): Boolean {
         return preferences.getBoolean(KEY_USER_LOGIN, false)
     }
@@ -71,11 +64,6 @@ class UserRepo(
     fun getCurrentUser(): LoginResponse.User? {
         val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
         return try {
-//            if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
-//                val fakeUserLoginResponseString =
-//                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-//                fakeUserLoginResponseString?.objectify()
-//            } else {
                  if (userLoginResponseString.isNullOrEmpty()) {
                     null
                 } else {
@@ -117,22 +105,6 @@ class UserRepo(
         }
     }
 
-//    fun saveFakeLoginResponse(
-//        response: LoginResponse,
-//    ) {
-//        preferences.edit {
-//            putString(KEY_FAKE_USER_RESPONSE, response.user.jsonify())
-//            putString(KEY_AUTH_TOKEN, response.token)
-//            putBoolean(KEY_USER_LOGIN, true)
-//            putBoolean(KEY_IS_FAKE_LOGIN, true)
-//        }
-//    }
-
-//    fun resetFakeLogin() {
-//        preferences.edit {
-//            putBoolean(KEY_IS_FAKE_LOGIN, false)
-//        }
-//    }
 
     suspend fun logOut(): Boolean {
         return try {
