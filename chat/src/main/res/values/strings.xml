@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_chat">Mentor</string>
     <string name="reject">Reject</string>
     <string name="join">Join</string>
     <string name="action_quick_reply">Quick Reply</string>
     <string name="action_mark_room_read">Mark as read</string>
     <string name="notification_new_messages">New Messages</string>
-    <string name="chat">Chat</string>
-    <string name="type_answer_here">Type Answer Here...</string>
 
     <string name="downloaded_file">File %1$s has been downloaded!</string>
     <string name="call">Call</string>
@@ -155,10 +152,6 @@
 
     <!-- Room settings: banned users -->
     <string name="room_settings_banned_users_title">Banned users</string>
-    <plurals name="room_settings_banned_users_count">
-        <item quantity="one">%d banned user</item>
-        <item quantity="other">%d banned users</item>
-    </plurals>
 
     <string name="room_created_summary_item">%s created and configured the room.</string>
     <string name="room_created_summary_item_by_you">You created and configured the room.</string>
@@ -182,7 +175,6 @@
     <string name="command_error">Command error</string>
     <string name="unrecognized_command">Unrecognized command: %s</string>
     <string name="command_problem_with_parameters">The command \"%s\" needs more parameters, or some parameters are incorrect.</string>
-    <string name="command_description_emote">Displays action</string>
     <string name="command_description_ban_user">Bans user with given id</string>
     <string name="command_description_unban_user">Unbans user with given id</string>
     <string name="command_description_op_user">Define the power level of a user</string>
@@ -196,18 +188,13 @@
     <string name="command_description_markdown">On/Off markdown</string>
     <string name="command_description_clear_scalar_token">To fix Matrix Apps management</string>
     <string name="command_description_rainbow">Sends the given message colored as a rainbow</string>
-    <string name="command_description_rainbow_emote">Sends the given emote colored as a rainbow</string>
     <string name="command_description_spoiler">Sends the given message as a spoiler</string>
-    <string name="command_description_verify">Request to verify the given userID</string>
     <string name="command_description_shrug">Prepends ¯\\_(ツ)_/¯ to a plain-text message</string>
     <string name="command_description_discard_session">Forces the current outbound group session in an encrypted room to be discarded</string>
     <string name="command_description_plain">Sends a message as plain text, without interpreting it as markdown</string>
 
     <!-- permissions Android M -->
-    <string name="permissions_rationale_popup_title">Information</string>
 
-    <string name="missing_permissions_warning">"Due to missing permissions, some features may be missing…</string>
-    <string name="permissions_action_not_performed_missing_permissions">Sorry. Action not performed, due to missing permissions</string>
     <string name="not_implemented">Not implemented</string>
 
     <string name="crypto_error_withheld_blacklisted">You cannot access this message because you have been blocked by the sender</string>
@@ -223,10 +210,6 @@
     <string name="send_file_step_sending_thumbnail">Sending thumbnail (%1$s / %2$s)</string>
     <string name="send_file_step_encrypting_file">Encrypting file…</string>
     <string name="send_file_step_sending_file">Sending file (%1$s / %2$s)</string>
-    <string name="demo_mgs_reply">I am fine thanks. What about you Annu? How your work is going?</string>
-    <string name="name_of_reciver">Abhisek Gupta</string>
-    <string name="sender_mgs">How are you? what are you doing? hjhjfk jkfkjjfj mkmkjfnrkj kmfjnfjnfjrfn mflkmlkmrklkdmkflmmflnr</string>
-    <string name="sender_name">Annu Bharti</string>
     <string name="devices_details_last_seen_format">%1$s @ %2$s</string>
     <string name="encryption_information_unknown_ip">unknown session</string>
     <string name="you_added_a_new_device_with_info">A new session is requesting encryption keys.\Session name: %1$s\nLast seen: %2$s\nIf you didn’t log in on another session, ignore this request.</string>
@@ -240,9 +223,6 @@
     <string name="quote">Quote</string>
     <string name="reply">Reply</string>
     <string name="room_message_placeholder">Send a message</string>
-    <string name="room_list_rooms_empty_title">Rooms</string>
-    <string name="room_list_rooms_empty_body">Your direct message conversations will be displayed here</string>
-    <string name="network_error_please_check_and_retry">Network error: please check your connection and retry.</string>
     <string name="notification_inline_reply_failed">** Failed to send - please open room</string>
     <string name="notification_ticker_text_dm">%1$s: %2$s</string>
     <string name="notification_ticker_text_group">%1$s: %2$s %3$s</string>
@@ -270,7 +250,6 @@
     <string name="message_action_item_redact">Remove…</string>
     <string name="view_source">View Source</string>
     <string name="view_decrypted_source">View Decrypted Source</string>
-    <string name="permalink">Permalink</string>
     <string name="report_content">Report Content</string>
     <string name="report_content_spam">It\'s Spam</string>
     <string name="report_content_inappropriate">It\'s Inappropriate</string>
@@ -312,8 +291,6 @@
     <string name="leave">Leave</string>
     <string name="room_settings_topic">Topic</string>
     <string name="room_profile_section_more">More</string>
-    <string name="direct_room_profile_section_more_settings">Settings</string>
-    <string name="room_profile_section_more_settings">Room Settings</string>
     <string name="room_profile_section_more_notifications">Notifications</string>
     <string name="direct_room_profile_section_more_leave">Leave</string>
     <string name="room_profile_section_more_leave">Leave Room</string>
@@ -334,8 +311,6 @@
     <string name="room_list_quick_actions_notifications_all">"All messages"</string>
     <string name="room_list_quick_actions_notifications_mentions">"Mentions only"</string>
     <string name="room_list_quick_actions_notifications_mute">"Mute"</string>
-    <string name="room_list_quick_actions_low_priority_add">"Add to low priority"</string>
-    <string name="room_list_quick_actions_low_priority_remove">"Remove from low priority"</string>
     <string name="room_list_quick_actions_leave">"Leave the room"</string>
 
 
