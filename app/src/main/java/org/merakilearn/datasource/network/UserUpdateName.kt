@@ -10,5 +10,5 @@ data class UserUpdateName(
     val name:String,
 
     @Json (name = "profile_picture")
-    val profilePicture:String?
+    val profile_picture:String?
 )
