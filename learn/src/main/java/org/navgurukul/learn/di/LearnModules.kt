@@ -10,13 +10,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.*
-import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.*
-import org.navgurukul.learn.util.ColorProvider
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
+import org.navgurukul.learn.util.ColorProvider
 import retrofit2.Retrofit
 
 val viewModelModule = module {

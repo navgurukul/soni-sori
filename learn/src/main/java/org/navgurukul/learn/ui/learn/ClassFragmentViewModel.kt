@@ -13,13 +13,10 @@ import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
-import org.navgurukul.learn.courses.network.EnrolResponse
 import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.util.toDisplayableInterval
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class ClassFragmentViewModel(
     private val learnRepo: LearnRepo,

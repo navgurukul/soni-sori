@@ -1,14 +1,11 @@
 package org.navgurukul.learn.courses.db
 
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
-import androidx.room.util.TableInfo.Column
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
-import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
 const val DB_VERSION = 13
 

@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect

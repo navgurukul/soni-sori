@@ -5,8 +5,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.merakilearn.core.extentions.capitalizeWords
 import org.navgurukul.learn.util.toDate
-import org.navgurukul.learn.util.toDay
-import org.navgurukul.learn.util.toTime
 import java.util.*
 
 @JsonClass(generateAdapter = true)

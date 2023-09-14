@@ -3,7 +3,6 @@ package org.navgurukul.learn.ui.learn.viewholder
 import android.view.View
 import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent

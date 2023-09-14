@@ -7,7 +7,6 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
@@ -16,9 +15,9 @@ import androidx.core.content.ContextCompat
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.commonui.themes.getThemedUnit
 import org.navgurukul.typingguru.R
-import org.navgurukul.commonui.R as commonR
 import kotlin.math.floor
 import kotlin.math.roundToInt
+import org.navgurukul.commonui.R as commonR
 
 class KeyboardView @JvmOverloads constructor(
     context: Context,
