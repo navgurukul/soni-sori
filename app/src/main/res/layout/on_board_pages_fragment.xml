@@ -93,20 +93,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/green_progress_color" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/skip_login"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:insetTop="0dp"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/spacing_4x"
-        android:insetBottom="0dp"
-        android:text="@string/skip_login_english"
-        android:textAllCaps="false"
-        android:textColor="?textSecondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

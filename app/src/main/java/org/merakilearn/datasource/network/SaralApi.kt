@@ -25,8 +25,6 @@ interface SaralApi {
         @Path(value = "classId") classId: Int
     ): ResponseBody
 
-    @POST("users/create")
-    suspend fun initFakeSignUpAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @PUT("users/me")
     suspend fun initUserUpdateAsync(
