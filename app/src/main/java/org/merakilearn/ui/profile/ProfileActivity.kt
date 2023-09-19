@@ -50,7 +50,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
 
-        if (!userRepo.isUserLoggedIn()) {
+        if (!userRepo.isUserLoggedIn() || userRepo.isFakeLogin()) {
             OnBoardingActivity.restartApp(this, true)
             return
         }

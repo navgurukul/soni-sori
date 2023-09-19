@@ -48,6 +48,9 @@ class OnBoardPagesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        skip_login.setOnClickListener {
+            viewModel.handle(OnBoardingPagesAction.InitiateFakeSignUp)
+        }
         login_with_google.setOnClickListener {
             signInWithGoogle()
         }
@@ -84,6 +87,7 @@ class OnBoardPagesFragment : BaseFragment() {
         next.text = onBoardingTranslations.nextText
         skip.text = onBoardingTranslations.skipText
         login_with_google.text = onBoardingTranslations.loginWithGoogleText
+        skip_login.text = onBoardingTranslations.skipLoginText
 
         if (viewPager2.adapter == null) {
             val onBoardPagesAdapter =

@@ -13,6 +13,8 @@ interface SaralApi {
     suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
 
 
+    @POST("users/create")
+    suspend fun initFakeSignUpAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @PUT("users/me")
     suspend fun initUserUpdateAsync(
