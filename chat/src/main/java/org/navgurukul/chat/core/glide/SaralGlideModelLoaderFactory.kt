@@ -8,16 +8,13 @@ import com.bumptech.glide.load.model.ModelLoader
 import com.bumptech.glide.load.model.ModelLoaderFactory
 import com.bumptech.glide.load.model.MultiModelLoaderFactory
 import com.bumptech.glide.signature.ObjectKey
-import org.matrix.android.sdk.api.Matrix
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.matrix.android.sdk.api.MatrixCallback
 import org.matrix.android.sdk.api.session.file.FileService
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.features.media.ImageContentRenderer
 import timber.log.Timber
 import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 

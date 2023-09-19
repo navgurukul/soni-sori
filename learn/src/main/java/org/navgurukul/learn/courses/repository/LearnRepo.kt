@@ -7,7 +7,6 @@ import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -18,7 +17,6 @@ import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
-import java.util.ArrayList
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,

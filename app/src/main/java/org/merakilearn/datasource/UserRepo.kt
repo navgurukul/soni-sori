@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.UserUpdateName
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate

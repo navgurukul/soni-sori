@@ -1,6 +1,5 @@
 package org.merakilearn.ui.onboarding
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

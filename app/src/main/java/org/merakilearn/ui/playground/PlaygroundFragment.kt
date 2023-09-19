@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.PopupMenu
@@ -24,7 +23,6 @@ import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
-import java.io.OutputStream
 
 class PlaygroundFragment : BaseFragment() {
 
