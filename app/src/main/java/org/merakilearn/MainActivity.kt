@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -27,6 +26,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
+import org.merakilearn.ui.profile.ProfileActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -154,8 +154,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             if (userRepo.isUserLoggedIn())
                 OnBoardingActivity.showLoginScreen(this)
             else
-                Toast.makeText(this, "Please login to continue", Toast.LENGTH_SHORT).show()
-
+                ProfileActivity.launch(this)
         }
     }
 
