@@ -38,7 +38,7 @@ class OnBoardingPagesViewModel(
         val viewState = viewState.value!!
 
         when (action) {
-            is OnBoardingPagesAction.InitiateFakeSignUp -> handleFakeSignUp()
+//            is OnBoardingPagesAction.InitiateFakeSignUp -> handleFakeSignUp()
             is OnBoardingPagesAction.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
             is OnBoardingPagesAction.Next -> {
                 val nextItem = action.currentItem + 1
@@ -98,18 +98,18 @@ class OnBoardingPagesViewModel(
         }
     }
 
-    private fun handleFakeSignUp() {
-        viewModelScope.launch {
-            setState { copy(isLoading = true) }
-            val fakeUserLoginResponse = loginRepository.performFakeSignUp()
-            setState { copy(isLoading = false) }
-            fakeUserLoginResponse?.let {
-                checkPartner()
-            } ?: run {
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
-            }
-        }
-    }
+//    private fun handleFakeSignUp() {
+//        viewModelScope.launch {
+//            setState { copy(isLoading = true) }
+//            val fakeUserLoginResponse = loginRepository.performFakeSignUp()
+//            setState { copy(isLoading = false) }
+//            fakeUserLoginResponse?.let {
+//                checkPartner()
+//            } ?: run {
+//                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_process_request)))
+//            }
+//        }
+//    }
 
     private fun checkPartner() {
         val decodeReferrer =
@@ -167,7 +167,7 @@ sealed class OnBoardingPagesAction : ViewModelAction {
     data class Skip(val totalItems: Int) : OnBoardingPagesAction()
     data class Next(val currentItem: Int) : OnBoardingPagesAction()
     data class PageSelected(val currentItem: Int) : OnBoardingPagesAction()
-    object InitiateFakeSignUp : OnBoardingPagesAction()
+//    object InitiateFakeSignUp : OnBoardingPagesAction()
 }
 
 data class OnBoardingPagesViewState(

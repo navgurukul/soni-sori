@@ -19,16 +19,16 @@ class ClassesRepo(
 
     var lastUpdatedClasses: List<Classes>? = null
 
-    suspend fun updateClasses() {    //function not in use
-        try {
-            val response = api.getMyClassesAsync()
-            lastUpdatedClasses = response
-            _classesFlow.emit(response)
-        } catch (ex: Exception) {
-            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
-            _classesFlow.emit(arrayListOf())
-        }
-    }
+//    suspend fun updateClasses() {    //function is not in use
+//        try {
+//            val response = api.getMyClassesAsync()
+//            lastUpdatedClasses = response
+//            _classesFlow.emit(response)
+//        } catch (ex: Exception) {
+//            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
+//            _classesFlow.emit(arrayListOf())
+//        }
+//    }
 
     suspend fun fetchClassData(classId: Int): Classes? {
         return try {

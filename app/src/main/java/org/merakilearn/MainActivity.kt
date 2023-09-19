@@ -150,12 +150,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .transform(CircleCrop())
             .into(it)
 
-        it.setOnClickListener {
-            if (userRepo.isFakeLogin())
-                OnBoardingActivity.showLoginScreen(this)
-            else
-                ProfileActivity.launch(this)
-        }
+//        it.setOnClickListener {
+//            if (userRepo.isFakeLogin())
+//                OnBoardingActivity.showLoginScreen(this)
+//            else
+//                ProfileActivity.launch(this)
+//        }
     }
 
 

@@ -9,12 +9,12 @@ interface SaralApi {
     @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
-    @GET("classes")
-    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
+//    @GET("classes")
+//    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
 
 
-    @POST("users/create")
-    suspend fun initFakeSignUpAsync(@Body loginRequest: LoginRequest): LoginResponse
+//    @POST("users/create")
+//    suspend fun initFakeSignUpAsync(@Body loginRequest: LoginRequest): LoginResponse
 
     @PUT("users/me")
     suspend fun initUserUpdateAsync(
