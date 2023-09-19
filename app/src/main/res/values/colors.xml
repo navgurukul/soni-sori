@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="splashBackground">#91C642</color>
     <color name="backgroundColorHome">#EEF7FE</color>
     <color name="nav_bar_unselected">#9C9C9C</color>
-    <color name="upcoming_class_background_color">#FFF4DD</color>
-    <color name="upcoming_class_border_color">#FFDE98</color>
-    <color name="upcoming_class_color_decoration">#FAE2B0</color>
 
     <color name="avatar_border_color">#FFD31D</color>
-    <color name="chip_selected_color">#FFFF0000</color>
 
-    <color name="on_boarding_green_color">#48A145</color>
-    <color name="on_boarding_text_view_black_color">#2E2E2E</color>
     <color name="dot_color">#CDCDCD</color>
 
     <color name="green">#21CC23</color>
-    <color name="blue">#0CCFE8</color>
-    <color name="darkGrey">#423F3F</color>
-    <color name="lightGrey">#6D6D64</color>
-    <color name="hintColor">#A9A9AC</color>
-    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
 </resources>
