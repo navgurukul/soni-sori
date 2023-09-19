@@ -105,18 +105,22 @@ class PlaygroundFragment : BaseFragment() {
                             .show()
                 }
                 R.id.shareSavedFile -> {
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.type = "text/x-python"
-                    val uri = FileProvider.getUriForFile(
-                        requireContext(),
-                        "org.merakilearn.fileprovider",
-                        file
-                    )
-                    intent.putExtra(Intent.EXTRA_STREAM, uri)
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
-                    intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
-                    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    startActivity(Intent.createChooser(intent, "Share File"))
+                    try {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.type = "text/x-python"
+                        val uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "org.merakilearn.fileprovider",
+                            file
+                        )
+                        intent.putExtra(Intent.EXTRA_STREAM, uri)
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
+                        intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
+                        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        startActivity(intent)  //Passing the intent Instead  create chooser for SecurityException
+                    }catch (e: Exception){
+                        Toast.makeText(requireContext(), "File sharing failed!", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 R.id.exportSavedFile -> {
                     var mimeType =
