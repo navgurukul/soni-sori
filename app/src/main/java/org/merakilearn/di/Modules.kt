@@ -194,7 +194,7 @@ val networkModule = module {
 val repositoryModule = module {
     single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
     single { Config() }
-    single { ClassesRepo(get()) }
+    single { ClassesRepo(get(),get()) }
     single { SettingsRepo(get()) }
     single { PlaygroundRepo(get()) }
     single {
