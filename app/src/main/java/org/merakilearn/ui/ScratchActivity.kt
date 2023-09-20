@@ -74,9 +74,8 @@ class ScratchActivity : AppCompatActivity() {
         webView.settings.allowFileAccessFromFileURLs = true
         webView.settings.allowUniversalAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Scratch")
-        webView.settings.domStorageEnabled = true;
-        webView.settings.setAppCacheEnabled(true);
-        webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
+        webView.settings.domStorageEnabled = true
+        webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
     }
 
     @JavascriptInterface
