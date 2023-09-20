@@ -3,91 +3,203 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_peek_layout"
-    android:paddingBottom="@dimen/spacing_4x"
+    android:layout_height="match_parent"
     app:behavior_hideable="true"
     app:behavior_peekHeight="@dimen/height_bottom_peek"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <TextView
-        android:id="@+id/linearLayoutPeek"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/height_bottom_peek"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/spacing_4x"
-        android:paddingRight="@dimen/spacing_4x"
-        android:text="@string/output"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?textPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="?borderWidth"
-        android:background="?borderColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeek" />
 
     <LinearLayout
+        android:id="@+id/linearLayoutPeek"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/layoutInput"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeek">
+        android:layout_height="@dimen/height_bottom_peek"
+        android:background="@drawable/bg_peek_layout"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvOutput"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:freezesText="true"
-            android:padding="@dimen/spacing_4x"
-            android:textColor="?textPrimary"
-            android:textIsSelectable="true"/>
+            android:layout_weight="1.2"
+            android:text="@string/output"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="0dp"
+        android:background="@color/output_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearlayout2">
 
-        <EditText
-            android:id="@+id/etInput"
-            style="@style/Code"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/svOutput"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/errorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/error_round_background"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/errorImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_importerror"></ImageView>
+
+                    <TextView
+                        android:id="@+id/errorTextExample"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/ConsoleOutput"
+                        android:textColor="@color/error_text"
+                        android:layout_marginTop="16dp"
+                        android:text="Couldn't find an object with name 'cube' in the 'math' library to import."></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/errorTextTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ConsoleOutput"
+                    android:background="@drawable/error_tip_round_backgrond"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:padding="16dp"
+                    android:drawableLeft="@drawable/ic_fixvector"
+                    android:drawablePadding="8dp"
+                    android:gravity="center|left"
+                    android:text="@string/error_fix_tip"></TextView>
+
+
+                <TextView
+                    android:id="@+id/tvError"
+                    style="@style/ConsoleOutput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_error"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/editor_background_dark" />
+
+                <TextView
+                    android:id="@+id/tvOutput"
+                    style="@style/ConsoleOutput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:id="@+id/tvMentorHelp"
+                    style="@style/Code"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"
+                    android:padding="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textColor="@color/errorColor"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:text="@string/take_mentor_help"
+                    />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/layoutInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:paddingLeft="8dp">
+
+            <EditText
+                android:id="@+id/etInput"
+                style="@style/Code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:ems="10"
+                android:hint="@string/enter_input_here"
+                android:imeOptions="actionDone|flagNoFullscreen"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:padding="8dp"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:id="@+id/ibEnter"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_enter_round"
+                android:tint="?attr/colorPrimary" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_bottom_peek"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:gravity="end|center"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@id/linearLayoutPeek">
+
+
+        <TextView
+            android:id="@+id/copy_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_2x"
-            android:layout_marginEnd="@dimen/spacing_2x"
-            android:layout_weight="1"
-            android:background="@drawable/bg_input"
-            android:ems="10"
-            android:hint="@string/enter_input_here"
-            android:imeOptions="actionDone|flagNoFullscreen"
-            android:inputType="textNoSuggestions|textVisiblePassword"
-            android:padding="@dimen/spacing_2x"
-            android:singleLine="true" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ibEnter"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:padding="@dimen/spacing_4x"
+            android:text="Copy"
+            android:clickable="true"
+            android:focusable="true"
+            android:enabled="true"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:drawableRight="@drawable/ic_copy_outline"
+            android:textColor="@color/error_background" />
+        <ImageView
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:minWidth="48dp"
-            app:icon="@drawable/ic_enter_round" />
+            android:layout_weight="0.3"
+            android:padding="@dimen/spacing_4x"
+            android:clickable="true"
+            android:focusable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:src="@drawable/ic_outline_cancel"/>
 
     </LinearLayout>
 
