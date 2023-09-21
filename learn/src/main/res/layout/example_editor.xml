@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/code_background"
     android:layout_height="wrap_content">
 
     <TextView
@@ -24,33 +23,33 @@
         android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top"
         android:text="codeBody"
-        android:minLines="3"
         android:scrollbars="horizontal|vertical"
         android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword"
         android:background="@drawable/border_reset"
-        android:layout_margin="@dimen/dimen_16_dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/code_title" />
 
-    <Button
-        android:id="@+id/reset_btn"
+
+
+    <TextView
+        android:id="@+id/reset_code"
         android:layout_width="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/code_body"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="17dp"
-        android:text="Reset"
-        android:textColor="@color/colorWhite"
+        android:text="Reset Code"
+        android:textColor="@color/colorBlack"
         android:padding="4dp"
+        android:backgroundTint="#FFFFFF"
         android:drawableLeft="@drawable/ic_baseline_restart_alt_24"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:textAllCaps="false"
-        android:background="@drawable/border_reset"
         android:layout_height="wrap_content">
-    </Button>
+    </TextView>
 
     <Button
         android:id="@+id/run_btn"
@@ -64,11 +63,17 @@
         android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/green_progress_color"
-        android:background="@drawable/border_reset"
+        android:background="@drawable/border_button"
         app:layout_constraintTop_toBottomOf="@id/code_body"
         android:layout_height="wrap_content">
     </Button>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorGrey_100"
+        app:layout_constraintTop_toBottomOf="@id/run_btn"></View>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,9 +88,10 @@
             android:id="@+id/out_put_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:drawableLeft="@drawable/ic_baseline_cable_24"
-            android:text=" OutPut"
+            android:layout_marginStart="7dp"
+            android:drawableLeft="@drawable/custom_image"
+            android:text="OutPut"
+            android:drawablePadding="10dp"
             android:textColor="@color/colorBlack"
             android:textSize="20dp"
             android:textStyle="bold"
