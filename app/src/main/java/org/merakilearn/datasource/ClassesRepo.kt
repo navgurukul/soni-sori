@@ -5,10 +5,12 @@ import kotlinx.coroutines.flow.*
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.Classes
+import org.navgurukul.learn.courses.network.SaralCoursesApi
 import timber.log.Timber
 
 class ClassesRepo(
-    val api: SaralApi
+    val api: SaralApi,
+    val api2:SaralCoursesApi
 ) {
 
     private val _classesFlow = MutableSharedFlow<List<Classes>?>(replay = 1)
@@ -17,16 +19,16 @@ class ClassesRepo(
 
     var lastUpdatedClasses: List<Classes>? = null
 
-    suspend fun updateClasses() {
-        try {
-            val response = api.getMyClassesAsync()
-            lastUpdatedClasses = response
-            _classesFlow.emit(response)
-        } catch (ex: Exception) {
-            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
-            _classesFlow.emit(arrayListOf())
-        }
-    }
+//    suspend fun updateClasses() {    //function is not in use
+//        try {
+//            val response = api.getMyClassesAsync()
+//            lastUpdatedClasses = response
+//            _classesFlow.emit(response)
+//        } catch (ex: Exception) {
+//            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
+//            _classesFlow.emit(arrayListOf())
+//        }
+//    }
 
     suspend fun fetchClassData(classId: Int): Classes? {
         return try {
@@ -57,10 +59,10 @@ class ClassesRepo(
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
             if (enrolled) {
-                api.logOutToClassAsync(classId)
+                api2.logOutToClassAsync(classId,false)
                 updateEnrollStatus(classId, false)
             } else {
-                api.enrollToClassAsync(classId, mutableMapOf())
+                api2.enrollToClassAsync(classId, mutableMapOf(),false)
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {

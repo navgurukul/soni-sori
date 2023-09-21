@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -11,11 +12,9 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
-import org.navgurukul.learn.courses.db.models.CurrentStudy
-import org.navgurukul.learn.courses.repository.LearnRepo
-import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.CourseExerciseContent
+import org.navgurukul.learn.courses.repository.LearnRepo
 
 class ExerciseFragmentViewModel(
     private val learnRepo: LearnRepo,

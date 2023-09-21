@@ -16,7 +16,6 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONException
-import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -25,12 +24,15 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
+import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
+import org.navgurukul.learn.courses.network.model.ConstantString
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import java.util.*
-import org.navgurukul.learn.courses.network.model.ConstantString
 
 
 @Parcelize

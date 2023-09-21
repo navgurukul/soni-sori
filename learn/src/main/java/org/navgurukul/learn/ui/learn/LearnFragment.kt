@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.Context
@@ -12,12 +11,10 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.pdf.PdfRenderer
-import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.os.StrictMode
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.*
 import kotlinx.android.synthetic.main.generated_certificate.view.*
 import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*

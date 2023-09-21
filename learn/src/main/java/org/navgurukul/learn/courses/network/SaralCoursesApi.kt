@@ -16,7 +16,7 @@ interface SaralCoursesApi {
     ): PathwayContainer
 
     @GET("pathways/courses")
-    suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer
+    suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer   //Api not in use
 
     @GET("pathways/{pathway_id}/courses")
     suspend fun getCoursesForPathway(

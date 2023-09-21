@@ -1,10 +1,8 @@
 package org.navgurukul.typingguru.keyboard
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.merakilearn.core.extentions.TickerState
 import org.merakilearn.core.extentions.tickerFlow
 import org.merakilearn.core.navigator.Mode
@@ -13,8 +11,8 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewState
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit.*
-import kotlin.collections.ArrayList
+import java.util.concurrent.TimeUnit.MINUTES
+import java.util.concurrent.TimeUnit.SECONDS
 
 enum class CourseKeyState {
     CORRECT, INCORRECT, NEUTRAL

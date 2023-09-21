@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.UserUpdateName
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
@@ -24,8 +23,8 @@ class UserRepo(
 
     companion object {
         private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
-        private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
-        private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
+//        private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
+//        private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
         private const val KEY_INSTALL_REFERRER = "KEY_INSTALL_REFERRER"
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
@@ -51,38 +50,37 @@ class UserRepo(
             preferences.edit { putString(KEY_INSTALL_REFERRER, value) }
         }
 
-    fun isFakeLogin(): Boolean {
-        return preferences.getBoolean(KEY_IS_FAKE_LOGIN, false)
-    }
+//    fun isFakeLogin(): Boolean {
+//        return preferences.getBoolean(KEY_IS_FAKE_LOGIN, false)
+//    }
 
     fun isUserLoggedIn(): Boolean {
         return preferences.getBoolean(KEY_USER_LOGIN, false)
     }
 
-    fun getFakeLoginResponseId(): Int? {
-        val fakeUserLoginResponseString =
-            preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-        if (!fakeUserLoginResponseString.isNullOrEmpty()) {
-            val fakeUserLoginResponse: LoginResponse.User? = fakeUserLoginResponseString.objectify()
-            return fakeUserLoginResponse?.id?.toIntOrNull()
-        }
-        return 0
-    }
+//    fun getFakeLoginResponseId(): Int? {
+//        val fakeUserLoginResponseString =
+//            preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+//        if (!fakeUserLoginResponseString.isNullOrEmpty()) {
+//            val fakeUserLoginResponse: LoginResponse.User? = fakeUserLoginResponseString.objectify()
+//            return fakeUserLoginResponse?.id?.toIntOrNull()
+//        }
+//        return 0
+//    }
 
     fun getCurrentUser(): LoginResponse.User? {
         val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
         return try {
-            if (userLoginResponseString.isNullOrEmpty() && isFakeLogin()) {
-                val fakeUserLoginResponseString =
-                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-                fakeUserLoginResponseString?.objectify()
-            } else {
+//            if (userLoginResponseString.isNullOrEmpty()) {
+//                val fakeUserLoginResponseString =
+//                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+//                fakeUserLoginResponseString?.objectify()
+//            } else {
                 return if (userLoginResponseString.isNullOrEmpty()) {
                     null
                 } else {
                     userLoginResponseString.objectify()
                 }
-            }
         } catch (e : Exception){
             throw IllegalStateException("Current user is null")
         }
@@ -119,22 +117,22 @@ class UserRepo(
         }
     }
 
-    fun saveFakeLoginResponse(
-        response: LoginResponse,
-    ) {
-        preferences.edit {
-            putString(KEY_FAKE_USER_RESPONSE, response.user.jsonify())
-            putString(KEY_AUTH_TOKEN, response.token)
-            putBoolean(KEY_USER_LOGIN, true)
-            putBoolean(KEY_IS_FAKE_LOGIN, true)
-        }
-    }
+//    fun saveFakeLoginResponse(
+//        response: LoginResponse,
+//    ) {
+//        preferences.edit {
+//            putString(KEY_FAKE_USER_RESPONSE, response.user.jsonify())
+//            putString(KEY_AUTH_TOKEN, response.token)
+//            putBoolean(KEY_USER_LOGIN, true)
+//            putBoolean(KEY_IS_FAKE_LOGIN, true)
+//        }
+//    }
 
-    fun resetFakeLogin() {
-        preferences.edit {
-            putBoolean(KEY_IS_FAKE_LOGIN, false)
-        }
-    }
+//    fun resetFakeLogin() {
+//        preferences.edit {
+//            putBoolean(KEY_IS_FAKE_LOGIN, false)
+//        }
+//    }
 
     suspend fun logOut(): Boolean {
         return try {

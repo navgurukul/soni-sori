@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.caverock.androidsvg.SVG
-import kotlinx.coroutines.NonCancellable.isCancelled
 import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
