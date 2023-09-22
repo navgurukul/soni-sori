@@ -78,12 +78,12 @@
                     android:id="@+id/recyclerviewCourse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintHeight_default="wrap"
                     android:layout_marginTop="@dimen/spacing_2x"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTextCourse"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:clipChildren="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintHeight_default="wrap"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTextCourse"
                     tools:listitem="@layout/item_course" />
 
                 <include
