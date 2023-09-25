@@ -55,7 +55,8 @@
                         "Javascript",
                         "Spoken English",
                         "Typing Guru",
-                        "Residential Info"
+                        "Residential Info",
+                        "Scratch"
                     ]
                 },
                 "hi":{
@@ -83,7 +84,8 @@
                         "जावास्क्रिप्ट",
                         "अंग्रेजी बोलवचन",
                         "टाइपिंग गुरु",
-                        "आवासीय कार्यक्रमों की जानकारी-ट्रैक"
+                        "आवासीय कार्यक्रमों की जानकारी-ट्रैक",
+                        "स्क्रैच"
                     ]
                     }
                 },
@@ -134,7 +136,13 @@
                         "image":{
                             "local": "RESIDENTIAL"
                         }
-                    }
+                    },
+                   {
+                        "id":6,
+                        "image":{
+                            "local": "SCRATCH"
+                          }
+                       }
                     ]
             }
         </value>
