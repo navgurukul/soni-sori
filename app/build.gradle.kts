@@ -65,7 +65,7 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar","*.aar"))))
     implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
 
     //modules
@@ -142,6 +142,11 @@ dependencies {
     implementation(GooglePlayDependencies.playCore)
     implementation(GooglePlayDependencies.installReferrer)
 
+    //arduinocodeburn
+    implementation("com.android.support.constraint:constraint-layout:1.1.3")
+    implementation("android.arch.navigation:navigation-fragment:1.0.0")
+    implementation("android.arch.navigation:navigation-ui:1.0.0")
+
 
     //test
     testImplementation(TestDependencies.jUnit)
@@ -153,6 +158,7 @@ dependencies {
 
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
+    implementation("com.github.felHR85:UsbSerial:6.1.0")
 
 }
 

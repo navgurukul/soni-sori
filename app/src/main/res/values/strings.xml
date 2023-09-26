@@ -2,7 +2,8 @@
     <!--<string name="server_client_id" translatable="false">34917283366-vp76jlfim4aqh4nl9ork3irb4mf4cp34.apps.googleusercontent.com</string>-->
     <string name="server_client_id" translatable="false">449891326531-jv9ulof4hfsuth41buj5buiv5cmf17re.apps.googleusercontent.com</string>
     <string name="app_name">Meraki</string>
-
+    <string name="action_settings">Settings</string>
+    <string name="serial_port">Serial Port</string>
     <string name="title_more">More</string>
     <string name="profile">Profile</string>
     <string name="unable_to_sign">Unable to Sign in ! Please try again</string>

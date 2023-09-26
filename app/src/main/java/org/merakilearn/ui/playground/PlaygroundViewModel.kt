@@ -133,6 +133,7 @@ class PlaygroundViewModel(
                     playgroundItemModel.file
                 )
             )
+            PlaygroundTypes.ARDUINO -> _viewEvents.postValue(PlaygroundViewEvents.OpenArduinoBlockly)
         }
     }
 
@@ -219,7 +220,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
-
+    object OpenArduinoBlockly : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions : ViewModelAction {

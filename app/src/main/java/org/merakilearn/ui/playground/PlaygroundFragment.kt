@@ -24,6 +24,8 @@ import org.navgurukul.commonui.platform.GridSpacingDecorator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import java.io.File
 
+import org.merakilearn.ui.ArduinoBlocklyActivity
+
 class PlaygroundFragment : BaseFragment() {
 
     private val viewModel: PlaygroundViewModel by viewModel()
@@ -76,6 +78,10 @@ class PlaygroundFragment : BaseFragment() {
                 is PlaygroundViewEvents.OpenScratchWithFile -> {
                     val intent = Intent(requireContext(), ScratchActivity::class.java)
                     intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
+                    startActivity(intent)
+                }
+                is PlaygroundViewEvents.OpenArduinoBlockly -> {
+                    val intent = Intent(requireContext(), ArduinoBlocklyActivity::class.java)
                     startActivity(intent)
                 }
             }

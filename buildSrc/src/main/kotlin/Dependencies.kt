@@ -176,6 +176,33 @@ object BuildConfigVersions {
     const val versionCode = 89
     const val versionName = "1.5.59"
     const val applicationId = "org.merakilearn"
+
+    const val  usbSerialVersion = "6.1.0"
+    const val  vumeterlibraryVersion = "1.0.17"
+    const val  sliderVersion = "2.0.4"
+
+    const val  lifecycleVersion = "1.1.1"
+    // App dependencies
+    const val  supportLibVersion = "28.0.0" //'28.0.0-rc02'
+    const val  gsonVersion = "2.8.2"
+    const val  nav_version = "1.0.0-alpha06"
+
+    const val  rxJavaVersion = "2.2.3"
+    const val  rxAndroidVersion = "2.0.1"
+    const val timberVersion = "4.5.1"
+
+    //Test dependencies
+    const val mockitoVersion = "2.7.1"
+
+    //Dagger 2
+    const val daggerVersion = "2.13"
+    const val dagger = "com.google.dagger:dagger:$daggerVersion"
+    const val  daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    const val daggerAndroid = "com.google.dagger:dagger-android:$daggerVersion"
+    const val  daggerAndroidSupport = "com.google.dagger:dagger-android-support:$daggerVersion"
+    const val  daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
+    //LeakCanary
+    const val  leakCanary = "1.6.2"
 }
 
 object Classpath {
