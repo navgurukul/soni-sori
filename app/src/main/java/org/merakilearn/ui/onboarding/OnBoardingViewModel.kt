@@ -7,10 +7,10 @@ import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.UserRepo
-import org.merakilearn.datasource.network.model.OnBoardingData
-import org.merakilearn.datasource.network.model.OnBoardingTranslations
-import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.datasource.network.model.*
 import org.navgurukul.commonui.platform.*
+import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.network.SaralCoursesApi
 import java.net.URLDecoder
 
 class OnBoardingViewModel(
@@ -18,25 +18,57 @@ class OnBoardingViewModel(
     private val userRepo: UserRepo,
     private val config: Config,
     private val corePreferences: CorePreferences,
-    private val installReferrerManager: InstallReferrerManager
+    private val installReferrerManager: InstallReferrerManager,
+    private val saralCoursesApi: SaralCoursesApi
 ) :
     BaseViewModel<OnBoardingViewEvents, OnBoardingViewState>(OnBoardingViewState()) {
+
+    private var cardViewsAdded = false
 
     init {
         viewModelScope.launch {
             val selectedLanguage = corePreferences.selectedLanguage
-            val data =
-                config.getObjectifiedValue<OnBoardingData>(
-                    Config.ON_BOARDING_DATA
-                )!!
-            setState {
-                copy(
-                    onBoardingData = data,
-                    onBoardingTranslations = data.onBoardingTranslations[selectedLanguage]
-                )
+            val data = config.getObjectifiedValue<OnBoardingData>(Config.ON_BOARDING_DATA)
+            val translations = data?.onBoardingTranslations?.get(selectedLanguage)
+
+            if (data != null && translations != null) {
+                setState {
+                    copy(
+                        onBoardingData = data,
+                        onBoardingTranslations = translations
+                    )
+                }
+                if (!cardViewsAdded) {
+                    loadPathways()
+                }
             }
         }
     }
+
+    fun loadPathways() {
+        viewModelScope.launch {
+            try {
+                val pathwaysResponse = saralCoursesApi.getPathways()
+                val pathways = pathwaysResponse.pathways
+                setState { copy(onBoardingData = createOnBoardingData(pathways)) }
+                cardViewsAdded = true
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+    private fun createOnBoardingData(pathways: List<Pathway>): OnBoardingData {
+        val onBoardingPathwayList = pathways.map { pathway ->
+            OnBoardingPathwayData(
+                OnBoardingImage(pathway.logo),
+                pathway.id,
+                pathway.name,
+                pathway.logo
+            )
+        }
+        return OnBoardingData(emptyList(), onBoardingPathwayList, emptyMap())
+    }
+
 
     private fun checkPartner() {
         viewModelScope.launch {
