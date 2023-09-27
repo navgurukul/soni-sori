@@ -36,7 +36,6 @@ class PlaygroundRepo(
                 name="Arduino",
                 iconResource = R.drawable.arduino_logo,
             ),
-
             )
     }
 

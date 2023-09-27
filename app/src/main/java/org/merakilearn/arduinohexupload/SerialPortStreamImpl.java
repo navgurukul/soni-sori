@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 import ArduinoUploader.Help.ISerialPortStream;
 
+
+
 public class SerialPortStreamImpl implements ISerialPortStream {
     private static final String TAG = SerialPortStreamImpl.class.getSimpleName();
     protected int baudRate;
@@ -28,7 +30,7 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     private UsbDeviceConnection connection;
     protected String portName;//PortKey
     HashMap<String, UsbDevice> usbDevices;
-     final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
+    final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
     protected ArrayBlockingQueue<Integer> data = new ArrayBlockingQueue<Integer>(DEFAULT_READ_BUFFER_SIZE);
     protected volatile boolean is_open;
 
@@ -94,7 +96,7 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     }
 
     @Override
-    public void setBaudRate​(int newBaudRate) {
+    public void setBaudRate(int newBaudRate) {
         synchronized (this) {
             serialPort.setBaudRate(newBaudRate);
         }
@@ -150,14 +152,14 @@ public class SerialPortStreamImpl implements ISerialPortStream {
         }
     }
 
-    public void setNumDataBits​(int newDataBits) {
+    public void setNumDataBits(int newDataBits) {
         synchronized (this) {
             serialPort.setDataBits(newDataBits);
         }
     }
 
     @Override
-    public void setNumStopBits​(int newStopBits) {
+    public void setNumStopBits(int newStopBits) {
         synchronized (this) {
             serialPort.setStopBits(newStopBits);
         }
@@ -166,14 +168,14 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     ;
 
     @Override
-    public void setParity​(int newParity) {
+    public void setParity(int newParity) {
         synchronized (this) {
             serialPort.setParity(newParity);
         }
     }
 
     @Override
-    public int readBytes​(byte[] buffer, int bytesToRead) {
+    public int readBytes(byte[] buffer, int bytesToRead) {
         synchronized (this) {
             int index = 0;
             int count = 0;
@@ -196,7 +198,7 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     }
 
     @Override
-    public int readBytes​(byte[] buffer, int bytesToRead, int offset) {
+    public int readBytes(byte[] buffer, int bytesToRead, int offset) {
         synchronized (this) {
             int index = offset;
             int numRead = 0;
@@ -220,7 +222,7 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     }
 
     @Override
-    public int writeBytes​(byte[] buffer, int bytesToWrite) {
+    public int writeBytes(byte[] buffer, int bytesToWrite) {
         synchronized (this) {
             byte[] mWriteBuffer = new byte[bytesToWrite];
             System.arraycopy(buffer, 0, mWriteBuffer, 0, bytesToWrite);
@@ -230,7 +232,7 @@ public class SerialPortStreamImpl implements ISerialPortStream {
     }
 
     @Override
-    public int writeBytes​(byte[] buffer, int bytesToWrite, int offset) {
+    public int writeBytes(byte[] buffer, int bytesToWrite, int offset) {
         synchronized (this) {
             byte[] mWriteBuffer = new byte[bytesToWrite];
             System.arraycopy(buffer, offset, mWriteBuffer, 0, bytesToWrite);
@@ -246,3 +248,5 @@ public class SerialPortStreamImpl implements ISerialPortStream {
 
 
 }
+
+
