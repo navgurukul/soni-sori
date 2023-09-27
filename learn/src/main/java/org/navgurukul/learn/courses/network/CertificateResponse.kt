@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class GetCompletedPortion(
     @Json(name = "total_completed_portion")
-    val totalCompletedPortion : Int
+    val totalCompletedPortion : Int?
 )
 
 @JsonClass(generateAdapter = true)

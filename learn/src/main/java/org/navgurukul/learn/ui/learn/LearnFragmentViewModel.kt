@@ -220,7 +220,10 @@ class LearnFragmentViewModel(
     private fun getCertificate(pathwayId: Int, pathwayCode: String){
         viewModelScope.launch {
             val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-            getCertificatePdf(completedData, pathwayCode)
+//            getCertificatePdf(completedData, pathwayCode)
+            if (completedData != null) {
+                getCertificatePdf(completedData, pathwayCode)
+            }
         }
     }
 
