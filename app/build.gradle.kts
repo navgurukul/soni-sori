@@ -142,12 +142,6 @@ dependencies {
     implementation(GooglePlayDependencies.playCore)
     implementation(GooglePlayDependencies.installReferrer)
 
-    //arduinocodeburn
-    implementation("com.android.support.constraint:constraint-layout:1.1.3")
-    implementation("android.arch.navigation:navigation-fragment:1.0.0")
-    implementation("android.arch.navigation:navigation-ui:1.0.0")
-
-
     //test
     testImplementation(TestDependencies.jUnit)
 
