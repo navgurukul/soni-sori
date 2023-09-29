@@ -23,13 +23,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.felhr.usbserial.UsbSerialDevice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.merakilearn.R;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import ArduinoUploader.ArduinoSketchUploader;
@@ -43,7 +42,8 @@ import CSharpStyle.IProgress;
 public class ArduinoHexUploadActivity extends AppCompatActivity {
     public static final String TAG = ArduinoHexUploadActivity.class.getSimpleName();
     private UsbSerialManager usbSerialManager;
-
+    private Bundle bundle;
+    private Gson gson;
     public enum UsbConnectState {
         DISCONNECTED,
         CONNECT
@@ -127,7 +127,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private String deviceKeyName;
     private FloatingActionButton fab;
     private Button requestButton;
-
+    private String[] parseHexData;
 
     public void usbConnectChange(UsbConnectState state) {
         if (state == UsbConnectState.DISCONNECTED) {
@@ -152,6 +152,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = getIntent().getExtras();
         usbSerialManager = new UsbSerialManager(this);
         setUsbFilter();
         setContentView(R.layout.activity_arduino_hex_upload);
@@ -174,6 +175,12 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             }
         });
 
+        // Retrieve the data from the Bundle
+        String hexDataFromSketch = bundle.getString("HexDataFromSketch", null);
+        gson = new Gson();
+        if (hexDataFromSketch != null) {
+            parseHexData = gson.fromJson(hexDataFromSketch, String[].class);
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,9 +217,9 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         return usbSerialManager.checkDevicePermission(key);
     }
 
-    public UsbSerialDevice getUsbSerialDevice(String key) {
+    /* public UsbSerialDevice getUsbSerialDevice(String key) {
         return usbSerialManager.tryGetDevice(key);
-    }
+    }*/
 
     @Override
     public void onResume() {
@@ -226,7 +233,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         unregisterReceiver(mUsbNotifyReceiver);
     }
 
-    public void uploadHex() {
+    public void uploadHex(List<String> hexFileContents) {
 
         Boards board = Boards.ARDUINO_UNO;
 
@@ -296,18 +303,16 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             public void Report(Double value) {
                 String result = String.format("Upload progress: %1$,3.2f%%", value * 100);
                 Log.d(TAG, result);
-                logUI("Procees:" + result);
+                logUI("Process:" + result);
 
             }
         };
 
         try {
-            final InputStream file = getAssets().open("Blink.uno.hex");
-            Reader reader = new InputStreamReader(file);
-            Collection<String> hexFileContents = new LineReader(reader).readLines();
+            //Collection<String> hexFileContents = new LineReader(reader).readLines();
             ArduinoSketchUploader<SerialPortStreamImpl> uploader = new ArduinoSketchUploader<SerialPortStreamImpl>(this, SerialPortStreamImpl.class, null, logger, progress);
 //            ArduinoSketchUploader<SerialPortStreamImpl> uploader = new ArduinoSketchUploader<SerialPortStreamImpl>(this, null, logger, progress) {
-//                //Ananymous
+//                //some code
 //            };
             uploader.UploadSketch(hexFileContents, customArduino, deviceKeyName);
         } catch (ArduinoUploaderException ex) {
@@ -325,7 +330,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private class UploadRunnable implements Runnable {
         @Override
         public void run() {
-            uploadHex();
+            uploadHex(Arrays.asList(parseHexData));
         }
     }
 

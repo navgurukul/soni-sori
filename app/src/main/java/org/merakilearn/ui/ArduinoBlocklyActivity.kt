@@ -1,25 +1,31 @@
 package org.merakilearn.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.webkit.*
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
 import org.merakilearn.R
+import org.merakilearn.arduinohexupload.ArduinoHexUploadActivity
+
 
 class ArduinoBlocklyActivity : AppCompatActivity() {
     lateinit var webView: WebView
     lateinit var progressBar: ProgressBar
     lateinit var myRequest: PermissionRequest
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +33,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.progressBar2)
         progressBar.visibility = View.VISIBLE
+
+        sharedPreferences = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
 
         webView = findViewById(R.id.webView)
         webView.webViewClient = MyWebViewClient(this)
@@ -72,6 +80,53 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
         } else {
             myRequest.grant(myRequest.resources)
+        }
+    }
+
+    @JavascriptInterface
+    fun hexDataUploadToDevice(hexData: ArrayList<String>) {
+        val builder = AlertDialog.Builder(this)
+        if( hexData.isNotEmpty() ) {
+
+            editor = sharedPreferences.edit()
+            //Set the values if reading data as Arroy List
+            val gson = Gson()
+            val textHexList: List<String> = ArrayList<String>(hexData)
+            val jsonText: String = gson.toJson(textHexList)
+            editor.putString("HexDataFromSketch", jsonText)
+            editor.apply()
+
+            /* If data coming as string
+            editor.putString("HexDataFromSketch", hexData )
+            editor.apply() */
+            val readHexDataPref = sharedPreferences.getString("HexDataFromSketch", null)
+            if (readHexDataPref.toString().isNotEmpty()) {
+                val intent = Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
+                val bundle = Bundle()
+                bundle.putString("HexDataFromSketch", readHexDataPref)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+            // Set the dialog title and message
+            builder.setTitle("Failed to Save data in InMemory")
+                .setMessage("InMemory HexData is Null")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry to upload the code in mins ", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
+        }
+        else {
+            // Set the dialog title and message if reading data from web to android fails
+            builder.setTitle("Failed to Read Data From API")
+                .setMessage("Sketch Code to Hex file data is empty ")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry in sometime", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
         }
     }
 
