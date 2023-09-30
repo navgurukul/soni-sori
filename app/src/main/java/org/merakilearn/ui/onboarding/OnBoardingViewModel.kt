@@ -11,6 +11,7 @@ import org.merakilearn.datasource.network.model.*
 import org.navgurukul.commonui.platform.*
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.network.SaralCoursesApi
+import timber.log.Timber
 import java.net.URLDecoder
 
 class OnBoardingViewModel(
@@ -48,12 +49,12 @@ class OnBoardingViewModel(
     fun loadPathways() {
         viewModelScope.launch {
             try {
-                val pathwaysResponse = saralCoursesApi.getPathways()
-                val pathways = pathwaysResponse.pathways
-                setState { copy(onBoardingData = createOnBoardingData(pathways)) }
+                val pathwaysResponse = saralCoursesApi.getPathways().pathways
+                val filteredPathways = pathwaysResponse.filter { it.platform == "both" }
+                setState { copy(onBoardingData = createOnBoardingData(filteredPathways) )}
                 cardViewsAdded = true
             } catch (e: Exception) {
-
+                Timber.tag("OnBoardingViewModel").e(e, "Error loading pathways")
             }
         }
     }
