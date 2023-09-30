@@ -85,7 +85,7 @@ object RxJavaDependencies {
     const val rxBinding = "com.jakewharton.rxbinding3:rxbinding:${Versions.rxBinding}"
     const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
     const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-    const val rxRelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxBinding}"
+    const val rxRelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxRelay}"
     const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
 }
 
