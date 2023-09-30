@@ -16,6 +16,39 @@ object Versions {
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
+    const val rxJava = "2.2.10"
+    const val rxAndroid = "2.1.1"
+    const val rxRelay = "2.1.1"
+    const val rxKotlin = "2.3.0"
+    const val swipeRefreshLayout = "1.1.0"
+    const val slidingPaneLayout = "1.1.0"
+    const val work = "2.7.1"
+    const val emoji = "1.0.0"
+    const val preference = "1.1.1"
+    const val navigationFragmentKtx = "2.3.0"
+    const val navigationUIKtx = "2.3.0"
+    const val navigationUI = "2.3.0"
+    const val navigationFragment = "2.3.0"
+    const val coreKtx = "1.3.0"
+    const val appcompat = "1.2.0"
+    const val constraintLayout = "2.0.1"
+    const val legacyV4 = "1.0.0"
+    const val browser = "1.3.0"
+    const val materialDesign = "1.4.0"
+    const val playCore = "1.10.0"
+    const val installReferrer = "2.2"
+    const val base = "18.1.0"
+    const val auth = "18.1.0"
+    const val annotation = "1.1.0"
+    const val espresso = "3.3.0"
+    const val androidxJUnit = "1.1.2"
+    const val jUnit = "4.13"
+    const val youtubePlayer = "10.0.5"
+    const val AutoService = "1.0-rc7"
+    const val htmlCompressor = "1.4"
+    const val realmFieldNamesHelper = "1.1.1"
+    const val realm = "0.5.1"
+    const val stetho = "1.5.1"
 }
 
 object RxJavaDependencies {
@@ -24,10 +57,10 @@ object RxJavaDependencies {
     const val rxBindingAppCompat =
         "com.jakewharton.rxbinding3:rxbinding-appcompat:${Versions.rxBinding}"
     const val rxBinding = "com.jakewharton.rxbinding3:rxbinding:${Versions.rxBinding}"
-    const val rxJava = "io.reactivex.rxjava2:rxjava:2.2.10"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
-    const val rxRelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
-    const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.3.0"
+    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
+    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
+    const val rxRelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxBinding}"
+    const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
 }
 
 object KotlinDependencies {
@@ -48,11 +81,11 @@ object DaggerDependencies {
 }
 
 object AndroidxDependencies {
-    const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    const val slidingPaneLayout = "androidx.slidingpanelayout:slidingpanelayout:1.1.0"
-    const val work = "androidx.work:work-runtime-ktx:2.7.1"
-    const val emoji = "androidx.emoji:emoji:1.0.0"
-    const val preference = "androidx.preference:preference:1.1.1"
+    const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
+    const val slidingPaneLayout = "androidx.slidingpanelayout:slidingpanelayout:${Versions.slidingPaneLayout}"
+    const val work = "androidx.work:work-runtime-ktx:${Versions.work}"
+    const val emoji = "androidx.emoji:emoji:${Versions.emoji}"
+    const val preference = "androidx.preference:preference:${Versions.preference}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
@@ -68,19 +101,19 @@ object AndroidxDependencies {
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
         "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
-    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:2.3.0"
-    const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
-    const val navigationFragment = "androidx.navigation:navigation-fragment:2.3.0"
-    const val coreKtx = "androidx.core:core-ktx:1.3.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.2.0"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
-    const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
-    const val browser = "androidx.browser:browser:1.3.0"
+    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigationFragmentKtx}"
+    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigationUIKtx}"
+    const val navigationUI = "androidx.navigation:navigation-ui:${Versions.navigationUI}"
+    const val navigationFragment = "androidx.navigation:navigation-fragment:${Versions.navigationFragment}"
+    const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
+    const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val legacyV4 = "androidx.legacy:legacy-support-v4:${Versions.legacyV4}"
+    const val browser = "androidx.browser:browser:${Versions.browser}"
 }
 
 object MaterialDesignDependencies {
-    const val materialDesign = "com.google.android.material:material:1.4.0"
+    const val materialDesign = "com.google.android.material:material:${Versions.materialDesign}"
 }
 
 object OkReplayDependencies {
@@ -90,13 +123,13 @@ object OkReplayDependencies {
 }
 
 object GooglePlayDependencies {
-    const val playCore = "com.google.android.play:core:1.10.0"
-    const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
+    const val playCore = "com.google.android.play:core:${Versions.playCore}"
+    const val installReferrer = "com.android.installreferrer:installreferrer:${Versions.installReferrer}"
 }
 
 object GMSDependencies {
-    const val base = "com.google.android.gms:play-services-base:18.1.0"
-    const val auth = "com.google.android.gms:play-services-auth:18.1.0"
+    const val base = "com.google.android.gms:play-services-base:${Versions.base}"
+    const val auth = "com.google.android.gms:play-services-auth:${Versions.auth}"
 }
 
 object KoinDependencies {
@@ -112,23 +145,23 @@ object GlideDependencies {
 }
 
 object TestDependencies {
-    const val annotation = "androidx.annotation:annotation:1.1.0"
-    const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
-    const val androidxJUnit = "androidx.test.ext:junit:1.1.2"
-    const val jUnit = "junit:junit:4.13"
+    const val annotation = "androidx.annotation:annotation:${Versions.annotation}"
+    const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    const val androidxJUnit = "androidx.test.ext:junit:${Versions.androidxJUnit}"
+    const val jUnit = "junit:junit:${Versions.jUnit}"
 }
 
 object MiscellaneousDependencies {
-    const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
-    const val AutoService = "com.google.auto.service:auto-service:1.0-rc7"
-    const val htmlCompressor = "com.googlecode.htmlcompressor:htmlcompressor:1.4"
+    const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:${Versions.youtubePlayer}"
+    const val AutoService = "com.google.auto.service:auto-service:${Versions.AutoService}"
+    const val htmlCompressor = "com.googlecode.htmlcompressor:htmlcompressor:${Versions.htmlCompressor}"
     const val markdownHtml = "io.noties.markwon:html:${Versions.markdown}"
     const val markdownCore = "io.noties.markwon:core:${Versions.markdown}"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:${Versions.epoxy_version}"
     const val epoxy = "com.airbnb.android:epoxy:${Versions.epoxy_version}"
-    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
-    const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
-    const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
+    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:${Versions.realmFieldNamesHelper}"
+    const val realm = "com.github.Zhuinden:realm-monarchy:${Versions.realm}"
+    const val stetho = "com.facebook.stetho:stetho-okhttp3:${Versions.stetho}"
     const val eventBus = "org.greenrobot:eventbus:3.1.1"
     const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
     const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
