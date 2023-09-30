@@ -49,6 +49,32 @@ object Versions {
     const val realmFieldNamesHelper = "1.1.1"
     const val realm = "0.5.1"
     const val stetho = "1.5.1"
+    const val eventBus = "3.1.1"
+    const val olm = "3.1.2"
+    const val textDrawable = "1.0.1"
+    const val span = "1.7"
+    const val threeTenABP = "1.0.3"
+    const val linkMovement = "2.2.0"
+    const val libPhoneNumber = "8.10.23"
+    const val photoView = "2.0.0"
+    const val alerter = "5.1.2"
+    const val timber = "5.0.1"
+    const val markdownView = "0.1.2"
+    const val shimmer = "0.5.0"
+    const val inAppMessagingKtx = "20.1.1"
+    const val dynamicLinksKtx = "19.1.0"
+    const val messaging = "23.0.0"
+    const val configKtx = "19.2.0"
+    const val commonKtx = "19.3.1"
+    const val crashlyticsKtx = "17.2.1"
+    const val analyticsKtx = "20.0.0"
+    const val perfKtx = "20.0.6"
+    const val gradle = "7.0.2"
+    const val python = "10.0.1"
+    const val realm2 = "6.1.0"
+    const val googleServices = "4.3.4"
+    const val firebaseCrashlytics = "2.4.1"
+    const val firebasePerf = "1.4.1"
 }
 
 object RxJavaDependencies {
@@ -162,29 +188,29 @@ object MiscellaneousDependencies {
     const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:${Versions.realmFieldNamesHelper}"
     const val realm = "com.github.Zhuinden:realm-monarchy:${Versions.realm}"
     const val stetho = "com.facebook.stetho:stetho-okhttp3:${Versions.stetho}"
-    const val eventBus = "org.greenrobot:eventbus:3.1.1"
-    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
-    const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
-    const val span = "me.gujun.android:span:1.7"
-    const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:1.0.3"
-    const val linkMovement = "me.saket:better-link-movement-method:2.2.0"
-    const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:8.10.23"
-    const val photoView = "com.github.chrisbanes:PhotoView:2.0.0"
-    const val alerter = "com.tapadoo.android:alerter:5.1.2"
-    const val timber = "com.jakewharton.timber:timber:5.0.1"
-    const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
-    const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
+    const val eventBus = "org.greenrobot:eventbus:${Versions.eventBus}"
+    const val olm = "org.matrix.gitlab.matrix-org:olm:${Versions.olm}"
+    const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:${Versions.textDrawable}"
+    const val span = "me.gujun.android:span:${Versions.span}"
+    const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenABP}"
+    const val linkMovement = "me.saket:better-link-movement-method:${Versions.linkMovement}"
+    const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:${Versions.libPhoneNumber}"
+    const val photoView = "com.github.chrisbanes:PhotoView:${Versions.photoView}"
+    const val alerter = "com.tapadoo.android:alerter:${Versions.alerter}"
+    const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+    const val markdownView = "com.github.GrenderG:MarkdownView:${Versions.markdownView}"
+    const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmer}"
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
-    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
-    const val messaging = "com.google.firebase:firebase-messaging:23.0.0"
-    const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
-    const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
-    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
-    const val perfKtx = "com.google.firebase:firebase-perf-ktx:20.0.6"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:${Versions.inAppMessagingKtx}"
+    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:${Versions.dynamicLinksKtx}"
+    const val messaging = "com.google.firebase:firebase-messaging:${Versions.messaging}"
+    const val configKtx = "com.google.firebase:firebase-config-ktx:${Versions.configKtx}"
+    const val commonKtx = "com.google.firebase:firebase-common-ktx:${Versions.commonKtx}"
+    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:${Versions.crashlyticsKtx}"
+    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:${Versions.analyticsKtx}"
+    const val perfKtx = "com.google.firebase:firebase-perf-ktx:${Versions.perfKtx}"
 }
 
 object RetrofitDependencies {
@@ -212,17 +238,17 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:7.0.2"
+    const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:10.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
-    const val googleServices = "com.google.gms:google-services:4.3.4"
-    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
+    const val python = "com.chaquo.python:gradle:${Versions.python}"
+    const val realm = "io.realm:realm-gradle-plugin:${Versions.realm2}"
+    const val googleServices = "com.google.gms:google-services:${Versions.googleServices}"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlytics}"
     const val firebasePerf =
-        "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
+        "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:${Versions.firebasePerf}"
 }
 
 object Plugins {
