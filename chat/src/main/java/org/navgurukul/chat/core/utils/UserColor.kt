@@ -15,34 +15,34 @@
  */
 
 package org.navgurukul.chat.core.utils
-
-import androidx.annotation.ColorRes
-import org.navgurukul.chat.R
-import kotlin.math.abs
-
-@ColorRes
-fun getColorFromUserId(userId: String?): Int {
-    var hash = 0
-
-    userId?.toList()?.map { chr -> hash = (hash shl 5) - hash + chr.toInt() }
-
-    return when (abs(hash) % 8) {
-        1    -> R.color.saral_username_2
-        2    -> R.color.saral_username_3
-        3    -> R.color.saral_username_4
-        4    -> R.color.saral_username_5
-        5    -> R.color.saral_username_6
-        6    -> R.color.saral_username_7
-        7    -> R.color.saral_username_8
-        else -> R.color.saral_username_1
-    }
-}
-
-@ColorRes
-fun getColorFromRoomId(roomId: String?): Int {
-    return when ((roomId?.toList()?.sumBy { it.toInt() } ?: 0) % 3) {
-        1    -> R.color.saral_avatar_fill_2
-        2    -> R.color.saral_avatar_fill_3
-        else -> R.color.saral_avatar_fill_1
-    }
-}
+//
+//import androidx.annotation.ColorRes
+//import org.navgurukul.chat.R
+//import kotlin.math.abs
+//
+//@ColorRes
+//fun getColorFromUserId(userId: String?): Int {
+//    var hash = 0
+//
+//    userId?.toList()?.map { chr -> hash = (hash shl 5) - hash + chr.toInt() }
+//
+//    return when (abs(hash) % 8) {
+//        1    -> R.color.saral_username_2
+//        2    -> R.color.saral_username_3
+//        3    -> R.color.saral_username_4
+//        4    -> R.color.saral_username_5
+//        5    -> R.color.saral_username_6
+//        6    -> R.color.saral_username_7
+//        7    -> R.color.saral_username_8
+//        else -> R.color.saral_username_1
+//    }
+//}
+//
+//@ColorRes
+//fun getColorFromRoomId(roomId: String?): Int {
+//    return when ((roomId?.toList()?.sumBy { it.toInt() } ?: 0) % 3) {
+//        1    -> R.color.saral_avatar_fill_2
+//        2    -> R.color.saral_avatar_fill_3
+//        else -> R.color.saral_avatar_fill_1
+//    }
+//}

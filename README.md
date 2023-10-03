@@ -21,6 +21,7 @@ or using the command: git clone https://github.com/navgurukul/soni-sori.git
 ## Chaquopy Setup
 Add the following parameters in the local.properties file
 ``` 
+
 chaquopy.license=[LICENSE_KEY_HERE]
 chaquopy.applicationId=org.merakilearn
 ```

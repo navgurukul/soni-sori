@@ -16,17 +16,17 @@
  */
 
 package org.navgurukul.chat.features.home.room.list
-
-import org.matrix.android.sdk.api.session.room.model.RoomSummary
-import org.navgurukul.commonui.platform.ViewEvents
-
-/**
- * Transient events for RoomList
- */
-sealed class RoomListViewEvents : ViewEvents {
-    data class Loading(val message: CharSequence? = null) : RoomListViewEvents()
-    data class Failure(val throwable: Throwable) : RoomListViewEvents()
-
-    data class SelectRoom(val roomSummary: RoomSummary) : RoomListViewEvents()
-    object Done : RoomListViewEvents()
-}
+//
+//import org.matrix.android.sdk.api.session.room.model.RoomSummary
+//import org.navgurukul.commonui.platform.ViewEvents
+//
+///**
+// * Transient events for RoomList
+// */
+//sealed class RoomListViewEvents : ViewEvents {
+//    data class Loading(val message: CharSequence? = null) : RoomListViewEvents()
+//    data class Failure(val throwable: Throwable) : RoomListViewEvents()
+//
+//    data class SelectRoom(val roomSummary: RoomSummary) : RoomListViewEvents()
+//    object Done : RoomListViewEvents()
+//}
