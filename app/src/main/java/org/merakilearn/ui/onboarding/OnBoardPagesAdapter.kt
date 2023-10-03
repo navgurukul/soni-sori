@@ -8,10 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
-import org.navgurukul.chat.core.glide.GlideApp
 
 class OnBoardPagesAdapter(
     private val onBoardingData: OnBoardingData,
@@ -36,7 +36,7 @@ class OnBoardPagesAdapter(
         val onBoardingData = onBoardingData.onBoardingPagesList[position]
 
         onBoardingData.image.remote?.let {
-            GlideApp.with(context)
+            Glide.with(context)
                 .load(it)
                 .into(holder.imageView)
         } ?: run {

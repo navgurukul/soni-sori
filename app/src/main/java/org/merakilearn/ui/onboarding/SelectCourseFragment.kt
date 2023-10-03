@@ -6,12 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.select_course_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.R
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
-import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
 
 class SelectCourseFragment : BaseFragment() {
@@ -52,7 +52,7 @@ class SelectCourseFragment : BaseFragment() {
 
             val imageView = customView.findViewById<ImageView>(R.id.logo)
             pathway.image.remote?.let {
-                GlideApp.with(requireContext())
+                Glide.with(requireContext())
                     .load(it)
                     .into(imageView)
             } ?: run {

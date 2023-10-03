@@ -37,7 +37,6 @@ import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.ui.adapter.EnrolledBatchAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
@@ -248,11 +247,11 @@ class ProfileFragment : Fragment() {
                 .centerCrop()
                 .transform(CircleCrop())
 
-            val thumbnail = GlideApp.with(this)
+            val thumbnail = Glide.with(this)
                 .load(R.drawable.illus_default_avatar)
                 .apply(requestOptions)
 
-            GlideApp.with(mBinding.ivProfile)
+            Glide.with(mBinding.ivProfile)
                 .load(it.profilePic)
                 .apply(requestOptions)
                 .thumbnail(thumbnail)

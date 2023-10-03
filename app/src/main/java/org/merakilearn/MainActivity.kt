@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -26,7 +27,6 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
@@ -115,11 +115,11 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .centerCrop()
             .transform(CircleCrop())
 
-        val thumbnail = GlideApp.with(this)
+        val thumbnail = Glide.with(this)
             .load(R.drawable.ic_log_out)
             .apply(requestOptions)
 
-        GlideApp.with(it)
+        Glide.with(it)
             .load(R.drawable.ic_log_out)
             .apply(requestOptions)
             .thumbnail(thumbnail)
@@ -138,11 +138,11 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         firebaseAnalytics.setUserId(currentUser.id)
 
-        val thumbnail = GlideApp.with(this)
+        val thumbnail = Glide.with(this)
             .load(R.drawable.illus_default_avatar)
             .apply(requestOptions)
 
-        GlideApp.with(it)
+        Glide.with(it)
             .load(currentUser.profilePicture)
             .apply(requestOptions)
             .thumbnail(thumbnail)
@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                     SvgLoader(this).loadSvgFromUrl(it, headerIcon)
                 }
                 else {
-                    GlideApp.with(headerIcon)
+                    Glide.with(headerIcon)
                         .load(it)
                         .transform(CircleCrop())
                         .into(headerIcon)
