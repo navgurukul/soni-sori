@@ -21,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import org.koin.core.error.NoBeanDefFoundException
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
@@ -90,8 +91,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             navHostFragment.navController.navigate(R.id.navigation_learn)
         }
 
-        mainActivityArgs.let { args ->
-            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+        try {
+            mainActivityArgs.let { args ->
+                appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
         }
 
         findViewById<ImageView>(R.id.headerIv).let {
