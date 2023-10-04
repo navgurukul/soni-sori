@@ -2,7 +2,7 @@ object Versions {
     const val okHttp = "4.5.0"
     const val arrow_version = "0.8.2"
     const val daggerAssistedInject = "0.5.0"
-    const val daggerVersion = "2.25.4"
+    const val dagger = "2.25.4"
     const val moshi_version = "1.12.0"
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
@@ -102,8 +102,8 @@ object DaggerDependencies {
         "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.daggerAssistedInject}"
     const val assistedInjectAnnotation =
         "com.squareup.inject:assisted-inject-annotations-dagger2:${Versions.daggerAssistedInject}"
-    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.daggerVersion}"
-    const val dagger = "com.google.dagger:dagger:${Versions.daggerVersion}"
+    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
 }
 
 object AndroidxDependencies {
