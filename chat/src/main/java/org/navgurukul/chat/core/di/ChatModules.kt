@@ -10,7 +10,6 @@ import org.navgurukul.chat.core.repo.ActiveSessionDataSource
 import org.navgurukul.chat.core.repo.ActiveSessionHolder
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.chat.core.resources.ColorProvider
-import org.navgurukul.chat.features.crypto.KeyRequestHandler
 import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
 import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
 import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
@@ -52,10 +51,10 @@ val factoryModule = module {
 //    single { FcmHelper() }
 //    single { PushersManager(get(), get(), get()) }
 //    single { UserPreferencesProvider(get()) }
-    single { PushRuleTriggerListener(get()) }
+//    single { PushRuleTriggerListener(get()) }
     single { NotifiableEventResolver(get(), get(), get()) }
-    single { ActiveSessionHolder(get(), get(), get(), get()) }
-    single { KeyRequestHandler(androidContext(), get()) }
+    single { ActiveSessionHolder(get(), get()) }
+//    single { KeyRequestHandler(androidContext(), get()) }
 //    single { PopupAlertManager() }
     single { ImageManager(androidContext(), get()) }
 //    single { AvatarRenderer(get()) }

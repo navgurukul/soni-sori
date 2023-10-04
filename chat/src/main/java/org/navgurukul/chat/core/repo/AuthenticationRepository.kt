@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.configureAndStart
-import org.navgurukul.chat.core.utils.deleteAllFiles
 import org.navgurukul.chat.features.settings.ChatPreferences
 import org.navgurukul.commonui.resources.StringProvider
 import kotlin.coroutines.resume
@@ -100,7 +99,6 @@ class AuthenticationRepository(
                 Glide.get(appContext).clearDiskCache()
 
                 // Also clear cache (Logs, etc...)
-                deleteAllFiles(appContext.cacheDir)
             }
         }
     }
