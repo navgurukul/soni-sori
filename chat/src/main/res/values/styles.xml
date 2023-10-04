@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TimelineContentStubBaseParams">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">@dimen/spacing_3x</item>
-        <item name="android:paddingEnd">@dimen/spacing_3x</item>
-        <item name="android:paddingTop">@dimen/spacing_2x</item>
-        <item name="android:paddingBottom">@dimen/spacing_2x</item>
-    </style>
-
-    <style name="AlerterButton" parent="Widget.AppCompat.Button.Borderless.Colored">
-        <item name="colorAccent">@android:color/white</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="colorControlHighlight">@android:color/white</item>
-    </style>
 </resources>

@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="saral_username_1">#368bd6</color>
-    <color name="saral_username_2">#ac3ba8</color>
-    <color name="saral_username_3">#03B381</color>
-    <color name="saral_username_4">#e64f7a</color>
-    <color name="saral_username_5">#ff812d</color>
-    <color name="saral_username_6">#2dc2c5</color>
-    <color name="saral_username_7">#5c56f5</color>
-    <color name="saral_username_8">#74d12c</color>
     <color name="yellow">#F7CA18</color>
     <color name="colorBlack">#000000</color>
     <color name="colorRed">#D63447</color>
     <color name="colorGrey">#E5E5E5</color>
     <color name="colorStatus">#fcf4c4</color>
-    <color name="colorLightRedBg">#dfdfdf</color>
-
-    <color name="saral_avatar_fill_2">#FF368bd6</color>
-    <color name="saral_avatar_fill_3">#FFac3ba8</color>
-    <color name="saral_avatar_fill_1">#FF03B381</color>
-
-    <color name="waiting_background_color">#AAAAAAAA</color>
-
-    <color name="header_panel_background">#FFF3F8FD</color>
-    <color name="block_background_color">#FFEEEEEE</color>
-    <color name="spoiler_background_color">#FF000000</color>
-    <color name="received_message_background">#FAF6F6</color>
-    <color name="sent_message_background">#F0F0F0</color>
-    <color name="black_alpha">#55000000</color>
 
 </resources>
