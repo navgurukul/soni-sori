@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn.adapter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,10 +47,16 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
             item.value
                 ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
         )
+        binding.tvRadioButtonOption.setOnClickListener {
+            binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+        }
+
 
         when(item.viewState){
             OptionViewState.SELECTED -> {
                 binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                binding.tvRadioButtonOption.isChecked = true
+                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
             }
             OptionViewState.NOT_SELECTED -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -57,10 +64,16 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
             OptionViewState.INCORRECT -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
                 binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
+                binding.tvRadioButtonOption.isChecked = true
+                binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_cancel_24)
+                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
             }
             OptionViewState.CORRECT -> {
                 binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                 binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                binding.tvRadioButtonOption.isChecked = true
+                binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_check_circle_24)
+                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
             }
         }
 
