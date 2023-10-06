@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
@@ -15,7 +16,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
 import org.merakilearn.R
 import org.merakilearn.arduinohexupload.ArduinoHexUploadActivity
 
@@ -44,7 +44,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
         webView.settings.allowFileAccess = true
         webView.settings.allowFileAccessFromFileURLs = true
-        webView.addJavascriptInterface(this, "Arduino")
+        webView.addJavascriptInterface(this, "AndroidBridge")
         webView.loadUrl("https://arduino.merd-bhanwaridevi.merakilearn.org/blockly-home")
     }
 
@@ -84,7 +84,110 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
-    fun hexDataUploadToDevice(hexData: ArrayList<String>) {
+    fun hexDataUploadToAndroidDevice(hexData: String) {
+        val builder = AlertDialog.Builder(this)
+        if( hexData.isNotEmpty() ) {
+
+            editor = sharedPreferences.edit()
+            // If data coming as json string
+            Log.d(
+                "ArduinoHex",
+                "Read Data from bundle intent after conversion$hexData"
+            )
+            println(hexData.length)
+            editor.putString("HexDataFromSketch", hexData )
+            editor.apply()
+            val readHexDataPref = sharedPreferences.getString("HexDataFromSketch", null)
+            if (readHexDataPref.toString().isNotEmpty()) {
+                val intent = Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
+                val bundle = Bundle()
+                bundle.putString("HexDataFromSketch", readHexDataPref)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+            // Set the dialog title and message
+            builder.setTitle("Failed to Save data in InMemory")
+                .setMessage("InMemory HexData is Null")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry to upload the code in mins ", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
+        }
+        else {
+            // Set the dialog title and message if reading data from web to android fails
+            builder.setTitle("Failed to Read Data From API")
+                .setMessage("Sketch Code to Hex file data is empty ")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry in sometime", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
+        }
+    }
+
+    /*@JavascriptInterface
+    fun hexDataUploadToDevice(hexData: String) {
+        val builder = AlertDialog.Builder(this)
+        if( hexData.isNotEmpty() ) {
+
+            editor = sharedPreferences.edit()
+            //Set the values if reading data as Arroy List
+            val gson = Gson()
+           /* val textHexList: List<String> = ArrayList<String>(hexData)
+            val jsonText: String = gson.toJson(textHexList)*/
+            try {
+
+                val jsonArray = JSONArray(hexData)
+                println("JsonArray HexData:")
+                println(jsonArray)
+                val jsonString = jsonArray.toString()
+                println(jsonString)
+                editor.putString("HexDataFromSketch",jsonString )
+                editor.apply()
+            }
+            catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            /* If data coming as string
+            editor.putString("HexDataFromSketch", hexData )
+            editor.apply() */
+            val readHexDataPref = sharedPreferences.getString("HexDataFromSketch", null)
+            if (readHexDataPref.toString().isNotEmpty()) {
+                val intent = Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
+                val bundle = Bundle()
+                bundle.putString("HexDataFromSketch", readHexDataPref)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+            // Set the dialog title and message
+            builder.setTitle("Failed to Save data in InMemory")
+                .setMessage("InMemory HexData is Null")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry to upload the code in mins ", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
+        }
+        else {
+            // Set the dialog title and message if reading data from web to android fails
+            builder.setTitle("Failed to Read Data From API")
+                .setMessage("Sketch Code to Hex file data is empty ")
+
+            // Set positive button and its click listener
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(this, "Retry in sometime", Toast.LENGTH_SHORT).show();
+                dialog.dismiss() // Dismiss the dialog
+            }
+        }
+    }*/
+
+    @JavascriptInterface
+    /*fun hexDataUploadToDevice1(hexData: ArrayBuffer)
+    {
         val builder = AlertDialog.Builder(this)
         if( hexData.isNotEmpty() ) {
 
@@ -128,11 +231,11 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
                 dialog.dismiss() // Dismiss the dialog
             }
         }
-    }
+    }*/
 
-    @JavascriptInterface
+
     fun onBack() {
-        Toast.makeText(this, "Exiting Scratch", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Exiting Arduino", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
     }

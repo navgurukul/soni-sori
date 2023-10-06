@@ -25,10 +25,11 @@ import com.felhr.usbserial.UsbSerialDevice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.merakilearn.R;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import ArduinoUploader.ArduinoSketchUploader;
@@ -127,7 +128,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private String deviceKeyName;
     private FloatingActionButton fab;
     private Button requestButton;
-    private String[] parseHexData;
+    private ArrayList<String> parseHexDataString;
 
     public void usbConnectChange(UsbConnectState state) {
         if (state == UsbConnectState.DISCONNECTED) {
@@ -177,9 +178,14 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
 
         // Retrieve the data from the Bundle
         String hexDataFromSketch = bundle.getString("HexDataFromSketch", null);
-        gson = new Gson();
         if (hexDataFromSketch != null) {
-            parseHexData = gson.fromJson(hexDataFromSketch, String[].class);
+            //Set the values if reading data as string to  Arroy List
+            try {
+              parseHexDataString =  jsonHexStringToArrayConv(hexDataFromSketch);
+              Log.d("ArduinoHex","Read Data from bundle intent after conversion"+ parseHexDataString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +195,20 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
                 new Thread(new UploadRunnable()).start();
             }
         });
+    }
+
+    ArrayList<String> jsonHexStringToArrayConv(String jsonString) throws JSONException {
+
+        Log.d("ArduinoHex","Read Data from bundle intent jsonString"+ jsonString);
+        ArrayList<String> data = new ArrayList<String>();
+
+        JSONArray jsonArray = new JSONArray(jsonString);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            data.add(jsonArray.getString(i));
+        }
+
+        return data;
     }
 
     @Override
@@ -233,7 +253,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         unregisterReceiver(mUsbNotifyReceiver);
     }
 
-    public void uploadHex(List<String> hexFileContents) {
+    public void uploadHex(ArrayList<String> hexFileContents) {
 
         Boards board = Boards.ARDUINO_UNO;
 
@@ -330,7 +350,8 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private class UploadRunnable implements Runnable {
         @Override
         public void run() {
-            uploadHex(Arrays.asList(parseHexData));
+            Log.d("ArduinoHex","Read Data from bundle intent ArrayList"+ parseHexDataString);
+            uploadHex(parseHexDataString);
         }
     }
 
