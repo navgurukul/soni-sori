@@ -32,3 +32,8 @@ data class StudentResponse(
     @Json(name = "id")
     val id : Int
 )
+
+//data class Value(
+//    @Json(name = "value")
+//    val value : Int?
+//)  added for testing purpose
