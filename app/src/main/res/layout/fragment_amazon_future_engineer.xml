@@ -15,7 +15,6 @@
         android:layout_marginRight="20dp"
         android:src="@drawable/amazon"
         android:layout_marginTop="50dp"
-        app:layout_constraintBottom_toTopOf="@id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +23,6 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf=""
         android:text="Helping young people explore their career potential"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -35,63 +33,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/dotsLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <View
-            android:id="@+id/dot1"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="60dp"/>
-
-        <View
-            android:id="@+id/dot2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="4dp"/>
-
-        <View
-            android:id="@+id/dot3"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:background="@drawable/dot"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="4dp"/>
-
-        <View
-            android:id="@+id/dot4"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/dot"/>
-    </LinearLayout>
-
     <Button
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="196dp"
-        android:layout_marginEnd="44dp"
         android:background="@android:color/transparent"
         android:padding="10dp"
         android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:drawableRight="@drawable/arrow_forward"
         android:textAllCaps="false"
         android:textColor="@color/language_chip_border_color"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dotsLayout" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/skipButton"
@@ -105,10 +60,6 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.142"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dotsLayout"
-        app:layout_constraintVertical_bias="0.395" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
