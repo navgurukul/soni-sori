@@ -189,7 +189,7 @@ data class OptionsBaseCourseContent(
 @JsonClass(generateAdapter = true)
 data class SolutionBaseCourseContent(
         @Json(name = "type")
-        val attemptType: AttemptType,   //for the single or multiple
+        val assessmentType: AssessmentType,   //for the single or multiple
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
@@ -281,7 +281,7 @@ enum class OptionViewState{
         NOT_SELECTED, SELECTED, CORRECT, INCORRECT, PARTIALLY_CORRECT, PARTIALLY_INCORRECT
 }
 
-enum class AttemptType{
+enum class AssessmentType{
         single, multiple
 }
 
