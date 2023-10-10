@@ -157,23 +157,23 @@ class AssessmentFragment : Fragment() {
         attemptResponse: AttemptResponse?
     ) {
         CoroutineScope(Dispatchers.Main).launch {
-            mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-                selectedOption?.let {
-                    isContentRvClickable = false
-                    fragmentViewModel.handle(
-                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
-                            it
-                        )
-                    )
-                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-                }
-                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-                initIncorrectRV(list)
-                isContentRvClickable = false
-//            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-
-            }
+//            mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
+//                selectedOption?.let {
+//                    isContentRvClickable = false
+//                    fragmentViewModel.handle(
+//                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
+//                            it
+//                        )
+//                    )
+//                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+//                }
+//                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
+//                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
+//                initIncorrectRV(list)
+//                isContentRvClickable = false
+////            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
+//
+//            }
             if (attemptResponse != null) {
                 if (attemptResponse.attemptCount < 2) {
                     mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
