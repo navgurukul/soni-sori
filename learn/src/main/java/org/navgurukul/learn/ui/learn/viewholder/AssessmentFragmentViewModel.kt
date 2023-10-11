@@ -55,10 +55,10 @@ class AssessmentFragmentViewModel (
                 postResultOnSubmit(action.selectedOptionResponse)
                 showOutputScreen(action.selectedOptionResponse)
             }
-            is AssessmentFragmentViewActions.SeeExplanationClicked -> {
-                postResultOnSubmit(action.selectedOptionResponse)
-                showCorrectOnIncorrect()
-            }
+//            is AssessmentFragmentViewActions.SeeExplanationClicked -> {
+//                postResultOnSubmit(action.selectedOptionResponse)
+//                showCorrectOnIncorrect()
+//            }
 
             is AssessmentFragmentViewActions.OptionSelected ->{
                 updateList(action.selectedOptionResponse, OptionViewState.SELECTED)
@@ -312,7 +312,7 @@ class AssessmentFragmentViewModel (
         object RequestContentRefresh : AssessmentFragmentViewActions()
         data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
-        data class SeeExplanationClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+//        data class SeeExplanationClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
         object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()
