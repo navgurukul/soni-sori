@@ -137,17 +137,16 @@
             android:name=".ui.ArduinoBlocklyActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:parentActivityName="."
+            android:parentActivityName=".ui.ArduinoBlocklyActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".arduinohexupload.ArduinoHexUploadActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:parentActivityName=".arduinohexupload.ArduinoHexUploadActivity">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.ArduinoBlocklyActivity">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>

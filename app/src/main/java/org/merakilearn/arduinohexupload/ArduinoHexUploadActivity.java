@@ -1,15 +1,12 @@
 package org.merakilearn.arduinohexupload;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -19,17 +16,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.felhr.usbserial.UsbSerialDevice;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.merakilearn.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import ArduinoUploader.ArduinoSketchUploader;
@@ -128,7 +124,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private String deviceKeyName;
     private FloatingActionButton fab;
     private Button requestButton;
-    private ArrayList<String> parseHexDataString;
+    private Collection<String> parseHexDataString;
 
     public void usbConnectChange(UsbConnectState state) {
         if (state == UsbConnectState.DISCONNECTED) {
@@ -177,15 +173,21 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         });
 
         // Retrieve the data from the Bundle
-        String hexDataFromSketch = bundle.getString("HexDataFromSketch", null);
+        String hexDataFromSketch = bundle.getString("HexDataFromSketch1", null);
+
         if (hexDataFromSketch != null) {
             //Set the values if reading data as string to  Arroy List
-            try {
-              parseHexDataString =  jsonHexStringToArrayConv(hexDataFromSketch);
-              Log.d("ArduinoHex","Read Data from bundle intent after conversion"+ parseHexDataString);
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+            String[] lines = hexDataFromSketch.split("\n");
+            parseHexDataString = new ArrayList<>();
+
+            for (String line : lines) {
+                String trimmedLine = line.trim();
+                if (!trimmedLine.isEmpty()) {
+                    parseHexDataString.add(trimmedLine);
+                }
             }
+            Log.d("Arduino","Getting array buffer directly"+ parseHexDataString);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -196,21 +198,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             }
         });
     }
-
-    ArrayList<String> jsonHexStringToArrayConv(String jsonString) throws JSONException {
-
-        Log.d("ArduinoHex","Read Data from bundle intent jsonString"+ jsonString);
-        ArrayList<String> data = new ArrayList<String>();
-
-        JSONArray jsonArray = new JSONArray(jsonString);
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            data.add(jsonArray.getString(i));
-        }
-
-        return data;
-    }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -253,7 +241,10 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         unregisterReceiver(mUsbNotifyReceiver);
     }
 
-    public void uploadHex(ArrayList<String> hexFileContents) {
+    public void uploadHex(Collection<String> hexFileContents) {
+        Log.d("uploaderHex",hexFileContents.toString());
+        Log.d("uploaderHex",hexFileContents.toString());
+        Log.d("length", String.valueOf(hexFileContents.toString().length()));
 
         Boards board = Boards.ARDUINO_UNO;
 
@@ -350,8 +341,12 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private class UploadRunnable implements Runnable {
         @Override
         public void run() {
-            Log.d("ArduinoHex","Read Data from bundle intent ArrayList"+ parseHexDataString);
-            uploadHex(parseHexDataString);
+           //  Log.d("ArduinoHex","Read Data from bundle intent ArrayList"+ parseHexDataString);
+            if( parseHexDataString != null) {
+                uploadHex(parseHexDataString);
+            } else {
+                Log.d("ArduinoHex","failed to parsedata conversion");
+            }
         }
     }
 
