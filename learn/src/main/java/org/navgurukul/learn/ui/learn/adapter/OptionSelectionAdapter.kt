@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn.adapter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
@@ -39,6 +40,8 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
        )
     }
 
+    val type:String = "single"
+
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.tvOption.text = item.value
@@ -54,26 +57,57 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
 
         when(item.viewState){
             OptionViewState.SELECTED -> {
-                binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                binding.tvRadioButtonOption.isChecked = true
-                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                if (type == "single") {
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    binding.tvRadioButtonOption.isChecked = true
+                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                } else {
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    binding.checkBox.isChecked = true
+                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                }
             }
             OptionViewState.NOT_SELECTED -> {
-                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                if (type == "single") {
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                    binding.tvRadioButtonOption.visibility = View.VISIBLE
+                } else {
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                    binding.tvRadioButtonOption.visibility = View.GONE
+                    binding.checkBox.visibility = View.VISIBLE
+                }
             }
             OptionViewState.INCORRECT -> {
-                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-                binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
-                binding.tvRadioButtonOption.isChecked = true
-                binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_cancel_24)
-                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                if (type == "single"){
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
+                    binding.tvRadioButtonOption.isChecked = true
+                    binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_cancel_24)
+                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                }else{
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
+                    binding.checkBox.isChecked = true
+                    binding.checkBox.setButtonDrawable(drawable.baseline_cancel_24)
+                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                }
             }
             OptionViewState.CORRECT -> {
-                binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                binding.tvRadioButtonOption.isChecked = true
-                binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_check_circle_24)
-                binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                if (type == "single"){
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    binding.tvRadioButtonOption.isChecked = true
+                    binding.tvRadioButtonOption.setButtonDrawable(drawable.baseline_check_circle_24)
+                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                }else{
+                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    binding.checkBox.isChecked = true
+                    binding.checkBox.setButtonDrawable(drawable.baseline_check_circle_24)
+                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                }
             }
         }
 
