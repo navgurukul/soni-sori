@@ -189,7 +189,7 @@ class AssessmentFragmentViewModel (
 
                         list.attemptStatus?.selectedOption?.let{
                             val contentListForUI = getAssessmentListForUI(list.content)
-                            getOptionItemById(it, contentListForUI)?.let { option ->
+                            getOptionItemById(it[0], contentListForUI)?.let { option ->
                                 showOutputScreen(option, contentListForUI)
                             }
                         }?: kotlin.run {

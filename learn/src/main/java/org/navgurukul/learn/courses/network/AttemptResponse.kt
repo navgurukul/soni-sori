@@ -2,6 +2,7 @@ package org.navgurukul.learn.courses.network
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.navgurukul.learn.courses.db.models.ValueObject
 
 @JsonClass(generateAdapter = true)
 data class AttemptResponse(
@@ -15,13 +16,7 @@ data class AttemptResponse(
     val multipleChoice : String? = null
 )
 
-@JsonClass(generateAdapter = true)
-data class AttemptResponseStatus(
-    @Json(name = "selected_option")
-    val selectedOption : Int?,
-    @Json(name =  "attempt_count")
-    val attemptCount: Int
-)
+
 enum class AttemptStatus{
     NOT_ATTEMPTED,
     CORRECT,
