@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -149,6 +150,15 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Check USB Connectivity");
+        builder.setMessage("Please check your phone connection to OTG/USB should be established for code burn  ");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Positive button click action
+            dialog.dismiss();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
         bundle = getIntent().getExtras();
         usbSerialManager = new UsbSerialManager(this);
         setUsbFilter();
