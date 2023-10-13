@@ -152,7 +152,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Check USB Connectivity");
-        builder.setMessage("Please check your phone connection to OTG/USB should be established for code burn  ");
+        builder.setMessage("Please check your phone connectivity with Arduino board via USB should be established for code burn ");
         builder.setPositiveButton("OK", (dialog, which) -> {
             // Positive button click action
             dialog.dismiss();
