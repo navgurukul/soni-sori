@@ -215,6 +215,11 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         unregisterReceiver(mUsbHardwareReceiver);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        }
+
     private void setFilters() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED);
