@@ -192,8 +192,10 @@ data class SolutionBaseCourseContent(
         val assessmentType: AssessmentType,   //for the single or multiple
         @Json(name = "component")
         override val component: String,
-        @Json(name = "value")
-        var value: List<ValueObject>, // Changes according to Api Response
+        @Json(name = "correct_options_value")
+        var correct_options_value: List<ValueObject>, // Changes according to Api Response
+        @Json(name = "incorrect_options_value")
+        var incorrect_options_value: List<ValueObjectString>? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ):BaseCourseContent
@@ -202,6 +204,12 @@ data class SolutionBaseCourseContent(
 data class ValueObject(
         @Json(name = "value")
         val value: Int
+)
+
+@JsonClass(generateAdapter = true)
+data class ValueObjectString(
+        @Json(name = "value")
+        val value: String
 )
 
 
@@ -259,8 +267,8 @@ data class OptionResponse(
         val id : Int,
         @Json(name = "value")
         val value: String,
-        @Json(name = "type")
-        val type:SolutionType,
+        @Json(name = "option_type")
+        val type:OptionType,
         @Ignore
         var viewState: OptionViewState = OptionViewState.NOT_SELECTED
 )
@@ -285,7 +293,7 @@ enum class AssessmentType{
         single, multiple
 }
 
-enum class SolutionType{
+enum class OptionType{
         text, Image
 }
 

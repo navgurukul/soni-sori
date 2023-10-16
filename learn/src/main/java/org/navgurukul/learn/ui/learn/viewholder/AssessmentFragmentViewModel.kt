@@ -102,7 +102,7 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .value[0].value
+                .correct_options_value[0].value
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
@@ -293,7 +293,7 @@ class AssessmentFragmentViewModel (
             return clickedOption.id ==
                     (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                        .value[0].value
+                        .correct_options_value[0].value
 
         }catch (e: Exception){
             return false
@@ -304,6 +304,8 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
+        data class ShowPartiallyCorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
+        data class ShowPartiallyIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
         data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
     }
 
