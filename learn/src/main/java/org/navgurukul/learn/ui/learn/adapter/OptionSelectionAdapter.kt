@@ -109,6 +109,12 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
                     binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }
             }
+            OptionViewState.PARTIALLY_CORRECT->{
+
+            }
+            OptionViewState.PARTIALLY_INCORRECT->{
+
+            }
         }
 
         callback?.let {
