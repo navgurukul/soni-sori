@@ -8,9 +8,11 @@ data class AttemptResponse(
     @Json(name = "attempt_status")
     val attemptStatus: AttemptStatus,
     @Json(name = "selected_option")
-    val selectedOption : Int? = null,
+    val selectedOption: List<Int>,
     @Json(name = "attempt_count")
-    val attemptCount : Int
+    val attemptCount: Int,
+    @Json(name = "assessment_id")
+    val assessmentId: Int
 )
 
 @JsonClass(generateAdapter = true)

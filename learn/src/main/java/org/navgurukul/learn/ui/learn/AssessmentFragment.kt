@@ -28,7 +28,13 @@ import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
+import retrofit2.Response
 
+
+private val attemptCount: Any
+    get() {
+        TODO("Not yet implemented")
+    }
 
 class AssessmentFragment : Fragment() {
 
@@ -122,6 +128,13 @@ class AssessmentFragment : Fragment() {
         }
         initScreenRefresh()
 
+    }
+
+    private fun setupIncorrectOutputLayout(
+        list: List<BaseCourseContent>,
+        attemptResponse: Response<AttemptResponse>
+    ) {
+        TODO("Not yet implemented")
     }
 
     private fun showErrorScreen(isError: Boolean) {
@@ -262,4 +275,8 @@ class AssessmentFragment : Fragment() {
         inCorrectAdapter.submitList(getNewReferencedList(list))
     }
 
+}
+
+private operator fun Any.compareTo(block: Int): Int {
+    TODO("Not yet implemented")
 }

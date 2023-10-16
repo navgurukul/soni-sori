@@ -16,6 +16,7 @@ import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
+import retrofit2.Response
 import java.net.UnknownHostException
 
 class LearnRepo(
@@ -328,7 +329,7 @@ class LearnRepo(
         }
     }
 
-    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
+    suspend fun getStudentResult(assessmentId: Int) : Response<AttemptResponse> {
         if (LearnUtils.isOnline(application)){
             return try {
                 courseApi.getStudentResult(assessmentId)

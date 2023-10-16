@@ -20,6 +20,16 @@ import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
+import retrofit2.Response
+
+private val <T> Response<T>.selectedOption: Int?
+    get() {
+        TODO("Not yet implemented")
+    }
+private val <T> Response<T>.attemptStatus: Any
+    get() {
+        TODO("Not yet implemented")
+    }
 
 class AssessmentFragmentViewModel (
     private val learnRepo: LearnRepo,
@@ -304,7 +314,7 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
-        data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
+        data class ShowRetryOnce(val list: List<BaseCourseContent>, val attemptResponse: Response<AttemptResponse>)  : AssessmentFragmentViewEvents()
     }
 
 

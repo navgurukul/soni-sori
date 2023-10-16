@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -65,13 +66,13 @@ interface SaralCoursesApi {
 
     @POST("assessment/student/result")
     suspend fun postStudentResult(
-        @Body studentResult : StudentResult
-    ) : StudentResponse
+        @Body studentResult: StudentResult
+    ): Response<StudentResponse>
 
     @GET("assessment/{assessmentId}/student/result")
     suspend fun getStudentResult(
-        @Path(value = "assessmentId")  assessmentId : Int
-    ): AttemptResponse
+        @Path(value = "assessmentId") assessmentId: Int
+    ): Response<AttemptResponse>
 
     @GET("pathways/{pathwayId}/completePortion")
     suspend fun getCompletedPortionData(

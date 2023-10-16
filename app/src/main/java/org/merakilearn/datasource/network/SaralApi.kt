@@ -7,7 +7,9 @@ import retrofit2.http.*
 
 interface SaralApi {
     @POST("users/auth/v2/google")
-    suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
+    suspend fun initLoginAsync(
+        @Body loginRequest: LoginRequest
+    ): LoginResponse
 
 //    @GET("classes")
 //    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
