@@ -38,7 +38,11 @@ data class CourseAssessmentContent(
     val attemptStatus: AttemptResponseStatus? = null,
 
     @Json(name = "assessment_type")
-    val assessmentType: String? = null
+    val assessmentType: String? = null,
+
+    @Json(name = "max_selection_count")
+    val maxSelectionCount: Int?
+
     ):CourseContents
 
 
