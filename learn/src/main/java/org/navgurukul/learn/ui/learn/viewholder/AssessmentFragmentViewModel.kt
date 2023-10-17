@@ -239,7 +239,7 @@ class AssessmentFragmentViewModel (
 //        markCourseAssessmentCompleted(args.contentId.toInt())
     }
 
-    private fun postStudentResult(assessmentId: Int, status : Status, selectedOption: Int?){
+    private fun postStudentResult(assessmentId: Int, status: Status, selectedOption: List<Int>){
         viewModelScope.launch {
             learnRepo.postStudentResult(assessmentId, status, selectedOption)
         }
@@ -289,10 +289,10 @@ class AssessmentFragmentViewModel (
 
     private fun postResultOnSubmit(clickedOption: OptionResponse){
         if (isOptionSelectedCorrect(clickedOption)){
-            postStudentResult(args.contentId.toInt(), Status.Pass, clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Pass, listOf(clickedOption.id))
         }
         else{
-            postStudentResult(args.contentId.toInt(), Status.Fail, clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(clickedOption.id))
         }
     }
 

@@ -10,13 +10,15 @@ data class StudentResult(
     @Json(name = "status")
     val status : Status,
     @Json(name = "selected_option")
-    val selectedOption: Int?
+    val selectedOption: List<Int>,
 )
 
 
 enum class Status {
     Pass,
     Fail,
+    Partially_Correct,
+    Partially_Incorrect,
 }
 
 @JsonClass(generateAdapter = true)
