@@ -188,10 +188,14 @@ data class OptionsBaseCourseContent(
 
 @JsonClass(generateAdapter = true)
 data class SolutionBaseCourseContent(
+        @Json(name = "type")
+        val assessmentType: AssessmentType,   //for the single or multiple
         @Json(name = "component")
         override val component: String,
-        @Json(name = "value")
-        var value: List<ValueObject>, // Changes according to Api Response
+        @Json(name = "correct_options_value")
+        var correct_options_value: List<ValueObject>, // Changes according to Api Response
+        @Json(name = "incorrect_options_value")
+        var incorrect_options_value: List<ValueObject>? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ):BaseCourseContent
@@ -201,7 +205,6 @@ data class ValueObject(
         @Json(name = "value")
         val value: Int
 )
-
 
 @JsonClass(generateAdapter = true)
 data class OutputBaseCourseContent(
@@ -257,8 +260,8 @@ data class OptionResponse(
         val id : Int,
         @Json(name = "value")
         val value: String,
-        @Json(name = "type")
-        val type:String,
+        @Json(name = "option_type")
+        val optionType: OptionType,
         @Ignore
         var viewState: OptionViewState = OptionViewState.NOT_SELECTED
 )
@@ -269,9 +272,21 @@ data class AnswerOutput(
         val correct: List<BaseCourseContent>,
         @Json(name = "incorrect")
         val incorrect: List<BaseCourseContent>,
-
+        @Json(name = "partially_correct")
+        val partially_correct: List<BaseCourseContent>,
+        @Json(name = "partially_incorrect")
+        val partially_incorrect: List<BaseCourseContent>
 )
 
 enum class OptionViewState{
-        NOT_SELECTED, SELECTED, CORRECT, INCORRECT
+        NOT_SELECTED, SELECTED, CORRECT, INCORRECT, PARTIALLY_CORRECT, PARTIALLY_INCORRECT
 }
+
+enum class AssessmentType{
+        single, multiple
+}
+
+enum class OptionType{
+        text, image
+}
+

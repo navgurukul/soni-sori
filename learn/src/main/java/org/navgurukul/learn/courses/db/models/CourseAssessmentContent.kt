@@ -5,7 +5,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.navgurukul.learn.courses.network.AttemptResponseStatus
 
 @Entity(tableName = "course_assessment", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
@@ -36,5 +35,21 @@ data class CourseAssessmentContent(
 
     @Embedded(prefix = "assess_")
     @Json(name = "attempt_status")
-    val attemptStatus: AttemptResponseStatus? = null
+    val attemptStatus: AttemptResponseStatus? = null,
+
+    @Json(name = "assessment_type")
+    val assessmentType: String? = null,
+
+    @Json(name = "max_selection_count")
+    val maxSelectionCount: Int?
+
     ):CourseContents
+
+
+@JsonClass(generateAdapter = true)
+data class AttemptResponseStatus(
+    @Json(name = "selected_option")
+    val selectedOption : List<Int>? = null,
+    @Json(name =  "attempt_count")
+    val attemptCount: Int
+)
