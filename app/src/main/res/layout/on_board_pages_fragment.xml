@@ -1,112 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_weight="1"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/skip"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:textColor="?textSecondary"
-        android:layout_marginStart="@dimen/spacing_4x"
-        android:layout_marginBottom="@dimen/spacing_4x"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/skip_english" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/next"
-        app:layout_constraintStart_toEndOf="@id/skip"
-        app:tabBackground="@drawable/tab_pager_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp"
-        android:layout_marginBottom="@dimen/spacing_4x"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/skip"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="?textSecondary"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginBottom="@dimen/spacing_4x"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/skip_english" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/next"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:textColor="@color/green_progress_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="@string/next_english"
-        android:layout_marginBottom="@dimen/spacing_4x"
-        android:layout_marginEnd="@dimen/spacing_4x"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/next"
+            app:layout_constraintStart_toEndOf="@id/skip"
+            app:tabBackground="@drawable/tab_pager_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            android:layout_marginBottom="@dimen/spacing_4x"/>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/nav_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:constraint_referenced_ids="next, tab_layout, skip" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@color/green_progress_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="@string/next_english"
+            android:layout_marginBottom="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"/>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/login_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/spacing_5x"
-        android:layout_marginStart="@dimen/spacing_4x"
-        android:layout_marginEnd="@dimen/spacing_4x"
-        app:constraint_referenced_ids="login_with_google" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/nav_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:constraint_referenced_ids="next, tab_layout, skip" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_with_google"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/continue_with_google_english"
-        android:textAllCaps="false"
-        android:textColor="@color/green_progress_color"
-        app:icon="@drawable/google_icon"
-        app:iconGravity="textStart"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/spacing_5x"
-        android:layout_marginStart="@dimen/spacing_4x"
-        android:layout_marginEnd="@dimen/spacing_4x"
-        app:iconPadding="@dimen/spacing_4x"
-        app:iconTint="@android:color/transparent"
-        app:iconTintMode="add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/green_progress_color" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/login_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            android:layout_marginBottom="@dimen/spacing_5x"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:constraint_referenced_ids="login_with_google, login_with_c4ca, text_for_meraki_learners, text_for_c4ca_learners" />
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/skip_login"-->
-<!--        style="@style/Widget.MaterialComponents.Button.TextButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:insetTop="0dp"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_marginBottom="@dimen/spacing_4x"-->
-<!--        android:insetBottom="0dp"-->
-<!--        android:text="@string/skip_login_english"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="?textSecondary"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/text_for_meraki_learners"
+            android:text="@string/for_meraki_learners"
+            android:paddingBottom="@dimen/dimen_16_dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@id/login_with_google"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_with_google"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/continue_with_google_english"
+            android:textAllCaps="false"
+            android:textColor="@color/green_progress_color"
+            app:icon="@drawable/google_icon"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="80dp"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:iconPadding="@dimen/spacing_4x"
+            app:iconTint="@android:color/transparent"
+            app:iconTintMode="add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/green_progress_color"
+            app:layout_constraintBottom_toTopOf="@id/login_with_c4ca"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/text_for_c4ca_learners"
+            android:text="@string/for_c4ca_learners"
+            android:layout_marginBottom="@dimen/dimen_16_dp"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="32dp"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@id/login_with_c4ca"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/login_with_google"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_with_c4ca"
+            app:cornerRadius="5dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/login_with_user_id_and_password"
+            android:textAllCaps="false"
+            android:textColor="@color/green_progress_color"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="@dimen/dimen_25_dp"
+            android:layout_marginStart="@dimen/spacing_4x"
+            android:layout_marginEnd="@dimen/spacing_4x"
+            app:iconPadding="@dimen/spacing_4x"
+            app:iconTint="@android:color/transparent"
+            app:iconTintMode="add"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/green_progress_color"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

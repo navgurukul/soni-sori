@@ -1,6 +1,7 @@
 package org.merakilearn.datasource.network
 
 import org.merakilearn.datasource.network.model.*
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -8,6 +9,9 @@ import retrofit2.http.*
 interface SaralApi {
     @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
+    @Headers("Content-Type: application/json")
+    @POST("/c4ca/team/login")
+    fun authenticate(@Body requestBody: LoginRequestBody): Call<LoginResponseC4ca>
 
 //    @GET("classes")
 //    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use

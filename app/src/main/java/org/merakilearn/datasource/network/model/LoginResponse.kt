@@ -45,3 +45,20 @@ data class LoginResponse(
         val partnerId: Int? = null,
     )
 }
+
+data class LoginResponseC4ca(
+    val status: String,
+    val data: UserData
+)
+
+data class UserData(
+    val id: Int,
+    val team_name: String,
+    val team_size: Int,
+    val teacher_id: Int,
+    val login_id: String,
+    val password: String,
+    val flag: String,
+    val token: String
+)
+

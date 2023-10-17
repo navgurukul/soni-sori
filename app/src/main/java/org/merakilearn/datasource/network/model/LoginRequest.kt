@@ -15,3 +15,11 @@ data class LoginRequest(
     @Json(name = "lang")
     val language: String
 ) : Serializable
+
+
+data class LoginRequestBody(
+    val login_id: String,
+    val password: String
+)
+
+

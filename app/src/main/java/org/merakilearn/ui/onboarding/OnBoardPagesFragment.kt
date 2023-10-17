@@ -87,6 +87,10 @@ class OnBoardPagesFragment : BaseFragment() {
         next.text = onBoardingTranslations.nextText
         skip.text = onBoardingTranslations.skipText
         login_with_google.text = onBoardingTranslations.loginWithGoogleText
+        login_with_c4ca.setOnClickListener{
+            var intent= Intent(requireContext(),C4caScreen::class.java)
+            startActivity(intent)
+        }
 //        skip_login.text = onBoardingTranslations.skipLoginText
 
         if (viewPager2.adapter == null) {
