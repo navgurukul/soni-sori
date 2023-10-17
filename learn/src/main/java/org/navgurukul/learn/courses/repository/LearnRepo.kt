@@ -410,10 +410,10 @@ class LearnRepo(
     suspend fun postStudentResult(
         assessmentId: Int,
         status: Status,
-        selectedOption: Int?
+        selectedOptions: List<Int>
     ){
         try {
-            val studentResult = StudentResult(assessmentId, status,selectedOption)
+            val studentResult = StudentResult(assessmentId, status,selectedOptions)
             courseApi.postStudentResult(studentResult)
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")

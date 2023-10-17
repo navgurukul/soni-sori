@@ -80,7 +80,7 @@ class Converters(val moshi: Moshi) {
     }
 
     @TypeConverter
-    fun intListToString(list: List<Int>): String? {
+    fun intListToString(list: List<Int>?): String? {
         if (list.isNullOrEmpty()) return ""
         return intListAdapter.toJson(list)
     }
