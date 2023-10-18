@@ -19,6 +19,8 @@ data class LoginRequest(
 
 @JsonClass(generateAdapter = true)
 data class LoginRequestC4CA(
+    @Json(name = "login_id")
     val login_id: String?,
-    val password: String
+    @Json(name = "password")
+    val password: String?
 )

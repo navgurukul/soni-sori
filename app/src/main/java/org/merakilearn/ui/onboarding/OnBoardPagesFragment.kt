@@ -133,11 +133,6 @@ class OnBoardPagesFragment : BaseFragment() {
         }
     }
 
-    private fun signInWithC4ca() {
-        viewModel.loginC4CA("avengers","Avengers_ln3s")
-        Log.d(TAG, "signInWithC4ca: ")
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {

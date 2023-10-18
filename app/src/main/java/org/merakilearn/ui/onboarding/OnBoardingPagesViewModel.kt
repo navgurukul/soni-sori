@@ -16,6 +16,7 @@ import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.datasource.Config.Companion.ON_BOARDING_DATA
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.LoginRepository
+import org.merakilearn.datasource.network.model.LoginRequestC4CA
 import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
@@ -174,12 +175,9 @@ class OnBoardingPagesViewModel(
 
     fun loginC4CA(username: String, password: String) {
         viewModelScope.launch {
-            setState { copy(isLoading = true) }
             val loginResponse = loginRepository.loginc4ca(username, password)
-            setState { copy(isLoading = false) }
             if (loginResponse != null) {
-                Log.d("OnBoardingPagesViewModelC4CA", "loginC4CA: $loginResponse")
-                setLogin(loginResponse)
+
             } else {
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
@@ -192,6 +190,7 @@ class OnBoardingPagesViewModel(
         data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
         data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
         data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
+        data class OpenC4CAHomePage(val id: Int) : OnBoardingPagesEvents()
     }
 
     sealed class OnBoardingPagesAction : ViewModelAction {

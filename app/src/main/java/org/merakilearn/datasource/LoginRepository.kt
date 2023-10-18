@@ -1,6 +1,8 @@
 package org.merakilearn.datasource
 
 import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -83,23 +85,38 @@ class LoginRepository(
         }
     }
 
-    suspend fun loginc4ca(username: String, pass: String) : LoginResponseC4CA {
-        return applicationApi.postLoginC4CA(LoginRequestC4CA(username, pass))
-    }
-    //suspend fun loginc4ca(username: String, pass : String) : LoginResponseC4CA
-    //{
-//        return try {
-//            val loginRequestC4CA = LoginRequestC4CA(username, pass)
-//            //val response = applicationApi.postLoginC4CA(loginRequestC4CA)
-//            applicationApi.postLoginC4CA(loginRequestC4CA)
-//            loginRequestC4CA
-//            //applicationApi.postLoginC4CA(username, password)
-////            val response = applicationApi.loginC4CA(username, password)
-////            response
-//        } catch (ex: Exception) {
-//            }
-//        }
+    suspend fun loginc4ca(
+        username: String,
+        pass: String
+    ) {
+         return try {
+             val loginRequestC4CA = LoginRequestC4CA(username, pass)
+            val response = applicationApi.postLoginC4CA(loginRequestC4CA)
+             if (response.data != null){
+                 Logger.getLogger("WrongUsernamepassword").warning("Login failed")
+                 Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")
+             }
+             else{
+                 Toast.makeText(application, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
+             }
+//             if(response.body()?.data == null){
+//                 Logger.getLogger("WrongUsernamepassword").warning("Login failed")
+//                 Toast.makeText(application, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
+//             }
+//             else{
+//                 Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")
+//             }
 
-//    }
-       // }
+//             when(response.isSuccessful) {
+//                 (response.body()?.data == null) -> {
+//                     Logger.getLogger("WrongUsernamepassword").warning("Login failed")
+//                 }
+//                 else -> {
+//                     Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")
+//                 }
+//             }
+         } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
 }
