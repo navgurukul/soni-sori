@@ -1,5 +1,10 @@
 package org.merakilearn.ui.onboarding
 
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -11,6 +16,7 @@ import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.datasource.Config.Companion.ON_BOARDING_DATA
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.LoginRepository
+import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -27,6 +33,16 @@ class OnBoardingPagesViewModel(
     private val preferences: CorePreferences,
     private val config: Config
 ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
+
+    private val _login = MutableLiveData<LoginResponseC4CA>()
+    val login: LiveData<LoginResponseC4CA> = _login
+
+    fun setLogin(loginResponseC4CA: LoginResponseC4CA) {
+        _login.value = loginResponseC4CA
+    }
+//    val login = liveData {
+//        emitSource(_login)
+//    }
 
     companion object {
         const val PARTNER_ID = "partner_id"
@@ -49,12 +65,14 @@ class OnBoardingPagesViewModel(
                     }
                 }
             }
+
             is OnBoardingPagesAction.Skip -> {
                 setState {
                     copy(isLoginLayoutVisible = true, isNavLayoutVisible = false)
                 }
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems))
             }
+
             is OnBoardingPagesAction.PageSelected -> {
                 val isLoginLayoutVisible =
                     action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 1
@@ -153,27 +171,43 @@ class OnBoardingPagesViewModel(
             } ?: run { _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
+
+    fun loginC4CA(username: String, password: String) {
+        viewModelScope.launch {
+            setState { copy(isLoading = true) }
+            val loginResponse = loginRepository.loginc4ca(username, password)
+            setState { copy(isLoading = false) }
+            if (loginResponse != null) {
+                Log.d("OnBoardingPagesViewModelC4CA", "loginC4CA: $loginResponse")
+                setLogin(loginResponse)
+            } else {
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+            }
+        }
+    }
 }
 
-sealed class OnBoardingPagesEvents : ViewEvents {
-    object OpenCourseSelection : OnBoardingPagesEvents()
-    data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
-    data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
-    data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
-}
+    sealed class OnBoardingPagesEvents : ViewEvents {
+        object OpenCourseSelection : OnBoardingPagesEvents()
+        data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
+        data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
+        data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
+    }
 
-sealed class OnBoardingPagesAction : ViewModelAction {
-    data class LoginWithAuthToken(val authToken: String) : OnBoardingPagesAction()
-    data class Skip(val totalItems: Int) : OnBoardingPagesAction()
-    data class Next(val currentItem: Int) : OnBoardingPagesAction()
-    data class PageSelected(val currentItem: Int) : OnBoardingPagesAction()
+    sealed class OnBoardingPagesAction : ViewModelAction {
+        data class LoginWithAuthToken(val authToken: String) : OnBoardingPagesAction()
+        data class Skip(val totalItems: Int) : OnBoardingPagesAction()
+        data class Next(val currentItem: Int) : OnBoardingPagesAction()
+        data class PageSelected(val currentItem: Int) : OnBoardingPagesAction()
+
+        data class LoginC4CA(val username: String, val password: String) : OnBoardingPagesAction()
 //    object InitiateFakeSignUp : OnBoardingPagesAction()
-}
+    }
 
-data class OnBoardingPagesViewState(
-    val isLoading: Boolean = false,
-    val onBoardingData: OnBoardingData? = null,
-    val onBoardingTranslations: OnBoardingTranslations? = null,
-    val isNavLayoutVisible: Boolean = true,
-    val isLoginLayoutVisible: Boolean = false
-) : ViewState
+    data class OnBoardingPagesViewState(
+        val isLoading: Boolean = false,
+        val onBoardingData: OnBoardingData? = null,
+        val onBoardingTranslations: OnBoardingTranslations? = null,
+        val isNavLayoutVisible: Boolean = true,
+        val isLoginLayoutVisible: Boolean = false
+    ) : ViewState

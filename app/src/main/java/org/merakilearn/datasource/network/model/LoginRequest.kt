@@ -15,3 +15,10 @@ data class LoginRequest(
     @Json(name = "lang")
     val language: String
 ) : Serializable
+
+
+@JsonClass(generateAdapter = true)
+data class LoginRequestC4CA(
+    val login_id: String?,
+    val password: String
+)

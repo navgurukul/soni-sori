@@ -67,6 +67,8 @@ class LoginFragment : Fragment() {
         mBinding.skipLogin.setOnClickListener {
             MainActivity.launch(requireContext())
         }
+
+        //viewModel.login("first team","First Team_v71c")
     }
 
     private fun showConfirmation() {
@@ -147,5 +149,6 @@ class LoginFragment : Fragment() {
     private fun toggleProgressBarVisibility(visibiltiy: Int) {
         mBinding.progressBarButton.visibility = visibiltiy
     }
+
 
 }

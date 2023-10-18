@@ -8,10 +8,14 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
+import org.merakilearn.datasource.network.model.LoginRequestC4CA
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.datasource.network.model.ResidentialProgramPathwayResponse
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
+import java.net.PasswordAuthentication
+import java.util.logging.Logger
 
 class LoginRepository(
     private val applicationApi: SaralApi,
@@ -78,4 +82,24 @@ class LoginRepository(
             false
         }
     }
+
+    suspend fun loginc4ca(username: String, pass: String) : LoginResponseC4CA {
+        return applicationApi.postLoginC4CA(LoginRequestC4CA(username, pass))
+    }
+    //suspend fun loginc4ca(username: String, pass : String) : LoginResponseC4CA
+    //{
+//        return try {
+//            val loginRequestC4CA = LoginRequestC4CA(username, pass)
+//            //val response = applicationApi.postLoginC4CA(loginRequestC4CA)
+//            applicationApi.postLoginC4CA(loginRequestC4CA)
+//            loginRequestC4CA
+//            //applicationApi.postLoginC4CA(username, password)
+////            val response = applicationApi.loginC4CA(username, password)
+////            response
+//        } catch (ex: Exception) {
+//            }
+//        }
+
+//    }
+       // }
 }

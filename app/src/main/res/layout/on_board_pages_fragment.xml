@@ -67,8 +67,19 @@
         android:layout_marginBottom="@dimen/spacing_5x"
         android:layout_marginStart="@dimen/spacing_4x"
         android:layout_marginEnd="@dimen/spacing_4x"
-        app:constraint_referenced_ids="login_with_google" />
+        app:constraint_referenced_ids="login_with_google,login_with_c4ca,merakiLearner,c4caLearner"/>
 
+    <TextView
+        android:id="@+id/merakiLearner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="For Meraki Learner"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textColor="@color/colorBlack"
+        android:layout_marginBottom="@dimen/dimen_16_dp"
+        app:layout_constraintBottom_toTopOf="@id/login_with_google"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_with_google"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -80,6 +91,40 @@
         android:textAllCaps="false"
         android:textColor="@color/green_progress_color"
         app:icon="@drawable/google_icon"
+        app:iconGravity="textStart"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/spacing_5x"
+        android:layout_marginStart="@dimen/spacing_4x"
+        android:layout_marginEnd="@dimen/spacing_4x"
+        app:iconPadding="@dimen/spacing_4x"
+        app:iconTint="@android:color/transparent"
+        app:iconTintMode="add"
+        app:layout_constraintBottom_toTopOf="@id/c4caLearner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/green_progress_color" />
+
+    <TextView
+        android:id="@+id/c4caLearner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="For C4CA Learners"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/login_with_c4ca"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_with_c4ca"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Login with c4ca"
+        android:textAllCaps="false"
+        android:textColor="@color/green_progress_color"
         app:iconGravity="textStart"
         android:visibility="gone"
         android:layout_marginBottom="@dimen/spacing_5x"

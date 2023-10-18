@@ -2,6 +2,7 @@ package org.merakilearn.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +54,9 @@ class OnBoardPagesFragment : BaseFragment() {
 //        }
         login_with_google.setOnClickListener {
             signInWithGoogle()
+        }
+     login_with_c4ca.setOnClickListener {
+         startActivity(Intent(requireContext(),ActivityC4CA::class.java))
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
@@ -127,6 +131,11 @@ class OnBoardPagesFragment : BaseFragment() {
         googleSignInClient.signOut().addOnCompleteListener {
             startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
         }
+    }
+
+    private fun signInWithC4ca() {
+        viewModel.loginC4CA("avengers","Avengers_ln3s")
+        Log.d(TAG, "signInWithC4ca: ")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

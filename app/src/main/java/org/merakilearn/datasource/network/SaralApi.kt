@@ -9,6 +9,8 @@ interface SaralApi {
     @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
+    @POST("c4ca/team/login")
+    suspend fun postLoginC4CA(@Body loginRequest: LoginRequestC4CA): LoginResponseC4CA
 //    @GET("classes")
 //    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
 
