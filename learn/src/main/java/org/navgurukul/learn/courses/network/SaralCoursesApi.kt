@@ -92,4 +92,10 @@ interface SaralCoursesApi {
     suspend fun getCertificate(
         @Query(value = "pathway_code") pathway_code: String
     ): CertificateResponse
+
+    @GET("pathways/c4ca")
+    suspend fun getC4CAPathway(
+    ): PathwayC4CA
 }
+
+

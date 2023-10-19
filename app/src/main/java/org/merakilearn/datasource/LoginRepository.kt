@@ -92,6 +92,8 @@ class LoginRepository(
          return try {
              val loginRequestC4CA = LoginRequestC4CA(username, pass)
             val response = applicationApi.postLoginC4CA(loginRequestC4CA)
+             userRepo.saveC4CAUserLoginResponse(response)
+             response
              if (response.data != null){
                  Logger.getLogger("WrongUsernamepassword").warning("Login failed")
                  Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")

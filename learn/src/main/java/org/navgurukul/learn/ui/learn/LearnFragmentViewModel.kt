@@ -236,6 +236,13 @@ class LearnFragmentViewModel(
             }
         }
     }
+
+    fun getC4CAPathways() {
+        viewModelScope.launch {
+            val pathways = learnRepo.getC4CAPathways()
+        }
+    }
+
     fun selectBatch(batch: Batch) {
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
     }

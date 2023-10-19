@@ -9,6 +9,7 @@ import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
+import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
 import org.navgurukul.chat.core.repo.AuthenticationRepository
@@ -86,6 +87,23 @@ class UserRepo(
         }
     }
 
+    fun getCurrentC4CAUser(): LoginResponseC4CA? {
+        val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
+        return try {
+//            if (userLoginResponseString.isNullOrEmpty()) {
+//                val fakeUserLoginResponseString =
+//                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
+//                fakeUserLoginResponseString?.objectify()
+//            } else {
+            return if (userLoginResponseString.isNullOrEmpty()) {
+                null
+            } else {
+                userLoginResponseString.objectify()
+            }
+        } catch (e : Exception){
+            throw IllegalStateException("Current user is null")
+        }
+    }
     suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
             val response = saralApi.initUserUpdateAsync(
@@ -107,6 +125,12 @@ class UserRepo(
         }
     }
 
+    private fun saveUserResponseC4CA(user: LoginResponseC4CA) {
+        preferences.edit {
+            putString(KEY_USER_RESPONSE, user.jsonify())
+        }
+    }
+
     fun saveUserLoginResponse(
         response: LoginResponse,
     ) {
@@ -117,6 +141,15 @@ class UserRepo(
         }
     }
 
+    fun saveC4CAUserLoginResponse(
+        response: LoginResponseC4CA,
+    ) {
+        saveUserResponseC4CA(response)
+        preferences.edit {
+            putString(KEY_AUTH_TOKEN, response.data.token)
+            putBoolean(KEY_USER_LOGIN, true)
+        }
+    }
 //    fun saveFakeLoginResponse(
 //        response: LoginResponse,
 //    ) {

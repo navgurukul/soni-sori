@@ -90,9 +90,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             navHostFragment.navController.navigate(R.id.navigation_learn)
         }
 
+
+
         mainActivityArgs.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
+
 
         findViewById<ImageView>(R.id.headerIv).let {
             userRepo.getCurrentUser()?.let { currentUser ->

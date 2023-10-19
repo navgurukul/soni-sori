@@ -2,6 +2,13 @@ package org.merakilearn.datasource.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import org.merakilearn.R
+import org.merakilearn.expandablerecyclerviewlist.adapter.ExpandableRecyclerAdapter
+import org.merakilearn.expandablerecyclerviewlist.model.ParentListItem
+import org.merakilearn.ui.model.Category
+import org.merakilearn.ui.model.CategoryList
+import org.merakilearn.ui.viewholder.CategoryListViewHolder
+import org.merakilearn.ui.viewholder.CategoryViewHolder
 
 
 class CategoryAdapter : ExpandableRecyclerAdapter<CategoryViewHolder, CategoryListViewHolder>(){

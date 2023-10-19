@@ -15,6 +15,7 @@ import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.model.LearningTrackStatus
+import org.navgurukul.learn.courses.network.model.PathwayC4CA
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
 
@@ -447,6 +448,15 @@ class LearnRepo(
         }
         catch (e: Exception){
             e.printStackTrace()
+        }
+    }
+
+    suspend fun getC4CAPathways(): PathwayC4CA {
+        return try {
+            courseApi.getC4CAPathway()
+        }
+        catch (ex: Exception) {
+            throw ex
         }
     }
 }
