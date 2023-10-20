@@ -56,7 +56,7 @@ class OnBoardPagesFragment : BaseFragment() {
             signInWithGoogle()
         }
      login_with_c4ca.setOnClickListener {
-         startActivity(Intent(requireContext(),ActivityC4CA::class.java))
+         startActivity(Intent(requireContext(), ActivityC4CA::class.java))
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {

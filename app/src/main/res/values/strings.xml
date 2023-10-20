@@ -6,6 +6,7 @@
     <string name="title_more">More</string>
     <string name="profile">Profile</string>
     <string name="unable_to_sign">Unable to Sign in ! Please try again</string>
+    <string name="wrong_data">User or password is wrong</string>
     <string name="upcoming_class">Upcoming Classes</string>
     <string name="view_all">View All</string>
     <string name="search_playground">Search projects or lab…</string>
@@ -83,5 +84,12 @@
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
     <string name="stay_enrolled">Stay Enrolled</string>
+    <string name="login_c4ca_text"><![CDATA[Login with User ID & Password]]></string>
+    <string name="error_text">The entered User ID and Password do not match in our account records. Please enter a correct combination.</string>
+    <string name="login_to_c4ca_text">Login to C4CA</string>
+    <string name="login_info">Please ask your teacher to provide you the team login user id and password</string>
+    <string name="forgot_c4ca_text">Forgot password/ Don\'t have login details?</string>
+    <string name="login_to">Login to</string>
+    <string name="login_info_c4ca">Find problems and generate creativity solutions to solve for climate change</string>
 
 </resources>

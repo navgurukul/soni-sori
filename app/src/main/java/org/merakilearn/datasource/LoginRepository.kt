@@ -85,22 +85,24 @@ class LoginRepository(
         }
     }
 
-    suspend fun loginc4ca(
+    suspend fun loginC4ca(
         username: String,
         pass: String
-    ) {
+    ) : LoginResponseC4CA {
          return try {
              val loginRequestC4CA = LoginRequestC4CA(username, pass)
-            val response = applicationApi.postLoginC4CA(loginRequestC4CA)
+             val response = applicationApi.postLoginC4CA(loginRequestC4CA)
              userRepo.saveC4CAUserLoginResponse(response)
              response
-             if (response.data != null){
-                 Logger.getLogger("WrongUsernamepassword").warning("Login failed")
-                 Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")
-             }
-             else{
-                 Toast.makeText(application, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
-             }
+
+
+//             if (response.data != null){
+//                 Logger.getLogger("WrongUsernamepassword").warning("Login failed")
+//                 Logger.getLogger("C4CALoginSuccessfull").warning("Login successful")
+//             }
+//             else{
+//                 Toast.makeText(application, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
+//             }
 //             if(response.body()?.data == null){
 //                 Logger.getLogger("WrongUsernamepassword").warning("Login failed")
 //                 Toast.makeText(application, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
@@ -118,7 +120,7 @@ class LoginRepository(
 //                 }
 //             }
          } catch (ex: Exception) {
-            ex.printStackTrace()
+            throw ex
         }
     }
 }

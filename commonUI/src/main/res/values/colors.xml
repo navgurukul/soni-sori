@@ -19,4 +19,5 @@
     <color name="constructiveForeground">#7CC144</color>
 
     <color name="notification_accent_color">#368BD6</color>
+    <color name="btn_back_gray">#949494</color>
 </resources>

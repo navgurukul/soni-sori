@@ -146,7 +146,7 @@ class UserRepo(
     ) {
         saveUserResponseC4CA(response)
         preferences.edit {
-            putString(KEY_AUTH_TOKEN, response.data.token)
+            putString(KEY_AUTH_TOKEN, response.data?.token)
             putBoolean(KEY_USER_LOGIN, true)
         }
     }

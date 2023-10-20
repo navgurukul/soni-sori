@@ -175,12 +175,22 @@ class OnBoardingPagesViewModel(
 
     fun loginC4CA(username: String, password: String) {
         viewModelScope.launch {
-            val loginResponse = loginRepository.loginc4ca(username, password)
-            if (loginResponse != null) {
-
+            val loginResponse = loginRepository.loginC4ca(username, password)
+            val loginStatus = loginResponse.status
+            if (loginStatus == "success"){
+                Log.d("loginStatus", "Login $loginStatus $username congratulation")
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
             } else {
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+                Log.d("loginStatus", "Login failure $loginStatus $username Sorry for inconvinience")
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowErrorMessage)
             }
+
+//            if (loginResponse != null) {
+//
+//            } else {
+//                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+//            }
         }
     }
 }
@@ -190,7 +200,8 @@ class OnBoardingPagesViewModel(
         data class NavigateToItem(val item: Int) : OnBoardingPagesEvents()
         data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
         data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
-        data class OpenC4CAHomePage(val id: Int) : OnBoardingPagesEvents()
+        object OpenC4CAHomePage : OnBoardingPagesEvents()
+        object ShowErrorMessage : OnBoardingPagesEvents()
     }
 
     sealed class OnBoardingPagesAction : ViewModelAction {

@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class LoginResponseC4CA(
     @Json(name = "data")
-    val `data`: DataC4CA,
+    val `data`: DataC4CA? = null,
     @Json(name = "status")
     val status: String
 )
