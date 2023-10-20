@@ -175,7 +175,7 @@ class AssessmentFragment : Fragment() {
 //
 //            }
             if (attemptResponse != null) {
-                if (attemptResponse.attemptCount < 2) {
+                if (attemptResponse.attemptCount <= 2) {
                     mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                         isContentRvClickable = true
