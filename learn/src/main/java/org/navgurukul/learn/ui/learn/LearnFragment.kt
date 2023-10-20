@@ -60,6 +60,7 @@ import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
 import org.navgurukul.learn.ui.learn.adapter.UpcomingEnrolAdapater
 import org.navgurukul.learn.util.BrowserRedirectHelper
 import org.navgurukul.learn.util.FileDownloader.downloadFile
+import org.navgurukul.learn.util.PdfGenerateUtils
 import org.navgurukul.learn.util.PdfQuality
 import org.navgurukul.learn.util.toDate
 import java.io.File
@@ -147,7 +148,7 @@ class LearnFragment : Fragment() {
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
 
-            when(it.code) {
+            when (it.code) {
                 "PRGPYT" -> {
                     mBinding.certificate.root.visibility = View.VISIBLE
                     mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
@@ -234,12 +235,12 @@ class LearnFragment : Fragment() {
         }
     }
 
-    private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
+    private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName: String) {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-        val textView : TextView = mBinding.certificate.root.locked_status
+        val textView: TextView = mBinding.certificate.root.locked_status
         var binding: GeneratedCertificateBinding
 
-        if (completedPortion == 100){
+        if (completedPortion == 100) {
             imageView.setImageResource(R.drawable.ic_certificate)
             textView.isVisible = false
         } else {
@@ -256,13 +257,13 @@ class LearnFragment : Fragment() {
                 binding.txtCertificate.text = getString(R.string.text_certificate, pathwayName)
                 binding.txt.text = getString(R.string.certificate_information, pathwayName)
                 binding.tvDownload.setOnClickListener {
-                    generatePDF(pdfUrl)
+                    PdfGenerateUtils.generatePDF(requireContext(), pdfUrl)
                 }
                 binding.tvShare.setOnClickListener {
-                    showShareIntent(pdfUrl)
+                    PdfGenerateUtils.showShareIntent(requireContext(), pdfUrl)
                 }
                 CoroutineScope(Dispatchers.IO).launch {
-                    download(pdfUrl, pdfView)
+                    PdfGenerateUtils.download(requireContext(), pdfUrl, pdfView)
                 }
                 //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
                 println("required completed portion in fragment $completedPortion")
@@ -277,102 +278,6 @@ class LearnFragment : Fragment() {
             }
 
         }
-    }
-
-    private fun generatePDF(pdfUrl: String) {
-        val download = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val pdfUri = Uri.parse(pdfUrl)
-        val getPdf = DownloadManager.Request(pdfUri)
-        getPdf.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        download.enqueue(getPdf)
-        Toast.makeText(context, "Download Started", Toast.LENGTH_LONG).show()
-    }
-
-    private fun download(pdfUrl: String, pdfView: ImageView) {
-        val fileUrl = pdfUrl // -> http://maven.apache.org/maven-1.x/maven.pdf
-        val fileName = "certificate.pdf" // -> maven.pdf
-        val extStorageDirectory = context?.filesDir
-        val folder = File(extStorageDirectory, "certificate")
-        folder.mkdir()
-        val pdfFile = File(folder, fileName)
-        try {
-            pdfFile.createNewFile()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        if (downloadFile(context, fileUrl, pdfFile)) {
-            showCertificate(pdfView)
-        } else {
-            CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(context, "something went wrong", Toast.LENGTH_LONG).show()
-            }
-        }
-
-    }
-
-
-    private fun showCertificate(pdfView: ImageView) {
-
-        val pdfQuality = PdfQuality.NORMAL
-
-        val fileName = "certificate.pdf" // -> maven.pdf
-        val extStorageDirectory = context?.filesDir
-        val folder = File(extStorageDirectory, "certificate")
-        val mCardStmtFile = File(folder, fileName)
-
-        context?.let {
-
-            // We will get a page from the PDF file by calling openPage
-            val fileDescriptor = ParcelFileDescriptor.open(
-                mCardStmtFile,
-                ParcelFileDescriptor.MODE_READ_ONLY
-            )
-
-            val mPdfRenderer = PdfRenderer(fileDescriptor)
-            ///mPdfRenderer.pageCount
-            val mPdfPage = mPdfRenderer.openPage(0)
-
-            // Create a new bitmap and render the page contents on to it
-            val bitmap = Bitmap.createBitmap(
-                mPdfPage.width * pdfQuality.ratio,
-                mPdfPage.height * pdfQuality.ratio,
-                Bitmap.Config.ARGB_8888
-            )
-
-            mPdfPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-
-            // Set the bitmap in the ImageView so we can view it
-            CoroutineScope(Dispatchers.Main).launch {
-                pdfView.setImageBitmap(bitmap)
-            }
-        }
-    }
-
-    private fun showShareIntent(pdfUrl: String) {
-        try {
-            val fileName = "certificate.pdf" // -> maven.pdf
-            val extStorageDirectory = context?.filesDir
-            val folder = File(extStorageDirectory, "certificate")
-            val file = File(folder, fileName)
-
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "application/pdf"
-
-            val fileUri: Uri = FileProvider.getUriForFile(
-                requireContext(),
-                "org.merakilearn.provider",
-                file
-            )
-
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-            requireContext().startActivity(shareIntent)
-        } catch (e: Exception){
-            e.printStackTrace()
-            Toast.makeText(context, "There is some issue to share", Toast.LENGTH_LONG).show()
-        }
-
     }
 
 

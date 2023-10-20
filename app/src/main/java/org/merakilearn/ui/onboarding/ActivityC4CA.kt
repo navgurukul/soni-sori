@@ -24,8 +24,13 @@ class ActivityC4CA : AppCompatActivity() {
         binding.errorMessageText.visibility = View.GONE
 
         // Create an OnFocusChangeListener for the username EditText
-        binding.userIDEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
-            binding.loginButton.isEnabled = hasFocus
+        binding.apply {
+            userIDEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+                loginButton.isEnabled = hasFocus
+            }
+            passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+                loginButton.isEnabled = hasFocus
+            }
         }
 
         viewModel.viewEvents.observe(this){
