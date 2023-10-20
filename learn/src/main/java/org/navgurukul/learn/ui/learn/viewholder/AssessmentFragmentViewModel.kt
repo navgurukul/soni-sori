@@ -317,6 +317,8 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
+        data class ShowPartiallyCorrectOutput(val list: List<BaseCourseContent>):AssessmentFragmentViewEvents()
+        data class ShowPartiallyIncorrectOutput(val list: List<BaseCourseContent>):AssessmentFragmentViewEvents()
         data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
     }
 

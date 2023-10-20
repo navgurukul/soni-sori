@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
+import org.navgurukul.learn.courses.db.models.SolutionBaseCourseContent
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
 
 class OptionCourseViewHolder(itemView: View):
