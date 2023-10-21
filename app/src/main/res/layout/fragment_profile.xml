@@ -178,7 +178,13 @@
                     app:layout_constraintTop_toBottomOf="@id/partnerDesc"
                     app:layout_goneMarginEnd="@dimen/spacing_4x"
                     tools:text="@string/partnerWebsite" />
-
+                <include layout="@layout/c4ca_ceritificate_profile"
+                    android:id="@+id/c4ca_ceritificate_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4x"
+                    app:layout_constraintTop_toBottomOf="@+id/partnerWebsite"
+                    />
                 <TextView
                     android:id="@+id/opportunityTitle"
                     style="?textAppearanceEmphasized2"
@@ -189,7 +195,7 @@
                     android:text="@string/opportunities"
                     android:textColor="?textSecondary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerWebsite" />
+                    app:layout_constraintTop_toBottomOf="@id/c4ca_ceritificate_profile" />
 
                 <TextView
                     android:id="@+id/opportunityDescription"
