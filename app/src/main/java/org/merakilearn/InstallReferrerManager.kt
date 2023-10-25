@@ -43,6 +43,7 @@ class InstallReferrerManager(val application: Application, val userRepo: UserRep
 
     private fun uploadInstallReferrer() {
         val currentUser = userRepo.getCurrentUser()
+//        val currentUser = userRepo.getCurrentC4CAUser()
         val installReferrer = userRepo.installReferrer
 
         if (currentUser != null) {

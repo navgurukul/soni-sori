@@ -191,17 +191,10 @@ data class SolutionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value: List<ValueObject>, // Changes according to Api Response
+        var value: Int?,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ):BaseCourseContent
-
-@JsonClass(generateAdapter = true)
-data class ValueObject(
-        @Json(name = "value")
-        val value: Int
-)
-
 
 @JsonClass(generateAdapter = true)
 data class OutputBaseCourseContent(
@@ -257,8 +250,6 @@ data class OptionResponse(
         val id : Int,
         @Json(name = "value")
         val value: String,
-        @Json(name = "type")
-        val type:String,
         @Ignore
         var viewState: OptionViewState = OptionViewState.NOT_SELECTED
 )

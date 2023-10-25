@@ -9,6 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.datasource.adapter.CategoryAdapter
+import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.expandablerecyclerviewlist.listener.ExpandCollapseListener
 import org.merakilearn.ui.model.Category
 import org.merakilearn.ui.model.CategoryList
@@ -18,7 +19,6 @@ class ModuleActtivity : AppCompatActivity() {
 
     private val adapter = CategoryAdapter()
     private val viewModel: LearnFragmentViewModel by viewModel()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

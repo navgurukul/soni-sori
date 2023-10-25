@@ -11,6 +11,12 @@
         tools:layout="@layout/fragment_learn" />
 
     <fragment
+        android:id="@+id/navigation_c4ca"
+        android:name="org.navgurukul.learn.ui.learn.c4ca.C4CAFragment"
+        android:label="C4CA"
+        tools:layout= "@layout/fragment_c4ca" />
+
+    <fragment
         android:id="@+id/navigation_playground"
         android:name="org.merakilearn.ui.playground.PlaygroundFragment"
         android:label="@string/title_playground"

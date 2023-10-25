@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.AttrRes
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     private lateinit var firebaseAnalytics : FirebaseAnalytics
     companion object {
-        fun launch(context: Context, selectedPathwayId: Int? = null) {
+        fun launch(context: Context, selectedPathwayId: Int? = null, isC4CA : Boolean = false){
             val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
             context.startActivity(intent)
         }
@@ -86,10 +87,14 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         nav_view.setupWithNavController(navHostFragment.navController)
 
-        if (mainActivityArgs.selectedPathwayId != null) {
-            navHostFragment.navController.navigate(R.id.navigation_learn)
-        }
 
+        if (mainActivityArgs.selectedPathwayId != null) {
+            nav_view.menu.findItem(R.id.navigation_c4ca).isVisible = false
+            navHostFragment.navController.navigate(R.id.navigation_learn)
+        } else {
+            nav_view.menu.findItem(R.id.navigation_learn).isVisible = false
+            navHostFragment.navController.navigate(R.id.navigation_c4ca)
+        }
 
 
         mainActivityArgs.let { args ->
@@ -97,13 +102,13 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
 
-        findViewById<ImageView>(R.id.headerIv).let {
-            userRepo.getCurrentUser()?.let { currentUser ->
-                setUserThumbnail(it, currentUser)
-            } ?: run {
+//        findViewById<ImageView>(R.id.headerIv).let {
+//            userRepo.getCurrentUser()?.let { currentUser ->
+//                setUserThumbnail(it, currentUser)
+//            } ?: run {
                 OnBoardingActivity.restartApp(this@MainActivity)
-            }
-        }
+//            }
+//        }
 
         findViewById<ImageView>(R.id.headerLogOut).let {
             setUserLogoutThumbnail(it)

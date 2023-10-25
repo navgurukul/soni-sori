@@ -83,7 +83,7 @@
                     android:id="@+id/groupServerUrl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:constraint_referenced_ids="serverUrlTitle, serverUrlValue" />
 
                 <TextView
@@ -109,147 +109,170 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/serverUrlTitle"
                     tools:text="https://api.merakilearn.org" />
-                <TextView
-                    android:id="@+id/title"
-                    style="?textAppearanceEmphasized2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:text="@string/title"
-                    android:visibility="gone"
-                    android:textColor="?textSecondary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/serverUrlValue" />
-                <ImageView
-                    android:id="@+id/partnerImage"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:visibility="gone"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title"/>
-
-                <TextView
-                    android:id="@+id/partnerName"
-                    style="?textAppearanceEmphasized1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:layout_marginEnd="@dimen/spacing_4x"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:textColor="?textSecondary"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerImage"
-                    tools:text="@string/partnerName" />
-
-                <TextView
-                    android:id="@+id/partnerDesc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_2x"
-                    android:layout_marginEnd="@dimen/spacing_4x"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:textColor="?textSecondary"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerName"
-                    tools:text="@string/partnerDesc" />
-
-                <TextView
-                    android:id="@+id/partnerWebsite"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_2x"
-                    android:layout_marginEnd="@dimen/spacing_4x"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:textAppearance="?textAppearanceEmphasized2"
-                    android:textColor="@color/green_progress_color"
-                    android:autoLink="web"
-                    android:visibility="gone"
-                    android:textColorLink="@color/green_progress_color"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerDesc"
-                    app:layout_goneMarginEnd="@dimen/spacing_4x"
-                    tools:text="@string/partnerWebsite" />
-
-                <TextView
-                    android:id="@+id/opportunityTitle"
-                    style="?textAppearanceEmphasized2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:text="@string/opportunities"
-                    android:textColor="?textSecondary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/partnerWebsite" />
-
-                <TextView
-                    android:id="@+id/opportunityDescription"
-                    style="?textAppearanceBody2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:text="@string/opportunities_desc"
-                    android:textColor="?textPrimary"
-                    app:layout_constraintEnd_toStartOf="@id/opportunityImage"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/opportunityTitle" />
-
-                <ImageView
-                    android:id="@+id/opportunityImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_4x"
-                    android:src="@drawable/profile_presents"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/opportunityDescription" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/explore_opportunity"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/partnerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:backgroundTint="@color/green_progress_color"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="@string/explore_opportunities"
-                    android:textAllCaps="false"
-                    android:textAppearance="?textAppearanceEmphasized2"
-                    app:cornerRadius="?cornerRadius400"
-                    app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
-
-                <TextView
-                    android:id="@+id/tvEnrolledText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_10x"
-                    android:text="@string/enrolled_batches"
-                    android:textColor="?textSecondary"
-                    android:textAllCaps="false"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/explore_opportunity"
-                    tools:text="Enrolled Batches" />
+                    app:layout_constraintTop_toBottomOf="@id/serverUrlValue" >
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvEnrolledBatch"
+                    <TextView
+                        android:id="@+id/title"
+                        style="?textAppearanceEmphasized2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:text="@string/title"
+                        android:textColor="?textSecondary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/partnerImage"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/title"/>
+
+                    <TextView
+                        android:id="@+id/partnerName"
+                        style="?textAppearanceEmphasized1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:layout_marginEnd="@dimen/spacing_4x"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:textColor="?textSecondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/partnerImage"
+                        tools:text="@string/partnerName" />
+
+                    <TextView
+                        android:id="@+id/partnerDesc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        android:layout_marginEnd="@dimen/spacing_4x"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:textColor="?textSecondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/partnerName"
+                        tools:text="@string/partnerDesc" />
+
+                    <TextView
+                        android:id="@+id/partnerWebsite"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        android:layout_marginEnd="@dimen/spacing_4x"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:textAppearance="?textAppearanceEmphasized2"
+                        android:textColor="@color/green_progress_color"
+                        android:autoLink="web"
+                        android:textColorLink="@color/green_progress_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/partnerDesc"
+                        app:layout_goneMarginEnd="@dimen/spacing_4x"
+                        tools:text="@string/partnerWebsite" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/opportunityLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_4x"
-                    android:layout_marginTop="@dimen/spacing_4x"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvEnrolledText" />
+                    app:layout_constraintTop_toBottomOf="@id/partnerLayout" >
+
+                    <TextView
+                        android:id="@+id/opportunityTitle"
+                        style="?textAppearanceEmphasized2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:text="@string/opportunities"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="?textSecondary" />
+
+                    <TextView
+                        android:id="@+id/opportunityDescription"
+                        style="?textAppearanceBody2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:text="@string/opportunities_desc"
+                        android:textColor="?textPrimary"
+                        app:layout_constraintEnd_toStartOf="@id/opportunityImage"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/opportunityTitle" />
+
+                    <ImageView
+                        android:id="@+id/opportunityImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_4x"
+                        android:src="@drawable/profile_presents"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/opportunityDescription" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/explore_opportunity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:backgroundTint="@color/green_progress_color"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/explore_opportunities"
+                        android:textAllCaps="false"
+                        android:textAppearance="?textAppearanceEmphasized2"
+                        app:cornerRadius="?cornerRadius400"
+                        app:layout_constraintTop_toBottomOf="@+id/opportunityDescription" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/enrolledBatchesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/opportunityLayout">
+                    <TextView
+                        android:id="@+id/tvEnrolledText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_10x"
+                        android:text="@string/enrolled_batches"
+                        android:textColor="?textSecondary"
+                        android:textAllCaps="false"
+                        tools:text="Enrolled Batches"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvEnrolledBatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_4x"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvEnrolledText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ProgressBar
                     android:id="@+id/progress_bar_button"

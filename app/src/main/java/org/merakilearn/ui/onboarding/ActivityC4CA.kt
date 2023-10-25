@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.MainActivity
 import org.merakilearn.R
 import org.merakilearn.databinding.ActivityC4caBinding
 
@@ -39,6 +40,10 @@ class ActivityC4CA : AppCompatActivity() {
                 is OnBoardingPagesEvents.OpenC4CAHomePage -> {
                     binding.errorMessageText.visibility = View.GONE
                     startActivity(Intent(this, ModuleActtivity::class.java))
+                }
+                is OnBoardingPagesEvents.ShowMainScreen ->{
+                    MainActivity.launch(this, isC4CA = true)
+                    finish()
                 }
                 is OnBoardingPagesEvents.ShowToast -> {
                     Toast.makeText(this, it.toastText, Toast.LENGTH_LONG).show()

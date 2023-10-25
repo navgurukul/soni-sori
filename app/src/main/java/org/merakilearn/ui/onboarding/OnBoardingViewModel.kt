@@ -1,11 +1,13 @@
 package org.merakilearn.ui.onboarding
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.LoginResponseC4CA
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.merakilearn.datasource.network.model.PartnerDataResponse

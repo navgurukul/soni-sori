@@ -16,10 +16,8 @@ import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.datasource.Config.Companion.ON_BOARDING_DATA
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.LoginRepository
-import org.merakilearn.datasource.network.model.LoginRequestC4CA
-import org.merakilearn.datasource.network.model.LoginResponseC4CA
-import org.merakilearn.datasource.network.model.OnBoardingData
-import org.merakilearn.datasource.network.model.OnBoardingTranslations
+import org.merakilearn.datasource.UserRepo
+import org.merakilearn.datasource.network.model.*
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -32,8 +30,10 @@ class OnBoardingPagesViewModel(
     private val stringProvider: StringProvider,
     private val installReferrerManager: InstallReferrerManager,
     private val preferences: CorePreferences,
-    private val config: Config
-) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
+    private val config: Config,
+    private val userRepo: UserRepo,
+
+    ) : BaseViewModel<OnBoardingPagesEvents, OnBoardingPagesViewState>(OnBoardingPagesViewState()) {
 
     private val _login = MutableLiveData<LoginResponseC4CA>()
     val login: LiveData<LoginResponseC4CA> = _login
@@ -50,6 +50,10 @@ class OnBoardingPagesViewModel(
     }
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    private var c4caUser : LoginResponseC4CA.DataC4CA? = null
+    private var user  : LoginResponse.User? = null
+
 
     fun handle(action: OnBoardingPagesAction) {
         val viewState = viewState.value!!
@@ -178,8 +182,13 @@ class OnBoardingPagesViewModel(
             val loginResponse = loginRepository.loginC4ca(username, password)
             val loginStatus = loginResponse.status
             if (loginStatus == "success"){
+                c4caUser = userRepo.getCurrentC4CAUser()
+                user = userRepo.getCurrentUser()
+                Log.e("loginStatus", "c4caUser: $c4caUser")
+                Log.e("loginStatus", "CommonUser: $user")
                 Log.d("loginStatus", "Login $loginStatus $username congratulation")
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
+//                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowMainScreen)
             } else {
                 Log.d("loginStatus", "Login failure $loginStatus $username Sorry for inconvinience")
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
@@ -202,6 +211,7 @@ class OnBoardingPagesViewModel(
         data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
         object OpenC4CAHomePage : OnBoardingPagesEvents()
         object ShowErrorMessage : OnBoardingPagesEvents()
+        object ShowMainScreen : OnBoardingPagesEvents()
     }
 
     sealed class OnBoardingPagesAction : ViewModelAction {

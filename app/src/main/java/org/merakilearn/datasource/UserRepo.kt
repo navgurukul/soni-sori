@@ -8,10 +8,7 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.model.LoginResponse
-import org.merakilearn.datasource.network.model.LoginResponseC4CA
-import org.merakilearn.datasource.network.model.PartnerDataResponse
-import org.merakilearn.datasource.network.model.UserUpdate
+import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -24,6 +21,7 @@ class UserRepo(
 
     companion object {
         private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
+        private const val KEY_USER_C4CA_RESPONSE = "KEY_USER_C4CA_RESPONSE"
 //        private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
 //        private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
@@ -31,6 +29,7 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
+        private const val KEY_USER_C4CA_LOGIN = "KEY_USER_C4CA_LOGIN"
     }
 
     var installReferrerFetched: Boolean
@@ -87,21 +86,16 @@ class UserRepo(
         }
     }
 
-    fun getCurrentC4CAUser(): LoginResponseC4CA? {
-        val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
+    fun getCurrentC4CAUser(): LoginResponseC4CA.DataC4CA? {
+        val userLoginResponseString = preferences.getString(KEY_USER_C4CA_RESPONSE, null)
         return try {
-//            if (userLoginResponseString.isNullOrEmpty()) {
-//                val fakeUserLoginResponseString =
-//                    preferences.getString(KEY_FAKE_USER_RESPONSE, null)
-//                fakeUserLoginResponseString?.objectify()
-//            } else {
             return if (userLoginResponseString.isNullOrEmpty()) {
                 null
             } else {
                 userLoginResponseString.objectify()
             }
         } catch (e : Exception){
-            throw IllegalStateException("Current user is null")
+            throw IllegalStateException("Current c4ca user is null")
         }
     }
     suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
@@ -125,12 +119,11 @@ class UserRepo(
         }
     }
 
-    private fun saveUserResponseC4CA(user: LoginResponseC4CA) {
+    private fun saveUserResponseC4CA(user: LoginResponseC4CA.DataC4CA) {
         preferences.edit {
-            putString(KEY_USER_RESPONSE, user.jsonify())
+            putString(KEY_USER_C4CA_RESPONSE, user.jsonify())
         }
     }
-
     fun saveUserLoginResponse(
         response: LoginResponse,
     ) {
@@ -144,12 +137,14 @@ class UserRepo(
     fun saveC4CAUserLoginResponse(
         response: LoginResponseC4CA,
     ) {
-        saveUserResponseC4CA(response)
+        response.data?.let { saveUserResponseC4CA(it) }
         preferences.edit {
             putString(KEY_AUTH_TOKEN, response.data?.token)
-            putBoolean(KEY_USER_LOGIN, true)
+            putBoolean(KEY_USER_C4CA_LOGIN, true)
         }
     }
+
+
 //    fun saveFakeLoginResponse(
 //        response: LoginResponse,
 //    ) {
