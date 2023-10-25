@@ -83,5 +83,10 @@
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
     <string name="stay_enrolled">Stay Enrolled</string>
+    <string name="login_with_user_id_and_password">Login with user id and password</string>
+    <string name="for_c4ca_learners">for c4ca learners</string>
+    <string name="for_meraki_learners">For meraki learners</string>
+    <string name="next_english">Next english</string>
+    <string name="skip_english">Skip english</string>
 
 </resources>
