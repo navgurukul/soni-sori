@@ -12,6 +12,7 @@ import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.AssessmentType
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionViewState
+import org.navgurukul.learn.courses.db.models.SolutionBaseCourseContent
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
@@ -43,7 +44,8 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
 
     //for testing purpose
     private val assessmentType: AssessmentType = AssessmentType.single
-
+//    private val solutionContentList:List<SolutionBaseCourseContent>?= null
+//    private lateinit var solutionContentList:SolutionBaseCourseContent
 
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
@@ -53,6 +55,9 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
             item.value
                 ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
         )
+
+//        val assessmentType = solutionContentList?.get(0)?.assessmentType
+//        val assessmentType = solutionContentList.assessmentType
 
         when(item.viewState){
             OptionViewState.SELECTED -> {
