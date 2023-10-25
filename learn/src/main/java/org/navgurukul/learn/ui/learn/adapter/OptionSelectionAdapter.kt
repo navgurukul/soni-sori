@@ -49,9 +49,10 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
 
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
-        binding.tvOption.text = item.value
+        binding.apply {
+        tvOption.text = item.value
 
-        binding.tvOption.text = HtmlCompat.fromHtml(
+        tvOption.text = HtmlCompat.fromHtml(
             item.value
                 ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
         )
@@ -62,56 +63,56 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
         when(item.viewState){
             OptionViewState.SELECTED -> {
                 if (assessmentType==AssessmentType.single){
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                    binding.tvRadioButtonOption.isChecked = true
-                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    tvRadioButtonOption.isChecked = true
+                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }else{
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                    binding.checkBox.isChecked = true
-                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    checkBox.isChecked = true
+                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }
             }
             OptionViewState.NOT_SELECTED -> {
                 if (assessmentType==AssessmentType.single){
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
-                    binding.tvRadioButtonOption.visibility = View.VISIBLE
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                    tvRadioButtonOption.visibility = View.VISIBLE
                 }else{
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
-                    binding.tvRadioButtonOption.visibility = View.GONE
-                    binding.checkBox.visibility = View.VISIBLE
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                    tvRadioButtonOption.visibility = View.GONE
+                    checkBox.visibility = View.VISIBLE
                 }
             }
             OptionViewState.INCORRECT -> {
                 if (assessmentType==AssessmentType.single){
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
-                    binding.tvRadioButtonOption.isChecked = true
-                    binding.tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
-                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                    tvCardOption.strokeColor = Color.parseColor("#F44336")
+                    tvRadioButtonOption.isChecked = true
+                    tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
                 }else{
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#F44336")
-                    binding.checkBox.isChecked = true
-                    binding.checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
-                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                    tvCardOption.strokeColor = Color.parseColor("#F44336")
+                    checkBox.isChecked = true
+                    checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
                 }
 
             }
             OptionViewState.CORRECT -> {
                 if (assessmentType==AssessmentType.single){
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                    binding.tvRadioButtonOption.isChecked = true
-                    binding.tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
-                    binding.tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    tvRadioButtonOption.isChecked = true
+                    tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
+                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }else{
-                    binding.tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                    binding.tvCardOption.strokeColor = Color.parseColor("#48A145")
-                    binding.checkBox.isChecked = true
-                    binding.checkBox.setButtonDrawable(drawable.check_circle_correctoption)
-                    binding.checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+                    checkBox.isChecked = true
+                    checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }
 
             }
@@ -124,11 +125,12 @@ class OptionSelectionAdapter(val callback: ((OptionResponse) -> Unit)? = null):
         }
 
         callback?.let {
-            binding.root.setOnClickListener { view ->
+            root.setOnClickListener { view ->
                 it.invoke(item)
 
             }
         }
+    }
     }
 
 }
