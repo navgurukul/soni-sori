@@ -112,6 +112,7 @@ class UserRepo(
     }
 
     fun getAuthToken() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN, null)}"
+//    fun getAuthTokenC4CA() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN_C4CA, null)}"
 
     private fun saveUserResponse(user: LoginResponse.User) {
         preferences.edit {

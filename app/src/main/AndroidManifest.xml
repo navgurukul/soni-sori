@@ -21,9 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity
-            android:name=".ui.onboarding.ModuleActtivity"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -127,7 +124,7 @@
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ui.onboarding.ActivityC4CA" />
+        <activity android:name=".ui.onboarding.C4CALoginActivity" />
 
         <service
             android:name=".fcm.MerakiMessagingService"

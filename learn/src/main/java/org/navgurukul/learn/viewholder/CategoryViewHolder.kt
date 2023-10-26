@@ -1,12 +1,13 @@
-package org.merakilearn.ui.viewholder
+package org.navgurukul.learn.viewholder
 
 import android.view.View
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
-import org.merakilearn.ui.model.Category
-import org.merakilearn.R
-import org.merakilearn.expandablerecyclerviewlist.viewholder.ParentViewHolder
+import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
+import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.network.model.PathwayC4CA
+import org.navgurukul.learn.ui.learn.model.Category
 
 class CategoryViewHolder(itemView:View) : ParentViewHolder(itemView) {
     private lateinit var animation: RotateAnimation

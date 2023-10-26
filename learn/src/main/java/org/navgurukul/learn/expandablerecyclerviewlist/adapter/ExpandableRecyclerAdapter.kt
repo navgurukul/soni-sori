@@ -1,15 +1,15 @@
-package org.merakilearn.expandablerecyclerviewlist.adapter
+package org.navgurukul.learn.expandablerecyclerviewlist.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.merakilearn.expandablerecyclerviewlist.helper.ExpandableRecyclerAdapterHelper
-import org.merakilearn.expandablerecyclerviewlist.listener.ExpandCollapseListener
-import org.merakilearn.expandablerecyclerviewlist.listener.ParentListItemExpandCollapseListener
-import org.merakilearn.expandablerecyclerviewlist.model.ParentListItem
-import org.merakilearn.expandablerecyclerviewlist.model.ParentWrapper
-import org.merakilearn.expandablerecyclerviewlist.viewholder.ChildViewHolder
-import org.merakilearn.expandablerecyclerviewlist.viewholder.ParentViewHolder
+import org.navgurukul.learn.expandablerecyclerviewlist.helper.ExpandableRecyclerAdapterHelper
+import org.navgurukul.learn.expandablerecyclerviewlist.listener.ExpandCollapseListener
+import org.navgurukul.learn.expandablerecyclerviewlist.listener.ParentListItemExpandCollapseListener
+import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentListItem
+import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentWrapper
+import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ChildViewHolder
+import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
 import java.lang.IllegalStateException
 
 @Suppress("UNCHECKED_CAST")

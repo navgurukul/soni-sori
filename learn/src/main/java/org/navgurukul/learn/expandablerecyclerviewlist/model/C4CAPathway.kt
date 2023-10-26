@@ -1,4 +1,4 @@
-package org.merakilearn.expandablerecyclerviewlist.model
+package org.navgurukul.learn.expandablerecyclerviewlist.model
 
 data class C4CAPathway(
     val code: String,

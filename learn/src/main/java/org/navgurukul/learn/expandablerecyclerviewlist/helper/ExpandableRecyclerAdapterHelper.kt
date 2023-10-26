@@ -1,7 +1,7 @@
-package org.merakilearn.expandablerecyclerviewlist.helper
+package org.navgurukul.learn.expandablerecyclerviewlist.helper
 
-import org.merakilearn.expandablerecyclerviewlist.model.ParentListItem
-import org.merakilearn.expandablerecyclerviewlist.model.ParentWrapper
+import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentListItem
+import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentWrapper
 
 // this helper provide expandable child item list
 object ExpandableRecyclerAdapterHelper {

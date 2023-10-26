@@ -1,4 +1,4 @@
-package org.merakilearn.expandablerecyclerviewlist.model
+package org.navgurukul.learn.expandablerecyclerviewlist.model
 
 
 data class ParentWrapper(var isExpanded:Boolean=false,

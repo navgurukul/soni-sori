@@ -1,4 +1,4 @@
-package org.merakilearn.expandablerecyclerviewlist.viewholder
+package org.navgurukul.learn.expandablerecyclerviewlist.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

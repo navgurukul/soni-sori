@@ -16,7 +16,7 @@
             android:contentDescription="@string/app_name"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/python_logo"
+            android:src="@drawable/ic_class_nudge"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/view"
@@ -65,7 +65,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView"
-            android:src="@drawable/python_logo" />
+            android:src="@drawable/ic_book" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
