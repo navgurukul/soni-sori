@@ -43,10 +43,10 @@ class C4CALoginActivity : AppCompatActivity() {
                 is OnBoardingPagesEvents.OpenC4CAHomeFragment -> {
 
                 }
-                is OnBoardingPagesEvents.ShowMainScreen ->{
-                    MainActivity.launch(this, isC4CA = true)
-                    finish()
-                }
+//                is OnBoardingPagesEvents.ShowMainScreen ->{
+//                    MainActivity.launch(this, isC4CA = true)
+//                    finish()
+//                }
                 is OnBoardingPagesEvents.ShowToast -> {
                     Toast.makeText(this, it.toastText, Toast.LENGTH_LONG).show()
                 }

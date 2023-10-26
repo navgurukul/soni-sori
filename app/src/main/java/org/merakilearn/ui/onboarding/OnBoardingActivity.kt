@@ -76,7 +76,7 @@ class OnBoardingActivity : AppCompatActivity() {
         viewModel.viewEvents.observe(this) {
             when (it) {
                 is OnBoardingViewEvents.ShowMainScreen -> {
-                    MainActivity.launch(this, it.pathwayId, false)
+                    MainActivity.launch(this, it.pathwayId)
                     finish()
                 }
                 OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(

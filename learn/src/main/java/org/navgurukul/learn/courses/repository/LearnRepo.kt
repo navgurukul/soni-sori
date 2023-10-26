@@ -458,8 +458,7 @@ class LearnRepo(
     suspend fun getC4CAPathways(): PathwayC4CA {
         return try {
             courseApi.getC4CAPathway()
-        }
-        catch (ex: Exception) {
+        } catch (ex: Exception) {
             throw ex
         }
     }

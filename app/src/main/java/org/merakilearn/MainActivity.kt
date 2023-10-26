@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     private lateinit var firebaseAnalytics : FirebaseAnalytics
     companion object {
-        fun launch(context: Context, selectedPathwayId: Int? = null, isC4CA : Boolean = false){
+        fun launch(context: Context, selectedPathwayId: Int? = null){
             val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
             context.startActivity(intent)
         }
@@ -88,12 +88,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         nav_view.setupWithNavController(navHostFragment.navController)
 
 
+//        if (mainActivityArgs.selectedPathwayId != null) {
+//            nav_view.menu.findItem(R.id.navigation_c4ca).isVisible = false
+//            navHostFragment.navController.navigate(R.id.navigation_learn)
+//        } else {
+//            nav_view.menu.findItem(R.id.navigation_learn).isVisible = false
+//            navHostFragment.navController.navigate(R.id.navigation_c4ca)
+//        }
+
         if (mainActivityArgs.selectedPathwayId != null) {
-            nav_view.menu.findItem(R.id.navigation_c4ca).isVisible = false
             navHostFragment.navController.navigate(R.id.navigation_learn)
-        } else {
-            nav_view.menu.findItem(R.id.navigation_learn).isVisible = false
-            navHostFragment.navController.navigate(R.id.navigation_c4ca)
         }
 
 
@@ -106,7 +110,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 //            userRepo.getCurrentUser()?.let { currentUser ->
 //                setUserThumbnail(it, currentUser)
 //            } ?: run {
-                OnBoardingActivity.restartApp(this@MainActivity)
+//                OnBoardingActivity.restartApp(this@MainActivity)
 //            }
 //        }
 
