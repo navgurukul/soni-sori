@@ -179,7 +179,8 @@ class OnBoardingPagesViewModel(
             val loginStatus = loginResponse.status
             if (loginStatus == "success"){
                 Log.d("loginStatus", "Login $loginStatus $username congratulation")
-                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
+                //_viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
+                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomeFragment)
             } else {
                 Log.d("loginStatus", "Login failure $loginStatus $username Sorry for inconvinience")
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
@@ -201,6 +202,7 @@ class OnBoardingPagesViewModel(
         data class ShowToast(val toastText: String) : OnBoardingPagesEvents()
         data class OpenHomePage(val id: Int) : OnBoardingPagesEvents()
         object OpenC4CAHomePage : OnBoardingPagesEvents()
+        object OpenC4CAHomeFragment : OnBoardingPagesEvents()
         object ShowErrorMessage : OnBoardingPagesEvents()
     }
 

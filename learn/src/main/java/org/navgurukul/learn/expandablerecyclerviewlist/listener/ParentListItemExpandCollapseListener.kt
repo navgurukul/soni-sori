@@ -1,4 +1,4 @@
-package org.merakilearn.expandablerecyclerviewlist.listener
+package org.navgurukul.learn.expandablerecyclerviewlist.listener
 
 interface ParentListItemExpandCollapseListener{
     fun onParentListItemExpanded(position:Int)

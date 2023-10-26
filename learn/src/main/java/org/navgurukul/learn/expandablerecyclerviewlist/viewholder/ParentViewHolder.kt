@@ -1,8 +1,8 @@
-package org.merakilearn.expandablerecyclerviewlist.viewholder
+package org.navgurukul.learn.expandablerecyclerviewlist.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import org.merakilearn.expandablerecyclerviewlist.listener.ParentListItemExpandCollapseListener
+import org.navgurukul.learn.expandablerecyclerviewlist.listener.ParentListItemExpandCollapseListener
 
 open class ParentViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
     private var expanded = false

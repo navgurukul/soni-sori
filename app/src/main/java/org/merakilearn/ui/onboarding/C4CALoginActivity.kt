@@ -1,6 +1,5 @@
 package org.merakilearn.ui.onboarding
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,17 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
-import org.merakilearn.databinding.ActivityC4caBinding
+import org.merakilearn.databinding.ActivityC4caLoginBinding
 
 
-class ActivityC4CA : AppCompatActivity() {
+class C4CALoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityC4caBinding
+    private lateinit var binding: ActivityC4caLoginBinding
     private val viewModel: OnBoardingPagesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_c4ca)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_c4ca_login)
 
         binding.loginButton.isEnabled = false
         binding.errorMessageText.visibility = View.GONE
@@ -36,9 +35,12 @@ class ActivityC4CA : AppCompatActivity() {
         viewModel.viewEvents.observe(this){
 
             when (it){
-                is OnBoardingPagesEvents.OpenC4CAHomePage -> {
-                    binding.errorMessageText.visibility = View.GONE
-                    startActivity(Intent(this, ModuleActtivity::class.java))
+//                is OnBoardingPagesEvents.OpenC4CAHomePage -> {
+//                    binding.errorMessageText.visibility = View.GONE
+//                    startActivity(Intent(this, ModuleActtivity::class.java))
+//                }
+                is OnBoardingPagesEvents.OpenC4CAHomeFragment -> {
+
                 }
                 is OnBoardingPagesEvents.ShowToast -> {
                     Toast.makeText(this, it.toastText, Toast.LENGTH_LONG).show()

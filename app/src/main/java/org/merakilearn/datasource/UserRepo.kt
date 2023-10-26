@@ -24,13 +24,16 @@ class UserRepo(
 
     companion object {
         private const val KEY_USER_RESPONSE = "KEY_USER_RESPONSE"
+        private const val KEY_USER_RESPONSE_C4CA = "KEY_USER_RESPONSE"
 //        private const val KEY_IS_FAKE_LOGIN = "KEY_IS_FAKE_LOGIN"
 //        private const val KEY_FAKE_USER_RESPONSE = "KEY_FAKE_USER_RESPONSE"
         private const val KEY_AUTH_TOKEN = "KEY_AUTH_TOKEN"
+        private const val KEY_AUTH_TOKEN_C4CA = "KEY_AUTH_TOKEN"
         private const val KEY_INSTALL_REFERRER = "KEY_INSTALL_REFERRER"
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
+        private const val KEY_USER_LOGIN_C4CA = "KEY_USER_LOGIN"
     }
 
     var installReferrerFetched: Boolean
@@ -88,7 +91,7 @@ class UserRepo(
     }
 
     fun getCurrentC4CAUser(): LoginResponseC4CA? {
-        val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
+        val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE_C4CA, null)
         return try {
 //            if (userLoginResponseString.isNullOrEmpty()) {
 //                val fakeUserLoginResponseString =
@@ -118,6 +121,7 @@ class UserRepo(
     }
 
     fun getAuthToken() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN, null)}"
+    fun getAuthTokenC4CA() = "Bearer ${preferences.getString(KEY_AUTH_TOKEN_C4CA, null)}"
 
     private fun saveUserResponse(user: LoginResponse.User) {
         preferences.edit {
@@ -127,7 +131,7 @@ class UserRepo(
 
     private fun saveUserResponseC4CA(user: LoginResponseC4CA) {
         preferences.edit {
-            putString(KEY_USER_RESPONSE, user.jsonify())
+            putString(KEY_USER_RESPONSE_C4CA, user.jsonify())
         }
     }
 
@@ -146,8 +150,8 @@ class UserRepo(
     ) {
         saveUserResponseC4CA(response)
         preferences.edit {
-            putString(KEY_AUTH_TOKEN, response.data?.token)
-            putBoolean(KEY_USER_LOGIN, true)
+            putString(KEY_AUTH_TOKEN_C4CA, response.data?.token)
+            putBoolean(KEY_USER_LOGIN_C4CA, true)
         }
     }
 //    fun saveFakeLoginResponse(

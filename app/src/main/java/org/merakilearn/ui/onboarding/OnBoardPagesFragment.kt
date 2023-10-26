@@ -2,7 +2,6 @@ package org.merakilearn.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -56,7 +55,7 @@ class OnBoardPagesFragment : BaseFragment() {
             signInWithGoogle()
         }
      login_with_c4ca.setOnClickListener {
-         startActivity(Intent(requireContext(), ActivityC4CA::class.java))
+         startActivity(Intent(requireContext(), C4CALoginActivity::class.java))
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
