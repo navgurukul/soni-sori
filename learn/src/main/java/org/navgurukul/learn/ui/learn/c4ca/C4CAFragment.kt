@@ -27,7 +27,7 @@ class C4CAFragment : Fragment() {
 
     private val adapter = CategoryAdapter()
     private lateinit var mBinding: FragmentC4caBinding
-//    private val viewModel: LearnFragmentViewModel by sharedViewModel()
+    private val viewModel: C4CAFragmentViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,22 +40,12 @@ class C4CAFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.viewState.observe(viewLifecycleOwner) {
-//
-//        }
-//
-//        viewModel.viewEvents.observe(viewLifecycleOwner) {
-//            when (it) {
-//                is LearnFragmentViewEvents.OpenC4CAHomeFragment -> {
-//                    Log.d("C4CAFragment", "OpenC4CAHomeFragment ${it}")
-//                }
-//            }
-//        }
 
-//        mCourseAdapter = CourseAdapter(requireContext()) {
-//            viewModel.selectCourse(it)
-//        }
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            Log.d("C4CAFragment", "onViewCreated: $it")
+        }
 
+        //viewModel.getC4CAPathways()
 
         val data = listOf(
             Category("Module 1: Build Perspective on Climate Change", listOf(
