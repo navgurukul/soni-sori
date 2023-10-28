@@ -145,9 +145,6 @@ class OnBoardingPagesViewModel(
             partnerNamePattern.find(decodeReferrer)?.value?.removePrefix("utm_medium=")
                 ?.removeSuffix("&utm_content")
 
-
-
-
         if (partnerIdValue != null) {
 
             setAnalytics(partnerIdValue, partnerNameValue)
@@ -184,13 +181,13 @@ class OnBoardingPagesViewModel(
             if (loginStatus == "success"){
                 c4caUser = userRepo.getCurrentC4CAUser()
                 user = userRepo.getCurrentUser()
-                Log.e("loginStatus", "c4caUser: $c4caUser")
-                Log.e("loginStatus", "CommonUser: $user")
-                Log.d("loginStatus", "Login $loginStatus $username congratulation")
+                Log.e("ShowMainScreen", "c4caUser: $c4caUser")
+                Log.e("ShowMainScreen", "CommonUser: $user")
+                Log.d("ShowMainScreen", "Login $loginStatus $username congratulation")
 //                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowMainScreen)
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowC4CAScreen(true))
             } else {
-                Log.d("loginStatus", "Login failure $loginStatus $username Sorry for inconvinience")
+                Log.d("ShowMainScreen", "Login failure $loginStatus $username Sorry for inconvinience")
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
                 _viewEvents.setValue(OnBoardingPagesEvents.ShowErrorMessage)
             }
@@ -212,7 +209,7 @@ class OnBoardingPagesViewModel(
         object OpenC4CAHomePage : OnBoardingPagesEvents()
         object OpenC4CAHomeFragment : OnBoardingPagesEvents()
         object ShowErrorMessage : OnBoardingPagesEvents()
-        object ShowMainScreen : OnBoardingPagesEvents()
+        data class ShowC4CAScreen(val isC4CAUser : Boolean) : OnBoardingPagesEvents()
     }
 
     sealed class OnBoardingPagesAction : ViewModelAction {

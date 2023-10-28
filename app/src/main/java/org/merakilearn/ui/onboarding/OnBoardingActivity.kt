@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -76,9 +77,16 @@ class OnBoardingActivity : AppCompatActivity() {
         viewModel.viewEvents.observe(this) {
             when (it) {
                 is OnBoardingViewEvents.ShowMainScreen -> {
-                    MainActivity.launch(this, it.pathwayId)
+                    MainActivity.launch(this, it.pathwayId,false)
+                    Log.d("ShowMainScreen", "Login when user is already logged in ${it.pathwayId}")
                     finish()
                 }
+                is OnBoardingViewEvents.ShowC4CAScreen -> {
+                    MainActivity.launch(this, null, it.isC4CAUser)
+                    Log.d("ShowMainScreen", "Showing main screee  by c4ca scrren")
+
+                }
+
                 OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
                     OnBoardPagesFragment.newInstance(),
                     OnBoardPagesFragment.TAG,

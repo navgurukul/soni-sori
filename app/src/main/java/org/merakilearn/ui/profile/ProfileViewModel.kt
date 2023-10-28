@@ -23,6 +23,7 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.repo.PythonRepository
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.net.URLDecoder
@@ -49,33 +50,40 @@ class ProfileViewModel(
 
     init {
         val appVersionText = BuildConfig.VERSION_NAME
-        user = userRepo.getCurrentUser()
-        c4caUser = userRepo.getCurrentC4CAUser()
+
         val decodeReferrer =
             URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
         val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
         val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
 
-        if (user!= null) {
-            setState {
-                copy(
-                    appVersionText = appVersionText,
-                    userName = user.name,
-                    userEmail = user.email,
-                    profilePic = user.profilePicture
-                )
+        user = userRepo.getCurrentUser()
+        c4caUser = userRepo.getCurrentC4CAUser()
+        when {
+            user != null -> {
+                setState {
+                    copy(
+                        appVersionText = appVersionText,
+                        userName = user.name,
+                        userEmail = user.email,
+                        profilePic = user.profilePicture
+                    )
+                }
             }
-        }else if (c4caUser != null){
-            setState {
-                copy(
-                    appVersionText = appVersionText,
-                    userName = c4caUser.team_name,
-                    userEmail = c4caUser.password,
-                    profilePic = c4caUser.team_name
-                )
+            c4caUser != null -> {
+                _viewEvents.setValue(ProfileViewEvents.HideRemainingLayout)
+                setState {
+                    copy(
+                        appVersionText = appVersionText,
+                        userName = c4caUser.team_name,
+                        userEmail = c4caUser.password,
+                        profilePic = c4caUser.team_name
+                    )
+                }
+            }
+            else -> {
+                Timber.tag("ProfileViewModel").e("User is null")
             }
         }
-
         if (partnerIdValue != null) {
             checkPartner(partnerIdValue)
         }
@@ -321,6 +329,7 @@ sealed class ProfileViewEvents: ViewEvents {
     data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
     data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
     data class ShowPartnerData(val partnerData: PartnerDataResponse): ProfileViewEvents()
+    object HideRemainingLayout : ProfileViewEvents()
 }
 
 sealed class ProfileViewActions: ViewModelAction {

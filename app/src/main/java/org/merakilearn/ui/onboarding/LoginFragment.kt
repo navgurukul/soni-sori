@@ -64,9 +64,9 @@ class LoginFragment : Fragment() {
             showConfirmation()
         }
 
-        mBinding.skipLogin.setOnClickListener {
-            MainActivity.launch(requireContext())
-        }
+//        mBinding.skipLogin.setOnClickListener {
+//            MainActivity.launch(requireContext())
+//        }
 
         //viewModel.login("first team","First Team_v71c")
     }

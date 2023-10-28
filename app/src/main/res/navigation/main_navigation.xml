@@ -2,13 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_learn">
-
-    <fragment
-        android:id="@+id/navigation_c4ca"
-        android:name="org.navgurukul.learn.ui.learn.C4CAFragment"
-        android:label="C4CA"
-        tools:layout="@layout/fragment_c4ca" />
+    app:startDestination="@+id/navigation_c4ca">
 
     <fragment
         android:id="@+id/navigation_learn"

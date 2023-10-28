@@ -83,7 +83,7 @@
                     android:id="@+id/groupServerUrl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:constraint_referenced_ids="serverUrlTitle, serverUrlValue" />
 
                 <TextView
@@ -189,6 +189,7 @@
                     android:id="@+id/opportunityLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/partnerLayout" >
 

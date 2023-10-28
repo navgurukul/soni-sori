@@ -1,6 +1,7 @@
 package org.merakilearn.ui.onboarding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,17 +37,12 @@ class C4CALoginActivity : AppCompatActivity() {
         viewModel.viewEvents.observe(this){
 
             when (it){
-//                is OnBoardingPagesEvents.OpenC4CAHomePage -> {
-//                    binding.errorMessageText.visibility = View.GONE
-//                    startActivity(Intent(this, ModuleActtivity::class.java))
-//                }
-                is OnBoardingPagesEvents.OpenC4CAHomeFragment -> {
-
+//
+                is OnBoardingPagesEvents.ShowC4CAScreen ->{
+                    MainActivity.launch(this, null, it.isC4CAUser)
+                    Log.d("ShowMainScreen", "User is logged in by c4caActivity")
+                    finish()
                 }
-//                is OnBoardingPagesEvents.ShowMainScreen ->{
-//                    MainActivity.launch(this, isC4CA = true)
-//                    finish()
-//                }
                 is OnBoardingPagesEvents.ShowToast -> {
                     Toast.makeText(this, it.toastText, Toast.LENGTH_LONG).show()
                 }
@@ -65,7 +61,6 @@ class C4CALoginActivity : AppCompatActivity() {
             }
 
             viewModel.loginC4CA(username, password) //"avengers","Avengers_ln3s"
-//            startActivity(Intent(this, ModuleActtivity::class.java))
         }
 
         binding.backArrow.setOnClickListener {

@@ -1,6 +1,7 @@
 package org.merakilearn.datasource
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
         private const val KEY_USER_C4CA_LOGIN = "KEY_USER_C4CA_LOGIN"
+        private const val IS_FOR_C4CA = "IS_FOR_C4CA"
     }
 
     var installReferrerFetched: Boolean
@@ -56,7 +58,14 @@ class UserRepo(
 
     fun isUserLoggedIn(): Boolean {
         return preferences.getBoolean(KEY_USER_LOGIN, false)
+        Log.d("ShowMainScreen", "Chekcing isUserLogin Details $KEY_USER_LOGIN")
     }
+
+    fun isC4CAUserLoggedIn(): Boolean {
+        return preferences.getBoolean(KEY_USER_C4CA_LOGIN, false)
+    }
+
+
 
 //    fun getFakeLoginResponseId(): Int? {
 //        val fakeUserLoginResponseString =
@@ -142,6 +151,7 @@ class UserRepo(
         preferences.edit {
             putString(KEY_AUTH_TOKEN, response.data?.token)
             putBoolean(KEY_USER_C4CA_LOGIN, true)
+            putString(IS_FOR_C4CA, response.data?.flag)
         }
     }
 

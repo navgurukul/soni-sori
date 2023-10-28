@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -36,26 +37,28 @@ import org.navgurukul.learn.courses.repository.LearnRepo
 @Parcelize
 data class MainActivityArgs(
     val clearNotification: Boolean = false,
-    val selectedPathwayId: Int? = null
+    val selectedPathwayId: Int? = null,
+    val isC4caUser  : Boolean = false
 ) : Parcelable
 
 class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     private lateinit var firebaseAnalytics : FirebaseAnalytics
     companion object {
-        fun launch(context: Context, selectedPathwayId: Int? = null){
-            val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
+        fun launch(context: Context, selectedPathwayId: Int? = null, isC4caUser: Boolean = false) {
+            val intent = newIntent(context, selectedPathwayId = selectedPathwayId, isC4caUser = isC4caUser)
             context.startActivity(intent)
         }
-
         fun newIntent(
             context: Context,
             clearNotification: Boolean = false,
-            selectedPathwayId: Int? = null
+            selectedPathwayId: Int? = null,
+            isC4caUser: Boolean = false
         ): Intent {
             val args = MainActivityArgs(
                 clearNotification = clearNotification,
-                selectedPathwayId = selectedPathwayId
+                selectedPathwayId = selectedPathwayId,
+                isC4caUser = isC4caUser
             )
 
             return Intent(context, MainActivity::class.java)
@@ -96,8 +99,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 //            navHostFragment.navController.navigate(R.id.navigation_c4ca)
 //        }
 
-        if (mainActivityArgs.selectedPathwayId != null) {
-            navHostFragment.navController.navigate(R.id.navigation_learn)
+        when {
+            mainActivityArgs.isC4caUser -> {
+                nav_view.menu.findItem(R.id.navigation_learn).isVisible = false
+                navHostFragment.navController.navigate(R.id.navigation_c4ca)
+                Log.d("ShowMainScreen", "onCreate: " + mainActivityArgs.isC4caUser)
+            }
+            else -> {
+                nav_view.menu.findItem(R.id.navigation_c4ca).isVisible = false
+                navHostFragment.navController.navigate(R.id.navigation_learn)
+            }
         }
 
 

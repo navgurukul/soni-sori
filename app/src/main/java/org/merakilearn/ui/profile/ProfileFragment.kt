@@ -64,7 +64,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initSwipeRefresh()
-
         initShowEnrolledBatches()
 
         btnPrivacyPolicy.setOnClickListener {
@@ -99,6 +98,9 @@ class ProfileFragment : Fragment() {
                 is ProfileViewEvents.ShowPartnerData -> {
                     partnerData(it.partnerData)
                 }
+                is ProfileViewEvents.HideRemainingLayout -> {
+                    visibilityModifier()
+                }
             }
         }
 
@@ -120,6 +122,14 @@ class ProfileFragment : Fragment() {
         }
 
         mBinding.swipeRefreshLayout.setOnRefreshListener(screenRefreshListener)
+
+    }
+    private fun visibilityModifier(){
+        mBinding.apply {
+            opportunityLayout.visibility = View.GONE
+            tvEmail.visibility = View.GONE
+            btnEdit.visibility = View.GONE
+        }
 
     }
 

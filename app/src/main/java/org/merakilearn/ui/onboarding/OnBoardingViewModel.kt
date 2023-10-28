@@ -42,7 +42,7 @@ class OnBoardingViewModel(
         }
     }
 
-    private fun checkPartner() {
+    private fun checkPartner() {    // To check that partner screen is need to show or not
         viewModelScope.launch {
             try {
             val decodeReferrer =
@@ -83,13 +83,23 @@ class OnBoardingViewModel(
         if (onBoardingActivityArgs?.showLoginFragment == true) {
             _viewEvents.setValue(OnBoardingViewEvents.ShowLoginScreen)
         } else {
-            if (userRepo.isUserLoggedIn()) {
-                _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen())
-            } else {
-                _viewEvents.setValue(
-                    OnBoardingViewEvents.ShowOnBoardingPages
-                )
+            when {
+                userRepo.isUserLoggedIn() -> {
+                    Log.d("ShowMainScreen", "Checking isUserLogin Details in userRepo  ${userRepo.isUserLoggedIn()}")
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen())
+                    Log.d("ShowMainScreen", "User is logged in already by google")
+                }
+                userRepo.isC4CAUserLoggedIn() -> {
+                    Log.d("ShowMainScreen", "User is logged in already by c4ca userepo ${userRepo.isC4CAUserLoggedIn()}")
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowC4CAScreen(userRepo.isC4CAUserLoggedIn()))
+                    Log.d("ShowMainScreen", "User is logged in already by c4ca")
+                }
+                else -> {
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowOnBoardingPages)
+                    Log.d("ShowMainScreen", "This is fluctuating in onboardingviewmodel")
+                }
             }
+
         }
     }
 
@@ -101,11 +111,13 @@ class OnBoardingViewModel(
             is OnBoardingViewActions.SelectCourse -> {
                 corePreferences.lastSelectedPathWayId = action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
+                Log.d("ShowMainScreen", "User is logged in by using action selectCOurse")
             }
 
             is OnBoardingViewActions.OpenHomeScreen -> {
                 corePreferences.lastSelectedPathWayId = action.pathwayId
                 _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen(pathwayId = action.pathwayId))
+                Log.d("ShowMainScreen", "User is logged in by using action HomeScreen")
             }
             is OnBoardingViewActions.GetPartnerData -> {
                 checkPartner()
@@ -123,6 +135,7 @@ class OnBoardingViewModel(
 sealed class OnBoardingViewEvents : ViewEvents {
     object ShowSelectLanguageFragment : OnBoardingViewEvents()
     data class ShowMainScreen(val pathwayId: Int? = null) : OnBoardingViewEvents()
+    data class ShowC4CAScreen(val isC4CAUser : Boolean) : OnBoardingViewEvents()
     object ShowCourseSelectionScreen : OnBoardingViewEvents()
     object ShowOnBoardingPages : OnBoardingViewEvents()
     object ShowLoginScreen : OnBoardingViewEvents()

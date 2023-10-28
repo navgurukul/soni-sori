@@ -72,9 +72,9 @@ class OnBoardPagesFragment : BaseFragment() {
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
                 is OnBoardingPagesEvents.ShowToast -> toast(it.toastText)
-                is OnBoardingPagesEvents.OpenHomePage -> onBoardingViewModel.handle(
-                    OnBoardingViewActions.OpenHomeScreen(it.id)
-                )
+//                is OnBoardingPagesEvents.OpenHomePage -> onBoardingViewModel.handle(
+//                    OnBoardingViewActions.OpenHomeScreen(it.id)
+//                )
                 is OnBoardingPagesEvents.OpenCourseSelection -> onBoardingViewModel.handle(
                     OnBoardingViewActions.NavigateNextFromOnBoardingScreen
                 )

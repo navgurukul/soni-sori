@@ -176,4 +176,6 @@
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
+
+    <string name="c4ca_title">C4CA</string>
 </resources>

@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_c4ca"
-        android:icon="@drawable/ic_learn"
-        android:title="C4CA" />
-
-    <item
         android:id="@+id/navigation_learn"
         android:icon="@drawable/ic_learn"
         android:title="@string/title_learn" />

@@ -53,6 +53,8 @@ class SvgLoader(private val context: Context) {
                     Glide.with(context)
                         .load(drawable)
                         .apply(requestOptions)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(targetImageView)
                 }
             }
