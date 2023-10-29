@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.R
 import org.navgurukul.learn.adapter.CategoryAdapter
-import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.databinding.FragmentC4caBinding
 import org.navgurukul.learn.expandablerecyclerviewlist.listener.ExpandCollapseListener
 import org.navgurukul.learn.ui.learn.model.Category
@@ -20,10 +19,7 @@ import org.navgurukul.learn.ui.learn.model.CategoryList
 
 class C4CAFragment : Fragment() {
 
-    private lateinit var c4CA: List<Module>
-    private val expandableAdapter = CategoryAdapter()
-    //private  val normalExpandable = C4CAAdapter()
-    //private val normalAdapter = C4CAAdapter(c4CA)
+    private var expandableAdapter = CategoryAdapter()
     private lateinit var mBinding: FragmentC4caBinding
     private val viewModel: C4CAFragmentViewModel by sharedViewModel()
 
@@ -38,16 +34,47 @@ class C4CAFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //initRecyclerView()
-        initNormalExpandableView()
         //initExpandableRecyclerView()
+
+        viewModel.viewEvents.observe(viewLifecycleOwner) {
+            when (it) {
+                is C4CAFragmentViewEvents.GetC4CAPathways -> {
+                    Log.d(
+                        "C4CAFragmentWithViewEvents",
+                        "initExpandableRecyclerView: ${it.C4CA}"
+                    )
+                    it.C4CA
+                    val ModuleAdapter = C4CAAdapter()
+                    ModuleAdapter.submitList(it.C4CA)
+                    mBinding.module.layoutManager =
+                        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                    mBinding.module.adapter = ModuleAdapter
+
+                    // Expandable RecyclerView
+//                    mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
+//                    mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
+//                    expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
+//                        override fun onListItemExpanded(position: Int) {
+//                        }
+//
+//                        override fun onListItemCollapsed(position: Int) {
+//
+//                        }
+//
+//                    })
+//
+//                    mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
+//                    expandableAdapter.setExpandableParentItemList(it.C4CA.map { Category(it.name, it.courses!!) })
+                }
+            }
+        }
         initToolBar()
         viewModel.viewState.observe(viewLifecycleOwner) {
             Log.d("C4CAFragment", "onViewCreated: $it")
-            //normalExpandable.swapeData(it.pathwaysC4CA?.modules)
-            //normalExpandable.addData(it.pathways)
+
         }
     }
+
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.c4ca_title),
@@ -62,27 +89,7 @@ class C4CAFragment : Fragment() {
 
     }
 
-    //    private fun initRecyclerView() {
-//        mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-//        mBinding.categoryListRvFragmentC4ca.adapter = normalAdapter
-//    }
     private fun initExpandableRecyclerView() {
-        viewModel.getC4CAPathways()
-
-//        viewModel.viewState.observe(viewLifecycleOwner) {  // process 2
-//            when (it) {
-//                is LearnFragmentViewModel.ViewState.C4CAPathways -> {
-//                    Log.d("C4CAFragment", "initExpandableRecyclerView: ${it.pathways}")
-//                    c4CA = it.pathways
-//                    expandableAdapter.submitList(c4CA)
-//                }
-//            }
-//        }
-
-        viewModel.viewState.observe(viewLifecycleOwner) {
-            Log.d("C4CAFragmentNEWNWENEW", "initExpandableRecyclerView: $it")
-        }
-
         val data = listOf(
             Category(
                 "Module 1: Build Perspective on Climate Change", listOf(
@@ -104,8 +111,6 @@ class C4CAFragment : Fragment() {
                 )
             )
         )
-
-
         mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
         mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
         expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
@@ -120,17 +125,5 @@ class C4CAFragment : Fragment() {
 
         mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
         expandableAdapter.setExpandableParentItemList(data)
-        //expandableAdapter.submitList(c4CA)
-    }
-    private fun initNormalExpandableView() {
-//        normalExpandable = C4CAAdapter {
-//            val viewState = viewModel.viewState.value
-//        }
-//        normalExpandable = C4CAAdapter(this@C4CAFragment)
-
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        mBinding.categoryListRvFragmentC4ca.layoutManager = layoutManager
-        //mBinding.categoryListRvFragmentC4ca.adapter = normalExpandable
     }
 }
