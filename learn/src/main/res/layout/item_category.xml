@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="module"
+            type="org.navgurukul.learn.courses.network.model.Module" />
+    </data>
+<androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     app:cardElevation="0dp"
     app:cardCornerRadius="8dp"
     android:layout_margin="@dimen/dimen_16_dp"
     android:layout_marginBottom="3dp">
+
 
     <LinearLayout
         android:padding="16dp"
@@ -32,10 +39,11 @@
             android:padding="@dimen/dimen_16_dp"
             android:contentDescription="@string/app_name"
             android:layout_width="wrap_content"
-            android:tint="@color/white"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_down"/>
+            android:src="@drawable/ic_down"
+            app:tint="#FFFFFF" />
 
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
+</layout>

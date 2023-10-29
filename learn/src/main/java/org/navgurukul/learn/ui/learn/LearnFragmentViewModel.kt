@@ -81,7 +81,6 @@ class LearnFragmentViewModel(
                 }
             }
         }
-//        getC4CAPathways()
     }
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
@@ -261,20 +260,6 @@ class LearnFragmentViewModel(
         }
     }
 
-    fun getC4CAPathways() {
-        viewModelScope.launch {
-            //setState { copy(loading = true) }
-            val pathways = learnRepo.getC4CAPathways()
-            pathways.let {
-                setState {
-                    copy(
-                        c4ca = it,
-                    )
-                }
-                _viewEvents.postValue(LearnFragmentViewEvents.OpenC4CAHomeFragment)
-            }
-        }
-    }
 
     fun selectBatch(batch: Batch) {
         _viewEvents.postValue(LearnFragmentViewEvents.BatchSelectClicked(batch))
@@ -318,7 +303,6 @@ data class LearnFragmentViewState(
     val menuId: Int? = null,
     val classId: Int = 0,
     var shouldShowCertificate: Boolean = false,
-    var c4ca: PathwayC4CA? = null
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
@@ -347,7 +331,6 @@ sealed class LearnFragmentViewEvents : ViewEvents {
         val getCompletedPortion: Int,
         val pathwayName: String
     ) : LearnFragmentViewEvents()
-    object OpenC4CAHomeFragment : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {

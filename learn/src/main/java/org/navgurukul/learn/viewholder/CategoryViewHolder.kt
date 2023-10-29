@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.courses.network.model.PathwayC4CA
 import org.navgurukul.learn.ui.learn.model.Category
 
