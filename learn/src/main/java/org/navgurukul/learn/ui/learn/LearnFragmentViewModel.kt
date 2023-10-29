@@ -303,7 +303,6 @@ data class LearnFragmentViewState(
     val menuId: Int? = null,
     val classId: Int = 0,
     var shouldShowCertificate: Boolean = false,
-    var c4ca: PathwayC4CA? = null
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {

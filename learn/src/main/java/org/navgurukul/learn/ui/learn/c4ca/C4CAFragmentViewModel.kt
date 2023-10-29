@@ -2,17 +2,21 @@ package org.navgurukul.learn.ui.learn.c4ca
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewState
+import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.courses.network.model.PathwayC4CA
-import java.nio.file.Path
 
 class C4CAFragmentViewModel(
     private val c4caRepo: C4CARepo
 ) : BaseViewModel<C4CAFragmentViewEvents, C4CAFragmentViewState>(C4CAFragmentViewState()) {
 
-//    private val pathwayC4CA: PathwayC4CA
 
     init {
         viewModelScope.launch {
@@ -27,19 +31,23 @@ class C4CAFragmentViewModel(
             pathwaysC4CA.let {
                 setState {
                     copy(
-                        pathwaysC4CA = it,
+                        pathways = it.modules!!,
                     )
                 }
-                _viewEvents.postValue(C4CAFragmentViewEvents.OpenC4CAHomeFragment)
+                _viewEvents.postValue(C4CAFragmentViewEvents.FetchC4CAPathways)
             }
         }
     }
 }
 
+//data class C4CAFragmentViewState(
+//    var pathwaysC4CA: PathwayC4CA? = null,
+//) : ViewState
+
 data class C4CAFragmentViewState(
-    var pathwaysC4CA: PathwayC4CA? = null,
+    val pathways: List<Module> = arrayListOf(),
 ) : ViewState
 
 sealed class C4CAFragmentViewEvents : ViewEvents {
-    object OpenC4CAHomeFragment : C4CAFragmentViewEvents()
+    object FetchC4CAPathways : C4CAFragmentViewEvents()
 }

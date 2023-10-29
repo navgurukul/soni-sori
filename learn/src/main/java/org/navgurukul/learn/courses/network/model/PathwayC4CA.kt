@@ -18,7 +18,7 @@ data class PathwayC4CA(
     @Json(name = "logo")
     val logo: String,
     @Json(name = "modules")
-    val modules: List<Module>,
+    val modules: List<Module>? = null,
     @Json(name = "name")
     val name: String,
 //    @Json(name = "outcomes")
