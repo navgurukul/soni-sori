@@ -25,6 +25,7 @@ import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
+import org.merakilearn.databinding.ActivityMainBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
@@ -44,6 +45,7 @@ data class MainActivityArgs(
 class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     private lateinit var firebaseAnalytics : FirebaseAnalytics
+    private lateinit var mBinding : ActivityMainBinding
     companion object {
         fun launch(context: Context, selectedPathwayId: Int? = null, isC4caUser: Boolean = false) {
             val intent = newIntent(context, selectedPathwayId = selectedPathwayId, isC4caUser = isC4caUser)
@@ -101,12 +103,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         when {
             mainActivityArgs.isC4caUser -> {
-                nav_view.menu.findItem(R.id.navigation_learn).isVisible = false
+                mBinding.navView.menu.findItem(R.id.navigation_learn).isVisible = false
                 navHostFragment.navController.navigate(R.id.navigation_c4ca)
                 Log.d("ShowMainScreen", "onCreate: " + mainActivityArgs.isC4caUser)
             }
             else -> {
-                nav_view.menu.findItem(R.id.navigation_c4ca).isVisible = false
+                mBinding.navView.menu.findItem(R.id.navigation_c4ca).isVisible = false
                 navHostFragment.navController.navigate(R.id.navigation_learn)
             }
         }

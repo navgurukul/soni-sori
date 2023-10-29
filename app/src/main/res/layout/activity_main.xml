@@ -1,156 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/appToolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appToolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="?actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/headerTitle"
-                style="?textAppearanceHeadline6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:layout_marginEnd="45dp"
-                android:textColor="?textPrimary"
-                android:layout_marginTop="@dimen/spacing_4x"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintWidth_default="wrap"
-                app:layout_constraintStart_toEndOf="@id/headerIcon"
-                app:layout_constraintEnd_toStartOf="@id/headerAction"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/headerSubtitle"
-                style="?textAppearanceCaption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_drop_down"
-                android:drawablePadding="@dimen/spacing_2x"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:visibility="visible"
-                app:layout_constraintWidth_default="wrap"
-                android:layout_marginEnd="@dimen/spacing_4x"
-                android:textAllCaps="true"
-                android:textColor="?textPrimary"
-                app:layout_constraintHorizontal_bias="1"
-                android:visibility="visible"
-                app:layout_constraintStart_toEndOf="@id/headerTitle"
-                app:layout_constraintBottom_toBottomOf="@id/headerTitle"
-                tools:text="" />
+                <TextView
+                    android:id="@+id/headerTitle"
+                    style="?textAppearanceHeadline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginEnd="45dp"
+                    android:textColor="?textPrimary"
+                    android:layout_marginTop="@dimen/spacing_4x"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintWidth_default="wrap"
+                    app:layout_constraintStart_toEndOf="@id/headerIcon"
+                    app:layout_constraintEnd_toStartOf="@id/headerAction"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/headerAction"
-                style="?textAppearanceCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_4x"
-                android:drawableEnd="@drawable/ic_drop_down"
-                android:drawablePadding="@dimen/spacing_2x"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/headerSubtitle"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?textPrimary"
-                android:visibility="visible"
-                tools:text="Sample Action" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/headerSubtitle"
+                    style="?textAppearanceCaption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:drawablePadding="@dimen/spacing_2x"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:visibility="visible"
+                    app:layout_constraintWidth_default="wrap"
+                    android:layout_marginEnd="@dimen/spacing_4x"
+                    android:textAllCaps="true"
+                    android:textColor="?textPrimary"
+                    app:layout_constraintHorizontal_bias="1"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toEndOf="@id/headerTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+                    tools:text="" />
 
-            <View
-                android:id="@+id/headerActionClickArea"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/headerAction"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/headerAction"
+                    style="?textAppearanceCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_4x"
+                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:drawablePadding="@dimen/spacing_2x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/headerSubtitle"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="?textPrimary"
+                    android:visibility="visible"
+                    tools:text="Sample Action" />
 
-            <ImageView
-                android:id="@+id/headerIv"
-                android:layout_width="@dimen/course_profile_pic"
-                android:layout_height="@dimen/course_profile_pic"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_10_dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/avatar_background_border"
-                android:padding="@dimen/spacing_1x"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
-            <ImageView
-                android:id="@+id/headerLogOut"
-                android:layout_width="@dimen/course_profile_pic"
-                android:layout_height="@dimen/course_profile_pic"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_10_dp"
-                android:adjustViewBounds="true"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_log_out"
-                android:padding="@dimen/dimen_10_dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
+                <View
+                    android:id="@+id/headerActionClickArea"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/headerAction" />
 
-            <ImageView
-                android:id="@+id/headerIcon"
-                android:layout_width="@dimen/course_profile_pic"
-                android:layout_height="@dimen/course_profile_pic"
-                android:adjustViewBounds="true"
-                android:padding="@dimen/dimen_10_dp"
-                tools:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
+                <ImageView
+                    android:id="@+id/headerIv"
+                    android:layout_width="@dimen/course_profile_pic"
+                    android:layout_height="@dimen/course_profile_pic"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/dimen_10_dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/avatar_background_border"
+                    android:padding="@dimen/spacing_1x"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/headerLogOut"
+                    android:layout_width="@dimen/course_profile_pic"
+                    android:layout_height="@dimen/course_profile_pic"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/dimen_10_dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_log_out"
+                    android:padding="@dimen/dimen_10_dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
-    </androidx.appcompat.widget.Toolbar>
+                <ImageView
+                    android:id="@+id/headerIcon"
+                    android:layout_width="@dimen/course_profile_pic"
+                    android:layout_height="@dimen/course_profile_pic"
+                    android:adjustViewBounds="true"
+                    android:padding="@dimen/dimen_10_dp"
+                    tools:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="?actionBarSize"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/nav_view"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/main_navigation" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/bottom_bar_height"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="?attr/backgroundColor"
-        android:elevation="4dp"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        </androidx.appcompat.widget.Toolbar>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="?actionBarSize"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@id/nav_view"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/main_navigation" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bottom_bar_height"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?attr/backgroundColor"
+            android:elevation="4dp"
+            app:itemIconTint="@color/bottom_nav_selector"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

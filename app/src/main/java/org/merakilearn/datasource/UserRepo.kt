@@ -12,6 +12,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.*
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
+import timber.log.Timber
 
 class UserRepo(
     private val saralApi: SaralApi,
@@ -31,7 +32,7 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
         private const val KEY_USER_C4CA_LOGIN = "KEY_USER_C4CA_LOGIN"
-        private const val IS_FOR_C4CA = "IS_FOR_C4CA"
+        private const val IS_USER_C4CA_TYPE = "IS_USER_C4CA_TYPE"
     }
 
     var installReferrerFetched: Boolean
@@ -151,7 +152,7 @@ class UserRepo(
         preferences.edit {
             putString(KEY_AUTH_TOKEN, response.data?.token)
             putBoolean(KEY_USER_C4CA_LOGIN, true)
-            putString(IS_FOR_C4CA, response.data?.flag)
+            putString(IS_USER_C4CA_TYPE, response.data?.flag)
         }
     }
 

@@ -121,7 +121,7 @@ class LearnFragmentViewModel(
         }
         corePreferences.lastSelectedPathWayId = pathway.id
         _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
-//        getCertificate(pathway.id, pathway.code, pathway.name)
+        getCertificate(pathway.id, pathway.code, pathway.name)
         refreshCourses(pathway, false)
     }
 
