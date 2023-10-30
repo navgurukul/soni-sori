@@ -12,10 +12,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.R
 import org.navgurukul.learn.adapter.CategoryAdapter
+import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.databinding.FragmentC4caBinding
 import org.navgurukul.learn.expandablerecyclerviewlist.listener.ExpandCollapseListener
-import org.navgurukul.learn.ui.learn.model.Category
-import org.navgurukul.learn.ui.learn.model.CategoryList
 
 class C4CAFragment : Fragment() {
 
@@ -43,12 +42,14 @@ class C4CAFragment : Fragment() {
                         "C4CAFragmentWithViewEvents",
                         "initExpandableRecyclerView: ${it.C4CA}"
                     )
-                    it.C4CA
-                    val ModuleAdapter = C4CAAdapter()
-                    ModuleAdapter.submitList(it.C4CA)
-                    mBinding.module.layoutManager =
-                        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                    mBinding.module.adapter = ModuleAdapter
+
+                    initExpandableRecyclerView(it.C4CA)
+//                    it.C4CA
+//                    val ModuleAdapter = C4CAAdapter()
+//                    ModuleAdapter.submitList(it.C4CA)
+//                    mBinding.module.layoutManager =
+//                        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+//                    mBinding.module.adapter = ModuleAdapter
 
                     // Expandable RecyclerView
 //                    mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
@@ -89,30 +90,9 @@ class C4CAFragment : Fragment() {
 
     }
 
-    private fun initExpandableRecyclerView() {
-        val data = listOf(
-            Category(
-                "Module 1: Build Perspective on Climate Change", listOf(
-                    CategoryList("How earth has changed"),
-                    CategoryList("Intro to climate superheroes"),
-                    CategoryList("Why they become superheroes")
-                )
-            ),
-            Category(
-                "Module 2: Researcher - Solutions for Climate Action", listOf(
-                    CategoryList("Understanding vulnerability to climate impact"),
-                    CategoryList("Intro to events")
-                )
-            ),
-            Category(
-                "Module 3: Innovater - Building our Solutions for Climate Action", listOf(
-                    CategoryList("Loops and conditional loops introduction"),
-                    CategoryList("Loops and conditional loops introduction")
-                )
-            )
-        )
-        mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
-        mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
+        private fun initExpandableRecyclerView(modules: List<Module>){
+        mBinding.module.setHasFixedSize(true)
+        mBinding.module.layoutManager = LinearLayoutManager(activity)
         expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
             override fun onListItemExpanded(position: Int) {
             }
@@ -123,7 +103,45 @@ class C4CAFragment : Fragment() {
 
         })
 
-        mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
-        expandableAdapter.setExpandableParentItemList(data)
+        mBinding.module.adapter = expandableAdapter
+        expandableAdapter.setExpandableParentItemList(modules)
     }
+//
+//    private fun initExpandableRecyclerView(modules: List<Module>) {
+//        val data = listOf(
+//            Category(
+//                "Module 1: Build Perspective on Climate Change", listOf(
+//                    CategoryList("How earth has changed"),
+//                    CategoryList("Intro to climate superheroes"),
+//                    CategoryList("Why they become superheroes")
+//                )
+//            ),
+//            Category(
+//                "Module 2: Researcher - Solutions for Climate Action", listOf(
+//                    CategoryList("Understanding vulnerability to climate impact"),
+//                    CategoryList("Intro to events")
+//                )
+//            ),
+//            Category(
+//                "Module 3: Innovater - Building our Solutions for Climate Action", listOf(
+//                    CategoryList("Loops and conditional loops introduction"),
+//                    CategoryList("Loops and conditional loops introduction")
+//                )
+//            )
+//        )
+//        mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
+//        mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
+//        expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
+//            override fun onListItemExpanded(position: Int) {
+//            }
+//
+//            override fun onListItemCollapsed(position: Int) {
+//
+//            }
+//
+//        })
+//
+//        mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
+//        expandableAdapter.setExpandableParentItemList(modules)
+//    }
 }

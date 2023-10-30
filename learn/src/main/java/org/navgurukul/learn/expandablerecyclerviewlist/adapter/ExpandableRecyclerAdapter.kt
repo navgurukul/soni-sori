@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.expandablerecyclerviewlist.helper.ExpandableRecyclerAdapterHelper
 import org.navgurukul.learn.expandablerecyclerviewlist.listener.ExpandCollapseListener
 import org.navgurukul.learn.expandablerecyclerviewlist.listener.ParentListItemExpandCollapseListener
-import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentListItem
 import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentWrapper
 import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ChildViewHolder
 import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
@@ -16,7 +15,7 @@ import java.lang.IllegalStateException
 abstract class ExpandableRecyclerAdapter<PVH : ParentViewHolder, CVH : ChildViewHolder>:
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), ParentListItemExpandCollapseListener {
 
-    private var mParentItemList = mutableListOf<ParentListItem>()
+    private var mParentItemList = mutableListOf<org.navgurukul.learn.courses.network.model.Module>()
     private var attachRecyclerViewListPool = mutableListOf<RecyclerView>()
     private var itemList = mutableListOf<Any>()
 
@@ -59,7 +58,7 @@ abstract class ExpandableRecyclerAdapter<PVH : ParentViewHolder, CVH : ChildView
 
     }
 
-    abstract fun onBindParentViewHolder(parentViewHolder: PVH, position: Int, parentListItem: ParentListItem)
+    abstract fun onBindParentViewHolder(parentViewHolder: PVH, position: Int, parentListItem: org.navgurukul.learn.courses.network.model.Module)
     abstract fun onBindChildViewHolder(childViewHolder: CVH, position: Int, childListItem: Any)
 
     private fun getItemList(position: Int): Any? {
@@ -78,7 +77,7 @@ abstract class ExpandableRecyclerAdapter<PVH : ParentViewHolder, CVH : ChildView
         }
     }
 
-    fun getParentItemList(): List<ParentListItem> = mParentItemList
+    fun getParentItemList(): List<org.navgurukul.learn.courses.network.model.Module> = mParentItemList
 
     //---------Expand parent list item---------------------
     override fun onParentListItemExpanded(position: Int) {
@@ -151,7 +150,7 @@ abstract class ExpandableRecyclerAdapter<PVH : ParentViewHolder, CVH : ChildView
         this.expandCollapseListener = expandCollapseListener
     }
 
-    fun setExpandableParentItemList(parentItemList:List<ParentListItem>){
+    fun setExpandableParentItemList(parentItemList:List<org.navgurukul.learn.courses.network.model.Module>){
         mParentItemList.addAll(parentItemList)
         itemList.addAll(ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList = parentItemList) as MutableList<Any>)
         notifyDataSetChanged()

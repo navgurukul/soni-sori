@@ -176,27 +176,27 @@ class OnBoardingPagesViewModel(
 
     fun loginC4CA(username: String, password: String) {
         viewModelScope.launch {
-            val loginResponse = loginRepository.loginC4ca(username, password)
-            val loginStatus = loginResponse.status
-            if (loginStatus == "success"){
-                c4caUser = userRepo.getCurrentC4CAUser()
-                user = userRepo.getCurrentUser()
-                Log.e("ShowMainScreen", "c4caUser: $c4caUser")
-                Log.e("ShowMainScreen", "CommonUser: $user")
-                Log.d("ShowMainScreen", "Login $loginStatus $username congratulation")
+            try {
+                val loginResponse = loginRepository.loginC4ca(username, password)
+                val loginStatus = loginResponse.status
+                if (loginStatus == "success"){
+                    c4caUser = userRepo.getCurrentC4CAUser()
+                    user = userRepo.getCurrentUser()
+                    Log.e("ShowMainScreen", "c4caUser: $c4caUser")
+                    Log.e("ShowMainScreen", "CommonUser: $user")
+                    Log.d("ShowMainScreen", "Login $loginStatus $username congratulation")
 //                _viewEvents.setValue(OnBoardingPagesEvents.OpenC4CAHomePage)
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowC4CAScreen(true))
-            } else {
-                Log.d("ShowMainScreen", "Login failure $loginStatus $username Sorry for inconvinience")
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowErrorMessage)
+                    _viewEvents.setValue(OnBoardingPagesEvents.ShowC4CAScreen(true))
+                } else {
+                    Log.d("ShowMainScreen", "Login failure $loginStatus $username Sorry for inconvinience")
+                    _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.wrong_data)))
+                    _viewEvents.setValue(OnBoardingPagesEvents.ShowErrorMessage)
+                }
+
+            } catch (e : Exception){
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
 
-//            if (loginResponse != null) {
-//
-//            } else {
-//                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
-//            }
         }
     }
 }

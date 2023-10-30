@@ -11,6 +11,7 @@ import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding= DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =

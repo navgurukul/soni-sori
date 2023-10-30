@@ -1,75 +1,84 @@
 package org.navgurukul.learn.adapter
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.item_category.view.tv_category
-import org.navgurukul.learn.expandablerecyclerviewlist.adapter.ExpandableRecyclerAdapter
-import org.navgurukul.learn.expandablerecyclerviewlist.model.ParentListItem
-import org.navgurukul.learn.viewholder.CategoryListViewHolder
-import org.navgurukul.learn.viewholder.CategoryViewHolder
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_category_list.view.*
+import kotlinx.android.synthetic.main.item_module.view.*
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.network.model.Course
 import org.navgurukul.learn.courses.network.model.Module
-import org.navgurukul.learn.courses.network.model.PathwayC4CA
-import org.navgurukul.learn.ui.learn.adapter.CourseContainer
-import org.navgurukul.learn.ui.learn.model.Category
-import org.navgurukul.learn.ui.learn.model.CategoryList
+import org.navgurukul.learn.expandablerecyclerviewlist.adapter.ExpandableRecyclerAdapter
+import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ChildViewHolder
+import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
 
+class ModuleViewHolder(itemView: View) : ParentViewHolder(itemView) {
+    // Implement the ModuleViewHolder as needed
+    fun bindModuleData (module: Module){
+        itemView.tv_module.text = module.name
+        itemView.ll_module.setBackgroundColor(module.color?.let {
+            Color.parseColor(it) } ?: Color.parseColor("#ffff00"))
+    }
+}
+
+class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
+    // Implement the CourseViewHolder as needed
+    fun bindCourseData (course : Course){
+        itemView.nameTv.text = course.name
+//        val thumbnail = Glide.with(itemView)
+//            .load(R.drawable.ic_lock)
+//        Glide.with(itemView.ivLogo)
+//            .load(course.logo)
+//            .thumbnail(thumbnail)
+//            .into(itemView.ivLogo)
+
+    }
+}
 
 class CategoryAdapter :
-    ExpandableRecyclerAdapter<CategoryViewHolder, CategoryListViewHolder>() {
+    ExpandableRecyclerAdapter<ModuleViewHolder, CourseViewHolder>() {
 
     var colors = arrayOf("#29458C", "#FFAD33", "#F091B2")
-
-    override fun onCreateParentViewHolder(
-        parentViewGroup: ViewGroup
-    ): CategoryViewHolder {
+    override fun onCreateParentViewHolder(parentViewGroup: ViewGroup): ModuleViewHolder {
         val view = LayoutInflater.from(parentViewGroup.context)
-            .inflate(R.layout.item_category, parentViewGroup, false)
-        return CategoryViewHolder(view)
+            .inflate(R.layout.item_module, parentViewGroup, false)
+        return ModuleViewHolder(view)
     }
 
-    override fun onCreateChildViewHolder(parentViewGroup: ViewGroup): CategoryListViewHolder {
+    override fun onCreateChildViewHolder(parentViewGroup: ViewGroup): CourseViewHolder {
         val view = LayoutInflater.from(parentViewGroup.context)
             .inflate(R.layout.item_category_list, parentViewGroup, false)
-        return CategoryListViewHolder(view)
+        return CourseViewHolder(view)
     }
 
     override fun onBindParentViewHolder(
-        parentViewHolder: CategoryViewHolder,
+        parentViewHolder: ModuleViewHolder,
         position: Int,
-        parentListItem: ParentListItem
+        parentListItem: Module
     ) {
-        val data = parentListItem as Category
-        parentViewHolder.bind(data)
-        //parentListItem.name = data.name
-        parentViewHolder.itemView.tv_category.text = data.name
-        //parentListItem.name = data.name
-
-//        if(position == 0){
-//            parentViewHolder.itemView.setBackgroundColor(Color.parseColor(colors[0]))
-//        }else if(position == 1){
-//            parentViewHolder.itemView.setBackgroundColor(Color.parseColor(colors[1]))
-//        }else if(position == 2){
-//            parentViewHolder.itemView.setBackgroundColor(Color.parseColor(colors[2]))
-//        }
+        val module = parentListItem as Module
+        parentViewHolder.bindModuleData(module)
     }
 
     override fun onBindChildViewHolder(
-        childViewHolder: CategoryListViewHolder,
+        childViewHolder: CourseViewHolder,
         position: Int,
         childListItem: Any
     ) {
-        val data = childListItem as CategoryList
-        childViewHolder.bind(data)
+        val course = childListItem as Course
+        childViewHolder.bindCourseData(course)
     }
 
-    //    fun submitList(data: List<Module>) {
-//        submitList(data)
+//    override fun onBindParentViewHolder(
+//        parentViewHolder: ModuleViewHolder,
+//        position: Int,
+//        parentListItem: ParentListItem
+//    ) {
+//        TODO("Not yet implemented")
 //    }
-//    fun submitList(list: List<PathwayC4CA>) {
-//        submitList(list.map { CourseContainer(it) })
-//    }
+
 }
 
-data class C4CACourseContainer(val c4ca_course: PathwayC4CA)

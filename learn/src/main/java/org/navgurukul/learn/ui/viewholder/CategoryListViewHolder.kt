@@ -8,6 +8,6 @@ import org.navgurukul.learn.courses.network.model.PathwayC4CA
 
 class CategoryListViewHolder(view:View) : ChildViewHolder(view){
     fun bind(categoryList : PathwayC4CA){
-        itemView.findViewById<TextView>(R.id.nameTv).text = categoryList.name
+        itemView.findViewById<TextView>(R.id.tvName).text = categoryList.name
     }
 }
