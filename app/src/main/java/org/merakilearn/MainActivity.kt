@@ -85,7 +85,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
