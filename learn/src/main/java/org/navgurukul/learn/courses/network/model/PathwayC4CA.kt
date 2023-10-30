@@ -84,5 +84,7 @@ data class Course(
     @Json(name = "short_description")
     val short_description: String,
     @Json(name = "updatedAt")
-    val updatedAt: String
+    val updatedAt: String,
+    @Json(name = "completed_portion")
+    val completed_portion: Int? = 0,
 )

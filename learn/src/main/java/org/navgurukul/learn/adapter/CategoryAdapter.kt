@@ -1,7 +1,8 @@
 package org.navgurukul.learn.adapter
 
-import android.content.Context
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.expandablerecyclerviewlist.adapter.ExpandableRecyclerAdapter
 import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ChildViewHolder
 import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHolder
+
 
 class ModuleViewHolder(itemView: View) : ParentViewHolder(itemView) {
     // Implement the ModuleViewHolder as needed
@@ -28,13 +30,35 @@ class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
     // Implement the CourseViewHolder as needed
     fun bindCourseData (course : Course){
         itemView.nameTv.text = course.name
-//        val thumbnail = Glide.with(itemView)
-//            .load(R.drawable.ic_lock)
-//        Glide.with(itemView.ivLogo)
-//            .load(course.logo)
-//            .thumbnail(thumbnail)
-//            .into(itemView.ivLogo)
+        ///itemView.progressBar.progress = course.completed_portion
 
+        if(course.completed_portion != null && course.completed_portion > 0){
+
+            //itemView.progressBar.progress = course.completed_portion
+
+            val thumbnail = Glide.with(itemView)
+                .load(R.drawable.ic_lock)
+            Glide.with(itemView.imageView)
+                .load(course.logo)
+                .thumbnail(thumbnail)
+                .circleCrop()
+                .into(itemView.imageView)
+
+        } else {
+            val thumbnail = Glide.with(itemView)
+                .load(R.drawable.ic_lock)
+            Glide.with(itemView.imageView)
+                .load(course.logo)
+                .thumbnail(thumbnail)
+                .circleCrop()
+                .into(itemView.imageView)
+
+            //Grey scale
+            val colorMatrix =  ColorMatrix()
+            colorMatrix.setSaturation(0.0f)
+            val filter =  ColorMatrixColorFilter(colorMatrix)
+            itemView.imageView.colorFilter = filter
+        }
     }
 }
 

@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardElevation="0dp"
-    android:orientation="vertical">
+<!--<androidx.cardview.widget.CardView -->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:cardElevation="0dp"-->
+<!--    android:orientation="vertical">-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="8dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:contentDescription="@string/app_name"
-            android:layout_width="@dimen/pathway_logo_size"
-            android:layout_height="@dimen/pathway_logo_size"
-            android:src="@drawable/ic_class_nudge"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:max="100"
+            android:progress="20"
+            android:visibility="gone"
+            android:secondaryProgress="100"
+            app:indicatorColor="@color/trackingColor"
+            app:indicatorInset="0dp"
+            app:indicatorSize="@dimen/pathway_circle_border_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:trackColor="#CDCDCD"
+            app:trackThickness="3dp"/>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/pathway_logo_size"
+        android:layout_height="@dimen/pathway_logo_size"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_class_nudge"
+        app:layout_constraintBottom_toBottomOf="@id/progressBar"
+        app:layout_constraintLeft_toLeftOf="@id/progressBar"
+        app:layout_constraintRight_toRightOf="@id/progressBar"
+        app:layout_constraintTop_toTopOf="@id/progressBar" />
         <TextView
             android:id="@+id/nameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textColor="#000"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView" />
 
         <View
@@ -54,4 +67,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+<!--</androidx.cardview.widget.CardView>-->
