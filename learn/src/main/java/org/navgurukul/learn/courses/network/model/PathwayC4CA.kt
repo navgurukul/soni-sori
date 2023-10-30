@@ -53,6 +53,8 @@ data class Module(
     val name: String,
     @Json(name = "publishedAt")
     val publishedAt: String? = null,
+    @Json(name = "color")
+    val color: String? = null,
     @Json(name = "updatedAt")
     val updatedAt: String
 )
