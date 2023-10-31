@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -15,12 +16,14 @@ import org.navgurukul.learn.adapter.CategoryAdapter
 import org.navgurukul.learn.courses.network.model.Module
 import org.navgurukul.learn.databinding.FragmentC4caBinding
 import org.navgurukul.learn.expandablerecyclerviewlist.listener.ExpandCollapseListener
+import org.navgurukul.learn.ui.common.toast
 
 class C4CAFragment : Fragment() {
 
-    private var expandableAdapter = CategoryAdapter()
+    private lateinit var expandableAdapter: CategoryAdapter
     private lateinit var mBinding: FragmentC4caBinding
     private val viewModel: C4CAFragmentViewModel by sharedViewModel()
+    private val modules = mutableListOf<Module>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,70 +38,71 @@ class C4CAFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //initExpandableRecyclerView()
 
+
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            initToolBar(
+                subtitle = it.subtitle,
+                pathwayIcon = it.logo
+            )
+            initExpandableRecyclerView(it.moduleList)
+        }
+
         viewModel.viewEvents.observe(viewLifecycleOwner) {
             when (it) {
-                is C4CAFragmentViewEvents.GetC4CAPathways -> {
-                    Log.d(
-                        "C4CAFragmentWithViewEvents",
-                        "initExpandableRecyclerView: ${it.C4CA}"
+                is C4CAFragmentViewEvents.ShowToast -> toast(it.toastText)
+                is C4CAFragmentViewEvents.OpenModuleCourseDetailActivity -> {
+                    ModuleCourseContentActivity.start(
+                        requireContext(),
+                        it.courseId
                     )
-
-                    initExpandableRecyclerView(it.C4CA)
-//                    it.C4CA
-//                    val ModuleAdapter = C4CAAdapter()
-//                    ModuleAdapter.submitList(it.C4CA)
-//                    mBinding.module.layoutManager =
-//                        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-//                    mBinding.module.adapter = ModuleAdapter
-
-                    // Expandable RecyclerView
-//                    mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
-//                    mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
-//                    expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
-//                        override fun onListItemExpanded(position: Int) {
-//                        }
-//
-//                        override fun onListItemCollapsed(position: Int) {
-//
-//                        }
-//
-//                    })
-//
-//                    mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
-//                    expandableAdapter.setExpandableParentItemList(it.C4CA.map { Category(it.name, it.courses!!) })
+                    Log.d("C4CAFragment", "OpenModuleCourseDetailActivity Successfuly ${it.courseName}")
                 }
             }
         }
+
         initToolBar()
-        viewModel.viewState.observe(viewLifecycleOwner) {
-            Log.d("C4CAFragment", "onViewCreated: $it")
+    }
 
+    private fun initToolBar(
+        subtitle: String? = null,
+        pathwayIcon: String? = null
+    ) {
+        if (subtitle != null) {
+            (activity as? ToolbarConfigurable)?.configure(
+                subtitle,
+                R.attr.textPrimary,
+                false,
+                null,
+                null,
+                null, null,
+                showPathwayIcon = true,
+                pathwayIcon = pathwayIcon
+            )
         }
-    }
-
-    private fun initToolBar() {
-        (activity as? ToolbarConfigurable)?.configure(
-            getString(R.string.c4ca_title),
-            R.attr.textPrimary,
-            false,
-            null,
-            null,
-            null, null,
-            showPathwayIcon = true,
-            pathwayIcon = "https://s3strapi-project.s3.ap-south-1.amazonaws.com/random_c5ad8b4ada.svg"
-        )
 
     }
 
-        private fun initExpandableRecyclerView(modules: List<Module>){
+    private fun initExpandableRecyclerView(modules: List<Module>) {
+        expandableAdapter = CategoryAdapter(requireContext()) {
+            viewModel.selectCourse(it)
+        }
         mBinding.module.setHasFixedSize(true)
         mBinding.module.layoutManager = LinearLayoutManager(activity)
         expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
             override fun onListItemExpanded(position: Int) {
+                Toast.makeText(
+                    activity,
+                    "Expanded: $position",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onListItemCollapsed(position: Int) {
-
+                Toast.makeText(
+                    activity,
+                    "Collapsed: $position",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         })
@@ -106,42 +110,4 @@ class C4CAFragment : Fragment() {
         mBinding.module.adapter = expandableAdapter
         expandableAdapter.setExpandableParentItemList(modules)
     }
-//
-//    private fun initExpandableRecyclerView(modules: List<Module>) {
-//        val data = listOf(
-//            Category(
-//                "Module 1: Build Perspective on Climate Change", listOf(
-//                    CategoryList("How earth has changed"),
-//                    CategoryList("Intro to climate superheroes"),
-//                    CategoryList("Why they become superheroes")
-//                )
-//            ),
-//            Category(
-//                "Module 2: Researcher - Solutions for Climate Action", listOf(
-//                    CategoryList("Understanding vulnerability to climate impact"),
-//                    CategoryList("Intro to events")
-//                )
-//            ),
-//            Category(
-//                "Module 3: Innovater - Building our Solutions for Climate Action", listOf(
-//                    CategoryList("Loops and conditional loops introduction"),
-//                    CategoryList("Loops and conditional loops introduction")
-//                )
-//            )
-//        )
-//        mBinding.categoryListRvFragmentC4ca.setHasFixedSize(true)
-//        mBinding.categoryListRvFragmentC4ca.layoutManager = LinearLayoutManager(activity)
-//        expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
-//            override fun onListItemExpanded(position: Int) {
-//            }
-//
-//            override fun onListItemCollapsed(position: Int) {
-//
-//            }
-//
-//        })
-//
-//        mBinding.categoryListRvFragmentC4ca.adapter = expandableAdapter
-//        expandableAdapter.setExpandableParentItemList(modules)
-//    }
 }

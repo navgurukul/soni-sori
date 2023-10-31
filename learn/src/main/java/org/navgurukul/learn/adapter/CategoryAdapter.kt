@@ -1,11 +1,14 @@
 package org.navgurukul.learn.adapter
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_category_list.view.*
 import kotlinx.android.synthetic.main.item_module.view.*
@@ -23,6 +26,11 @@ class ModuleViewHolder(itemView: View) : ParentViewHolder(itemView) {
         itemView.tv_module.text = module.name
         itemView.ll_module.setBackgroundColor(module.color?.let {
             Color.parseColor(it) } ?: Color.parseColor("#ffff00"))
+    }
+    override fun setExpanded(expanded: Boolean) {
+        super.setExpanded(expanded)
+        if (expanded)itemView.findViewById<ImageView>(R.id.iv_arrow_expand).rotation = 180f
+        else itemView.findViewById<ImageView>(R.id.iv_arrow_expand).rotation = 0f
     }
 }
 
@@ -62,7 +70,7 @@ class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
     }
 }
 
-class CategoryAdapter :
+class CategoryAdapter(private val context: Context, val callback: (Course) -> Unit) :
     ExpandableRecyclerAdapter<ModuleViewHolder, CourseViewHolder>() {
 
     var colors = arrayOf("#29458C", "#FFAD33", "#F091B2")
@@ -87,6 +95,7 @@ class CategoryAdapter :
         parentViewHolder.bindModuleData(module)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindChildViewHolder(
         childViewHolder: CourseViewHolder,
         position: Int,
@@ -94,15 +103,11 @@ class CategoryAdapter :
     ) {
         val course = childListItem as Course
         childViewHolder.bindCourseData(course)
-    }
 
-//    override fun onBindParentViewHolder(
-//        parentViewHolder: ModuleViewHolder,
-//        position: Int,
-//        parentListItem: ParentListItem
-//    ) {
-//        TODO("Not yet implemented")
-//    }
+        childViewHolder.itemView.setOnClickListener {
+            callback.invoke(course)
+        }
+    }
 
 }
 

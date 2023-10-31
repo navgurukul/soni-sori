@@ -7,5 +7,6 @@ import org.navgurukul.learn.courses.network.model.Module
 data class ParentWrapper(
     var isExpanded:Boolean=false,
     var parentListItem: Module,
-    var isInitiallyExpanded: Boolean = true,
-    var childListItem: List<Course> = parentListItem.courses)
+    var isInitiallyExpanded: Boolean = false,
+    var childListItem: List<Course> = parentListItem.courses
+)

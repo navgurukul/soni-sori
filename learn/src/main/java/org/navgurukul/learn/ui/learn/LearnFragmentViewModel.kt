@@ -175,16 +175,22 @@ class LearnFragmentViewModel(
 
     private fun checkedStudentEnrolment(pathwayId: Int) {
         viewModelScope.launch {
-            setState { copy(loading = true) }
-            val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
-            if (status == EnrolStatus.enrolled) {
-                getUpcomingClasses(pathwayId)
-            } else if (status == EnrolStatus.not_enrolled) {
-                getBatchesDataByPathway(pathwayId)
-            } else if (status == EnrolStatus.enrolled_but_finished) {
-                getBatchesDataByPathway(pathwayId)
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+            try{
+                setState { copy(loading = true) }
+                val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
+                if (status == EnrolStatus.enrolled) {
+                    getUpcomingClasses(pathwayId)
+                } else if (status == EnrolStatus.not_enrolled) {
+                    getBatchesDataByPathway(pathwayId)
+                } else if (status == EnrolStatus.enrolled_but_finished) {
+                    getBatchesDataByPathway(pathwayId)
+                    _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+                }
+            } catch (e: Exception) {
+                setState { copy(loading = false) }
+                _viewEvents.postValue(LearnFragmentViewEvents.ShowToast(stringProvider.getString(R.string.network_error)))
             }
+
         }
     }
 

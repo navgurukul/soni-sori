@@ -90,7 +90,7 @@ abstract class ExpandableRecyclerAdapter<PVH : ParentViewHolder, CVH : ChildView
             parentWrapper.isExpanded = true
             if (parentWrapper.childListItem.isNotEmpty()) {
                 parentWrapper.childListItem.forEachIndexed { index, it ->
-                    itemList.add(parentIndex + index + 1, it!!)
+                    itemList.add(parentIndex + index + 1, it)
                 }
                 notifyItemRangeInserted(parentIndex + 1, parentWrapper.childListItem.size)
             }
