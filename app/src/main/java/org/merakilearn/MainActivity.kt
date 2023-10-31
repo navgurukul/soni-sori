@@ -34,6 +34,7 @@ import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.ui.learn.c4ca.C4CAFragment
 
 @Parcelize
 data class MainActivityArgs(
@@ -245,5 +246,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 listener.onClick(it)
             }
         }
+    }
+
+    override fun onBackPressed() {
+            moveTaskToBack(true)
+            super.onBackPressed()
     }
 }
