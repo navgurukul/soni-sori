@@ -56,7 +56,9 @@ data class Module(
     @Json(name = "color")
     val color: String? = null,
     @Json(name = "updatedAt")
-    val updatedAt: String
+    val updatedAt: String,
+    @Json(name = "completed_portion")
+    val completed_portion: Int? = 0,
 )
 @JsonClass(generateAdapter = true)
 data class Summary(

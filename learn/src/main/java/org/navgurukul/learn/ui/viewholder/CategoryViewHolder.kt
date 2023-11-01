@@ -12,7 +12,7 @@ class CategoryViewHolder(itemView:View) : ParentViewHolder(itemView) {
     private lateinit var animation: RotateAnimation
 
     fun bind(category: PathwayC4CA){
-        itemView.findViewById<TextView>(R.id.tv_category).text = category.name
+        itemView.findViewById<TextView>(R.id.tv_module).text = category.name
     }
 
     override fun onExpansionToggled(expanded: Boolean) {

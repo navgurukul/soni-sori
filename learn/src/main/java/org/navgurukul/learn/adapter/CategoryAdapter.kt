@@ -46,26 +46,26 @@ class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
 
             val thumbnail = Glide.with(itemView)
                 .load(R.drawable.ic_lock)
-            Glide.with(itemView.imageView)
+            Glide.with(itemView.imageViewModule)
                 .load(course.logo)
                 .thumbnail(thumbnail)
                 .circleCrop()
-                .into(itemView.imageView)
+                .into(itemView.imageViewModule)
 
         } else {
             val thumbnail = Glide.with(itemView)
                 .load(R.drawable.ic_lock)
-            Glide.with(itemView.imageView)
+            Glide.with(itemView.imageViewModule)
                 .load(course.logo)
                 .thumbnail(thumbnail)
                 .circleCrop()
-                .into(itemView.imageView)
+                .into(itemView.imageViewModule)
 
             //Grey scale
             val colorMatrix =  ColorMatrix()
             colorMatrix.setSaturation(0.0f)
             val filter =  ColorMatrixColorFilter(colorMatrix)
-            itemView.imageView.colorFilter = filter
+            itemView.imageViewModule.colorFilter = filter
         }
     }
 }
