@@ -12,3 +12,9 @@ data class CurrentStudy(
     var courseId: String,
     var exerciseId: String
 ) : Parcelable
+
+@Parcelize
+data class ModuleCurrentStudy(
+    var courseId: String,
+    var exerciseId: String
+) : Parcelable

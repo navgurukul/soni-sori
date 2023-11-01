@@ -1,7 +1,9 @@
 package org.navgurukul.learn.courses.network.model
 
+import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.navgurukul.learn.courses.db.models.CourseContents
 
 @JsonClass(generateAdapter = true)
 data class PathwayC4CA(
@@ -21,14 +23,6 @@ data class PathwayC4CA(
     val modules: List<Module>? = null,
     @Json(name = "name")
     val name: String,
-//    @Json(name = "outcomes")
-//    val outcomes: List<Outcome>,
-//    @Json(name = "publishedAt")
-//    val publishedAt: String,
-//    @Json(name = "summary")
-//    val summary: List<Summary>,
-//    @Json(name = "type")
-//    val type: String,
     @Json(name = "updatedAt")
     val updatedAt: String,
     @Json(name = "video_link")
@@ -79,6 +73,8 @@ data class Course(
     val logo: String,
     @Json(name = "name")
     val name: String,
+    @Json(name = "pathwayId")
+    var pathwayId: Int? = null,
     @Json(name = "publishedAt")
     val publishedAt: String? = null,
     @Json(name = "short_description")
@@ -87,4 +83,17 @@ data class Course(
     val updatedAt: String,
     @Json(name = "completed_portion")
     val completed_portion: Int? = 0,
+){
+    @Ignore
+    @Json(name = "exercises")
+    var courseContents: List<CourseContents> = listOf()
+}
+
+
+
+
+@JsonClass(generateAdapter = true)
+data class ModuleCourseExerciseContainer(
+    @Json(name = "course")
+    val course: Course
 )

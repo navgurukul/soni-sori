@@ -39,6 +39,10 @@ class C4CAFragmentViewModel(
         }
     }
 
+    private fun moduleGetCourseContentAsync(){
+
+    }
+
     fun selectCourse(course: org.navgurukul.learn.courses.network.model.Course) {
         course.let {
             _viewEvents.postValue(

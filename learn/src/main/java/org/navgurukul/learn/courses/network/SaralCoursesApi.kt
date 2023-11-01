@@ -96,6 +96,12 @@ interface SaralCoursesApi {
     @GET("pathways/c4ca")
     suspend fun getC4CAPathway(
     ): PathwayC4CA
+
+    @GET("courses/{course_id}/exercises")
+    suspend fun moduleGetCourseContentAsync(
+        @Path("course_id") course_id: String,
+        @Query("lang") language: String
+    ): ModuleCourseExerciseContainer
 }
 
 
