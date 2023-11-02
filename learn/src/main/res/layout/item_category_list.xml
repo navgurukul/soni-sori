@@ -10,7 +10,6 @@
         android:id="@+id/imageViewModule"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:scaleType="fitXY"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="@id/progressBarModule"
         app:layout_constraintLeft_toLeftOf="@id/progressBarModule"
@@ -28,7 +27,6 @@
             app:trackThickness="3dp"
             app:trackColor="#CDCDCD"
             app:indicatorInset="0dp"
-            app:indicatorSize="@dimen/pathway_circle_border_size"
             app:indicatorColor="@color/trackingColor"
             android:secondaryProgress="100"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +54,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTv" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
