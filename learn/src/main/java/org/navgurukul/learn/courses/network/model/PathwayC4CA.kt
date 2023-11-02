@@ -52,7 +52,9 @@ data class Module(
     @Json(name = "updatedAt")
     val updatedAt: String,
     @Json(name = "completed_portion")
-    val completed_portion: Int? = 0,
+    val module_completed_portion: Int? = 0,
+    @Json(name = "show_on_meraki")
+    val show_on_meraki: Boolean? = true,
 )
 @JsonClass(generateAdapter = true)
 data class Summary(
@@ -79,12 +81,14 @@ data class Course(
     var pathwayId: Int? = null,
     @Json(name = "publishedAt")
     val publishedAt: String? = null,
-    @Json(name = "short_description")
-    val short_description: String,
+//    @Json(name = "short_description") // not using
+//    val short_description: String,
     @Json(name = "updatedAt")
     val updatedAt: String,
     @Json(name = "completed_portion")
-    val completed_portion: Int? = 0,
+    val course_completed_portion: Int? = 0,
+    @Json(name = "course_lock")
+    val course_lock: Boolean? = false
 ){
     @Ignore
     @Json(name = "exercises")

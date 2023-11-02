@@ -90,19 +90,9 @@ class C4CAFragment : Fragment() {
         mBinding.module.layoutManager = LinearLayoutManager(activity)
         expandableAdapter.setExpandCollapseListener(object : ExpandCollapseListener {
             override fun onListItemExpanded(position: Int) {
-                Toast.makeText(
-                    activity,
-                    "Expanded: $position",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
 
             override fun onListItemCollapsed(position: Int) {
-                Toast.makeText(
-                    activity,
-                    "Collapsed: $position",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
 
         })

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageViewModule"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="@id/progressBarModule"
         app:layout_constraintLeft_toLeftOf="@id/progressBarModule"
@@ -18,14 +18,15 @@
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBarModule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:max="100"
             android:progress="20"
             app:trackThickness="3dp"
             app:trackColor="#CDCDCD"
+            app:indicatorSize="75dp"
             app:indicatorInset="0dp"
             app:indicatorColor="@color/trackingColor"
             android:secondaryProgress="100"

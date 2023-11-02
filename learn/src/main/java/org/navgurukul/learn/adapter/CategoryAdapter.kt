@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_category_list.view.*
 import kotlinx.android.synthetic.main.item_module.view.*
@@ -22,28 +23,30 @@ import org.navgurukul.learn.expandablerecyclerviewlist.viewholder.ParentViewHold
 
 class ModuleViewHolder(itemView: View) : ParentViewHolder(itemView) {
     // Implement the ModuleViewHolder as needed
-    fun bindModuleData (module: Module){
+    fun bindModuleData(module: Module) {
+        if (module.show_on_meraki == false)
+            itemView.visibility = View.GONE
+        else
+            itemView.visibility = View.VISIBLE
         itemView.tv_module.text = module.name
         itemView.ll_module.setBackgroundColor(module.color?.let {
-            Color.parseColor(it) } ?: Color.parseColor("#ffff00"))
+            Color.parseColor(it)
+        } ?: Color.parseColor("#ffff00"))
     }
+
     override fun setExpanded(expanded: Boolean) {
         super.setExpanded(expanded)
-        if (expanded)itemView.findViewById<ImageView>(R.id.iv_arrow_expand).rotation = 180f
+        if (expanded) itemView.findViewById<ImageView>(R.id.iv_arrow_expand).rotation = 180f
         else itemView.findViewById<ImageView>(R.id.iv_arrow_expand).rotation = 0f
     }
 }
 
 class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
     // Implement the CourseViewHolder as needed
-    fun bindCourseData (course : Course){
+    fun bindCourseData(course: Course) {
         itemView.nameTv.text = course.name
-        ///itemView.progressBar.progress = course.completed_portion
-
-        if(course.completed_portion != null && course.completed_portion > 0){
-
-            //itemView.progressBar.progress = course.completed_portion
-
+        itemView.progressBarModule.progress = course.course_completed_portion ?: 0
+        if (course.course_lock == false) {
             val thumbnail = Glide.with(itemView)
                 .load(R.drawable.ic_lock)
             Glide.with(itemView.imageViewModule)
@@ -51,7 +54,6 @@ class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
                 .thumbnail(thumbnail)
                 .circleCrop()
                 .into(itemView.imageViewModule)
-
         } else {
             val thumbnail = Glide.with(itemView)
                 .load(R.drawable.ic_lock)
@@ -60,11 +62,10 @@ class CourseViewHolder(itemView: View) : ChildViewHolder(itemView) {
                 .thumbnail(thumbnail)
                 .circleCrop()
                 .into(itemView.imageViewModule)
-
             //Grey scale
-            val colorMatrix =  ColorMatrix()
+            val colorMatrix = ColorMatrix()
             colorMatrix.setSaturation(0.0f)
-            val filter =  ColorMatrixColorFilter(colorMatrix)
+            val filter = ColorMatrixColorFilter(colorMatrix)
             itemView.imageViewModule.colorFilter = filter
         }
     }
@@ -104,9 +105,16 @@ class CategoryAdapter(private val context: Context, val callback: (Course) -> Un
         val course = childListItem as Course
         childViewHolder.bindCourseData(course)
 
-        childViewHolder.itemView.setOnClickListener {
-            callback.invoke(course)
+        if (course.course_lock == true) {
+            childViewHolder.itemView.setOnClickListener(null)
+        } else {
+            childViewHolder.itemView.setOnClickListener {
+                callback.invoke(course)
+            }
         }
+//        childViewHolder.itemView.setOnClickListener {
+//            callback.invoke(course)
+//        }
     }
 
 }
