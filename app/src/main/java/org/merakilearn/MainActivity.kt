@@ -34,6 +34,7 @@ import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.learn.courses.repository.LearnRepo
+import org.navgurukul.learn.ui.learn.c4ca.C4CAFragment
 
 @Parcelize
 data class MainActivityArgs(
@@ -85,7 +86,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
@@ -244,5 +246,10 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 listener.onClick(it)
             }
         }
+    }
+
+    override fun onBackPressed() {
+            moveTaskToBack(true)
+            super.onBackPressed()
     }
 }
