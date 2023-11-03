@@ -2,12 +2,11 @@ package org.merakilearn.ui
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
+import android.hardware.usb.UsbDevice
+import android.hardware.usb.UsbManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
@@ -18,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import org.merakilearn.R
 import org.merakilearn.arduinohexupload.ArduinoHexUploadActivity
+import org.merakilearn.arduinohexupload.UsbSerialManager
+import timber.log.Timber
 
 
 class ArduinoBlocklyActivity : AppCompatActivity() {
@@ -26,6 +27,109 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
     lateinit var myRequest: PermissionRequest
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+    private val usbSerialManager: UsbSerialManager? = null
+
+    enum class UsbConnectState {
+        DISCONNECTED, CONNECT
+    }
+
+
+    private val mUsbNotifyReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                UsbSerialManager.ACTION_USB_PERMISSION_GRANTED -> Toast.makeText(
+                    context,
+                    "USB permission granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+                UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED -> Toast.makeText(
+                    context,
+                    "USB Permission denied",
+                    Toast.LENGTH_SHORT
+                ).show()
+                UsbSerialManager.ACTION_NO_USB -> Toast.makeText(
+                    context,
+                    "No USB connected",
+                    Toast.LENGTH_SHORT
+                ).show()
+                UsbSerialManager.ACTION_USB_DISCONNECTED -> {
+                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show()
+                    usbConnectChange(UsbConnectState.DISCONNECTED)
+                }
+                UsbSerialManager.ACTION_USB_CONNECT -> {
+                    Toast.makeText(context, "USB connected", Toast.LENGTH_SHORT).show()
+                    usbConnectChange(UsbConnectState.CONNECT)
+                }
+                UsbSerialManager.ACTION_USB_NOT_SUPPORTED -> Toast.makeText(
+                    context,
+                    "USB device not supported",
+                    Toast.LENGTH_SHORT
+                ).show()
+                UsbSerialManager.ACTION_USB_READY -> Toast.makeText(
+                    context,
+                    "Usb device ready",
+                    Toast.LENGTH_SHORT
+                ).show()
+                UsbSerialManager.ACTION_USB_DEVICE_NOT_WORKING -> Toast.makeText(
+                    context,
+                    "USB device not working",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private val mUsbHardwareReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == UsbSerialManager.ACTION_USB_PERMISSION_REQUEST) {
+                val granted = intent.extras!!.getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)
+                if (granted) // User accepted our USB connection. Try to open the device as a serial port
+                {
+                    val grantedDevice =
+                        intent.extras!!.getParcelable<UsbDevice>(UsbManager.EXTRA_DEVICE)
+                    usbPermissionGranted(grantedDevice!!.deviceName)
+                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED)
+                    context.sendBroadcast(it)
+                } else  // User not accepted our USB connection. Send an Intent to the Main Activity
+                {
+                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED)
+                    context.sendBroadcast(it)
+                }
+            } else if (intent.action == UsbManager.ACTION_USB_DEVICE_ATTACHED) {
+                val it = Intent(UsbSerialManager.ACTION_USB_CONNECT)
+                context.sendBroadcast(it)
+            } else if (intent.action == UsbManager.ACTION_USB_DEVICE_DETACHED) {
+                // Usb device was disconnected. send an intent to the Main Activity
+                val it = Intent(UsbSerialManager.ACTION_USB_DISCONNECTED)
+                context.sendBroadcast(it)
+            }
+        }
+    }
+
+    private fun setUsbFilter() {
+        val filter = IntentFilter()
+        filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_REQUEST)
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED)
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED)
+        registerReceiver(mUsbHardwareReceiver, filter)
+    }
+
+    fun usbConnectChange(state: UsbConnectState) {
+        if (state == UsbConnectState.DISCONNECTED) {
+//            if (requestButton != null) requestButton.setVisibility(View.INVISIBLE)
+//            if (fab != null) fab.hide()
+        } else if (state == UsbConnectState.CONNECT) {
+//            if (requestButton != null) requestButton.setVisibility(View.VISIBLE)
+        }
+    }
+
+    fun usbPermissionGranted(usbKey: String) {
+        Toast.makeText(this, "UsbPermissionGranted:$usbKey", Toast.LENGTH_SHORT).show()
+//        portSelect.setText(usbKey)
+//        deviceKeyName = usbKey
+//        if (fab != null) fab.show()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +138,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar2)
         progressBar.visibility = View.VISIBLE
 
+        setUsbFilter()
         sharedPreferences = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE)
 
         webView = findViewById(R.id.webView)
@@ -47,6 +152,32 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         webView.addJavascriptInterface(this, "AndroidBridge")
         webView.loadUrl("https://arduino.merd-bhanwaridevi.merakilearn.org/blockly-home")
     }
+
+
+    private fun setFilters() {
+        val filter = IntentFilter()
+        filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED)
+        filter.addAction(UsbSerialManager.ACTION_NO_USB)
+        filter.addAction(UsbSerialManager.ACTION_USB_DISCONNECTED)
+        filter.addAction(UsbSerialManager.ACTION_USB_CONNECT)
+        filter.addAction(UsbSerialManager.ACTION_USB_NOT_SUPPORTED)
+        filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED)
+        registerReceiver(mUsbNotifyReceiver, filter)
+    }
+
+    /* public UsbSerialDevice getUsbSerialDevice(String key) {
+        return usbSerialManager.tryGetDevice(key);
+    }*/
+    override fun onResume() {
+        super.onResume()
+        setFilters()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mUsbNotifyReceiver)
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -92,17 +223,15 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
             editor = sharedPreferences.edit()
             // If data coming as json string
 
-            Log.d(
-                "ArduinoBlockly",
-                "Read Data from web ${hexData}"
-            )
+            Timber.tag("ArduinoBlockly").d("Read Data from web " + hexData)
 
             println(hexData.length)
-            editor.putString("HexDataFromSketch1", hexData )
+            editor.putString("HexDataFromSketch1", hexData)
             editor.apply()
             val readHexDataPref = sharedPreferences.getString("HexDataFromSketch1", null)
             if (readHexDataPref.toString().isNotEmpty()) {
-                val intent = Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
+                val intent =
+                    Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 val bundle = Bundle()
                 bundle.putString("HexDataFromSketch1", readHexDataPref)
@@ -115,7 +244,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
             // Set positive button and its click listener
             builder.setPositiveButton("OK") { dialog, which ->
-                Toast.makeText(this, "Retry to upload the code in mins ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Retry to upload the code in mins ", Toast.LENGTH_SHORT)
+                    .show();
                 dialog.dismiss() // Dismiss the dialog
             }
         }
