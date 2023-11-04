@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -95,23 +96,20 @@ class LearnFragmentViewModel(
     }
 
     fun selectPathway(pathway: Pathway) {
-        viewModelScope.launch {
-            val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
-            val completedData = learnRepo.getCompletedPortion(pathway.id).totalCompletedPortion
-            setState {
-                copy(
-                    currentPathwayIndex = pathways.indexOf(pathway),
-                    subtitle = pathway.name,
-                    loading = true,
-                    languages = pathway.supportedLanguages,
-                    selectedLanguage = selectedLanguage
-                )
-            }
-            corePreferences.lastSelectedPathWayId = pathway.id
-            _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
-            getCertificatePdf(completedData, pathway.code, pathway.name)
-            refreshCourses(pathway, false)
+        val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
+        setState {
+            copy(
+                currentPathwayIndex = pathways.indexOf(pathway),
+                subtitle = pathway.name,
+                loading = true,
+                languages = pathway.supportedLanguages,
+                selectedLanguage = selectedLanguage
+            )
         }
+        corePreferences.lastSelectedPathWayId = pathway.id
+        _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
+        getCertificate(pathway.id, pathway.code, pathway.name)
+        refreshCourses(pathway, false)
     }
 
 
@@ -195,46 +193,60 @@ class LearnFragmentViewModel(
 
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
-            val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches?.let {
-                setState {
-                    copy(
-                        batches = it,
-                        classes = emptyList()
-                    )
+            try{
+                val batches =learnRepo.getBatchesListByPathway(pathwayId)
+                batches?.let {
+                    setState {
+                        copy(
+                            batches = it,
+                            classes = emptyList()
+                        )
+                    }
+                    if(it.isNotEmpty()){
+                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
+                    }
                 }
-                if(it.isNotEmpty()){
-                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
-                }
+                setState { copy(loading = false) }
+            } catch (e: Exception){
+                println(e.message)
             }
-            setState { copy(loading = false) }
         }
     }
 
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
-            val classes = learnRepo.getUpcomingClass(pathwayId)
-            classes.let {
-                setState {
-                    copy(
-                        classes = it,
-                        batches = emptyList()
-                    )
+            try {
+                val classes = learnRepo.getUpcomingClass(pathwayId)
+                classes.let {
+                    setState {
+                        copy(
+                            classes = it,
+                            batches = emptyList()
+                        )
+                    }
+                    if (it.isNotEmpty()){
+                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
+                    }
                 }
-                if (it.isNotEmpty()){
-                    _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
-                }
+                setState { copy(loading = false) }
+            } catch (e: Exception){
+                println(e.message)
             }
-            setState { copy(loading = false) }
+
         }
     }
 
-//     private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
-//        viewModelScope.launch {
-//            val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-//            getCertificatePdf(completedData, pathwayCode, pathwayName)
-//        }
-//    }
+     private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
+        viewModelScope.launch {
+            try {
+                val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
+                getCertificatePdf(completedData, pathwayCode, pathwayName)
+            } catch (e : Exception){
+               Log.d("getCertificate", e.message?:"")
+            }
+
+        }
+    }
 
     private fun getCertificatePdf(completedPortion: Int, pathwayCode : String, pathwayName: String){
         viewModelScope.launch {

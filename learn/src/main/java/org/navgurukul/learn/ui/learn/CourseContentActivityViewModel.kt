@@ -133,7 +133,7 @@ class CourseContentActivityViewModel(
                 )
             } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
                 if (courseContentType == CourseContentType.exercise) {
-                    postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
+                    postExerciseCompleteStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
                 }
                 onContentListItemSelected(
                     currentCourse.courseContents[currentStudyIndex + 1].id,
@@ -154,7 +154,7 @@ class CourseContentActivityViewModel(
                     )
                 }
                 if (courseContentType == CourseContentType.exercise) {
-                    postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
+                    postExerciseCompleteStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
                 }
             }
         } else {
@@ -326,10 +326,10 @@ class CourseContentActivityViewModel(
         }
     }
 
-    private fun postLearningTrackStatus(contentId: Int) {
+    private fun postExerciseCompleteStatus(contentId: Int) {
         viewModelScope.launch {
             currentCourse.pathwayId?.let {
-                learnRepo.postLearningTrackStatus(contentId)
+                learnRepo.postExerciseCompleteStatus(contentId)
             }
         }
     }

@@ -14,7 +14,6 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
-import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
 
@@ -434,7 +433,7 @@ class LearnRepo(
         }
     }
 
-    suspend fun postLearningTrackStatus(
+    suspend fun postExerciseCompleteStatus(
         exerciseId: Int
     ){
         try {
