@@ -95,20 +95,23 @@ class LearnFragmentViewModel(
     }
 
     fun selectPathway(pathway: Pathway) {
-        val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
-        setState {
-            copy(
-                currentPathwayIndex = pathways.indexOf(pathway),
-                subtitle = pathway.name,
-                loading = true,
-                languages = pathway.supportedLanguages,
-                selectedLanguage = selectedLanguage
-            )
+        viewModelScope.launch {
+            val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
+            val completedData = learnRepo.getCompletedPortion(pathway.id).totalCompletedPortion
+            setState {
+                copy(
+                    currentPathwayIndex = pathways.indexOf(pathway),
+                    subtitle = pathway.name,
+                    loading = true,
+                    languages = pathway.supportedLanguages,
+                    selectedLanguage = selectedLanguage
+                )
+            }
+            corePreferences.lastSelectedPathWayId = pathway.id
+            _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
+            getCertificatePdf(completedData, pathway.code, pathway.name)
+            refreshCourses(pathway, false)
         }
-        corePreferences.lastSelectedPathWayId = pathway.id
-        _viewEvents.postValue(LearnFragmentViewEvents.DismissSelectionSheet)
-        getCertificate(pathway.id, pathway.code, pathway.name)
-        refreshCourses(pathway, false)
     }
 
 
@@ -158,16 +161,25 @@ class LearnFragmentViewModel(
 
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
-            setState { copy(loading=true) }
-            val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
-            if(status == EnrolStatus.enrolled){
-                getUpcomingClasses(pathwayId)
-            } else if(status == EnrolStatus.not_enrolled){
-                getBatchesDataByPathway(pathwayId)
-            }else if(status == EnrolStatus.enrolled_but_finished){
-                getBatchesDataByPathway(pathwayId)
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+            setState { copy(loading= true) }
+            try {
+                val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
+                when (status) {
+                    EnrolStatus.enrolled -> {
+                        getUpcomingClasses(pathwayId)
+                    }
+                    EnrolStatus.not_enrolled -> {
+                        getBatchesDataByPathway(pathwayId)
+                    }
+                    EnrolStatus.enrolled_but_finished -> {
+                        getBatchesDataByPathway(pathwayId)
+                        _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+                    }
+                }
+            }catch (e: Exception){
+               println(e.message)
             }
+
         }
     }
 
@@ -217,12 +229,12 @@ class LearnFragmentViewModel(
         }
     }
 
-     fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
-        viewModelScope.launch {
-            val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-            getCertificatePdf(completedData, pathwayCode, pathwayName)
-        }
-    }
+//     private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
+//        viewModelScope.launch {
+//            val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
+//            getCertificatePdf(completedData, pathwayCode, pathwayName)
+//        }
+//    }
 
     private fun getCertificatePdf(completedPortion: Int, pathwayCode : String, pathwayName: String){
         viewModelScope.launch {

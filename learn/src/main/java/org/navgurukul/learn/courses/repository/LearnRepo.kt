@@ -435,13 +435,10 @@ class LearnRepo(
     }
 
     suspend fun postLearningTrackStatus(
-        pathwayId: Int,
-        courseId: String,
-        exerciseId: String
+        exerciseId: Int
     ){
         try {
-            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
-            courseApi.postLearningTrackStatus(learningTrackStatus)
+             courseApi.postExerciseCompleteStatus(exerciseId)
         }catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
