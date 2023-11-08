@@ -9,7 +9,7 @@ import org.navgurukul.learn.courses.network.SaralCoursesApi
 import timber.log.Timber
 
 class ClassesRepo(
-    val api: SaralApi,
+    val saralApi: SaralApi,
     val coursesApi:SaralCoursesApi
 ) {
 
@@ -32,7 +32,7 @@ class ClassesRepo(
 
     suspend fun fetchClassData(classId: Int): Classes? {
         return try {
-            api.fetchClassDataAsync(classId)
+            saralApi.fetchClassDataAsync(classId)
         } catch (ex: Exception) {
             Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
             null
@@ -41,7 +41,7 @@ class ClassesRepo(
 
     suspend fun getEnrolledBatches(): List<Batches>? {
         return try {
-            val res = api.getEnrolledBatches()
+            val res = saralApi.getEnrolledBatches()
             if (res.isSuccessful) {
                 res.body()
             } else {
