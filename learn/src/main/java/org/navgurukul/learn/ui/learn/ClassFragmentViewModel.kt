@@ -112,7 +112,7 @@ class ClassFragmentViewModel(
             setState {copy(isLoading = true)}
 
             val revisionClasses = learnRepo.getRevisionClasses(classId)
-            revisionClasses?.let {
+            revisionClasses.let {
                 setState {
                     copy(
                         isLoading = false,
@@ -134,17 +134,22 @@ class ClassFragmentViewModel(
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             setState { copy(isLoading=true) }
-            val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches?.let {
-                setState {
-                    copy(
-                        batches = it
-                    )
-                }
-                if (it.isNotEmpty()){
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowBatches(batches))
-                }
-            }
+           try {
+               val batches =learnRepo.getBatchesListByPathway(pathwayId)
+               batches?.let {
+                   setState {
+                       copy(
+                           batches = it
+                       )
+                   }
+                   if (it.isNotEmpty()){
+                       _viewEvents.postValue(ClassFragmentViewEvents.ShowBatches(batches))
+                   }
+               }
+           } catch (e: Exception) {
+               println(e.message)
+           }
+            setState { copy(isLoading=false) }
         }
     }
 

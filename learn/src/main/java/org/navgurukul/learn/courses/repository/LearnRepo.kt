@@ -14,7 +14,6 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
-import org.navgurukul.learn.courses.network.model.LearningTrackStatus
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
 
@@ -434,14 +433,11 @@ class LearnRepo(
         }
     }
 
-    suspend fun postLearningTrackStatus(
-        pathwayId: Int,
-        courseId: String,
-        exerciseId: String
+    suspend fun postExerciseCompleteStatus(
+        exerciseId: Int
     ){
         try {
-            val learningTrackStatus = LearningTrackStatus(pathwayId, courseId.toInt(), exerciseId.toInt())
-            courseApi.postLearningTrackStatus(learningTrackStatus)
+             courseApi.postExerciseCompleteStatus(exerciseId)
         }catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }

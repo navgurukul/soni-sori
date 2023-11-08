@@ -78,10 +78,12 @@ interface SaralCoursesApi {
         @Path(value = "pathwayId") pathwayId: Int
     ) : GetCompletedPortion
 
-    @POST("progressTracking/learningTrackStatus")
-    suspend fun postLearningTrackStatus(
-        @Body learningTrackStatus : LearningTrackStatus
-    ) : ResponseBody
+
+    @POST("exercises/{exerciseId}/complete")
+    suspend fun postExerciseCompleteStatus(
+        @Path(value = "exerciseId") exerciseId: Int
+    ): ResponseBody
+
 
     @GET("progressTracking/{courseId}/completedCourseContentIds")
     suspend fun getCompletedContentsIds(
