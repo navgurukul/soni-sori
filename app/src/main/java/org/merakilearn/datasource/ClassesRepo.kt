@@ -10,7 +10,7 @@ import timber.log.Timber
 
 class ClassesRepo(
     val api: SaralApi,
-    val api2:SaralCoursesApi
+    val coursesApi:SaralCoursesApi
 ) {
 
     private val _classesFlow = MutableSharedFlow<List<Classes>?>(replay = 1)
@@ -59,10 +59,10 @@ class ClassesRepo(
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
             if (enrolled) {
-                api2.logOutToClassAsync(classId,false)
+                coursesApi.logOutToClassAsync(classId,false)
                 updateEnrollStatus(classId, false)
             } else {
-                api2.enrollToClassAsync(classId, mutableMapOf(),false)
+                coursesApi.enrollToClassAsync(classId, mutableMapOf(),false)
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {
