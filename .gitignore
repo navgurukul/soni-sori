@@ -3,7 +3,10 @@ app/release
 *pepk
 *patch
 *.iml
+##############################################################################
+### Gradle template
 .gradle
+.gradle/
 /local.properties
 /.idea/*
 .DS_Store

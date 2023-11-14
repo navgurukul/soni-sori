@@ -102,7 +102,7 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .value[0].value
+                .value
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
@@ -231,21 +231,28 @@ class AssessmentFragmentViewModel (
 
     private fun postStudentResult(assessmentId: Int, status : Status, selectedOption: Int?){
         viewModelScope.launch {
-            learnRepo.postStudentResult(assessmentId, status, selectedOption)
+            try {
+                learnRepo.postStudentResult(assessmentId, status, selectedOption)
+            } catch (e: Exception){
+            }
         }
     }
 
     private fun getAttemptStatus(assessmentId: Int){
         viewModelScope.launch {
-            setState { copy(isLoading = false) }
-            val attemptResponse = learnRepo.getStudentResult(assessmentId)
-            val attemptStatus = attemptResponse.attemptStatus
-            if (attemptStatus == AttemptStatus.CORRECT){
-                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
-            } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+            try {
+                setState { copy(isLoading = false) }
+                val attemptResponse = learnRepo.getStudentResult(assessmentId)
+                val attemptStatus = attemptResponse.attemptStatus
+                if (attemptStatus == AttemptStatus.CORRECT){
+                    updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
+                } else if ( attemptStatus == AttemptStatus.INCORRECT){
+                    updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+                }
+            } catch (e: Exception){
+                println(e.message)
             }
         }
     }
@@ -293,7 +300,7 @@ class AssessmentFragmentViewModel (
             return clickedOption.id ==
                     (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                        .value[0].value
+                        .value
 
         }catch (e: Exception){
             return false
