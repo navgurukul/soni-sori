@@ -14,14 +14,17 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.wrapper.BaseRepo
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
+import retrofit2.Response
 import java.net.UnknownHostException
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
     private val application: Application,
     private val database: CoursesDatabase
-) {
+) :BaseRepo() {
 
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
     var lastUpdatedBatches: List<Batch>? = null
@@ -328,16 +331,14 @@ class LearnRepo(
     }
 
     suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
-        if (LearnUtils.isOnline(application)){
-            return try {
-                courseApi.getStudentResult(assessmentId)
-            } catch (ex: Exception){
-                throw ex
-            }
-        } else {
+        try {
+            return courseApi.getStudentResult(assessmentId)
+        } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
-
+        catch (ex: Exception){
+            throw ex
+        }
     }
 
     suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
@@ -356,15 +357,16 @@ class LearnRepo(
         }
     }
 
-    suspend fun getCertificate(pathwayCode : String): CertificateResponse{
-            return try {
-                courseApi.getCertificate(pathwayCode)
-            } catch (e: OfflineException) {
-                throw OfflineException("No network connection")
-            }
-            catch (ex: Exception) {
-                throw ex
-            }
+    suspend fun getCertificate(pathwayCode : String): Resource<CertificateResponse>{
+        return safeApiCall { courseApi.getCertificate(pathwayCode) }
+//            return try {
+//                courseApi.getCertificate(pathwayCode)
+//            } catch (e: OfflineException) {
+//                throw OfflineException("No network connection")
+//            }
+//            catch (ex: Exception) {
+//                throw ex
+//            }
 
 
     }

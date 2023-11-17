@@ -227,6 +227,9 @@ class LearnFragment : Fragment() {
                             )
                     }
                 }
+                is LearnFragmentViewEvents.ShowNetworkErrorScreen ->{
+                    mBinding.emptyStateView.state = EmptyStateView.State.ERROR
+                }
                 else -> {
                 }
 

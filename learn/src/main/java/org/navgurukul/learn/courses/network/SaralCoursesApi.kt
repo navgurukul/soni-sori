@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -93,5 +94,5 @@ interface SaralCoursesApi {
     @GET("certificate")
     suspend fun getCertificate(
         @Query(value = "pathway_code") pathway_code: String
-    ): CertificateResponse
+    ): Response<CertificateResponse>
 }

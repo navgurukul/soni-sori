@@ -84,13 +84,18 @@ class LearnFragmentViewModel(
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
-            checkedStudentEnrolment(pathway.id)
-            learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
-                it?.let {
-                    setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
-                        showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
+            try {
+                checkedStudentEnrolment(pathway.id)
+                learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
+                    it?.let {
+                        setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
+                            showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("LearnFragmentViewModel", "refreshCourses: ${e.message}")
             }
+
             //getCertificate(pathway.id, pathway.code)
         }
     }
@@ -252,9 +257,11 @@ class LearnFragmentViewModel(
         viewModelScope.launch {
             setState { copy(loading = true) }
             try {
-                val certificatePdfUrl = learnRepo.getCertificate(pathwayCode).url
+                val certificatePdfUrl = learnRepo.getCertificate(pathwayCode)
                 println("certificateUrl $certificatePdfUrl")
-                _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl, completedPortion, pathwayName))
+                certificatePdfUrl.data?.let {
+                    _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl.data.url, completedPortion, pathwayName))
+                }
             }catch (e : Exception){
                 e.printStackTrace()
             }
@@ -319,6 +326,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
     object EnrolledSuccessfully : LearnFragmentViewEvents()
     class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int, val pathwayName : String) : LearnFragmentViewEvents()
+    object ShowNetworkErrorScreen : LearnFragmentViewEvents()
 }
 
 sealed class LearnFragmentViewActions : ViewModelAction {
