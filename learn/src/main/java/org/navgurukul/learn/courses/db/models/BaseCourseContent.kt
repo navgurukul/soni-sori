@@ -182,6 +182,8 @@ data class OptionsBaseCourseContent(
         override val component: String,
         @Json(name = "value")
         var value: List<OptionResponse>,
+        @Json(name = "assessment_type")
+        val assessmentType: AssessmentType,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ): BaseCourseContent
