@@ -76,13 +76,13 @@ class AssessmentFragmentViewModel (
     }
 
     @SuppressLint("SuspiciousIndentation")
-    private fun updateList(selectedOptionResponse: OptionResponse, newViewState : OptionViewState, content: List<BaseCourseContent> ?= null) {
+    private fun updateList(selectedOptionResponse: List<OptionResponse>, newViewState : OptionViewState, content: List<BaseCourseContent> ?= null) {
         val currentStateList = content?:viewState.value!!.assessmentContentListForUI
             currentStateList.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                     val optionList = it as OptionsBaseCourseContent
                     for(option in optionList.value){
-                        if (option.id == selectedOptionResponse.id){
+                        if (option.id == selectedOptionResponse[0].id){
                             option.viewState = newViewState
                         }
                         else {
@@ -192,8 +192,8 @@ class AssessmentFragmentViewModel (
                         val selOption = list.attemptStatus?.selectedOption
                         if(!selOption.isNullOrEmpty()){
                             val contentListForUI = getAssessmentListForUI(list.content)
-                            getOptionItemById(selOption[0], contentListForUI)?.let { option ->
-                                showOutputScreen(option, contentListForUI)
+                            getOptionItemById(selOption[0], contentListForUI)?.let {
+//                                showOutputScreen(option, contentListForUI)
                             }
                         } else {
                             //not attempted condition
@@ -280,7 +280,7 @@ class AssessmentFragmentViewModel (
         }
     }
 
-    private fun showOutputScreen(clickedOption: OptionResponse, content: List<BaseCourseContent>? = null){
+    private fun showOutputScreen(clickedOption: List<OptionResponse>, content: List<BaseCourseContent>? = null){
         if (isOptionSelectedCorrect(clickedOption)){
             updateList(clickedOption, OptionViewState.CORRECT, content)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
@@ -290,20 +290,21 @@ class AssessmentFragmentViewModel (
         }
     }
 
-    private fun postResultOnSubmit(clickedOption: OptionResponse){
+    private fun postResultOnSubmit(clickedOption: List<OptionResponse>){
+        val int :Int = clickedOption[0].id
         if (isOptionSelectedCorrect(clickedOption)){
-//            postStudentResult(args.contentId.toInt(), Status.Pass, clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Pass, listOf(int) )
         }
         else{
-//            postStudentResult(args.contentId.toInt(), Status.Fail, clickedOption.id)
+            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
         }
     }
 
     private fun isOptionSelectedCorrect(
-        clickedOption: OptionResponse
+        clickedOption: List<OptionResponse>
     ): Boolean {
         try {
-            return clickedOption.id ==
+            return clickedOption[0].id ==
                     (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
                         .correct_options_value[1].value
@@ -325,8 +326,8 @@ class AssessmentFragmentViewModel (
 
     sealed class AssessmentFragmentViewActions : ViewModelAction {
         object RequestContentRefresh : AssessmentFragmentViewActions()
-        data class SubmitOptionClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
-        data class OptionSelected(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
+        data class SubmitOptionClicked(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
+        data class OptionSelected(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
 //        data class SeeExplanationClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
         object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()

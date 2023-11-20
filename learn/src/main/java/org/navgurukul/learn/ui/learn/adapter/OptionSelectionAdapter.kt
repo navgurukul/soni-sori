@@ -15,7 +15,7 @@ import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class OptionSelectionAdapter(
-    val callback: ((OptionResponse) -> Unit)? = null,
+    val callback: ((List<OptionResponse>) -> Unit)? = null,
     private val assessmentType: AssessmentType? = null
 ):
     DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
@@ -217,7 +217,7 @@ class OptionSelectionAdapter(
 
         callback?.let {
             root.setOnClickListener { view ->
-                it.invoke(item)
+                it.invoke(listOf(item))
 
             }
         }

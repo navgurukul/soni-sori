@@ -38,7 +38,7 @@ class AssessmentFragment : Fragment() {
     private var isContentRvClickable = true
     private lateinit var correctAdapter: ExerciseContentAdapter
     private lateinit var inCorrectAdapter: ExerciseContentAdapter
-    private var selectedOption: OptionResponse? = null
+    private var selectedOption: List<OptionResponse>? = null
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })

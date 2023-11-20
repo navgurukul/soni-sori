@@ -25,7 +25,7 @@ class OptionCourseViewHolder(itemView: View):
         super.setHorizontalMargin(horizontalMargin)
     }
 
-    fun bindView(item: OptionsBaseCourseContent, mOptionCallback: ((OptionResponse) -> Unit)?) {
+    fun bindView(item: OptionsBaseCourseContent, mOptionCallback: ((List<OptionResponse>) -> Unit)?) {
         super.bind(item)
 
         item.value.let {
