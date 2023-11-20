@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
@@ -15,7 +16,7 @@ import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class OptionSelectionAdapter(
     val callback: ((OptionResponse) -> Unit)? = null,
-    val assessmentType: AssessmentType? = null
+    private val assessmentType: AssessmentType? = null
 ):
     DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>(){
@@ -50,13 +51,19 @@ class OptionSelectionAdapter(
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.apply {
-        tvOption.text = item.value
-
-
-        tvOption.text = HtmlCompat.fromHtml(
-            item.value
-                ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT
-        )
+        if (item.optionType == OptionType.text){
+            tvOption.visibility = View.VISIBLE
+            ivImgOption.visibility = View.GONE
+            tvOption.text = item.value
+            tvOption.text = HtmlCompat.fromHtml(item.value, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        }else{
+            tvOption.visibility = View.GONE
+            ivImgOption.visibility = View.VISIBLE
+            Glide
+                .with(ivImgOption.context)
+                .load(item.value)
+                .into(ivImgOption)
+        }
 
 //        val assessmentType = solutionContentList?.get(0)?.assessmentType
 //        val assessmentType = solutionContentList.assessmentType

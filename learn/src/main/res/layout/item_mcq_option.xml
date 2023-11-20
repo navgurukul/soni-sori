@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="@dimen/spacing_4x"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -29,6 +29,8 @@
                 android:clickable="false"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_height="0dp"
                 tools:ignore="MissingConstraints">
             </CheckBox>
@@ -42,6 +44,8 @@
                 android:visibility="visible"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
             </RadioButton>
@@ -49,11 +53,10 @@
 
             <ImageView
                 android:id="@+id/ivImgOption"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:paddingStart="@dimen/spacing_1x"
-                android:visibility="gone"
-                android:checkedButton="@id/checkBox"
+                android:visibility="visible"
                 android:src="@drawable/demo_optiontype_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,13 +71,14 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/spacing_1x"
                 android:layout_marginStart="30dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text ="A. You can not have a chocolate"
                 tools:ignore="RtlSymmetry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </com.google.android.material.card.MaterialCardView>
 
