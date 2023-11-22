@@ -43,6 +43,8 @@ class OptionSelectionAdapter(
        )
     }
 
+    private val selectedOptions = mutableListOf<OptionResponse>()
+
     //for testing purpose
 
 //    private val solutionContentList:List<SolutionBaseCourseContent>?= null
@@ -215,12 +217,21 @@ class OptionSelectionAdapter(
             }
         }
 
-        callback?.let {
-            root.setOnClickListener { view ->
-                it.invoke(listOf(item))
 
+            root.setOnClickListener { view ->
+                if (assessmentType == AssessmentType.single) {
+                    selectedOptions.clear()
+                    selectedOptions.add(item)
+                } else {
+                    if (selectedOptions.contains(item)) {
+                        selectedOptions.remove(item)
+                    } else {
+                        selectedOptions.add(item)
+                    }
+                }
+               callback?.invoke(selectedOptions)
             }
-        }
+
     }
     }
 
