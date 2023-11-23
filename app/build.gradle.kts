@@ -13,6 +13,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+
 android {
     compileSdk = BuildConfigVersions.compileSdkVersion
 
@@ -26,15 +27,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
         getByName("release") {
+
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
+
+            //resValue("bool", "FIREBASE_ENABLED", "true")
         }
 
         getByName("debug") {
             buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
+
+            //resValue("bool", "FIREBASE_ENABLED", "false")
         }
     }
     compileOptions {

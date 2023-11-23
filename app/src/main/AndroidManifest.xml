@@ -145,6 +145,10 @@
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
+
+        <!-- Crashlytics -->
+<!--        <meta-data android:name="firebase_crashlytics_collection_enabled"-->
+<!--            android:value="@bool/FIREBASE_ENABLED" />-->
     </application>
 
 </manifest>
