@@ -102,7 +102,7 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .correct_options_value[1].value
+                .correct_options_value[0].value
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
@@ -261,7 +261,7 @@ class AssessmentFragmentViewModel (
 //                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
 //            }
 //        }
-//    }
+//}
 
     private fun resetList(){
         viewState.value?.assessmentContentListForUI?.forEach {
@@ -291,26 +291,28 @@ class AssessmentFragmentViewModel (
     }
 
     private fun postResultOnSubmit(clickedOption: List<OptionResponse>){
+        val list = mutableListOf<Int>()
         val int :Int = clickedOption[0].id
+        list.add(int)
         if (isOptionSelectedCorrect(clickedOption)){
-            postStudentResult(args.contentId.toInt(), Status.Pass, listOf(int) )
+            postStudentResult(args.contentId.toInt(), Status.Pass, list )
         }
-        else{
-            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
-        }
+//        else{
+//            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
+//        }
     }
 
     private fun isOptionSelectedCorrect(
         clickedOption: List<OptionResponse>
     ): Boolean {
-        try {
-            return clickedOption[0].id ==
+        return try {
+            clickedOption[0].id ==
                     (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                        .correct_options_value[1].value
+                        .correct_options_value[0].value
 
         }catch (e: Exception){
-            return false
+            false
         }
     }
 
