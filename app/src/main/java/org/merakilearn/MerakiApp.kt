@@ -45,12 +45,12 @@ class MerakiApp : Application() {
             .setProjectId("meraki-c6769")
             .setStorageBucket("meraki-c6769.appspot.com")
         FirebaseApp.initializeApp(this, builder.build())
-//        if(BuildConfig.DEBUG) {
-//            Timber.plant(Timber.DebugTree())
-//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
-//        }else { // release or any other variant
-//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-//        }
+        if(BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
+        }else { // release or any other variant
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+        }
 
 
         val config: Config by inject()
