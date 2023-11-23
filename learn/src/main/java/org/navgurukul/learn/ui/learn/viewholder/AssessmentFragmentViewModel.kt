@@ -108,13 +108,13 @@ class AssessmentFragmentViewModel (
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
                     val optionList = it as OptionsBaseCourseContent
                     for (option in optionList.value){
-//                        if (option.id == correctOption){
-//                            option.viewState = OptionViewState.CORRECT
-//                        } else if (option.id == selectedOption){                                                                      // Need to check after during implementation
-//                            option.viewState = OptionViewState.INCORRECT
-//                        }else {
-//                            option.viewState = OptionViewState.NOT_SELECTED
-//                        }
+                        if (option.id == correctOption){
+                            option.viewState = OptionViewState.CORRECT
+                        } else if (option.id == selectedOption[0]){                                                                      // Need to check after during implementation
+                            option.viewState = OptionViewState.INCORRECT
+                        }else {
+                            option.viewState = OptionViewState.NOT_SELECTED
+                        }
                     }
                 }
             }
@@ -141,11 +141,11 @@ class AssessmentFragmentViewModel (
             if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                 val optionList = it as OptionsBaseCourseContent
                 for (option in optionList.value) {
-//                    if (option.id == selectedOption) {
-//                        option.viewState = newViewState
-//                    } else {
-//                        option.viewState = OptionViewState.NOT_SELECTED
-//                    }
+                    if (option.id == selectedOption[0]) {
+                        option.viewState = newViewState
+                    } else {
+                        option.viewState = OptionViewState.NOT_SELECTED
+                    }
                 }
             }
         }
@@ -200,17 +200,17 @@ class AssessmentFragmentViewModel (
                             setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
                         }
 
-//                        list.attemptStatus?.selectedOption?.let{
+                        list.attemptStatus?.selectedOption?.let{
 //                            val contentListForUI = getAssessmentListForUI(list.content)
-//                            getOptionItemById(it[1], contentListForUI)?.let { option ->      // comment for the changes new assessment unused checked above updaated code
-//                                showOutputScreen(option, contentListForUI)
+//                            getOptionItemById(it[1], contentListForUI)?.let {   // comment for the changes new assessment unused checked above updaated code
+////                                showOutputScreen(option, contentListForUI)
 //                            }
-//                        }?: kotlin.run {
-//                            //not attempted condition
-//                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-//                        }
+                        }?: kotlin.run {
+                            //not attempted condition
+                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
+                        }
 
-//                        getAttemptStatus(list.id.toInt())                      // commenting to stop to getassessment api call call
+                        getAttemptStatus(list.id.toInt())                      // commenting to stop to getassessment api call call
 
                     } else {
                         _viewEvents.setValue(
@@ -248,20 +248,20 @@ class AssessmentFragmentViewModel (
         }
     }
 
-//    private fun getAttemptStatus(assessmentId: Int){
-//        viewModelScope.launch {
-//            setState { copy(isLoading = false) }
-//            val attemptResponse = learnRepo.getStudentResult(assessmentId)
-//            val attemptStatus = attemptResponse.attemptStatus
-//            if (attemptStatus == AttemptStatus.CORRECT){
+    private fun getAttemptStatus(assessmentId: Int){
+        viewModelScope.launch {
+            setState { copy(isLoading = false) }
+            val attemptResponse = learnRepo.getStudentResult(assessmentId)
+            val attemptStatus = attemptResponse.attemptStatus
+            if (attemptStatus == AttemptStatus.CORRECT){
 //                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
-//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
-//            } else if ( attemptStatus == AttemptStatus.INCORRECT){
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
+            } else if ( attemptStatus == AttemptStatus.INCORRECT){
 //                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
-//                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
-//            }
-//        }
-//}
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+            }
+        }
+}
 
     private fun resetList(){
         viewState.value?.assessmentContentListForUI?.forEach {
@@ -297,9 +297,9 @@ class AssessmentFragmentViewModel (
         if (isOptionSelectedCorrect(clickedOption)){
             postStudentResult(args.contentId.toInt(), Status.Pass, list )
         }
-//        else{
-//            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
-//        }
+        else{
+            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
+        }
     }
 
     private fun isOptionSelectedCorrect(
