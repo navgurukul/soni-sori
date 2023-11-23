@@ -254,10 +254,10 @@ class AssessmentFragmentViewModel (
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
             val attemptStatus = attemptResponse.attemptStatus
             if (attemptStatus == AttemptStatus.CORRECT){
-//                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
+                updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
             } else if ( attemptStatus == AttemptStatus.INCORRECT){
-//                updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
+                updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
                 _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
             }
         }
@@ -298,7 +298,7 @@ class AssessmentFragmentViewModel (
             postStudentResult(args.contentId.toInt(), Status.Pass, list )
         }
         else{
-            postStudentResult(args.contentId.toInt(), Status.Fail, listOf(int) )
+            postStudentResult(args.contentId.toInt(), Status.Fail, list )
         }
     }
 
