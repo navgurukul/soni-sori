@@ -50,7 +50,7 @@ class OnBoardingViewModel(
         viewModelScope.launch {
             try {
                 val pathwaysResponse = saralCoursesApi.getPathways().pathways
-                val filteredPathways = pathwaysResponse.filter { it.platform == "both" }
+                val filteredPathways = pathwaysResponse.filter { it.platform == "both" || it.platform == "android"}
                 setState { copy(onBoardingData = createOnBoardingData(filteredPathways) )}
                 cardViewsAdded = true
             } catch (e: Exception) {

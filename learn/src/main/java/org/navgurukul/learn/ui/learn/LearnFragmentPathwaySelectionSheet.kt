@@ -71,7 +71,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
             })
 
         viewModel.viewState.observe(viewLifecycleOwner, { state ->
-            val filteredPathways = state.pathways.filter { it.platform == "both" }
+            val filteredPathways = state.pathways.filter { it.platform == "both" || it.platform == "android"}
             adapter.submitList(filteredPathways)
         })
 
