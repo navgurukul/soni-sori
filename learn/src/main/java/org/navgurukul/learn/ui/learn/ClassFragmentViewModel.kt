@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -63,7 +64,8 @@ class ClassFragmentViewModel(
                         if ( status == EnrolStatus.enrolled){
                             if (Date().time > data.endTime.time){
                                 getRevisionClasses(data.id)
-                            }else{
+                            }
+                             else{
                                _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
                             }
                         }
@@ -111,22 +113,29 @@ class ClassFragmentViewModel(
         viewModelScope.launch {
             setState {copy(isLoading = true)}
 
-            val revisionClasses = learnRepo.getRevisionClasses(classId)
-            revisionClasses.let {
-                setState {
-                    copy(
-                        isLoading = false,
-                        revisionClasses = it
-                    )
-                }
-                if (it.isNotEmpty()){
-                    if(it.first().isEnrolled)
-                        _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
-                    else
+            try {
+                val revisionClasses = learnRepo.getRevisionClasses(classId)
+                revisionClasses.let {
+                    setState {
+                        copy(
+                            isLoading = false,
+                            revisionClasses = it
+                        )
+                    }
+                    if (it.isNotEmpty()) {
+                        if (it.first().isEnrolled)
+                            _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
+                        else {
+                            _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+                        }
+                    } else {
                         _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
-                }else{
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+                    }
                 }
+            } catch (e: Exception) {
+                println(e.message)
+                _viewEvents.postValue(ClassFragmentViewEvents.ShowToast("API Error in fetching revision classes"))
+                _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen)
             }
         }
     }
@@ -148,6 +157,7 @@ class ClassFragmentViewModel(
                }
            } catch (e: Exception) {
                println(e.message)
+               _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen)
            }
             setState { copy(isLoading=false) }
         }
@@ -160,6 +170,7 @@ class ClassFragmentViewModel(
         data class ShowClassData(val courseClass : CourseClassContent): ClassFragmentViewEvents()
         data class ShowBatches(val batches : List<Batch>):ClassFragmentViewEvents()
         class OpenLink(val link: String) : ClassFragmentViewEvents()
+        object ShowErrorScreen : ClassFragmentViewEvents()
     }
 
     sealed class ClassFragmentViewActions : ViewModelAction {
