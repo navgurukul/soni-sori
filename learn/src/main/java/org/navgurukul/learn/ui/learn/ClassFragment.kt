@@ -154,7 +154,7 @@ class ClassFragment: Fragment() {
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
 
-                //is ClassFragmentViewModel.ClassFragmentViewEvents.ShowErrorScreen -> showErrorScreen(true)
+                is ClassFragmentViewModel.ClassFragmentViewEvents.ShowErrorScreen -> showErrorScreen(true)
             }
         }
 
