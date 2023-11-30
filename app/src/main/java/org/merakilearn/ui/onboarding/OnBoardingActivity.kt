@@ -5,11 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +33,8 @@ data class OnBoardingActivityArgs(
     val clearNotification: Boolean,
     val showLoginFragment: Boolean = false
 ) : Parcelable
+
+const val UPDATE_REQUEST_CODE = 524
 
 class OnBoardingActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityOnBoardingBinding
@@ -69,33 +78,69 @@ class OnBoardingActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
-
-        viewModel.viewEvents.observe(this) {
-            when (it) {
-                is OnBoardingViewEvents.ShowMainScreen -> {
-                    MainActivity.launch(this, it.pathwayId)
-                    finish()
-                }
-                OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
-                    OnBoardPagesFragment.newInstance(),
-                    OnBoardPagesFragment.TAG,
-                )
-                OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
-                    SelectCourseFragment.newInstance(), SelectCourseFragment.TAG
-                )
-                OnBoardingViewEvents.ShowLoginScreen -> showFragment(
-                    LoginFragment.newInstance(),
-                    LoginFragment.TAG
-                )
-                OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
-                    PartnerFragment.newInstance(),
-                    PartnerFragment.TAG
-                )
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
+            if (resultLauncher.resultCode == RESULT_OK) {
             }
         }
+    private val appUpdateManager: AppUpdateManager by lazy {
+        AppUpdateManagerFactory.create(applicationContext)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener {
+            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    it,
+                    this,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                        .setAllowAssetPackDeletion(true).build(),
+                    UPDATE_REQUEST_CODE
+                )
+                resultLauncher.launch(intent)
+
+            } else {
+                viewModel.viewEvents.observe(this) {
+                    when (it) {
+                        is OnBoardingViewEvents.ShowMainScreen -> {
+                            MainActivity.launch(this, it.pathwayId)
+                            finish()
+                        }
+
+                        OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
+                            OnBoardPagesFragment.newInstance(),
+                            OnBoardPagesFragment.TAG,
+                        )
+
+                        OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
+                            SelectCourseFragment.newInstance(), SelectCourseFragment.TAG
+                        )
+
+                        OnBoardingViewEvents.ShowLoginScreen -> showFragment(
+                            LoginFragment.newInstance(),
+                            LoginFragment.TAG
+                        )
+
+                        OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
+                            PartnerFragment.newInstance(),
+                            PartnerFragment.TAG
+                        )
+                    }
+                }
+                //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
+            }
+        }
+            .addOnFailureListener {
+                Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+            }
+
 
         args?.let { args ->
             appOpenDelegate.onAppOpened(this, args.clearNotification)
