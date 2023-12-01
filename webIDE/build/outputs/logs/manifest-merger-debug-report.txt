@@ -1,0 +1,128 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\Shaina\.gradle\caches\transforms-3\f2792a79b15b0a9ea738f3c50f3f421f\transformed\multidex-2.0.1\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+	package
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:5:5-36
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:4:5-51
+	xmlns:dist
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:3:5-61
+	android:versionCode
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:1-61:12
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:7:5-67
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:7:22-64
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:8:5-80
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:8:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:9:5-81
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:9:22-78
+dist:module
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:11:5-18:19
+	dist:instant
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:12:9-29
+	dist:title
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:13:9-42
+dist:delivery
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:14:9-16:25
+dist:on-demand
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:15:13-31
+dist:fusing
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:17:9-44
+	dist:include
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:17:22-41
+application
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:20:5-59:19
+activity#org.navgurukul.webide.ui.activity.SplashActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:22:9-31:20
+	android:screenOrientation
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:25:13-49
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:24:13-45
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:23:13-55
+activity#org.navgurukul.webide.ui.activity.WebIdeHomeActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:33:9-35:48
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:35:13-45
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:34:13-59
+activity#org.navgurukul.webide.ui.activity.WebActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:36:9-39:48
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:39:13-45
+	android:configChanges
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:38:13-74
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:37:13-52
+activity#org.navgurukul.webide.ui.activity.ProjectActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:40:9-50:20
+	android:parentActivityName
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:44:13-73
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:43:13-45
+	android:windowSoftInputMode
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:45:13-67
+	tools:ignore
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:46:13-43
+	android:configChanges
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:42:13-74
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:41:13-56
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:47:13-49:67
+	android:value
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:49:17-64
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:48:17-63
+activity#org.navgurukul.webide.ui.activity.IntroActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:51:9-63
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:51:19-60
+activity#org.navgurukul.webide.ui.activity.RemotesActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:52:9-54:39
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:54:13-36
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:53:13-56
+activity#org.navgurukul.webide.ui.activity.SettingsActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:55:9-57:55
+	android:label
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:57:13-52
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:56:13-57
+activity#org.navgurukul.webide.ui.activity.AnalyzeActivity
+ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:58:9-65
+	android:name
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml:58:19-62
+uses-sdk
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\Shaina\.gradle\caches\transforms-3\f2792a79b15b0a9ea738f3c50f3f421f\transformed\multidex-2.0.1\AndroidManifest.xml:20:5-43
+MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\Shaina\.gradle\caches\transforms-3\f2792a79b15b0a9ea738f3c50f3f421f\transformed\multidex-2.0.1\AndroidManifest.xml:20:5-43
+INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Shaina\AndroidStudioProjects\soni-sori\webIDE\src\main\AndroidManifest.xml

@@ -1,0 +1,6 @@
+:webIDE::debug
+androidx.multidex:multidex
+com.github.PhilJay:MPAndroidChart
+com.googlecode.javaewah:JavaEWAH
+org.eclipse.jgit:org.eclipse.jgit
+org.slf4j:slf4j-api
