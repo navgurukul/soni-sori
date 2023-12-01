@@ -22,8 +22,8 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
     private val codeBody: EditText = codeLayout.findViewById(R.id.code_body)
 
     private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
-    private val outputTextView = codeLayout.findViewById<TextView>(R.id.Actual_outPut)
-    private val outputTexts = codeLayout.findViewById<TextView>(R.id.out_put_txt)
+    private val outputTextView: TextView = codeLayout.findViewById(R.id.Actual_outPut)
+    private val outputTexts: TextView = codeLayout.findViewById(R.id.out_put_txt)
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
@@ -57,14 +57,9 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
-            outputTextView.visibility = View.VISIBLE
-            outputTexts.visibility = View.VISIBLE
-            val objs: PyObject = pyObj.callAttr("main", codeBody.text.toString())
-            outputTextView.text = objs.toString()
-
+            executeCode(pyObj)
             bottomSheetDialog.show()
         }
-
 
         val resetCode: TextView = codeLayout.findViewById(R.id.reset_code)
         resetCode.setOnClickListener {
@@ -79,4 +74,15 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
             HtmlCompat.FROM_HTML_MODE_COMPACT
         ) as Editable?
     }
+
+    private fun executeCode(pyObj: PyObject) {
+
+        val objs: PyObject = pyObj.callAttr("main", codeBody.text.toString())
+        val executionResults = objs.toString()
+
+        bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)?.text = executionResults
+
+        bottomSheetDialog.show()
+    }
+
 }

@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks" />
 
     <LinearLayout
+        android:id="@+id/layoutExecutionResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -42,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks">
 
         <TextView
-            android:id="@+id/tvOutputs"
+            android:id="@+id/tvExecutionResults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:freezesText="true"
