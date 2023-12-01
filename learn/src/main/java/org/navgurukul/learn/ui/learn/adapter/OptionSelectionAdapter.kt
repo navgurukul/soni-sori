@@ -64,6 +64,7 @@ class OptionSelectionAdapter(
                 Glide
                     .with(ivImgOption.context)
                     .load(item.value)
+                    .centerCrop()
                     .into(ivImgOption)
             }
 

@@ -18,14 +18,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/dimen_10_dp"
+            android:padding="@dimen/spacing_2x"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clOption"
                 android:layout_width="0dp"
-
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,26 +57,27 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivImgOption"
-                android:layout_width="264px"
-                android:layout_height="168px"
+                android:layout_width="match_parent"
+                android:layout_height="148dp"
+                android:layout_marginStart="35dp"
                 android:src="@drawable/demo_optiontype_image"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:scaleType="fitXY"
-                android:layout_marginStart="@dimen/dimen_5_dp"
+                app:shapeAppearanceOverlay="@style/roundImageview"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/clOption"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </ImageView>
+            </com.google.android.material.imageview.ShapeableImageView>
 
             <TextView
                 android:id="@+id/tvOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/spacing_1x"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/clOption"
