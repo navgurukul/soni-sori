@@ -156,8 +156,6 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
-    //implementation("com.github.chuckerteam.chucker:library:4.0.0")
-
 }
 
 tasks.register<Download>("downloadBundleTools") {
