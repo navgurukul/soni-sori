@@ -63,7 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/etInputs"
+            android:id="@+id/etInputId"
             style="@style/Code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

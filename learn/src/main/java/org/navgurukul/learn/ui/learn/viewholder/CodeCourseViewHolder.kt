@@ -13,9 +13,11 @@ import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import com.chaquo.python.PyObject
 import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 
 
 class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private val codeLayout: ConstraintLayout = populateStub(R.layout.example_editor)
     private val codeTitle: TextView = codeLayout.findViewById(R.id.code_title)
@@ -25,7 +27,8 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
     private val outputTextView: TextView = codeLayout.findViewById(R.id.Actual_outPut)
     private val outputTexts: TextView = codeLayout.findViewById(R.id.out_put_txt)
 
-    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var inputEditText: EditText
+    private lateinit var enterButton: MaterialButton
 
     override val horizontalMargin: Int
         get() = 0
@@ -51,14 +54,22 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
             codeTitle.text = item.title
         }
 
+        inputEditText = bottomSheetDialog.findViewById(R.id.etInputId)!!
+        enterButton = bottomSheetDialog.findViewById(R.id.ibEnters)!!
+
         val py = Python.getInstance()
         val pyObj = py.getModule("pyscript")
 
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
-            executeCode(pyObj)
+            val userInput = inputEditText.text.toString()
+            executeCode(pyObj, userInput)
             bottomSheetDialog.show()
+        }
+
+        enterButton.setOnClickListener {
+            val userInput: String = inputEditText.text.toString()
         }
 
         val resetCode: TextView = codeLayout.findViewById(R.id.reset_code)
@@ -75,9 +86,9 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         ) as Editable?
     }
 
-    private fun executeCode(pyObj: PyObject) {
-
-        val objs: PyObject = pyObj.callAttr("main", codeBody.text.toString())
+    private fun executeCode(pyObj: PyObject, userInput: String) {
+        val combinedInput = "${codeBody.text.toString()}\n${userInput}"
+        val objs: PyObject = pyObj.callAttr("main", combinedInput)
         val executionResults = objs.toString()
 
         bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)?.text = executionResults
