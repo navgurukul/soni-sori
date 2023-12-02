@@ -78,7 +78,6 @@ val networkModule = module {
 
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            //.addInterceptor(ChuckerInterceptor(Application()))
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
         okHttpClientBuilder.addInterceptor { chain ->
             val chainBuilder = chain.request().newBuilder()

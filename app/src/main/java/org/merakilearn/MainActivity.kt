@@ -199,7 +199,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         headerIv.isVisible = showProfile
         headerLogOut.isVisible = showLogout
         headerIcon.isVisible = true
-        headerIcon.setImageResource(R.drawable.placeholder_course_icon)
+        //headerIcon.setImageResource(R.drawable.placeholder_course_icon)
 
         headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {
