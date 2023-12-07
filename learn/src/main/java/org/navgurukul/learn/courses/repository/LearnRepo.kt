@@ -2,7 +2,6 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,18 +16,16 @@ import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
-import retrofit2.Response
-import java.net.UnknownHostException
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
     private val application: Application,
     private val database: CoursesDatabase
-) :BaseRepo() {
+) : BaseRepo() {
 
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
     var lastUpdatedBatches: List<Batch>? = null
-    var statusEnrolled: EnrolResponse? = null
+    var statusEnrolled: Resource<EnrolResponse>? = null
 
     class OfflineException(message: String) : Exception(message)
 
@@ -290,27 +287,20 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
-    suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
-            return try {
-                courseApi.getRevisionClasses(classId)
-            }catch (e: OfflineException) {
-                throw OfflineException("No network connection")
-            }
-            catch (ex: Exception){
-                throw ex
-            }
+    suspend fun getRevisionClasses(classId: String): Resource<List<CourseClassContent>> {
+        return safeApiCall { courseApi.getRevisionClasses(classId) }
     }
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
+    suspend fun checkedStudentEnrolment(pathwayId: Int): Resource<EnrolResponse>? {
         if(LearnUtils.isOnline(application))
-            statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+            statusEnrolled = safeApiCall {courseApi.checkedStudentEnrolment(pathwayId)}
         return statusEnrolled
     }
 
-    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
+    suspend fun getBatchesListByPathway(pathwayId: Int): Resource<List<Batch>>? {
         if(LearnUtils.isOnline(application)) {
             return try {
-                courseApi.getBatchesAsync(pathwayId)
+                safeApiCall {courseApi.getBatchesAsync(pathwayId) }
             } catch (ex: Exception){
                 throw ex
             }
@@ -318,10 +308,9 @@ class LearnRepo(
         return null
     }
 
-
-    suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
+    suspend fun getUpcomingClass(pathwayId: Int): Resource<List<CourseClassContent>> {
         return try {
-            courseApi.getUpcomingClass(pathwayId)
+           safeApiCall { courseApi.getUpcomingClass(pathwayId) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
@@ -341,34 +330,12 @@ class LearnRepo(
         }
     }
 
-    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
-        if (!LearnUtils.isOnline(application)) {
-            // Handle offline scenario here
-            // For example, return a default or empty result indicating no network connection
-            return GetCompletedPortion(pathwayId) // Return default or empty result
-        }
-
-        return try {
-            courseApi.getCompletedPortionData(pathwayId)
-        } catch (ex: UnknownHostException) {
-            Toast.makeText(application, "Check Internet Connectivity!", Toast.LENGTH_LONG).show()
-            // Handle other exceptions if needed
-            throw ex
-        }
+    suspend fun getCompletedPortion(pathwayId: Int): Resource<GetCompletedPortion> {
+        return safeApiCall {  courseApi.getCompletedPortionData(pathwayId)}
     }
 
     suspend fun getCertificate(pathwayCode : String): Resource<CertificateResponse>{
         return safeApiCall { courseApi.getCertificate(pathwayCode) }
-//            return try {
-//                courseApi.getCertificate(pathwayCode)
-//            } catch (e: OfflineException) {
-//                throw OfflineException("No network connection")
-//            }
-//            catch (ex: Exception) {
-//                throw ex
-//            }
-
-
     }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         if (LearnUtils.isOnline(application)){
@@ -415,7 +382,7 @@ class LearnRepo(
     ){
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
-            courseApi.postStudentResult(studentResult)
+            safeApiCall { courseApi.postStudentResult(studentResult) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
@@ -439,7 +406,7 @@ class LearnRepo(
         exerciseId: Int
     ){
         try {
-             courseApi.postExerciseCompleteStatus(exerciseId)
+             safeApiCall {courseApi.postExerciseCompleteStatus(exerciseId) }
         }catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }

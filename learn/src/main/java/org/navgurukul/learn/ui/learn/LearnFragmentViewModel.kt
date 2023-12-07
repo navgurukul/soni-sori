@@ -19,6 +19,7 @@ import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 
 class LearnFragmentViewModel(
@@ -100,7 +101,7 @@ class LearnFragmentViewModel(
         }
     }
 
-    fun selectPathway(pathway: Pathway) {
+     fun selectPathway(pathway: Pathway) {
         val selectedLanguage = pathway.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label ?: pathway.supportedLanguages[0].label
         setState {
             copy(
@@ -165,24 +166,30 @@ class LearnFragmentViewModel(
      private fun checkedStudentEnrolment(pathwayId: Int){
         viewModelScope.launch {
             setState { copy(loading= true) }
-            try {
-                val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
-                when (status) {
-                    EnrolStatus.enrolled -> {
-                        getUpcomingClasses(pathwayId)
-                    }
-                    EnrolStatus.not_enrolled -> {
-                        getBatchesDataByPathway(pathwayId)
-                    }
-                    EnrolStatus.enrolled_but_finished -> {
-                        getBatchesDataByPathway(pathwayId)
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+            val status = learnRepo.checkedStudentEnrolment(pathwayId)
+            when (status){
+                is Resource.Success -> {
+                    when(status.data?.message){
+                        EnrolStatus.enrolled -> {
+                            getUpcomingClasses(pathwayId)
+                            Log.e("LearnFragmentViewModel", "checkedStudentEnrolment1: ${status.message}")
+                        }
+                        EnrolStatus.not_enrolled -> {
+                            getBatchesDataByPathway(pathwayId)
+                            Log.e("LearnFragmentViewModel", "checkedStudentEnrolment2: ${status.message}")
+                        }
+                        EnrolStatus.enrolled_but_finished -> {
+                            getBatchesDataByPathway(pathwayId)
+                            _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+                            Log.e("LearnFragmentViewModel", "checkedStudentEnrolment3: ${status.message}")
+                        }
                     }
                 }
-            }catch (e: Exception){
-               println(e.message)
+                is Resource.Error -> {
+                    setState { copy(loading= false) }
+                    Log.e("LearnFragmentViewModel", "checkedStudentEnrolment: ${status.message}")
+                }
             }
-
         }
     }
 
@@ -200,18 +207,24 @@ class LearnFragmentViewModel(
         viewModelScope.launch {
             try{
                 val batches =learnRepo.getBatchesListByPathway(pathwayId)
-                batches?.let {
-                    setState {
-                        copy(
-                            batches = it,
-                            classes = emptyList()
-                        )
+                when (batches){
+                    is Resource.Success -> {
+                        batches.data?.let {
+                            setState {
+                                copy(
+                                    batches = it,
+                                    classes = emptyList()
+                                )
+                            }
+                            if(it.isNotEmpty()){
+                                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
+                            }
+                        }
                     }
-                    if(it.isNotEmpty()){
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
+                    is Resource.Error -> {
+                        Log.e("LearnFragmentViewModel", "getBatchesDataByPathway: ${batches.message}")
                     }
                 }
-                setState { copy(loading = false) }
             } catch (e: Exception){
                 println(e.message)
             }
@@ -220,50 +233,67 @@ class LearnFragmentViewModel(
 
     private fun getUpcomingClasses(pathwayId: Int){
         viewModelScope.launch {
-            try {
-                val classes = learnRepo.getUpcomingClass(pathwayId)
-                classes.let {
-                    setState {
-                        copy(
-                            classes = it,
-                            batches = emptyList()
-                        )
-                    }
-                    if (it.isNotEmpty()){
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
+            val classes = learnRepo.getUpcomingClass(pathwayId)
+            when (classes){
+                is Resource.Success -> {
+                    classes.data?.let {
+                        setState {
+                            copy(
+                                classes = it,
+                                batches = emptyList()
+                            )
+                        }
+                        if (it.isNotEmpty()){
+                            _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(it))
+                        }
                     }
                 }
-                setState { copy(loading = false) }
-            } catch (e: Exception){
-                println(e.message)
+                is Resource.Error -> {
+                    Log.e("LearnFragmentViewModel", "getUpcomingClasses2: ${classes.message}")
+                }
+                else -> {
+                    Log.e("LearnFragmentViewModel", "getUpcomingClasses: ${classes.message}")
+                }
             }
-
         }
     }
 
      private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
-        viewModelScope.launch {
-            try {
-                val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-                getCertificatePdf(completedData, pathwayCode, pathwayName)
-            } catch (e : Exception){
-               Log.d("getCertificate", e.message?:"")
-            }
-
-        }
+         viewModelScope.launch {
+             val response = learnRepo.getCompletedPortion(pathwayId)
+             when (response) {
+                 is Resource.Success -> {
+                     response.data?.let {
+                         getCertificatePdf(it.totalCompletedPortion, pathwayCode, pathwayName)
+                     }
+                     response
+                 }
+                 is Resource.Error -> {
+                     Log.d("LearnFragmentViewModel", response.message?:"")
+                 }
+                 else -> {
+                     Log.d("LearnFragmentViewModel", response.message?:"")
+                 }
+             }
+         }
     }
 
     private fun getCertificatePdf(completedPortion: Int, pathwayCode : String, pathwayName: String){
         viewModelScope.launch {
-            setState { copy(loading = true) }
-            try {
-                val certificatePdfUrl = learnRepo.getCertificate(pathwayCode)
-                println("certificateUrl $certificatePdfUrl")
-                certificatePdfUrl.data?.let {
-                    _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(certificatePdfUrl.data.url, completedPortion, pathwayName))
+            val response = learnRepo.getCertificate(pathwayCode)
+            when (response){
+                is Resource.Success -> {
+                    response.data?.let {
+                        _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(response.data.url, completedPortion, pathwayName))
+                    }
+                    response
                 }
-            }catch (e : Exception){
-                e.printStackTrace()
+                is Resource.Error -> {
+                    Log.d("LearnFragmentViewModel", response.message?:"Some error occurred")
+                }
+                else -> {
+                    Log.d("LearnFragmentViewModel", response.message?:"Some error occurred")
+                }
             }
         }
     }

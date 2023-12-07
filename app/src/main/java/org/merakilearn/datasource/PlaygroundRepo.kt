@@ -8,11 +8,13 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.ProjectNameAndUrl
 import org.merakilearn.datasource.network.model.UpdateSuccessS3UploadResponse
 import org.merakilearn.datasource.network.model.UploadCredentials
+import org.navgurukul.learn.courses.network.wrapper.BaseRepo
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import timber.log.Timber
 
 class PlaygroundRepo(
     private val api: SaralApi,
-) {
+): BaseRepo() {
 
     fun getAllPlaygrounds(): List<PlaygroundItemModel> {
         return arrayListOf(
@@ -45,10 +47,9 @@ class PlaygroundRepo(
         }
     }
 
-    suspend fun updateSuccessS3Upload(projectId: String, projectNameAndUrl: ProjectNameAndUrl): UpdateSuccessS3UploadResponse? {
+    suspend fun updateSuccessS3Upload(projectId: String, projectNameAndUrl: ProjectNameAndUrl): Resource<UpdateSuccessS3UploadResponse>? {
         return try {
-            val response = api.updateSuccessS3Upload(projectId, projectNameAndUrl)
-            response
+            safeApiCall { api.updateSuccessS3Upload(projectId, projectNameAndUrl) }
         } catch (ex: Exception) {
             Timber.tag("PLAYGROUND_REPO").e(ex,"updateSuccessS3UploadResponse")
             null

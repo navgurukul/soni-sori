@@ -17,14 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.batches_in_exercise.*
 import kotlinx.android.synthetic.main.class_course_detail.*
-import kotlinx.android.synthetic.main.class_course_detail.tvDate
-import kotlinx.android.synthetic.main.class_course_detail.tvFacilatorName
 import kotlinx.android.synthetic.main.fragment_class.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.layout_revision_dialog.view.*
 import kotlinx.android.synthetic.main.revision_class.*
 import kotlinx.android.synthetic.main.revision_selection_sheet.*
-import kotlinx.android.synthetic.main.revision_selection_sheet.btnRevision
 import kotlinx.android.synthetic.main.revision_selection_sheet.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -153,6 +150,7 @@ class ClassFragment: Fragment() {
                 }
 
                 is ClassFragmentViewModel.ClassFragmentViewEvents.OpenLink -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.link)))
+                is ClassFragmentViewModel.ClassFragmentViewEvents.ShowErrorScreen -> showErrorScreen(it.isError)
             }
         }
 
@@ -271,7 +269,7 @@ class ClassFragment: Fragment() {
     }
 
     private fun setupClassHeaderDeatils(courseClass: CourseClassContent) {
-        completeText.text = "Completed on "+courseClass.startTime.toDate()
+        completeText.text = "Completed on ${courseClass.startTime.toDate()}"
         tvSubTitle.text = courseClass.subTitle ?: ""
         tvClassType.text = courseClass.type.name.capitalizeWords()
         tvClassLanguage.text = courseClass.displayableLanguage()

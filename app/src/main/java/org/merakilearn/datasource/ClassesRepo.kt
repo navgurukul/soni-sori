@@ -1,17 +1,19 @@
 package org.merakilearn.datasource
 
-import android.util.Log
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.Classes
 import org.navgurukul.learn.courses.network.SaralCoursesApi
+import org.navgurukul.learn.courses.network.wrapper.BaseRepo
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import timber.log.Timber
 
 class ClassesRepo(
     val saralApi: SaralApi,
     val coursesApi:SaralCoursesApi
-) {
+) : BaseRepo() {
 
     private val _classesFlow = MutableSharedFlow<List<Classes>?>(replay = 1)
 
@@ -39,17 +41,9 @@ class ClassesRepo(
         }
     }
 
-    suspend fun getEnrolledBatches(): List<Batches>? {
+    suspend fun getEnrolledBatches(): Resource<List<Batches>>? {
         return try {
-            val res = saralApi.getEnrolledBatches()
-            if (res.isSuccessful) {
-                res.body()
-            } else {
-                val errorBody = res.errorBody()?.string()
-                val errorMessage = "Failed to get enrolled batches. Response code: ${res.code()}. Error body: $errorBody"
-                Log.e("LearnRepo", errorMessage)
-                null
-            }
+            safeApiCall { saralApi.getEnrolledBatches() }
         } catch (ex: Exception) {
             ex.printStackTrace()
             null

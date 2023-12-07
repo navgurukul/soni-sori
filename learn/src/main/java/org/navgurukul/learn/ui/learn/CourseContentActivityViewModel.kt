@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.repository.LearnRepo
-import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.repository.LearnRepo
 
 class CourseContentActivityViewModel(
     private val learnRepo: LearnRepo,
