@@ -98,20 +98,25 @@ class EnrollViewModel(
     private fun dropOut() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val result = classesRepo.enrollToClass(classId, true)
-            setState { copy(isLoading = false) }
-            if (result) {
-                isEnrolled = false
-                setState {
-                    copy(
-                        isLoading = false,
-                        primaryAction = stringProvider.getString(R.string.enroll_to_class),
-                        menuId = null,
-                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
-                    )
+            try {
+                val result = classesRepo.enrollToClass(classId, true)
+                setState { copy(isLoading = false) }
+                if (result) {
+                    isEnrolled = false
+                    setState {
+                        copy(
+                            isLoading = false,
+                            primaryAction = stringProvider.getString(R.string.enroll_to_class),
+                            menuId = null,
+                            primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        )
+                    }
+                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
+                } else {
+                    setState { copy(isLoading = false) }
+                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
                 }
-                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
-            } else {
+            } catch (e: Exception) {
                 setState { copy(isLoading = false) }
                 _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
             }

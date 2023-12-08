@@ -112,18 +112,23 @@ class ProfileViewModel(
     private fun dropOut(batchId: Int) {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val result = classesRepo.enrollToClass(batchId, true)
-            setState { copy(isLoading = false) }
-            if (result) {
-                isEnrolled = false
-                setState {
-                    copy(
-                        isLoading = false
-                    )
+            try {
+                val result = classesRepo.enrollToClass(batchId, true)
+                setState { copy(isLoading = false) }
+                if (result) {
+                    isEnrolled = false
+                    setState {
+                        copy(
+                            isLoading = false
+                        )
+                    }
+                    getEnrolledBatches()
+                    _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
+                } else {
+                    setState { copy(isLoading = false) }
+                    _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
                 }
-                getEnrolledBatches()
-                _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
-            } else {
+            } catch (e: Exception) {
                 setState { copy(isLoading = false) }
                 _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
             }

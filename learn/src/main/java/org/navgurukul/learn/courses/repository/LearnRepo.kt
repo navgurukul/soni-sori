@@ -295,6 +295,15 @@ class LearnRepo(
         if(LearnUtils.isOnline(application))
             statusEnrolled = safeApiCall {courseApi.checkedStudentEnrolment(pathwayId)}
         return statusEnrolled
+
+//     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
+//         try {
+//             if (LearnUtils.isOnline(application))
+//                 statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
+//             return statusEnrolled
+//         } catch (ex: Exception){
+//             throw ex
+//         }
     }
 
     suspend fun getBatchesListByPathway(pathwayId: Int): Resource<List<Batch>>? {
