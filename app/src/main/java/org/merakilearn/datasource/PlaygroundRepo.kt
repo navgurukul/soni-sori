@@ -1,6 +1,7 @@
 package org.merakilearn.datasource
 
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.merakilearn.R
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
@@ -40,6 +41,7 @@ class PlaygroundRepo(
             val response = api.getUploadCredentials()
             response
         } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
             Timber.tag("PLAYGROUND_REPO").e(ex, "getUploadCredentials: ")
             null
         }
@@ -50,6 +52,7 @@ class PlaygroundRepo(
             val response = api.updateSuccessS3Upload(projectId, projectNameAndUrl)
             response
         } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
             Timber.tag("PLAYGROUND_REPO").e(ex,"updateSuccessS3UploadResponse")
             null
         }

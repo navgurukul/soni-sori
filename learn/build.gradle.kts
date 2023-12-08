@@ -123,5 +123,6 @@ dependencies {
 
     //firebase
     implementation(FirebaseDependencies.perfKtx)
+    implementation(FirebaseDependencies.crashlyticsKtx)
 
 }
