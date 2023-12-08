@@ -4,7 +4,7 @@
     android:id="@+id/bottomSheets"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_peek_layout"
+    android:background="@drawable/user_input_background"
     android:paddingBottom="@dimen/spacing_4x"
     app:behavior_hideable="true"
     app:behavior_peekHeight="@dimen/height_bottom_peek"

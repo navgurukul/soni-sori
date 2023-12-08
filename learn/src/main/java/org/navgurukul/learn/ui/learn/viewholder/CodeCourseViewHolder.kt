@@ -14,6 +14,10 @@ import com.chaquo.python.PyObject
 import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.PrintStream
 
 
 class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
@@ -63,13 +67,12 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
-            val userInput = inputEditText.text.toString()
-            executeCode(pyObj, userInput)
+            executeCode(pyObj, inputEditText.text.toString())
             bottomSheetDialog.show()
         }
 
         enterButton.setOnClickListener {
-            val userInput: String = inputEditText.text.toString()
+            executeCode(pyObj, inputEditText.text.toString())
         }
 
         val resetCode: TextView = codeLayout.findViewById(R.id.reset_code)
@@ -86,14 +89,44 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         ) as Editable?
     }
 
-    private fun executeCode(pyObj: PyObject, userInput: String) {
-        val combinedInput = "${codeBody.text.toString()}\n${userInput}"
-        val objs: PyObject = pyObj.callAttr("main", combinedInput)
-        val executionResults = objs.toString()
+    private fun executeCode(pyObj: PyObject, userInput: String?) {
+        val originalInputStream: InputStream = System.`in`
+        val originalOutputStream: PrintStream = System.out
 
-        bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)?.text = executionResults
+        val inputBytes: ByteArrayInputStream = if (!userInput.isNullOrBlank()) {
+            ByteArrayInputStream(userInput.toByteArray())
+        } else {
 
-        bottomSheetDialog.show()
+            ByteArrayInputStream("".toByteArray())
+        }
+
+        val outputBytes: ByteArrayOutputStream = ByteArrayOutputStream()
+
+        try {
+            System.setIn(inputBytes)
+            System.setOut(PrintStream(outputBytes))
+            val scriptCode = codeBody.text.toString()
+            val execResult = pyObj.callAttr("main", scriptCode)
+            val output = execResult.toString()
+            System.setIn(originalInputStream)
+            System.setOut(originalOutputStream)
+            val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
+            val outputToShow = "Output:\n$output"
+            executionResultsTextView?.text = outputToShow
+            if (!userInput.isNullOrBlank()) {
+                inputEditText?.setText("")
+            }
+            bottomSheetDialog.show()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
+            executionResultsTextView?.text = "Error during execution: End of input reached."
+            System.setIn(originalInputStream)
+            System.setOut(originalOutputStream)
+            bottomSheetDialog.show()
+
+        }
     }
 
 }
