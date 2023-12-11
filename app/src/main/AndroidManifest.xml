@@ -122,6 +122,12 @@
             </intent-filter>
         </activity>
         <activity
+        android:name=".ui.SplashActivity"
+        android:exported="true"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".ui.ScratchActivity"
             android:exported="true"
             android:label="@string/app_name"
