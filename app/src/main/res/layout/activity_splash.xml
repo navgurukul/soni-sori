@@ -6,28 +6,53 @@
         android:layout_height="match_parent"
         android:background="#F5F1F1">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imageContainer"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/headerImageViewForChristmas"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/top_decoration_1"
-        android:scaleType="fitXY"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+            <ImageView
+                android:id="@+id/headerImageViewForChristmas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/top_decoration_1"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
-        android:id="@+id/headerImageViewForNewYear"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/flag"
-        android:scaleType="fitXY"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+            <ImageView
+                android:id="@+id/headerImageViewForNewYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/flag"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/snowAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:scaleType="matrix"
+            app:lottie_fileName="Animation - 1702034076123 (1).json"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+
 
     <ImageView
         android:id="@+id/logoImageViewForChristmas"
@@ -68,20 +93,12 @@
         android:id="@+id/navgurukulTextImageView"
         android:layout_width="@dimen/dimen_100_dp"
         android:layout_height="@dimen/dimen_100_dp"
-        android:src="@drawable/navgurukul_text"
+        android:src="@drawable/img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/snowAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_fileName="Animation - 1702034076123 (1).json"
-        app:layout_constraintTop_toBottomOf="@id/headerImageViewForChristmas"
-        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
