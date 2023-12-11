@@ -156,6 +156,8 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
+    //lottie
+    implementation ("com.airbnb.android:lottie:4.2.0")
 }
 
 tasks.register<Download>("downloadBundleTools") {
