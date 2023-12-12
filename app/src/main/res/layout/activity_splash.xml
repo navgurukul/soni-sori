@@ -84,6 +84,7 @@
         android:id="@+id/quoteTextView"
         android:text="from"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +95,7 @@
         android:layout_width="@dimen/dimen_100_dp"
         android:layout_height="@dimen/dimen_100_dp"
         android:src="@drawable/img"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
