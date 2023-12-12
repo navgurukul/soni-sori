@@ -1,7 +1,5 @@
 package org.merakilearn.ui
 
-
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,34 +10,21 @@ import androidx.databinding.DataBindingUtil
 import org.merakilearn.R
 import org.merakilearn.databinding.ActivitySplashBinding
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.merakilearn.util.toDay
 import java.util.*
 
 
 class SplashActivity : AppCompatActivity() {
    private lateinit var binding : ActivitySplashBinding
-
-   // private val currentDate = Date().toDay()
-
    private val currentDate =  Calendar.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_splash)
-
-        try{
-            setUpTheme()
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
-
-
+        setUpTheme()
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, OnBoardingActivity::class.java)
             startActivity(intent)
             finish()
-        }, 2000)
-
+        }, 3000)
     }
 
     private fun setUpTheme(){
@@ -58,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
             headerImageViewForNewYear.visibility = View.GONE
             snowAnimationView.visibility = View.VISIBLE
             logoImageViewForChristmas.visibility = View.VISIBLE
-            logoImageView.visibility = View.VISIBLE
+            logoImageView.visibility = View.GONE
             quoteTextView.visibility = View.VISIBLE
             navgurukulTextImageView.visibility = View.VISIBLE
         }
@@ -92,14 +77,14 @@ class SplashActivity : AppCompatActivity() {
     private fun isChristmas(): Boolean {
         val christmasStart = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 22)
+            set(Calendar.DAY_OF_MONTH, 12)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
         val christmasEnd = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 26)
+            set(Calendar.DAY_OF_MONTH, 15)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
@@ -110,14 +95,14 @@ class SplashActivity : AppCompatActivity() {
     private fun isNewYear(): Boolean {
         val newYearStart = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 31)
+            set(Calendar.DAY_OF_MONTH, 16)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
         val newYearEnd = Calendar.getInstance().apply {
-            set(Calendar.MONTH, Calendar.JANUARY)
-            set(Calendar.DAY_OF_MONTH, 2)
+            set(Calendar.MONTH, Calendar.DECEMBER)
+            set(Calendar.DAY_OF_MONTH, 20)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
