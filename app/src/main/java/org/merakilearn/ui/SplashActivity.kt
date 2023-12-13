@@ -29,12 +29,16 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setUpTheme(){
-        if (isChristmas()){
-            setChristmasTheme()
-        }else if (isNewYear()){
-            setNewYearTheme()
-        }else{
-            setNormalTheme()
+        when {
+            isChristmas() -> {
+                setChristmasTheme()
+            }
+            isNewYear() -> {
+                setNewYearTheme()
+            }
+            else -> {
+                setNormalTheme()
+            }
         }
     }
 
@@ -60,6 +64,7 @@ class SplashActivity : AppCompatActivity() {
             logoImageView.visibility = View.VISIBLE
             quoteTextView.visibility = View.VISIBLE
             navgurukulTextImageView.visibility = View.VISIBLE
+            splashLayout.setBackgroundColor(resources.getColor(R.color.white))
         }
     }
 
@@ -72,6 +77,7 @@ class SplashActivity : AppCompatActivity() {
             logoImageView.visibility = View.VISIBLE
             quoteTextView.visibility = View.GONE
             navgurukulTextImageView.visibility = View.GONE
+            splashLayout.setBackgroundColor(resources.getColor(R.color.white))
         }
     }
 
