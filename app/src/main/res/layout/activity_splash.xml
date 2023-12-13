@@ -42,7 +42,7 @@
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/snowAnimationView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             android:scaleType="matrix"
@@ -55,12 +55,12 @@
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/newYearAnimation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             android:visibility="gone"
             android:scaleType="matrix"
-            app:lottie_rawRes="@raw/newsyear"
+            app:lottie_rawRes="@raw/newyear_animation"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
