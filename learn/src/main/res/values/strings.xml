@@ -163,6 +163,7 @@
     <string name="have_you_completed_the_overview">Have you completed the overview?</string>
     <string name="locked">(Locked)</string>
     <string name="text_certificate">%1$s Certificate</string>
+    <string name="error_text">Something went wrong</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

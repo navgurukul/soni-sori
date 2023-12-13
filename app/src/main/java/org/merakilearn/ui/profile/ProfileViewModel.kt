@@ -273,7 +273,7 @@ class ProfileViewModel(
                                 )
                             }
                             if (it.isNotEmpty()) {
-                                _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches.data!!))
+                                _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(it))
                             }
                         }
                     }
@@ -282,8 +282,8 @@ class ProfileViewModel(
                     }
                 }
 
-            }catch (e:Exception){
-                Log.e("Exception",e.toString())
+            }catch (e:Exception) {
+                Timber.tag("Exception").e(e.toString())
             }
         }
     }

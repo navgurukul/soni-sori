@@ -37,14 +37,14 @@ interface SaralCoursesApi {
     ):Response<List<CourseClassContent>>
 
     @POST("classes/{classId}/register")
-    suspend fun enrollToClassAsync(                  // finding issue in this api
+    suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
         @Body hashMap: MutableMap<String, Any>,
         @Query("register-all") shouldRegisterAll: Boolean
     ): Response<ResponseBody>
 
     @DELETE("classes/{classId}/unregister")
-    suspend fun logOutToClassAsync(        // finding issue in this api
+    suspend fun logOutToClassAsync(
         @Path(value = "classId") classId: Int,
         @Query("unregister-all") shouldUnregisterAll: Boolean
     ): Response<ResponseBody>
@@ -70,9 +70,9 @@ interface SaralCoursesApi {
     ) : Response<StudentResponse>
 
     @GET("assessment/{assessmentId}/student/result")
-    suspend fun getStudentResult(                    // finding issue in this api
+    suspend fun getStudentResult(
         @Path(value = "assessmentId")  assessmentId : Int
-    ): AttemptResponse
+    ): Response<AttemptResponse>
 
     @GET("pathways/{pathwayId}/completePortion")
     suspend fun getCompletedPortionData(
@@ -87,7 +87,7 @@ interface SaralCoursesApi {
 
 
     @GET("progressTracking/{courseId}/completedCourseContentIds")
-    suspend fun getCompletedContentsIds(                                // Getting problem
+    suspend fun getCompletedContentsIds(
         @Path(value = "courseId") courseId: String
     ): CompletedContentsIds
 

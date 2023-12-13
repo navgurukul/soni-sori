@@ -295,15 +295,6 @@ class LearnRepo(
         if(LearnUtils.isOnline(application))
             statusEnrolled = safeApiCall {courseApi.checkedStudentEnrolment(pathwayId)}
         return statusEnrolled
-
-//     suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
-//         try {
-//             if (LearnUtils.isOnline(application))
-//                 statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
-//             return statusEnrolled
-//         } catch (ex: Exception){
-//             throw ex
-//         }
     }
 
     suspend fun getBatchesListByPathway(pathwayId: Int): Resource<List<Batch>>? {
@@ -328,9 +319,9 @@ class LearnRepo(
         }
     }
 
-    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
+    suspend fun getStudentResult(assessmentId: Int) : Resource<AttemptResponse> {
         try {
-            return courseApi.getStudentResult(assessmentId)
+            return safeApiCall {courseApi.getStudentResult(assessmentId) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }

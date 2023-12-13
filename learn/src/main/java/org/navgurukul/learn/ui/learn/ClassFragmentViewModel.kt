@@ -144,30 +144,7 @@ class ClassFragmentViewModel(
                }
                 else -> {
                     Log.d("ClassFragmentViewModel", "getRevisionClasses: ")
-
-//             try {
-//                 val revisionClasses = learnRepo.getRevisionClasses(classId)
-//                 revisionClasses.let {
-//                     setState {
-//                         copy(
-//                             isLoading = false,
-//                             revisionClasses = it
-//                         )
-//                     }
-//                     if (it.isNotEmpty()) {
-//                         if (it.first().isEnrolled)
-//                             _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
-//                         else {
-//                             _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
-//                         }
-//                     } else {
-//                         _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
-//                     }
                 }
-            } catch (e: Exception) {
-                println(e.message)
-                _viewEvents.postValue(ClassFragmentViewEvents.ShowToast("API Error in fetching revision classes"))
-//                 _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen)
             }
 
         }
@@ -202,7 +179,7 @@ class ClassFragmentViewModel(
 
            } catch (e: Exception) {
                println(e.message)
-               _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen)
+               _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
            }
             setState { copy(isLoading=false) }
         }
@@ -216,7 +193,6 @@ class ClassFragmentViewModel(
         data class ShowBatches(val batches : List<Batch>):ClassFragmentViewEvents()
         class OpenLink(val link: String) : ClassFragmentViewEvents()
         class ShowErrorScreen(val isError: Boolean) : ClassFragmentViewEvents()
-//         object ShowErrorScreen : ClassFragmentViewEvents()
     }
 
     sealed class ClassFragmentViewActions : ViewModelAction {

@@ -32,7 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
 import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
@@ -91,9 +90,6 @@ class LearnFragment : Fragment() {
 
         mBinding.progressBarButton.visibility = View.VISIBLE
         mBinding.emptyStateView.state = EmptyStateView.State.LOADING
-
-//        mBinding.batchCard.root.visibility = View.GONE
-//        mBinding.upcoming.root.visibility = View.GONE
 
         initSwipeRefresh()
 
@@ -237,6 +233,17 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private fun showErrorScreen(isError: Boolean) {
+        if (isError) {
+            mBinding.emptyStateView.visibility = View.VISIBLE
+            mBinding.emptyStateView.state = EmptyStateView.State.ERROR
+
+        } else {
+            mBinding.emptyStateView.visibility = View.GONE
+//            mBinding.errorLayout.root.visibility = View.GONE
+//            mBinding.tvClassDetail.visibility = View.VISIBLE
+        }
+    }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
         val textView : TextView = mBinding.certificate.root.locked_status
