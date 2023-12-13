@@ -54,6 +54,7 @@ class SplashActivity : AppCompatActivity() {
             headerImageViewForChristmas.visibility = View.GONE
             headerImageViewForNewYear.visibility = View.VISIBLE
             snowAnimationView.visibility = View.GONE
+            newYearAnimation.visibility = View.VISIBLE
             logoImageViewForChristmas.visibility = View.GONE
             logoImageView.visibility = View.VISIBLE
             quoteTextView.visibility = View.VISIBLE
@@ -77,14 +78,14 @@ class SplashActivity : AppCompatActivity() {
     private fun isChristmas(): Boolean {
         val christmasStart = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 12)
+            set(Calendar.DAY_OF_MONTH, 22)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
         val christmasEnd = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 15)
+            set(Calendar.DAY_OF_MONTH, 26)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
@@ -95,14 +96,14 @@ class SplashActivity : AppCompatActivity() {
     private fun isNewYear(): Boolean {
         val newYearStart = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 16)
+            set(Calendar.DAY_OF_MONTH, 30)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
         val newYearEnd = Calendar.getInstance().apply {
-            set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 20)
+            set(Calendar.MONTH, Calendar.JANUARY)
+            set(Calendar.DAY_OF_MONTH,2 )
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
