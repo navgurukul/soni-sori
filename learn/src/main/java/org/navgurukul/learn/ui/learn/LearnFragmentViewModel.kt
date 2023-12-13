@@ -35,50 +35,56 @@ class LearnFragmentViewModel(
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getPathwayData(true).collect {
-                it?.let {
-                    var currentPathway: Pathway? = null
-                    if (it.isNotEmpty()) {
-                        setState {
-                            val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
-                            var currentPathwayIndex = currentPathwayIndex
-                            currentPathway = it[currentPathwayIndex]
-                            it.forEachIndexed { index, pathway ->
-                                if (pathway.id == lastSelectedPathwayId) {
-                                    currentPathwayIndex = index
-                                    currentPathway = pathway
+                if (it != null) {
+                    it?.let {
+                        var currentPathway: Pathway? = null
+                        if (it.isNotEmpty()) {
+                            setState {
+                                val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
+                                var currentPathwayIndex = currentPathwayIndex
+                                currentPathway = it[currentPathwayIndex]
+                                it.forEachIndexed { index, pathway ->
+                                    if (pathway.id == lastSelectedPathwayId) {
+                                        currentPathwayIndex = index
+                                        currentPathway = pathway
+                                    }
                                 }
-                            }
-                            val courses = currentPathway!!.courses
+                                val courses = currentPathway!!.courses
 
-                            if (currentPathway!!.courses.isEmpty()) {
-                                selectPathway(currentPathway!!)
+                                if (currentPathway!!.courses.isEmpty()) {
+                                    selectPathway(currentPathway!!)
+                                }
+                                val selectedLanguage =
+                                    currentPathway!!.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
+                                        ?: currentPathway!!.supportedLanguages[0].label
+                                copy(
+                                    loading = courses.isEmpty(),
+                                    pathways = it,
+                                    courses = courses,
+                                    currentPathwayIndex = currentPathwayIndex,
+                                    subtitle = currentPathway!!.name,
+                                    languages = currentPathway!!.supportedLanguages,
+                                    selectedLanguage = selectedLanguage,
+                                    logo = currentPathway!!.logo,
+                                    code = currentPathway!!.code,
+                                    shouldShowCertificate = currentPathway!!.shouldShowCertificate,
+                                    showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
+                                            ?: true
+                                    ) false else true
+                                )
                             }
-                            val selectedLanguage =
-                                currentPathway!!.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
-                                    ?: currentPathway!!.supportedLanguages[0].label
-                            copy(
-                                loading = courses.isEmpty(),
-                                pathways = it,
-                                courses = courses,
-                                currentPathwayIndex = currentPathwayIndex,
-                                subtitle = currentPathway!!.name,
-                                languages = currentPathway!!.supportedLanguages,
-                                selectedLanguage = selectedLanguage,
-                                logo = currentPathway!!.logo,
-                                code = currentPathway!!.code,
-                                shouldShowCertificate = currentPathway!!.shouldShowCertificate,
-                                showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
-                                        ?: true
-                                ) false else true
-                            )
+                            currentPathway?.let {
+                                checkedStudentEnrolment(it.id)
+                            }
+                        } else {
+                            setState { copy(loading = false) }
                         }
-                        currentPathway?.let {
-                            checkedStudentEnrolment(it.id)
-                        }
-                    } else {
-                        setState { copy(loading = false) }
                     }
                 }
+                else {
+                    _viewEvents.postValue(LearnFragmentViewEvents.ShowNetworkErrorScreen)
+                }
+
             }
         }
     }
@@ -88,10 +94,15 @@ class LearnFragmentViewModel(
             try {
                 checkedStudentEnrolment(pathway.id)
                 learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
-                    it?.let {
-                        setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
-                            showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
+                    if (it != null) {
+                        it.let {
+                            setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
+                                showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
+                        }
+                    } else{
+                        _viewEvents.postValue(LearnFragmentViewEvents.ShowNetworkErrorScreen)
                     }
+
                 }
             } catch (e: Exception) {
                 Log.e("LearnFragmentViewModel", "refreshCourses: ${e.message}")
@@ -389,7 +400,7 @@ sealed class LearnFragmentViewEvents : ViewEvents {
     object EnrolledSuccessfully : LearnFragmentViewEvents()
     class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int, val pathwayName : String) : LearnFragmentViewEvents()
     object ShowNetworkErrorScreen : LearnFragmentViewEvents()
-    object ShowCourseRecyclerview : LearnFragmentViewEvents()
+    object ShowErrorView : LearnFragmentViewEvents()
 }
   sealed class LearnFragmentViewActions : ViewModelAction {
         object RequestPageLoad : LearnFragmentViewActions()

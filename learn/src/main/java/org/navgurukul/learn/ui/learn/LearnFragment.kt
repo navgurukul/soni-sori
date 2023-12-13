@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
+import kotlinx.android.synthetic.main.fragment_learn.view.*
 import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
@@ -43,7 +44,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
@@ -89,7 +89,7 @@ class LearnFragment : Fragment() {
         initRecyclerView()
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+//        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
 
         initSwipeRefresh()
 
@@ -122,7 +122,7 @@ class LearnFragment : Fragment() {
                 it.languages.isNotEmpty(),
                 it.logo
             )
-            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
+//            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
             if (!it.classes.isEmpty()) {
@@ -224,7 +224,7 @@ class LearnFragment : Fragment() {
                     }
                 }
                 is LearnFragmentViewEvents.ShowNetworkErrorScreen ->{
-                    mBinding.emptyStateView.state = EmptyStateView.State.ERROR
+                    showErrorScreen(true)
                 }
                 else -> {
                 }
@@ -235,13 +235,12 @@ class LearnFragment : Fragment() {
 
     private fun showErrorScreen(isError: Boolean) {
         if (isError) {
-            mBinding.emptyStateView.visibility = View.VISIBLE
-            mBinding.emptyStateView.state = EmptyStateView.State.ERROR
-
+            mBinding.progressBarButton.visibility = View.GONE
+            mBinding.rlCourseContainer.empty_state_view.isVisible = true
+            mBinding.rlCourseContainer.recyclerviewCourseContainer.visibility = View.GONE
         } else {
-            mBinding.emptyStateView.visibility = View.GONE
-//            mBinding.errorLayout.root.visibility = View.GONE
-//            mBinding.tvClassDetail.visibility = View.VISIBLE
+            mBinding.rlCourseContainer.empty_state_view.isVisible = false
+            mBinding.rlCourseContainer.recyclerviewCourseContainer.visibility = View.VISIBLE
         }
     }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
