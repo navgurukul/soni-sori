@@ -229,7 +229,8 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
             } else if (courseContentType == CourseContentType.class_topic) {
@@ -241,7 +242,8 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
             } else if (courseContentType == CourseContentType.assessment) {
@@ -253,7 +255,8 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
             }
@@ -379,7 +382,8 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
 
     class ShowClassFragment(
@@ -389,7 +393,8 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
 
 
@@ -400,7 +405,8 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
 
 

@@ -26,6 +26,7 @@ class LearnRepo(
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
     var lastUpdatedBatches: List<Batch>? = null
     var statusEnrolled: Resource<EnrolResponse>? = null
+    lateinit var pathwayId : String
 
     class OfflineException(message: String) : Exception(message)
 

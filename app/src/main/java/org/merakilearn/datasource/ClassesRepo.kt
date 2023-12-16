@@ -53,7 +53,7 @@ class ClassesRepo(
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
             if (enrolled) {
-                coursesApi.logOutToClassAsync(classId,false)
+                coursesApi.logOutToClassAsync(classId,true)
                 updateEnrollStatus(classId, false)
             } else {
                 coursesApi.enrollToClassAsync(classId, mutableMapOf(),false)

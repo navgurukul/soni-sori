@@ -33,7 +33,7 @@ class ClassFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchClassContent(args.contentId, args.courseId, args.courseContentType)
+        fetchClassContent(args.contentId, args.courseId, args.courseContentType, pathwayId = args.pathwayId)
     }
 
     private fun fetchClassContent(
@@ -41,6 +41,7 @@ class ClassFragmentViewModel(
         courseId: String,
         courseContentType: CourseContentType,
         forceUpdate: Boolean = false,
+        pathwayId: Int
     ) {
         fetchClassJob?.cancel()
         fetchClassJob = viewModelScope.launch {
@@ -71,7 +72,7 @@ class ClassFragmentViewModel(
                             }
                         }
                         else{
-                            getBatchesDataByPathway(1)
+                            getBatchesDataByPathway(pathwayId = pathwayId)
                         }
 
                     } else {
@@ -97,7 +98,8 @@ class ClassFragmentViewModel(
                 args.contentId,
                 args.courseId,
                 args.courseContentType,
-                true
+                true,
+                args.pathwayId
             )
         }
     }
