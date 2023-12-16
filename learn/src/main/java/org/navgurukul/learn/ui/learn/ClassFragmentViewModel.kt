@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -137,10 +136,7 @@ class ClassFragmentViewModel(
                     }
                 }
                is Resource.Error -> {
-                   revisionClasses.message?.let {
-                       _viewEvents.postValue(ClassFragmentViewEvents.ShowToast(it))
-                   }
-                   revisionClasses
+                   _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
                }
                 else -> {
                     Log.d("ClassFragmentViewModel", "getRevisionClasses: ")

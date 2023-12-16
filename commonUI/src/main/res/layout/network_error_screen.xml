@@ -18,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:text="Our servers are seem to be down. But, it’s us. Please be patient while we resolve it.Refresh"
+                android:text="s are seem to be down. But, it’s us. Please be patient while we resolve it.Refresh"
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:textSize="22dp"

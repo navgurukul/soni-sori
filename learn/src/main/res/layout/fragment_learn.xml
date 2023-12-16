@@ -24,29 +24,152 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical">
-            
-            <include
-                android:id="@+id/batchCard"
-                layout="@layout/batch_card"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/courseContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_2x"
-                tools:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
-            <include
-                android:id="@+id/upcoming"
-                layout="@layout/upcoming_class_selection_sheet"
-                android:layout_width="match_parent"
-                tools:visibility="gone"
-                android:layout_marginTop="@dimen/spacing_2x"
-                app:layout_constraintTop_toBottomOf="@+id/enrolled_butFinished"
-                android:layout_height="wrap_content" />
-            <include
-                android:id="@+id/enrolled_butFinished"
-                layout="@layout/enrolled_but_finished"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:background="@color/course_background"
+                android:paddingStart="@dimen/spacing_4x"
+                android:paddingEnd="@dimen/spacing_4x"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/batchCard"
+                    layout="@layout/batch_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    tools:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/upcoming"/>
+                <include
+                    android:id="@+id/upcoming"
+                    layout="@layout/upcoming_class_selection_sheet"
+                    android:layout_width="match_parent"
+                    tools:visibility="gone"
+                    android:layout_marginTop="@dimen/spacing_2x"
+                    app:layout_constraintTop_toBottomOf="@+id/enrolled_butFinished"
+                    android:layout_height="wrap_content" />
+                <include
+                    android:id="@+id/enrolled_butFinished"
+                    layout="@layout/enrolled_but_finished"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/recyclerviewCourseContainer"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/spacing_3x"
+                    app:layout_constraintTop_toBottomOf="@id/batchCard"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTextCourse"
+                        style="?textAppearanceEmphasized1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/spacing_2x"
+                        android:text="@string/courses"
+                        android:layout_marginBottom="@dimen/spacing_4x"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textColor="?textPrimary"
+                        tools:text="Course" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerviewCourse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_2x"
+                        android:clipChildren="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintHeight_default="wrap"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextCourse"
+                        tools:listitem="@layout/item_course" />
+
+                    <include
+                        android:id="@+id/dot_adding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="@id/certificate"
+                        android:layout_marginBottom="15dp"
+                        layout="@layout/dot_to_add">
+                    </include>
+
+                    <include
+                        android:id="@+id/certificate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_3x"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerviewCourse"
+                        app:layout_constraintStart_toStartOf="parent"
+                        layout="@layout/item_certificate"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_button"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="@dimen/dimen_progress_bar"
+                    android:layout_height="@dimen/dimen_progress_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintVertical_bias="0.2"
+                    android:indeterminate="true"
+                    android:visibility="visible"
+                    app:elevation="30dp"
+                    android:elevation="30dp"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layoutTakeTest"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerviewCourseContainer"
+                    android:layout_marginTop="@dimen/spacing_1x">
+
+                    <View
+                        android:id="@+id/separatorView"
+                        android:layout_width="120dp"
+                        android:layout_height="1dp"
+                        android:background="#DEDEDE"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textAskOverviewCompletion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@id/separatorView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        style="?textAppearanceBody2"
+                        android:text="@string/have_you_completed_the_overview"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonTakeTest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Button"
+                        app:layout_constraintTop_toBottomOf="@+id/textAskOverviewCompletion"
+                        android:layout_marginHorizontal="@dimen/spacing_4x"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        tools:text="Yes, let’s take the test"
+                        android:padding="@dimen/spacing_4x"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="@dimen/spacing_4x"
+                        android:layout_marginBottom="@dimen/spacing_12x"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
                 android:id="@+id/empty_state_view"
@@ -54,117 +177,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/recyclerviewCourseContainer"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/spacing_3x"
-                app:layout_constraintTop_toBottomOf="@id/batchCard"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvTextCourse"
-                    style="?textAppearanceEmphasized1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/spacing_2x"
-                    android:text="@string/courses"
-                    android:layout_marginBottom="@dimen/spacing_4x"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textColor="?textPrimary"
-                    tools:text="Course" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerviewCourse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_2x"
-                    android:clipChildren="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintHeight_default="wrap"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTextCourse"
-                    tools:listitem="@layout/item_course" />
-
-                <include
-                    android:id="@+id/dot_adding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@id/certificate"
-                    android:layout_marginBottom="15dp"
-                    layout="@layout/dot_to_add">
-                </include>
-
-                <include
-                    android:id="@+id/certificate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_3x"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerviewCourse"
-                    app:layout_constraintStart_toStartOf="parent"
-                    layout="@layout/item_certificate"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ProgressBar
-                android:id="@+id/progress_bar_button"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="@dimen/dimen_progress_bar"
-                android:layout_height="@dimen/dimen_progress_bar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_bias="0.2"
-                android:indeterminate="true"
-                android:visibility="visible"
-                app:elevation="30dp"
-                android:elevation="30dp"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/layoutTakeTest"
-                android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/recyclerviewCourseContainer"
-                android:layout_marginTop="@dimen/spacing_1x">
-
-                <View
-                    android:id="@+id/separatorView"
-                    android:layout_width="120dp"
-                    android:layout_height="1dp"
-                    android:background="#DEDEDE"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <TextView
-                    android:id="@+id/textAskOverviewCompletion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/separatorView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    style="?textAppearanceBody2"
-                    android:text="@string/have_you_completed_the_overview"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonTakeTest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button"
-                    app:layout_constraintTop_toBottomOf="@+id/textAskOverviewCompletion"
-                    android:layout_marginHorizontal="@dimen/spacing_4x"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    tools:text="Yes, let’s take the test"
-                    android:padding="@dimen/spacing_4x"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="@dimen/spacing_4x"
-                    android:layout_marginBottom="@dimen/spacing_12x"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

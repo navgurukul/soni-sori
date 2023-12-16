@@ -22,6 +22,7 @@ import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 
+
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
     private val corePreferences: CorePreferences,
@@ -34,9 +35,10 @@ class LearnFragmentViewModel(
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
+            Log.d("LearnFragment", "viewmodel Init: ")
             learnRepo.getPathwayData(true).collect {
-                if (it != null) {
-                    it?.let {
+              it?.run {
+                    it.let {
                         var currentPathway: Pathway? = null
                         if (it.isNotEmpty()) {
                             setState {
@@ -81,10 +83,6 @@ class LearnFragmentViewModel(
                         }
                     }
                 }
-                else {
-                    _viewEvents.postValue(LearnFragmentViewEvents.ShowNetworkErrorScreen)
-                }
-
             }
         }
     }

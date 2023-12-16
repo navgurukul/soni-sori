@@ -86,11 +86,11 @@ class LearnFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+
 
         mBinding.progressBarButton.visibility = View.VISIBLE
 //        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
-
+        initRecyclerView()
         initSwipeRefresh()
 
         configureToolbar()
@@ -237,10 +237,10 @@ class LearnFragment : Fragment() {
         if (isError) {
             mBinding.progressBarButton.visibility = View.GONE
             mBinding.rlCourseContainer.empty_state_view.isVisible = true
-            mBinding.rlCourseContainer.recyclerviewCourseContainer.visibility = View.GONE
+            mBinding.rlCourseContainer.courseContainer.visibility = View.GONE
         } else {
             mBinding.rlCourseContainer.empty_state_view.isVisible = false
-            mBinding.rlCourseContainer.recyclerviewCourseContainer.visibility = View.VISIBLE
+            mBinding.rlCourseContainer.courseContainer.visibility = View.VISIBLE
         }
     }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {

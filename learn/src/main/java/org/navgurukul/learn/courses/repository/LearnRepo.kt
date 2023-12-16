@@ -214,11 +214,11 @@ class LearnRepo(
         )
     }
 
-    suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
+    suspend fun getCompletedContentsIds(courseId: String): Flow<Resource<CompletedContentsIds>> {
             return flow {
                 if (LearnUtils.isOnline(application)) {
                     try {
-                        val contentList = courseApi.getCompletedContentsIds(courseId)
+                        val contentList = safeApiCall {courseApi.getCompletedContentsIds(courseId) }
                         updateCompletedContentInDb(contentList)
                         emit(contentList)
                     } catch (e: Exception) {
@@ -232,7 +232,7 @@ class LearnRepo(
 
     }
 
-    suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
+    suspend fun updateCompletedContentInDb(contentList: Resource<CompletedContentsIds>) {
 
         val exerciseDao = database.exerciseDao()
         val classesDao = database.classDao()
@@ -240,15 +240,15 @@ class LearnRepo(
 
         exerciseDao.markExerciseCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.exercises?.map { it.toString() }
+            contentList.data?.exercises?.map { it.toString() }
         )
         classesDao.markClassCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.classes?.map { it.toString() }
+            contentList.data?.classes?.map { it.toString() }
         )
         assessmentDao.markAssessmentCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.assessments?.map { it.toString() }
+            contentList.data?.assessments?.map { it.toString() }
         )
     }
 
