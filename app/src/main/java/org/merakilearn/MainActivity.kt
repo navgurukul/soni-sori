@@ -204,15 +204,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {
             runOnUiThread {
-                if (it.endsWith(".svg")) {
-                    SvgLoader(this).loadSvgFromUrl(it, headerIcon)
-                }
-                else {
-                    GlideApp.with(headerIcon)
-                        .load(it)
-                        .transform(CircleCrop())
-                        .into(headerIcon)
-                }
+                val svgLoaderFunction = SvgLoader.SvgLoaderFunction(this)
+                svgLoaderFunction.loadImage(it, headerIcon)
             }
         }
 

@@ -5,10 +5,13 @@ import android.content.Context
 import android.graphics.drawable.PictureDrawable
 import android.os.AsyncTask
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.caverock.androidsvg.SVG
+import org.navgurukul.commonui.R
 import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
@@ -55,6 +58,28 @@ class SvgLoader(private val context: Context) {
                         .apply(requestOptions)
                         .into(targetImageView)
                 }
+            }
+        }
+    }
+
+    class SvgLoaderFunction(private val context: Context) {
+        private val requestOptions = RequestOptions()
+        fun loadImage(url: String, targetImageView: ImageView) {
+            val task = SvgLoadingTask(context, targetImageView, requestOptions)
+            task.execute(url)
+
+            if (url.endsWith(".svg")) {
+                AppCompatResources.getDrawable(context, R.drawable.placeholder_course_icon)
+                Glide.with(context)
+                    .load(url)
+                    .into(targetImageView)
+            } else {
+                Glide.with(context)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(targetImageView)
             }
         }
     }
