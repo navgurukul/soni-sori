@@ -8,7 +8,7 @@ val currentDate: Calendar =  Calendar.getInstance()
 fun isChristmas(): Boolean {
         val christmasStart = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 24)
+            set(Calendar.DAY_OF_MONTH, 25)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
@@ -25,16 +25,16 @@ fun isChristmas(): Boolean {
 
 fun isNewYear(): Boolean {
         val newYearStart = Calendar.getInstance().apply {
-            set(Calendar.MONTH, Calendar.DECEMBER)
-            set(Calendar.DAY_OF_MONTH, 31)
-            set(Calendar.YEAR, 2023)
+            set(Calendar.MONTH, Calendar.JANUARY)
+            set(Calendar.DAY_OF_MONTH, 1)
+            set(Calendar.YEAR, 2024)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
         val newYearEnd = Calendar.getInstance().apply {
             set(Calendar.MONTH, Calendar.JANUARY)
-            set(Calendar.DAY_OF_MONTH,2)
+            set(Calendar.DAY_OF_MONTH,3)
             set(Calendar.YEAR, 2024)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
