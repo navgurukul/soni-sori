@@ -70,6 +70,8 @@ class OptionSelectionAdapter(
 
     //        val assessmentType = solutionContentList?.get(0)?.assessmentType
     //        val assessmentType = solutionContentList.assessmentType
+            item.viewState = if (selectedOptions.contains(item)) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED
+
 
             when(item.viewState){
                 OptionViewState.SELECTED -> {
@@ -245,19 +247,17 @@ class OptionSelectionAdapter(
             }
 
 
-                root.setOnClickListener { view ->
-                    if (assessmentType == AssessmentType.single) {
-                        selectedOptions.clear()
-                        selectedOptions.add(item)
-                    } else {
-                        if (selectedOptions.contains(item)) {
-                            selectedOptions.remove(item)
-                        } else {
-                            selectedOptions.add(item)
-                        }
-                    }
-                   callback?.invoke(selectedOptions)
+            root.setOnClickListener {
+                if (selectedOptions.contains(item)) {
+                    selectedOptions.remove(item)
+                    item.viewState = OptionViewState.NOT_SELECTED
+                } else {
+                    selectedOptions.add(item)
+                    item.viewState = OptionViewState.SELECTED
                 }
+                bind(holder, item)
+                callback?.invoke(selectedOptions.toList())
+            }
 
         }
     }
