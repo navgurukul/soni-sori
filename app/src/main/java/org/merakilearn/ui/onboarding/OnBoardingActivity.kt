@@ -34,8 +34,6 @@ data class OnBoardingActivityArgs(
     val showLoginFragment: Boolean = false
 ) : Parcelable
 
-const val UPDATE_REQUEST_CODE = 524
-
 class OnBoardingActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityOnBoardingBinding
 
@@ -78,69 +76,38 @@ class OnBoardingActivity : AppCompatActivity() {
         }
     }
 
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
-            if (resultLauncher.resultCode == RESULT_OK) {
-            }
-        }
-    private val appUpdateManager: AppUpdateManager by lazy {
-        AppUpdateManagerFactory.create(applicationContext)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
-        appUpdateInfoTask.addOnSuccessListener {
-            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    it,
-                    this,
-                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
-                        .setAllowAssetPackDeletion(true).build(),
-                    UPDATE_REQUEST_CODE
-                )
-                resultLauncher.launch(intent)
-
-            } else {
-                viewModel.viewEvents.observe(this) {
-                    when (it) {
-                        is OnBoardingViewEvents.ShowMainScreen -> {
-                            MainActivity.launch(this, it.pathwayId)
-                            finish()
-                        }
-
-                        OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
-                            OnBoardPagesFragment.newInstance(),
-                            OnBoardPagesFragment.TAG,
-                        )
-
-                        OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
-                            SelectCourseFragment.newInstance(), SelectCourseFragment.TAG
-                        )
-
-                        OnBoardingViewEvents.ShowLoginScreen -> showFragment(
-                            LoginFragment.newInstance(),
-                            LoginFragment.TAG
-                        )
-
-                        OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
-                            PartnerFragment.newInstance(),
-                            PartnerFragment.TAG
-                        )
-                    }
+        viewModel.viewEvents.observe(this) {
+            when (it) {
+                is OnBoardingViewEvents.ShowMainScreen -> {
+                    MainActivity.launch(this, it.pathwayId)
+                    finish()
                 }
-                //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
+
+                OnBoardingViewEvents.ShowOnBoardingPages -> showFragment(
+                    OnBoardPagesFragment.newInstance(),
+                    OnBoardPagesFragment.TAG,
+                )
+
+                OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
+                    SelectCourseFragment.newInstance(), SelectCourseFragment.TAG
+                )
+
+                OnBoardingViewEvents.ShowLoginScreen -> showFragment(
+                    LoginFragment.newInstance(),
+                    LoginFragment.TAG
+                )
+
+                OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
+                    PartnerFragment.newInstance(),
+                    PartnerFragment.TAG
+                )
             }
         }
-            .addOnFailureListener {
-                Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
-            }
-
 
         args?.let { args ->
             appOpenDelegate.onAppOpened(this, args.clearNotification)
