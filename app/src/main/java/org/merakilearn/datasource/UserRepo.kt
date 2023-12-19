@@ -158,7 +158,8 @@ class UserRepo(
         return try {
             saralApi.getPartnerData(partnerId)
         } catch (ex: Exception) {
-            throw ex
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            null!!
         }
     }
 }

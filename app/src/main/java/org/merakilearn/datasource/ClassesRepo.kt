@@ -1,5 +1,8 @@
 package org.merakilearn.datasource
 
+import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import org.merakilearn.datasource.network.SaralApi
@@ -36,7 +39,7 @@ class ClassesRepo(
         return try {
             saralApi.fetchClassDataAsync(classId)
         } catch (ex: Exception) {
-            Timber.tag(TAG).e(ex, "fetchUpcomingClassData: ")
+            FirebaseCrashlytics.getInstance().recordException(ex)
             null
         }
     }
@@ -45,7 +48,7 @@ class ClassesRepo(
         return try {
             safeApiCall { saralApi.getEnrolledBatches() }
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            FirebaseCrashlytics.getInstance().recordException(ex)
             null
         }
     }
@@ -60,6 +63,7 @@ class ClassesRepo(
                 updateEnrollStatus(classId, true)
             }
         } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
             Timber.tag(TAG).e(ex, "enrollToClass: ")
             false
         }

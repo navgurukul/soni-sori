@@ -16,6 +16,8 @@ import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
+import java.net.UnknownHostException
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -55,7 +57,8 @@ class LearnRepo(
             })
         }
         catch (e : Exception) {
-            throw e
+            FirebaseCrashlytics.getInstance().recordException(e)
+            null!!
         }
 
     }
@@ -63,20 +66,24 @@ class LearnRepo(
 
     fun getCoursesDataByPathway(pathwayId: Int, forceUpdate: Boolean): Flow<List<Course>?> {
         val courseDao = database.courseDao()
-        return networkBoundResourceFlow(
-            loadFromDb = {
-            courseDao.getCoursesByPathwayId(pathwayId)
-        }, shouldFetch = { data ->
-            (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
-        }, makeApiCallAsync = {
-            courseApi.getCoursesForPathway(pathwayId, "json")
-        }, saveCallResult = { data ->
-            data.courses.map {
-                it.pathwayId = data.id
-            }.toList()
-            courseDao.deleteAllCourses()
-            courseDao.insertCourses(data.courses)
-        })
+        return try {networkBoundResourceFlow(
+                loadFromDb = {
+                courseDao.getCoursesByPathwayId(pathwayId)
+            }, shouldFetch = { data ->
+                (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null || data.isEmpty()))
+            }, makeApiCallAsync = {
+                courseApi.getCoursesForPathway(pathwayId, "json")
+            }, saveCallResult = { data ->
+                data.courses.map {
+                    it.pathwayId = data.id
+                }.toList()
+                courseDao.deleteAllCourses()
+                courseDao.insertCourses(data.courses)
+            })
+        }catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            null!!
+        }
     }
 
     suspend fun getCourseContentById(
@@ -137,6 +144,7 @@ class LearnRepo(
                     Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
                 }
             } catch (ex: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(ex)
                 Log.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
             }
         }
@@ -156,63 +164,67 @@ class LearnRepo(
         val classDao = database.classDao()
         val assessmentDao = database.assessmentDao()
 
-        return networkBoundResourceFlow(
-            loadFromDb = {
-                val course = courseDao.getCourseById(courseId)
+        return try {
+            networkBoundResourceFlow(
+                loadFromDb = {
+                    val course = courseDao.getCourseById(courseId)
 
-                val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
-                val classes = classDao.getAllClassesForCourse(courseId, language)
-                val assessments = assessmentDao.getAllAssessmentForCourse(courseId, language)
-                val contentList = ArrayList<CourseContents>()
-                contentList.addAll(exercises)
-                contentList.addAll(classes)
-                contentList.addAll(assessments)
-                contentList.sortBy { it.sequenceNumber }
+                    val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
+                    val classes = classDao.getAllClassesForCourse(courseId, language)
+                    val assessments = assessmentDao.getAllAssessmentForCourse(courseId, language)
+                    val contentList = ArrayList<CourseContents>()
+                    contentList.addAll(exercises)
+                    contentList.addAll(classes)
+                    contentList.addAll(assessments)
+                    contentList.sortBy { it.sequenceNumber }
 
-                if (contentList.isNotEmpty()) {
-                    course.apply { this.courseContents = contentList }
-                } else {
-                    null
-                }
-            },
-            shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
-            makeApiCallAsync = { courseApi.getCourseContentAsync(courseId, language) },
-            saveCallResult = { courseExerciseContainer ->
-                val course = courseExerciseContainer.course.apply {
-                    this.pathwayId = pathwayId
-                }
-                val lang =
-                    if (language in course.supportedLanguages) language else course.supportedLanguages[0]
-                val mappedData = course.courseContents.map {
-                    it.apply {
-                        this.courseId = courseId
-                        if(this.courseContentType == CourseContentType.exercise) {
-                            (this as CourseExerciseContent).lang = lang
-                        }else if(this.courseContentType == CourseContentType.class_topic){
-                            (this as CourseClassContent).lang = lang
-                        }
-                        else if (this.courseContentType == CourseContentType.assessment){
-                            (this as CourseAssessmentContent).lang = lang
-                        }
+                    if (contentList.isNotEmpty()) {
+                        course.apply { this.courseContents = contentList }
+                    } else {
+                        null
                     }
-                }.toList()
+                },
+                shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
+                makeApiCallAsync = { courseApi.getCourseContentAsync(courseId, language) },
+                saveCallResult = { courseExerciseContainer ->
+                    val course = courseExerciseContainer.course.apply {
+                        this.pathwayId = pathwayId
+                    }
+                    val lang =
+                        if (language in course.supportedLanguages) language else course.supportedLanguages[0]
+                    val mappedData = course.courseContents.map {
+                        it.apply {
+                            this.courseId = courseId
+                            if (this.courseContentType == CourseContentType.exercise) {
+                                (this as CourseExerciseContent).lang = lang
+                            } else if (this.courseContentType == CourseContentType.class_topic) {
+                                (this as CourseClassContent).lang = lang
+                            } else if (this.courseContentType == CourseContentType.assessment) {
+                                (this as CourseAssessmentContent).lang = lang
+                            }
+                        }
+                    }.toList()
 
-                courseDao.insertCourse(course)
+                    courseDao.insertCourse(course)
 
-                try {
-                    exerciseDao.insertExercise(mappedData.filter { it.courseContentType == CourseContentType.exercise } as List<CourseExerciseContent>)
-                }catch (ex: Exception) {
+                    try {
+                        exerciseDao.insertExercise(mappedData.filter { it.courseContentType == CourseContentType.exercise } as List<CourseExerciseContent>)
+                    } catch (ex: Exception) {
+                    }
+                    try {
+                        classDao.insertClass(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
+                    } catch (ex: Exception) {
+                    }
+                    try {
+                        assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
+                    } catch (ex: Exception) {
+                    }
                 }
-                try {
-                    classDao.insertClass(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
-                }catch (ex: Exception) {
-                }
-                try {
-                    assessmentDao.insertAssessment(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
-                }catch (ex: Exception){
-                }
-            }
-        )
+            )
+        }catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            null!!
+        }
     }
 
     suspend fun getCompletedContentsIds(courseId: String): Flow<Resource<CompletedContentsIds>> {
@@ -223,6 +235,7 @@ class LearnRepo(
                         updateCompletedContentInDb(contentList)
                         emit(contentList)
                     } catch (e: Exception) {
+                        FirebaseCrashlytics.getInstance().recordException(e)
                         e.printStackTrace()
                     }
                 } else {
@@ -303,6 +316,7 @@ class LearnRepo(
             return try {
                 safeApiCall {courseApi.getBatchesAsync(pathwayId) }
             } catch (ex: Exception){
+                FirebaseCrashlytics.getInstance().recordException(ex)
                 throw ex
             }
         }
@@ -316,6 +330,7 @@ class LearnRepo(
             throw OfflineException("No network connection")
         }
         catch (ex: Exception){
+            FirebaseCrashlytics.getInstance().recordException(ex)
             throw ex
         }
     }
@@ -349,6 +364,7 @@ class LearnRepo(
                     updateEnrollStatus(classId, true)
                 }
             } catch (ex: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(ex)
                 false
             }
         }
@@ -388,6 +404,7 @@ class LearnRepo(
             throw OfflineException("No network connection")
         }
         catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
             e.printStackTrace()
         }
     }
@@ -409,9 +426,11 @@ class LearnRepo(
         try {
              safeApiCall {courseApi.postExerciseCompleteStatus(exerciseId) }
         }catch (e: OfflineException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw OfflineException("No network connection")
         }
         catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
             e.printStackTrace()
         }
     }
