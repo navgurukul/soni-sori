@@ -36,6 +36,8 @@ class AssessmentFragmentViewModel (
     private var allAssessmentContentList:  List<BaseCourseContent> = listOf()
     private var correctOutputDataList:  List<BaseCourseContent> = listOf()
     private var inCorrectOutputDataList:  List<BaseCourseContent> = listOf()
+    private var partiallyCorrectOutputDataList: List<BaseCourseContent> = listOf()
+    private var partiallyInCorrectOutputDataList: List<BaseCourseContent> = listOf()
     private var selectedOption: List<Int> = listOf()
 
 
@@ -304,24 +306,28 @@ class AssessmentFragmentViewModel (
 
     private fun isOptionSelectedCorrect(
         clickedOption: List<OptionResponse>
-    ): Boolean {
-        return try {
-            clickedOption[0].id ==
-                    (allAssessmentContentList
-                        .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                        .correct_options_value[0].value
-
+    ) : Boolean {
+        var increment = 0
+        val correctOptions = (allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).correct_options_value
+        try {
+            while ( increment<clickedOption.size){
+                if(clickedOption[increment].id in correctOptions.indices){
+                    return true
+                }
+                increment++
+            }
         }catch (e: Exception){
-            false
+            return false
         }
+        return false
     }
+
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
-        data class ShowPartiallyCorrectOutput(val list: List<BaseCourseContent>):AssessmentFragmentViewEvents()
-        data class ShowPartiallyIncorrectOutput(val list: List<BaseCourseContent>):AssessmentFragmentViewEvents()
         data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
     }
 
