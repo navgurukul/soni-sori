@@ -87,7 +87,7 @@ interface SaralCoursesApi {
 
 
     @GET("progressTracking/{courseId}/completedCourseContentIds")
-    suspend fun getCompletedContentsIds(      // testing is remaining
+    suspend fun getCompletedContentsIds(
         @Path(value = "courseId") courseId: String
     ): Response<CompletedContentsIds>
 
