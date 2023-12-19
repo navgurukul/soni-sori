@@ -52,6 +52,7 @@ class AssessmentFragment : Fragment() {
             courseId: String,
             assessmentId: String,
             courseContentType: CourseContentType,
+            pathwayId : Int
         ): AssessmentFragment {
             return AssessmentFragment().apply {
                 arguments = CourseContentArgs(
@@ -60,7 +61,8 @@ class AssessmentFragment : Fragment() {
                     isCompleted,
                     courseId,
                     assessmentId,
-                    courseContentType
+                    courseContentType,
+                    pathwayId
                 ).toBundle()
             }
         }

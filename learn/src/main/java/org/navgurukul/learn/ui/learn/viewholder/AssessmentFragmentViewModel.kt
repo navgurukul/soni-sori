@@ -18,6 +18,7 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPON
 import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -243,14 +244,27 @@ class AssessmentFragmentViewModel (
             try {
                 setState { copy(isLoading = false) }
                 val attemptResponse = learnRepo.getStudentResult(assessmentId)
-                val attemptStatus = attemptResponse.attemptStatus
-                if (attemptStatus == AttemptStatus.CORRECT){
-                    updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.CORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
-                } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                    updateListAttemptStatus(attemptResponse.selectedOption, assessmentId, OptionViewState.INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+                when (attemptResponse){
+                    is Resource.Success ->{
+                        attemptResponse.data?.let {
+                            val attemptStatus = attemptResponse.data.attemptStatus
+                            if (attemptStatus == AttemptStatus.CORRECT){
+                                updateListAttemptStatus(attemptResponse.data.selectedOption, assessmentId, OptionViewState.CORRECT)
+                                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
+                            } else if ( attemptStatus == AttemptStatus.INCORRECT){
+                                updateListAttemptStatus(attemptResponse.data.selectedOption, assessmentId, OptionViewState.INCORRECT)
+                                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse.data))
+                            }
+                        }
+
+                    }
+                    is Resource.Error ->{
+                        attemptResponse.message?.let {
+                            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowToast(it))
+                        }
+                    }
                 }
+
             } catch (e: Exception){
                 println(e.message)
             }

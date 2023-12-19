@@ -21,7 +21,9 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.playground.repo.PythonRepository
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.net.URLDecoder
@@ -262,18 +264,26 @@ class ProfileViewModel(
             setState { copy(isLoading = true) }
             try {
                 val batches = classesRepo.getEnrolledBatches()
-                batches?.let {
-                    setState {
-                        copy(
-                            batches = it
-                        )
+                when (batches){
+                    is Resource.Success -> {
+                        batches.data?.let {
+                            setState {
+                                copy(
+                                    batches = it
+                                )
+                            }
+                            if (it.isNotEmpty()) {
+                                _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(it))
+                            }
+                        }
                     }
-                    if (it.isNotEmpty()) {
-                        _viewEvents.postValue(ProfileViewEvents.ShowEnrolledBatches(batches))
+                    is Resource.Error -> {
+                        Timber.tag("ProfileViewModel").d("Error in getting enrolled batches")
                     }
                 }
-            }catch (e:Exception){
-                Log.e("Exception",e.toString())
+
+            }catch (e:Exception) {
+                Timber.tag("Exception").e(e.toString())
             }
         }
     }
@@ -297,7 +307,7 @@ data class ProfileViewState(
     val showEditProfileLayout: Boolean = false,
     val showServerUrl: Boolean = BuildConfig.DEBUG,
     val serverUrl: String,
-    val batches: List<Batches> = arrayListOf(),
+    val batches: List<Batches>? = arrayListOf(),
 ) : ViewState
 
 sealed class ProfileViewEvents: ViewEvents {

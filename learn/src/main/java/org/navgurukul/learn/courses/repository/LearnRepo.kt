@@ -2,7 +2,6 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +13,8 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.wrapper.BaseRepo
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -22,11 +23,12 @@ class LearnRepo(
     private val courseApi: SaralCoursesApi,
     private val application: Application,
     private val database: CoursesDatabase
-) {
+) : BaseRepo() {
 
     private val _batchFlow = MutableSharedFlow<List<Batch>?>(replay = 1)
     var lastUpdatedBatches: List<Batch>? = null
-    var statusEnrolled: EnrolResponse? = null
+    var statusEnrolled: Resource<EnrolResponse>? = null
+    lateinit var pathwayId : String
 
     class OfflineException(message: String) : Exception(message)
 
@@ -225,11 +227,11 @@ class LearnRepo(
         }
     }
 
-    suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
+    suspend fun getCompletedContentsIds(courseId: String): Flow<Resource<CompletedContentsIds>> {
             return flow {
                 if (LearnUtils.isOnline(application)) {
                     try {
-                        val contentList = courseApi.getCompletedContentsIds(courseId)
+                        val contentList = safeApiCall {courseApi.getCompletedContentsIds(courseId) }
                         updateCompletedContentInDb(contentList)
                         emit(contentList)
                     } catch (e: Exception) {
@@ -244,7 +246,7 @@ class LearnRepo(
 
     }
 
-    suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
+    suspend fun updateCompletedContentInDb(contentList: Resource<CompletedContentsIds>) {
 
         val exerciseDao = database.exerciseDao()
         val classesDao = database.classDao()
@@ -252,15 +254,15 @@ class LearnRepo(
 
         exerciseDao.markExerciseCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.exercises?.map { it.toString() }
+            contentList.data?.exercises?.map { it.toString() }
         )
         classesDao.markClassCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.classes?.map { it.toString() }
+            contentList.data?.classes?.map { it.toString() }
         )
         assessmentDao.markAssessmentCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.assessments?.map { it.toString() }
+            contentList.data?.assessments?.map { it.toString() }
         )
     }
 
@@ -299,34 +301,20 @@ class LearnRepo(
         return currentStudyDao.getCurrentStudyForCourse(courseId)
     }
 
-    suspend fun getRevisionClasses(classId: String): List<CourseClassContent> {
-            return try {
-                courseApi.getRevisionClasses(classId)
-            }catch (e: OfflineException) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-                throw OfflineException("No network connection")
-            }
-            catch (ex: Exception){
-                FirebaseCrashlytics.getInstance().recordException(ex)
-                throw ex
-            }
+    suspend fun getRevisionClasses(classId: String): Resource<List<CourseClassContent>> {
+        return safeApiCall { courseApi.getRevisionClasses(classId) }
     }
 
-    suspend fun checkedStudentEnrolment(pathwayId: Int): EnrolResponse? {
-        try {
-            if (LearnUtils.isOnline(application))
-                statusEnrolled = courseApi.checkedStudentEnrolment(pathwayId)
-            return statusEnrolled
-        } catch (ex: Exception){
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            throw ex
-        }
+    suspend fun checkedStudentEnrolment(pathwayId: Int): Resource<EnrolResponse>? {
+        if(LearnUtils.isOnline(application))
+            statusEnrolled = safeApiCall {courseApi.checkedStudentEnrolment(pathwayId)}
+        return statusEnrolled
     }
 
-    suspend fun getBatchesListByPathway(pathwayId: Int): List<Batch>? {
+    suspend fun getBatchesListByPathway(pathwayId: Int): Resource<List<Batch>>? {
         if(LearnUtils.isOnline(application)) {
             return try {
-                courseApi.getBatchesAsync(pathwayId)
+                safeApiCall {courseApi.getBatchesAsync(pathwayId) }
             } catch (ex: Exception){
                 FirebaseCrashlytics.getInstance().recordException(ex)
                 throw ex
@@ -335,10 +323,9 @@ class LearnRepo(
         return null
     }
 
-
-    suspend fun getUpcomingClass(pathwayId: Int): List<CourseClassContent> {
+    suspend fun getUpcomingClass(pathwayId: Int): Resource<List<CourseClassContent>> {
         return try {
-            courseApi.getUpcomingClass(pathwayId)
+           safeApiCall { courseApi.getUpcomingClass(pathwayId) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
@@ -348,49 +335,23 @@ class LearnRepo(
         }
     }
 
-    suspend fun getStudentResult(assessmentId: Int) : AttemptResponse {
-        if (LearnUtils.isOnline(application)){
-            return try {
-                courseApi.getStudentResult(assessmentId)
-            } catch (ex: Exception){
-                FirebaseCrashlytics.getInstance().recordException(ex)
-                null!!
-            }
-        } else {
+    suspend fun getStudentResult(assessmentId: Int) : Resource<AttemptResponse> {
+        try {
+            return safeApiCall {courseApi.getStudentResult(assessmentId) }
+        } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
-
-    }
-
-    suspend fun getCompletedPortion(pathwayId: Int): GetCompletedPortion{
-        if (!LearnUtils.isOnline(application)) {
-            // Handle offline scenario here
-            // For example, return a default or empty result indicating no network connection
-            return GetCompletedPortion(pathwayId) // Return default or empty result
-        }
-
-        return try {
-            courseApi.getCompletedPortionData(pathwayId)
-        } catch (ex: UnknownHostException) {
-            Toast.makeText(application, "Check Internet Connectivity!", Toast.LENGTH_LONG).show()
-            // Handle other exceptions if needed
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            null!!
+        catch (ex: Exception){
+            throw ex
         }
     }
 
-    suspend fun getCertificate(pathwayCode : String): CertificateResponse{
-            return try {
-                courseApi.getCertificate(pathwayCode)
-            } catch (e: OfflineException) {
-                throw OfflineException("No network connection")
-            }
-            catch (ex: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(ex)
-                null!!
-            }
+    suspend fun getCompletedPortion(pathwayId: Int): Resource<GetCompletedPortion> {
+        return safeApiCall {  courseApi.getCompletedPortionData(pathwayId)}
+    }
 
-
+    suspend fun getCertificate(pathwayCode : String): Resource<CertificateResponse>{
+        return safeApiCall { courseApi.getCertificate(pathwayCode) }
     }
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         if (LearnUtils.isOnline(application)){
@@ -438,7 +399,7 @@ class LearnRepo(
     ){
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
-            courseApi.postStudentResult(studentResult)
+            safeApiCall { courseApi.postStudentResult(studentResult) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
@@ -463,7 +424,7 @@ class LearnRepo(
         exerciseId: Int
     ){
         try {
-             courseApi.postExerciseCompleteStatus(exerciseId)
+             safeApiCall {courseApi.postExerciseCompleteStatus(exerciseId) }
         }catch (e: OfflineException) {
             FirebaseCrashlytics.getInstance().recordException(e)
             throw OfflineException("No network connection")

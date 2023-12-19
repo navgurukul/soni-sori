@@ -43,6 +43,7 @@ data class CourseContentArgs(
     val courseId: String,
     val contentId: String,
     val courseContentType: CourseContentType,
+    val pathwayId: Int
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
@@ -62,7 +63,8 @@ class ExerciseFragment : Fragment() {
             isCompleted: Boolean,
             courseId: String,
             exerciseId: String,
-            courseContentType: CourseContentType
+            courseContentType: CourseContentType,
+            pathwayId: Int
         ): ExerciseFragment {
             return ExerciseFragment().apply {
                 arguments = CourseContentArgs(
@@ -71,7 +73,8 @@ class ExerciseFragment : Fragment() {
                     isCompleted,
                     courseId,
                     exerciseId,
-                    courseContentType
+                    courseContentType,
+                    pathwayId
                 ).toBundle()
             }
         }
