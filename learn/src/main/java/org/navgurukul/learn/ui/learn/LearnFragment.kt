@@ -92,7 +92,7 @@ class LearnFragment : Fragment() {
 //        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
         initRecyclerView()
         initSwipeRefresh()
-
+        initToolBar()
         configureToolbar()
 
         val builder = StrictMode.VmPolicy.Builder();
@@ -431,7 +431,18 @@ class LearnFragment : Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45);
     }
+    private fun initToolBar() {
+        (activity as? ToolbarConfigurable)?.configure(
+            getString(R.string.app_name),
+            R.attr.textPrimary,
+            false,
+            null,
+            null,
+            null, null,
+            false,
+        )
 
+    }
     private fun configureToolbar(
         subtitle: String? = null,
         attachClickListener: Boolean = false,
