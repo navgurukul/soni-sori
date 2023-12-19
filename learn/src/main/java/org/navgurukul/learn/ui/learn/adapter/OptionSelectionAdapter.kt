@@ -45,11 +45,6 @@ class OptionSelectionAdapter(
 
     private val selectedOptions = mutableListOf<OptionResponse>()
 
-    //for testing purpose
-
-//    private val solutionContentList:List<SolutionBaseCourseContent>?= null
-//    private lateinit var solutionContentList:SolutionBaseCourseContent
-
     override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
         binding.apply {
@@ -67,10 +62,9 @@ class OptionSelectionAdapter(
                     .centerCrop()
                     .into(ivImgOption)
             }
-
-    //        val assessmentType = solutionContentList?.get(0)?.assessmentType
-    //        val assessmentType = solutionContentList.assessmentType
+if(assessmentType==AssessmentType.multiple){
             item.viewState = if (selectedOptions.contains(item)) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED
+}
 
 
             when(item.viewState){
@@ -248,15 +242,23 @@ class OptionSelectionAdapter(
 
 
             root.setOnClickListener {
-                if (selectedOptions.contains(item)) {
-                    selectedOptions.remove(item)
-                    item.viewState = OptionViewState.NOT_SELECTED
-                } else {
-                    selectedOptions.add(item)
-                    item.viewState = OptionViewState.SELECTED
+                when(assessmentType){
+                    AssessmentType.multiple -> { if (selectedOptions.contains(item)) {
+                            selectedOptions.remove(item)
+                            item.viewState = OptionViewState.NOT_SELECTED
+                        } else {
+                            selectedOptions.add(item)
+                            item.viewState = OptionViewState.SELECTED
+                        }
+                        bind(holder, item)
+                        callback?.invoke(selectedOptions.toList())
+                    }
+                    AssessmentType.single -> {
+                        selectedOptions.clear()
+                        selectedOptions.add(item)
+                        callback?.invoke(selectedOptions)
+                    }
                 }
-                bind(holder, item)
-                callback?.invoke(selectedOptions.toList())
             }
 
         }
