@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -35,7 +36,6 @@ class LearnFragmentViewModel(
     init {
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
-            Log.d("LearnFragment", "viewmodel Init: ")
             learnRepo.getPathwayData(true).collect {
               it?.run {
                     it.let {
@@ -103,7 +103,7 @@ class LearnFragmentViewModel(
 
                 }
             } catch (e: Exception) {
-                Log.e("LearnFragmentViewModel", "refreshCourses: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
             }
         }
     }
@@ -202,7 +202,7 @@ class LearnFragmentViewModel(
                 }
                 is Resource.Error -> {
                     setState { copy(loading= false) }
-                    Log.e("LearnFragmentViewModel", "checkedStudentEnrolment: ${status.message}")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(status.message))
                 }
             }
         }
@@ -237,7 +237,7 @@ class LearnFragmentViewModel(
                         }
                     }
                     is Resource.Error -> {
-                        Log.e("LearnFragmentViewModel", "getBatchesDataByPathway: ${batches.message}")
+                        FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
                     }
                 }
             } catch (e: Exception){
@@ -264,10 +264,10 @@ class LearnFragmentViewModel(
                     }
                 }
                 is Resource.Error -> {
-                    Log.e("LearnFragmentViewModel", "getUpcomingClasses2: ${classes.message}")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
                 }
                 else -> {
-                    Log.e("LearnFragmentViewModel", "getUpcomingClasses: ${classes.message}")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
                 }
             }
         }
@@ -284,10 +284,11 @@ class LearnFragmentViewModel(
                      response
                  }
                  is Resource.Error -> {
-                     Log.d("LearnFragmentViewModel", "getCertificate ${response.message}")
+                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
                  }
                  else -> {
                      Log.d("LearnFragmentViewModel", response.message?:"")
+                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
                  }
              }
          }
@@ -304,10 +305,10 @@ class LearnFragmentViewModel(
                     response
                 }
                 is Resource.Error -> {
-                    Log.d("LearnFragmentViewModel", response.message?:"Some error occurred")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
                 }
                 else -> {
-                    Log.d("LearnFragmentViewModel", response.message?:"Some error occurred")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
                 }
             }
         }

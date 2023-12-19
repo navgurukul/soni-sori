@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -139,9 +140,11 @@ class ClassFragmentViewModel(
                 }
                is Resource.Error -> {
                    _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+                   FirebaseCrashlytics.getInstance().recordException(Exception(revisionClasses.message))
                }
                 else -> {
                     Log.d("ClassFragmentViewModel", "getRevisionClasses: ")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(revisionClasses.message))
                 }
             }
 
@@ -169,15 +172,20 @@ class ClassFragmentViewModel(
                    }
                    is Resource.Error -> {
                        setState { copy(isError= true) }
-                       Log.d("ClassFragmentViewModel", "getBatchesDataByPathway: ${batches.message}")
                        _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+                       FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
+
                    }
-                   else -> {Log.d("ClassFragmentViewModel", "getBatchesDataByPathway: ")}
+                   else -> {
+                       if (batches != null) {
+                           FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
+                       }
+                   }
                }
 
            } catch (e: Exception) {
-               println(e.message)
                _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+               FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
            }
             setState { copy(isLoading=false) }
         }

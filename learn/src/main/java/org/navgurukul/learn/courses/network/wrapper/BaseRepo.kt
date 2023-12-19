@@ -16,11 +16,13 @@ abstract class BaseRepo() {
         return withContext(Dispatchers.IO) {
             try {
                 val response: Response<T> = apiToBeCalled()
+                val errorMessage = "${response.code()} ${response.message()}"
+
                 if (response.isSuccessful) {
                     Resource.Success(data = response.body()!!)
                 } else {
                     Resource.Error(
-                        errorMessage = (response.message() ?: R.string.error_text) as String
+                        errorMessage = (errorMessage ?: R.string.error_text) as String
                     )
                 }
 
