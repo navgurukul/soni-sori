@@ -323,6 +323,40 @@ class AssessmentFragmentViewModel (
         return false
     }
 
+    private fun isOptionSelectionPartiallyCorrect(
+        clickedOption: List<OptionResponse>
+    ): Boolean {
+        val correctOptions = (allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).correct_options_value
+        return try {
+            val correctOptionIds = correctOptions.map { it.value }  //(a,b,d)
+            val clickedOptionIds = clickedOption.map { it.id }  //(a,b)
+            val matchingOptionsCount = clickedOptionIds.intersect(correctOptionIds.toSet()).size //(a,b) intersect (a,b,d) = (a,b) = 2
+
+            //we can set a fixed number of correct answers required for partial credit.
+
+            val partialCorrectThreshold = (correctOptionIds.size % 2).toInt() //(a,b,d) = 3 % 2 = 1
+            matchingOptionsCount >= partialCorrectThreshold //(a,b) >= 1 = true
+
+        } catch (e: Exception) {
+            false
+        }
+
+        //For example I have 4 option (a,b,c,d) and 3 is correct (a,b,d) and user clicks on (a,b) then it should be partially correct
+    }
+
+    private fun isOptionSelectionPartiallyInCorrect(
+        clickedOption: List<OptionResponse>
+    ): Boolean {
+         try{
+
+        }catch (e: Exception) {
+             return false
+        }
+        return false
+    }
+
+
 
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
