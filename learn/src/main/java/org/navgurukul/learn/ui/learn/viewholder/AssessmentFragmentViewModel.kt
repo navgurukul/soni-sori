@@ -323,7 +323,27 @@ class AssessmentFragmentViewModel (
         return false
     }
 
-    private fun isOptionSelectionPartiallyCorrect(
+    private fun isOptionSelectedInCorrect(
+        clickedOption: List<OptionResponse>
+    ) : Boolean {
+        var increment = 0
+        val inCorrectOptions = (allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).incorrect_options_value
+        try {
+            while ( increment<clickedOption.size){
+                if(inCorrectOptions?.indices?.contains(clickedOption[increment].id) == true){
+                    return true
+                }
+                increment++
+            }
+        }catch (e: Exception){
+            return false
+        }
+        return false
+    }
+
+    //According to Figma When user selected some correct answers
+    private fun isOptionSelectedPartiallyCorrect(
         clickedOption: List<OptionResponse>
     ): Boolean {
         val correctOptions = (allAssessmentContentList
@@ -345,16 +365,29 @@ class AssessmentFragmentViewModel (
         //For example I have 4 option (a,b,c,d) and 3 is correct (a,b,d) and user clicks on (a,b) then it should be partially correct
     }
 
-    private fun isOptionSelectionPartiallyInCorrect(
+    //According to Figma When user selected some correct answers and some wrong answers
+    private fun isOptionSelectedPartiallyInCorrect(
         clickedOption: List<OptionResponse>
     ): Boolean {
-         try{
+        val solutionContent = allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
+        val correctOptions = solutionContent.correct_options_value as? List<OptionResponse>
+        val incorrectOptions = solutionContent.incorrect_options_value as? List<OptionResponse>
+        return if (correctOptions != null && incorrectOptions != null) {
+            try {
+                (correctOptions.subtract(clickedOption.toSet()).isNotEmpty() &&
+                        clickedOption.intersect(incorrectOptions).isNotEmpty())
 
-        }catch (e: Exception) {
-             return false
+                //If any correct options are missing (correctOptions.subtract(clickedOption).isNotEmpty()), it indicates partial incorrectness.
+                //If any incorrect options are selected (clickedOption.intersect(incorrectOptions).isNotEmpty()), it also indicates partial incorrectness.
+            } catch (e: Exception) {
+                false
+            }
+        } else {
+            false
         }
-        return false
     }
+
 
 
 
