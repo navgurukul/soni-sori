@@ -294,8 +294,9 @@ class AssessmentFragmentViewModel (
 
     private fun postResultOnSubmit(clickedOption: List<OptionResponse>){
         val list = mutableListOf<Int>()
-        val int :Int = clickedOption[0].id
-        list.add(int)
+        for (int in clickedOption){
+            list.add(int.id)
+        }
         if (isOptionSelectedCorrect(clickedOption)){
             postStudentResult(args.contentId.toInt(), Status.Pass, list )
         }
