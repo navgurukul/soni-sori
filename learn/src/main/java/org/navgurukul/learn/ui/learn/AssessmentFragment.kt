@@ -21,6 +21,7 @@ import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.*
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
+import org.navgurukul.playground.editor.PythonEditorViewModel
 
 
 class AssessmentFragment : Fragment() {
@@ -166,7 +167,7 @@ class AssessmentFragment : Fragment() {
                 fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(it))
                 mBinding.btnSubmit.visibility = View.VISIBLE
             }
-        })
+        },viewModel = null)
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.recyclerViewAsses.layoutManager = layoutManager
         mBinding.recyclerViewAsses.adapter = contentAdapter
@@ -177,7 +178,7 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun initCorrectRV(list: List<BaseCourseContent>) {
-        correctAdapter = ExerciseContentAdapter(this.requireContext(),{}, {} ,{})
+        correctAdapter = ExerciseContentAdapter(this.requireContext(),{}, {} ,{},viewModel = null)
         val layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
@@ -185,7 +186,7 @@ class AssessmentFragment : Fragment() {
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
-        inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{}, {})
+        inCorrectAdapter = ExerciseContentAdapter(this.requireContext(),{},{}, {},viewModel = null)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter

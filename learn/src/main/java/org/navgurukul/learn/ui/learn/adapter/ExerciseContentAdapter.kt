@@ -2,8 +2,10 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
@@ -19,12 +21,15 @@ class ExerciseContentAdapter(
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit,
     optionCallback: ((OptionResponse) -> Unit) ?= null,
+    private val viewModel: PythonEditorViewModel?=null
 
     ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
         ContentDiffCallback()
     ) {
-
+    init {
+        Log.d("ExerciseContentAdapter", "ViewModel is: $viewModel")
+    }
     private val inflater = LayoutInflater.from(context)
     private val mCallback = callback
     private val mOptionCallback = optionCallback
@@ -64,7 +69,7 @@ class ExerciseContentAdapter(
             R.layout.item_header_content -> HeaderCourseViewHolder(itemView)
             R.layout.item_youtube_content -> YoutubeCourseViewHolder(itemView)
             R.layout.item_block_quote_content -> BlockQuoteCourseViewHolder(itemView)
-            R.layout.example_editor -> CodeCourseViewHolder(itemView)
+            R.layout.example_editor -> CodeCourseViewHolder(itemView, viewModel)
             R.layout.item_banner_content -> BannerCourseViewHolder(itemView)
             R.layout.item_link_content -> LinkCourseViewHolder(itemView)
             R.layout.item_question_code_content -> QuestionCodeCourseViewHolder(itemView)

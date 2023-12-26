@@ -1,6 +1,7 @@
 package org.navgurukul.playground.editor
 
 import android.text.TextUtils
+import android.util.Log
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.lifecycle.LiveData
@@ -74,6 +75,8 @@ class PythonEditorViewModel(
     }
 
     private fun updateOutput(output: CharSequence) {
+        Log.d("Debug", "updateOutput called with output: $output")
+
         setState {
             val codeResponse = if (codeResponse is CodeResponseModel.Output) {
                 CodeResponseModel.Output(TextUtils.concat(codeResponse.output, output))
@@ -137,6 +140,8 @@ class PythonEditorViewModel(
     }
 
     private fun onInput(input: String) {
+        Log.d("input", "onInput called with input: $input")
+
         updateOutput(" $input \n")
         viewModelScope.launch { pythonRepository.onInput(input) }
         setState { copy(inputEnabled = false) }

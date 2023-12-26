@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -14,13 +15,18 @@ import com.chaquo.python.PyObject
 import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.navgurukul.playground.editor.PythonEditorViewActions
+import org.navgurukul.playground.editor.PythonEditorViewModel
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.PrintStream
 
 
-class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
+class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorViewModel?) : BaseCourseViewHolder(itemView) {
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private val codeLayout: ConstraintLayout = populateStub(R.layout.example_editor)
@@ -30,6 +36,7 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
     private val imageViewPlay: Button = codeLayout.findViewById(R.id.run_btn)
     private val outputTextView: TextView = codeLayout.findViewById(R.id.Actual_outPut)
     private val outputTexts: TextView = codeLayout.findViewById(R.id.out_put_txt)
+    private val customScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var inputEditText: EditText
     private lateinit var enterButton: MaterialButton
@@ -67,12 +74,16 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
-            executeCode(pyObj, inputEditText.text.toString())
+            customScope.launch {
+                executeCode(pyObj, inputEditText.text.toString())
+            }
             bottomSheetDialog.show()
         }
 
         enterButton.setOnClickListener {
-            executeCode(pyObj, inputEditText.text.toString())
+            val userInput = inputEditText.text.toString()
+            viewModel?.handle(PythonEditorViewActions.OnInput(userInput))
+            viewModel?.handle(PythonEditorViewActions.OnRunCode)
         }
 
         val resetCode: TextView = codeLayout.findViewById(R.id.reset_code)
@@ -90,28 +101,20 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
     }
 
     private fun executeCode(pyObj: PyObject, userInput: String?) {
-        val originalInputStream: InputStream = System.`in`
-        val originalOutputStream: PrintStream = System.out
-
-        val inputBytes: ByteArrayInputStream = if (!userInput.isNullOrBlank()) {
-            ByteArrayInputStream(userInput.toByteArray())
-        } else {
-
-            ByteArrayInputStream("".toByteArray())
-        }
-
-        val outputBytes: ByteArrayOutputStream = ByteArrayOutputStream()
+        Log.d("Debug", "executeCode called")
 
         try {
-            System.setIn(inputBytes)
-            System.setOut(PrintStream(outputBytes))
             val scriptCode = codeBody.text.toString()
             val execResult = pyObj.callAttr("main", scriptCode)
             val output = execResult.toString()
-            System.setIn(originalInputStream)
-            System.setOut(originalOutputStream)
+            viewModel?.handle(PythonEditorViewActions.OnInput(userInput ?: ""))
+            viewModel?.handle(PythonEditorViewActions.OnRunCode)
             val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
             val outputToShow = "Output:\n$output"
+
+            Log.d("Debug", "executionResultsTextView: $executionResultsTextView")
+
+            Log.d("Debug", "Output to show: $outputToShow")
             executionResultsTextView?.text = outputToShow
             if (!userInput.isNullOrBlank()) {
                 inputEditText?.setText("")
@@ -120,10 +123,9 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
 
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("Debug", "Error during execution: ${e.message}")
             val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
             executionResultsTextView?.text = "Error during execution: End of input reached."
-            System.setIn(originalInputStream)
-            System.setOut(originalOutputStream)
             bottomSheetDialog.show()
 
         }

@@ -56,14 +56,6 @@ class ExerciseFragment : Fragment() {
     private lateinit var mBinding: FragmentExerciseBinding
     private lateinit var contentAdapter: ExerciseContentAdapter
     private val merakiNavigator: MerakiNavigator by inject()
-    private val viewModel: PythonEditorViewModel by viewModel(parameters = {
-        parametersOf(
-            pythonEditorArgs, ContextCompat.getColor(requireContext(), org.navgurukul.playground.R.color.error_text)
-        )
-    })
-
-    private val pythonEditorArgs: PythonEditorArgs by fragmentArgs()
-
 
     companion object {
         fun newInstance(
@@ -179,7 +171,7 @@ class ExerciseFragment : Fragment() {
                         merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
-        })
+        },viewModel = null)
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
