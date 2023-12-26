@@ -292,16 +292,30 @@ class AssessmentFragmentViewModel (
         }
     }
 
-    private fun postResultOnSubmit(clickedOption: List<OptionResponse>){
-        val list = mutableListOf<Int>()
-        for (int in clickedOption){
-            list.add(int.id)
-        }
-        if (isOptionSelectedCorrect(clickedOption)){
-            postStudentResult(args.contentId.toInt(), Status.Pass, list )
-        }
-        else{
-            postStudentResult(args.contentId.toInt(), Status.Fail, list )
+    private fun postResultOnSubmit(clickedOption: List<OptionResponse>) {
+        val solutionContent = allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
+        val correctOptions = solutionContent.correct_options_value
+        val incorrectOptions = solutionContent.incorrect_options_value
+        val selectedIds = clickedOption.map { it.id }
+
+        // Condition 1: All correct options selected -> Correct
+        if (selectedIds.containsAll(correctOptions.map { it.value })) {
+            postStudentResult(args.contentId.toInt(), Status.Pass, selectedIds)
+        } else {
+            // Condition 2: Some correct options selected -> Partially Correct
+            if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
+                postStudentResult(args.contentId.toInt(), Status.Partially_Correct, selectedIds)
+            } else {
+                // Condition 3: Some correct and some incorrect options selected -> Partially Incorrect
+                if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
+                    selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
+                    postStudentResult(args.contentId.toInt(), Status.Partially_Incorrect, selectedIds)
+                } else {
+                    // Condition 4: All incorrect options selected (or no options selected)
+                    postStudentResult(args.contentId.toInt(), Status.Fail, selectedIds)
+                }
+            }
         }
     }
 
@@ -323,75 +337,6 @@ class AssessmentFragmentViewModel (
         }
         return false
     }
-
-    private fun isOptionSelectedInCorrect(
-        clickedOption: List<OptionResponse>
-    ) : Boolean {
-        var increment = 0
-        val inCorrectOptions = (allAssessmentContentList
-            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).incorrect_options_value
-        try {
-            while ( increment<clickedOption.size){
-                if(inCorrectOptions?.indices?.contains(clickedOption[increment].id) == true){
-                    return true
-                }
-                increment++
-            }
-        }catch (e: Exception){
-            return false
-        }
-        return false
-    }
-
-    //According to Figma When user selected some correct answers
-    private fun isOptionSelectedPartiallyCorrect(
-        clickedOption: List<OptionResponse>
-    ): Boolean {
-        val correctOptions = (allAssessmentContentList
-            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).correct_options_value
-        return try {
-            val correctOptionIds = correctOptions.map { it.value }  //(a,b,d)
-            val clickedOptionIds = clickedOption.map { it.id }  //(a,b)
-            val matchingOptionsCount = clickedOptionIds.intersect(correctOptionIds.toSet()).size //(a,b) intersect (a,b,d) = (a,b) = 2
-
-            //we can set a fixed number of correct answers required for partial credit.
-
-            val partialCorrectThreshold = (correctOptionIds.size % 2).toInt() //(a,b,d) = 3 % 2 = 1
-            matchingOptionsCount >= partialCorrectThreshold //(a,b) >= 1 = true
-
-        } catch (e: Exception) {
-            false
-        }
-
-        //For example I have 4 option (a,b,c,d) and 3 is correct (a,b,d) and user clicks on (a,b) then it should be partially correct
-    }
-
-    //According to Figma When user selected some correct answers and some wrong answers
-    private fun isOptionSelectedPartiallyInCorrect(
-        clickedOption: List<OptionResponse>
-    ): Boolean {
-        val solutionContent = allAssessmentContentList
-            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
-        val correctOptions = solutionContent.correct_options_value as? List<OptionResponse>
-        val incorrectOptions = solutionContent.incorrect_options_value as? List<OptionResponse>
-        return if (correctOptions != null && incorrectOptions != null) {
-            try {
-                (correctOptions.subtract(clickedOption.toSet()).isNotEmpty() &&
-                        clickedOption.intersect(incorrectOptions).isNotEmpty())
-
-                //If any correct options are missing (correctOptions.subtract(clickedOption).isNotEmpty()), it indicates partial incorrectness.
-                //If any incorrect options are selected (clickedOption.intersect(incorrectOptions).isNotEmpty()), it also indicates partial incorrectness.
-            } catch (e: Exception) {
-                false
-            }
-        } else {
-            false
-        }
-    }
-
-
-
-
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
