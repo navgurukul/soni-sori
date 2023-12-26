@@ -254,14 +254,25 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
-            val attemptStatus = attemptResponse.attemptStatus
-            if (attemptStatus == AttemptStatus.CORRECT){
-                updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
-            } else if ( attemptStatus == AttemptStatus.INCORRECT){
-                updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+            when(attemptResponse.attemptStatus){
+                AttemptStatus.CORRECT -> {
+                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
+                }
+                AttemptStatus.INCORRECT -> {
+                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+                }
+                AttemptStatus.PARTIALLY_CORRECT -> {
+                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyCorrectOutputDataList))
+                }
+                AttemptStatus.PARTIALLY_INCORRECT -> {
+                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyInCorrectOutputDataList))
+                }
             }
+
         }
 }
 
