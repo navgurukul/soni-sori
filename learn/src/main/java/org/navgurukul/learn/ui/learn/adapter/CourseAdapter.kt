@@ -54,16 +54,9 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         val binding = holder.binding
         binding.course = item.course
 
-        if (item.logo?.endsWith(".svg") == true) {
-            SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivLogo)
-        } else{
-            val thumbnail = Glide.with(holder.itemView)
-                .load(R.drawable.ic_lock)
-            Glide.with(binding.ivLogo)
-                .load(item.logo)
-                .thumbnail(thumbnail)
-                .into(binding.ivLogo)
-        }
+        binding.ivLogo.setImageResource(R.drawable.placeholder_course_icon)
+        val svgLoaderFunction = SvgLoader.SvgLoaderFunction(context)
+        item.logo?.let { svgLoaderFunction.loadImage(it, binding.ivLogo) }
 
         // TODO set progress from the object
         binding.progressBar.progress = item.course.completedPortion?:0

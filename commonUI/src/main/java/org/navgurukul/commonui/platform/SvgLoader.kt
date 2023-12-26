@@ -18,15 +18,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class SvgLoader(private val context: Context) {
-    private val requestOptions = RequestOptions()
-        .diskCacheStrategy(DiskCacheStrategy.NONE)
-        .skipMemoryCache(true)
-
-    fun loadSvgFromUrl(url: String, targetImageView: ImageView) {
-        val task = SvgLoadingTask(context, targetImageView, requestOptions)
-        task.execute(url)
-    }
-
     private class SvgLoadingTask(
         context: Context,
         private val targetImageView: ImageView,

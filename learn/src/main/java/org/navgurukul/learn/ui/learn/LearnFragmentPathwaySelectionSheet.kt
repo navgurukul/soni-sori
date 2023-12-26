@@ -99,23 +99,15 @@ class PathwaySelectionAdapter( val context: Context, val callback: (Pathway) -> 
     }
 
     override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
-            val binding = holder.binding
-            binding.pathway = item
-            binding.root.setOnClickListener {
-                callback.invoke(item)
-            }
-
-            if (item.logo?.endsWith(".svg") == true) {
-                SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
-            }
-            else {
-                val thumbnail = Glide.with(holder.itemView)
-                    .load(R.drawable.ic_typing_icon)
-                Glide.with(binding.ivPathwayIcon)
-                    .load(item.logo)
-                    .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
-                    .thumbnail(thumbnail)
-                    .into(binding.ivPathwayIcon)
-            }
+        val binding = holder.binding
+        binding.pathway = item
+        binding.root.setOnClickListener {
+            callback.invoke(item)
         }
+
+        binding.ivPathwayIcon.setImageResource(R.drawable.placeholder_course_icon)
+        val svgLoaderFunction = SvgLoader.SvgLoaderFunction(context)
+        item.logo?.let { svgLoaderFunction.loadImage(it, binding.ivPathwayIcon) }
+
+    }
 }
