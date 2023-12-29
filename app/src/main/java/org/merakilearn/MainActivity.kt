@@ -26,7 +26,6 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
-import org.merakilearn.ui.profile.ProfileActivity
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
@@ -150,12 +149,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .transform(CircleCrop())
             .into(it)
 
-        it.setOnClickListener {
-            if (userRepo.isFakeLogin())
-                OnBoardingActivity.showLoginScreen(this)
-            else
-                ProfileActivity.launch(this)
-        }
+//        it.setOnClickListener {
+//            if (userRepo.isFakeLogin())
+//                OnBoardingActivity.showLoginScreen(this)
+//            else
+//                ProfileActivity.launch(this)
+//        }
     }
 
 
@@ -199,6 +198,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         headerIv.isVisible = showProfile
         headerLogOut.isVisible = showLogout
+        headerIcon.isVisible = true
+        //headerIcon.setImageResource(R.drawable.placeholder_course_icon)
 
         headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {

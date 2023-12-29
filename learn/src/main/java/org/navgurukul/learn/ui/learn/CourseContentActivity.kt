@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.play.core.assetpacks.cu
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -99,7 +98,8 @@ class CourseContentActivity : AppCompatActivity(){
                         it.courseId,
                         it.contentId,
                         it.courseContentType,
-                        it.navigation
+                        it.navigation,
+                        it.pathwayId
                     )
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
@@ -112,7 +112,8 @@ class CourseContentActivity : AppCompatActivity(){
                         it.courseId,
                         it.contentId,
                         it.courseContentType,
-                        it.navigation
+                        it.navigation,
+                        it.pathwayId
                     )
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
@@ -125,7 +126,8 @@ class CourseContentActivity : AppCompatActivity(){
                         it.courseId,
                         it.contentId,
                         it.courseContentType,
-                        it.navigation
+                        it.navigation,
+                        it.pathwayId
                     )
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
@@ -204,7 +206,8 @@ class CourseContentActivity : AppCompatActivity(){
         courseId: String,
         exerciseId: String,
         courseContentType: CourseContentType,
-        navigation: ExerciseNavigation?
+        navigation: ExerciseNavigation?,
+        pathwayId: Int
     ) {
         supportFragmentManager.commit {
             val enter = when (navigation) {
@@ -217,7 +220,7 @@ class CourseContentActivity : AppCompatActivity(){
             )
             replace(
                 R.id.exerciseContentContainer,
-                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId, courseContentType),
+                ExerciseFragment.newInstance(isFirst, isLast, isCompleted, courseId, exerciseId, courseContentType, pathwayId),
                 ExerciseFragment.TAG
             )
         }
@@ -230,7 +233,8 @@ class CourseContentActivity : AppCompatActivity(){
         courseId: String,
         classId: String,
         courseContentType: CourseContentType,
-        navigation: ExerciseNavigation?
+        navigation: ExerciseNavigation?,
+        pathwayId: Int
     ) {
         supportFragmentManager.commit {
             val enter = when (navigation) {
@@ -243,7 +247,7 @@ class CourseContentActivity : AppCompatActivity(){
             )
             replace(
                 R.id.exerciseContentContainer,
-                ClassFragment.newInstance(isFirst, isLast, isCompleted, courseId, classId, courseContentType),
+                ClassFragment.newInstance(isFirst, isLast, isCompleted, courseId, classId, courseContentType, pathwayId),
                 ClassFragment.TAG
             )
         }
@@ -256,7 +260,8 @@ class CourseContentActivity : AppCompatActivity(){
         courseId: String,
         assessmentId : String,
         courseContentType: CourseContentType,
-        navigation: ExerciseNavigation?
+        navigation: ExerciseNavigation?,
+        pathwayId: Int
     ){
         supportFragmentManager.commit {
             val enter = when(navigation){
@@ -269,7 +274,7 @@ class CourseContentActivity : AppCompatActivity(){
             )
             replace(
                 R.id.exerciseContentContainer,
-                AssessmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, assessmentId, courseContentType),
+                AssessmentFragment.newInstance(isFirst, isLast, isCompleted, courseId, assessmentId, courseContentType, pathwayId),
                 AssessmentFragment.TAG
             )
         }

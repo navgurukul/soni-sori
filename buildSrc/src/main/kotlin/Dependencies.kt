@@ -170,11 +170,11 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 31
+    const val compileSdkVersion = 33
     const val minSdkVersion = 23
-    const val targetSdkVersion = 31
-    const val versionCode = 85
-    const val versionName = "1.5.55"
+    const val targetSdkVersion = 33
+    const val versionCode = 91
+    const val versionName = "1.5.61"
     const val applicationId = "org.merakilearn"
 }
 

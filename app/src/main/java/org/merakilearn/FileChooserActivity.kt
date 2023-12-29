@@ -179,7 +179,14 @@ class FileChooserActivity : AppCompatActivity() {
     }
 
     private fun getExtensionFromName(fileName: String): String {
-        return fileName.substring(fileName.lastIndexOf("."), fileName.length)
+        val lastDotIndex = fileName.lastIndexOf(".")
+
+        return if (lastDotIndex != -1 && lastDotIndex < fileName.length - 1) {
+            fileName.substring(lastDotIndex + 1)
+        } else {
+            "IllegalArgumentException(\"Invalid file name: $fileName\")"
+        }
     }
+
 
 }

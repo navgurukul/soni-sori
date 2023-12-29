@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/python_certificate" />
+        tools:text= "Python certificate"/>
 
     <ImageView
         android:id="@+id/idPDFView"
@@ -38,7 +39,7 @@
         android:layout_marginBottom="@dimen/spacing_2x"
         app:layout_constraintTop_toBottomOf="@+id/idPDFView"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/certificate_information" />
+        tools:text="@string/certificate_information" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,3 +66,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
