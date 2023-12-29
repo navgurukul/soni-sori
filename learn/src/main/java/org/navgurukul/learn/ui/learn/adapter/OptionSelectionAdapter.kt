@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -229,14 +230,10 @@ if(assessmentType==AssessmentType.multiple){
                     }
                 }
                 OptionViewState.PARTIALLY_CORRECT ->{
-//                    tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
-//                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-//                    tvCardOption.strokeColor = Color.parseColor("#48A145")
-//                    tvRadioButtonOption.isChecked = true
-//                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                    Toast.makeText(root.context,"Partially Correct",Toast.LENGTH_SHORT).show()
                 }
                 OptionViewState.PARTIALLY_INCORRECT->{
-
+                    Toast.makeText(root.context,"Partially Incorrect",Toast.LENGTH_SHORT).show()
                 }
             }
 
