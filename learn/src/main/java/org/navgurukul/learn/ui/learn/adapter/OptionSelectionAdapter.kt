@@ -229,11 +229,11 @@ if(assessmentType==AssessmentType.multiple){
                     }
                 }
                 OptionViewState.PARTIALLY_CORRECT ->{
-                    tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
-                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                    tvCardOption.strokeColor = Color.parseColor("#48A145")
-                    tvRadioButtonOption.isChecked = true
-                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+//                    tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
+//                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+//                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+//                    tvRadioButtonOption.isChecked = true
+//                    tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                 }
                 OptionViewState.PARTIALLY_INCORRECT->{
 

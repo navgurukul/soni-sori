@@ -143,10 +143,13 @@ class AssessmentFragmentViewModel (
             if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                 val optionList = it as OptionsBaseCourseContent
                 for (option in optionList.value) {
-                    if (option.id == selectedOption[0]) {
-                        option.viewState = newViewState
-                    } else {
-                        option.viewState = OptionViewState.NOT_SELECTED
+                    for (optionId in selectedOption) {
+                        if (option.id == optionId) {
+                            option.viewState = newViewState
+                        }
+                        else {
+                            option.viewState = OptionViewState.NOT_SELECTED
+                        }
                     }
                 }
             }
@@ -294,12 +297,28 @@ class AssessmentFragmentViewModel (
     }
 
     private fun showOutputScreen(clickedOption: List<OptionResponse>, content: List<BaseCourseContent>? = null){
-        if (isOptionSelectedCorrect(clickedOption)){
+        val solutionContent = allAssessmentContentList
+            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
+        val correctOptions = solutionContent.correct_options_value
+        val incorrectOptions = solutionContent.incorrect_options_value
+        val selectedIds = clickedOption.map { it.id }
+        if (selectedIds.containsAll(correctOptions.map { it.value })){
             updateList(clickedOption, OptionViewState.CORRECT, content)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
-        }else{
-            updateList(clickedOption, OptionViewState.INCORRECT, content)
-            _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+        }else {
+            if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
+                updateList(clickedOption, OptionViewState.PARTIALLY_CORRECT, content)
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyCorrectOutputDataList))
+            }else {
+                if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
+                    selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
+                    updateList(clickedOption, OptionViewState.PARTIALLY_INCORRECT, content)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyInCorrectOutputDataList))
+                }else {
+                    updateList(clickedOption, OptionViewState.INCORRECT, content)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
+                }
+            }
         }
     }
 
@@ -309,45 +328,22 @@ class AssessmentFragmentViewModel (
         val correctOptions = solutionContent.correct_options_value
         val incorrectOptions = solutionContent.incorrect_options_value
         val selectedIds = clickedOption.map { it.id }
-
-        // Condition 1: All correct options selected -> Correct
         if (selectedIds.containsAll(correctOptions.map { it.value })) {
             postStudentResult(args.contentId.toInt(), Status.Pass, selectedIds)
         } else {
-            // Condition 2: Some correct options selected -> Partially Correct
             if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
                 postStudentResult(args.contentId.toInt(), Status.Partially_Correct, selectedIds)
             } else {
-                // Condition 3: Some correct and some incorrect options selected -> Partially Incorrect
                 if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
                     selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
                     postStudentResult(args.contentId.toInt(), Status.Partially_Incorrect, selectedIds)
                 } else {
-                    // Condition 4: All incorrect options selected (or no options selected)
                     postStudentResult(args.contentId.toInt(), Status.Fail, selectedIds)
                 }
             }
         }
     }
 
-    private fun isOptionSelectedCorrect(
-        clickedOption: List<OptionResponse>
-    ) : Boolean {
-        var increment = 0
-        val correctOptions = (allAssessmentContentList
-            .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent).correct_options_value
-        try {
-            while ( increment<clickedOption.size){
-                if(clickedOption[increment].id in correctOptions.indices){
-                    return true
-                }
-                increment++
-            }
-        }catch (e: Exception){
-            return false
-        }
-        return false
-    }
     sealed class AssessmentFragmentViewEvents : ViewEvents {
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
