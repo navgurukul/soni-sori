@@ -280,15 +280,15 @@ class AssessmentFragmentViewModel (
                 }
                 AttemptStatus.INCORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
                 }
                 AttemptStatus.PARTIALLY_CORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyCorrectOutputDataList))
                 }
                 AttemptStatus.PARTIALLY_INCORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyInCorrectOutputDataList))
                 }
             }
 
