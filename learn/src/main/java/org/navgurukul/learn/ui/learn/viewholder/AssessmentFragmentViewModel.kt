@@ -104,18 +104,34 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .correct_options_value[0].value
+                .correct_options_value
+            val inCorrectOption = (allAssessmentContentList
+                .find { it.component == BaseCourseContent.COMPONENT_SOLUTION} as SolutionBaseCourseContent).incorrect_options_value
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
                     val optionList = it as OptionsBaseCourseContent
+                    val optionIds = mutableListOf<Int>()
                     for (option in optionList.value){
-                        if (option.id == correctOption){
+                            optionIds.add(option.id)
+                    }
+                    for (option in optionList.value){
+                        if (optionIds.containsAll(correctOption.map { it.value })){
                             option.viewState = OptionViewState.CORRECT
-                        } else if (option.id == selectedOption[0]){                                                                      // Need to check after during implementation
-                            option.viewState = OptionViewState.INCORRECT
-                        }else {
-                            option.viewState = OptionViewState.NOT_SELECTED
+                        } else{
+                            if (optionIds.intersect(correctOption.map { it.value }).isNotEmpty() && !optionIds.intersect(inCorrectOption!!.map { it.value }).isNotEmpty()){
+                                option.viewState = OptionViewState.PARTIALLY_CORRECT
+                            } else{
+                                if (optionIds.intersect(correctOption.map { it.value }).isNotEmpty() &&
+                                    optionIds.intersect(inCorrectOption!!.map { it.value }).isNotEmpty()){
+                                    option.viewState = OptionViewState.PARTIALLY_INCORRECT
+                                } else if (optionIds.containsAll(inCorrectOption!!.map { it.value })){
+                                    option.viewState = OptionViewState.INCORRECT
+                                }
+                                else{
+                                    option.viewState = OptionViewState.NOT_SELECTED
+                                }
+                            }
                         }
                     }
                 }
