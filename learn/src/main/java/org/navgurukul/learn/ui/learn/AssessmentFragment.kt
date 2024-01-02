@@ -18,12 +18,14 @@ import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
+import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
@@ -176,11 +178,29 @@ class AssessmentFragment : Fragment() {
 //            }
             if (attemptResponse != null) {
                 if (attemptResponse.attemptCount < 2) {
-                    mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                        isContentRvClickable = true
-                        mBinding.incorrectOutputLayout.visibility = View.GONE
-                        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                    if (attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_CORRECT){
+                        mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
+                        mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
+                        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+                            isContentRvClickable = true
+                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                        }
+                    }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
+                        mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
+                        mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
+                        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+                            isContentRvClickable = true
+                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                        }
+                    }else{
+                        mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
+                        mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
+                            isContentRvClickable = true
+                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
+                        }
                     }
                 } else {
                     mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
