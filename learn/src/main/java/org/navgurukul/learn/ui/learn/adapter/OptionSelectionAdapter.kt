@@ -10,6 +10,7 @@ import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
@@ -230,11 +231,51 @@ if(assessmentType==AssessmentType.multiple){
                     }
                 }
                 OptionViewState.PARTIALLY_CORRECT ->{
-                    Toast.makeText(root.context,"Partially Correct",Toast.LENGTH_SHORT).show()
+                    when (assessmentType){
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFFDE7"))
+                                tvCardOption.strokeColor = Color.parseColor("#FFC107")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#FFC107"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFFDE7"))
+                                tvCardOption.strokeColor = Color.parseColor("#FFC107")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#FFC107"))
+                            }
+                        }
+                    }
                 }
                 OptionViewState.PARTIALLY_INCORRECT->{
-                    Toast.makeText(root.context,"Partially Incorrect",Toast.LENGTH_SHORT).show()
+                    when (assessmentType){
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }
+                        }
                 }
+            }
             }
 
 
