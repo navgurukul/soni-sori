@@ -205,8 +205,10 @@ class AssessmentFragmentViewModel (
                                 it as OutputBaseCourseContent
                                 inCorrectOutputDataList = it.value.incorrect
                                 correctOutputDataList = it.value.correct
+                                partiallyCorrectOutputDataList = it.value.partially_correct
+                                partiallyInCorrectOutputDataList = it.value.partially_incorrect
                             }catch (e: Exception){
-
+                                e.printStackTrace()
                             }
                         }
 
