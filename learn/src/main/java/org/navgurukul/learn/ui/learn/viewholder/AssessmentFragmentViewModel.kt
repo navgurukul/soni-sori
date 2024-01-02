@@ -320,7 +320,7 @@ class AssessmentFragmentViewModel (
         val correctOptions = solutionContent.correct_options_value
         val incorrectOptions = solutionContent.incorrect_options_value
         val selectedIds = clickedOption.map { it.id }
-        if (selectedIds.containsAll(correctOptions.map { it.value })){
+        if (selectedIds==correctOptions.map { it.value }){
             updateList(clickedOption, OptionViewState.CORRECT, content)
             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
         }else {
@@ -346,7 +346,7 @@ class AssessmentFragmentViewModel (
         val correctOptions = solutionContent.correct_options_value
         val incorrectOptions = solutionContent.incorrect_options_value
         val selectedIds = clickedOption.map { it.id }
-        if (selectedIds.containsAll(correctOptions.map { it.value })) {
+        if (selectedIds==correctOptions.map { it.value }) {
             postStudentResult(args.contentId.toInt(), Status.Pass, selectedIds)
         } else {
             if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
