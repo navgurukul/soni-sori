@@ -326,13 +326,13 @@ class AssessmentFragmentViewModel (
         }else {
             if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
                 updateList(clickedOption, OptionViewState.PARTIALLY_CORRECT, content)
-                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyCorrectOutputDataList))
+                _viewEvents.postValue(AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput(partiallyCorrectOutputDataList))
             }else {
                 if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
                     selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
                     updateList(clickedOption, OptionViewState.PARTIALLY_INCORRECT, content)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyInCorrectOutputDataList))
-                }else {
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput(partiallyInCorrectOutputDataList))
+                }else if(selectedIds == incorrectOptions!!.map { it.value }){
                     updateList(clickedOption, OptionViewState.INCORRECT, content)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
                 }
@@ -366,6 +366,8 @@ class AssessmentFragmentViewModel (
         class ShowToast(val toastText: String) : AssessmentFragmentViewModel.AssessmentFragmentViewEvents()
         data class ShowCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
         data class ShowIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
+        data class ShowPartiallyCorrectOutput(val list : List<BaseCourseContent>): AssessmentFragmentViewEvents()
+        data class ShowPartiallyIncorrectOutput(val list : List<BaseCourseContent>) : AssessmentFragmentViewEvents()
         data class ShowRetryOnce(val list : List<BaseCourseContent>, val attemptResponse: AttemptResponse)  : AssessmentFragmentViewEvents()
     }
 

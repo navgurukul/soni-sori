@@ -111,6 +111,20 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
 
                 }
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput -> {
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.correctOutputLayout.root.visibility = View.GONE
+                    initIncorrectRV(it.list)
+                    isContentRvClickable = false
+
+                }
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
+                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.correctOutputLayout.root.visibility = View.GONE
+                    initIncorrectRV(it.list)
+                    isContentRvClickable = false
+                }
+
             }
         }
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
