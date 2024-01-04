@@ -7,28 +7,25 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.chaquo.python.Python
-import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.BaseCourseContent
-import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
-import com.chaquo.python.PyObject
 import androidx.core.text.HtmlCompat
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.bottom_sheet_input.view.layoutInputs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.navgurukul.playground.editor.PythonEditorViewActions
-import org.navgurukul.playground.editor.PythonEditorViewModel
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.PrintStream
+import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
+import org.navgurukul.learn.databinding.BottomSheetInputBinding
 
 
-class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorViewModel?) : BaseCourseViewHolder(itemView) {
+class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
+    private lateinit var binding : BottomSheetInputBinding
     private val codeLayout: ConstraintLayout = populateStub(R.layout.example_editor)
     private val codeTitle: TextView = codeLayout.findViewById(R.id.code_title)
     private val codeBody: EditText = codeLayout.findViewById(R.id.code_body)
@@ -50,14 +47,14 @@ class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorVie
         outputTextView.visibility = View.GONE
         outputTexts.visibility = View.GONE
 
-        bottomSheetDialog = BottomSheetDialog(itemView.context)
-        val bottomSheetView = View.inflate(itemView.context, R.layout.bottom_sheet_input, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
+
     }
 
     fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
         super.bind(item)
-
+        bottomSheetDialog = BottomSheetDialog(itemView.context)
+        val binding = View.inflate(itemView.context, R.layout.bottom_sheet_input, null)
+        bottomSheetDialog.setContentView(binding)
         if (item.title.isNullOrBlank()) {
             codeTitle.visibility = View.GONE
         } else {
@@ -74,6 +71,8 @@ class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorVie
         imageViewPlay.visibility = View.VISIBLE
 
         imageViewPlay.setOnClickListener {
+
+            binding.layoutInputs.visibility = View.GONE
             customScope.launch {
                 executeCode(pyObj, inputEditText.text.toString())
             }
@@ -82,8 +81,6 @@ class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorVie
 
         enterButton.setOnClickListener {
             val userInput = inputEditText.text.toString()
-            viewModel?.handle(PythonEditorViewActions.OnInput(userInput))
-            viewModel?.handle(PythonEditorViewActions.OnRunCode)
         }
 
         val resetCode: TextView = codeLayout.findViewById(R.id.reset_code)
@@ -107,8 +104,6 @@ class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorVie
             val scriptCode = codeBody.text.toString()
             val execResult = pyObj.callAttr("main", scriptCode)
             val output = execResult.toString()
-            viewModel?.handle(PythonEditorViewActions.OnInput(userInput ?: ""))
-            viewModel?.handle(PythonEditorViewActions.OnRunCode)
             val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
             val outputToShow = "Output:\n$output"
 
@@ -117,7 +112,7 @@ class CodeCourseViewHolder(itemView: View,private var viewModel: PythonEditorVie
             Log.d("Debug", "Output to show: $outputToShow")
             executionResultsTextView?.text = outputToShow
             if (!userInput.isNullOrBlank()) {
-                inputEditText?.setText("")
+                inputEditText.setText("")
             }
             bottomSheetDialog.show()
 

@@ -7,7 +7,6 @@ import androidx.core.text.color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.chaquo.python.Python
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -16,7 +15,6 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.R
-import org.navgurukul.playground.editor.PythonEditorActivity.Companion.EMPTY_FILE
 import org.navgurukul.playground.repo.PythonRepository
 
 
@@ -71,7 +69,7 @@ class PythonEditorViewModel(
             }
         }
 
-        newFile=pythonEditorArgs.newFile
+        newFile = pythonEditorArgs.newFile
     }
 
     private fun updateOutput(output: CharSequence) {

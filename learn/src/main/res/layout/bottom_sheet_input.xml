@@ -1,95 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottomSheets"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/user_input_background"
-    android:paddingBottom="@dimen/spacing_4x"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="@dimen/height_bottom_peek"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/linearLayoutPeeks"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/height_bottom_peek"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/spacing_4x"
-        android:paddingRight="@dimen/spacing_4x"
-        android:text="@string/output"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?textPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="?borderWidth"
-        android:background="?borderColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks" />
-
-    <LinearLayout
-        android:id="@+id/layoutExecutionResults"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomSheets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/layoutInputs"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks">
+        android:paddingBottom="@dimen/spacing_4x"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/height_bottom_peek"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView
-            android:id="@+id/tvExecutionResults"
+            android:id="@+id/linearLayoutPeeks"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_bottom_peek"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_4x"
+            android:paddingRight="@dimen/spacing_4x"
+            android:text="@string/output"
+            android:textAppearance="?textAppearanceHeadline5"
+            android:textColor="?textPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="?borderWidth"
+            android:background="?borderColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks" />
+
+        <LinearLayout
+            android:id="@+id/layoutExecutionResults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:freezesText="true"
-            android:padding="@dimen/spacing_4x"
-            android:textColor="?textPrimary"
-            android:textIsSelectable="true"/>
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/layoutInputs"
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutPeeks">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvExecutionResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:freezesText="true"
+                android:padding="@dimen/spacing_4x"
+                android:textColor="?textPrimary"
+                android:textIsSelectable="true" />
 
-    <LinearLayout
-        android:id="@+id/layoutInputs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent">
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etInputId"
-            style="@style/Code"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layoutInputs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_2x"
-            android:layout_marginEnd="@dimen/spacing_2x"
-            android:layout_weight="1"
-            android:background="@drawable/bg_input"
-            android:ems="10"
-            android:hint="@string/enter_input_here"
-            android:imeOptions="actionDone|flagNoFullscreen"
-            android:inputType="textNoSuggestions|textVisiblePassword"
-            android:padding="@dimen/spacing_2x"
-            android:singleLine="true" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ibEnters"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:minWidth="48dp"
-            app:icon="@drawable/ic_enter_round" />
+            <EditText
+                android:id="@+id/etInputId"
+                style="@style/Code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_2x"
+                android:layout_marginEnd="@dimen/spacing_2x"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:ems="10"
+                android:hint="@string/enter_input_here"
+                android:imeOptions="actionDone|flagNoFullscreen"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:padding="@dimen/spacing_2x"
+                android:singleLine="true" />
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ibEnters"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="48dp"
+                app:icon="@drawable/ic_enter_round" />
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
