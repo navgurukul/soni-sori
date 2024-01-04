@@ -104,34 +104,18 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             val correctOption = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .correct_options_value
-            val inCorrectOption = (allAssessmentContentList
-                .find { it.component == BaseCourseContent.COMPONENT_SOLUTION} as SolutionBaseCourseContent).incorrect_options_value
+                .correct_options_value[0].value
             val currentState = viewState.value!!
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
                     val optionList = it as OptionsBaseCourseContent
-                    val optionIds = mutableListOf<Int>()
                     for (option in optionList.value){
-                            optionIds.add(option.id)
-                    }
-                    for (option in optionList.value){
-                        if (optionIds.containsAll(correctOption.map { it.value })){
+                        if (option.id == correctOption){
                             option.viewState = OptionViewState.CORRECT
-                        } else{
-                            if (optionIds.intersect(correctOption.map { it.value }).isNotEmpty() && !optionIds.intersect(inCorrectOption!!.map { it.value }).isNotEmpty()){
-                                option.viewState = OptionViewState.PARTIALLY_CORRECT
-                            } else{
-                                if (optionIds.intersect(correctOption.map { it.value }).isNotEmpty() &&
-                                    optionIds.intersect(inCorrectOption!!.map { it.value }).isNotEmpty()){
-                                    option.viewState = OptionViewState.PARTIALLY_INCORRECT
-                                } else if (optionIds.containsAll(inCorrectOption!!.map { it.value })){
-                                    option.viewState = OptionViewState.INCORRECT
-                                }
-                                else{
-                                    option.viewState = OptionViewState.NOT_SELECTED
-                                }
-                            }
+                        } else if (option.id == selectedOption[0]){                                                                      // Need to check after during implementation
+                            option.viewState = OptionViewState.INCORRECT
+                        }else {
+                            option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
                 }
@@ -282,15 +266,15 @@ class AssessmentFragmentViewModel (
                 }
                 AttemptStatus.INCORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(inCorrectOutputDataList))
                 }
                 AttemptStatus.PARTIALLY_CORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyCorrectOutputDataList))
                 }
                 AttemptStatus.PARTIALLY_INCORRECT -> {
                     updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse))
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowIncorrectOutput(partiallyInCorrectOutputDataList))
                 }
             }
 
