@@ -135,12 +135,18 @@ if(assessmentType==AssessmentType.multiple){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvCardOption.strokeColor = Color.parseColor("#ffffff")
                                 checkBox.visibility = View.VISIBLE
+                                checkBox.isChecked = false
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvCardOption.strokeColor = Color.parseColor("#ffffff")
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
                                 checkBox.visibility = View.VISIBLE
+                                checkBox.isChecked = false
                             }
                         }
                     }
