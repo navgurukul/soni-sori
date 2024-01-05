@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,7 +20,9 @@ import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
+
 
 class LearnFragmentViewModel(
     private val learnRepo: LearnRepo,
@@ -34,48 +37,50 @@ class LearnFragmentViewModel(
         setState { copy(loading = true) }
         viewModelScope.launch(Dispatchers.Default) {
             learnRepo.getPathwayData(true).collect {
-                it?.let {
-                    var currentPathway: Pathway? = null
-                    if (it.isNotEmpty()) {
-                        setState {
-                            val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
-                            var currentPathwayIndex = currentPathwayIndex
-                            currentPathway = it[currentPathwayIndex]
-                            it.forEachIndexed { index, pathway ->
-                                if (pathway.id == lastSelectedPathwayId) {
-                                    currentPathwayIndex = index
-                                    currentPathway = pathway
+              it?.run {
+                    it.let {
+                        var currentPathway: Pathway? = null
+                        if (it.isNotEmpty()) {
+                            setState {
+                                val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
+                                var currentPathwayIndex = currentPathwayIndex
+                                currentPathway = it[currentPathwayIndex]
+                                it.forEachIndexed { index, pathway ->
+                                    if (pathway.id == lastSelectedPathwayId) {
+                                        currentPathwayIndex = index
+                                        currentPathway = pathway
+                                    }
                                 }
-                            }
-                            val courses = currentPathway!!.courses
+                                val courses = currentPathway!!.courses
 
-                            if (currentPathway!!.courses.isEmpty()) {
-                                selectPathway(currentPathway!!)
+                                if (currentPathway!!.courses.isEmpty()) {
+                                    selectPathway(currentPathway!!)
+                                }
+                                val selectedLanguage =
+                                    currentPathway!!.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
+                                        ?: currentPathway!!.supportedLanguages[0].label
+                                copy(
+                                    loading = courses.isEmpty(),
+                                    pathways = it,
+                                    courses = courses,
+                                    currentPathwayIndex = currentPathwayIndex,
+                                    subtitle = currentPathway!!.name,
+                                    languages = currentPathway!!.supportedLanguages,
+                                    selectedLanguage = selectedLanguage,
+                                    logo = currentPathway!!.logo,
+                                    code = currentPathway!!.code,
+                                    shouldShowCertificate = currentPathway!!.shouldShowCertificate,
+                                    showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
+                                            ?: true
+                                    ) false else true
+                                )
                             }
-                            val selectedLanguage =
-                                currentPathway!!.supportedLanguages.find { it.code == corePreferences.selectedLanguage }?.label
-                                    ?: currentPathway!!.supportedLanguages[0].label
-                            copy(
-                                loading = courses.isEmpty(),
-                                pathways = it,
-                                courses = courses,
-                                currentPathwayIndex = currentPathwayIndex,
-                                subtitle = currentPathway!!.name,
-                                languages = currentPathway!!.supportedLanguages,
-                                selectedLanguage = selectedLanguage,
-                                logo = currentPathway!!.logo,
-                                code = currentPathway!!.code,
-                                shouldShowCertificate = currentPathway!!.shouldShowCertificate,
-                                showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
-                                        ?: true
-                                ) false else true
-                            )
+                            currentPathway?.let {
+                                checkedStudentEnrolment(it.id)
+                            }
+                        } else {
+                            setState { copy(loading = false) }
                         }
-                        currentPathway?.let {
-                            checkedStudentEnrolment(it.id)
-                        }
-                    } else {
-                        setState { copy(loading = false) }
                     }
                 }
             }
@@ -84,24 +89,22 @@ class LearnFragmentViewModel(
 
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
-            checkedStudentEnrolment(pathway.id)
-            learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
-                it?.let {
-                    setState {
-                        copy(
-                            courses = it,
-                            loading = false,
-                            logo = pathway.logo,
-                            shouldShowCertificate = false,
-                            code = pathway.code,
-                            showTakeTestButton = if (pathway.cta?.url?.isBlank()
-                                    ?: true
-                            ) false else true
-                        )
+            try {
+                checkedStudentEnrolment(pathway.id)
+                learnRepo.getCoursesDataByPathway(pathway.id, forceUpdate).collect {
+                    if (it != null) {
+                        it.let {
+                            setState { copy(courses = it, loading = false, logo = pathway.logo, shouldShowCertificate = false, code = pathway.code,
+                                showTakeTestButton = if(pathway.cta?.url?.isBlank()?:true) false else true) }
+                        }
+                    } else{
+                        _viewEvents.postValue(LearnFragmentViewEvents.ShowNetworkErrorScreen)
                     }
+
                 }
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
             }
-            //getCertificate(pathway.id, pathway.code)
         }
     }
 
@@ -180,28 +183,28 @@ class LearnFragmentViewModel(
 
     private fun checkedStudentEnrolment(pathwayId: Int) {
         viewModelScope.launch {
-            setState { copy(loading = true) }
-            try {
-                val status = learnRepo.checkedStudentEnrolment(pathwayId)?.message
-                when (status) {
-                    EnrolStatus.enrolled -> {
-                        getUpcomingClasses(pathwayId)
-                    }
-
-                    EnrolStatus.not_enrolled -> {
-                        getBatchesDataByPathway(pathwayId)
-                    }
-
-                    EnrolStatus.enrolled_but_finished -> {
-                        getBatchesDataByPathway(pathwayId)
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+            setState { copy(loading= true) }
+            val status = learnRepo.checkedStudentEnrolment(pathwayId)
+            when (status){
+                is Resource.Success -> {
+                    when(status.data?.message){
+                        EnrolStatus.enrolled -> {
+                            getUpcomingClasses(pathwayId)
+                        }
+                        EnrolStatus.not_enrolled -> {
+                            getBatchesDataByPathway(pathwayId)
+                        }
+                        EnrolStatus.enrolled_but_finished -> {
+                            getBatchesDataByPathway(pathwayId)
+                            _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
+                        }
                     }
                 }
-            } catch (e: Exception) {
-                println(e.message)
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowToast("Error in fetching student enrolment status"))
+                is Resource.Error -> {
+                    setState { copy(loading= false) }
+                    FirebaseCrashlytics.getInstance().recordException(Exception(status.message))
+                }
             }
-
         }
     }
 
@@ -217,21 +220,27 @@ class LearnFragmentViewModel(
 
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
-            try {
-                val batches = learnRepo.getBatchesListByPathway(pathwayId)
-                batches?.let {
-                    setState {
-                        copy(
-                            batches = it,
-                            classes = emptyList()
-                        )
+            try{
+                val batches =learnRepo.getBatchesListByPathway(pathwayId)
+                when (batches){
+                    is Resource.Success -> {
+                        batches.data?.let {
+                            setState {
+                                copy(
+                                    batches = it,
+                                    classes = emptyList()
+                                )
+                            }
+                            if(it.isNotEmpty()){
+                                _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
+                            }
+                        }
                     }
-                    if (it.isNotEmpty()) {
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingBatch(it[0]))
+                    is Resource.Error -> {
+                        FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
                     }
                 }
-                setState { copy(loading = false) }
-            } catch (e: Exception) {
+            } catch (e: Exception){
                 println(e.message)
             }
         }
@@ -239,55 +248,68 @@ class LearnFragmentViewModel(
 
     private fun getUpcomingClasses(pathwayId: Int) {
         viewModelScope.launch {
-            try {
-                val classes = learnRepo.getUpcomingClass(pathwayId)
-                classes.let {
-                    setState {
-                        copy(
-                            classes = it,
-                            batches = emptyList()
-                        )
-                    }
-                    if (it.isNotEmpty()) {
-                        _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(classes))
+            val classes = learnRepo.getUpcomingClass(pathwayId)
+            when (classes){
+                is Resource.Success -> {
+                    classes.data?.let {
+                        setState {
+                            copy(
+                                classes = it,
+                                batches = emptyList()
+                            )
+                        }
+                        if (it.isNotEmpty()){
+                            _viewEvents.postValue(LearnFragmentViewEvents.ShowUpcomingClasses(it))
+                        }
                     }
                 }
-                setState { copy(loading = false) }
-            } catch (e: Exception) {
-                println(e.message)
-                _viewEvents.postValue(LearnFragmentViewEvents.ShowToast("Error in fetching upcoming classes"))
+                is Resource.Error -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
+                }
+                else -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
+                }
             }
-
         }
     }
 
-    private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String) {
-        viewModelScope.launch {
-            try {
-                val completedData = learnRepo.getCompletedPortion(pathwayId).totalCompletedPortion
-                getCertificatePdf(completedData, pathwayCode, pathwayName)
-            } catch (e: Exception) {
-                Log.d("getCertificate", e.message ?: "")
-            }
-
-        }
+     private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
+         viewModelScope.launch {
+             val response = learnRepo.getCompletedPortion(pathwayId)
+             when (response) {
+                 is Resource.Success -> {
+                     response.data?.let {
+                         getCertificatePdf(it.totalCompletedPortion, pathwayCode, pathwayName)
+                     }
+                     response
+                 }
+                 is Resource.Error -> {
+                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                 }
+                 else -> {
+                     Log.d("LearnFragmentViewModel", response.message?:"")
+                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                 }
+             }
+         }
     }
 
     private fun getCertificatePdf(completedPortion: Int, pathwayCode: String, pathwayName: String) {
         viewModelScope.launch {
-            setState { copy(loading = true) }
-            try {
-                val certificatePdfUrl = learnRepo.getCertificate(pathwayCode).url
-                println("certificateUrl $certificatePdfUrl")
-                _viewEvents.postValue(
-                    LearnFragmentViewEvents.GetCertificate(
-                        certificatePdfUrl,
-                        completedPortion,
-                        pathwayName
-                    )
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
+            val response = learnRepo.getCertificate(pathwayCode)
+            when (response){
+                is Resource.Success -> {
+                    response.data?.let {
+                        _viewEvents.postValue(LearnFragmentViewEvents.GetCertificate(response.data.url, completedPortion, pathwayName))
+                    }
+                    response
+                }
+                is Resource.Error -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                }
+                else -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                }
             }
         }
     }
@@ -342,57 +364,46 @@ class LearnFragmentViewModel(
     }
 }
 
-    data class LearnFragmentViewState(
-        val loading: Boolean = false,
-        val subtitle: String? = null,
-        val pathways: List<Pathway> = arrayListOf(),
-        val batches: List<Batch> = arrayListOf(),
-        val classes: List<CourseClassContent> = arrayListOf(),
-        val currentPathwayIndex: Int = 0,
-        val courses: List<Course> = arrayListOf(),
-        val selectedLanguage: String? = null,
-        val languages: List<Language> = arrayListOf(),
-        val logo: String? = null,
-        val code: String? = null,
-        val showTakeTestButton: Boolean = false,
-        val menuId: Int? = null,
-        val classId: Int = 0,
-        var shouldShowCertificate: Boolean = false
-    ) : ViewState
 
-    sealed class LearnFragmentViewEvents : ViewEvents {
-        class ShowToast(val toastText: String) : LearnFragmentViewEvents()
-        data class OpenBatchSelectionSheet(val batches: List<Batch>) : LearnFragmentViewEvents()
-        data class ShowUpcomingBatch(val batch: Batch) : LearnFragmentViewEvents()
-        data class ShowUpcomingClasses(val classes: List<CourseClassContent>) :
-            LearnFragmentViewEvents()
+data class LearnFragmentViewState(
+    val loading: Boolean = false,
+    val subtitle: String? = null,
+    val pathways: List<Pathway> = arrayListOf(),
+    val batches: List<Batch> = arrayListOf(),
+    val classes: List<CourseClassContent> = arrayListOf(),
+    val currentPathwayIndex: Int = 0,
+    val courses: List<Course> = arrayListOf(),
+    val selectedLanguage: String? = null,
+    val languages: List<Language> = arrayListOf(),
+    val logo: String? = null,
+    val code : String ? = null,
+    val showTakeTestButton: Boolean = false,
+    val menuId: Int? = null,
+    val classId: Int = 0,
+    var shouldShowCertificate: Boolean = false
+) : ViewState
 
-        object ShowCompletedStatus : LearnFragmentViewEvents()
-        object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
-        object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
-        data class BatchSelectClicked(val batch: Batch) : LearnFragmentViewEvents()
-        object DismissSelectionSheet : LearnFragmentViewEvents()
-        class OpenCourseDetailActivity(
-            val courseId: String,
-            val courseName: String,
-            val pathwayId: Int
-        ) :
-            LearnFragmentViewEvents()
-
-        data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
-        object EnrolledSuccessfully : LearnFragmentViewEvents()
-        class GetCertificate(
-            val pdfUrl: String,
-            val getCompletedPortion: Int,
-            val pathwayName: String
-        ) : LearnFragmentViewEvents()
-    }
-
-    sealed class LearnFragmentViewActions : ViewModelAction {
+sealed class LearnFragmentViewEvents : ViewEvents {
+    class ShowToast(val toastText: String) :LearnFragmentViewEvents()
+    data class OpenBatchSelectionSheet(val batches: List<Batch>):LearnFragmentViewEvents()
+    data class ShowUpcomingBatch(val batch: Batch):LearnFragmentViewEvents()
+    data class ShowUpcomingClasses(val classes: List<CourseClassContent>) : LearnFragmentViewEvents()
+    object ShowCompletedStatus : LearnFragmentViewEvents()
+    object OpenPathwaySelectionSheet : LearnFragmentViewEvents()
+    object OpenLanguageSelectionSheet : LearnFragmentViewEvents()
+    data class BatchSelectClicked(val batch: Batch) : LearnFragmentViewEvents()
+    object DismissSelectionSheet : LearnFragmentViewEvents()
+    class OpenCourseDetailActivity(val courseId: String, val courseName: String, val pathwayId: Int) :
+        LearnFragmentViewEvents()
+    data class OpenUrl(val cta: PathwayCTA?) : LearnFragmentViewEvents()
+    object EnrolledSuccessfully : LearnFragmentViewEvents()
+    class GetCertificate(val pdfUrl: String, val getCompletedPortion: Int, val pathwayName : String) : LearnFragmentViewEvents()
+    object ShowNetworkErrorScreen : LearnFragmentViewEvents()
+    object ShowErrorView : LearnFragmentViewEvents()
+}
+  sealed class LearnFragmentViewActions : ViewModelAction {
         object RequestPageLoad : LearnFragmentViewActions()
-        data class PrimaryAction(val classId: Int, val shouldRegisterUnregisterAll: Boolean) :
-            LearnFragmentViewActions()
-
+        data class PrimaryAction(val classId: Int, val shouldRegisterUnregisterAll: Boolean) :LearnFragmentViewActions()
         object ToolbarClicked : LearnFragmentViewActions()
         object BtnMoreBatchClicked : LearnFragmentViewActions()
         object LanguageSelectionClicked : LearnFragmentViewActions()

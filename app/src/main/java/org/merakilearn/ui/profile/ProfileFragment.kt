@@ -203,7 +203,7 @@ class ProfileFragment : Fragment() {
             mBinding.tvEmail.setText(it)
         }
 
-        if (it.batches.isEmpty()) {
+        if (it.batches?.isEmpty() == true) {
             mBinding.tvEnrolledText.visibility = View.GONE
             mBinding.rvEnrolledBatch.visibility = View.GONE
         } else {

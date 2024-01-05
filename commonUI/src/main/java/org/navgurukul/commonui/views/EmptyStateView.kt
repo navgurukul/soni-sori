@@ -14,7 +14,7 @@ class EmptyStateView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attributes, defaultStyleAttr, defaultStyleRes) {
 
     enum class State {
-        NO_CONTENT, ERROR, LOADING
+        NO_CONTENT, ERROR, LOADING, OFFLINE
     }
 
     var state: State = State.NO_CONTENT

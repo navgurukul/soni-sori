@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -33,65 +34,65 @@ interface SaralCoursesApi {
     @GET("classes/{classId}/revision")
     suspend fun getRevisionClasses(
         @Path("classId") classId: String
-    ):List<CourseClassContent>
+    ):Response<List<CourseClassContent>>
 
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
         @Body hashMap: MutableMap<String, Any>,
         @Query("register-all") shouldRegisterAll: Boolean
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @DELETE("classes/{classId}/unregister")
     suspend fun logOutToClassAsync(
         @Path(value = "classId") classId: Int,
         @Query("unregister-all") shouldUnregisterAll: Boolean
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @GET("classes/studentEnrolment")
     suspend fun checkedStudentEnrolment(
         @Query("pathway_id") pathway_id: Int
-    ):EnrolResponse
+    ):Response<EnrolResponse>
 
     @GET("pathways/{pathwayId}/upcomingBatches")
     suspend fun getBatchesAsync(
         @Path(value = "pathwayId") pathwayId: Int
-    ): List<Batch>
+    ): Response<List<Batch>>
 
     @GET("pathways/{pathwayId}/upcomingEnrolledClasses")
     suspend fun getUpcomingClass(
         @Path(value = "pathwayId") pathwayId: Int
-    ):List<CourseClassContent>
+    ):Response<List<CourseClassContent>>
 
     @POST("assessment/student/result")
     suspend fun postStudentResult(
         @Body studentResult : StudentResult
-    ) : StudentResponse
+    ) : Response<StudentResponse>
 
     @GET("assessment/{assessmentId}/student/result")
     suspend fun getStudentResult(
         @Path(value = "assessmentId")  assessmentId : Int
-    ): AttemptResponse
+    ): Response<AttemptResponse>
 
     @GET("pathways/{pathwayId}/completePortion")
     suspend fun getCompletedPortionData(
         @Path(value = "pathwayId") pathwayId: Int
-    ) : GetCompletedPortion
+    ) : Response<GetCompletedPortion>
 
 
     @POST("exercises/{exerciseId}/complete")
     suspend fun postExerciseCompleteStatus(
         @Path(value = "exerciseId") exerciseId: Int
-    ): ResponseBody
+    ): Response<ResponseBody>
 
 
     @GET("progressTracking/{courseId}/completedCourseContentIds")
     suspend fun getCompletedContentsIds(
         @Path(value = "courseId") courseId: String
-    ): CompletedContentsIds
+    ): Response<CompletedContentsIds>
 
     @GET("certificate")
     suspend fun getCertificate(
         @Query(value = "pathway_code") pathway_code: String
-    ): CertificateResponse
+    ): Response<CertificateResponse>
 }

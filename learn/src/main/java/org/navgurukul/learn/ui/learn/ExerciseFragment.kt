@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -43,6 +44,7 @@ data class CourseContentArgs(
     val courseId: String,
     val contentId: String,
     val courseContentType: CourseContentType,
+    val pathwayId: Int
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
@@ -62,7 +64,8 @@ class ExerciseFragment : Fragment() {
             isCompleted: Boolean,
             courseId: String,
             exerciseId: String,
-            courseContentType: CourseContentType
+            courseContentType: CourseContentType,
+            pathwayId: Int
         ): ExerciseFragment {
             return ExerciseFragment().apply {
                 arguments = CourseContentArgs(
@@ -71,7 +74,8 @@ class ExerciseFragment : Fragment() {
                     isCompleted,
                     courseId,
                     exerciseId,
-                    courseContentType
+                    courseContentType,
+                    pathwayId
                 ).toBundle()
             }
         }
@@ -162,6 +166,7 @@ class ExerciseFragment : Fragment() {
                                 }
                             } catch (err: JSONException) {
                                 Log.d("Error", err.toString())
+                                FirebaseCrashlytics.getInstance().recordException(Exception(err.message))
                             }
                         }
                     } else
