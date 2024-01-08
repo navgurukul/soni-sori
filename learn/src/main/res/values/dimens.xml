@@ -19,6 +19,7 @@
     <dimen name="dimen_15_dp">15dp</dimen>
     <dimen name="dimen_10_dp">10dp</dimen>
     <dimen name="dimen_25_dp">25dp</dimen>
+    <dimen name="line_number_box_width">25dp</dimen>
 
     <dimen name="dimen_40_dp">40dp</dimen>
     <dimen name="dimen_50_dp">50dp</dimen>

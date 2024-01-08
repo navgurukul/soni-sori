@@ -6,10 +6,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
+import com.google.android.play.core.assetpacks.cu
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -65,6 +69,9 @@ class CourseContentActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         mBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_exercise)
+        if (!Python.isStarted()) {
+            Python.start(AndroidPlatform(this))
+        }
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
         if (!LearnUtils.isUserLoggedIn(this)) {
             merakiNavigator.restartApp(this, true)
@@ -152,6 +159,8 @@ class CourseContentActivity : AppCompatActivity(){
                 showCompletionScreen(it.nextCourseTitle, it.currentCourseTitle)
             }
         }
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     private fun isCurrentContentAssessment(): Boolean {
