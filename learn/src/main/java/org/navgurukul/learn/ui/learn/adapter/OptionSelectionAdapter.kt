@@ -5,168 +5,309 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.AssessmentType
-import org.navgurukul.learn.courses.db.models.OptionResponse
-import org.navgurukul.learn.courses.db.models.OptionType
-import org.navgurukul.learn.courses.db.models.OptionViewState
+import com.google.android.material.snackbar.Snackbar
+import org.navgurukul.learn.R.*
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class OptionSelectionAdapter(
     val callback: ((List<OptionResponse>) -> Unit)? = null,
     private val assessmentType: AssessmentType? = null
-) : DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
-    mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>() {
-        override fun areItemsTheSame(oldItem: OptionResponse, newItem: OptionResponse) =
-            oldItem.id == newItem.id
+):
+    DataBoundListAdapter<OptionResponse, ItemMcqOptionBinding>(
+        mDiffCallback = object : DiffUtil.ItemCallback<OptionResponse>(){
 
-        override fun areContentsTheSame(oldItem: OptionResponse, newItem: OptionResponse) =
-            oldItem == newItem
+            override fun areItemsTheSame(
+                oldItem: OptionResponse,
+                newItem: OptionResponse,
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: OptionResponse,
+                newItem: OptionResponse,
+            ): Boolean {
+                return oldItem == newItem
+            }
+        })
+{
+    override fun createBinding(parent: ViewGroup, viewType: Int): ItemMcqOptionBinding{
+        return DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            layout.item_mcq_option,parent,false
+        )
     }
-) {
+
     private val selectedOptions = mutableListOf<OptionResponse>()
 
-    override fun createBinding(parent: ViewGroup, viewType: Int): ItemMcqOptionBinding =
-        ItemMcqOptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
-    override fun bind(
-        holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>,
-        item: OptionResponse
-    ) {
+    override fun bind(holder: DataBoundListAdapter.DataBoundViewHolder<ItemMcqOptionBinding>, item: OptionResponse) {
         val binding = holder.binding
-
         binding.apply {
-            val isTextOption = item.optionType == OptionType.text
-
-            tvOption.visibility = if (isTextOption) View.VISIBLE else View.GONE
-            ivImgOption.visibility = if (isTextOption) View.GONE else View.VISIBLE
-
-            if (isTextOption) {
+            if (item.optionType == OptionType.text){
+                tvOption.visibility = View.VISIBLE
+                ivImgOption.visibility = View.GONE
+                tvOption.text = item.value
                 tvOption.text = HtmlCompat.fromHtml(item.value, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            } else {
-                Glide.with(ivImgOption.context)
+            }else{
+                tvOption.visibility = View.GONE
+                ivImgOption.visibility = View.VISIBLE
+                Glide
+                    .with(ivImgOption.context)
                     .load(item.value)
                     .centerCrop()
                     .into(ivImgOption)
             }
+            //if(assessmentType==AssessmentType.multiple){
+            //            item.viewState = if (selectedOptions.contains(item)) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED
+            //}
+
 
             when(item.viewState){
                 OptionViewState.SELECTED -> {
-                        setOptionSelectedUI(binding, isTextOption)
+                    when (assessmentType){
+                        AssessmentType.single ->{
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }
+
+                        }AssessmentType.multiple ->{
+                        if (item.optionType == OptionType.text){
+                            ivImgOption.visibility = View.GONE
+                            tvOption.visibility = View.VISIBLE
+                            tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                            tvCardOption.strokeColor = Color.parseColor("#48A145")
+                            checkBox.isChecked = true
+                            checkBox.visibility = View.VISIBLE
+                            tvRadioButtonOption.visibility = View.GONE
+                            checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                        }else{
+                            ivImgOption.visibility = View.VISIBLE
+                            tvOption.visibility = View.GONE
+                            tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                            tvCardOption.strokeColor = Color.parseColor("#48A145")
+                            checkBox.isChecked = true
+                            checkBox.visibility = View.VISIBLE
+                            tvRadioButtonOption.visibility = View.GONE
+                            checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                        }
+
+                    }
+                    }
                 }
                 OptionViewState.NOT_SELECTED -> {
-                    setOptionNotSelectedUI(binding, isTextOption)
+                    when(assessmentType){
+                        AssessmentType.single -> {
+                            checkBox.visibility = View.GONE
+                            if (item.optionType == OptionType.text) {
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvRadioButtonOption.visibility = View.VISIBLE
+                            } else {
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvRadioButtonOption.visibility = View.VISIBLE
+                            }
+                        }
+                        AssessmentType.multiple -> {
+                            tvRadioButtonOption.visibility = View.GONE
+                            if (item.optionType == OptionType.text) {
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvCardOption.strokeColor = Color.parseColor("#ffffff")
+                                checkBox.visibility = View.VISIBLE
+                                checkBox.isChecked = false
+                                checkBox.buttonTintList =
+                                    ColorStateList.valueOf(Color.parseColor("#000000"))
+                            } else {
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                                tvCardOption.strokeColor = Color.parseColor("#ffffff")
+                                checkBox.buttonTintList =
+                                    ColorStateList.valueOf(Color.parseColor("#000000"))
+                                checkBox.visibility = View.VISIBLE
+                                checkBox.isChecked = false
+                            }
+                        }
+                    }
 
                 }
                 OptionViewState.INCORRECT -> {
-                    setIncorrectUI(binding, isTextOption)
+                    when (assessmentType){
+                        AssessmentType.single ->{
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }
+                        }
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }
+                        }
+                    }
                 }
                 OptionViewState.CORRECT -> {
-                    setCorrectUI(binding, isTextOption)
+                    when (assessmentType){
+                        AssessmentType.single ->{
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                tvRadioButtonOption.isChecked = true
+                                tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
+                                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }
+                        }
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            }
+                        }
+                    }
                 }
-                OptionViewState.PARTIALLY_CORRECT -> {
-                    setCorrectUI(binding, isTextOption)
+                OptionViewState.PARTIALLY_CORRECT ->{
+                    when (assessmentType){
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#FFC107"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFFDE7"))
+                                tvCardOption.strokeColor = Color.parseColor("#FFC107")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#FFC107"))
+                            }
+                        }
+                    }
                 }
-                OptionViewState.PARTIALLY_INCORRECT -> {
-                    setIncorrectUI(binding, isTextOption)
+                OptionViewState.PARTIALLY_INCORRECT->{
+                    when (assessmentType){
+                        AssessmentType.multiple -> {
+                            if (item.optionType == OptionType.text){
+                                ivImgOption.visibility = View.GONE
+                                tvOption.visibility = View.VISIBLE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }else{
+                                ivImgOption.visibility = View.VISIBLE
+                                tvOption.visibility = View.GONE
+                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                checkBox.isChecked = true
+                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            }
+                        }
+                    }
                 }
             }
+
 
             root.setOnClickListener {
-                when (assessmentType) {
-                    AssessmentType.multiple -> {
-                        if (selectedOptions.contains(item)) {
-                            selectedOptions.remove(item)
-                            item.viewState = OptionViewState.NOT_SELECTED
-                        } else {
-                            selectedOptions.add(item)
-                            item.viewState = OptionViewState.SELECTED
-                        }
-                        callback?.invoke(selectedOptions)
+                when(assessmentType){
+                    AssessmentType.multiple -> { if (selectedOptions.contains(item)) {
+                        selectedOptions.remove(item)
+                        item.viewState = OptionViewState.NOT_SELECTED
+                    } else {
+                        selectedOptions.add(item)
+                        item.viewState = OptionViewState.SELECTED
+                    }
                         bind(holder, item)
+                        callback?.invoke(selectedOptions)
                     }
                     AssessmentType.single -> {
-                        handleSingleSelection(item)
+                        selectedOptions.clear()
+                        selectedOptions.add(item)
+                        callback?.invoke(selectedOptions)
                     }
                 }
             }
+
         }
     }
 
-
-    private fun setOptionSelectedUI(binding: ItemMcqOptionBinding, isTextOption: Boolean) {
-        binding.apply {
-            tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-            tvCardOption.strokeColor = Color.parseColor("#48A145")
-
-            if (isTextOption) {
-                tvRadioButtonOption.isChecked = true
-                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
-            } else {
-                checkBox.isChecked = true
-                checkBox.visibility = View.VISIBLE
-                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
-                tvRadioButtonOption.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun setOptionNotSelectedUI(binding: ItemMcqOptionBinding, isTextOption: Boolean) {
-        binding.apply {
-            tvRadioButtonOption.visibility = View.VISIBLE
-            checkBox.visibility = View.GONE
-
-            if (isTextOption) {
-                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
-            } else {
-                tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
-                tvCardOption.strokeColor = Color.parseColor("#ffffff")
-            }
-        }
-    }
-
-    private fun setIncorrectUI(binding: ItemMcqOptionBinding, isTextOption: Boolean) {
-        binding.apply {
-            tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-            tvCardOption.strokeColor = Color.parseColor("#F44336")
-
-            if (isTextOption) {
-                tvRadioButtonOption.isChecked = true
-                tvRadioButtonOption.setButtonDrawable(R.drawable.cancel_circle_optionincorrect)
-                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
-            } else {
-                checkBox.isChecked = true
-                checkBox.setButtonDrawable(R.drawable.cancel_circle_optionincorrect)
-                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
-            }
-        }
-    }
-
-    private fun setCorrectUI(binding: ItemMcqOptionBinding, isTextOption: Boolean) {
-        binding.apply {
-            tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-            tvCardOption.strokeColor = Color.parseColor("#48A145")
-
-            if (isTextOption) {
-                tvRadioButtonOption.isChecked = true
-                tvRadioButtonOption.setButtonDrawable(R.drawable.check_circle_correctoption)
-                tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
-            } else {
-                checkBox.isChecked = true
-                checkBox.setButtonDrawable(R.drawable.check_circle_correctoption)
-                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
-            }
-        }
-    }
-
-
-    private fun handleSingleSelection(item: OptionResponse) {
-        selectedOptions.clear()
-        selectedOptions.add(item)
-        callback?.invoke(selectedOptions)
-    }
 }
