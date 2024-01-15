@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import org.navgurukul.learn.R
 import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
@@ -179,6 +181,8 @@ class OptionSelectionAdapter(
                             if (item.optionType == OptionType.text){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
                                 tvCardOption.strokeColor = Color.parseColor("#F44336")
                                 checkBox.isChecked = true
@@ -187,9 +191,11 @@ class OptionSelectionAdapter(
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
                                 tvCardOption.strokeColor = Color.parseColor("#F44336")
                                 checkBox.isChecked = true
+                                tvRadioButtonOption.visibility = View.GONE
                                 checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
                                 checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
                             }
@@ -221,14 +227,18 @@ class OptionSelectionAdapter(
                             if (item.optionType == OptionType.text){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                                 tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                checkBox.visibility = View.VISIBLE
                                 checkBox.isChecked = true
                                 checkBox.setButtonDrawable(drawable.check_circle_correctoption)
                                 checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
+                                tvRadioButtonOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                                 tvCardOption.strokeColor = Color.parseColor("#48A145")
                                 checkBox.isChecked = true
@@ -244,6 +254,8 @@ class OptionSelectionAdapter(
                             if (item.optionType == OptionType.text){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                                 tvCardOption.strokeColor = Color.parseColor("#48A145")
                                 checkBox.isChecked = true
@@ -252,6 +264,8 @@ class OptionSelectionAdapter(
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#FFFDE7"))
                                 tvCardOption.strokeColor = Color.parseColor("#FFC107")
                                 checkBox.isChecked = true
@@ -267,6 +281,8 @@ class OptionSelectionAdapter(
                             if (item.optionType == OptionType.text){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
+                                checkBox.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
                                 tvCardOption.strokeColor = Color.parseColor("#F44336")
                                 checkBox.isChecked = true
@@ -275,6 +291,8 @@ class OptionSelectionAdapter(
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
+                                checkBox.visibility = View.VISIBLE
+                                tvRadioButtonOption.visibility = View.GONE
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
                                 tvCardOption.strokeColor = Color.parseColor("#F44336")
                                 checkBox.isChecked = true
