@@ -149,13 +149,10 @@ class AssessmentFragmentViewModel (
             if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                 val optionList = it as OptionsBaseCourseContent
                 for (option in optionList.value) {
-                    for (optionId in selectedOption) {
-                        if (option.id == optionId) {
-                            option.viewState = newViewState
-                        }
-                        else {
-                            option.viewState = OptionViewState.NOT_SELECTED
-                        }
+                    if(option.id in selectedOption){
+                        option.viewState = newViewState
+                    }else{
+                        option.viewState = OptionViewState.NOT_SELECTED
                     }
                 }
             }
