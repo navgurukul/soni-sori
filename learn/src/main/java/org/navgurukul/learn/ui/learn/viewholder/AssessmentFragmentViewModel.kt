@@ -106,22 +106,22 @@ class AssessmentFragmentViewModel (
         updateListInLocalDb(currentStateList)
     }
 
-    private fun showCorrectOnIncorrect(){
+    private fun showCorrectOnIncorrect() {
         viewModelScope.launch {
-            val correctOption = (allAssessmentContentList
-                .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                .correct_options_value[0].value
             val currentState = viewState.value!!
+            val solutionContent = (allAssessmentContentList
+                .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
+            val correctOptions = solutionContent.correct_options_value
+            val incorrectOptions = solutionContent.incorrect_options_value
+
             currentState.assessmentContentListForUI.forEach {
-                if (it.component == BaseCourseContent.COMPONENT_OPTIONS){
+                if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                     val optionList = it as OptionsBaseCourseContent
-                    for (option in optionList.value){
-                        if (option.id == correctOption){
+                    for (option in optionList.value) {
+                        if (option.id in correctOptions.map { it.value }) {
                             option.viewState = OptionViewState.CORRECT
-                        } else if (option.id == selectedOption[0]){                                                                      // Need to check after during implementation
+                        } else if (option.id in incorrectOptions!!.map { it.value }) {
                             option.viewState = OptionViewState.INCORRECT
-                        }else {
-                            option.viewState = OptionViewState.NOT_SELECTED
                         }
                     }
                 }
@@ -131,8 +131,8 @@ class AssessmentFragmentViewModel (
                 copy(assessmentContentListForUI = currentState.assessmentContentListForUI)
             }
         }
-
     }
+
 
     private fun updateListInLocalDb(currentStateList: List<BaseCourseContent>) {
         viewModelScope.launch {
