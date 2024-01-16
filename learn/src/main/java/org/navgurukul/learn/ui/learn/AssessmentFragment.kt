@@ -24,6 +24,7 @@ import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter

@@ -66,10 +66,10 @@ class PythonEditorActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EMPTY_FILE:String="Untitled"
+        const val EMPTY_FILE: String= "Untitled"
         fun launch(code: String?, context: Context, isFromCourse: Boolean): Intent {
             val intent = Intent(context, PythonEditorActivity::class.java)
-            intent.putExtra("isFromCourse",isFromCourse)
+            intent.putExtra("isFromCourse", isFromCourse)
             intent.putExtras(PythonEditorArgs(code,File(EMPTY_FILE),true).toBundle()!!)
             return intent
         }

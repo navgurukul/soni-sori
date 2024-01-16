@@ -8,7 +8,6 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.QuestionCodeBaseCourseContent
 import org.navgurukul.learn.courses.network.model.ConstantString
 
-
 class QuestionCodeCourseViewHolder(itemview: View):
 BaseCourseViewHolder(itemview){
     private val questionCodeLayout: ConstraintLayout = populateStub(R.layout.item_question_code_content)

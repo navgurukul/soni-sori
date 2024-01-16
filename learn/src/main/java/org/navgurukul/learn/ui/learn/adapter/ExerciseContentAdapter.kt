@@ -2,8 +2,10 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
@@ -11,6 +13,7 @@ import com.bumptech.glide.RequestManager
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.ui.learn.viewholder.*
+import org.navgurukul.playground.editor.PythonEditorViewModel
 
 
 class ExerciseContentAdapter(
@@ -18,12 +21,15 @@ class ExerciseContentAdapter(
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit,
     optionCallback: ((OptionResponse) -> Unit) ?= null,
+    private val viewModel: PythonEditorViewModel?=null
 
-) :
+    ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(
         ContentDiffCallback()
     ) {
-
+    init {
+        Log.d("ExerciseContentAdapter", "ViewModel is: $viewModel")
+    }
     private val inflater = LayoutInflater.from(context)
     private val mCallback = callback
     private val mOptionCallback = optionCallback
@@ -143,3 +149,5 @@ class ExerciseContentAdapter(
         }
     }
 }
+
+

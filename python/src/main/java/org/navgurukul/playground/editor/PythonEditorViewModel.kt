@@ -1,8 +1,11 @@
 package org.navgurukul.playground.editor
 
 import android.text.TextUtils
+import android.util.Log
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -26,6 +29,9 @@ class PythonEditorViewModel(
         const val PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE = "File \"<string>\","
     }
     var newFile:Boolean=false
+
+    private val _codeResponse = MutableLiveData<CodeResponseModel?>()
+    val codeResponse: LiveData<CodeResponseModel?> = _codeResponse
 
     init {
         val existingCode = ""//pythonRepository.cachedCode
@@ -63,10 +69,12 @@ class PythonEditorViewModel(
             }
         }
 
-        newFile=pythonEditorArgs.newFile
+        newFile = pythonEditorArgs.newFile
     }
 
     private fun updateOutput(output: CharSequence) {
+        Log.d("Debug", "updateOutput called with output: $output")
+
         setState {
             val codeResponse = if (codeResponse is CodeResponseModel.Output) {
                 CodeResponseModel.Output(TextUtils.concat(codeResponse.output, output))
@@ -130,6 +138,8 @@ class PythonEditorViewModel(
     }
 
     private fun onInput(input: String) {
+        Log.d("input", "onInput called with input: $input")
+
         updateOutput(" $input \n")
         viewModelScope.launch { pythonRepository.onInput(input) }
         setState { copy(inputEnabled = false) }

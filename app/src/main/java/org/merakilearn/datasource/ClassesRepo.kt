@@ -53,6 +53,23 @@ class ClassesRepo(
         }
     }
 
+    suspend fun getEnrolledBatches(): List<Batches>? {
+        return try {
+            val res = api.getEnrolledBatches()
+            if (res.isSuccessful) {
+                res.body()
+            } else {
+                val errorBody = res.errorBody()?.string()
+                val errorMessage = "Failed to get enrolled batches. Response code: ${res.code()}. Error body: $errorBody"
+                Log.e("LearnRepo", errorMessage)
+                null
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+    }
+
     suspend fun enrollToClass(classId: Int, enrolled: Boolean): Boolean {
         return try {
             if (enrolled) {

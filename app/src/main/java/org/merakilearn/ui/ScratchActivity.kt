@@ -77,7 +77,7 @@ class ScratchActivity : AppCompatActivity() {
         webView.addJavascriptInterface(this, "Scratch")
         webView.settings.domStorageEnabled = true
         webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-    }
+      }
 
     @JavascriptInterface
     fun onSave(globalBase64String: String) {

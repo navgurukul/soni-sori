@@ -153,6 +153,9 @@ class PythonRepositoryImpl(
         return finalFileName
     }
 
+    override suspend fun executePythonCode(code: String): String? {
+        return runCode(code, tag = Unit)
+    }
 
 
     override suspend fun isFileNamePresent(fileName:String): Boolean{
