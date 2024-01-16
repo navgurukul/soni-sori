@@ -3,6 +3,7 @@
     <color name="yellow">#F7CA18</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorPrimary">#2E2E2E</color>
     <color name="colorRed">#D63447</color>
     <color name="colorGrey">#E5E5E5</color>
     <color name="sheetHandle">#CECECE</color>
@@ -16,7 +17,7 @@
     <color name="errorColor_70">#B3B00020</color>
     <color name="colorGrey_100">#818181</color>
     <color name="green_progress_color">#48A145</color>
-
+<color name="colorGrey_200">#E0E0E0</color>
     <color name="colorBlockQuoteBackgroundDark">#FFC107</color>
     <color name="colorBlockQuoteBackground">#FFE69C</color>
 
@@ -26,7 +27,7 @@
     <color name="question_code_background">#F5F5F5</color>
     <color name="contentScreenBackground">#E5E5E5</color>
     <color name="textGrey">#818181</color>
-    <color name="dotGrey"> #949494</color>
+    <color name="dotGrey"> #E0E0E0</color>
     <color name="card_background">#E9F5E9</color>
     <color name="classChipSecondary">#4548A1</color>
     <color name="classChipBackground">#DADAEC</color>

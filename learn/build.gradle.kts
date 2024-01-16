@@ -50,6 +50,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":commonUI"))
+    implementation(project(":python"))
 
     //kotlin
     implementation(KotlinDependencies.kotlin)

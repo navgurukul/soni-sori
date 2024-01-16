@@ -12,7 +12,7 @@ interface PythonRepository {
     suspend fun runCode(code: String, tag: Any): String?
     suspend fun onInput(input: String)
     suspend fun isFileNamePresent(fileName:String): Boolean
-
+    suspend fun executePythonCode(code: String): String?
 
     val inputFlow: Flow<PythonInput>
     val outputFlow: Flow<PythonOutput>

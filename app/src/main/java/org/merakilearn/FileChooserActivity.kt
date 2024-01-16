@@ -84,11 +84,21 @@ class FileChooserActivity : AppCompatActivity() {
                             onBackPressed()
                         }
                     }
-                    scheme.compareTo("https")  == 0 -> {
-                       compareToCommon(uri)
+                    scheme.compareTo("https") == 0 -> {
+                        val url = uri!!.path.toString().removePrefix("/project/")
+                        val s3Url = "https://chanakya-dev.s3.ap-south-1.amazonaws.com/scratch/$url.sb3"
+                        val newIntent = Intent(this, ScratchActivity::class.java)
+                        newIntent.putExtra("s3Url", s3Url)
+                        startActivity(newIntent)
+                        finish()
                     }
                     scheme.compareTo("http") == 0 -> {
-                        compareToCommon(uri)
+                        val url = uri!!.path.toString().removePrefix("/project/")
+                        val s3Url = "https://chanakya-dev.s3.ap-south-1.amazonaws.com/scratch/$url.sb3"
+                        val newIntent = Intent(this, ScratchActivity::class.java)
+                        newIntent.putExtra("s3Url", s3Url)
+                        startActivity(newIntent)
+                        finish()
                     }
                     scheme.compareTo("ftp") == 0 -> {
                         // TODO Import from FTP!

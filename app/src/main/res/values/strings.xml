@@ -70,6 +70,8 @@
     <string name="edit">Edit</string>
 
 
+    <string name="english"><b>ABC</b>\n\nEnglish</string>
+
     <string name="skip_login_english">Skip Login</string>
     <string name="continue_with_google_english">Continue with Google</string>
 

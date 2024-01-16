@@ -107,7 +107,9 @@ data class CodeBaseCourseContent(
         @Json(name = "type")
         val codeTypes: CodeType? = null,
         @Json(name = "decoration")
-        override val decoration: Decoration? = null
+        override val decoration: Decoration? = null,
+                val inputPrompt: String?,
+                val inputHint: String?
 ) : BaseCourseContent
 
 @JsonClass(generateAdapter = true)
@@ -201,7 +203,6 @@ data class ValueObject(
         @Json(name = "value")
         val value: Int
 )
-
 
 @JsonClass(generateAdapter = true)
 data class OutputBaseCourseContent(

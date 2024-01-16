@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.learn_selection_sheet.*
+import kotlinx.coroutines.NonDisposableHandle.parent
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.SvgLoader

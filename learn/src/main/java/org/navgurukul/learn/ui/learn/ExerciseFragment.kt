@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.chaquo.python.Python
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -25,15 +27,19 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
+import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.network.model.ConstantString
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
-import org.navgurukul.learn.courses.network.model.ConstantString
 import org.navgurukul.learn.databinding.FragmentExerciseBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
+import org.navgurukul.playground.editor.PythonEditorArgs
+import org.navgurukul.playground.editor.PythonEditorViewModel
 import java.util.*
+
 
 
 @Parcelize
@@ -139,7 +145,8 @@ class ExerciseFragment : Fragment() {
         contentAdapter = ExerciseContentAdapter(this.requireContext(),{
             if (it is CodeBaseCourseContent) {
                 if (!it.value.isNullOrBlank()) {
-                    val fromHtml = it.value.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT).replace(ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
+                    val fromHtml = it.value.replace(ConstantString.LINE_BREAK, ConstantString.LINE_BR_REPLACEMENT).replace(
+                        ConstantString.EMSP, ConstantString.EMSP_REPLACEMENT)
                     merakiNavigator.openPlayground(this.requireContext(), fromHtml, true)
                 }
             } else if (it is LinkBaseCourseContent) {
@@ -173,7 +180,7 @@ class ExerciseFragment : Fragment() {
                         merakiNavigator.openDeepLink(this.requireActivity(), url, action.data)
                 }
             }
-        })
+        },viewModel = null)
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)

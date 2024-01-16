@@ -65,8 +65,9 @@ class PythonEditorActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+//    what is the solution system of the equation 2x+3y=5 and 3x+2y=4
     companion object {
-        const val EMPTY_FILE:String="Untitled"
+        const val EMPTY_FILE: String= "Untitled"
         fun launch(code: String?, context: Context, isFromCourse: Boolean): Intent {
             val intent = Intent(context, PythonEditorActivity::class.java)
             intent.putExtra("isFromCourse",isFromCourse)

@@ -86,6 +86,7 @@ class LearnRepo(
         }
     }
 
+
     suspend fun getCourseContentById(
         contentId: String,
         courseId: String,
@@ -353,6 +354,7 @@ class LearnRepo(
     suspend fun getCertificate(pathwayCode : String): Resource<CertificateResponse>{
         return safeApiCall { courseApi.getCertificate(pathwayCode) }
     }
+
     suspend fun enrollToClass(classId: Int, enrolled: Boolean, shouldRegisterUnregisterAll: Boolean = false): Boolean {
         if (LearnUtils.isOnline(application)){
             return try {
