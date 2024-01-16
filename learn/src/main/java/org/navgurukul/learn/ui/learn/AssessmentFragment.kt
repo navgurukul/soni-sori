@@ -23,10 +23,12 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.OptionResponse
+import org.navgurukul.learn.courses.db.models.OptionViewState
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
+import org.navgurukul.learn.databinding.ItemOptionsListContentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
@@ -196,7 +198,7 @@ class AssessmentFragment : Fragment() {
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                            isContentRvClickable = true
+                            isContentRvClickable = false
                             mBinding.incorrectOutputLayout.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
@@ -205,7 +207,7 @@ class AssessmentFragment : Fragment() {
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                            isContentRvClickable = true
+                            isContentRvClickable = false
                             mBinding.incorrectOutputLayout.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
@@ -225,6 +227,11 @@ class AssessmentFragment : Fragment() {
                     initIncorrectRV(list)
                     isContentRvClickable = false
                 }
+            }
+
+            // new condition to hide retry button for all selected options
+            if(selectedOption?.all { it.viewState == OptionViewState.SELECTED } == true){
+                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
             }
         }
     }
