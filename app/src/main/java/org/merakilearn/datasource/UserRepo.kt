@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 import org.merakilearn.core.extentions.jsonify
 import org.merakilearn.core.extentions.objectify
 import org.merakilearn.datasource.network.SaralApi
-import org.merakilearn.datasource.network.UserUpdateName
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
@@ -89,9 +88,11 @@ class UserRepo(
         }
     }
 
-    suspend fun updateProfile(user: LoginResponse.User): Boolean {
+    suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
-            val response = saralApi.updateProfileName(user.id.toInt(), UserUpdateName(user.name, user.profilePicture))
+            val response = saralApi.initUserUpdateAsync(
+                UserUpdate(user.name, referrer)
+            )
             saveUserResponse(response.user)
             true
         } catch (ex: Exception) {

@@ -314,7 +314,7 @@ class AssessmentFragmentViewModel (
             return clickedOption.id ==
                     (allAssessmentContentList
                         .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-                        .value.toInt()
+                        .value
 
         }catch (e: Exception){
             return false
