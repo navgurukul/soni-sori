@@ -150,12 +150,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .transform(CircleCrop())
             .into(it)
 
-        it.setOnClickListener {
-            if (userRepo.isFakeLogin())
-                OnBoardingActivity.showLoginScreen(this)
-            else
-                ProfileActivity.launch(this)
-        }
+//        it.setOnClickListener {
+//            if (userRepo.isFakeLogin())
+//                OnBoardingActivity.showLoginScreen(this)
+//            else
+//                ProfileActivity.launch(this)
+//        }
     }
 
 
@@ -199,6 +199,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
         headerIv.isVisible = showProfile
         headerLogOut.isVisible = showLogout
+        headerIcon.isVisible = true
+        //headerIcon.setImageResource(R.drawable.placeholder_course_icon)
 
         headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {

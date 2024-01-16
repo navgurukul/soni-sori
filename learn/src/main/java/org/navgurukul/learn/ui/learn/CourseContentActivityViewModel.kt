@@ -1,21 +1,23 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.repository.LearnRepo
-import org.merakilearn.core.utils.CorePreferences
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.wrapper.Resource
+import org.navgurukul.learn.courses.repository.LearnRepo
 
 class CourseContentActivityViewModel(
     private val learnRepo: LearnRepo,
@@ -36,47 +38,76 @@ class CourseContentActivityViewModel(
     init {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            combine(
-                learnRepo.fetchCourseContentDataWithCourse(courseId, pathwayId, selectedLanguage),
-                learnRepo.getCoursesDataByPathway(pathwayId, false),
-                learnRepo.getCompletedContentsIds(courseId)
-            ) { course, courseList, completedContentList ->
-                updateCourseWIthCompletedContent(course, completedContentList)
-                course to courseList
-            }.collect {
-                val course = it.first
-                coursesList = it.second
-                if (course == null) {
-                    setState { copy(isLoading = false) }
-                    _viewEvents.postValue(
-                        CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
-                    )
-                } else {
-                    launchLastSelectedContentOfCourse(course, contentId)
+            try {
+                combine(
+                    learnRepo.fetchCourseContentDataWithCourse(courseId, pathwayId, selectedLanguage),
+                    learnRepo.getCoursesDataByPathway(pathwayId, false),
+                    learnRepo.getCompletedContentsIds(courseId)
+                ) { course, courseList, completedContentList ->
+                    updateCourseWIthCompletedContent(course, completedContentList)
+                    course to courseList
+                }.collect {
+                    if (it != null) {
+                        val course = it.first
+                        coursesList = it.second
+                        if (course == null) {
+                            setState { copy(isLoading = false) }
+                            _viewEvents.postValue(
+                                CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
+                            )
+                        } else {
+                            launchLastSelectedContentOfCourse(course, contentId)
+                        }
+                    } else {
+                        _viewEvents.postValue(
+                            CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
+                        )
+                    }
+
                 }
+            }
+            catch (e: Exception) {
+                _viewEvents.postValue(
+                    CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
+                )
             }
 
         }
 
     }
 
-    private fun updateCourseWIthCompletedContent(course: Course?, completedContentList: CompletedContentsIds) {
-        completedContentList?.assessments?.forEach { assessmentId ->
-            markContentCompletedInCourse(course, assessmentId.toString())
+    private fun updateCourseWIthCompletedContent(
+        course: Course?,
+        completedContentList: Resource<CompletedContentsIds>
+    ) {
+      when (completedContentList) {
+            is Resource.Success -> {
+                completedContentList.data?.assessments?.forEach { assessmentId ->
+                    markContentCompletedInCourse(course, assessmentId.toString())
+                }
+                completedContentList.data?.exercises?.forEach { assessmentId ->
+                    markContentCompletedInCourse(course, assessmentId.toString())
+                }
+                completedContentList.data?.classes?.forEach { assessmentId ->
+                    markContentCompletedInCourse(course, assessmentId.toString())
+                }
+            }
+            is Resource.Error -> {
+                Log.d("CourseContentActivity", "Error in fetching completed content list")
+            }
         }
-        completedContentList?.exercises?.forEach { assessmentId ->
-            markContentCompletedInCourse(course, assessmentId.toString())
-        }
-        completedContentList?.classes?.forEach { assessmentId ->
-            markContentCompletedInCourse(course, assessmentId.toString())
-        }
+
     }
 
     private fun markContentCompletedInCourse(course: Course?, contentId: String) {
-        course?.courseContents?.find { it.id == contentId }?.courseContentProgress = CourseContentProgress.COMPLETED
+        course?.courseContents?.find { it.id == contentId }?.courseContentProgress =
+            CourseContentProgress.COMPLETED
     }
 
-    private suspend fun launchLastSelectedContentOfCourse(course: Course?, contentId: String? = null) {
+    private suspend fun launchLastSelectedContentOfCourse(
+        course: Course?,
+        contentId: String? = null
+    ) {
         course?.let {
             currentCourse = it
 
@@ -106,46 +137,66 @@ class CourseContentActivityViewModel(
             is CourseContentActivityViewActions.ContentMarkedCompleted -> onExerciseMarkedCompleted()
             is CourseContentActivityViewActions.NextNavigationClicked -> navigate(ExerciseNavigation.NEXT)
             is CourseContentActivityViewActions.PrevNavigationClicked -> navigate(ExerciseNavigation.PREV)
-            is CourseContentActivityViewActions.OnNextCourseClicked -> launchNextCourse(currentCourse.id)
+            is CourseContentActivityViewActions.OnNextCourseClicked -> launchNextCourse(
+                currentCourse.id
+            )
         }
     }
 
     private fun navigate(navigation: ExerciseNavigation) {
-        if(::currentCourse.isInitialized) {
+        if (::currentCourse.isInitialized) {
             val currentStudyIndex = currentCourse.courseContents.indexOfFirst {
                 it.id == currentStudy?.exerciseId
             }
-            val courseContentType = currentCourse.courseContents[currentStudyIndex].courseContentType
-            if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
-                onContentListItemSelected(
-                    currentCourse.courseContents[currentStudyIndex - 1].id,
-                    navigation
-                )
-            } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
-                if (courseContentType == CourseContentType.exercise){
-                    postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
-                }
-                onContentListItemSelected(
-                    currentCourse.courseContents[currentStudyIndex + 1].id,
-                    navigation
-                )
+            if (currentStudyIndex >=0 && currentStudyIndex < currentCourse.courseContents.size){
+                val courseContentType =
+                    currentCourse.courseContents[currentStudyIndex].courseContentType
+                if (navigation == ExerciseNavigation.PREV && currentStudyIndex > 0) {
+                    onContentListItemSelected(
+                        currentCourse.courseContents[currentStudyIndex - 1].id,
+                        navigation
+                    )
+                } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex < currentCourse.courseContents.size - 1) {
+                    if (courseContentType == CourseContentType.exercise) {
+                        postExerciseCompleteStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
+                    }
+                    onContentListItemSelected(
+                        currentCourse.courseContents[currentStudyIndex + 1].id,
+                        navigation
+                    )
 
-            } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
-                val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
-                    stringProvider.getString(
-                        R.string.next_course_message,
-                        it.name
-                    )
-                } ?: stringProvider.getString(R.string.finish)
-                setState {
-                    copy(
-                        isCourseCompleted = true,
-                        nextCourseTitle = nextActionTitle
-                    )
+                } else if (navigation == ExerciseNavigation.NEXT && currentStudyIndex == currentCourse.courseContents.size - 1) {
+                    val nextActionTitle: String = getNextCourse(currentCourse.id)?.let {
+                        stringProvider.getString(
+                            R.string.next_course_message,
+                            it.name
+                        )
+                    } ?: stringProvider.getString(R.string.finish)
+                    setState {
+                        copy(
+                            isCourseCompleted = true,
+                            nextCourseTitle = nextActionTitle
+                        )
+                    }
+                    if (courseContentType == CourseContentType.exercise) {
+                        postExerciseCompleteStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
+                    }
                 }
             }
-        }else{
-            _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.retry_after_some_time)))
+            else {
+                _viewEvents.postValue(
+                    CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.error_loading_data))
+                )
+            }
+
+        } else {
+            _viewEvents.setValue(
+                CourseContentActivityViewEvents.ShowToast(
+                    stringProvider.getString(
+                        R.string.retry_after_some_time
+                    )
+                )
+            )
         }
     }
 
@@ -162,7 +213,7 @@ class CourseContentActivityViewModel(
 
         val index = currentCourse.courseContents.indexOfFirst { contentId == it.id }
 
-        if(index > -1) {
+        if (index > -1) {
             val isFirst = index == 0
             val isLast = index == currentCourse.courseContents.size - 1
             val isCompleted =
@@ -178,7 +229,8 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
             } else if (courseContentType == CourseContentType.class_topic) {
@@ -190,10 +242,11 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
-            }else if (courseContentType == CourseContentType.assessment){
+            } else if (courseContentType == CourseContentType.assessment) {
                 _viewEvents.setValue(
                     CourseContentActivityViewEvents.ShowAssessmentFragment(
                         isFirst,
@@ -202,19 +255,26 @@ class CourseContentActivityViewModel(
                         currentCourse.id,
                         contentId,
                         courseContentType,
-                        navigation
+                        navigation,
+                        pathwayId
                     )
                 )
             }
-        }else{
-            _viewEvents.setValue(CourseContentActivityViewEvents.ShowToast(stringProvider.getString(R.string.content_error_message)))
+        } else {
+            _viewEvents.setValue(
+                CourseContentActivityViewEvents.ShowToast(
+                    stringProvider.getString(
+                        R.string.error_text
+                    )
+                )
+            )
         }
     }
 
     private fun onExerciseMarkedCompleted() {
         markCourseExerciseCompletedInDb(currentStudy?.exerciseId)
 
-        if(::currentCourse.isInitialized) {
+        if (::currentCourse.isInitialized) {
             val updatedList = currentCourse
                 .courseContents.toMutableList()
 
@@ -248,13 +308,12 @@ class CourseContentActivityViewModel(
     }
 
 
-
     private fun markCourseExerciseCompletedInDb(
         exerciseId: String?
     ) {
         exerciseId?.let {
             viewModelScope.launch {
-                when(currentCourse.courseContents.find { it.id == exerciseId }?.courseContentType){
+                when (currentCourse.courseContents.find { it.id == exerciseId }?.courseContentType) {
                     CourseContentType.assessment -> learnRepo.markCourseAssessmentCompleted(it)
                     CourseContentType.class_topic -> learnRepo.markCourseClassCompleted(it)
                     CourseContentType.exercise -> learnRepo.markCourseExerciseCompleted(it)
@@ -277,15 +336,14 @@ class CourseContentActivityViewModel(
 
     private fun markContentSelected(contentId: String) {
         var selectedIndex = 0
-        var bool:Boolean=false;
+        var bool: Boolean = false;
         currentCourse.courseContents.toMutableList().let {
             it.forEachIndexed { index, content ->
                 if (content.id == contentId) {
                     if (content.courseContentProgress != CourseContentProgress.COMPLETED) {
                         content.courseContentProgress = CourseContentProgress.IN_PROGRESS
                         selectedIndex = index
-                    }
-                    else if (content.courseContentProgress == CourseContentProgress.COMPLETED){
+                    } else if (content.courseContentProgress == CourseContentProgress.COMPLETED) {
                         content.courseContentProgress = CourseContentProgress.COMPLETED_RESELECT
                         selectedIndex = index
                     }
@@ -293,8 +351,7 @@ class CourseContentActivityViewModel(
                 } else {
                     if (content.courseContentProgress == CourseContentProgress.IN_PROGRESS) {
                         content.courseContentProgress = CourseContentProgress.NOT_STARTED
-                    }
-                    else if (content.courseContentProgress == CourseContentProgress.COMPLETED_RESELECT){
+                    } else if (content.courseContentProgress == CourseContentProgress.COMPLETED_RESELECT) {
                         content.courseContentProgress = CourseContentProgress.COMPLETED
                     }
                 }
@@ -304,12 +361,13 @@ class CourseContentActivityViewModel(
         }
     }
 
-    private fun postLearningTrackStatus(contentId: String){
+    private fun postExerciseCompleteStatus(contentId: Int) {
         viewModelScope.launch {
-                currentCourse.pathwayId?.let { learnRepo.postLearningTrackStatus(it, currentCourse.id, contentId)
+            currentCourse.pathwayId?.let {
+                learnRepo.postExerciseCompleteStatus(contentId)
             }
         }
-        }
+    }
 
 
 }
@@ -324,7 +382,8 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
 
     class ShowClassFragment(
@@ -334,7 +393,8 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
 
 
@@ -345,13 +405,15 @@ sealed class CourseContentActivityViewEvents : ViewEvents {
         val courseId: String,
         val contentId: String,
         val courseContentType: CourseContentType,
-        val navigation: ExerciseNavigation?
+        val navigation: ExerciseNavigation?,
+        val pathwayId: Int
     ) : CourseContentActivityViewEvents()
-
 
 
     object FinishActivity : CourseContentActivityViewEvents()
     class ShowToast(val toastText: String) : CourseContentActivityViewEvents()
+
+    object ShowErrorScreen : CourseContentActivityViewEvents()
 }
 
 data class CourseContentActivityViewState(

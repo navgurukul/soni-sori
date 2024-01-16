@@ -2,10 +2,10 @@ package org.navgurukul.commonui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.empty_state.view.*
 import org.navgurukul.commonui.R
-
 class EmptyStateView @JvmOverloads constructor(
     context: Context,
     attributes: AttributeSet? = null,
@@ -14,7 +14,7 @@ class EmptyStateView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attributes, defaultStyleAttr, defaultStyleRes) {
 
     enum class State {
-        NO_CONTENT, ERROR
+        NO_CONTENT, ERROR, LOADING, OFFLINE
     }
 
     var state: State = State.NO_CONTENT
@@ -25,16 +25,25 @@ class EmptyStateView @JvmOverloads constructor(
                     emptyStateDescription.text = context.getString(R.string.empty_state_no_content_description)
                     emptyStateTitle.text = context.getString(R.string.empty_state_no_content_title)
                     emptyStateImage.setImageResource(R.drawable.illus_no_content)
+                    progressBar.visibility = View.GONE
                 }
                 State.ERROR -> {
                     emptyStateDescription.text = context.getString(R.string.empty_state_error_description)
                     emptyStateTitle.text = context.getString(R.string.empty_state_error_title)
                     emptyStateImage.setImageResource(R.drawable.illus_no_internet)
+                    progressBar.visibility = View.GONE
+                }
+                State.LOADING -> {
+                    progressBar.visibility = View.VISIBLE
+                    emptyStateImage.visibility = View.GONE
+                    emptyStateTitle.visibility = View.GONE
+                    emptyStateDescription.visibility = View.GONE
                 }
             }
         }
 
     init {
         inflate(context, R.layout.empty_state, this)
+        progressBar.visibility = View.GONE
     }
 }

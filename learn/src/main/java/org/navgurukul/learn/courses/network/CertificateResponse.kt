@@ -14,3 +14,4 @@ data class CertificateResponse(
     @Json(name = "url")
     val url : String
 )
+

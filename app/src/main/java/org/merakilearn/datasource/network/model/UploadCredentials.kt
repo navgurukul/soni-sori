@@ -12,25 +12,25 @@ data class UploadCredentials(
 @JsonClass(generateAdapter = true)
 data class Data(
     @Json(name = "Bucket")
-    val Bucket : String,
+    val Bucket: String,
 
     @Json(name = "Key")
-    val Key : String,
+    val Key: String,
 
     @Json(name = "ContentType")
-    val ContentType : String,
+    val ContentType: String,
 
     @Json(name = "ACL")
-    val ACL : String,
+    val ACL: String,
 
     @Json(name = "Body")
-    val Body : String?,
+    val Body: String?,
 
     @Json(name = "Credentials")
-    val Credentials : Credentials,
+    val Credentials: Credentials,
 
     @Json(name = "project_id")
-    val project_id : String
+    val projectId: String
 )
 
 @JsonClass(generateAdapter = true)

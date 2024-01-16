@@ -154,6 +154,14 @@ dependencies {
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
 
+    implementation ("com.google.android.gms:play-services-auth:19.0.0")
+
+    //lottie
+    implementation ("com.airbnb.android:lottie:4.2.0")
+
+    //chucker
+    debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
 tasks.register<Download>("downloadBundleTools") {

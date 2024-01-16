@@ -150,34 +150,34 @@ class PlaygroundViewModel(
             return
         }
         viewModelScope.launch {
-            Toast.makeText(
-                context,
-                "Please wait while we upload your file to cloud.",
-                Toast.LENGTH_LONG
-            )
-                .show()
-            val response = repository.getUploadCredentials()
-            response?.data?.let {
-                val shareUrl = "https://scratch.merakilearn.org/project/" +
-                        "${it.Key.removeSuffix(".sb3").removePrefix("scratch/")}"
-                val shareUrl2 = "https://${it.Bucket}.s3.ap-south-1.amazonaws.com/${it.Key}"
-                uploadObjectToS3(
-                    file,
-                    it.Bucket,
-                    it.Credentials.AccessKeyId,
-                    it.Credentials.SecretAccessKey,
-                    it.Credentials.SessionToken,
-                    it.Key,
-                    it.project_id,
-                    shareUrl2
-                )
-                val i = Intent(Intent.ACTION_SEND)
-                i.type = "text/plain"
-                i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
-                i.putExtra(Intent.EXTRA_TEXT,
-                    "Hi, I've made a scratch project using MerakiLearn. You can view it here or remix it to create your own.\n\n$shareUrl"
-                )
-                context.startActivity(Intent.createChooser(i, "Share File"))
+            try {
+                Toast.makeText(context, "Please wait while we upload your file to cloud.", Toast.LENGTH_LONG).show()
+                val response = repository.getUploadCredentials()
+                response?.data?.let {
+                    val shareUrl = "https://scratch.merakilearn.org/project/" +
+                            "${it.Key.removeSuffix(".sb3").removePrefix("scratch/")}"
+                    val shareUrl2 = "https://${it.Bucket}.s3.ap-south-1.amazonaws.com/${it.Key}"
+                    uploadObjectToS3(
+                        file,
+                        it.Bucket,
+                        it.Credentials.AccessKeyId,
+                        it.Credentials.SecretAccessKey,
+                        it.Credentials.SessionToken,
+                        it.Key,
+                        it.projectId,
+                        shareUrl2
+                    )
+                    val i = Intent(Intent.ACTION_SEND)
+                    i.type = "text/plain"
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
+                    i.putExtra(Intent.EXTRA_TEXT,
+                        "Hi, I've made a scratch project using MerakiLearn. You can view it here or remix it to create your own.\n\n$shareUrl"
+                    )
+                    context.startActivity(Intent.createChooser(i, "Share File"))
+                }
+            } catch (e: Exception) {
+                Timber.e(e)
+                Toast.makeText(context, "Sorry!, something went wrong", Toast.LENGTH_LONG).show()
             }
         }
     }

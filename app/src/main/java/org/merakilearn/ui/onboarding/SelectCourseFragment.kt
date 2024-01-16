@@ -77,7 +77,8 @@ class SelectCourseFragment : BaseFragment() {
         TYPING(R.drawable.ic_icon_typing),
         ENGLISH(R.drawable.ic_icon_language),
         JAVASCRIPT(R.drawable.ic_javascript_logo),
-        RESIDENTIAL(R.drawable.residential_icon)
+        RESIDENTIAL(R.drawable.residential_icon),
+        SCRATCH(R.drawable.ic_scratch_cat)
     }
 
 }

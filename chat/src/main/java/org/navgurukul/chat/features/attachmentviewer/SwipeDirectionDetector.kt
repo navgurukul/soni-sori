@@ -2,7 +2,6 @@ package org.navgurukul.chat.features.attachmentviewer
 
 import android.content.Context
 import android.view.MotionEvent
-import org.navgurukul.chat.features.attachmentviewer.SwipeDirection
 import kotlin.math.sqrt
 
 class SwipeDirectionDetector(

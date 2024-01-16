@@ -106,6 +106,16 @@ class FileChooserActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    private fun compareToCommon(uri : Uri?) {
+        val url = uri!!.path.toString().removePrefix("/project/")
+        val s3Url = "https://chanakya-dev.s3.ap-south-1.amazonaws.com/scratch/$url.sb3"
+        val newIntent = Intent(this, ScratchActivity::class.java)
+        newIntent.putExtra("s3Url", s3Url)
+        startActivity(newIntent)
+        finish()
     }
 
     private fun fileFromContentUri(context: Context, contentUri: Uri): File {
@@ -179,7 +189,14 @@ class FileChooserActivity : AppCompatActivity() {
     }
 
     private fun getExtensionFromName(fileName: String): String {
-        return fileName.substring(fileName.lastIndexOf("."), fileName.length)
+        val lastDotIndex = fileName.lastIndexOf(".")
+
+        return if (lastDotIndex != -1 && lastDotIndex < fileName.length - 1) {
+            fileName.substring(lastDotIndex + 1)
+        } else {
+            "IllegalArgumentException(\"Invalid file name: $fileName\")"
+        }
     }
+
 
 }

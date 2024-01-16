@@ -8,6 +8,7 @@
         android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -98,6 +99,14 @@
                 android:visibility="gone" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include
+            android:id="@+id/errorLayout"
+            layout="@layout/content_error_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <org.navgurukul.learn.ui.common.CourseExerciseNavigationBottomSheet
             android:id="@+id/bottomNavigationExercise"

@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.Context
@@ -12,12 +11,10 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.pdf.PdfRenderer
-import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.os.StrictMode
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
+import kotlinx.android.synthetic.main.fragment_learn.view.*
 import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
@@ -48,7 +44,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
@@ -57,6 +52,7 @@ import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.courses.network.model.sanitizedType
 import org.navgurukul.learn.databinding.FragmentLearnBinding
+import org.navgurukul.learn.databinding.GeneratedCertificateBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -90,13 +86,13 @@ class LearnFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.NO_CONTENT
-
+//        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+        initRecyclerView()
         initSwipeRefresh()
-
+        initToolBar()
         configureToolbar()
 
         val builder = StrictMode.VmPolicy.Builder();
@@ -126,7 +122,7 @@ class LearnFragment : Fragment() {
                 it.languages.isNotEmpty(),
                 it.logo
             )
-            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
+//            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
             if (!it.classes.isEmpty()) {
@@ -146,12 +142,22 @@ class LearnFragment : Fragment() {
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
 
-            if (it.code == "PRGPYT"){
-                mBinding.certificate.visibility = View.VISIBLE
-                mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
-            } else {
-                mBinding.certificate.visibility = View.GONE
-                mBinding.dotAdding.visibility = View.GONE
+
+            when(it.code) {
+                "PRGPYT" -> {
+                    mBinding.certificate.root.visibility = View.VISIBLE
+                    mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
+                    mBinding.certificate.txtCertificate.text = "Python Certificate"
+                }
+                "SCRTHB" -> {
+                    mBinding.certificate.root.visibility = View.VISIBLE
+                    mBinding.dotAdding.visibility = View.VISIBLE
+                    mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+                }
+                else -> {
+                    mBinding.certificate.root.visibility = View.GONE
+                    mBinding.dotAdding.visibility = View.GONE
+                }
             }
 
         }
@@ -199,7 +205,7 @@ class LearnFragment : Fragment() {
                     mBinding.upcoming.root.visibility = View.GONE
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
-                    getCertificate(it.pdfUrl, it.getCompletedPortion)
+                    getCertificate(it.pdfUrl, it.getCompletedPortion, it.pathwayName)
                 }
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
@@ -217,6 +223,9 @@ class LearnFragment : Fragment() {
                             )
                     }
                 }
+                is LearnFragmentViewEvents.ShowNetworkErrorScreen ->{
+                    showErrorScreen(true)
+                }
                 else -> {
                 }
 
@@ -224,20 +233,41 @@ class LearnFragment : Fragment() {
         }
     }
 
-    private fun getCertificate(pdfUrl: String, completedPortion: Int) {
-        mBinding.certificate.setOnClickListener {
-            val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-            val textView : TextView = mBinding.certificate.locked_status
+    private fun showErrorScreen(isError: Boolean) {
+        if (isError) {
+            mBinding.progressBarButton.visibility = View.GONE
+            mBinding.rlCourseContainer.empty_state_view.isVisible = true
+            mBinding.rlCourseContainer.courseContainer.visibility = View.GONE
+        } else {
+            mBinding.rlCourseContainer.empty_state_view.isVisible = false
+            mBinding.rlCourseContainer.courseContainer.visibility = View.VISIBLE
+        }
+    }
+    private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
+        val imageView: ImageView = mBinding.certificate.ivCertificateLogo
+        val textView : TextView = mBinding.certificate.root.locked_status
+        var binding: GeneratedCertificateBinding
+
+        if (completedPortion == 100){
+            imageView.setImageResource(R.drawable.ic_certificate)
+            textView.isVisible = false
+        } else {
+            imageView.setImageResource(R.drawable.grey_icon_certificate)
+            textView.isVisible = true
+        }
+        mBinding.certificate.root.setOnClickListener {
             if (completedPortion == 100) {
                 imageView.setImageResource(R.drawable.ic_certificate)
                 textView.isVisible = false
                 val dialog = BottomSheetDialog(requireContext())
-                val view = layoutInflater.inflate(R.layout.generated_certificate, null)
-                pdfView = view.idPDFView
-                view.tvDownload.setOnClickListener {
+                binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
+                pdfView = binding.idPDFView
+                binding.txtCertificate.text = getString(R.string.text_certificate, pathwayName)
+                binding.txt.text = getString(R.string.certificate_information, pathwayName)
+                binding.tvDownload.setOnClickListener {
                     generatePDF(pdfUrl)
                 }
-                view.tvShare.setOnClickListener {
+                binding.tvShare.setOnClickListener {
                     showShareIntent(pdfUrl)
                 }
                 CoroutineScope(Dispatchers.IO).launch {
@@ -246,7 +276,7 @@ class LearnFragment : Fragment() {
                 //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
                 println("required completed portion in fragment $completedPortion")
                 dialog.setCancelable(true)
-                dialog.setContentView(view)
+                dialog.setContentView(binding.root)
                 dialog.show()
             } else {
                 textView.isVisible = true
@@ -301,11 +331,6 @@ class LearnFragment : Fragment() {
         val mCardStmtFile = File(folder, fileName)
 
         context?.let {
-            val fileUri: Uri = FileProvider.getUriForFile(
-                it,
-                "org.merakilearn.provider",
-                mCardStmtFile
-            )
 
             // We will get a page from the PDF file by calling openPage
             val fileDescriptor = ParcelFileDescriptor.open(
@@ -334,23 +359,28 @@ class LearnFragment : Fragment() {
     }
 
     private fun showShareIntent(pdfUrl: String) {
-        val fileName = "certificate.pdf" // -> maven.pdf
-        val extStorageDirectory = context?.filesDir
-        val folder = File(extStorageDirectory, "certificate")
-        val file = File(folder, fileName)
+        try {
+            val fileName = "certificate.pdf" // -> maven.pdf
+            val extStorageDirectory = context?.filesDir
+            val folder = File(extStorageDirectory, "certificate")
+            val file = File(folder, fileName)
 
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "application/pdf"
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "application/pdf"
 
-        val fileUri: Uri = FileProvider.getUriForFile(
-            requireContext(),
-            "org.merakilearn.provider",
-            file
-        )
+            val fileUri: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "org.merakilearn.provider",
+                file
+            )
 
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        requireContext().startActivity(shareIntent)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            requireContext().startActivity(shareIntent)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(context, "There is some issue to share", Toast.LENGTH_LONG).show()
+        }
 
     }
 
@@ -401,7 +431,18 @@ class LearnFragment : Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45);
     }
+    private fun initToolBar() {
+        (activity as? ToolbarConfigurable)?.configure(
+            getString(R.string.app_name),
+            R.attr.textPrimary,
+            false,
+            null,
+            null,
+            null, null,
+            false,
+        )
 
+    }
     private fun configureToolbar(
         subtitle: String? = null,
         attachClickListener: Boolean = false,

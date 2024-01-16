@@ -31,9 +31,7 @@ val viewModelModule = module{
 
 val apiModule = module {
     fun provideUserApi(retrofit: Retrofit): SaralCoursesApi {
-        return retrofit
-
-            .create(SaralCoursesApi::class.java)
+        return retrofit.create(SaralCoursesApi::class.java)
     }
     single { provideUserApi(get()) }
 }
@@ -56,6 +54,8 @@ val databaseModule = module {
             .addMigrations(MIGRATION_8_9)
             .addMigrations(MIGRATION_9_10)
             .addMigrations(MIGRATION_10_11)
+            .addMigrations(MIGRATION_11_12)
+            .addMigrations(MIGRATION_12_13)
             .addTypeConverter(Converters(moshi))
             .build()
     }

@@ -1,7 +1,10 @@
 package org.merakilearn.di
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -9,6 +12,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
@@ -76,8 +80,16 @@ val networkModule = module {
         return logging
     }
 
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
+            .addInterceptor(
+                ChuckerInterceptor.Builder(context)
+                    .collector(ChuckerCollector(context))
+                    .maxContentLength(250000L)
+                    .redactHeaders(emptySet())
+                    .alwaysReadResponseBody(false)
+                    .build()
+            )
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
         okHttpClientBuilder.addInterceptor { chain ->
             val chainBuilder = chain.request().newBuilder()
@@ -121,10 +133,6 @@ val networkModule = module {
                         BaseCourseContent.COMPONENT_QUESTION_CODE
                     )
                     .withSubtype(
-                        QuestionExpressionBaseCourseContent::class.java,
-                        BaseCourseContent.COMPONENT_QUESTION_EXPRESSION
-                    )
-                    .withSubtype(
                         BlockQuoteBaseCourseContent::class.java,
                         BaseCourseContent.COMPONENT_BLOCK_QUOTE
                     )
@@ -157,6 +165,10 @@ val networkModule = module {
                         BaseCourseContent.COMPONENT_YOUTUBE_VIDEO
                     )
                     .withSubtype(
+                        QuestionExpressionBaseCourseContent::class.java,
+                        BaseCourseContent.COMPONENT_QUESTION_EXPRESSION
+                    )
+                    .withSubtype(
                         UnknownBaseCourseContent::class.java,
                         BaseCourseContent.COMPONENT_UNKNOWN
                     )
@@ -164,12 +176,10 @@ val networkModule = module {
             )
             .add(
                 PolymorphicJsonAdapterFactory.of(CourseContents::class.java, "content_type")
+                    .withSubtype(CourseAssessmentContent::class.java, CourseContentType.assessment.name)
                     .withSubtype(CourseExerciseContent::class.java, CourseContentType.exercise.name)
                     .withSubtype(CourseClassContent::class.java, CourseContentType.class_topic.name)
-                    .withSubtype(
-                        CourseAssessmentContent::class.java,
-                        CourseContentType.assessment.name
-                    )
+
             )
             .build()
     }
@@ -178,7 +188,7 @@ val networkModule = module {
     fun provideRetrofit(
         factory: Moshi,
         client: OkHttpClient,
-        settingsRepo: SettingsRepo
+        settingsRepo: SettingsRepo,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(settingsRepo.serverBaseUrl)
@@ -187,7 +197,7 @@ val networkModule = module {
             .build()
     }
 
-    single { provideHttpClient() }
+    single { provideHttpClient(androidContext()) }
     single { provideMoshi() }
     single { provideRetrofit(get(), get(), get()) }
 
@@ -196,7 +206,7 @@ val networkModule = module {
 val repositoryModule = module {
     single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
     single { Config() }
-    single { ClassesRepo(get()) }
+    single { ClassesRepo(get(),get()) }
     single { SettingsRepo(get()) }
     single { PlaygroundRepo(get()) }
     single {

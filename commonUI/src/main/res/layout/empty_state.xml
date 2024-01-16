@@ -39,11 +39,20 @@
         android:gravity="center"
         android:textAppearance="?textAppearanceSubtitle1"
         android:textColor="?textSecondary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emptyStateTitle"
-        tools:text="Sorry! we couldn’t find any content , please come
-back later" />
+        tools:text="Sorry! We couldn't find any content, please come back later" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8x"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emptyStateDescription" />
 
 </merge>

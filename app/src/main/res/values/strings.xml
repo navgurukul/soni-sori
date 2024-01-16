@@ -5,26 +5,10 @@
 
     <string name="title_more">More</string>
     <string name="profile">Profile</string>
-    <string name="hello">Hello!</string>
-    <string name="description">I am <font fgcolor='#D63447'>Meraki.</font>\nI am here to help you learn</string>
-    <string name="powered_by">Powered by Nav-Gurukul</string>
-    <string name="get_started">Let\'s get started!</string>
-    <string name="already_account">Already have an account? <u>Login Now</u></string>
-    <string name="login_with_email">Login with Email</string>
-    <string name="new_to_meraki">New to Meraki? <u>SignUp here</u></string>
     <string name="unable_to_sign">Unable to Sign in ! Please try again</string>
-    <string name="where_you_left">Continue where you left off…</string>
     <string name="upcoming_class">Upcoming Classes</string>
     <string name="view_all">View All</string>
-    <string name="other_class">Other Courses</string>
-    <string name="try_other_courses">Try any new courses for first 2 weeks</string>
-    <string name="discover_class">Discover all upcoming classes</string>
-    <string name="stay_updated">Stay updated and don\'t miss out</string>
-    <string name="title_home">Home</string>
-    <string name="meraki">Meraki</string>
-    <string name="search_classes">Search for Classes</string>
     <string name="search_playground">Search projects or lab…</string>
-    <string name="no_class_scheduled">No Class Scheduled</string>
     <string name="about">About</string>
     <string name="class_detail">Class Detail</string>
     <string name="special_instructions">Special Instructions</string>
@@ -39,26 +23,16 @@
     <string name="unable_to_process_request">Unable to process your request, please try again</string>
 
     <string name="default_notification_channel_id" translatable="false">meraki_fcm_default_channel</string>
-    <string name="default_notification_channel_name" translatable="true">Meraki</string>
     <string name="my_details">My Details</string>
     <string name="name">Name</string>
-    <string name="email">Email Id</string>
     <string name="save">Save</string>
-    <string name="link_google_account">Link Google Account</string>
     <string name="unable_to_update">Unable to update your profile. Please try again</string>
     <string name="unable_to_log_out">Unable to Log out your profile. Please try again</string>
     <string name="profile_updated_successfully">Your profile is updated successfully</string>
-    <string name="account_linked_successfully">Account is linked successfully</string>
     <string name="want_log_out">Are you sure you want to log out from application ?</string>
     <string name="okay">Yes</string>
     <string name="cancel">No</string>
-    <string name="please_connect">Please connect your account to update</string>
-    <string name="update_profile">Update Profile</string>
     <string name="email_already_used">This email is already linked with another account</string>
-    <string name="app_version">App Version</string>
-    <string name="connect_with_email">Connect with Email</string>
-    <string name="skip_login">Don\'t want to login? <u>Skip Login</u></string>
-    <string name="create_new_account">Create New Account</string>
     <string name="want_login">Your existing data will be lost and you would be signed in using your email account</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
@@ -68,11 +42,8 @@
     <string name="server_url_label">Server Url</string>
     <string name="delete">Delete</string>
     <string name="copy_to_playground">Copy to Playground</string>
-    <string name="file_deleted">File is deleted</string>
     <string name="collapse">Collapse</string>
     <string name="title_typing">Typing</string>
-    <string name="enrolled_label">Enrolled</string>
-    <string name="only_enrolled">Only Enrolled</string>
     <string name="class_not_started_toast">This class has not started yet, join back in %s</string>
     <string name="privacy_policy"><u>Privacy Policy</u></string>
     <plurals name="days">
@@ -91,7 +62,6 @@
 
     <string name="opportunities">Opportunities</string>
     <string name="partnerName">Partner Name</string>
-    <string name="partnerInfo">Your learning is sponsored by:</string>
     <string name="partnerDesc">Partner Desc</string>
     <string name="partnerWebsite">Website</string>
     <string name="title">Your learning is supported by:</string>
@@ -101,6 +71,7 @@
 
 
     <string name="english"><b>ABC</b>\n\nEnglish</string>
+
     <string name="skip_login_english">Skip Login</string>
     <string name="continue_with_google_english">Continue with Google</string>
 
@@ -110,7 +81,6 @@
     <string name="title_learn">Learn</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="profile_title">Profile</string>
     <string name="enrolled_batches">Enrolled Batches</string>
     <string name="confirmation">Confirm dropping out of the batch</string>
     <string name="confirm_txt">If you have missed some classes, you can take revision classes without dropping off</string>
