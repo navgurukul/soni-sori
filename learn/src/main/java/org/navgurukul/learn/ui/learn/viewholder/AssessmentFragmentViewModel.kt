@@ -132,7 +132,9 @@ class AssessmentFragmentViewModel (
 //                            option.viewState = OptionViewState.CORRECT
                             //Log.d("option", option.viewState.toString())
                         } else if (option.id in incorrectOptions!!.map { it.value }) {
-                            option.viewState = OptionViewState.INCORRECT
+                            if(option.id in selectedOption) {
+                                option.viewState = OptionViewState.INCORRECT
+                            }
                         }
                     }
                 }

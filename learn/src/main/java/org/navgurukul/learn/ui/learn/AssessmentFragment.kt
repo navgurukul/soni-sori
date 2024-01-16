@@ -203,6 +203,7 @@ class AssessmentFragment : Fragment() {
                     }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
+                        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
