@@ -125,3 +125,4 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
 
         }
     }
+}
