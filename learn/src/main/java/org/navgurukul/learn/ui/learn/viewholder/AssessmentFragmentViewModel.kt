@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -112,14 +113,24 @@ class AssessmentFragmentViewModel (
             val solutionContent = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
             val correctOptions = solutionContent.correct_options_value
+            Log.d("correctOptions", correctOptions.toString())
             val incorrectOptions = solutionContent.incorrect_options_value
+            Log.d("incorrectOptions", incorrectOptions.toString())
 
             currentState.assessmentContentListForUI.forEach {
                 if (it.component == BaseCourseContent.COMPONENT_OPTIONS) {
                     val optionList = it as OptionsBaseCourseContent
                     for (option in optionList.value) {
+                        Log.d("option", option.id.toString())
                         if (option.id in correctOptions.map { it.value }) {
-                            option.viewState = OptionViewState.CORRECT
+                            if(option.id in selectedOption) {
+                                option.viewState = OptionViewState.CORRECT
+                            }
+                            /* 1 -> modify same function to take only selected or unselected values
+                            *  2 -> modify same function to take PARTIALLY_CORRECT and PARTIALLY_INCORRECT values
+                            * */
+//                            option.viewState = OptionViewState.CORRECT
+                            //Log.d("option", option.viewState.toString())
                         } else if (option.id in incorrectOptions!!.map { it.value }) {
                             option.viewState = OptionViewState.INCORRECT
                         }
