@@ -256,21 +256,36 @@ class OptionSelectionAdapter(
                                 tvOption.visibility = View.VISIBLE
                                 tvRadioButtonOption.visibility = View.GONE
                                 checkBox.visibility = View.VISIBLE
-                                tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
-                                tvCardOption.strokeColor = Color.parseColor("#48A145")
-                                checkBox.isChecked = true
-                                checkBox.setButtonDrawable(drawable.check_circle_correctoption)
-                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                                if(item.attemptCount <2){
+                                    checkBox.isChecked = false
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#F1F1F1"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F1F1F1")
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
+
+                                }else{
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                                    tvCardOption.strokeColor = Color.parseColor("#48A145")
+                                    checkBox.isChecked = true
+                                    checkBox.setButtonDrawable(drawable.check_circle_correctoption)
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                                }
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
                                 checkBox.visibility = View.VISIBLE
                                 tvRadioButtonOption.visibility = View.GONE
+                                if (item.attemptCount <2){
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#F1F1F1"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F1F1F1")
+                                    checkBox.isChecked = false
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))}
+                                else{
                                 tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                                 tvCardOption.strokeColor = Color.parseColor("#48A145")
                                 checkBox.isChecked = true
                                 checkBox.setButtonDrawable(drawable.check_circle_correctoption)
                                 checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
+                                }
                             }
                         }
                     }
@@ -281,23 +296,36 @@ class OptionSelectionAdapter(
                             if (item.optionType == OptionType.text){
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
-                                checkBox.visibility = View.VISIBLE
                                 tvRadioButtonOption.visibility = View.GONE
-                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-                                tvCardOption.strokeColor = Color.parseColor("#F44336")
-                                checkBox.isChecked = true
-                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
-                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                                checkBox.visibility = View.VISIBLE
+                                if(item.attemptCount <2){
+                                    checkBox.isChecked = false
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#F1F1F1"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F1F1F1")
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
+                                }else{
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                    checkBox.isChecked = true
+                                    checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))}
                             }else{
                                 ivImgOption.visibility = View.VISIBLE
                                 tvOption.visibility = View.GONE
                                 checkBox.visibility = View.VISIBLE
                                 tvRadioButtonOption.visibility = View.GONE
-                                tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
-                                tvCardOption.strokeColor = Color.parseColor("#F44336")
-                                checkBox.isChecked = true
-                                checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
-                                checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                                if (item.attemptCount <2){
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#F1F1F1"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F1F1F1")
+                                    checkBox.isChecked = false
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))}
+                                else{
+                                    tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                                    tvCardOption.strokeColor = Color.parseColor("#F44336")
+                                    checkBox.isChecked = true
+                                    checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                                    checkBox.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                                }
                             }
                         }
                     }

@@ -265,7 +265,9 @@ data class OptionResponse(
         @Json(name = "option_type")
         val optionType: OptionType,
         @Ignore
-        var viewState: OptionViewState = OptionViewState.NOT_SELECTED
+        var viewState: OptionViewState = OptionViewState.NOT_SELECTED,
+        @Ignore
+        var attemptCount: Int = 0
 )
 
 @JsonClass(generateAdapter = true)

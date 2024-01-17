@@ -197,21 +197,22 @@ class AssessmentFragment : Fragment() {
                     if (attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_CORRECT){
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
+                       // fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                            isContentRvClickable = false
+                            isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
                     }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
+                        //fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                            isContentRvClickable = false
+                            isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
-                    }else{
+                    }else if (attemptResponse.attemptStatus == AttemptStatus.INCORRECT){
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
@@ -230,9 +231,9 @@ class AssessmentFragment : Fragment() {
             }
 
             // new condition to hide retry button for all selected options
-            if(selectedOption?.all { it.viewState == OptionViewState.SELECTED } == true){
-                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
-            }
+//            if(selectedOption?.all { it.viewState == OptionViewState.SELECTED } == true){
+//                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
+//            }
         }
     }
 
