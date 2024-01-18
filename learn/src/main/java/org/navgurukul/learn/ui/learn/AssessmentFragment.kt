@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,8 @@ class AssessmentFragment : Fragment() {
     private lateinit var activityViewModel: CourseContentActivityViewModel
 
     companion object {
+         var isContentRvClickableMultiple = true
+
         fun newInstance(
             isFirst: Boolean,
             isLast: Boolean,
@@ -227,6 +230,7 @@ class AssessmentFragment : Fragment() {
                     fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                     initIncorrectRV(list)
                     isContentRvClickable = false
+                    isContentRvClickableMultiple = false
                 }
             }
 
@@ -267,7 +271,10 @@ class AssessmentFragment : Fragment() {
         }, {
 
         }, {
+            Log.d(TAG, "initContentRvbefore: $isContentRvClickable")
+            //isContentRvClickableMultiple = true  // TODO : able to select if attempt response if less than 2
             if (isContentRvClickable) {
+                Log.d(TAG, "initContentRv: $isContentRvClickable")
                 selectedOption = it
                 fragmentViewModel.handle(
                     AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(
