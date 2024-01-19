@@ -3,6 +3,7 @@ package org.navgurukul.learn.ui.learn.adapter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Icon
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
-import org.navgurukul.learn.ui.learn.AssessmentFragment.Companion.isContentRvClickableMultiple
 
 class OptionSelectionAdapter(
     val callback: ((List<OptionResponse>) -> Unit)? = null,
@@ -371,7 +371,9 @@ class OptionSelectionAdapter(
             root.setOnClickListener {
                 when (assessmentType) {
                     AssessmentType.multiple -> {
+                        Log.d("isContentRvClickableBefore", isContentRvClickableMultiple.toString())
                         if (isContentRvClickableMultiple) {
+                            Log.d("isContentRvClickableAfter", isContentRvClickableMultiple.toString())
                             if (selectedOptions.contains(item)) {
                                 selectedOptions.remove(item)
                                 item.viewState = OptionViewState.NOT_SELECTED
@@ -402,4 +404,7 @@ class OptionSelectionAdapter(
         }
     }
 
+    companion object {
+        var isContentRvClickableMultiple : Boolean = true
+    }
 }
