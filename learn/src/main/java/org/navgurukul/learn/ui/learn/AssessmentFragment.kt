@@ -33,7 +33,6 @@ import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.databinding.ItemOptionsListContentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
-import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter.Companion.isContentRvClickableMultiple
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
 
 
@@ -100,7 +99,7 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+//                    isContentRvClickableMultiple = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.visibility = View.GONE
@@ -115,7 +114,7 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+                    //isContentRvClickableMultiple = false
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput -> {
@@ -123,7 +122,7 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+                    //isContentRvClickableMultiple = false
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
@@ -131,7 +130,7 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+                    //isContentRvClickableMultiple = false
                 }
 
             }
@@ -165,7 +164,7 @@ class AssessmentFragment : Fragment() {
                 mBinding.btnSubmit.visibility = View.GONE
                 selectedOption?.let {
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+                    //isContentRvClickableMultiple = false
                     fragmentViewModel.handle(
                         AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
                             it
@@ -235,7 +234,7 @@ class AssessmentFragment : Fragment() {
                     fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                     initIncorrectRV(list)
                     isContentRvClickable = false
-                    isContentRvClickableMultiple = false
+                    //isContentRvClickableMultiple = false
                     //isContentRvClickableMultiple = false
                 }
             }

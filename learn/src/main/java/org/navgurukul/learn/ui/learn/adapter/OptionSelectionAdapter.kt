@@ -371,26 +371,18 @@ class OptionSelectionAdapter(
             root.setOnClickListener {
                 when (assessmentType) {
                     AssessmentType.multiple -> {
-                        Log.d("isContentRvClickableBefore", isContentRvClickableMultiple.toString())
-                        if (isContentRvClickableMultiple) {
-                            Log.d("isContentRvClickableAfter", isContentRvClickableMultiple.toString())
-                            if (selectedOptions.contains(item)) {
-                                selectedOptions.remove(item)
-                                item.viewState = OptionViewState.NOT_SELECTED
-                            } else {
-                                selectedOptions.add(item)
-                                item.viewState = OptionViewState.SELECTED
-                            }
-                            bind(holder, item)
-                            callback?.invoke(selectedOptions)
+                        //Log.d("isContentRvClickableBefore", isContentRvClickableMultiple.toString())
+//                        if (isContentRvClickableMultiple) {
+                        //Log.d("isContentRvClickableAfter", isContentRvClickableMultiple.toString())
+                        if (selectedOptions.contains(item)) {
+                            selectedOptions.remove(item)
+                            item.viewState = OptionViewState.NOT_SELECTED
                         } else {
-                            Toast.makeText(
-                                root.context,
-                                "Disable click listener",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
+                            selectedOptions.add(item)
+                            item.viewState = OptionViewState.SELECTED
                         }
+                        bind(holder, item)
+                        callback?.invoke(selectedOptions)
                     }
 
                     AssessmentType.single -> {
@@ -404,7 +396,7 @@ class OptionSelectionAdapter(
         }
     }
 
-    companion object {
-        var isContentRvClickableMultiple : Boolean = true
-    }
+//    companion object {
+//        var isContentRvClickableMultiple : Boolean = true
+//    }
 }
