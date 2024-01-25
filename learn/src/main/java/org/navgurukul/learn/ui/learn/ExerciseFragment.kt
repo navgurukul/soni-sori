@@ -184,4 +184,5 @@ class ExerciseFragment : Fragment() {
         )
 
     }
+
 }
