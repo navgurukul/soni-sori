@@ -2,6 +2,7 @@
 <resources>
     <dimen name="spacing_half_x">2dp</dimen>
     <dimen name="spacing_1x">4dp</dimen>
+    <dimen name="spacing_1_5x">6dp</dimen>
     <dimen name="spacing_2x">8dp</dimen>
     <dimen name="spacing_3x">12dp</dimen>
     <dimen name="spacing_4x">16dp</dimen>
@@ -11,6 +12,5 @@
     <dimen name="spacing_10x">36dp</dimen>
     <dimen name="spacing_11x">44dp</dimen>
     <dimen name="spacing_12x">48dp</dimen>
-
     <dimen name="actionBarSize">64dp</dimen>
 </resources>
