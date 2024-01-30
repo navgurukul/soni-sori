@@ -34,6 +34,7 @@
                         android:layout_marginTop="@dimen/spacing_1x"
                         android:overScrollMode="never"
                         android:paddingTop="@dimen/spacing_2x"
+                        android:scrollbars="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_base_course_content" />
 
