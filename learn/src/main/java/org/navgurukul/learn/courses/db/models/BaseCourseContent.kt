@@ -191,7 +191,7 @@ data class SolutionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "value")
-        var value:  Int, //List<ValueObject>,
+        var value: Int?, // Changes according to Api Response
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ):BaseCourseContent

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -66,6 +68,9 @@ class CourseContentActivity : AppCompatActivity(){
         mBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
+        if (!Python.isStarted()) {
+            Python.start(AndroidPlatform(this))
+        }
         if (!LearnUtils.isUserLoggedIn(this)) {
             merakiNavigator.restartApp(this, true)
         }
