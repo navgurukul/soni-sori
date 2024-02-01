@@ -144,6 +144,7 @@ class LearnRepo(
                     Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
                 }
             } catch (ex: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(ex)
                 Log.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
             }
         }
@@ -226,14 +227,15 @@ class LearnRepo(
         }
     }
 
-    suspend fun getCompletedContentsIds(courseId: String): Flow<CompletedContentsIds> {
+    suspend fun getCompletedContentsIds(courseId: String): Flow<Resource<CompletedContentsIds>> {
             return flow {
                 if (LearnUtils.isOnline(application)) {
                     try {
-                        val contentList = courseApi.getCompletedContentsIds(courseId)
+                        val contentList = safeApiCall {courseApi.getCompletedContentsIds(courseId) }
                         updateCompletedContentInDb(contentList)
                         emit(contentList)
                     } catch (e: Exception) {
+                        FirebaseCrashlytics.getInstance().recordException(e)
                         e.printStackTrace()
                     }
                 } else {
@@ -393,7 +395,7 @@ class LearnRepo(
     suspend fun postStudentResult(
         assessmentId: Int,
         status: Status,
-        selectedOption: Int?
+        selectedOption: List<Int>
     ){
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)

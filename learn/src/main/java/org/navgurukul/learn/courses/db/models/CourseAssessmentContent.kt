@@ -35,14 +35,7 @@ data class CourseAssessmentContent(
 
     @Embedded(prefix = "assess_")
     @Json(name = "attempt_status")
-    val attemptStatus: AttemptResponseStatus? = null,
-
-    @Json(name = "assessment_type")
-    val assessmentType: String? = null,
-
-    @Json(name = "max_selection_count")
-    val maxSelectionCount: Int?
-
+    val attemptStatus: AttemptResponseStatus? = null
     ):CourseContents
 
 

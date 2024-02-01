@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -18,6 +19,7 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPON
 import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -274,22 +276,22 @@ class AssessmentFragmentViewModel (
         viewModelScope.launch {
             setState { copy(isLoading = false) }
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
-            when(attemptResponse.attemptStatus){
+            when(attemptResponse.data?.attemptStatus){
                 AttemptStatus.CORRECT -> {
-                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
+                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
                 }
                 AttemptStatus.INCORRECT -> {
-                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse))
+                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse.data))
                 }
                 AttemptStatus.PARTIALLY_CORRECT -> {
-                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyCorrectOutputDataList,attemptResponse))
+                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyCorrectOutputDataList,attemptResponse.data))
                 }
                 AttemptStatus.PARTIALLY_INCORRECT -> {
-                    updateListAttemptStatus(attemptResponse.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
-                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse))
+                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
+                    _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse.data))
                 }
             }
 
