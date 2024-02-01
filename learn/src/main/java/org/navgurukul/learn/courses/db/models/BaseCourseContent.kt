@@ -208,6 +208,7 @@ data class ValueObject(
         val value: Int
 )
 
+
 @JsonClass(generateAdapter = true)
 data class OutputBaseCourseContent(
         @Json(name = "component")

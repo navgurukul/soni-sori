@@ -112,7 +112,7 @@
     <string name="reading_completed">Reading Completed</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
-    <string name="content_error_message">Oops! The content fell off the scoop. Don’t forget check your internet connection</string>
+    <string name="content_error_message">Oops! Our servers are seem to be down. But, it’s us. Please be patient while we resolve it.. Don’t forget check your internet connection</string>
     <string name="refresh_content">Refresh Content</string>
     <string name="next_course_message">Next Up: %1s</string>
     <string name="course_completed_message">%1s Completed!</string>
@@ -163,7 +163,7 @@
     <string name="have_you_completed_the_overview">Have you completed the overview?</string>
     <string name="locked">(Locked)</string>
     <string name="text_certificate">%1$s Certificate</string>
-    <string name="missed_the_bull_eye">😟 Missed the bull\'s eye</string>
+    <string name="error_text">Something went wrong</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

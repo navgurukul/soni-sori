@@ -1,6 +1,8 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.network.EnrolStatus
 import org.navgurukul.learn.courses.network.model.Batch
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 import java.util.*
 
@@ -31,7 +34,7 @@ class ClassFragmentViewModel(
     private val selectedLanguage = corePreferences.selectedLanguage
 
     init {
-        fetchClassContent(args.contentId, args.courseId, args.courseContentType)
+        fetchClassContent(args.contentId, args.courseId, args.courseContentType, pathwayId = args.pathwayId)
     }
 
     private fun fetchClassContent(
@@ -39,6 +42,7 @@ class ClassFragmentViewModel(
         courseId: String,
         courseContentType: CourseContentType,
         forceUpdate: Boolean = false,
+        pathwayId: Int
     ) {
         fetchClassJob?.cancel()
         fetchClassJob = viewModelScope.launch {
@@ -59,16 +63,17 @@ class ClassFragmentViewModel(
                         setState { copy(isError = false) }
                         setState { copy(classContent = data) }
 
-                        val status = learnRepo.statusEnrolled?.message
+                        val status = learnRepo.statusEnrolled?.data?.message
                         if ( status == EnrolStatus.enrolled){
                             if (Date().time > data.endTime.time){
                                 getRevisionClasses(data.id)
-                            }else{
+                            }
+                             else{
                                _viewEvents.postValue(ClassFragmentViewEvents.ShowClassData(data))
                             }
                         }
                         else{
-                            getBatchesDataByPathway(1)
+                            getBatchesDataByPathway(pathwayId = pathwayId)
                         }
 
                     } else {
@@ -94,7 +99,8 @@ class ClassFragmentViewModel(
                 args.contentId,
                 args.courseId,
                 args.courseContentType,
-                true
+                true,
+                args.pathwayId
             )
         }
     }
@@ -110,41 +116,78 @@ class ClassFragmentViewModel(
     private fun getRevisionClasses(classId: String){
         viewModelScope.launch {
             setState {copy(isLoading = true)}
-
             val revisionClasses = learnRepo.getRevisionClasses(classId)
-            revisionClasses?.let {
-                setState {
-                    copy(
-                        isLoading = false,
-                        revisionClasses = it
-                    )
+            when (revisionClasses) {
+                is Resource.Success -> {
+                    revisionClasses.data.let {
+                        setState {
+                            copy(
+                                isLoading = false,
+                                revisionClasses = it
+                            )
+                        }
+                        if (it != null) {
+                            if (it.isNotEmpty()){
+                                if(it.first().isEnrolled)
+                                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
+                                else
+                                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+                            }else{
+                                _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+                            }
+                        }
+                    }
                 }
-                if (it.isNotEmpty()){
-                    if(it.first().isEnrolled)
-                        _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClassToJoin(it.first()))
-                    else
-                        _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
-                }else{
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowRevisionClasses(it))
+               is Resource.Error -> {
+                   _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+                   FirebaseCrashlytics.getInstance().recordException(Exception(revisionClasses.message))
+               }
+                else -> {
+                    Log.d("ClassFragmentViewModel", "getRevisionClasses: ")
+                    FirebaseCrashlytics.getInstance().recordException(Exception(revisionClasses.message))
                 }
             }
+
         }
     }
 
     private fun getBatchesDataByPathway(pathwayId: Int) {
         viewModelScope.launch {
             setState { copy(isLoading=true) }
-            val batches =learnRepo.getBatchesListByPathway(pathwayId)
-            batches?.let {
-                setState {
-                    copy(
-                        batches = it
-                    )
-                }
-                if (it.isNotEmpty()){
-                    _viewEvents.postValue(ClassFragmentViewEvents.ShowBatches(batches))
-                }
-            }
+           try {
+               val batches = learnRepo.getBatchesListByPathway(pathwayId)
+               when (batches) {
+                   is Resource.Success -> {
+                       batches.data?.let {
+                           setState {
+                               copy(
+                                   isLoading = false,
+                                   batches = it
+                               )
+                           }
+                           if (it.isNotEmpty()){
+                               _viewEvents.postValue(ClassFragmentViewEvents.ShowBatches(it))
+                           }
+                       }
+                   }
+                   is Resource.Error -> {
+                       setState { copy(isError= true) }
+                       _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+                       FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
+
+                   }
+                   else -> {
+                       if (batches != null) {
+                           FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
+                       }
+                   }
+               }
+
+           } catch (e: Exception) {
+               _viewEvents.postValue(ClassFragmentViewEvents.ShowErrorScreen(isError = true))
+               FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
+           }
+            setState { copy(isLoading=false) }
         }
     }
 
@@ -155,6 +198,7 @@ class ClassFragmentViewModel(
         data class ShowClassData(val courseClass : CourseClassContent): ClassFragmentViewEvents()
         data class ShowBatches(val batches : List<Batch>):ClassFragmentViewEvents()
         class OpenLink(val link: String) : ClassFragmentViewEvents()
+        class ShowErrorScreen(val isError: Boolean) : ClassFragmentViewEvents()
     }
 
     sealed class ClassFragmentViewActions : ViewModelAction {
@@ -166,7 +210,7 @@ class ClassFragmentViewModel(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
         val classContent: CourseClassContent? = null,
-        val revisionClasses: List<CourseClassContent> = arrayListOf(),
+        val revisionClasses: List<CourseClassContent>? = arrayListOf(),
         val batches: List<Batch> = arrayListOf()
 
     ) : ViewState

@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
+import kotlinx.android.synthetic.main.fragment_learn.view.*
 import kotlinx.android.synthetic.main.item_certificate.view.*
 import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
 import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
@@ -44,7 +44,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
@@ -87,16 +86,13 @@ class LearnFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
-
-//        mBinding.batchCard.root.visibility = View.GONE
-//        mBinding.upcoming.root.visibility = View.GONE
-
+//        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+        initRecyclerView()
         initSwipeRefresh()
-
+        initToolBar()
         configureToolbar()
 
         val builder = StrictMode.VmPolicy.Builder();
@@ -126,7 +122,7 @@ class LearnFragment : Fragment() {
                 it.languages.isNotEmpty(),
                 it.logo
             )
-            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
+//            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
             mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
 
             if (!it.classes.isEmpty()) {
@@ -227,6 +223,9 @@ class LearnFragment : Fragment() {
                             )
                     }
                 }
+                is LearnFragmentViewEvents.ShowNetworkErrorScreen ->{
+                    showErrorScreen(true)
+                }
                 else -> {
                 }
 
@@ -234,6 +233,16 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private fun showErrorScreen(isError: Boolean) {
+        if (isError) {
+            mBinding.progressBarButton.visibility = View.GONE
+            mBinding.rlCourseContainer.empty_state_view.isVisible = true
+            mBinding.rlCourseContainer.courseContainer.visibility = View.GONE
+        } else {
+            mBinding.rlCourseContainer.empty_state_view.isVisible = false
+            mBinding.rlCourseContainer.courseContainer.visibility = View.VISIBLE
+        }
+    }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
         val textView : TextView = mBinding.certificate.root.locked_status
@@ -422,7 +431,18 @@ class LearnFragment : Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45);
     }
+    private fun initToolBar() {
+        (activity as? ToolbarConfigurable)?.configure(
+            getString(R.string.app_name),
+            R.attr.textPrimary,
+            false,
+            null,
+            null,
+            null, null,
+            false,
+        )
 
+    }
     private fun configureToolbar(
         subtitle: String? = null,
         attachClickListener: Boolean = false,

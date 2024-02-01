@@ -1,7 +1,6 @@
 package org.navgurukul.learn.ui.learn.viewholder
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
