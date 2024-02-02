@@ -3,21 +3,36 @@ package org.navgurukul.learn.courses.repository
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.asFlow
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.*
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CourseAssessmentContent
+import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.CourseContentProgress
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.CourseContents
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
+import org.navgurukul.learn.courses.db.models.CurrentStudy
+import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.CertificateResponse
+import org.navgurukul.learn.courses.network.EnrolResponse
+import org.navgurukul.learn.courses.network.GetCompletedPortion
+import org.navgurukul.learn.courses.network.SaralCoursesApi
+import org.navgurukul.learn.courses.network.Status
+import org.navgurukul.learn.courses.network.StudentResult
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
-import java.net.UnknownHostException
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -104,9 +119,9 @@ class LearnRepo(
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
                 val result = courseApi.getCourseContentAsync(courseId, lang)
-                val mappedData = result.course.courseContents.map {
+                val mappedData = result.course[0].courseContents.map {
                     it.courseId = courseId
-                    it.courseName = result.course.name
+                    it.courseName = result.course[0].name
                     if(it.courseContentType == CourseContentType.exercise) {
                         it as CourseExerciseContent
                         it.lang =
@@ -168,7 +183,6 @@ class LearnRepo(
             networkBoundResourceFlow(
                 loadFromDb = {
                     val course = courseDao.getCourseById(courseId)
-
                     val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
                     val classes = classDao.getAllClassesForCourse(courseId, language)
                     val assessments = assessmentDao.getAllAssessmentForCourse(courseId, language)
@@ -187,7 +201,7 @@ class LearnRepo(
                 shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
                 makeApiCallAsync = { courseApi.getCourseContentAsync(courseId, language) },
                 saveCallResult = { courseExerciseContainer ->
-                    val course = courseExerciseContainer.course.apply {
+                    val course = courseExerciseContainer.course[0].apply {
                         this.pathwayId = pathwayId
                     }
                     val lang =

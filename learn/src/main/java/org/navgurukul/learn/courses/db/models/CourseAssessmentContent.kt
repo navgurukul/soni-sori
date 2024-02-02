@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.network.AttemptResponseStatus
 @Entity(tableName = "course_assessment", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
 data class CourseAssessmentContent(
-    @Json(name = "id")
+    @Json(name = "slug_id")
     @ColumnInfo(name = "id")
     override val id: String = "",
 

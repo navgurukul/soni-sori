@@ -21,12 +21,12 @@ data class Course(
     @Json(name = "short_description")
     var shortDescription: String?,
     @Json(name = "lang_available")
-    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
+    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"hi\"]")
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
     var completedPortion : Int? = null
 ){
     @Ignore
-    @Json(name = "exercises")
+    @Json(name = "course_content")
     var courseContents: List<CourseContents> = listOf()
 }
