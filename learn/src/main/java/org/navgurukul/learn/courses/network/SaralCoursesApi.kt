@@ -31,11 +31,6 @@ interface SaralCoursesApi {
         @Query("lang") language: String
     ): CourseExerciseContainer
 
-    @GET("courses/{courseId}/content/slug")
-    suspend fun getCourseContentBySlugAsync(
-        @Path("courseId") courseId: String,
-        @Query("lang") language: String
-    ): CourseExerciseContainer
 
     @GET("classes/{classId}/revision")
     suspend fun getRevisionClasses(
@@ -70,29 +65,29 @@ interface SaralCoursesApi {
         @Path(value = "pathwayId") pathwayId: Int
     ):Response<List<CourseClassContent>>
 
-    @POST("assessment/student/result/v2")
+    @POST("assessment/slug/complete")
     suspend fun postStudentResult(
         @Body studentResult : StudentResult
     ) : Response<StudentResponse>
 
-    @GET("assessment/{assessmentId}/student/result/v2")
+    @GET("assessment/{slugId}/complete")
     suspend fun getStudentResult(
-        @Path(value = "assessmentId")  assessmentId : Int
+        @Path(value = "slugId")  slugId : Int
     ): Response<AttemptResponse>
 
-    @GET("pathways/{pathwayId}/completePortion")
+    @GET("pathways/{pathwayId}/totalProgress")
     suspend fun getCompletedPortionData(
         @Path(value = "pathwayId") pathwayId: Int
     ) : Response<GetCompletedPortion>
 
-
-    @POST("exercises/{exerciseId}/complete")
+    @POST("exercises/{slug_id}/markcomplete")
     suspend fun postExerciseCompleteStatus(
-        @Path(value = "exerciseId") exerciseId: Int
+        @Path(value = "slug_id") slugId: Int,
+        @Query("lang") language: String
     ): Response<ResponseBody>
 
 
-    @GET("progressTracking/{courseId}/completedCourseContentIds")
+    @GET("progressTracking/{courseId}/completedContent")
     suspend fun getCompletedContentsIds(
         @Path(value = "courseId") courseId: String
     ): Response<CompletedContentsIds>

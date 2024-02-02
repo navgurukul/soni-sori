@@ -44,6 +44,7 @@ class LearnRepo(
     var lastUpdatedBatches: List<Batch>? = null
     var statusEnrolled: Resource<EnrolResponse>? = null
     lateinit var pathwayId : String
+    private lateinit var selectedLang : String
 
     class OfflineException(message: String) : Exception(message)
 
@@ -113,12 +114,12 @@ class LearnRepo(
         val classDao = database.classDao()
         val assessmentDao = database.assessmentDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
-        val lang: String = course?.let {
+        selectedLang = course?.let {
             if (language in course.supportedLanguages) language else course.supportedLanguages[0]
         } ?: language
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
-                val result = courseApi.getCourseContentAsync(courseId, lang)
+                val result = courseApi.getCourseContentAsync(courseId, selectedLang)
                 val mappedData = result.course[0].courseContents.map {
                     it.courseId = courseId
                     it.courseName = result.course[0].name
@@ -165,10 +166,10 @@ class LearnRepo(
         }
 
         return when(courseContentType){
-            CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, lang).asFlow()
-            CourseContentType.class_topic -> classDao.getClassById(contentId, lang).asFlow()
-            CourseContentType.assessment -> assessmentDao.getAssessmentById(contentId, lang).asFlow()
-            else -> exerciseDao.getExerciseById(contentId, lang).asFlow()
+            CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, selectedLang).asFlow()
+            CourseContentType.class_topic -> classDao.getClassById(contentId, selectedLang).asFlow()
+            CourseContentType.assessment -> assessmentDao.getAssessmentById(contentId, selectedLang).asFlow()
+            else -> exerciseDao.getExerciseById(contentId, selectedLang).asFlow()
         }
     }
 
@@ -407,12 +408,13 @@ class LearnRepo(
     }
 
     suspend fun postStudentResult(
-        assessmentId: Int,
+        slugId: Int,
+        courseId: Int,
         status: Status,
-        selectedOption: List<Int>
+        selectedOption: List<Int>,
     ){
         try {
-            val studentResult = StudentResult(assessmentId, status,selectedOption)
+            val studentResult = StudentResult(slugId, courseId, status,selectedOption, selectedLang)
             safeApiCall { courseApi.postStudentResult(studentResult) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
@@ -435,10 +437,11 @@ class LearnRepo(
     }
 
     suspend fun postExerciseCompleteStatus(
-        exerciseId: Int
+        slugId: Int,
+
     ){
         try {
-             safeApiCall {courseApi.postExerciseCompleteStatus(exerciseId) }
+             safeApiCall {courseApi.postExerciseCompleteStatus(slugId, selectedLang) }
         }catch (e: OfflineException) {
             FirebaseCrashlytics.getInstance().recordException(e)
             throw OfflineException("No network connection")

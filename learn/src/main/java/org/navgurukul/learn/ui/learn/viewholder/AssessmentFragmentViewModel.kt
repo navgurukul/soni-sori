@@ -19,7 +19,6 @@ import org.navgurukul.learn.courses.db.models.BaseCourseContent.Companion.COMPON
 import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.courses.network.Status
-import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
 import org.navgurukul.learn.ui.learn.CourseContentArgs
 
@@ -266,9 +265,9 @@ class AssessmentFragmentViewModel (
 //        markCourseAssessmentCompleted(args.contentId.toInt())
     }
 
-    private fun postStudentResult(assessmentId: Int, status : Status, selectedOptions: List<Int>){
+    private fun postStudentResult(slugId: Int, courseId: Int, status : Status, selectedOptions: List<Int>){
         viewModelScope.launch {
-            learnRepo.postStudentResult(assessmentId, status, selectedOptions)
+            learnRepo.postStudentResult(slugId, courseId, status, selectedOptions)
         }
     }
 
@@ -348,16 +347,16 @@ class AssessmentFragmentViewModel (
         val incorrectOptions = solutionContent.incorrect_options_value
         val selectedIds = clickedOption.map { it.id }
         if (selectedIds==correctOptions.map { it.value }) {
-            postStudentResult(args.contentId.toInt(), Status.Pass, selectedIds)
+            postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Pass, selectedIds)
         } else {
             if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
-                postStudentResult(args.contentId.toInt(), Status.Partially_Correct, selectedIds)
+                postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Partially_Correct, selectedIds)
             } else {
                 if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
                     selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
-                    postStudentResult(args.contentId.toInt(), Status.Partially_Incorrect, selectedIds)
+                    postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Partially_Incorrect, selectedIds)
                 } else {
-                    postStudentResult(args.contentId.toInt(), Status.Fail, selectedIds)
+                    postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Fail, selectedIds)
                 }
             }
         }
