@@ -7,21 +7,19 @@ import com.squareup.moshi.JsonClass
 data class AttemptResponse(
     @Json(name = "attempt_status")
     val attemptStatus: AttemptStatus,
-    @Json(name = "selected_option")
-    val selectedOption : Int? = null,
+    @Json(name = "selected_multiple_option")
+    val selected_multiple_option : List<Int>? = null,
     @Json(name = "attempt_count")
-    val attemptCount : Int
+    val attemptCount : Int,
+    @Json(name = "assessment_id")
+    val assessmentId : Int,
 )
 
-@JsonClass(generateAdapter = true)
-data class AttemptResponseStatus(
-    @Json(name = "selected_option")
-    val selectedOption : Int?,
-    @Json(name =  "attempt_count")
-    val attemptCount: Int
-)
+
 enum class AttemptStatus{
     NOT_ATTEMPTED,
     CORRECT,
-    INCORRECT
+    INCORRECT,
+    PARTIALLY_INCORRECT,
+    PARTIALLY_CORRECT,
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.OptionResponse
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
+import org.navgurukul.learn.courses.db.models.SolutionBaseCourseContent
 import org.navgurukul.learn.ui.learn.adapter.OptionSelectionAdapter
 
 class OptionCourseViewHolder(itemView: View):
@@ -24,17 +25,19 @@ class OptionCourseViewHolder(itemView: View):
         super.setHorizontalMargin(horizontalMargin)
     }
 
-    fun bindView(item: OptionsBaseCourseContent, mOptionCallback: ((OptionResponse) -> Unit)?) {
+    fun bindView(item: OptionsBaseCourseContent, mOptionCallback: ((List<OptionResponse>) -> Unit)?) {
         super.bind(item)
 
         item.value.let {
-            mOptionCallback?.let { callback ->
-                optionsAdapter = OptionSelectionAdapter() {
-                    callback.invoke(it)
-                }
-            }?: kotlin.run {
-                optionsAdapter = OptionSelectionAdapter()
-            }
+//            mOptionCallback?.let { callback ->
+//                optionsAdapter = OptionSelectionAdapter() {
+//                    callback.invoke(it)
+//                }
+//            }?: kotlin.run {
+//                optionsAdapter = OptionSelectionAdapter()
+//            }
+            optionsAdapter = OptionSelectionAdapter(mOptionCallback, item.assessmentType)
+
             val layoutManager = LinearLayoutManager(optionContent.context, LinearLayoutManager.VERTICAL,false)
             optionContent.layoutManager = layoutManager
             optionContent.adapter = optionsAdapter

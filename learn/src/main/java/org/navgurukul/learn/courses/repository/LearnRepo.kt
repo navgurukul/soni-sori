@@ -409,7 +409,7 @@ class LearnRepo(
     suspend fun postStudentResult(
         assessmentId: Int,
         status: Status,
-        selectedOption: Int?
+        selectedOption: List<Int>
     ){
         try {
             val studentResult = StudentResult(assessmentId, status,selectedOption)
