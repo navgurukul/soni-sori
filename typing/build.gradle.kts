@@ -34,6 +34,12 @@ dependencies {
     kapt(MiscellaneousDependencies.AutoService)
     implementation(MiscellaneousDependencies.AutoService)
 
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+    dependencies {
+        implementation ("com.jakewharton.timber:timber:5.0.1")
+    }
+
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)

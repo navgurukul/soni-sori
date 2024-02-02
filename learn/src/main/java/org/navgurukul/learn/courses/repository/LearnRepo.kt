@@ -18,6 +18,7 @@ import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import timber.log.Timber
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -131,21 +132,21 @@ class LearnRepo(
                 try {
                     exerciseDao.insertExerciseAsync(mappedData.filter { it.courseContentType == CourseContentType.exercise } as List<CourseExerciseContent>)
                 }catch (ex: Exception) {
-                    Log.d("LearnRepo", "exercise dao insert exception = ${ex.printStackTrace()}")
+                    Timber.d("LearnRepo", "exercise dao insert exception = ${ex.printStackTrace()}")
                 }
                 try {
                     classDao.insertClassAsync(mappedData.filter { it.courseContentType == CourseContentType.class_topic } as List<CourseClassContent>)
                 }catch (ex: Exception) {
-                    Log.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
+                    Timber.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
                 }
                 try {
                     assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent?>)
                 }catch (ex: Exception){
-                    Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
+                    Timber.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
                 }
             } catch (ex: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(ex)
-                Log.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
+                Timber.d("LearnRepo", "getCourseContentById exception = ${ex.printStackTrace()}")
             }
         }
 

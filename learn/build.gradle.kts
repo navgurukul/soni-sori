@@ -51,6 +51,12 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":commonUI"))
 
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+    dependencies {
+        implementation ("com.jakewharton.timber:timber:5.0.1")
+    }
+
     //kotlin
     implementation(KotlinDependencies.kotlin)
 
