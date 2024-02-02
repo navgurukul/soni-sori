@@ -37,6 +37,12 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(KotlinDependencies.kotlin)
 
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+    dependencies {
+        implementation ("com.jakewharton.timber:timber:5.0.1")
+    }
+
     //androidx
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.appcompat)

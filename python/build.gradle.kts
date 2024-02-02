@@ -36,6 +36,12 @@ dependencies {
     implementation(project(":commonUI"))
     implementation(project(":core"))
 
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+    dependencies {
+        implementation ("com.jakewharton.timber:timber:5.0.1")
+    }
+
     //androidx
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.lifecycleExtensions)

@@ -36,6 +36,12 @@ dependencies {
     implementation(project(":core"))
     implementation(fileTree(mapOf("dir" to "libs", "include" to arrayOf("*jar"))))
 
+    // Logging
+    implementation(MiscellaneousDependencies.timber)
+    dependencies {
+        implementation ("com.jakewharton.timber:timber:5.0.1")
+    }
+
     //Kotlin
     implementation(KotlinDependencies.kotlin)
     implementation(KotlinDependencies.coroutinesCore)
