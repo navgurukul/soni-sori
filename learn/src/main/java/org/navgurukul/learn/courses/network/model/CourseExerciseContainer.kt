@@ -11,7 +11,7 @@ import org.navgurukul.learn.courses.db.models.Course
 @JsonClass(generateAdapter = true)
 data class CourseExerciseContainer(
     @Json(name = "course")
-    val course: List<Course>
+    val course: Course
 )
 
 

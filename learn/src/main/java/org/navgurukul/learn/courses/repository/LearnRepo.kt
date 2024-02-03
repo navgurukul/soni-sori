@@ -120,9 +120,9 @@ class LearnRepo(
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
                 val result = courseApi.getCourseContentAsync(courseId, selectedLang)
-                val mappedData = result.course[0].courseContents.map {
+                val mappedData = result.course.courseContents.map {
                     it.courseId = courseId
-                    it.courseName = result.course[0].name
+                    it.courseName = result.course.name
                     if(it.courseContentType == CourseContentType.exercise) {
                         it as CourseExerciseContent
                         it.lang =
@@ -202,7 +202,7 @@ class LearnRepo(
                 shouldFetch = { LearnUtils.isOnline(application) && (it == null || it.courseContents.isEmpty()) },
                 makeApiCallAsync = { courseApi.getCourseContentAsync(courseId, language) },
                 saveCallResult = { courseExerciseContainer ->
-                    val course = courseExerciseContainer.course[0].apply {
+                    val course = courseExerciseContainer.course.apply {
                         this.pathwayId = pathwayId
                     }
                     val lang =

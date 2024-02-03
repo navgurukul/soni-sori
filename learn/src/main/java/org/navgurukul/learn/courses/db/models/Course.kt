@@ -21,7 +21,7 @@ data class Course(
     @Json(name = "short_description")
     var shortDescription: String?,
     @Json(name = "lang_available")
-    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"hi\"]")
+    @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
     var completedPortion : Int? = null
