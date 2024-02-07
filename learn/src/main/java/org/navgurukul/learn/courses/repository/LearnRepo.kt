@@ -412,9 +412,8 @@ class LearnRepo(
     suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
         try {
             val assessmentDao = database.assessmentDao()
-            assessmentDao.insertAssessmentAsync(
-                currentStateList as List<CourseAssessmentContent?>
-            )
+            val assessmentContentList = currentStateList.filterIsInstance<CourseAssessmentContent>()
+            assessmentDao.insertAssessmentAsync(assessmentContentList)
         }catch (e: Exception){
             e.printStackTrace()
         }
