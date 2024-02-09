@@ -21,6 +21,9 @@ interface SaralApi {
         @Body loginResponse: UserUpdate,
     ): UserUpdateContainer
 
+    @GET("users/me")
+    suspend fun fetchUserDataAsync(): UserUpdateContainer
+
     @PUT("users/{userId}")
     suspend fun updateProfileName(
         @Path (value = "userId") userId:Int,
