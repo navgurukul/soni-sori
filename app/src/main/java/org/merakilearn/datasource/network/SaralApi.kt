@@ -22,7 +22,7 @@ interface SaralApi {
     ): UserUpdateContainer
 
     @GET("users/me")
-    suspend fun fetchUserDataAsync(): UserUpdateContainer
+     fun fetchUserDataAsync(): UserUpdateContainer
 
     @PUT("users/{userId}")
     suspend fun updateProfileName(
