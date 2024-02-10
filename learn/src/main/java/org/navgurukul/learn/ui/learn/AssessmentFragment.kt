@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,17 +19,14 @@ import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.courses.db.models.OptionResponse
-import org.navgurukul.learn.courses.db.models.OptionViewState
 import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.courses.network.AttemptResponse
 import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
-import org.navgurukul.learn.databinding.ItemOptionsListContentBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
@@ -44,7 +40,7 @@ class AssessmentFragment : Fragment() {
     private var isContentRvClickable = true
     private lateinit var correctAdapter: ExerciseContentAdapter
     private lateinit var inCorrectAdapter: ExerciseContentAdapter
-    private var selectedOption: List<OptionResponse>? = null
+    private var selectedOptions: List<OptionResponse>? = null
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -101,7 +97,6 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowCorrectOutput -> {
                     isContentRvClickable = false
-//                    isContentRvClickableMultiple = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
                     mBinding.incorrectOutputLayout.visibility = View.GONE
@@ -109,6 +104,7 @@ class AssessmentFragment : Fragment() {
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowRetryOnce -> {
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
+                    isContentRvClickable = false
                     setupIncorrectOutputLayout(it.list, it.attemptResponse)
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput -> {
@@ -116,7 +112,6 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    //isContentRvClickableMultiple = false
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput -> {
@@ -124,7 +119,6 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    //isContentRvClickableMultiple = false
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
@@ -132,7 +126,6 @@ class AssessmentFragment : Fragment() {
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
-                    //isContentRvClickableMultiple = false
                 }
 
             }
@@ -164,9 +157,8 @@ class AssessmentFragment : Fragment() {
         mBinding.btnSubmit.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 mBinding.btnSubmit.visibility = View.GONE
-                selectedOption?.let {
+                selectedOptions?.let {
                     isContentRvClickable = false
-                    //isContentRvClickableMultiple = false
                     fragmentViewModel.handle(
                         AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
                             it
@@ -201,6 +193,7 @@ class AssessmentFragment : Fragment() {
 //          fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
 //
 //            }
+
             if (attemptResponse != null) {
                 if (attemptResponse.attemptCount < 2) {
                     if (attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_CORRECT){
@@ -236,8 +229,6 @@ class AssessmentFragment : Fragment() {
                     fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                     initIncorrectRV(list)
                     isContentRvClickable = false
-                    //isContentRvClickableMultiple = false
-                    //isContentRvClickableMultiple = false
                 }
             }
 
@@ -279,10 +270,9 @@ class AssessmentFragment : Fragment() {
 
         }, {
             Log.d(TAG, "initContentRvbefore: $isContentRvClickable")
-            //isContentRvClickableMultiple = true  // TODO : able to select if attempt response if less than 2
             if (isContentRvClickable) {
                 Log.d(TAG, "initContentRv: $isContentRvClickable")
-                selectedOption = it
+                selectedOptions = it
                 fragmentViewModel.handle(
                     AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(
                         it

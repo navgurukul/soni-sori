@@ -2,19 +2,15 @@ package org.navgurukul.learn.ui.learn.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.Icon
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_mcq_option.view.clOption
-import org.navgurukul.learn.R
 import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
@@ -321,35 +317,37 @@ class OptionSelectionAdapter(
                 }
             }
 
-            root.setOnClickListener {
-                when (assessmentType) {
-                    AssessmentType.multiple -> {
-                        //Log.d("isContentRvClickableBefore", isContentRvClickableMultiple.toString())
-//                        if (isContentRvClickableMultiple) {
-                        //Log.d("isContentRvClickableAfter", isContentRvClickableMultiple.toString())
-                        if (selectedOptions.contains(item)) {
-                            selectedOptions.remove(item)
-                            item.viewState = OptionViewState.NOT_SELECTED
-                        } else {
-                            selectedOptions.add(item)
-                            item.viewState = OptionViewState.SELECTED
+            root.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    when (assessmentType) {
+                        AssessmentType.multiple -> {
+                            //repopulate the selected items list.
+                            selectedOptions.clear()
+                            selectedOptions.addAll(currentList.filter { it.viewState == OptionViewState.SELECTED })
+
+                            val currItem = selectedOptions.find { it.id == item.id }
+                            if (currItem!= null) {
+                                Log.d("TAG removing", "${selectedOptions.size}, $selectedOptions")
+                                selectedOptions.remove(currItem)
+                            } else {
+                                Log.d("TAG adding", "${selectedOptions.size}, $selectedOptions")
+                                selectedOptions.add(item)
+                            }
+
+                            callback?.invoke(selectedOptions)
                         }
-                        bind(holder, item)
-                        callback?.invoke(selectedOptions)
+
+                        AssessmentType.single -> {
+                            selectedOptions.clear()
+                            selectedOptions.add(item)
+                            callback?.invoke(selectedOptions)
+                        }
                     }
 
-                    AssessmentType.single -> {
-                        selectedOptions.clear()
-                        selectedOptions.add(item)
-                        callback?.invoke(selectedOptions)
-                    }
                 }
-            }
+            })
 
         }
     }
 
-//    companion object {
-//        var isContentRvClickableMultiple : Boolean = true
-//    }
 }

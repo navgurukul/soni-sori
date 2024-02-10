@@ -87,10 +87,9 @@ class AssessmentFragmentViewModel (
                     val optionList = it as OptionsBaseCourseContent
                     for(option in optionList.value){
                         try {
-                            if (option.id == selectedOptionResponse[0].id){
-                            option.viewState = newViewState
-                            }
-                            else {
+                            if (selectedOptionResponse.find { it.id == option.id } != null){
+                                option.viewState = newViewState
+                            } else {
                                 option.viewState = OptionViewState.NOT_SELECTED
                             }
                         }catch (e: IndexOutOfBoundsException){
