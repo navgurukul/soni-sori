@@ -2,6 +2,7 @@ package org.navgurukul.learn.editor
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -24,7 +25,7 @@ class LineNumberedEditText(
 
     private val paint: Paint = Paint()
     private val lineNumberBoxWidth =
-        resources.getDimensionPixelSize(R.dimen.dimen_15_dp) // 15dp //TODO
+        resources.getDimensionPixelSize(R.dimen.dimen_25_dp) // 15dp //TODO
     private val lineNumberHorizontalMargin =
         context.resources.getDimensionPixelSize(R.dimen.spacing_1x)
     private val lineWidth = context.getThemedUnit(R.attr.borderWidth)
@@ -39,7 +40,7 @@ class LineNumberedEditText(
     override fun onDraw(canvas: Canvas) {
         var baseLine = baseline
         val redPaint = Paint()
-        redPaint.color = ContextCompat.getColor(context, R.color.dotGrey)
+        redPaint.color = ContextCompat.getColor(context, R.color.webLightGrey)
 
         for (i in 0 until lineCount) {
             val lineNumber = (i + 1).toString()

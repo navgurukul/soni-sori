@@ -102,7 +102,7 @@ class ExerciseContentAdapter(
                 (holder as BlockQuoteCourseViewHolder).bindView(getItem(position) as BlockQuoteBaseCourseContent)
 
             R.layout.item_code_content ->
-                (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent, mCallback)
+                (holder as CodeCourseViewHolder).bindView(getItem(position) as CodeBaseCourseContent)
 
             R.layout.item_banner_content ->
                 (holder as BannerCourseViewHolder).bindView(getItem(position) as BannerBaseCourseContent, mUrlCallback)

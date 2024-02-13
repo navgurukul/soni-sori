@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chaquo.python.Python
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
 import com.chaquo.python.PyObject
 import androidx.core.text.HtmlCompat
@@ -21,7 +20,7 @@ import java.io.PrintStream
 
 
 class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
-    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var bottomSheetDialog: BottomSheetDialog
 
     private val codeLayout: ConstraintLayout = populateStub(R.layout.example_editor)
     private val codeTitle: TextView = codeLayout.findViewById(R.id.code_title)
@@ -48,7 +47,7 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
         bottomSheetDialog.setContentView(bottomSheetView)
     }
 
-    fun bindView(item: CodeBaseCourseContent, callback: (BaseCourseContent) -> Unit) {
+    fun bindView(item: CodeBaseCourseContent) {
         super.bind(item)
 
         if (item.title.isNullOrBlank()) {
@@ -100,7 +99,7 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
             ByteArrayInputStream("".toByteArray())
         }
 
-        val outputBytes: ByteArrayOutputStream = ByteArrayOutputStream()
+        val outputBytes = ByteArrayOutputStream()
 
         try {
             System.setIn(inputBytes)
@@ -110,17 +109,18 @@ class CodeCourseViewHolder(itemView: View) : BaseCourseViewHolder(itemView) {
             val output = execResult.toString()
             System.setIn(originalInputStream)
             System.setOut(originalOutputStream)
-            val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
-            val outputToShow = "Output:\n$output"
-            executionResultsTextView?.text = outputToShow
+            val executionResultsTextView =
+                bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
+            executionResultsTextView?.text = output
             if (!userInput.isNullOrBlank()) {
-                inputEditText?.setText("")
+                inputEditText.setText("")
             }
             bottomSheetDialog.show()
 
         } catch (e: Exception) {
             e.printStackTrace()
-            val executionResultsTextView = bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
+            val executionResultsTextView =
+                bottomSheetDialog.findViewById<TextView>(R.id.tvExecutionResults)
             executionResultsTextView?.text = "Error during execution: End of input reached."
             System.setIn(originalInputStream)
             System.setOut(originalOutputStream)

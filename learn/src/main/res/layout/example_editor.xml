@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Hi Title"></TextView>
+        tools:text="Hi Title" />
 
     <org.navgurukul.learn.editor.LineNumberedEditText
         android:id="@+id/code_body"
@@ -73,7 +73,7 @@
         android:layout_height="0.3dp"
         android:layout_marginTop="10dp"
         android:background="@color/colorGrey_100"
-        app:layout_constraintTop_toBottomOf="@id/run_btn"></View>
+        app:layout_constraintTop_toBottomOf="@id/run_btn" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/Actual_outPut"
