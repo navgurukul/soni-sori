@@ -113,7 +113,10 @@ class OptionSelectionAdapter(
                         AssessmentType.single -> {
                             checkBox.visibility = View.GONE
                             tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
+                            tvCardOption.strokeColor = Color.parseColor("#ffffff")
+                            tvRadioButtonOption.isChecked = false
                             tvRadioButtonOption.visibility = View.VISIBLE
+                            tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
                             if (item.optionType == OptionType.text) {
                                 ivImgOption.visibility = View.GONE
                                 tvOption.visibility = View.VISIBLE
@@ -339,6 +342,8 @@ class OptionSelectionAdapter(
 
                         AssessmentType.single -> {
                             selectedOptions.clear()
+                            selectedOptions.remove(item)
+                            notifyItemChanged(currentList.indexOf(item))
                             selectedOptions.add(item)
                             callback?.invoke(selectedOptions)
                         }
