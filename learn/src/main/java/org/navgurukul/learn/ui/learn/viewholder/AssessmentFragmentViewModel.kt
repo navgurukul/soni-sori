@@ -212,28 +212,31 @@ class AssessmentFragmentViewModel (
                             }
                         }
 
-                        val selOption = list.attemptStatus?.selectedOption
-                        if(!selOption.isNullOrEmpty()){
-                            val contentListForUI = getAssessmentListForUI(list.content)
-                            getOptionItemById(selOption[0], contentListForUI)?.let {
-//                                showOutputScreen(option, contentListForUI)
-                            }
-                        } else {
-                            //not attempted condition
-                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-                        }
+                        getAttemptStatus(list.id.toInt())
+                        setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
 
-                        list.attemptStatus?.selectedOption?.let{
+//                        val selOption = list.attemptStatus?.selectedOption
+//                        if(!selOption.isNullOrEmpty()){
 //                            val contentListForUI = getAssessmentListForUI(list.content)
-//                            getOptionItemById(it[1], contentListForUI)?.let {   // comment for the changes new assessment unused checked above updaated code
+//                            getOptionItemById(selOption[0], contentListForUI)?.let {
 ////                                showOutputScreen(option, contentListForUI)
 //                            }
-                        }?: kotlin.run {
-                            //not attempted condition
-                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-                        }
+//                        } else {
+//                            //not attempted condition
+//                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
+//                        }
 
-                        getAttemptStatus(list.id.toInt())                      // commenting to stop to getassessment api call call
+//                        list.attemptStatus?.selectedOption?.let{
+////                            val contentListForUI = getAssessmentListForUI(list.content)
+////                            getOptionItemById(it[1], contentListForUI)?.let {   // comment for the changes new assessment unused checked above updaated code
+//////                                showOutputScreen(option, contentListForUI)
+////                            }
+//                        }?: kotlin.run {
+                            //not attempted condition
+
+//                        }
+
+                                            // commenting to stop to getassessment api call call
 
                     } else {
                         _viewEvents.setValue(
