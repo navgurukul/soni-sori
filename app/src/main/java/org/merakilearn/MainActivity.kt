@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
@@ -80,6 +81,9 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val userId = userRepo.getCurrentUser()?.email
+        FirebaseCrashlytics.getInstance().setUserId(userId!!)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
@@ -221,5 +225,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 listener.onClick(it)
             }
         }
+
+
     }
 }
