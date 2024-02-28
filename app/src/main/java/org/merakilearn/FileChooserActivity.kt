@@ -1,8 +1,11 @@
 package org.merakilearn
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +16,8 @@ import android.webkit.MimeTypeMap
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.ui.ScratchActivity
@@ -23,9 +28,13 @@ import java.io.OutputStreamWriter
 
 
 class FileChooserActivity : AppCompatActivity() {
+
+    private val PERMISSION_REQUEST_CODE = 1001
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_file_chooser)
+        checkAndRequestPermissions()
 
         val progressBar: ProgressBar = findViewById(R.id.progressBar3)
         progressBar.visibility = View.VISIBLE
@@ -96,7 +105,51 @@ class FileChooserActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun checkAndRequestPermissions() {
+        val permissionsToRequest = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_CONTACTS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_CONTACTS)
+        }
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_CONTACTS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.WRITE_CONTACTS)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                recreate()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permission denied. Some functionality may not work properly.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun compareToCommon(uri : Uri?) {
@@ -108,6 +161,7 @@ class FileChooserActivity : AppCompatActivity() {
         finish()
     }
 
+    @SuppressLint("Recycle")
     private fun fileFromContentUri(context: Context, contentUri: Uri): File {
 
         val fileExtension = getFileExtension(context, contentUri)
@@ -164,14 +218,36 @@ class FileChooserActivity : AppCompatActivity() {
     }
 
     private fun getNameFromContentUri(context: Context, contentUri: Uri): String {
-        val returnCursor: Cursor =
-            context.contentResolver.query(contentUri, null, null, null, null)!!
-        val nameColumnIndex: Int = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        returnCursor.moveToFirst()
-        val name = returnCursor.getString(nameColumnIndex)
-        returnCursor.close()
-        return name
+        return try {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val returnCursor: Cursor? =
+                    context.contentResolver.query(contentUri, null, null, null, null)
+
+                returnCursor?.use {
+                    if (it.moveToFirst()) {
+                        val nameColumnIndex: Int = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        if (nameColumnIndex != -1) {
+                            return it.getString(nameColumnIndex)
+                        } else {
+                            return ""
+                        }
+                    } else {
+                        ""
+                    }
+                } ?: ""
+            } else {
+                ""
+            }
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+            ""
+        }
     }
+
 
     private fun getFileExtension(context: Context, contentUri: Uri): String? {
         val fileType: String? = context.contentResolver.getType(contentUri)
