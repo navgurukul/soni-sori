@@ -58,11 +58,6 @@ class AssessmentFragmentViewModel (
                 postResultOnSubmit(action.selectedOptionResponse)
                 showOutputScreen(action.selectedOptionResponse)
             }
-//            is AssessmentFragmentViewActions.SeeExplanationClicked -> {
-//                postResultOnSubmit(action.selectedOptionResponse)
-//                showCorrectOnIncorrect()
-//            }
-
             is AssessmentFragmentViewActions.OptionSelected ->{
                 updateList(action.selectedOptionResponse, OptionViewState.SELECTED)
             }
@@ -213,30 +208,6 @@ class AssessmentFragmentViewModel (
 
                         getAttemptStatus(list.id.toInt())
                         setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-
-//                        val selOption = list.attemptStatus?.selectedOption
-//                        if(!selOption.isNullOrEmpty()){
-//                            val contentListForUI = getAssessmentListForUI(list.content)
-//                            getOptionItemById(selOption[0], contentListForUI)?.let {
-////                                showOutputScreen(option, contentListForUI)
-//                            }
-//                        } else {
-//                            //not attempted condition
-//                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-//                        }
-
-//                        list.attemptStatus?.selectedOption?.let{
-////                            val contentListForUI = getAssessmentListForUI(list.content)
-////                            getOptionItemById(it[1], contentListForUI)?.let {   // comment for the changes new assessment unused checked above updaated code
-//////                                showOutputScreen(option, contentListForUI)
-////                            }
-//                        }?: kotlin.run {
-                            //not attempted condition
-
-//                        }
-
-                                            // commenting to stop to getassessment api call call
-
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -378,7 +349,6 @@ class AssessmentFragmentViewModel (
         object RequestContentRefresh : AssessmentFragmentViewActions()
         data class SubmitOptionClicked(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
-//        data class SeeExplanationClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
         object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()

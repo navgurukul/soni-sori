@@ -66,11 +66,6 @@ class OptionSelectionAdapter(
                     .centerCrop()
                     .into(ivImgOption)
             }
-            //if(assessmentType==AssessmentType.multiple){
-            //            item.viewState = if (selectedOptions.contains(item)) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED
-            //}
-
-
             when (item.viewState) {
                 OptionViewState.SELECTED -> {
                     when (assessmentType) {

@@ -114,17 +114,10 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
 
                 }
-                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput -> {
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput, is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
                     mBinding.incorrectOutputLayout.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
-                    initIncorrectRV(it.list)
-                    isContentRvClickable = false
-
-                }
-                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
-                    mBinding.correctOutputLayout.root.visibility = View.GONE
-                    initIncorrectRV(it.list)
+                    initIncorrectRV(it as List<BaseCourseContent>)
                     isContentRvClickable = false
                 }
 
@@ -176,30 +169,11 @@ class AssessmentFragment : Fragment() {
         attemptResponse: AttemptResponse?
     ) {
         CoroutineScope(Dispatchers.Main).launch {
-//            mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-//                selectedOption?.let {
-//                    isContentRvClickable = false
-//                    fragmentViewModel.handle(
-//                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
-//                            it
-//                        )
-//                    )
-//                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-//                }
-//                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-//                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-//                initIncorrectRV(list)
-//                isContentRvClickable = false
-//          fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-//
-//            }
-
             if (attemptResponse != null) {
                 if (attemptResponse.attemptCount < 2) {
                     if (attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_CORRECT){
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
-                       // fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
@@ -208,7 +182,6 @@ class AssessmentFragment : Fragment() {
                     }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
                         mBinding.incorrectOutputLayout.miss_txt.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                        //fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
@@ -231,11 +204,6 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
                 }
             }
-
-            // new condition to hide retry button for all selected options
-//            if(selectedOption?.all { it.viewState == OptionViewState.SELECTED } == true){
-//                mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
-//            }
         }
     }
 
