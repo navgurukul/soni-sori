@@ -180,7 +180,7 @@ class ExerciseFragment : Fragment() {
         mBinding.recyclerViewSlug.layoutManager = layoutManager
         mBinding.recyclerViewSlug.adapter = contentAdapter
         mBinding.recyclerViewSlug.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_8x), 0)
         )
 
     }
