@@ -10,7 +10,7 @@ data class StudentResult(
     @Json(name = "status")
     val status : Status,
     @Json(name = "selected_multiple_option")
-    val selected_multiple_option: List<Int>
+    val selectedMultipleOption: List<Int>
 )
 
 
@@ -32,7 +32,7 @@ data class StudentResponse(
     @Json(name = "status")
     val status : Status,
     @Json(name = "selected_multiple_option")
-    val selected_multiple_option: List<Int>,
+    val selectedMultipleOption: List<Int>,
     @Json(name = "attempt_count")
     val attemptCount : Int,
     @Json(name = "team_id")

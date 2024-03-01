@@ -195,9 +195,9 @@ data class SolutionBaseCourseContent(
         @Json(name = "component")
         override val component: String,
         @Json(name = "correct_options_value")
-        var correct_options_value: List<ValueObject>, // Changes according to Api Response
+        var correctOptionsValue: List<ValueObject>, // Changes according to Api Response
         @Json(name = "incorrect_options_value")
-        var incorrect_options_value: List<ValueObject>? = null,
+        var incorrectOptionsValue: List<ValueObject>? = null,
         @Json(name = "decoration")
         override val decoration: Decoration? = null
 ):BaseCourseContent
@@ -278,9 +278,9 @@ data class AnswerOutput(
         @Json(name = "incorrect")
         val incorrect: List<BaseCourseContent>,
         @Json(name = "partially_correct")
-        val partially_correct: List<BaseCourseContent>,
+        val partiallyCorrect: List<BaseCourseContent>,
         @Json(name = "partially_incorrect")
-        val partially_incorrect: List<BaseCourseContent>
+        val partiallyIncorrect: List<BaseCourseContent>
 )
 
 enum class OptionViewState{
