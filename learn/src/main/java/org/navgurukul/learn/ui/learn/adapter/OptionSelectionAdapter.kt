@@ -70,7 +70,15 @@ class OptionSelectionAdapter(
             //            item.viewState = if (selectedOptions.contains(item)) OptionViewState.SELECTED else OptionViewState.NOT_SELECTED
             //}
 
-
+            fun setOptionVisibility(optionType: OptionType) {
+                if (optionType == OptionType.text) {
+                    tvOption.visibility = View.VISIBLE
+                    ivImgOption.visibility = View.GONE
+                } else {
+                    tvOption.visibility = View.GONE
+                    ivImgOption.visibility = View.VISIBLE
+                }
+            }
             when (item.viewState) {
                 OptionViewState.SELECTED -> {
                     when (assessmentType) {
@@ -78,14 +86,17 @@ class OptionSelectionAdapter(
                             tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
                             tvCardOption.strokeColor = Color.parseColor("#48A145")
                             tvRadioButtonOption.isChecked = true
-                            tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#48A145"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            tvRadioButtonOption.buttonTintList =
+                                ColorStateList.valueOf(Color.parseColor("#48A145"))
+
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
 
                         AssessmentType.multiple -> {
@@ -96,13 +107,14 @@ class OptionSelectionAdapter(
                             tvRadioButtonOption.visibility = View.GONE
                             checkBox.buttonTintList =
                                 ColorStateList.valueOf(Color.parseColor("#48A145"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
 
                         }
                     }
@@ -114,14 +126,15 @@ class OptionSelectionAdapter(
                             checkBox.visibility = View.GONE
                             tvCardOption.setCardBackgroundColor(Color.parseColor("#ffffff"))
                             tvRadioButtonOption.visibility = View.VISIBLE
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
 
                         AssessmentType.multiple -> {
@@ -132,13 +145,14 @@ class OptionSelectionAdapter(
                             checkBox.isChecked = false
                             checkBox.buttonTintList =
                                 ColorStateList.valueOf(Color.parseColor("#000000"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
                     }
 
@@ -151,14 +165,16 @@ class OptionSelectionAdapter(
                             tvCardOption.strokeColor = Color.parseColor("#F44336")
                             tvRadioButtonOption.isChecked = true
                             tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
-                            tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            tvRadioButtonOption.buttonTintList =
+                                ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
 
                         AssessmentType.multiple -> {
@@ -171,15 +187,16 @@ class OptionSelectionAdapter(
                             checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
                             checkBox.buttonTintList =
                                 ColorStateList.valueOf(Color.parseColor("#D63447"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//
+//                            }
                         }
                     }
                 }
@@ -193,13 +210,14 @@ class OptionSelectionAdapter(
                             tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
                             tvRadioButtonOption.buttonTintList =
                                 ColorStateList.valueOf(Color.parseColor("#48A145"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
 
                         AssessmentType.multiple -> {
@@ -211,13 +229,14 @@ class OptionSelectionAdapter(
                             checkBox.setButtonDrawable(drawable.check_circle_correctoption)
                             checkBox.buttonTintList =
                                 ColorStateList.valueOf(Color.parseColor("#48A145"))
-                            if (item.optionType == OptionType.text) {
-                                ivImgOption.visibility = View.GONE
-                                tvOption.visibility = View.VISIBLE
-                            } else {
-                                ivImgOption.visibility = View.VISIBLE
-                                tvOption.visibility = View.GONE
-                            }
+                            setOptionVisibility(item.optionType)
+//                            if (item.optionType == OptionType.text) {
+//                                ivImgOption.visibility = View.GONE
+//                                tvOption.visibility = View.VISIBLE
+//                            } else {
+//                                ivImgOption.visibility = View.VISIBLE
+//                                tvOption.visibility = View.GONE
+//                            }
                         }
                     }
                 }
@@ -326,7 +345,7 @@ class OptionSelectionAdapter(
                             selectedOptions.addAll(currentList.filter { it.viewState == OptionViewState.SELECTED })
 
                             val currItem = selectedOptions.find { it.id == item.id }
-                            if (currItem!= null) {
+                            if (currItem != null) {
                                 Log.d("TAG removing", "${selectedOptions.size}, $selectedOptions")
                                 selectedOptions.remove(currItem)
                             } else {
@@ -348,6 +367,10 @@ class OptionSelectionAdapter(
             })
 
         }
+    }
+
+    private fun setVisibilityBasedOnAttemptCount(attemptCount: Int) {
+
     }
 
 }
