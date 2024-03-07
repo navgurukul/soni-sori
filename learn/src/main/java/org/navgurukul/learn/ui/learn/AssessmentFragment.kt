@@ -173,14 +173,14 @@ class AssessmentFragment : Fragment() {
                 if (attemptResponse.attemptCount < 2) {
                     if (attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_CORRECT){
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                        mBinding.incorrectOutputLayout.missTxt.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
+                        mBinding.incorrectOutputLayout.missText.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
                             mBinding.incorrectOutputLayout.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
                     }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
-                        mBinding.incorrectOutputLayout.missTxt.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
+                        mBinding.incorrectOutputLayout.missText.text = "\uD83D\uDE2F Quite close! However, both correct and incorrect answers were selected"
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
