@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 14
+const val DB_VERSION = 15
 
 @Dao
 interface PathwayDao {
@@ -380,7 +380,7 @@ val MIGRATION_13_14 = object : Migration(13, 14){
     }
 }
 
-val MIGRATION_14_15 = object : Migration(13, 14) {
+val MIGRATION_14_15 = object : Migration(14, 15) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Create a temporary table
         database.execSQL(
