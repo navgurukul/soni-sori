@@ -31,11 +31,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.fragment_learn.view.*
-import kotlinx.android.synthetic.main.item_certificate.view.*
-import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
+import kotlinx.android.synthetic.main.batch_card.more_classe
+import kotlinx.android.synthetic.main.batch_card.tvBatchDate
+import kotlinx.android.synthetic.main.batch_card.tvBtnEnroll
+import kotlinx.android.synthetic.main.batch_card.tvText
+import kotlinx.android.synthetic.main.batch_card.tvTitleBatch
+import kotlinx.android.synthetic.main.batch_card.tvType
+import kotlinx.android.synthetic.main.fragment_learn.view.courseContainer
+import kotlinx.android.synthetic.main.fragment_learn.view.empty_state_view
+import kotlinx.android.synthetic.main.item_certificate.view.locked_status
+import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.tvClassTitle
+import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.tv_Batch_Date
+import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.recyclerViewUpcoming
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -114,7 +121,7 @@ class LearnFragment : Fragment() {
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
-            mCourseAdapter.submitList(it.courses, it.logo)
+            mCourseAdapter.submitList(it.courses, it.logo, it.pathwayData)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),
@@ -282,7 +289,7 @@ class LearnFragment : Fragment() {
                 textView.isVisible = true
                 imageView.setImageResource(R.drawable.grey_icon_certificate)
                 println("required completed portion in fragment $completedPortion")
-                Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.complete_course, pathwayName), Toast.LENGTH_LONG).show()
             }
 
         }

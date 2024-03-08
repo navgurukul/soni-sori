@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface SaralCoursesApi {
 
-    @GET("pathways")
+    @GET("pathways/dropdown")
     suspend fun getPathways(
         @Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE,
         @Query("courseType") coursetype: String = "json",
@@ -96,4 +96,5 @@ interface SaralCoursesApi {
     suspend fun getCertificate(
         @Query(value = "pathway_code") pathway_code: String
     ): Response<CertificateResponse>
+
 }

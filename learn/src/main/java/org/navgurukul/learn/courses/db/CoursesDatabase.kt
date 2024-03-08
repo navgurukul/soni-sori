@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 14
+const val DB_VERSION = 15
 
 @Dao
 interface PathwayDao {
@@ -371,7 +371,16 @@ val MIGRATION_12_13 = object : Migration(12, 13){
 
 }
 
-val MIGRATION_13_14 = object : Migration(13, 14) {
+val MIGRATION_13_14 = object : Migration(13, 14){
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("DROP TABLE IF EXISTS pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, `platform` TEXT NOT NULL, PRIMARY KEY(`id`)) ")
+
+    }
+}
+
+val MIGRATION_14_15 = object : Migration(14, 15) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // Create a temporary table
         database.execSQL(

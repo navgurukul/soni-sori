@@ -14,6 +14,7 @@ import org.navgurukul.learn.courses.db.MIGRATION_10_11
 import org.navgurukul.learn.courses.db.MIGRATION_11_12
 import org.navgurukul.learn.courses.db.MIGRATION_12_13
 import org.navgurukul.learn.courses.db.MIGRATION_13_14
+import org.navgurukul.learn.courses.db.MIGRATION_14_15
 import org.navgurukul.learn.courses.db.MIGRATION_1_2
 import org.navgurukul.learn.courses.db.MIGRATION_2_3
 import org.navgurukul.learn.courses.db.MIGRATION_3_4
@@ -74,6 +75,7 @@ val databaseModule = module {
             .addMigrations(MIGRATION_11_12)
             .addMigrations(MIGRATION_12_13)
             .addMigrations(MIGRATION_13_14)
+            .addMigrations(MIGRATION_14_15)
             .addTypeConverter(Converters(moshi))
             .build()
     }
