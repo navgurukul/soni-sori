@@ -380,6 +380,30 @@ val MIGRATION_13_14 = object : Migration(13, 14){
     }
 }
 
+val MIGRATION_14_15 = object : Migration(13, 14) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Create a temporary table
+        database.execSQL(
+            "CREATE TABLE `course_assessment_temp`(" +
+                    " `content` TEXT NOT NULL," +
+                    " `courseId` TEXT NOT NULL," +
+                    " `id` TEXT NOT NULL," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " `courseContentProgress` TEXT," +
+                    " `sequenceNumber` INTEGER," +
+                    " `courseContentType` TEXT NOT NULL," +
+                    " `assess_selectedOption` TEXT," +
+                    " `assess_attemptCount` INTEGER," +
+                    " PRIMARY KEY(`id`, `lang`) )"
+        )
+        database.execSQL("INSERT INTO `course_assessment_temp` SELECT * FROM `course_assessment`")
+        database.execSQL("DROP TABLE `course_assessment`")
+        database.execSQL("ALTER TABLE `course_assessment_temp` RENAME TO `course_assessment`")
+    }
+}
+
+
 // When ever we do any change in local db need to write migration script here.
 @Database(
     entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class],

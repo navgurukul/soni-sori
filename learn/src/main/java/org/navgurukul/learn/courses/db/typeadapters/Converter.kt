@@ -30,10 +30,18 @@ class Converters(val moshi: Moshi) {
 //        String::class.java,
 //        PathwayCTA::class.java,
 //    )
+
+
+    private val intListType: Type = Types.newParameterizedType(
+        List::class.java,
+        Int::class.javaObjectType
+    )
+
     private val exerciseAdapter = moshi.adapter<List<BaseCourseContent>>(exerciseDetailListType)
     private val stringAdapter = moshi.adapter<List<String>>(stringListType)
     private val languageAdapter = moshi.adapter<List<Language>>(languageListType)
     private val pathwayCtaAdapter: JsonAdapter<PathwayCTA> = moshi.adapter<PathwayCTA>(PathwayCTA::class.java)
+    private val intListAdapter = moshi.adapter<List<Int>>(intListType)
 
     @TypeConverter
     fun exerciseDetailListToString(list: List<BaseCourseContent>): String? {
@@ -69,6 +77,18 @@ class Converters(val moshi: Moshi) {
     fun stringToStringList(stringValue: String?): List<String> {
         if (stringValue.isNullOrEmpty()) return emptyList()
         return stringAdapter.fromJson(stringValue) ?: emptyList()
+    }
+
+    @TypeConverter
+    fun intListToString(list: List<Int>?): String? {
+        if (list.isNullOrEmpty()) return ""
+        return intListAdapter.toJson(list)
+    }
+
+    @TypeConverter
+    fun intToIntList(stringValue: String?): List<Int> {
+        if (stringValue.isNullOrEmpty()) return emptyList()
+        return intListAdapter.fromJson(stringValue) ?: emptyList()
     }
 
     @TypeConverter
