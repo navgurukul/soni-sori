@@ -238,9 +238,9 @@ class AssessmentFragmentViewModel (
 //        markCourseAssessmentCompleted(args.contentId.toInt())
     }
 
-    private fun postStudentResult(assessmentId: Int, status : Status, selectedOptions: List<Int>){
+    private fun postStudentResult(slugId: Int, courseId: Int, status : Status, selectedOptions: List<Int>){
         viewModelScope.launch {
-            learnRepo.postStudentResult(assessmentId, status, selectedOptions)
+            learnRepo.postStudentResult(slugId, courseId, status, selectedOptions)
         }
     }
 
@@ -320,16 +320,16 @@ class AssessmentFragmentViewModel (
         val incorrectOptions = solutionContent.incorrectOptionsValue
         val selectedIds = clickedOption.map { it.id }
         if (selectedIds==correctOptions.map { it.value }) {
-            postStudentResult(args.contentId.toInt(), Status.Pass, selectedIds)
+            postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Pass, selectedIds)
         } else {
             if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() && !selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
-                postStudentResult(args.contentId.toInt(), Status.Partially_Correct, selectedIds)
+                postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Partially_Correct, selectedIds)
             } else {
                 if (selectedIds.intersect(correctOptions.map { it.value }).isNotEmpty() &&
                     selectedIds.intersect(incorrectOptions!!.map { it.value }).isNotEmpty()) {
-                    postStudentResult(args.contentId.toInt(), Status.Partially_Incorrect, selectedIds)
+                    postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Partially_Incorrect, selectedIds)
                 } else {
-                    postStudentResult(args.contentId.toInt(), Status.Fail, selectedIds)
+                    postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Fail, selectedIds)
                 }
             }
         }

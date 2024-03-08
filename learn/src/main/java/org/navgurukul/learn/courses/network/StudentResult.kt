@@ -5,12 +5,16 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class StudentResult(
-    @Json(name = "assessment_id")
+    @Json(name = "slug_id")
     val assessmentId : Int,
+    @Json(name = "course_id")
+    val courseId : Int,
     @Json(name = "status")
     val status : Status,
-    @Json(name = "selected_multiple_option")
-    val selectedMultipleOption: List<Int>
+    @Json(name = "selected_option")
+    val selectedMultipleOption: List<Int>,
+    @Json(name = "lang")
+    val lang : String,
 )
 
 
@@ -23,7 +27,7 @@ enum class Status {
 
 @JsonClass(generateAdapter = true)
 data class StudentResponse(
-    @Json(name = "id")
+    @Json(name = "slug_id")
     val id : Int,
     @Json(name = "user_id")
     val userId : Int,
@@ -31,11 +35,14 @@ data class StudentResponse(
     val assessmentId : Int,
     @Json(name = "status")
     val status : Status,
-    @Json(name = "selected_multiple_option")
+    @Json(name = "selected_option")
     val selectedMultipleOption: List<Int>,
     @Json(name = "attempt_count")
     val attemptCount : Int,
     @Json(name = "team_id")
     val teamId : Int? = null,
-
+    @Json(name = "course_id")
+    val courseId : Int,
+    @Json(name = "lang")
+    val lang : String
     )
