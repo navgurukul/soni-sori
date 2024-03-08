@@ -121,7 +121,7 @@ class LearnFragment : Fragment() {
         viewModel.viewState.observe(viewLifecycleOwner) {
             mBinding.swipeContainer.isRefreshing = false
             mBinding.progressBarButton.isVisible = it.loading
-            mCourseAdapter.submitList(it.courses, it.logo)
+            mCourseAdapter.submitList(it.courses, it.logo, it.pathwayData)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),

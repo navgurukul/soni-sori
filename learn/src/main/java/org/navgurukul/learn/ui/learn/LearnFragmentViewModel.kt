@@ -20,6 +20,7 @@ import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.courses.db.models.PathwayCTA
 import org.navgurukul.learn.courses.network.EnrolStatus
+import org.navgurukul.learn.courses.network.PathwayData
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.courses.repository.LearnRepo
@@ -88,6 +89,30 @@ class LearnFragmentViewModel(
         }
     }
 
+    private fun getCompletedPortion(pathwayId: Int) {
+        viewModelScope.launch {
+            val response = learnRepo.getCompletedPortion(pathwayId)
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.let {
+                        setState {
+                            copy(
+                                pathwayData = it.pathway
+                            )
+                        }
+                    }
+                    response
+                }
+                is Resource.Error -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                }
+                else -> {
+                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
+                }
+            }
+        }
+    }
+
     private fun refreshCourses(pathway: Pathway, forceUpdate: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
             try {
@@ -103,6 +128,7 @@ class LearnFragmentViewModel(
                     }
 
                 }
+                getCompletedPortion(pathway.id)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
             }
@@ -381,6 +407,7 @@ data class LearnFragmentViewState(
     val showTakeTestButton: Boolean = false,
     val menuId: Int? = null,
     val classId: Int = 0,
+    val pathwayData : List<PathwayData> = arrayListOf(),
     @Ignore
     var shouldShowCertificate: Boolean = false
 ) : ViewState
