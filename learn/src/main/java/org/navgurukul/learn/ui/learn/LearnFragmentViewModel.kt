@@ -71,7 +71,7 @@ class LearnFragmentViewModel(
                                     selectedLanguage = selectedLanguage,
                                     logo = currentPathway!!.logo,
                                     code = currentPathway!!.code,
-                                    shouldShowCertificate = currentPathway!!.shouldShowCertificate,
+                                    //shouldShowCertificate = currentPathway!!.shouldShowCertificate,
                                     showTakeTestButton = if (currentPathway!!.cta?.url?.isBlank()
                                             ?: true
                                     ) false else true
