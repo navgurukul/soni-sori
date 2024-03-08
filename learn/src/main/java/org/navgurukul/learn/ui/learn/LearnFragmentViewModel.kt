@@ -2,6 +2,7 @@ package org.navgurukul.learn.ui.learn
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.room.Ignore
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -406,8 +407,9 @@ data class LearnFragmentViewState(
     val showTakeTestButton: Boolean = false,
     val menuId: Int? = null,
     val classId: Int = 0,
-    var shouldShowCertificate: Boolean = false,
-    val pathwayData : List<PathwayData> = arrayListOf()
+    val pathwayData : List<PathwayData> = arrayListOf(),
+    @Ignore
+    var shouldShowCertificate: Boolean = false
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {
