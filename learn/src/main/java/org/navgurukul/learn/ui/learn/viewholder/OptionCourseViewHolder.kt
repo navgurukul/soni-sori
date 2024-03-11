@@ -29,18 +29,14 @@ class OptionCourseViewHolder(itemView: View):
         super.bind(item)
 
         item.value.let {
-//            mOptionCallback?.let { callback ->
-//                optionsAdapter = OptionSelectionAdapter() {
-//                    callback.invoke(it)
-//                }
-//            }?: kotlin.run {
-//                optionsAdapter = OptionSelectionAdapter()
-//            }
-            optionsAdapter = OptionSelectionAdapter(mOptionCallback, item.assessmentType)
+            if(!::optionsAdapter.isInitialized) {
+                optionsAdapter = OptionSelectionAdapter(mOptionCallback, item.assessmentType)
 
-            val layoutManager = LinearLayoutManager(optionContent.context, LinearLayoutManager.VERTICAL,false)
-            optionContent.layoutManager = layoutManager
-            optionContent.adapter = optionsAdapter
+                val layoutManager =
+                    LinearLayoutManager(optionContent.context, LinearLayoutManager.VERTICAL, false)
+                optionContent.layoutManager = layoutManager
+                optionContent.adapter = optionsAdapter
+            }
             optionsAdapter.submitList(it)
 
         }

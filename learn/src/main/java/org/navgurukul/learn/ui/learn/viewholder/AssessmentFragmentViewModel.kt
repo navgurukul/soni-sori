@@ -58,11 +58,6 @@ class AssessmentFragmentViewModel (
                 postResultOnSubmit(action.selectedOptionResponse)
                 showOutputScreen(action.selectedOptionResponse)
             }
-//            is AssessmentFragmentViewActions.SeeExplanationClicked -> {
-//                postResultOnSubmit(action.selectedOptionResponse)
-//                showCorrectOnIncorrect()
-//            }
-
             is AssessmentFragmentViewActions.OptionSelected ->{
                 updateList(action.selectedOptionResponse, OptionViewState.SELECTED)
             }
@@ -86,10 +81,9 @@ class AssessmentFragmentViewModel (
                     val optionList = it as OptionsBaseCourseContent
                     for(option in optionList.value){
                         try {
-                            if (option.id == selectedOptionResponse[0].id){
-                            option.viewState = newViewState
-                            }
-                            else {
+                            if (selectedOptionResponse.find { it.id == option.id } != null){
+                                option.viewState = newViewState
+                            } else {
                                 option.viewState = OptionViewState.NOT_SELECTED
                             }
                         }catch (e: IndexOutOfBoundsException){
@@ -112,9 +106,9 @@ class AssessmentFragmentViewModel (
             val currentState = viewState.value!!
             val solutionContent = (allAssessmentContentList
                 .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent)
-            val correctOptions = solutionContent.correct_options_value
+            val correctOptions = solutionContent.correctOptionsValue
             Log.d("correctOptions", correctOptions.toString())
-            val incorrectOptions = solutionContent.incorrect_options_value
+            val incorrectOptions = solutionContent.incorrectOptionsValue
             Log.d("incorrectOptions", incorrectOptions.toString())
 
             currentState.assessmentContentListForUI.forEach {
@@ -131,7 +125,7 @@ class AssessmentFragmentViewModel (
                             * */
 //                            option.viewState = OptionViewState.CORRECT
                             //Log.d("option", option.viewState.toString())
-                        } else if (option.id in incorrectOptions!!.map { it.value }) {
+                        } else if (incorrectOptions?.map { it.value }?.contains(option.id) == true) {
                             if(option.id in selectedOption) {
                                 option.viewState = OptionViewState.INCORRECT
                             }
@@ -205,36 +199,15 @@ class AssessmentFragmentViewModel (
                                 it as OutputBaseCourseContent
                                 inCorrectOutputDataList = it.value.incorrect
                                 correctOutputDataList = it.value.correct
-                                partiallyCorrectOutputDataList = it.value.partially_correct
-                                partiallyInCorrectOutputDataList = it.value.partially_incorrect
+                                partiallyCorrectOutputDataList = it.value.partiallyCorrect
+                                partiallyInCorrectOutputDataList = it.value.partiallyIncorrect
                             }catch (e: Exception){
                                 e.printStackTrace()
                             }
                         }
 
-                        val selOption = list.attemptStatus?.selectedOption
-                        if(!selOption.isNullOrEmpty()){
-                            val contentListForUI = getAssessmentListForUI(list.content)
-                            getOptionItemById(selOption[0], contentListForUI)?.let {
-//                                showOutputScreen(option, contentListForUI)
-                            }
-                        } else {
-                            //not attempted condition
-                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-                        }
-
-                        list.attemptStatus?.selectedOption?.let{
-//                            val contentListForUI = getAssessmentListForUI(list.content)
-//                            getOptionItemById(it[1], contentListForUI)?.let {   // comment for the changes new assessment unused checked above updaated code
-////                                showOutputScreen(option, contentListForUI)
-//                            }
-                        }?: kotlin.run {
-                            //not attempted condition
-                            setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
-                        }
-
-                        getAttemptStatus(list.id.toInt())                      // commenting to stop to getassessment api call call
-
+                        getAttemptStatus(list.id.toInt())
+                        setState { copy(assessmentContentListForUI = getAssessmentListForUI(list.content)) }
                     } else {
                         _viewEvents.setValue(
                             AssessmentFragmentViewEvents.ShowToast(
@@ -277,19 +250,19 @@ class AssessmentFragmentViewModel (
             val attemptResponse = learnRepo.getStudentResult(assessmentId)
             when(attemptResponse.data?.attemptStatus){
                 AttemptStatus.CORRECT -> {
-                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.CORRECT)
+                    updateListAttemptStatus(attemptResponse.data.selectedMultipleOption, assessmentId, OptionViewState.CORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowCorrectOutput(correctOutputDataList))
                 }
                 AttemptStatus.INCORRECT -> {
-                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.INCORRECT)
+                    updateListAttemptStatus(attemptResponse.data.selectedMultipleOption, assessmentId, OptionViewState.INCORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(inCorrectOutputDataList, attemptResponse.data))
                 }
                 AttemptStatus.PARTIALLY_CORRECT -> {
-                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_CORRECT)
+                    updateListAttemptStatus(attemptResponse.data.selectedMultipleOption, assessmentId, OptionViewState.PARTIALLY_CORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyCorrectOutputDataList,attemptResponse.data))
                 }
                 AttemptStatus.PARTIALLY_INCORRECT -> {
-                    updateListAttemptStatus(attemptResponse.data.selected_multiple_option, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
+                    updateListAttemptStatus(attemptResponse.data.selectedMultipleOption, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse.data))
                 }
             }
@@ -317,8 +290,8 @@ class AssessmentFragmentViewModel (
     private fun showOutputScreen(clickedOption: List<OptionResponse>, content: List<BaseCourseContent>? = null){
         val solutionContent = allAssessmentContentList
             .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
-        val correctOptions = solutionContent.correct_options_value
-        val incorrectOptions = solutionContent.incorrect_options_value
+        val correctOptions = solutionContent.correctOptionsValue
+        val incorrectOptions = solutionContent.incorrectOptionsValue
         val selectedIds = clickedOption.map { it.id }
         if (selectedIds==correctOptions.map { it.value }){
             updateList(clickedOption, OptionViewState.CORRECT, content)
@@ -343,8 +316,8 @@ class AssessmentFragmentViewModel (
     private fun postResultOnSubmit(clickedOption: List<OptionResponse>) {
         val solutionContent = allAssessmentContentList
             .find { it.component == BaseCourseContent.COMPONENT_SOLUTION } as SolutionBaseCourseContent
-        val correctOptions = solutionContent.correct_options_value
-        val incorrectOptions = solutionContent.incorrect_options_value
+        val correctOptions = solutionContent.correctOptionsValue
+        val incorrectOptions = solutionContent.incorrectOptionsValue
         val selectedIds = clickedOption.map { it.id }
         if (selectedIds==correctOptions.map { it.value }) {
             postStudentResult(args.contentId.toInt(), args.courseId.toInt(), Status.Pass, selectedIds)
@@ -376,7 +349,6 @@ class AssessmentFragmentViewModel (
         object RequestContentRefresh : AssessmentFragmentViewActions()
         data class SubmitOptionClicked(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
         data class OptionSelected(val selectedOptionResponse: List<OptionResponse>): AssessmentFragmentViewActions()
-//        data class SeeExplanationClicked(val selectedOptionResponse: OptionResponse): AssessmentFragmentViewActions()
         object ShowUpdatedOutput : AssessmentFragmentViewActions()
         object ShowCorrectOnIncorrect : AssessmentFragmentViewActions()
         object ContentMarkCompleted : AssessmentFragmentViewActions()

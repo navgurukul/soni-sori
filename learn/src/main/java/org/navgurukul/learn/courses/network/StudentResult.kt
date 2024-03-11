@@ -12,7 +12,7 @@ data class StudentResult(
     @Json(name = "status")
     val status : Status,
     @Json(name = "selected_option")
-    val selected_multiple_option: List<Int>,
+    val selectedMultipleOption: List<Int>,
     @Json(name = "lang")
     val lang : String,
 )
@@ -31,12 +31,12 @@ data class StudentResponse(
     val id : Int,
     @Json(name = "user_id")
     val userId : Int,
-    @Json(name = "selected_option")
-    val selected_multiple_option: List<Int>,
     @Json(name = "assessment_id")
     val assessmentId : Int,
     @Json(name = "status")
     val status : Status,
+    @Json(name = "selected_option")
+    val selectedMultipleOption: List<Int>,
     @Json(name = "attempt_count")
     val attemptCount : Int,
     @Json(name = "team_id")
