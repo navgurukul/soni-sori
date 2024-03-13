@@ -181,6 +181,9 @@ class LearnFragmentViewModel(
 
             is LearnFragmentViewActions.RequestPageLoad -> {
 //                checkedStudentEnrolment()
+                val lastSelectedPathwayId = corePreferences.lastSelectedPathWayId
+                getCompletedPortion(lastSelectedPathwayId)
+
             }
 
             is LearnFragmentViewActions.PrimaryAction -> primaryAction(
