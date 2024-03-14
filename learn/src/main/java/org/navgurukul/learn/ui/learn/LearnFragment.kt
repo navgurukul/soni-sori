@@ -525,7 +525,7 @@ class LearnFragment : Fragment() {
     private fun initRecyclerView() {
         mCourseAdapter = CourseAdapter(requireContext()) {
             viewModel.selectCourse(it)
-            mCourseAdapter.notifyDataSetChanged()
+            //mCourseAdapter.notifyDataSetChanged()
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
