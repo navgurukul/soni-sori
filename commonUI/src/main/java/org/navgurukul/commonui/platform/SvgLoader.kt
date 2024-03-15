@@ -1,5 +1,6 @@
 package org.navgurukul.commonui.platform
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.PictureDrawable
@@ -47,9 +48,10 @@ class SvgLoader(private val context: Context) {
         override fun onPostExecute(svg: SVG?) {
             val context = contextReference.get()
             if (context != null && !isCancelled && svg != null) {
-                val picture = svg.renderToPicture()
-                val drawable = PictureDrawable(picture)
-                if (context is Activity && !context.isFinishing) {
+                if (context is Activity && !context.isFinishing && !context.isDestroyed) {
+                    val picture = svg.renderToPicture()
+                    val drawable = PictureDrawable(picture)
+
                     Glide.with(context)
                         .load(drawable)
                         .apply(requestOptions)
