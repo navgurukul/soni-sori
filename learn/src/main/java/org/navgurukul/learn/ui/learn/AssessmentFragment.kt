@@ -86,7 +86,7 @@ class AssessmentFragment : Fragment() {
 
         mBinding.btnSubmit.visibility = View.GONE
         mBinding.correctOutputLayout.root.visibility = View.GONE
-        mBinding.incorrectOutputLayout.visibility = View.GONE
+        mBinding.incorrectOutputLayout.root.visibility = View.GONE
 
         activityViewModel =
             ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
@@ -99,23 +99,23 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.visibility = View.GONE
+                    mBinding.incorrectOutputLayout.root.visibility = View.GONE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowRetryOnce -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     isContentRvClickable = false
                     setupIncorrectOutputLayout(it.list, it.attemptResponse)
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
 
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput, is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it as List<BaseCourseContent>)
                     isContentRvClickable = false
@@ -124,7 +124,7 @@ class AssessmentFragment : Fragment() {
             }
         }
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.root.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             showErrorScreen(it.isError)
 
@@ -176,7 +176,7 @@ class AssessmentFragment : Fragment() {
                         mBinding.incorrectOutputLayout.missText.text = "\uD83D\uDE2F Quite close! However, some correct answer(s) were missed"
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
-                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            mBinding.incorrectOutputLayout.root.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
                     }else if(attemptResponse.attemptStatus == AttemptStatus.PARTIALLY_INCORRECT){
@@ -184,14 +184,14 @@ class AssessmentFragment : Fragment() {
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
-                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            mBinding.incorrectOutputLayout.root.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
                     }else if (attemptResponse.attemptStatus == AttemptStatus.INCORRECT){
                         mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
                         mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
                             isContentRvClickable = true
-                            mBinding.incorrectOutputLayout.visibility = View.GONE
+                            mBinding.incorrectOutputLayout.root.visibility = View.GONE
                             fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
                         }
                     }

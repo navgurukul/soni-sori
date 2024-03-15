@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.databinding.ItemPathwayBinding
+import org.navgurukul.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
@@ -32,17 +32,20 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var adapter: PathwaySelectionAdapter
+    private  lateinit var binding: LearnSelectionSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
+        binding = LearnSelectionSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding ?: return
 
         val offsetFromTop = resources.getDimensionPixelSize(R.dimen.sheet_top_offset)
         (dialog as? BottomSheetDialog)?.behavior?.apply {
@@ -52,15 +55,15 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         adapter = PathwaySelectionAdapter(requireContext()) {
             viewModel.selectPathway(it)
         }
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
                     R.dimen.spacing_3x
                 ), 0
             )
         )
-        recycler_view.addItemDecoration(
+        binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
@@ -79,7 +82,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
     }
 }
 
-class PathwaySelectionAdapter( val context: Context, val callback: (Pathway) -> Unit) :
+class PathwaySelectionAdapter(private val context: Context, private val callback: (Pathway) -> Unit) :
     DataBoundListAdapter<Pathway, ItemPathwayBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Pathway>() {
             override fun areItemsTheSame(oldItem: Pathway, newItem: Pathway): Boolean {
@@ -99,23 +102,23 @@ class PathwaySelectionAdapter( val context: Context, val callback: (Pathway) -> 
     }
 
     override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
-            val binding = holder.binding
-            binding.pathway = item
-            binding.root.setOnClickListener {
-                callback.invoke(item)
-            }
-
-            if (item.logo?.endsWith(".svg") == true) {
-                SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
-            }
-            else {
-                val thumbnail = Glide.with(holder.itemView)
-                    .load(R.drawable.ic_typing_icon)
-                Glide.with(binding.ivPathwayIcon)
-                    .load(item.logo)
-                    .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
-                    .thumbnail(thumbnail)
-                    .into(binding.ivPathwayIcon)
-            }
+        val binding = holder.binding
+        binding.pathway = item
+        binding.root.setOnClickListener {
+            callback.invoke(item)
         }
+
+        if (item.logo?.endsWith(".svg") == true) {
+            SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
+        }
+        else {
+            val thumbnail = Glide.with(holder.itemView)
+                .load(R.drawable.ic_typing_icon)
+            Glide.with(binding.ivPathwayIcon)
+                .load(item.logo)
+                .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
+                .thumbnail(thumbnail)
+                .into(binding.ivPathwayIcon)
+        }
+    }
 }
