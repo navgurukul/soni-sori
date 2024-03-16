@@ -42,6 +42,7 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
 
     fun submitList(list: List<Course>, logo: String?, pathwayData : List<PathwayData>) {
         submitList(list.map { CourseContainer(it, logo, pathwayData) })
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
