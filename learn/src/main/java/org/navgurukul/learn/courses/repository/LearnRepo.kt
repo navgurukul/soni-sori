@@ -33,6 +33,7 @@ import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
+import java.net.UnknownHostException
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -74,6 +75,9 @@ class LearnRepo(
         }
         catch (e : Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
+            null!!
+        }catch (e : UnknownHostException){
+            e.printStackTrace()
             null!!
         }
 
