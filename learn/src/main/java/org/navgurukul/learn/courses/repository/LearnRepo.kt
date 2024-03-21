@@ -2,6 +2,8 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.asFlow
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -72,12 +74,12 @@ class LearnRepo(
                 pathwayDao.insertPathways(data.pathways)
 
             })
-        }
-        catch (e : Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
+        } catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
             null!!
-        }catch (e : UnknownHostException){
-            e.printStackTrace()
+        } catch (e : Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
 
@@ -100,7 +102,11 @@ class LearnRepo(
                 courseDao.deleteAllCourses()
                 courseDao.insertCourses(data.courses)
             })
-        }catch (e: Exception){
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        } catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
@@ -240,7 +246,12 @@ class LearnRepo(
                     }
                 }
             )
-        }catch (ex: Exception) {
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        }
+        catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
             null!!
         }
