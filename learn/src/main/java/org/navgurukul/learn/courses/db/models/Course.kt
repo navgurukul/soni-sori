@@ -27,6 +27,6 @@ data class Course(
     var completedPortion : Int? = null
 ){
     @Ignore
-    @Json(name = "exercises")
+    @Json(name = "course_content")
     var courseContents: List<CourseContents> = listOf()
 }

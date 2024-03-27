@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 13
+const val DB_VERSION = 15
 
 @Dao
 interface PathwayDao {
@@ -370,6 +370,39 @@ val MIGRATION_12_13 = object : Migration(12, 13){
     }
 
 }
+
+val MIGRATION_13_14 = object : Migration(13, 14){
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("DROP TABLE IF EXISTS pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, `platform` TEXT NOT NULL, PRIMARY KEY(`id`)) ")
+
+    }
+}
+
+val MIGRATION_14_15 = object : Migration(14, 15) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Create a temporary table
+        database.execSQL(
+            "CREATE TABLE `course_assessment_temp`(" +
+                    " `content` TEXT NOT NULL," +
+                    " `courseId` TEXT NOT NULL," +
+                    " `id` TEXT NOT NULL," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " `courseContentProgress` TEXT," +
+                    " `sequenceNumber` INTEGER," +
+                    " `courseContentType` TEXT NOT NULL," +
+                    " `assess_selectedOption` TEXT," +
+                    " `assess_attemptCount` INTEGER," +
+                    " PRIMARY KEY(`id`, `lang`) )"
+        )
+        database.execSQL("INSERT INTO `course_assessment_temp` SELECT * FROM `course_assessment`")
+        database.execSQL("DROP TABLE `course_assessment`")
+        database.execSQL("ALTER TABLE `course_assessment_temp` RENAME TO `course_assessment`")
+    }
+}
+
 
 // When ever we do any change in local db need to write migration script here.
 @Database(

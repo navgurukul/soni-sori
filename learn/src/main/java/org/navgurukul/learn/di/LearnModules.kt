@@ -9,14 +9,32 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.*
-import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.CoursesDatabase
+import org.navgurukul.learn.courses.db.MIGRATION_10_11
+import org.navgurukul.learn.courses.db.MIGRATION_11_12
+import org.navgurukul.learn.courses.db.MIGRATION_12_13
+import org.navgurukul.learn.courses.db.MIGRATION_13_14
+import org.navgurukul.learn.courses.db.MIGRATION_14_15
+import org.navgurukul.learn.courses.db.MIGRATION_1_2
+import org.navgurukul.learn.courses.db.MIGRATION_2_3
+import org.navgurukul.learn.courses.db.MIGRATION_3_4
+import org.navgurukul.learn.courses.db.MIGRATION_4_5
+import org.navgurukul.learn.courses.db.MIGRATION_5_6
+import org.navgurukul.learn.courses.db.MIGRATION_6_7
+import org.navgurukul.learn.courses.db.MIGRATION_7_8
+import org.navgurukul.learn.courses.db.MIGRATION_8_9
+import org.navgurukul.learn.courses.db.MIGRATION_9_10
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.SaralCoursesApi
 import org.navgurukul.learn.courses.repository.LearnRepo
-import org.navgurukul.learn.ui.learn.*
-import org.navgurukul.learn.util.ColorProvider
+import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
+import org.navgurukul.learn.ui.learn.CourseContentActivityViewModel
+import org.navgurukul.learn.ui.learn.CourseContentArgs
+import org.navgurukul.learn.ui.learn.EnrollViewModel
+import org.navgurukul.learn.ui.learn.ExerciseFragmentViewModel
+import org.navgurukul.learn.ui.learn.LearnFragmentViewModel
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
+import org.navgurukul.learn.util.ColorProvider
 import retrofit2.Retrofit
 
 val viewModelModule = module {
@@ -56,6 +74,8 @@ val databaseModule = module {
             .addMigrations(MIGRATION_10_11)
             .addMigrations(MIGRATION_11_12)
             .addMigrations(MIGRATION_12_13)
+            .addMigrations(MIGRATION_13_14)
+            .addMigrations(MIGRATION_14_15)
             .addTypeConverter(Converters(moshi))
             .build()
     }

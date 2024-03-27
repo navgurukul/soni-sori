@@ -173,10 +173,11 @@ object BuildConfigVersions {
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
-    const val versionCode = 91
-    const val versionName = "1.5.61"
+    const val versionCode = 93
+    const val versionName = "1.5.63"
     const val applicationId = "org.merakilearn"
 }
+
 
 object Classpath {
     const val gradle = "com.android.tools.build:gradle:7.0.2"

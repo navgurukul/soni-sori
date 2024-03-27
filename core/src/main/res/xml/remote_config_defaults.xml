@@ -4,14 +4,14 @@
     <entry>
         <key>available_lang</key>
         <value>
-            [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
+            [{"code":"en","label":"English"},{"code":"hi-IN","label":"Hindi"}]
         </value>
 
     </entry>
     <entry>
         <key>course_available_lang</key>
         <value>
-            [{"code":"en","label":"English"},{"code":"hi","label":"Hindi"}]
+            [{"code":"en","label":"English"},{"code":"hi-IN","label":"Hindi"}]
         </value>
     </entry>
     <entry>
@@ -59,7 +59,7 @@
                         "Scratch"
                     ]
                 },
-                "hi":{
+                "hi-IN":{
                     "skip_text":"छोड़े",
                     "next_text":"अगला",
                     "skip_login_text":"लॉगिन छोड़ें",
