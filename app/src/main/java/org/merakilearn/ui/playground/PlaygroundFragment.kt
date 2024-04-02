@@ -3,6 +3,7 @@ package org.merakilearn.ui.playground
 import android.app.Activity
 import android.content.SharedPreferences
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -176,6 +177,12 @@ class PlaygroundFragment : BaseFragment() {
             .create()
 
         createDialog.show()
+
+        // Set the color of the negative button
+        val negativeButton = createDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(Color.RED)
+
+
         createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
                 val name = rootView.nameLayout.editText!!.text.toString()
