@@ -13,7 +13,6 @@ import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.network.PathwayData
 import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
-import org.navgurukul.commonui.platform.SvgLoader
 
 class CourseAdapter(private val context: Context, val callback: (Course) -> Unit) :
 

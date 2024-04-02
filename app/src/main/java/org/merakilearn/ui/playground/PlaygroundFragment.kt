@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.dialog_create.view.*
 import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -156,6 +157,65 @@ class PlaygroundFragment : BaseFragment() {
 
 
     }
+
+    private fun openDialogToCreateProject() {
+        val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
+//        rootView.typeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, ProjectManager.TYPES)
+//        rootView.typeSpinner.setSelection(prefs["type", 0]!!)
+        rootView.nameLayout.editText!!.setText(prefs["name", ""])
+//        rootView.authorLayout.editText!!.setText(prefs["author", ""])
+//        rootView.descLayout.editText!!.setText(prefs["description", ""])
+//        rootView.keyLayout.editText!!.setText(prefs["keywords", ""])
+
+        projectIcon = rootView.faviconImage
+
+        val createDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Create a new project")
+            .setView(rootView)
+            .setPositiveButton("CREATE", null)
+            .setNegativeButton("CANCEL", null)
+            .create()
+
+        createDialog.show()
+
+        // Set the color of the negative button
+        val negativeButton = createDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(Color.RED)
+
+
+        createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
+                val name = rootView.nameLayout.editText!!.text.toString()
+
+                prefs["name"] = name
+                prefs["type"] = 0
+
+                Log.i("TAG", requireActivity().ROOT_PATH())
+                val projectName = ProjectManager.generate(
+                    requireContext(),
+                    name,
+                    imageStream,
+                    projectAdapter,
+                    coordinatorLayout,
+                    0
+                )
+                projectAdapter.notifyDataSetChanged()
+
+                //var intent: Intent? = null
+                try {
+                    navigator.launchWebIDEApp(requireActivity(), projectName)
+//                    intent = Intent(context, Class.forName("org.navgurukul.webide.ui.activity.ProjectActivity"))
+//                    intent.putExtra("project" ,projectName)
+//                    context?.startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                createDialog.dismiss()
+            }
+        }
+    }
+
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
