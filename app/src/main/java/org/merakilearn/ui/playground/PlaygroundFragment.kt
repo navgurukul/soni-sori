@@ -100,7 +100,7 @@ class PlaygroundFragment : BaseFragment() {
                     file = it.file
                 )
                 is PlaygroundViewEvents.OpenWebIDE -> {
-                    //   navigator.launchWebIDEApp(requireActivity(), Mode.Playground)
+                    navigator.launchWebIDEApp(requireActivity(), it.file.name)
                 }
                 is PlaygroundViewEvents.OpenDialogToCreateWebProject -> {
                     openDialogToCreateProject()
