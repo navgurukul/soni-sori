@@ -2,7 +2,7 @@ package org.navgurukul.typingguru.navigator
 
 import android.app.ActivityOptions
 import androidx.fragment.app.FragmentActivity
-import com.google.auto.service.AutoService
+//import com.google.auto.service.AutoService
 import org.koin.core.context.loadKoinModules
 import org.koin.java.KoinJavaComponent.inject
 import org.merakilearn.core.navigator.Mode
@@ -12,7 +12,7 @@ import org.navgurukul.typingguru.keyboard.KeyboardActivity
 import org.navgurukul.typingguru.keyboard.dialog.KeyboardDialogActivity
 import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 
-@AutoService(TypingAppModuleNavigator::class)
+//@AutoService(TypingAppModuleNavigator::class)
 class TypingAppModuleNavigatorImpl : TypingAppModuleNavigator {
 
     override fun launchTypingApp(activity: FragmentActivity, mode : Mode) {

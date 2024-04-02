@@ -1,0 +1,160 @@
+<!--
+   Copyright 2016 Geetesh Kalakoti <kalakotig@gmail.com>
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.navgurukul.webide.ui.widget.Editor
+        android:id="@+id/fileContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/symbolLayoutScrollContainer"
+        android:gravity="start"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:paddingLeft="36dp"
+        android:paddingStart="36dp"
+        android:privateImeOptions="nm"
+        android:scrollbars="vertical"
+        android:textSize="14sp" />
+
+    <HorizontalScrollView
+        android:id="@+id/symbolLayoutScrollContainer"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <Button
+                android:id="@+id/symbolOne"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="&lt;"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolTwo"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="/"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolThree"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="&gt;"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolFour"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="&quot;"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolFive"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="="
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolSix"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="!"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolSeven"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="-"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/symbolEight"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="\"
+                android:textColor="?attr/symbolColor"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/dropShadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_above="@+id/symbolLayoutScrollContainer"
+        android:alpha="0.5"
+        android:background="@drawable/bottom_shadow"
+        android:rotation="180" />
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/symbolTab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginBottom="32dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginRight="16dp"-->
+<!--        android:src="@drawable/ic_tab"-->
+<!--        app:fabSize="mini"-->
+<!--        tools:ignore="RelativeOverlap" />-->
+
+</RelativeLayout>

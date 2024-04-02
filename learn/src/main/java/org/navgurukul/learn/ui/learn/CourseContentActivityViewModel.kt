@@ -186,6 +186,7 @@ class CourseContentActivityViewModel(
                         postExerciseCompleteStatus(currentCourse.courseContents[currentStudyIndex].id.toInt())
                     }
                 }
+                postLearningTrackStatus(currentCourse.courseContents[currentStudyIndex].id)
             }
             else {
                 _viewEvents.postValue(
