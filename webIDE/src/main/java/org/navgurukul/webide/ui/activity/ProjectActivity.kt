@@ -35,6 +35,7 @@ import org.navgurukul.webide.ui.fragment.EditorFragment
 import org.navgurukul.webide.ui.fragment.ImageFragment
 import org.navgurukul.webide.ui.helper.MenuPrepareHelper
 import org.navgurukul.webide.ui.viewmodel.ProjectViewModel
+import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.get
 import org.navgurukul.webide.util.ROOT_PATH
@@ -514,6 +515,19 @@ class ProjectActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
+            data?.let { intent ->
+                intent.clipData?.let { clipData ->
+                    for (i in 0 until clipData.itemCount) {
+                        val imageUri = clipData.getItemAt(i).uri
+                        adapter.saveImageToFolder(imageUri)
+                    }
+                }
+                intent.data?.let { imageUri ->
+                    adapter.saveImageToFolder(imageUri)
+                }
+            }
+        }
         when (requestCode) {
             IMPORT_FILE -> if (resultCode == Activity.RESULT_OK) {
                 val fileUri = data!!.data

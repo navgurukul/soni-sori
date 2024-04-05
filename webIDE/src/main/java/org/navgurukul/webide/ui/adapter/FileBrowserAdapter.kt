@@ -1,8 +1,11 @@
 package org.navgurukul.webide.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +31,7 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
 
     private var currentDir = File(context.ROOT_PATH(), projectName)
 
-    private var fileList: Array<File> = currentDir.listFiles()
+    private var fileList: Array<File> = currentDir.listFiles() as Array<File>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         TYPE_UP -> RootHolder(ItemFileRootBinding.inflate(LayoutInflater.from(parent.context),parent,false))
@@ -277,6 +280,42 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.action = Intent.ACTION_GET_CONTENT
         (context as Activity).startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.REQUEST_CODE_IMAGE)
+    }
+
+    fun saveImageToFolder(imageUri : Uri){
+        val imageFolder = File(currentDir, "images")
+        if (!imageFolder.exists()) {
+            imageFolder.mkdirs()
+        }
+
+        // Get the file name from the image URI
+        val fileName = getImageFileName(imageUri)
+
+        // Copy the image file to the "images" folder
+        val destinationFile = File(imageFolder, fileName)
+        try {
+            context.contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                destinationFile.outputStream().use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            mainView.snack("Image saved: $fileName", Snackbar.LENGTH_SHORT)
+        } catch (e: IOException) {
+            Timber.e(e)
+            mainView.snack("Error saving image", Snackbar.LENGTH_SHORT)
+        }
+    }
+
+    @SuppressLint("Range")
+    private fun getImageFileName(imageUri: Uri): String {
+        val cursor = context.contentResolver.query(imageUri, null, null, null, null)
+        var fileName = "image"
+        cursor?.use {
+            if (it.moveToFirst()) {
+                fileName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        }
+        return fileName
     }
 
     companion object {
