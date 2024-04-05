@@ -43,6 +43,7 @@ class HyperServer(
                 "jpg" to "image/jpeg",
                 "jpeg" to "image/jpeg",
                 "svg" to "image/svg+xml",
+                "webp" to "image/webp",
                 "bmp" to "image/bmp",
                 "gif" to "image/gif",
                 "ttf" to "application/x-font-ttf",
