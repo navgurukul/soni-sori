@@ -10,7 +10,7 @@ import java.io.IOException
 object HtmlParser {
 
     private fun getSoup(context: Context,name: String): Document? = try {
-        Jsoup.parse(ProjectManager.getIndexFile(context,name), "UTF-8")
+        ProjectManager.getIndexFile(context,name)?.let { Jsoup.parse(it, "UTF-8") }
     } catch (e: IOException) {
         Timber.e(e)
         null
