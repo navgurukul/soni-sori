@@ -38,6 +38,10 @@
 
     </item>
 
+    <item android:id="@+id/add"
+        android:title="Add">
+        ></item>
+
     <item
         android:id="@+id/action_copy"
         android:title="Copy"

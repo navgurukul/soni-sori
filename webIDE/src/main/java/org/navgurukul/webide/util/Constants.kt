@@ -8,7 +8,9 @@ import java.io.File
 
 object Constants {
 
-//    val HYPER_ROOT = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+    const val REQUEST_CODE_IMAGE: Int = 1
+
+    //    val HYPER_ROOT = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
 //        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + File.separator + "Meraki"
 //    }else{
 //        Environment.getExternalStorageDirectory().path + File.separator + "Meraki"

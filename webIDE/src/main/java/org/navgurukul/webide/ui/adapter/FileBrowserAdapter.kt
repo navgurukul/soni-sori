@@ -1,6 +1,8 @@
 package org.navgurukul.webide.ui.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -202,6 +204,7 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
                 menu.menu.findItem(R.id.action_cut).isVisible = false
                 menu.menu.findItem(R.id.action_rename).isVisible = false
                 menu.menu.findItem(R.id.action_delete).isVisible = false
+                menu.menu.findItem(R.id.add).isVisible = false
                 menu.menu.findItem(R.id.action_paste).isEnabled = Clipboard.currentFile != null
 
                 menu.setOnMenuItemClickListener { item ->
@@ -250,6 +253,7 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
 
                 menu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
+                        R.id.add -> browsImage()
                         R.id.action_rename -> renameFile(file)
                         R.id.action_copy -> Clipboard.update(file, Clipboard.Type.COPY, mainView)
                         R.id.action_cut -> Clipboard.update(file, Clipboard.Type.CUT, mainView)
@@ -265,6 +269,14 @@ class FileBrowserAdapter(private val context: Context, private val projectName: 
                 true
             }
         }
+    }
+
+    fun browsImage(){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        (context as Activity).startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.REQUEST_CODE_IMAGE)
     }
 
     companion object {
