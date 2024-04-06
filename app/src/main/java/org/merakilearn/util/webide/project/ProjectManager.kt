@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.merakilearn.R
 import org.merakilearn.extension.copyInputStreamToFile
 import org.merakilearn.extension.snack
+import org.merakilearn.ui.playground.PlaygroundAdapter
 import org.merakilearn.util.webide.ROOT_PATH
 import org.merakilearn.util.webide.adapter.ProjectAdapter
 import org.merakilearn.util.webide.editor.ProjectFiles
@@ -28,7 +29,7 @@ object ProjectManager {
         context: Context,
         name: String,
         stream: InputStream?,
-        adapter: ProjectAdapter,
+        adapter: PlaygroundAdapter,
         view: View,
         type: Int
     ): String {
@@ -45,7 +46,7 @@ object ProjectManager {
         }
 
         if (status) {
-            adapter.insert(nameNew)
+//            adapter.insert(nameNew)
             view.snack(R.string.project_success, Snackbar.LENGTH_SHORT)
         } else {
             view.snack(R.string.project_fail, Snackbar.LENGTH_SHORT)

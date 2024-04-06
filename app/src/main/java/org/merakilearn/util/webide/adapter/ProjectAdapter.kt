@@ -58,9 +58,6 @@ class ProjectAdapter(
             with(view) {
                 val properties = HtmlParser.getProperties(context, project)
                 title.text = properties[0]
-//                author.text = properties[1]
-//                desc.text = properties[2]
-//                favicon.setImageBitmap(ProjectManager.getFavicon(view.context, project))
                 favicon.setImageResource(R.drawable.ic_web_file)
 
                 projectLayout.setOnClickListener {
