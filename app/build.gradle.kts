@@ -162,6 +162,9 @@ dependencies {
     //chucker
     debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+
+    //leakcanary
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.13")
 }
 
 tasks.register<Download>("downloadBundleTools") {

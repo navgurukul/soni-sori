@@ -420,4 +420,5 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun currentStudyDao(): CurrentStudyDao
     abstract fun classDao(): ClassDao
     abstract fun assessmentDao() : AssessmentDao
+
 }
