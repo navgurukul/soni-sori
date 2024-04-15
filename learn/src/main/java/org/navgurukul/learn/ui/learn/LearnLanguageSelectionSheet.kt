@@ -19,7 +19,7 @@ import org.navgurukul.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
-lateinit var binding: LearnSelectionSheetBinding
+    lateinit var binding: LearnSelectionSheetBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
