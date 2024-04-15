@@ -33,7 +33,8 @@ lateinit var binding: LearnSelectionSheetBinding
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
+        binding= LearnSelectionSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
