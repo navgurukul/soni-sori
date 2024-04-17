@@ -20,7 +20,6 @@ import org.navgurukul.webide.databinding.ActivityWebBinding
 import org.navgurukul.webide.databinding.DialogInputSingleBinding
 import org.navgurukul.webide.databinding.SheetLogsBinding
 import org.navgurukul.webide.databinding.SheetWebSettingsBinding
-
 import org.navgurukul.webide.ui.adapter.LogsAdapter
 import org.navgurukul.webide.util.Constants
 import org.navgurukul.webide.util.Prefs.defaultPrefs
@@ -31,6 +30,7 @@ import org.navgurukul.webide.util.project.ProjectManager
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
+
 
 class WebActivity : ThemedActivity() {
 
@@ -58,6 +58,20 @@ class WebActivity : ThemedActivity() {
         val indexFile = ProjectManager.getIndexFile(this, project)
         val indexPath = ProjectManager.getRelativePath(this, indexFile!!, project)
 
+
+
+        val webSettings = binding.webView.settings
+
+        webSettings.javaScriptEnabled = true
+        webSettings.allowFileAccess = true
+        webSettings.allowContentAccess = true
+        binding.webView.webViewClient = WebViewClient()
+        webSettings.domStorageEnabled = true
+        webSettings.loadsImagesAutomatically = true;
+        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
+
+        binding.webView.loadUrl("/storage/emulated/0/Android/data/org.merakilearn/files/Download/Meraki/nunew/images/favicon.ico")
+
         binding.include.toolbar.title = project
         setSupportActionBar(binding.include.toolbar)
         binding.webView.settings.javaScriptEnabled = true
@@ -68,7 +82,7 @@ class WebActivity : ThemedActivity() {
                 intent.getStringExtra("localUrl")!!
 
         localWithoutIndex = localUrl.substring(0, localUrl.length - 10)
-        binding.webView.loadUrl(localUrl)
+        //binding.webView.loadUrl(localUrl)
         binding.webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 binding.loadingProgress.progress = newProgress
