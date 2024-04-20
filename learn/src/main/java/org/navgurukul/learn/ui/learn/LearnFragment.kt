@@ -31,9 +31,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_learn.view.courseContainer
-import kotlinx.android.synthetic.main.fragment_learn.view.empty_state_view
-import kotlinx.android.synthetic.main.item_certificate.view.locked_status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -235,16 +232,16 @@ class LearnFragment : Fragment() {
     private fun showErrorScreen(isError: Boolean) {
         if (isError) {
             mBinding.progressBarButton.visibility = View.GONE
-            mBinding.rlCourseContainer.empty_state_view.isVisible = true
-            mBinding.rlCourseContainer.courseContainer.visibility = View.GONE
+            mBinding.emptyStateView.root.isVisible = true
+            mBinding.courseContainer.visibility = View.GONE
         } else {
-            mBinding.rlCourseContainer.empty_state_view.isVisible = false
-            mBinding.rlCourseContainer.courseContainer.visibility = View.VISIBLE
+            mBinding.emptyStateView.root.isVisible = false
+            mBinding.courseContainer.visibility = View.VISIBLE
         }
     }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-        val textView : TextView = mBinding.certificate.root.locked_status
+        val textView : TextView = mBinding.certificate.lockedStatus
         var binding: GeneratedCertificateBinding
 
         if (completedPortion == 100){

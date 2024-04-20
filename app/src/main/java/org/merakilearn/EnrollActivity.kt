@@ -13,7 +13,6 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.view.isVisible
 import kotlinx.android.parcel.Parcelize
 import org.merakilearn.databinding.ActivityDiscoverEnrollBinding
-import kotlinx.android.synthetic.main.content_class_detail.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -114,21 +113,21 @@ class EnrollActivity : AppCompatActivity() {
     private fun updateState(it: EnrollViewState) {
         binding.progressBarButton.isVisible = it.isLoading
         it.about?.let {
-            tvAbout.isVisible = true
-            tvAboutTitle.isVisible = true
-            tvAbout.text = it
+            binding.classDetail.tvAbout.isVisible = true
+            binding.classDetail.tvAboutTitle.isVisible = true
+            binding.classDetail.tvAbout.text = it
         } ?: run {
-            tvAbout.isVisible = false
-            tvAboutTitle.isVisible = false
+            binding.classDetail.tvAbout.isVisible = false
+            binding.classDetail.tvAboutTitle.isVisible = false
         }
 
         it.details?.let {
-            tvClassDetail.isVisible = true
-            tvClassDetailTitle.isVisible = true
-            tvClassDetail.text = it
+            binding.classDetail.tvClassDetail.isVisible = true
+            binding.classDetail.tvClassDetailTitle.isVisible = true
+            binding.classDetail.tvClassDetail.text = it
         } ?: run {
-            tvClassDetail.isVisible = false
-            tvClassDetailTitle.isVisible = false
+            binding.classDetail.tvClassDetail.isVisible = false
+            binding.classDetail.tvClassDetailTitle.isVisible = false
         }
 
         it.type?.let {
@@ -139,12 +138,12 @@ class EnrollActivity : AppCompatActivity() {
         }
 
         it.rules?.let {
-            tvSpecialInstruction.isVisible = true
-            tvSpecialInstructionTitle.isVisible = true
-            tvSpecialInstruction.loadFromText(it)
+            binding.classDetail.tvSpecialInstruction.isVisible = true
+            binding.classDetail.tvSpecialInstructionTitle.isVisible = true
+            binding.classDetail.tvSpecialInstruction.loadFromText(it)
         } ?: run {
-            tvSpecialInstruction.isVisible = false
-            tvSpecialInstructionTitle.isVisible = false
+            binding.classDetail.tvSpecialInstruction.isVisible = false
+            binding.classDetail.tvSpecialInstructionTitle.isVisible = false
         }
 
         it.primaryAction?.let {
