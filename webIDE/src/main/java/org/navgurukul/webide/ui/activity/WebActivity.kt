@@ -70,7 +70,7 @@ class WebActivity : ThemedActivity() {
         webSettings.loadsImagesAutomatically = true;
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
 
-        binding.webView.loadUrl("/storage/emulated/0/Android/data/org.merakilearn/files/Download/Meraki/nunew/images/favicon.ico")
+       // binding.webView.loadUrl("/storage/emulated/0/Android/data/org.merakilearn/files/Download/Meraki/nikhil/images/favicon.ico")
 
         binding.include.toolbar.title = project
         setSupportActionBar(binding.include.toolbar)
@@ -82,7 +82,7 @@ class WebActivity : ThemedActivity() {
                 intent.getStringExtra("localUrl")!!
 
         localWithoutIndex = localUrl.substring(0, localUrl.length - 10)
-        //binding.webView.loadUrl(localUrl)
+        binding.webView.loadUrl(localUrl)
         binding.webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 binding.loadingProgress.progress = newProgress
