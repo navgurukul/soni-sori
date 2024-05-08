@@ -400,6 +400,11 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
         database.execSQL("INSERT INTO `course_assessment_temp` SELECT * FROM `course_assessment`")
         database.execSQL("DROP TABLE `course_assessment`")
         database.execSQL("ALTER TABLE `course_assessment_temp` RENAME TO `course_assessment`")
+
+        // Create new tables for exercise_progress, class_progress, and assessment_progress
+        database.execSQL("CREATE TABLE 'exercise_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
+        database.execSQL("CREATE TABLE 'class_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
+        database.execSQL("CREATE TABLE 'assessment_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
     }
 }
 

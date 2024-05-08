@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import org.navgurukul.learn.courses.db.models.Course
 import org.navgurukul.learn.courses.network.PathwayData
 import org.navgurukul.learn.databinding.ItemCourseBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
+import org.navgurukul.learn.util.LearnUtils
 
 class CourseAdapter(private val context: Context, val callback: (Course) -> Unit) :
 
@@ -72,7 +74,13 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         binding.tvName.text = item.course.name
 
         binding.root.setOnClickListener {
-            callback.invoke(item.course)
+            if(LearnUtils.isOnline(context)) {
+                callback.invoke(item.course)
+            } else {
+                //LearnUtils.showNoInternetDialog(context)
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+            }
+            //callback.invoke(item.course)
         }
     }
 }
