@@ -30,6 +30,7 @@ import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.databinding.FragmentClassBinding
+import org.navgurukul.learn.databinding.LayoutClassinfoDialogBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionExerciseAdapter
 import org.navgurukul.learn.ui.learn.adapter.RevisionClassAdapter
@@ -310,11 +311,13 @@ class ClassFragment: Fragment() {
         val btAlertDialog: AlertDialog? = builder.create()
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val binding = LayoutClassinfoDialogBinding.bind(alertLayout)
+        binding.tvClassTitle.text = batch.title
 
-        val tvClassTitle = alertLayout.findViewById<TextView>(R.id.tvClassTitle)
-        tvClassTitle.text = batch.title
-        val tvBatchDate = alertLayout.findViewById<TextView>(R.id.tv_Batch_Date)
-        tvBatchDate.text = batch.dateRange()
+//        val tvClassTitle = alertLayout.findViewById<TextView>(R.id.tvClassTitle)
+//        tvClassTitle.text = batch.title
+//        val tvBatchDate = alertLayout.findViewById<TextView>(R.id.tv_Batch_Date)
+        binding.tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
             learnViewModel.handle(LearnFragmentViewActions.PrimaryAction(selectedBatch?.id?:0, true))

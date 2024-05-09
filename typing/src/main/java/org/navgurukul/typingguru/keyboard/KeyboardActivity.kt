@@ -78,12 +78,12 @@ setContentView(binding.root)
             binding.txtTimer.text = state.timerText
         })
 
-        viewModel.viewEvents.observe(this, { event ->
-            when (event) {
+        viewModel.viewEvents.observe(this, {
+            when (it) {
                 is KeyboardViewEvent.ShakeKey -> {
                     binding.courseKeysView.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
-                    binding.keyboardView.incorrectKey = event.key
+                    binding.keyboardView.incorrectKey = it.key
                     incorrectKeyJob?.cancel()
                     incorrectKeyJob = lifecycleScope.launch {
                         delay(500)
@@ -95,10 +95,10 @@ setContentView(binding.root)
                     intent = ScoreActivity.newInstance(
                         this,
                         ScoreActivityArgs(
-                            event.rightKeys,
-                            event.wrongKeys,
-                            event.timeTaken,
-                            event.mode
+                            it.rightKeys,
+                            it.wrongKeys,
+                            it.timeTaken,
+                            it.mode
                         )
                     )
                     startActivity(intent)

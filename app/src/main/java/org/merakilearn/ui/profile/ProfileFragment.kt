@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private lateinit var mBinding: FragmentProfileBinding
     private lateinit var mAdapter: EnrolledBatchAdapter
-    lateinit var btnCross:ImageView
+    private lateinit var btnCross:ImageView
 
 
     override fun onCreateView(
