@@ -28,10 +28,10 @@
         app:showAsAction="never"
         android:visible="false"/>
 
-    <item
-        android:id="@+id/web_browser"
-        android:title="@string/open_in_web_browser"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/web_browser"-->
+<!--        android:title="@string/open_in_web_browser"-->
+<!--        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/web_logs"

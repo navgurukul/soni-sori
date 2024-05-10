@@ -194,11 +194,11 @@ class WebActivity : ThemedActivity() {
                     .show()
                 return true
             }
-            R.id.web_browser -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(localUrl))
-                startActivity(intent)
-                return true
-            }
+//            R.id.web_browser -> {
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(localUrl))
+//                startActivity(intent)
+//                return true
+//            }
             R.id.web_logs -> {
                 val layoutLog = SheetLogsBinding.inflate(LayoutInflater.from(this@WebActivity))
                 val darkTheme = prefs["dark_theme", false]!!
