@@ -70,16 +70,14 @@ class WebActivity : ThemedActivity() {
         webSettings.loadsImagesAutomatically = true;
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
 
-       // binding.webView.loadUrl("/storage/emulated/0/Android/data/org.merakilearn/files/Download/Meraki/nikhil/images/favicon.ico")
-
         binding.include.toolbar.title = project
         setSupportActionBar(binding.include.toolbar)
         binding.webView.settings.javaScriptEnabled = true
-        localUrl =
-            if (NetworkUtils.server!!.wasStarted() && NetworkUtils.server!!.isAlive && NetworkUtils.ipAddress != null)
-                "http://${NetworkUtils.ipAddress}:${HyperServer.PORT_NUMBER}/$indexPath"
-            else
-                intent.getStringExtra("localUrl")!!
+        localUrl = "/storage/emulated/0/Android/data/org.merakilearn/files/Download/Meraki/$project/index.html"
+//            if (NetworkUtils.server!!.wasStarted() && NetworkUtils.server!!.isAlive && NetworkUtils.ipAddress != null)
+//                "http://${NetworkUtils.ipAddress}:${HyperServer.PORT_NUMBER}/$indexPath"
+//            else
+//                intent.getStringExtra("localUrl")!!
 
         localWithoutIndex = localUrl.substring(0, localUrl.length - 10)
         binding.webView.loadUrl(localUrl)

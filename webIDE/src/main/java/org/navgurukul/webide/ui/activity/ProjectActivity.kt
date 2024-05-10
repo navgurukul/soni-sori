@@ -207,7 +207,9 @@ class ProjectActivity : BaseActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        toggle.syncState()
+        if(::toggle.isInitialized) {
+            toggle.syncState()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
