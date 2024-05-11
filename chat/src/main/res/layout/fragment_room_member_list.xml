@@ -7,7 +7,6 @@
     <include layout="@layout/fragment_room_setting_generic" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/inviteUsersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

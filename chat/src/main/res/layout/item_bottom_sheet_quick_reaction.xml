@@ -89,7 +89,6 @@
         tools:text="👀" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/reactionsFlowHelper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="quickReaction0,quickReaction1,quickReaction2,quickReaction3,quickReaction4,quickReaction5,quickReaction6,quickReaction7"

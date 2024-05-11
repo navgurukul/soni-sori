@@ -7,7 +7,6 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/mels_list_avatar_1"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:adjustViewBounds="true"
@@ -15,17 +14,6 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/mels_list_avatar_2"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="-5dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        tools:ignore="NegativeMargin"
-        tools:src="@tools:sample/avatars" />
-
-    <ImageView
-        android:id="@+id/mels_list_avatar_3"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="-5dp"
@@ -35,7 +23,6 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/mels_list_avatar_4"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="-5dp"
@@ -45,7 +32,15 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/mels_list_avatar_5"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="-5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:ignore="NegativeMargin"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="-5dp"

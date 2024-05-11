@@ -7,7 +7,6 @@
     android:background="?attr/selectableItemBackground">
 
     <org.navgurukul.commonui.platform.CheckableView
-        android:id="@+id/messageSelectedBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/viewStubContainer"
@@ -43,7 +42,6 @@
             tools:visibility="visible" />
 
         <ViewStub
-            android:id="@+id/messageContentBlankStub"
             style="@style/TimelineContentStubBaseParams"
             android:layout_width="0dp"
             android:layout_height="0dp"

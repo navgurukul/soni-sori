@@ -120,7 +120,6 @@
         tools:listitem="@layout/item_timeline_event_text_message" />
 
     <FrameLayout
-        android:id="@+id/bannersContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

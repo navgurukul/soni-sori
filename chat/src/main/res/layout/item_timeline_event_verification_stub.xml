@@ -7,7 +7,6 @@
 
 
     <TextView
-        android:id="@+id/itemVerificationTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -21,7 +20,6 @@
 
 
     <TextView
-        android:id="@+id/itemVerificationDetailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,7 +32,6 @@
         tools:text="Alice (@alice:navgurukul.org)" />
 
     <LinearLayout
-        android:id="@+id/itemVerificationButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -42,14 +39,12 @@
         tools:visibility="visible">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sas_verification_verified_decline_button"
             android:layout_marginEnd="16dp"
             android:text="@string/decline"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sas_verification_verified_accept_button"
             android:text="@string/accept"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content" />
@@ -57,7 +52,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/itemVerificationStatusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

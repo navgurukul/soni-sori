@@ -19,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/related_message_background_top_separator"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?borderColor"
@@ -28,7 +27,6 @@
         app:layout_constraintTop_toTopOf="@id/related_message_backround" />
 
     <View
-        android:id="@+id/related_message_background_bottom_separator"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?borderColor"

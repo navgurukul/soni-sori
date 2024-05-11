@@ -7,7 +7,6 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/waiting_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/waiting_background_color"
@@ -21,7 +20,6 @@
         tools:visibility="visible">
 
         <LinearLayout
-            android:id="@+id/waiting_view_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_4x"
@@ -40,14 +38,12 @@
                 android:orientation="horizontal">
 
                 <ProgressBar
-                    android:id="@+id/waiting_view_status_circular_progress"
                     android:layout_width="@dimen/circular_progress_bar_size"
                     android:layout_height="@dimen/circular_progress_bar_size"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="@dimen/spacing_2x" />
 
                 <TextView
-                    android:id="@+id/waiting_view_status_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -59,7 +55,6 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/waiting_view_status_horizontal_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
