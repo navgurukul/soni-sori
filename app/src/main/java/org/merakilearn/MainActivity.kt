@@ -150,6 +150,13 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .thumbnail(thumbnail)
             .transform(CircleCrop())
             .into(it)
+
+//        it.setOnClickListener {
+//            if (userRepo.isFakeLogin())
+//                OnBoardingActivity.showLoginScreen(this)
+//            else
+//                ProfileActivity.launch(this)
+//        }
     }
 
     override fun configure(toolbar: Toolbar) {
@@ -165,7 +172,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         action: String?,
         actionOnClickListener: View.OnClickListener?,
         showLogout: Boolean,
-        showPathwayIcon: Boolean,
+        showPathwayIcon : Boolean,
         pathwayIcon: String?
     ) {
         binding.headerTitle.text = title

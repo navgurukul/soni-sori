@@ -81,7 +81,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
     }
 }
 
-class PathwaySelectionAdapter(private val context: Context, private val callback: (Pathway) -> Unit) :
+class PathwaySelectionAdapter( val context: Context,  val callback: (Pathway) -> Unit) :
     DataBoundListAdapter<Pathway, ItemPathwayBinding>(
         mDiffCallback = object : DiffUtil.ItemCallback<Pathway>() {
             override fun areItemsTheSame(oldItem: Pathway, newItem: Pathway): Boolean {
