@@ -25,8 +25,8 @@ data class Course(
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
     var completedPortion : Int? = null,
-    @Json(name = "logo")
-    var logo : String
+    @Json(name = "android_logo")
+    val androidLogo: String?,
 ){
     @Ignore
     @Json(name = "course_content")

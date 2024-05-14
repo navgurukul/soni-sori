@@ -403,6 +403,14 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
     }
 }
 
+val MIGRATION_15_16 = object : Migration(15, 16) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Add the new column android_logo
+        database.execSQL("ALTER TABLE pathway_course ADD COLUMN android_logo TEXT")
+
+        // Since the new column allows null, no need to do data migration
+    }
+}
 
 // When ever we do any change in local db need to write migration script here.
 @Database(

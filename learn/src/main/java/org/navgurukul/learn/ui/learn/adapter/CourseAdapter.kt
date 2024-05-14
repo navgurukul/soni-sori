@@ -56,13 +56,13 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         val binding = holder.binding
         binding.course = item.course
 
-        if (item.course.logo?.endsWith(".svg") == true) {
-            SvgLoader(context).loadSvgFromUrl(item.course.logo, binding.ivLogo)
-        } else{
+        if (item.course.androidLogo?.endsWith(".svg") == true) {
+            SvgLoader(context).loadSvgFromUrl(item.course.androidLogo, binding.ivLogo)
+        } else {
             val thumbnail = Glide.with(holder.itemView)
                 .load(R.drawable.ic_lock)
             Glide.with(binding.ivLogo)
-                .load(item.course.logo)
+                .load(item.course.androidLogo)
                 .thumbnail(thumbnail)
                 .into(binding.ivLogo)
         }
