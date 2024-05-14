@@ -24,7 +24,9 @@ data class Course(
     @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
-    var completedPortion : Int? = null
+    var completedPortion : Int? = null,
+    @Json(name = "logo")
+    var logo : String
 ){
     @Ignore
     @Json(name = "course_content")
