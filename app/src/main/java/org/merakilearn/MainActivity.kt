@@ -67,12 +67,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         mainActivityArgs.let { args ->
-            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+            //appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
     }
 
 
-    private val appOpenDelegate: AppOpenDelegate by inject()
+    //private val appOpenDelegate: AppOpenDelegate by inject()
     private val mainActivityArgs: MainActivityArgs by activityArgs()
     private val userRepo: UserRepo by inject()
     private val learnRepo: LearnRepo by inject()
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         mainActivityArgs.let { args ->
-            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+            //appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
 
         findViewById<ImageView>(R.id.headerIv).let {
