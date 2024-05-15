@@ -16,7 +16,8 @@ import org.merakilearn.core.di.coreModules
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.di.appModules
 //import org.navgurukul.chat.core.ChatInitializer
-import org.navgurukul.chat.core.di.chatModules
+//import org.navgurukul.chat.core.di.chatModules
+import org.navgurukul.chat.core.di.factoryModule
 import org.navgurukul.commonui.di.commonUIModules
 import org.navgurukul.learn.di.learnModules
 import org.navgurukul.playground.di.playgroundModules
@@ -35,7 +36,7 @@ class MerakiApp : Application() {
         startKoin {
             androidContext(this@MerakiApp)
             androidLogger()
-            modules(appModules + chatModules + learnModules + playgroundModules + commonUIModules + coreModules)
+            modules(appModules + factoryModule + learnModules + playgroundModules + commonUIModules + coreModules)
         }
 
         val builder: FirebaseOptions.Builder = FirebaseOptions.Builder()

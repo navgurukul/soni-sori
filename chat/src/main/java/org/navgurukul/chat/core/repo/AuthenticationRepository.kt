@@ -27,7 +27,7 @@ class AuthenticationRepository(
     private val appContext: Context
 ) {
 
-    suspend fun getLoginFlow(): LoginFlowResult? = suspendCoroutine {
+    private suspend fun getLoginFlow(): LoginFlowResult? = suspendCoroutine {
         authService.getLoginFlow(
             HomeServerConnectionConfig.Builder()
                 .withHomeServerUri(stringProvider.getString(R.string.home_server_url))

@@ -21,20 +21,20 @@ class PushRuleTriggerListener(
             Timber.e("Called without active session")
         }
 
-        val notificationAction = actions.toNotificationAction()
-        if (notificationAction.shouldNotify) {
-            val notifiableEvent = resolver.resolveEvent(event, safeSession)
-            if (notifiableEvent == null) {
-                Timber.v("## Failed to resolve event")
-                // TODO
-            } else {
-                notifiableEvent.noisy = !notificationAction.soundName.isNullOrBlank()
-                Timber.v("New event to notify")
-                notificationDrawerManager.onNotifiableEventReceived(notifiableEvent)
-            }
-        } else {
-            Timber.v("Matched push rule is set to not notify")
-        }
+//        val notificationAction = actions.toNotificationAction()
+//        if (notificationAction.shouldNotify) {
+//            val notifiableEvent = resolver.resolveEvent(event, safeSession)
+//            if (notifiableEvent == null) {
+//                Timber.v("## Failed to resolve event")
+//                // TODO
+//            } else {
+//                notifiableEvent.noisy = !notificationAction.soundName.isNullOrBlank()
+//                Timber.v("New event to notify")
+//                notificationDrawerManager.onNotifiableEventReceived(notifiableEvent)
+//            }
+//        } else {
+//            Timber.v("Matched push rule is set to not notify")
+//        }
     }
 
     override fun onRoomLeft(roomId: String) {

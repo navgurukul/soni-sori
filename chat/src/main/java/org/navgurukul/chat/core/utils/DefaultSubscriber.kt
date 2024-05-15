@@ -16,17 +16,17 @@
 
 package org.navgurukul.chat.core.utils
 
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
-import io.reactivex.internal.functions.Functions
-import timber.log.Timber
-
-fun <T> Single<T>.subscribeLogError(): Disposable {
-    return subscribe(Functions.emptyConsumer(), Consumer { Timber.e(it) })
-}
-
-fun Completable.subscribeLogError(): Disposable {
-    return subscribe({}, { Timber.e(it) })
-}
+//import io.reactivex.Completable
+//import io.reactivex.Single
+//import io.reactivex.disposables.Disposable
+//import io.reactivex.functions.Consumer
+//import io.reactivex.internal.functions.Functions
+//import timber.log.Timber
+//
+//fun <T> Single<T>.subscribeLogError(): Disposable {
+//    return subscribe(Functions.emptyConsumer(), Consumer { Timber.e(it) })
+//}
+//
+//fun Completable.subscribeLogError(): Disposable {
+//    return subscribe({}, { Timber.e(it) })
+//}
