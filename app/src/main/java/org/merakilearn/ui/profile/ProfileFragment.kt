@@ -29,6 +29,7 @@ import org.merakilearn.R
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
+import org.merakilearn.databinding.ItemEnrolledBatchBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.PartnerDataResponse
@@ -46,7 +47,7 @@ class ProfileFragment : Fragment() {
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private lateinit var mBinding: FragmentProfileBinding
     private lateinit var mAdapter: EnrolledBatchAdapter
-    private lateinit var btnCross:ImageView
+    private lateinit var mItemBinding: ItemEnrolledBatchBinding
 
 
     override fun onCreateView(
@@ -56,6 +57,8 @@ class ProfileFragment : Fragment() {
     ): View {
         mBinding = FragmentProfileBinding.inflate(inflater, container, false)
         return mBinding.root
+        mItemBinding = ItemEnrolledBatchBinding.inflate(inflater, container, false)
+        return mItemBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +68,6 @@ class ProfileFragment : Fragment() {
 
         initShowEnrolledBatches()
 
-        btnCross= requireActivity().findViewById(R.id.btnCross)
         mBinding.btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
@@ -127,7 +129,7 @@ class ProfileFragment : Fragment() {
             showDropOutDialog(batches)
         }
 
-        btnCross?.setOnClickListener {
+        mItemBinding.btnCross?.setOnClickListener {
             showDropOutDialog(batches)
         }
     }
