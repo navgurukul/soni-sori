@@ -76,9 +76,6 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":commonUI"))
 
-    api(MiscellaneousDependencies.AutoService)
-    kapt(MiscellaneousDependencies.AutoService)
-
     //AndroidX
     implementation(AndroidxDependencies.appcompat)
     implementation(AndroidxDependencies.coreKtx)
