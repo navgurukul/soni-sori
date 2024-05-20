@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 15
+const val DB_VERSION = 16
 
 @Dao
 interface PathwayDao {
@@ -405,10 +405,7 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
 
 val MIGRATION_15_16 = object : Migration(15, 16) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        // Add the new column android_logo
-        database.execSQL("ALTER TABLE pathway_course ADD COLUMN android_logo TEXT")
-
-        // Since the new column allows null, no need to do data migration
+        database.execSQL("ALTER TABLE `pathway_course` ADD COLUMN `androidLogo` TEXT")
     }
 }
 
