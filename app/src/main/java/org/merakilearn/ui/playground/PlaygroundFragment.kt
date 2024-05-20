@@ -156,6 +156,7 @@ class PlaygroundFragment : BaseFragment() {
         negativeButton.setTextColor(Color.RED)
 
         createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            viewModel.handle(PlaygroundActions.RefreshLayout)
             if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
                 val name = rootView.nameLayout.editText!!.text.toString()
 

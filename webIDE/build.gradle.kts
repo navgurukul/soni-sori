@@ -34,6 +34,10 @@ dependencies {
 
 //    kapt(MiscellaneousDependencies.AutoService)
 //    implementation(MiscellaneousDependencies.AutoService)
+
+    implementation ("com.google.auto.service:auto-service:1.0.1")
+    kapt ("com.google.auto.service:auto-service:1.0.1")
+
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playCore)
 

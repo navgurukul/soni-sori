@@ -59,6 +59,7 @@ android {
         exclude("META-INF/notice.txt")
         exclude("META-INF/ASL2.0")
         exclude("META-INF/*.kotlin_module")
+        merge ("/META-INF/services/*")
     }
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
@@ -75,6 +76,9 @@ dependencies {
     implementation(project(":python"))
     implementation(project(":core"))
     implementation(project(":commonUI"))
+
+    implementation ("com.google.auto.service:auto-service:1.0.1")
+    kapt ("com.google.auto.service:auto-service:1.0.1")
 
     //AndroidX
     implementation(AndroidxDependencies.appcompat)
