@@ -9,6 +9,12 @@ interface SaralApi {
     @POST("users/auth/v2/google")
     suspend fun initLoginAsync(@Body loginRequest: LoginRequest): LoginResponse
 
+    @POST("users/auth/merakiStudent")
+    suspend fun loginWithUsername(
+        @Body userNameLoginRequest: UsernameLoginRequest
+    ) : UsernameLoginResponse
+
+
 //    @GET("classes")
 //    suspend fun getMyClassesAsync(): List<Classes>     //Api not in use
 
@@ -51,4 +57,5 @@ interface SaralApi {
         @Path("projectId") projectId: String,
         @Body projectNameAndUrl: ProjectNameAndUrl
     ): Response<UpdateSuccessS3UploadResponse>
+
 }

@@ -11,10 +11,10 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
+import org.merakilearn.datasource.network.model.UsernameLoginResponse
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
-import org.navgurukul.learn.courses.network.wrapper.Resource
 
 class UserRepo(
     private val saralApi: SaralApi,
@@ -32,6 +32,8 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER_FETCHED = "KEY_INSTALL_REFERRER_FETCHED"
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
+        private const val KEY_USER_ID = "KEY_USER_ID"
+
     }
 
     var installReferrerFetched: Boolean
@@ -108,12 +110,27 @@ class UserRepo(
             putString(KEY_USER_RESPONSE, user.jsonify())
         }
     }
+    private fun saveUserResponse(student: UsernameLoginResponse.StudentInfo){
+        preferences.edit{
+            putString(KEY_USER_RESPONSE, student.jsonify())
+        }
+    }
 
     fun saveUserLoginResponse(
         response: LoginResponse,
     ) {
         saveUserResponse(response.user)
         preferences.edit {
+            putString(KEY_AUTH_TOKEN, response.token)
+            putBoolean(KEY_USER_LOGIN, true)
+        }
+    }
+
+    fun saveLoginUsernameResponse(
+        response: UsernameLoginResponse,
+    ) {
+        response.student?.let { saveUserResponse(it) }
+        preferences.edit{
             putString(KEY_AUTH_TOKEN, response.token)
             putBoolean(KEY_USER_LOGIN, true)
         }

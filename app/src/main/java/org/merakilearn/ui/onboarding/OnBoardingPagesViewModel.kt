@@ -1,5 +1,6 @@
 package org.merakilearn.ui.onboarding
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -40,6 +41,7 @@ class OnBoardingPagesViewModel(
         when (action) {
 //            is OnBoardingPagesAction.InitiateFakeSignUp -> handleFakeSignUp()
             is OnBoardingPagesAction.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
+            is OnBoardingPagesAction.LoginWithUsername -> loginWithUsername(action.userName, action.password)
             is OnBoardingPagesAction.Next -> {
                 val nextItem = action.currentItem + 1
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(nextItem))
@@ -65,6 +67,7 @@ class OnBoardingPagesViewModel(
                     )
                 }
             }
+
         }
     }
 
@@ -97,6 +100,7 @@ class OnBoardingPagesViewModel(
             }
         }
     }
+
 
 //    private fun handleFakeSignUp() {
 //        viewModelScope.launch {
@@ -153,6 +157,21 @@ class OnBoardingPagesViewModel(
             } ?: run { _viewEvents.setValue(OnBoardingPagesEvents.OpenCourseSelection) }
         }
     }
+
+    fun loginWithUsername(userName: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val loginResponse = loginRepository.loginWithUserName(userName, password)
+                loginResponse
+                Log.d("Username", "loginWithUserName in OnBoardingPagesViewmodel: $loginResponse")
+            }catch (ex: Exception) {
+                Log.d("Username", "loginWithUserName in OnBoardingPagesViewmodel failed here: $ex")
+                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+            }
+        }
+    }
+
+
 }
 
 sealed class OnBoardingPagesEvents : ViewEvents {
@@ -168,6 +187,7 @@ sealed class OnBoardingPagesAction : ViewModelAction {
     data class Next(val currentItem: Int) : OnBoardingPagesAction()
     data class PageSelected(val currentItem: Int) : OnBoardingPagesAction()
 //    object InitiateFakeSignUp : OnBoardingPagesAction()
+    data class LoginWithUsername(val userName: String, val password: String) : OnBoardingPagesAction()
 }
 
 data class OnBoardingPagesViewState(
