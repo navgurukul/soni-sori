@@ -10,7 +10,6 @@ import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_mcq_option.view.clOption
 import org.navgurukul.learn.R.*
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.databinding.ItemMcqOptionBinding
@@ -237,7 +236,7 @@ class OptionSelectionAdapter(
                                     checkBox.setButtonDrawable(drawable.cancel_circle_optionincorrect)
                                     checkBox.buttonTintList =
                                         ColorStateList.valueOf(Color.parseColor("#D63447"))
-                                    tvCardOption.clOption.setOnTouchListener(null)
+                                    clOption.setOnTouchListener(null)
                                 }
                             } else {
                                 ivImgOption.visibility = View.VISIBLE

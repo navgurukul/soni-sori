@@ -6,7 +6,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -15,8 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.dialog_create.view.*
-import kotlinx.android.synthetic.main.fragment_playground.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -24,6 +24,7 @@ import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.databinding.FragmentPlaygroundBinding
 import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
@@ -44,6 +45,7 @@ class PlaygroundFragment : BaseFragment() {
     private val navigator: MerakiNavigator by inject()
     var isLoading: Boolean = false
     lateinit var exportFile: File
+    private lateinit var binding: FragmentPlaygroundBinding
 
     private var contents: Array<String>? = null
     private var contentsList: ArrayList<String>? = null
@@ -53,15 +55,24 @@ class PlaygroundFragment : BaseFragment() {
     private var imageStream: InputStream? = null
     private lateinit var projectIcon: ImageView
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding=FragmentPlaygroundBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun getLayoutResId() = R.layout.fragment_playground
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.layoutManager = GridLayoutManager(context, 4)
+
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 4)
         initSearchListener()
 
         val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
-        recycler_view.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
+        binding.recyclerView.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
         adapter =
             PlaygroundAdapter(requireContext()) { playgroundItemModel, view, isLongClick ->
@@ -83,7 +94,7 @@ class PlaygroundFragment : BaseFragment() {
 
             }
         if (isLoading) showLoading() else dismissLoadingDialog()
-        recycler_view.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.setData(it.playgroundsList)
@@ -256,7 +267,7 @@ class PlaygroundFragment : BaseFragment() {
     }
 
     private fun initSearchListener() {
-        search_view.setOnQueryTextListener(object :
+        binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.handle(PlaygroundActions.Query(query))
@@ -302,4 +313,7 @@ class PlaygroundFragment : BaseFragment() {
         private const val IMPORT_PROJECT = 102
     }
 
+}
+interface fragmentViewBinding{
+    fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
 }
