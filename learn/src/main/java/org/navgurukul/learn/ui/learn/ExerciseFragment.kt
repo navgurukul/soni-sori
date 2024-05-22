@@ -116,11 +116,13 @@ class ExerciseFragment : Fragment() {
 
     private fun showErrorScreen(isError: Boolean) {
         if (isError) {
-            mBinding.errorLayout.root.visibility = View.VISIBLE
-            mBinding.contentLayout.visibility = View.GONE
+            mBinding.apply { errorLayout.root.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE}
         } else {
-            mBinding.errorLayout.root.visibility = View.GONE
-            mBinding.contentLayout.visibility = View.VISIBLE
+            mBinding.apply {
+                errorLayout.root.visibility = View.GONE
+                contentLayout.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -177,12 +179,13 @@ class ExerciseFragment : Fragment() {
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
-        mBinding.recyclerViewSlug.layoutManager = layoutManager
-        mBinding.recyclerViewSlug.adapter = contentAdapter
-        mBinding.recyclerViewSlug.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_8x), 0)
-        )
-
+        mBinding.apply {
+            recyclerViewSlug.layoutManager = layoutManager
+            recyclerViewSlug.adapter = contentAdapter
+            recyclerViewSlug.addItemDecoration(
+                SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_8x), 0)
+            )
+        }
     }
 
 }

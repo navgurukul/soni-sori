@@ -92,11 +92,13 @@ class KeyboardDialogFragment : BaseDialogFragment() {
             }
         })
 
-        binding.btnOwn.setOnClickListener {
-            viewModel.handle(KeyboardDialogViewActions.OwnButtonClicked)
-        }
-        binding.btnPurchase.setOnClickListener {
-            viewModel.handle(KeyboardDialogViewActions.BuyButtonClicked)
+        binding.apply {
+            btnOwn.setOnClickListener {
+                viewModel.handle(KeyboardDialogViewActions.OwnButtonClicked)
+            }
+            btnPurchase.setOnClickListener {
+                viewModel.handle(KeyboardDialogViewActions.BuyButtonClicked)
+            }
         }
     }
 

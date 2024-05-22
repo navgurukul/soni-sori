@@ -47,22 +47,22 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             viewModel.selectBatch(it)
         }
 
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(
+        binding.apply {recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
                     R.dimen.spacing_3x
                 ), 0
             )
         )
-        binding.recyclerView.addItemDecoration(
+        recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             ).apply {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
-
+    }
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.batches.take(3))
         }

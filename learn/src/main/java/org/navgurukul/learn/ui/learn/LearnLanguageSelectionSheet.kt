@@ -50,22 +50,23 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
         adapter = LanguageSelectionAdapter {
             viewModel.selectLanguage(it)
         }
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(
+        binding.apply {
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
                     R.dimen.spacing_3x
                 ), 0
             )
         )
-        binding.recyclerView.addItemDecoration(
+        recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             ).apply {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
-
+    }
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.languages)
         }
@@ -97,9 +98,11 @@ class LanguageSelectionAdapter(val callback: (Language) -> Unit) :
 
     override fun bind(holder: DataBoundViewHolder<ItemLanguageBinding>, item: Language) {
         val binding = holder.binding
-        binding.language = item
-        binding.root.setOnClickListener {
-            callback.invoke(item)
+        binding.apply {
+            language = item
+            root.setOnClickListener {
+                callback.invoke(item)
+            }
         }
     }
 

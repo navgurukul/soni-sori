@@ -47,23 +47,27 @@ class ScoreActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         viewModel.viewState.observe(this, Observer {
-            binding.txtAccuracy.text = it.accuracy
-            binding.txtTimeTaken.text = it.timeTaken
-            binding.txtWpm.text = "${it.wpm}"
-            binding.speedometer.speedTo(it.wpm.toFloat())
+            binding.apply {
+                txtAccuracy.text = it.accuracy
+                txtTimeTaken.text = it.timeTaken
+                txtWpm.text = "${it.wpm}"
+                speedometer.speedTo(it.wpm.toFloat())
+            }
         })
 
         setSupportActionBar(binding.toolbar)
 
-        binding.toolbar.setNavigationOnClickListener { finish() }
+        binding.apply {
+            toolbar.setNavigationOnClickListener { finish() }
 
-        binding.btnRetake.setOnClickListener {
-            val intent = KeyboardActivity.newIntent(this, scoreActivityArgs.mode, true)
-            startActivity(intent)
-            finish()
-        }
-        binding.btnBackToLessons.setOnClickListener {
-            finish()
+            btnRetake.setOnClickListener {
+                val intent = KeyboardActivity.newIntent(this@ScoreActivity, scoreActivityArgs.mode, true)
+                startActivity(intent)
+                finish()
+            }
+            btnBackToLessons.setOnClickListener {
+                finish()
+            }
         }
     }
 }
