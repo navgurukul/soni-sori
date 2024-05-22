@@ -54,21 +54,28 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         adapter = PathwaySelectionAdapter(requireContext()) {
             viewModel.selectPathway(it)
         }
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(
-            SpaceItemDecoration(
-                requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
-                ), 0
+        binding.apply {
+            recyclerView.adapter = adapter
+            recyclerView.addItemDecoration(
+                SpaceItemDecoration(
+                    requireContext().resources.getDimensionPixelSize(
+                        R.dimen.spacing_3x
+                    ), 0
+                )
             )
-        )
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            ).apply {
-                setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
-            })
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                ).apply {
+                    setDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.divider
+                        )!!
+                    )
+                })
+        }
 
         viewModel.viewState.observe(viewLifecycleOwner, { state ->
             val filteredPathways = state.pathways.filter { it.platform == "both" }
@@ -102,9 +109,12 @@ class PathwaySelectionAdapter( val context: Context,  val callback: (Pathway) ->
 
     override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
         val binding = holder.binding
-        binding.pathway = item
-        binding.root.setOnClickListener {
-            callback.invoke(item)
+        binding.apply {
+            pathway = item
+
+            root.setOnClickListener {
+                callback.invoke(item)
+            }
         }
 
         if (item.logo?.endsWith(".svg") == true) {

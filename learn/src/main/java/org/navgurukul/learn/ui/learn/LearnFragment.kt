@@ -108,8 +108,10 @@ class LearnFragment : Fragment() {
 
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.swipeContainer.isRefreshing = false
-            mBinding.progressBarButton.isVisible = it.loading
+            mBinding.apply {
+                swipeContainer.isRefreshing = false
+                progressBarButton.isVisible = it.loading
+            }
             mCourseAdapter.submitList(it.courses, it.logo, it.pathwayData)
             configureToolbar(
                 it.subtitle,
@@ -119,21 +121,24 @@ class LearnFragment : Fragment() {
                 it.logo
             )
 //            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
-            mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
+            mBinding.apply {
+                layoutTakeTest.isVisible = it.showTakeTestButton
+
 
             if (!it.classes.isEmpty()) {
-                mBinding.upcoming.root.isVisible = true
+                upcoming.root.isVisible = true
                 initUpcomingRecyclerView(it.classes)
-                mBinding.enrolledButFinished.root.isVisible = false
+                enrolledButFinished.root.isVisible = false
             } else {
-                mBinding.upcoming.root.isVisible = false
+                upcoming.root.isVisible = false
             }
             if (!it.batches.isEmpty()) {
-                mBinding.batchCard.root.isVisible = true
+                batchCard.root.isVisible = true
                 setUpUpcomingData(it.batches.first())
             } else {
-                mBinding.batchCard.root.isVisible = false
+                batchCard.root.isVisible = false
             }
+        }
 
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
@@ -141,18 +146,24 @@ class LearnFragment : Fragment() {
 
             when(it.code) {
                 "PRGPYT" -> {
-                    mBinding.certificate.root.visibility = View.VISIBLE
-                    mBinding.dotAdding.root.visibility = View.VISIBLE    //this wil show the dot
-                    mBinding.certificate.txtCertificate.text = "Python Certificate"
+                    mBinding.apply {
+                        certificate.root.visibility = View.VISIBLE
+                        dotAdding.root.visibility = View.VISIBLE    //this wil show the dot
+                        certificate.txtCertificate.text = "Python Certificate"
+                    }
                 }
                 "SCRTHB" -> {
-                    mBinding.certificate.root.visibility = View.VISIBLE
-                    mBinding.dotAdding.root.visibility = View.VISIBLE
-                    mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+                    mBinding.apply {
+                        certificate.root.visibility = View.VISIBLE
+                        dotAdding.root.visibility = View.VISIBLE
+                        certificate.txtCertificate.text = "Scratch Certificate"
+                    }
                 }
                 else -> {
-                    mBinding.certificate.root.visibility = View.GONE
-                    mBinding.dotAdding.root.visibility = View.GONE
+                    mBinding.apply {
+                        certificate.root.visibility = View.GONE
+                        dotAdding.root.visibility = View.GONE
+                    }
                 }
             }
 
@@ -191,14 +202,18 @@ class LearnFragment : Fragment() {
                 }
                 is LearnFragmentViewEvents.ShowUpcomingClasses -> {
                     initUpcomingRecyclerView(it.classes)
-                    mBinding.upcoming.root.visibility = View.VISIBLE
-                    mBinding.batchCard.root.visibility = View.GONE
-                    mBinding.enrolledButFinished.root.visibility = View.GONE
+                    mBinding.apply {
+                        root.visibility = View.VISIBLE
+                        batchCard.root.visibility = View.GONE
+                        enrolledButFinished.root.visibility = View.GONE
+                    }
 
                 }
                 is LearnFragmentViewEvents.ShowCompletedStatus -> {
-                    mBinding.enrolledButFinished.root.visibility = View.VISIBLE
-                    mBinding.upcoming.root.visibility = View.GONE
+                    mBinding.apply {
+                        enrolledButFinished.root.visibility = View.VISIBLE
+                        upcoming.root.visibility = View.GONE
+                    }
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
                     getCertificate(it.pdfUrl, it.getCompletedPortion, it.pathwayName)
@@ -231,12 +246,16 @@ class LearnFragment : Fragment() {
 
     private fun showErrorScreen(isError: Boolean) {
         if (isError) {
-            mBinding.progressBarButton.visibility = View.GONE
-            mBinding.emptyStateView.root.isVisible = true
-            mBinding.courseContainer.visibility = View.GONE
+            mBinding.apply {
+                progressBarButton.visibility = View.GONE
+                emptyStateView.root.isVisible = true
+                courseContainer.visibility = View.GONE
+            }
         } else {
-            mBinding.emptyStateView.root.isVisible = false
-            mBinding.courseContainer.visibility = View.VISIBLE
+            mBinding.apply {
+                emptyStateView.root.isVisible = false
+                courseContainer.visibility = View.VISIBLE
+            }
         }
     }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
@@ -258,13 +277,15 @@ class LearnFragment : Fragment() {
                 val dialog = BottomSheetDialog(requireContext())
                 binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
                 pdfView = binding.idPDFView
-                binding.txtCertificate.text = getString(R.string.text_certificate, pathwayName)
-                binding.txt.text = getString(R.string.certificate_information, pathwayName)
-                binding.tvDownload.setOnClickListener {
-                    generatePDF(pdfUrl)
-                }
-                binding.tvShare.setOnClickListener {
-                    showShareIntent(pdfUrl)
+                binding.apply {
+                    txtCertificate.text = getString(R.string.text_certificate, pathwayName)
+                    txt.text = getString(R.string.certificate_information, pathwayName)
+                    tvDownload.setOnClickListener {
+                        generatePDF(pdfUrl)
+                    }
+                    tvShare.setOnClickListener {
+                        showShareIntent(pdfUrl)
+                    }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     download(pdfUrl, pdfView)
@@ -382,22 +403,26 @@ class LearnFragment : Fragment() {
 
 
     private fun setUpUpcomingData(batch: Batch) {
-        mBinding.batchCard.tvType.text = batch.sanitizedType() + " :"
-        mBinding.batchCard.tvTitleBatch.text = batch.title
-        mBinding.batchCard.tvBatchDate.text = batch.dateRange()
-        mBinding.batchCard.tvText.text = "Can't start on ${batch.startTime?.toDate()}"
-        mBinding.batchCard.tvBtnEnroll.setOnClickListener {
-            showEnrolDialog(batch)
-        }
-        mBinding.batchCard.moreClasse.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+        mBinding.apply {
+            batchCard.tvType.text = batch.sanitizedType() + " :"
+            batchCard.tvTitleBatch.text = batch.title
+            batchCard.tvBatchDate.text = batch.dateRange()
+            batchCard.tvText.text = "Can't start on ${batch.startTime?.toDate()}"
+            batchCard.tvBtnEnroll.setOnClickListener {
+                showEnrolDialog(batch)
+            }
+            batchCard.moreClasse.setOnClickListener {
+                viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+            }
         }
     }
 
     private fun showTestButton(cta: PathwayCTA) {
-        mBinding.buttonTakeTest.text = cta.value
-        mBinding.buttonTakeTest.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
+        mBinding.apply {
+            buttonTakeTest.text = cta.value
+            buttonTakeTest.setOnClickListener {
+                viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
+            }
         }
     }
 
@@ -514,10 +539,12 @@ class LearnFragment : Fragment() {
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        mBinding.upcoming.recyclerViewUpcoming.layoutManager = layoutManager
-        mBinding.upcoming.recyclerViewUpcoming.adapter = mClassAdapter
+        mBinding.apply {
+            upcoming.recyclerViewUpcoming.layoutManager = layoutManager
+            mBinding.upcoming.recyclerViewUpcoming.adapter = mClassAdapter
 
-        mClassAdapter.submitList(upcomingClassList)
+            mClassAdapter.submitList(upcomingClassList)
+        }
     }
 
     private fun initRecyclerView() {
@@ -527,11 +554,13 @@ class LearnFragment : Fragment() {
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        mBinding.recyclerviewCourse.layoutManager = layoutManager
-        mBinding.recyclerviewCourse.adapter = mCourseAdapter
-        mBinding.recyclerviewCourse.addItemDecoration(
-            DotItemDecoration(requireContext())
-        )
+        mBinding.apply {
+            recyclerviewCourse.layoutManager = layoutManager
+            recyclerviewCourse.adapter = mCourseAdapter
+            recyclerviewCourse.addItemDecoration(
+                DotItemDecoration(requireContext())
+            )
+        }
     }
 
 }

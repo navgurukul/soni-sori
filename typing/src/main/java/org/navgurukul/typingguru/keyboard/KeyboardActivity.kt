@@ -65,17 +65,19 @@ class KeyboardActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKeyboardBinding.inflate(layoutInflater)
-setContentView(binding.root)
+        setContentView(binding.root)
 
         hideSystemUI()
 
         viewModel.viewState.observe(this, { state ->
-            binding.courseKeysView.setKeys(state.courseKeys)
-            binding.courseKeysView.currentKeyIndex = state.activeKeyIndex
-            binding.keyboardView.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
-            binding.progressBar.max = state.maxProgress
-            binding.progressBar.progress = state.currentProgress
-            binding.txtTimer.text = state.timerText
+            binding.apply {
+                courseKeysView.setKeys(state.courseKeys)
+                courseKeysView.currentKeyIndex = state.activeKeyIndex
+                keyboardView.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
+                progressBar.max = state.maxProgress
+                progressBar.progress = state.currentProgress
+                txtTimer.text = state.timerText
+            }
         })
 
         viewModel.viewEvents.observe(this, {
@@ -90,6 +92,7 @@ setContentView(binding.root)
                         binding.keyboardView.incorrectKey = null
                     }
                 }
+
                 is KeyboardViewEvent.OpenScoreActivity -> {
                     Toast.makeText(this, "Lesson completed", Toast.LENGTH_SHORT).show()
                     intent = ScoreActivity.newInstance(
@@ -106,14 +109,15 @@ setContentView(binding.root)
                 }
             }
         })
-
-        binding.btnBack.setOnClickListener {
+        binding.apply {
+        btnBack.setOnClickListener {
             finish()
         }
 
-        binding.btnSettings.setOnClickListener {
-            startActivity(WebViewActivity.newIntent(this))
+        btnSettings.setOnClickListener {
+            startActivity(WebViewActivity.newIntent(this@KeyboardActivity))
         }
+    }
         if (!keyboardActivityArgs.retake) {
             showInfoDialog()
         }
