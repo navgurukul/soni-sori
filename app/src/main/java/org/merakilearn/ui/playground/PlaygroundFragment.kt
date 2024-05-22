@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.dialog_create.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -180,7 +181,7 @@ class PlaygroundFragment : BaseFragment() {
                     name,
                     imageStream,
                     adapter,
-                    coordinatorLayout,
+                    binding.coordinatorLayout,
                     0
                 )
                 adapter.notifyDataSetChanged()
