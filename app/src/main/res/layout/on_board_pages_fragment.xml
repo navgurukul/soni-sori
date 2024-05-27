@@ -107,7 +107,7 @@
                 android:insetBottom="0dp"
                 android:text="@string/login_with_username"
                 android:textAllCaps="false"
-                android:textColor="@color/green_progress_color"
+                android:textColor="@color/white"
                 app:iconGravity="textStart"
                 android:visibility="gone"
                 android:textStyle="bold"
@@ -121,7 +121,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:strokeColor="@color/green_progress_color" />
+                android:backgroundTint="@color/green_progress_color" />
+
 
             <!--    <com.google.android.material.button.MaterialButton-->
             <!--        android:id="@+id/skip_login"-->
