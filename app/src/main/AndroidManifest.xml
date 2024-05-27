@@ -135,6 +135,7 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".ui.onboarding.UsernameLoginActivity"/>
 
         <service
             android:name=".fcm.MerakiMessagingService"

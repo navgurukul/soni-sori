@@ -12,7 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.android.synthetic.main.on_board_pages_fragment.*
+import kotlinx.android.synthetic.main.on_board_pages_fragment.login_layout
+import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_google
+import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_username
+import kotlinx.android.synthetic.main.on_board_pages_fragment.nav_layout
+import kotlinx.android.synthetic.main.on_board_pages_fragment.next
+import kotlinx.android.synthetic.main.on_board_pages_fragment.skip
+import kotlinx.android.synthetic.main.on_board_pages_fragment.tab_layout
+import kotlinx.android.synthetic.main.on_board_pages_fragment.viewPager2
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -53,6 +60,10 @@ class OnBoardPagesFragment : BaseFragment() {
 //        }
         login_with_google.setOnClickListener {
             signInWithGoogle()
+        }
+        login_with_username.setOnClickListener {
+            startActivity(Intent(requireContext(), UsernameLoginActivity::class.java))
+
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {
