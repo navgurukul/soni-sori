@@ -31,18 +31,18 @@
 <!--                app:layout_constraintStart_toStartOf="parent"-->
 <!--                tools:text="@string/skip_login_english" />-->
 
-<!--    <com.google.android.material.tabs.TabLayout-->
-<!--        android:id="@+id/tab_layout"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/next"-->
-<!--        app:layout_constraintStart_toEndOf="@id/skip"-->
-<!--        app:tabBackground="@drawable/tab_pager_selector"-->
-<!--        app:tabGravity="center"-->
-<!--        app:tabIndicatorHeight="0dp"-->
-<!--        android:layout_marginBottom="@dimen/spacing_4x"/>-->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tabBackground="@drawable/tab_pager_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:layout_marginBottom="@dimen/spacing_4x"/>
 
 <!--    <com.google.android.material.button.MaterialButton-->
 <!--        android:id="@+id/next"-->
@@ -57,11 +57,10 @@
 <!--        android:layout_marginBottom="@dimen/spacing_4x"-->
 <!--        android:layout_marginEnd="@dimen/spacing_4x"/>-->
 
-<!--            <androidx.constraintlayout.widget.Group-->
-<!--                android:id="@+id/nav_layout"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:constraint_referenced_ids="next, tab_layout, skip" />-->
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/nav_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/login_layout"

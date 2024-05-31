@@ -15,10 +15,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.android.synthetic.main.on_board_pages_fragment.login_layout
 import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_google
 import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_username
-//import kotlinx.android.synthetic.main.on_board_pages_fragment.nav_layout
+import kotlinx.android.synthetic.main.on_board_pages_fragment.nav_layout
 //import kotlinx.android.synthetic.main.on_board_pages_fragment.next
 //import kotlinx.android.synthetic.main.on_board_pages_fragment.skip
-//import kotlinx.android.synthetic.main.on_board_pages_fragment.tab_layout
+import kotlinx.android.synthetic.main.on_board_pages_fragment.tab_layout
 import kotlinx.android.synthetic.main.on_board_pages_fragment.viewPager2
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,7 +73,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 configurePages(it.onBoardingData, it.onBoardingTranslations)
             }
 
-//            nav_layout.isVisible = it.isNavLayoutVisible
+            nav_layout.isVisible = it.isNavLayoutVisible
             login_layout.isVisible = it.isLoginLayoutVisible
         }
 
@@ -109,7 +109,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 )
 
             viewPager2.adapter = onBoardPagesAdapter
-//            TabLayoutMediator(tab_layout, viewPager2) { _, _ -> }.attach()
+            TabLayoutMediator(tab_layout, viewPager2) { _, _ -> }.attach()
             (viewPager2.getChildAt(0) as RecyclerView).overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER
 
