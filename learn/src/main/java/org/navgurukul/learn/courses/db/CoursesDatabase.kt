@@ -6,8 +6,9 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 
-const val DB_VERSION = 15
+const val DB_VERSION = 16
 
 @Dao
 interface PathwayDao {
@@ -133,6 +134,23 @@ interface AssessmentDao{
     suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 
 
+}
+@Dao
+interface CompletedContentsIdsDao {
+    @Insert
+    suspend fun insert(completedContentsIds: CompletedContentsIds)
+
+    @Update
+    suspend fun update(completedContentsIds: CompletedContentsIds)
+
+    @Delete
+    suspend fun delete(completedContentsIds: CompletedContentsIds)
+
+    @Query("SELECT * FROM completed_contents_ids")
+    suspend fun getAllCompletedContentsIds(): List<CompletedContentsIds>
+
+    @Query("SELECT * FROM completed_contents_ids WHERE rowid = :id")
+    suspend fun getCompletedContentsIdsById(id: Long): CompletedContentsIds?
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -408,10 +426,20 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
     }
 }
 
-
+val MIGRATION_15_16 =object : Migration(15, 16) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS `completed_contents_ids` (" +
+                    "`exercises` TEXT," +
+                    "`assessments` TEXT," +
+                    "`classes` TEXT" +
+                    ")"
+        )
+    }
+}
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class, CompletedContentsIds::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -425,5 +453,6 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun currentStudyDao(): CurrentStudyDao
     abstract fun classDao(): ClassDao
     abstract fun assessmentDao() : AssessmentDao
+    abstract fun completedContentsIdsDao(): CompletedContentsIdsDao
 
 }

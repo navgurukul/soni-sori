@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.network.model
 
+import androidx.room.Entity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -14,7 +15,7 @@ data class LearningTrackStatus(
 )
 
 
-
+@Entity(tableName = "completed_contents_ids")
 @JsonClass(generateAdapter = true)
 data class CompletedContentsIds(
     @Json(name= "exercises")
