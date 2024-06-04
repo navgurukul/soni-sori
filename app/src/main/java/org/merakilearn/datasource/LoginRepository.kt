@@ -1,7 +1,6 @@
 package org.merakilearn.datasource
 
 import android.app.Application
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -11,8 +10,6 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginRequest
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.ResidentialProgramPathwayResponse
-import org.merakilearn.datasource.network.model.UsernameLoginRequest
-import org.merakilearn.datasource.network.model.UsernameLoginResponse
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 
@@ -45,22 +42,6 @@ class LoginRepository(
             null
         }
     }
-
-    suspend fun loginWithUserName(userName : String, password : String) : UsernameLoginResponse {
-        return try {
-            val request = UsernameLoginRequest(userName, password)
-            val response = applicationApi.loginWithUsername(request)
-            Log.d("Username", "loginWithUserName in loginRepository: $response")
-            userRepo.saveLoginUsernameResponse(response)
-            response
-        } catch (ex: Exception) {
-            Log.d("Username", "loginWithUserName in loginRepository failed here: $ex")
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            UsernameLoginResponse(null, "")
-        }
-
-    }
-
 
 
 //    suspend fun performFakeSignUp(): LoginResponse? {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -94,7 +90,7 @@ class OnBoardingActivity : AppCompatActivity() {
                 )
 
                 OnBoardingViewEvents.ShowCourseSelectionScreen -> showFragment(
-                    SelectCourseFragment.newInstance(), SelectCourseFragment.TAG
+                    SelectCourseFragment.newInstance(), SelectCourseFragment.TAG,
                 )
 
                 OnBoardingViewEvents.ShowLoginScreen -> showFragment(
@@ -105,6 +101,11 @@ class OnBoardingActivity : AppCompatActivity() {
                 OnBoardingViewEvents.ShowPartnerScreen -> showFragment(
                     PartnerFragment.newInstance(),
                     PartnerFragment.TAG
+                )
+
+                OnBoardingViewEvents.ShowUserNameLoginScreen -> showFragment(
+                    UsernameLoginFragment.newInstance(),
+                    UsernameLoginFragment.TAG
                 )
             }
         }

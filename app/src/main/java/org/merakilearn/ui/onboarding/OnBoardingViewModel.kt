@@ -3,6 +3,7 @@ package org.merakilearn.ui.onboarding
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.merakilearn.InstallReferrerManager
+import org.merakilearn.R
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.UserRepo
@@ -13,6 +14,7 @@ import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
+import org.navgurukul.commonui.resources.StringProvider
 import java.net.URLDecoder
 
 class OnBoardingViewModel(
@@ -20,7 +22,8 @@ class OnBoardingViewModel(
     private val userRepo: UserRepo,
     private val config: Config,
     private val corePreferences: CorePreferences,
-    private val installReferrerManager: InstallReferrerManager
+    private val installReferrerManager: InstallReferrerManager,
+    private val stringProvider: StringProvider,
 ) :
     BaseViewModel<OnBoardingViewEvents, OnBoardingViewState>(OnBoardingViewState()) {
 
@@ -112,7 +115,25 @@ class OnBoardingViewModel(
                 _viewEvents.setValue(
                     OnBoardingViewEvents.ShowCourseSelectionScreen
                 )
+            }
+            is OnBoardingViewActions.NavigateToUsernameLoginScreen -> {
+                _viewEvents.setValue(OnBoardingViewEvents.ShowUserNameLoginScreen)
+            }
+        }
+    }
 
+    fun loginWithUsername(userName: String, password: String){
+        viewModelScope.launch {
+            val loginResponse = userRepo.loginWithUserName(userName, password)
+
+            loginResponse
+            if (loginResponse != null) {
+                _viewEvents.setValue(
+                    OnBoardingViewEvents.ShowCourseSelectionScreen
+                )
+//                _viewEvents.setValue(OnBoardingViewActions.NavigateNextFromPartnerDataScreen)
+            } else {
+                _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
         }
     }
@@ -126,6 +147,8 @@ sealed class OnBoardingViewEvents : ViewEvents {
     object ShowLoginScreen : OnBoardingViewEvents()
     object ShowPartnerScreen : OnBoardingViewEvents()
     data class ShowPartnerData(val partnerData: PartnerDataResponse) : OnBoardingViewEvents()
+    data class ShowToast(val toastText: String) : OnBoardingViewEvents()
+    object ShowUserNameLoginScreen : OnBoardingViewEvents()
 }
 
 sealed class OnBoardingViewActions : ViewModelAction {
@@ -134,6 +157,7 @@ sealed class OnBoardingViewActions : ViewModelAction {
     data class OpenHomeScreen(val pathwayId: Int) : OnBoardingViewActions()
     object GetPartnerData : OnBoardingViewActions()
     object NavigateNextFromPartnerDataScreen : OnBoardingViewActions()
+    object NavigateToUsernameLoginScreen : OnBoardingViewActions()
 }
 
 

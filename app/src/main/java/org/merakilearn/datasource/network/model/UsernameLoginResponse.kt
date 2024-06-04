@@ -2,14 +2,16 @@ package org.merakilearn.datasource.network.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class UsernameLoginResponse(
-    @Json(name = "student")
-    val student: StudentInfo?,
+    @Json(name = "user")
+    val student: StudentInfo,
     @Json(name = "token")
     val token: String
 ){
+    @JsonClass(generateAdapter = true)
     data class StudentInfo (
         @Json(name = "id")
         var id: Int,
@@ -20,8 +22,13 @@ data class UsernameLoginResponse(
         @Json(name = "partner_id")
         val partnerId: Int,
         @Json(name = "created_at")
-        val createdAt : String
-    )
+        val createdAt : String,
+        @Json(name = "rolesList")
+        val rolesList : List<String>,
+        @Json(name = "flag")
+        val flag : String?,
+    ): Serializable
+
 }
 
 
@@ -33,7 +40,7 @@ data class UsernameLoginRequest(
 
     @Json(name = "password")
     val password: String
-)
+): Serializable
 
 @JsonClass(generateAdapter = true)
 data class UserLoginErrorBlock(

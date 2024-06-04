@@ -11,6 +11,7 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
+import org.merakilearn.datasource.network.model.UsernameLoginRequest
 import org.merakilearn.datasource.network.model.UsernameLoginResponse
 import org.navgurukul.chat.core.repo.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
@@ -33,7 +34,8 @@ class UserRepo(
         private const val KEY_INSTALL_REFERRER_UPLOADED = "KEY_INSTALL_REFERRER_UPLOADED"
         private const val KEY_USER_LOGIN = "KEY_USER_LOGIN"
         private const val KEY_USER_ID = "KEY_USER_ID"
-
+        private const val KEY_USER_PASSWORD = "KEY_USER_PASSWORD"
+        private const val KEY_USERID_LOGIN_RESPONSE = "KEY_USERID_LOGIN_RESPONSE"
     }
 
     var installReferrerFetched: Boolean
@@ -90,6 +92,20 @@ class UserRepo(
         }
     }
 
+
+    fun getCurrentUserFromID(): UsernameLoginResponse.StudentInfo? {
+        val userLoginResponseStringUsername = preferences.getString(KEY_USERID_LOGIN_RESPONSE, null)
+        return try {
+            if (userLoginResponseStringUsername.isNullOrEmpty()) {
+                null
+            } else {
+                userLoginResponseStringUsername.objectify()
+            }
+        } catch (e : Exception){
+            throw IllegalStateException("Current user is null after username login" )
+        }
+    }
+
     suspend fun updateProfile(user: LoginResponse.User, referrer: String? = null): Boolean {
         return try {
             val response = saralApi.initUserUpdateAsync(
@@ -110,12 +126,12 @@ class UserRepo(
             putString(KEY_USER_RESPONSE, user.jsonify())
         }
     }
-    private fun saveUserResponse(student: UsernameLoginResponse.StudentInfo){
+
+    private fun saveUserResponseFromUSERId(student: UsernameLoginResponse.StudentInfo){
         preferences.edit{
-            putString(KEY_USER_RESPONSE, student.jsonify())
+            putString(KEY_USERID_LOGIN_RESPONSE, student.jsonify())
         }
     }
-
     fun saveUserLoginResponse(
         response: LoginResponse,
     ) {
@@ -126,10 +142,11 @@ class UserRepo(
         }
     }
 
+
     fun saveLoginUsernameResponse(
         response: UsernameLoginResponse,
     ) {
-        response.student?.let { saveUserResponse(it) }
+        saveUserResponseFromUSERId(response.student)
         preferences.edit{
             putString(KEY_AUTH_TOKEN, response.token)
             putBoolean(KEY_USER_LOGIN, true)
@@ -179,4 +196,21 @@ class UserRepo(
             null!!
         }
     }
+
+    suspend fun loginWithUserName(userName : String, password : String) : UsernameLoginResponse? {
+        return try {
+            val request = UsernameLoginRequest(userName, password)
+            val response = saralApi.loginWithUsername(request)
+            saveLoginUsernameResponse(response)
+            response
+
+
+        } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            null
+        }
+
+    }
+
+
 }

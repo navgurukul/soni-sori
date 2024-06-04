@@ -62,8 +62,9 @@ class OnBoardPagesFragment : BaseFragment() {
             signInWithGoogle()
         }
         login_with_username.setOnClickListener {
-            startActivity(Intent(requireContext(), UsernameLoginActivity::class.java))
-
+            onBoardingViewModel.handle(
+                OnBoardingViewActions.NavigateToUsernameLoginScreen
+            )
         }
 
         viewModel.viewState.observe(viewLifecycleOwner) {

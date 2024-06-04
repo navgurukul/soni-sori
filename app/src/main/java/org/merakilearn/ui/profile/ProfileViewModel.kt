@@ -1,6 +1,5 @@
 package org.merakilearn.ui.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +14,7 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
+import org.merakilearn.datasource.network.model.UsernameLoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
@@ -45,25 +45,40 @@ class ProfileViewModel(
     }
 
 
-    private val user: LoginResponse.User
+    private val user: LoginResponse.User?
+    private val userIdUser : UsernameLoginResponse.StudentInfo?
 
     init {
         val appVersionText = BuildConfig.VERSION_NAME
-        user = userRepo.getCurrentUser()!!
+        user = userRepo.getCurrentUser()
+        userIdUser = userRepo.getCurrentUserFromID()
         val decodeReferrer =
             URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
         val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
         val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
 
 
-        setState {
-            copy(
-                appVersionText = appVersionText,
-                userName = user.name,
-                userEmail = user.email,
-                profilePic = user.profilePicture
-            )
+        if (user != null) {
+            setState {
+                copy(
+                    appVersionText = appVersionText,
+                    userName = user.name,
+                    userEmail = user.email,
+                    profilePic = user.profilePicture
+                )
+            }
+        } else {
+            setState {
+                copy(
+                    appVersionText = appVersionText,
+                    userName = userIdUser?.name,
+                    userEmail = userIdUser?.userName,
+                    profilePic = userIdUser?.name
+                )
+            }
         }
+
+
         if (partnerIdValue != null) {
             checkPartner(partnerIdValue)
         }
@@ -72,7 +87,7 @@ class ProfileViewModel(
             updateFiles()
         }
         getEnrolledBatches()
-        val id = user.partnerId.toString()
+        val id = user?.partnerId.toString()
         if (id != null) {
             checkPartner(id)
         }
@@ -214,19 +229,19 @@ class ProfileViewModel(
             copy(showProgressBar = true, userName = userName, userEmail = email)
         }
         viewModelScope.launch {
-            user.name = userName
-            user.email = email
-            val success = userRepo.updateProfile(user)
+            user?.name = userName
+            user?.email = email
+            val success = user?.let { userRepo.updateProfile(it) }
             setState {
                 copy(
                     showProgressBar = false,
-                    showEditProfileLayout = !success,
-                    showUpdateProfile = !success
+                    showEditProfileLayout = !success!!,
+                    showUpdateProfile = !success!!
                 )
             }
-            val toastText =
-                stringProvider.getString(if (success) R.string.profile_updated_successfully else R.string.unable_to_update)
-            _viewEvents.setValue(ProfileViewEvents.ShowToast(toastText, success))
+
+            val toastText = stringProvider.getString(if (success == true) R.string.profile_updated_successfully else R.string.unable_to_update)
+            success?.let { ProfileViewEvents.ShowToast(toastText, it) }?.let { _viewEvents.setValue(it) }
         }
 
     }

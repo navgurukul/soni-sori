@@ -1,6 +1,7 @@
 package org.merakilearn.ui.onboarding
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -14,6 +15,7 @@ import org.merakilearn.core.utils.CorePreferences
 import org.merakilearn.datasource.LoginRepository
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
+import org.merakilearn.datasource.network.model.UsernameLoginResponse
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -21,6 +23,7 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import java.net.URLDecoder
 
+@Suppress("UNUSED_EXPRESSION")
 class OnBoardingPagesViewModel(
     private val loginRepository: LoginRepository,
     private val stringProvider: StringProvider,
@@ -41,7 +44,6 @@ class OnBoardingPagesViewModel(
         when (action) {
 //            is OnBoardingPagesAction.InitiateFakeSignUp -> handleFakeSignUp()
             is OnBoardingPagesAction.LoginWithAuthToken -> loginWithAuthToken(action.authToken)
-            is OnBoardingPagesAction.LoginWithUsername -> loginWithUsername(action.userName, action.password)
             is OnBoardingPagesAction.Next -> {
                 val nextItem = action.currentItem + 1
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(nextItem))
@@ -158,18 +160,6 @@ class OnBoardingPagesViewModel(
         }
     }
 
-    fun loginWithUsername(userName: String, password: String) {
-        viewModelScope.launch {
-            try {
-                val loginResponse = loginRepository.loginWithUserName(userName, password)
-                loginResponse
-                Log.d("Username", "loginWithUserName in OnBoardingPagesViewmodel: $loginResponse")
-            }catch (ex: Exception) {
-                Log.d("Username", "loginWithUserName in OnBoardingPagesViewmodel failed here: $ex")
-                _viewEvents.setValue(OnBoardingPagesEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
-            }
-        }
-    }
 
 
 }

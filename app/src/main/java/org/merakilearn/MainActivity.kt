@@ -94,13 +94,17 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
 
-        findViewById<ImageView>(R.id.headerIv).let {
-            userRepo.getCurrentUser()?.let { currentUser ->
-                setUserThumbnail(it, currentUser)
-            } ?: run {
-                OnBoardingActivity.restartApp(this@MainActivity)
-            }
-        }
+//        findViewById<ImageView>(R.id.headerIv).let {
+//            userRepo.getCurrentUser()?.let { currentUser ->
+//                setUserThumbnail(it, currentUser)
+//            } ?: run {
+//                userRepo.saveLoginUsernameResponse()?.let { loginResponse ->
+//                    setUserThumbnail(it, loginResponse.user)
+//                }
+//
+//                OnBoardingActivity.restartApp(this@MainActivity)
+//            }
+//        }
 
         findViewById<ImageView>(R.id.headerLogOut).let {
             setUserLogoutThumbnail(it)

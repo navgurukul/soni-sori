@@ -21,7 +21,11 @@ import org.merakilearn.EnrollViewModel
 import org.merakilearn.InstallReferrerManager
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.core.navigator.AppModuleNavigator
-import org.merakilearn.datasource.*
+import org.merakilearn.datasource.ClassesRepo
+import org.merakilearn.datasource.LoginRepository
+import org.merakilearn.datasource.PlaygroundRepo
+import org.merakilearn.datasource.SettingsRepo
+import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.navigation.AppModuleNavigationContract
 import org.merakilearn.repo.ScratchRepository
@@ -32,10 +36,30 @@ import org.merakilearn.ui.onboarding.OnBoardingPagesViewModel
 import org.merakilearn.ui.onboarding.OnBoardingViewModel
 import org.merakilearn.ui.playground.PlaygroundViewModel
 import org.merakilearn.ui.profile.ProfileViewModel
-import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.db.models.BannerBaseCourseContent
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.BlockQuoteBaseCourseContent
+import org.navgurukul.learn.courses.db.models.CodeBaseCourseContent
+import org.navgurukul.learn.courses.db.models.CourseAssessmentContent
+import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.CourseContents
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
+import org.navgurukul.learn.courses.db.models.HeaderBaseCourseContent
+import org.navgurukul.learn.courses.db.models.ImageBaseCourseContent
+import org.navgurukul.learn.courses.db.models.LinkBaseCourseContent
+import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
+import org.navgurukul.learn.courses.db.models.OutputBaseCourseContent
+import org.navgurukul.learn.courses.db.models.QuestionCodeBaseCourseContent
+import org.navgurukul.learn.courses.db.models.QuestionExpressionBaseCourseContent
+import org.navgurukul.learn.courses.db.models.SolutionBaseCourseContent
+import org.navgurukul.learn.courses.db.models.TableBaseCourseContent
+import org.navgurukul.learn.courses.db.models.TextBaseCourseContent
+import org.navgurukul.learn.courses.db.models.UnknownBaseCourseContent
+import org.navgurukul.learn.courses.db.models.YoutubeBaseCourseContent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 
@@ -43,7 +67,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
+    viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get(), get()) }
     viewModel { PlaygroundViewModel( get(),get(), get()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
