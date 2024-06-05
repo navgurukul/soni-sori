@@ -7,6 +7,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.GetCompletedPortion
+import org.navgurukul.learn.courses.network.PathwayData
 
 const val DB_VERSION = 16
 
@@ -133,6 +135,26 @@ interface AssessmentDao{
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
     suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 
+}
+
+@Dao
+interface CompletedPortionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCompletedPortion(completedPortion: GetCompletedPortion)
+
+    @Query("select * from completed_portion")
+    fun getCompletedPortion(): GetCompletedPortion?
+}
+
+@Dao
+interface PathwayDataDao{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPathwayData(pathwayData: PathwayData)
+
+    @Query("select * from pathway_data")
+    fun getPathwayData(): List<PathwayData>?
+    @Query("select * from pathway_data where courseId = :courseId")
+    fun getPathwayDataByCourseId(courseId: Int): PathwayData?
 
 }
 @Dao
@@ -418,11 +440,6 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
         database.execSQL("INSERT INTO `course_assessment_temp` SELECT * FROM `course_assessment`")
         database.execSQL("DROP TABLE `course_assessment`")
         database.execSQL("ALTER TABLE `course_assessment_temp` RENAME TO `course_assessment`")
-
-        // Create new tables for exercise_progress, class_progress, and assessment_progress
-        database.execSQL("CREATE TABLE 'exercise_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
-        database.execSQL("CREATE TABLE 'class_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
-        database.execSQL("CREATE TABLE 'assessment_progress' ( 'id' TEXT NOT NULL, 'progress' TEXT NOT NULL, PRIMARY KEY('id') )")
     }
 }
 
@@ -439,7 +456,7 @@ val MIGRATION_15_16 =object : Migration(15, 16) {
 }
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class, CompletedContentsIds::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class,CompletedContentsIds::class, GetCompletedPortion::class, PathwayData::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -455,4 +472,6 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun assessmentDao() : AssessmentDao
     abstract fun completedContentsIdsDao(): CompletedContentsIdsDao
 
+    abstract fun completedPortionDao(): CompletedPortionDao
+    abstract fun pathwayDataDao(): PathwayDataDao
 }

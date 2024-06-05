@@ -1,6 +1,5 @@
 package org.navgurukul.learn.ui.learn
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.room.Ignore
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -91,25 +90,23 @@ class LearnFragmentViewModel(
 
     private fun getCompletedPortion(pathwayId: Int) {
         viewModelScope.launch {
-            val response = learnRepo.getCompletedPortion(pathwayId)
-            when (response) {
-                is Resource.Success -> {
-                    response.data?.let {
+            try{
+            learnRepo.getCompletedPortion(pathwayId, true).collect {
+                it?.run {
+                    it.let {
                         setState {
                             copy(
+                                totalCompletedPortion = it.totalCompletedPortion,
                                 pathwayData = it.pathway
                             )
                         }
                     }
-                    response
-                }
-                is Resource.Error -> {
-                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
-                }
-                else -> {
-                    FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
                 }
             }
+
+        } catch (ex: Exception){
+            FirebaseCrashlytics.getInstance().recordException(Exception(ex.message))
+        }
         }
     }
 
@@ -306,21 +303,23 @@ class LearnFragmentViewModel(
 
      private fun getCertificate(pathwayId: Int, pathwayCode: String, pathwayName: String){
          viewModelScope.launch {
-             val response = learnRepo.getCompletedPortion(pathwayId)
-             when (response) {
-                 is Resource.Success -> {
-                     response.data?.let {
-                         getCertificatePdf(it.totalCompletedPortion, pathwayCode, pathwayName)
+             try {
+                 learnRepo.getCompletedPortion(pathwayId, true).collect {
+                     it?.run {
+                         it.let {
+                             setState {
+                                 copy(
+                                     totalCompletedPortion = it.totalCompletedPortion,
+                                     pathwayData = it.pathway
+                                 )
+                             }
+
+                             getCertificatePdf(it.totalCompletedPortion, pathwayCode, pathwayName)
+                         }
                      }
-                     response
                  }
-                 is Resource.Error -> {
-                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
-                 }
-                 else -> {
-                     Log.d("LearnFragmentViewModel", response.message?:"")
-                     FirebaseCrashlytics.getInstance().recordException(Exception(response.message))
-                 }
+             } catch (e: Exception) {
+                 FirebaseCrashlytics.getInstance().recordException(Exception(e.message))
              }
          }
     }
@@ -413,7 +412,8 @@ data class LearnFragmentViewState(
     val classId: Int = 0,
     val pathwayData : List<PathwayData> = arrayListOf(),
     @Ignore
-    var shouldShowCertificate: Boolean = false
+    var shouldShowCertificate: Boolean = false,
+    val totalCompletedPortion : Int = 0
 ) : ViewState
 
 sealed class LearnFragmentViewEvents : ViewEvents {

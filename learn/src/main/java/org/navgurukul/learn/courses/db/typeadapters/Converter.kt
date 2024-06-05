@@ -9,8 +9,9 @@ import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.Facilitator
 import org.navgurukul.learn.courses.db.models.PathwayCTA
+import org.navgurukul.learn.courses.network.PathwayData
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Date
 
 @ProvidedTypeConverter
 class Converters(val moshi: Moshi) {
@@ -31,6 +32,10 @@ class Converters(val moshi: Moshi) {
 //        PathwayCTA::class.java,
 //    )
 
+    private val pathwayDataType: Type = Types.newParameterizedType(
+        List::class.java,
+        PathwayData::class.java
+    )
 
     private val intListType: Type = Types.newParameterizedType(
         List::class.java,
@@ -42,6 +47,9 @@ class Converters(val moshi: Moshi) {
     private val languageAdapter = moshi.adapter<List<Language>>(languageListType)
     private val pathwayCtaAdapter: JsonAdapter<PathwayCTA> = moshi.adapter<PathwayCTA>(PathwayCTA::class.java)
     private val intListAdapter = moshi.adapter<List<Int>>(intListType)
+    private val pathwayDataAdapter = moshi.adapter<List<PathwayData>>(pathwayDataType)
+
+
 
     @TypeConverter
     fun exerciseDetailListToString(list: List<BaseCourseContent>): String? {
@@ -123,5 +131,17 @@ class Converters(val moshi: Moshi) {
     @TypeConverter
     fun toTimestamp(date: Date): Long {
         return date.time
+    }
+
+    @TypeConverter
+    fun pathwayDataListToString(list: List<PathwayData>): String? {
+        if (list.isNullOrEmpty()) return null
+        return pathwayDataAdapter.toJson(list)
+    }
+
+    @TypeConverter
+    fun stringToPathwayDataList(stringValue: String?): List<PathwayData>? {
+        if (stringValue.isNullOrEmpty()) return emptyList()
+        return pathwayDataAdapter.fromJson(stringValue)
     }
 }
