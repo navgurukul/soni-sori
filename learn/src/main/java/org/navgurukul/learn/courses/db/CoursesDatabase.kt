@@ -10,7 +10,7 @@ import org.navgurukul.learn.courses.network.model.CompletedContentsIds
 import org.navgurukul.learn.courses.network.GetCompletedPortion
 import org.navgurukul.learn.courses.network.PathwayData
 
-const val DB_VERSION = 16
+const val DB_VERSION = 17
 
 @Dao
 interface PathwayDao {
@@ -451,6 +451,25 @@ val MIGRATION_15_16 =object : Migration(15, 16) {
         )
     }
 }
+
+val MIGRATION_16_17 = object : Migration(16, 17) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS `completed_portion` (" +
+                    "`totalCompletedPortion` INTEGER NOT NULL, " +
+                    "`pathway` TEXT NOT NULL, " +
+                    "PRIMARY KEY(`totalCompletedPortion`))"
+        )
+
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS `pathway_data` (" +
+                    "`courseId` INTEGER NOT NULL, " +
+                    "`completedPortion` INTEGER NOT NULL, " +
+                    "PRIMARY KEY(`courseId`))"
+        )
+    }
+}
+
 // When ever we do any change in local db need to write migration script here.
 @Database(
     entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class,CompletedContentsIds::class, GetCompletedPortion::class, PathwayData::class],
