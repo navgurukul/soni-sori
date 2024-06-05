@@ -6,6 +6,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
+import org.navgurukul.learn.courses.network.GetCompletedPortion
+import org.navgurukul.learn.courses.network.PathwayData
 
 const val DB_VERSION = 15
 
@@ -132,6 +134,26 @@ interface AssessmentDao{
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
     suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
 
+}
+
+@Dao
+interface CompletedPortionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCompletedPortion(completedPortion: GetCompletedPortion)
+
+    @Query("select * from completed_portion")
+    fun getCompletedPortion(): GetCompletedPortion?
+}
+
+@Dao
+interface PathwayDataDao{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPathwayData(pathwayData: PathwayData)
+
+    @Query("select * from pathway_data")
+    fun getPathwayData(): List<PathwayData>?
+    @Query("select * from pathway_data where courseId = :courseId")
+    fun getPathwayDataByCourseId(courseId: Int): PathwayData?
 
 }
 
@@ -406,7 +428,7 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
-    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class],
+    entities = [Pathway::class, Course::class, CourseExerciseContent::class, CurrentStudy::class, CourseClassContent::class, CourseAssessmentContent::class, GetCompletedPortion::class, PathwayData::class],
     version = DB_VERSION,
     exportSchema = false
 )
@@ -420,4 +442,6 @@ abstract class CoursesDatabase : RoomDatabase() {
     abstract fun currentStudyDao(): CurrentStudyDao
     abstract fun classDao(): ClassDao
     abstract fun assessmentDao() : AssessmentDao
+    abstract fun completedPortionDao(): CompletedPortionDao
+    abstract fun pathwayDataDao(): PathwayDataDao
 }

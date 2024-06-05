@@ -361,10 +361,6 @@ class LearnRepo(
         }
     }
 
-    suspend fun getCompletedPortion(pathwayId: Int): Resource<GetCompletedPortion> {
-        return safeApiCall {  courseApi.getCompletedPortionData(pathwayId)}
-    }
-
     suspend fun getCertificate(pathwayCode : String): Resource<CertificateResponse>{
         return safeApiCall { courseApi.getCertificate(pathwayCode) }
     }
@@ -449,5 +445,33 @@ class LearnRepo(
             FirebaseCrashlytics.getInstance().recordException(e)
             e.printStackTrace()
         }
+    }
+
+
+    fun getCompletedPortion(pathwayId: Int, forceUpdate: Boolean): Flow<GetCompletedPortion?> {
+        val completedPortionDao = database.completedPortionDao()
+        val pathwayDataDao = database.pathwayDataDao()
+        return try {
+            networkBoundResourceFlow(
+                loadFromDb = {
+                    val data = completedPortionDao.getCompletedPortion()
+                    data?.pathway = pathwayDataDao.getPathwayData()!!
+                    data
+                }, shouldFetch = { data ->
+                    (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null))
+                }, makeApiCallAsync = {
+                    courseApi.getCompletedPortionData(pathwayId)
+                }, saveCallResult = { data ->
+                    data.pathway.forEach {
+                        pathwayDataDao.insertPathwayData(it)
+                    }
+                    completedPortionDao.insertCompletedPortion(data)
+                }
+            )
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            null!!
+        }
+
     }
 }
