@@ -140,10 +140,10 @@ interface AssessmentDao{
 @Dao
 interface CompletedPortionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCompletedPortion(completedPortion: GetCompletedPortion)
+    suspend fun insertCompletedPortion(completedPortion: GetCompletedPortion)
 
     @Query("select * from completed_portion")
-    fun getCompletedPortion(): GetCompletedPortion?
+    suspend fun getCompletedPortion(): GetCompletedPortion?
 }
 
 @Dao

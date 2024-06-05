@@ -4,11 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.asFlow
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.Course
@@ -454,18 +453,24 @@ class LearnRepo(
         return try {
             networkBoundResourceFlow(
                 loadFromDb = {
-                    val data = completedPortionDao.getCompletedPortion()
-                    data?.pathway = pathwayDataDao.getPathwayData()!!
-                    data
+                    withContext(Dispatchers.IO) {
+                        val data = completedPortionDao.getCompletedPortion()
+                        data?.pathway = pathwayDataDao.getPathwayData()!!
+                        data
+                    }
                 }, shouldFetch = { data ->
-                    (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && (data == null))
+                    (forceUpdate && LearnUtils.isOnline(application)) || (LearnUtils.isOnline(application) && data == null)
                 }, makeApiCallAsync = {
                     courseApi.getCompletedPortionData(pathwayId)
                 }, saveCallResult = { data ->
-                    data.pathway.forEach {
-                        pathwayDataDao.insertPathwayData(it)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        withContext(Dispatchers.IO) {
+                            data.pathway.forEach {
+                                pathwayDataDao.insertPathwayData(it)
+                            }
+                            completedPortionDao.insertCompletedPortion(data)
+                        }
                     }
-                    completedPortionDao.insertCompletedPortion(data)
                 }
             )
         } catch (e: Exception) {
