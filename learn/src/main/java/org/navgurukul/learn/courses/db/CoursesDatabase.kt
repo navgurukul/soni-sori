@@ -159,20 +159,17 @@ interface PathwayDataDao{
 }
 @Dao
 interface CompletedContentsIdsDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(completedContentsIds: CompletedContentsIds)
 
     @Update
     suspend fun update(completedContentsIds: CompletedContentsIds)
 
-    @Delete
-    suspend fun delete(completedContentsIds: CompletedContentsIds)
-
     @Query("SELECT * FROM completed_contents_ids")
     suspend fun getAllCompletedContentsIds(): List<CompletedContentsIds>
 
     @Query("SELECT * FROM completed_contents_ids WHERE rowid = :id")
-    suspend fun getCompletedContentsIdsById(id: Long): CompletedContentsIds?
+    suspend fun getCompletedContentsIdsById(id: Int): CompletedContentsIds?
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
