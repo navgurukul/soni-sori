@@ -6,6 +6,8 @@ import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class UsernameLoginResponse(
+    @Json(name = "error")
+    val error : Boolean,
     @Json(name = "user")
     val student: StudentInfo,
     @Json(name = "token")
@@ -51,3 +53,9 @@ data class UserLoginErrorBlock(
     @Json(name = "code")
     val code : Int
 )
+
+
+sealed class UsernameLoginResponses {
+    data class UsernameLoginResponse(val error: Boolean, val response: UsernameLoginResponse?) : UsernameLoginResponses()
+    data class UserLoginError(val error: Boolean, val response: UserLoginErrorBlock) : UsernameLoginResponses()
+}

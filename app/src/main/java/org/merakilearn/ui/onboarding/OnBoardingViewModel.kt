@@ -126,13 +126,15 @@ class OnBoardingViewModel(
         viewModelScope.launch {
             val loginResponse = userRepo.loginWithUserName(userName, password)
 
-            loginResponse
             if (loginResponse != null) {
-                _viewEvents.setValue(
-                    OnBoardingViewEvents.ShowCourseSelectionScreen
-                )
-//                _viewEvents.setValue(OnBoardingViewActions.NavigateNextFromPartnerDataScreen)
-            } else {
+                if (loginResponse.error) {
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+                }
+                else {
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowCourseSelectionScreen)
+                }
+            } else{
                 _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
         }
@@ -149,6 +151,7 @@ sealed class OnBoardingViewEvents : ViewEvents {
     data class ShowPartnerData(val partnerData: PartnerDataResponse) : OnBoardingViewEvents()
     data class ShowToast(val toastText: String) : OnBoardingViewEvents()
     object ShowUserNameLoginScreen : OnBoardingViewEvents()
+    object ShowErrorMessage : OnBoardingViewEvents()
 }
 
 sealed class OnBoardingViewActions : ViewModelAction {
