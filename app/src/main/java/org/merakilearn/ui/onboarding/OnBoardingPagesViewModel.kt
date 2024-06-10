@@ -60,12 +60,12 @@ class OnBoardingPagesViewModel(
                 _viewEvents.setValue(OnBoardingPagesEvents.NavigateToItem(action.totalItems))
             }
             is OnBoardingPagesAction.PageSelected -> {
-                val isLoginLayoutVisible =
-                    action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size - 1
+//                val isLoginLayoutVisible =
+//                    action.currentItem == viewState.onBoardingData!!.onBoardingPagesList.size -1
                 setState {
                     copy(
-                        isLoginLayoutVisible = isLoginLayoutVisible,
-                        isNavLayoutVisible = !isLoginLayoutVisible
+                        isLoginLayoutVisible = true,
+                        isNavLayoutVisible = true,
                     )
                 }
             }
