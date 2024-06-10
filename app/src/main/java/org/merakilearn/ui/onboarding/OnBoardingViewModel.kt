@@ -135,9 +135,10 @@ class OnBoardingViewModel(
                         "The password does not match the username. Please enter the correct password." -> _viewEvents.setValue(OnBoardingViewEvents.ShowUserPassError(it.message))
                         else -> _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
                     }
-                    _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
                 } else if (it.student != null) {
-                    _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen())
+                    _viewEvents.setValue(
+                        OnBoardingViewEvents.ShowCourseSelectionScreen
+                    )
                 }
             } ?: run {
                 _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
