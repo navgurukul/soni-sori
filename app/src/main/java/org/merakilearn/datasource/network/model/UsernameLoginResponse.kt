@@ -9,9 +9,13 @@ data class UsernameLoginResponse(
     @Json(name = "error")
     val error : Boolean,
     @Json(name = "user")
-    val student: StudentInfo,
+    val student: StudentInfo?,
     @Json(name = "token")
-    val token: String
+    val token: String?,
+    @Json(name = "message")
+    val message :String?,
+    @Json(name = "code")
+    val code : Int?
 ){
     @JsonClass(generateAdapter = true)
     data class StudentInfo (
@@ -53,9 +57,3 @@ data class UserLoginErrorBlock(
     @Json(name = "code")
     val code : Int
 )
-
-
-sealed class UsernameLoginResponses {
-    data class UsernameLoginResponse(val error: Boolean, val response: UsernameLoginResponse?) : UsernameLoginResponses()
-    data class UserLoginError(val error: Boolean, val response: UserLoginErrorBlock) : UsernameLoginResponses()
-}

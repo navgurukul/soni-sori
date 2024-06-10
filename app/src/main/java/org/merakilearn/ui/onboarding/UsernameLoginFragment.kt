@@ -39,22 +39,26 @@ class UsernameLoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val emptyBorderColor = ContextCompat.getColor(requireContext(), R.color.colorRed)
-        val emptyHintColor = ContextCompat.getColor(requireContext(), R.color.colorRed)
+        val emptyBorderColor = ContextCompat.getColor(requireContext(), R.color.error)
+        val emptyHintColor = ContextCompat.getColor(requireContext(), R.color.error)
 
 
         binding.errorMessagePass.visibility = View.GONE
         binding.errorMessageUserId.visibility = View.GONE
+        binding.mainErrorMsg.visibility = View.GONE
 
 
         binding.apply {
             userIDEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
                 binding.errorMessagePass.visibility = View.GONE
                 binding.errorMessageUserId.visibility = View.GONE
+                binding.mainErrorMsg.visibility = View.GONE
+
             }
             passwordEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
                 binding.errorMessagePass.visibility = View.GONE
                 binding.errorMessageUserId.visibility = View.GONE
+                binding.mainErrorMsg.visibility = View.GONE
             }
         }
         onBoardingViewModel.viewEvents.observe(viewLifecycleOwner){
@@ -62,9 +66,32 @@ class UsernameLoginFragment : BaseFragment() {
                 is OnBoardingViewEvents.ShowToast -> Toast.makeText(requireContext(), it.toastText, Toast.LENGTH_SHORT).show()
 
                 is OnBoardingViewEvents.ShowErrorMessage -> {
-                    binding.errorMessagePass.visibility = View.VISIBLE
-                    binding.errorMessageUserId.visibility = View.VISIBLE
-                    binding.errorMessagePass.text = "Your usesId is wrong"
+                    binding.mainErrorMsg.visibility = View.VISIBLE
+                }
+
+                is OnBoardingViewEvents.ShowUseIdErrorMessage -> {
+                    binding.apply {
+                        errorMessageUserId.visibility = View.VISIBLE
+                        errorMessageUserId.text = it.message
+                        mainErrorMsg.visibility = View.GONE
+                        textInputLayout.requestFocus()
+                        textInputLayout.apply {
+                            setBoxStrokeColorStateList(ColorStateList.valueOf(emptyBorderColor))
+                            hintTextColor = ColorStateList.valueOf(emptyHintColor)
+                        }
+                    }
+                }
+                is OnBoardingViewEvents.ShowUserPassError -> {
+                    binding.apply {
+                        errorMessagePass.visibility = View.VISIBLE
+                        errorMessagePass.text = it.message
+                        mainErrorMsg.visibility = View.GONE
+                        textInputLayout2.requestFocus()
+                        textInputLayout2.apply {
+                            setBoxStrokeColorStateList(ColorStateList.valueOf(emptyBorderColor))
+                            hintTextColor = ColorStateList.valueOf(emptyHintColor)
+                        }
+                    }
                 }
             }
         }
@@ -73,50 +100,45 @@ class UsernameLoginFragment : BaseFragment() {
             val userId = binding.userIDEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            if(userId.isEmpty() && password.isEmpty()){
+            if (userId.isEmpty() && password.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter a username and password.", Toast.LENGTH_SHORT).show()
-                binding.textInputLayout.apply{
-                    setBoxStrokeColorStateList(ColorStateList.valueOf(emptyBorderColor))
-                    defaultHintTextColor = ColorStateList.valueOf(emptyHintColor)
-                }
-                binding.textInputLayout2.apply {
-                    setBoxStrokeColorStateList(ColorStateList.valueOf(emptyBorderColor))
-                    defaultHintTextColor = ColorStateList.valueOf(emptyHintColor)
-                }
-                binding.textInputLayout.requestFocus()
-                binding.textInputLayout2.requestFocus()
                 binding.errorMessagePass.visibility = View.VISIBLE
                 binding.errorMessageUserId.visibility = View.VISIBLE
-            } else if (userId.isEmpty()){
+                showErrorMessages(showUserIdError = true, showPassError = true)
+            }
+            else  if (userId.isEmpty()){
                 Toast.makeText(requireContext(), "Please enter a username.", Toast.LENGTH_SHORT).show()
-                showErrorMessages(true, false, "Please enter a username." )
-
-            } else if (password.isEmpty()){
-                Toast.makeText(requireContext(), "Please enter a password.", Toast.LENGTH_SHORT).show()
-                showErrorMessages(false, true, "Please enter a password." )
-            }
-            else{
+                showErrorMessages(showUserIdError = true, showPassError = false)
+                binding.errorMessageUserId.visibility = View.VISIBLE
                 binding.errorMessagePass.visibility = View.GONE
+            }
+            else  if (password.isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter a password.", Toast.LENGTH_SHORT).show()
+                showErrorMessages(showUserIdError = false, showPassError = true)
                 binding.errorMessageUserId.visibility = View.GONE
+                binding.errorMessagePass.visibility = View.VISIBLE
+            }
+            else  {
+                onBoardingViewModel.loginWithUsername(userId, password)
             }
 
-            onBoardingViewModel.loginWithUsername(userId, password)
         }
 
         binding.backArrow.setOnClickListener {
-//            requireActivity().onBackPressed()
+            onBoardingViewModel.handle(OnBoardingViewActions.BackToOnboardingPages)
     }
 
+
 }
-    private fun showErrorMessages(showUserIdError: Boolean, showPassError: Boolean, message: String? = null){
+    private fun showErrorMessages(showUserIdError: Boolean, showPassError: Boolean ){
         binding.errorMessageUserId.apply {
             visibility = if (showUserIdError) View.VISIBLE else View.GONE
-            text = message
+            text = "Please enter a username."
         }
 
         binding.errorMessagePass.apply {
             visibility = if (showPassError) View.VISIBLE else View.GONE
-            text = message
+            text = "Please enter a password."
         }
     }
 

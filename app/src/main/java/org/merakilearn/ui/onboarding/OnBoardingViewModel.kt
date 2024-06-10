@@ -119,26 +119,32 @@ class OnBoardingViewModel(
             is OnBoardingViewActions.NavigateToUsernameLoginScreen -> {
                 _viewEvents.setValue(OnBoardingViewEvents.ShowUserNameLoginScreen)
             }
+            is OnBoardingViewActions.BackToOnboardingPages ->{
+                _viewEvents.setValue(OnBoardingViewEvents.ShowOnBoardingPages)
+            }
         }
     }
 
-    fun loginWithUsername(userName: String, password: String){
+    fun loginWithUsername(username: String, password: String) {
         viewModelScope.launch {
-            val loginResponse = userRepo.loginWithUserName(userName, password)
-
-            if (loginResponse != null) {
-                if (loginResponse.error) {
-                    _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
+            val loginResponse = userRepo.loginWithUserName(username, password)
+            loginResponse?.let {
+                if (it.error) {
+                    when (it.message) {
+                        "Invalid username or password. Please try again." -> _viewEvents.setValue(OnBoardingViewEvents.ShowUseIdErrorMessage(it.message))
+                        "The password does not match the username. Please enter the correct password." -> _viewEvents.setValue(OnBoardingViewEvents.ShowUserPassError(it.message))
+                        else -> _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
+                    }
                     _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
+                } else if (it.student != null) {
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowMainScreen())
                 }
-                else {
-                    _viewEvents.setValue(OnBoardingViewEvents.ShowCourseSelectionScreen)
-                }
-            } else{
+            } ?: run {
                 _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))
             }
         }
     }
+
 }
 
 sealed class OnBoardingViewEvents : ViewEvents {
@@ -152,6 +158,8 @@ sealed class OnBoardingViewEvents : ViewEvents {
     data class ShowToast(val toastText: String) : OnBoardingViewEvents()
     object ShowUserNameLoginScreen : OnBoardingViewEvents()
     object ShowErrorMessage : OnBoardingViewEvents()
+    data class ShowUseIdErrorMessage(val message : String) : OnBoardingViewEvents()
+    data class ShowUserPassError(val message: String) : OnBoardingViewEvents()
 }
 
 sealed class OnBoardingViewActions : ViewModelAction {
@@ -161,6 +169,7 @@ sealed class OnBoardingViewActions : ViewModelAction {
     object GetPartnerData : OnBoardingViewActions()
     object NavigateNextFromPartnerDataScreen : OnBoardingViewActions()
     object NavigateToUsernameLoginScreen : OnBoardingViewActions()
+    object BackToOnboardingPages : OnBoardingViewActions()
 }
 
 

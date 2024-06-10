@@ -143,10 +143,10 @@ class UserRepo(
     }
 
 
-    fun saveLoginUsernameResponse(
+    private fun saveLoginUsernameResponse(
         response: UsernameLoginResponse,
     ) {
-        saveUserResponseFromUSERId(response.student)
+        response.student?.let { saveUserResponseFromUSERId(it) }
         preferences.edit{
             putString(KEY_AUTH_TOKEN, response.token)
             putBoolean(KEY_USER_LOGIN, true)
@@ -201,10 +201,10 @@ class UserRepo(
         return try {
             val request = UsernameLoginRequest(userName, password)
             val response = saralApi.loginWithUsername(request)
-            saveLoginUsernameResponse(response)
+            if (!response.error){
+                saveLoginUsernameResponse(response)
+            }
             response
-
-
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
             null
