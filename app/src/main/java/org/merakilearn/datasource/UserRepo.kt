@@ -73,7 +73,6 @@ class UserRepo(
 //        }
 //        return 0
 //    }
-
     fun getCurrentUser(): LoginResponse.User? {
         val userLoginResponseString = preferences.getString(KEY_USER_RESPONSE, null)
         return try {

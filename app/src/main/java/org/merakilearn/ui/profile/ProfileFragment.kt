@@ -24,8 +24,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.item_enrolled_batch.view.*
+import kotlinx.android.synthetic.main.fragment_profile.btnPrivacyPolicy
+import kotlinx.android.synthetic.main.fragment_profile.explore_opportunity
+import kotlinx.android.synthetic.main.fragment_profile.rvEnrolledBatch
+import kotlinx.android.synthetic.main.item_enrolled_batch.view.btnCross
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -145,11 +147,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun viewPartnerData() {
-        mBinding.title.visibility = View.VISIBLE
-        mBinding.partnerName.visibility = View.VISIBLE
-        mBinding.partnerDesc.visibility = View.VISIBLE
-        mBinding.partnerImage.visibility = View.VISIBLE
-
+        mBinding.apply {
+            title.visibility = View.VISIBLE
+            partnerName.visibility = View.VISIBLE
+            partnerDesc.visibility = View.VISIBLE
+            partnerImage.visibility = View.VISIBLE
+        }
     }
 
     private fun shareCode(it: ProfileViewEvents.ShareText) {

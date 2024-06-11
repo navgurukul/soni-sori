@@ -58,24 +58,14 @@ class ProfileViewModel(
         val partnerIdValue = partnerIdPattern.find(decodeReferrer, 0)?.value
 
 
-        if (user != null) {
-            setState {
-                copy(
-                    appVersionText = appVersionText,
-                    userName = user.name,
-                    userEmail = user.email,
-                    profilePic = user.profilePicture
-                )
-            }
-        } else {
-            setState {
-                copy(
-                    appVersionText = appVersionText,
-                    userName = userIdUser?.name,
-                    userEmail = userIdUser?.userName,
-                    profilePic = userIdUser?.name
-                )
-            }
+
+        setState {
+            copy(
+                appVersionText = appVersionText,
+                userName = user?.name ?: userIdUser?.name,
+                userEmail = user?.email ?: userIdUser?.userName,
+                profilePic = user?.profilePicture ?: userIdUser?.name
+            )
         }
 
 
@@ -88,9 +78,7 @@ class ProfileViewModel(
         }
         getEnrolledBatches()
         val id = user?.partnerId.toString()
-        if (id != null) {
-            checkPartner(id)
-        }
+        checkPartner(id)
 
     }
 

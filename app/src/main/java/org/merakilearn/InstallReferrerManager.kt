@@ -4,6 +4,9 @@ import android.app.Application
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.merakilearn.datasource.UserRepo
 
 class InstallReferrerManager(val application: Application, val userRepo: UserRepo) {
@@ -42,13 +45,15 @@ class InstallReferrerManager(val application: Application, val userRepo: UserRep
         val currentUser = userRepo.getCurrentUser()
         val installReferrer = userRepo.installReferrer
 
-//        if (currentUser != null) {
-//            val scope = CoroutineScope(Dispatchers.Default)
-//            scope.launch {
-//                if (userRepo.updateProfile(currentUser, "referrer=$installReferrer")) {
-//                    userRepo.installReferrerUploaded = true
-//                }
-//            }
-//        }
+        if (currentUser != null) {
+            val scope = CoroutineScope(Dispatchers.Default)
+            scope.launch {
+                if (userRepo.updateProfile(currentUser, "referrer=$installReferrer")) {
+                    userRepo.installReferrerUploaded = true
+                }
+            }
+        } else {
+            userRepo.installReferrerUploaded = true
+        }
     }
 }
