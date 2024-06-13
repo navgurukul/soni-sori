@@ -242,44 +242,48 @@ class LearnRepo(
     }
 
     suspend fun getCompletedContentsIds(courseId: String): Flow<Resource<CompletedContentsIds>> {
-            return flow {
-                if (LearnUtils.isOnline(application)) {
-                    try {
-                        val contentList = safeApiCall {courseApi.getCompletedContentsIds(courseId) }
-                        updateCompletedContentInDb(contentList)
-                        emit(contentList)
-                    } catch (e: Exception) {
-                        FirebaseCrashlytics.getInstance().recordException(e)
-                        e.printStackTrace()
+        val completedContentsIdsDao = database.completedContentsIdsDao()
+        return flow {
+            if (LearnUtils.isOnline(application)) {
+                try {
+                    val contentList = safeApiCall { courseApi.getCompletedContentsIds(courseId) }
+                    contentList.let {
+                        it.data?.let { completedContentsId ->
+                            completedContentsIdsDao.insert(completedContentsId)
+                            updateCompletedContentInDb(completedContentsId)
+                        }
+                        emit(it)
                     }
-                } else {
-                    println("Error Occurred!")
+                } catch (e: Exception) {
+                    FirebaseCrashlytics.getInstance().recordException(e)
+                    e.printStackTrace()
+                    emit(Resource.Error<CompletedContentsIds>("Error fetching data"))
                 }
+            } else {
+                emit(Resource.Error<CompletedContentsIds>("No internet connection"))
+                completedContentsIdsDao.getAllCompletedContentsIds()
             }
-
-
+        }
     }
 
-    suspend fun updateCompletedContentInDb(contentList: Resource<CompletedContentsIds>) {
+     private suspend fun updateCompletedContentInDb(contentList: CompletedContentsIds) {
+        val completedContentsIdsDao = database.completedContentsIdsDao()
+        completedContentsIdsDao.update(contentList)
 
         val exerciseDao = database.exerciseDao()
         val classesDao = database.classDao()
         val assessmentDao = database.assessmentDao()
 
-        exerciseDao.markExerciseCompleted(
-            CourseContentProgress.COMPLETED.name,
-            contentList.data?.exercises?.map { it.toString() }
-        )
-        classesDao.markClassCompleted(
-            CourseContentProgress.COMPLETED.name,
-            contentList.data?.classes?.map { it.toString() }
-        )
-        assessmentDao.markAssessmentCompleted(
-            CourseContentProgress.COMPLETED.name,
-            contentList.data?.assessments?.map { it.toString() }
-        )
+         contentList.exercises?.map { it.toString() }?.let { exerciseIds ->
+             exerciseDao.markExerciseCompleted(CourseContentProgress.COMPLETED.name, exerciseIds)
+         }
+         contentList.classes?.map { it.toString() }?.let { classIds ->
+             classesDao.markClassCompleted(CourseContentProgress.COMPLETED.name, classIds)
+         }
+         contentList.assessments?.map { it.toString() }?.let { assessmentIds ->
+             assessmentDao.markAssessmentCompleted(CourseContentProgress.COMPLETED.name, assessmentIds)
+         }
     }
-
 
     suspend fun saveCourseContentCurrent(currentStudy: CurrentStudy) {
         val currentStudyDao = database.currentStudyDao()
