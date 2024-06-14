@@ -41,7 +41,7 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
     }
 
     fun submitList(list: List<Course>, logo: String?, pathwayData : List<PathwayData>) {
-        submitList(list.map { CourseContainer(it,pathwayData) })
+        submitList(list.map { CourseContainer(it, logo, pathwayData) })
         notifyDataSetChanged()
     }
 
@@ -56,13 +56,15 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         val binding = holder.binding
         binding.course = item.course
 
-        if (item.course.androidLogo?.endsWith(".svg") == true) {
-            SvgLoader(context).loadSvgFromUrl(item.course.androidLogo, binding.ivLogo)
+        val courseLogo = item.course.androidLogo ?: item.logo
+
+        if (courseLogo?.endsWith(".svg") == true) {
+            SvgLoader(context).loadSvgFromUrl(courseLogo, binding.ivLogo)
         } else {
             val thumbnail = Glide.with(holder.itemView)
                 .load(R.drawable.ic_lock)
             Glide.with(binding.ivLogo)
-                .load(item.course.androidLogo)
+                .load(courseLogo)
                 .thumbnail(thumbnail)
                 .into(binding.ivLogo)
         }
@@ -77,4 +79,4 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
     }
 }
 
-data class CourseContainer(val course: Course, val pathwayData: List<PathwayData>)
+data class CourseContainer(val course: Course, val logo: String?, val pathwayData: List<PathwayData>)
