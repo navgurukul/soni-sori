@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/pathway_logo_size"
+            android:layout_height="@dimen/pathway_logo_size"
             app:layout_constraintBottom_toBottomOf="@id/progressBar"
             app:layout_constraintLeft_toLeftOf="@id/progressBar"
             app:layout_constraintRight_toRightOf="@id/progressBar"
