@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 15
+const val DB_VERSION = 16
 
 @Dao
 interface PathwayDao {
@@ -403,6 +403,11 @@ val MIGRATION_14_15 = object : Migration(14, 15) {
     }
 }
 
+val MIGRATION_15_16 = object : Migration(15, 16) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE `pathway_course` ADD COLUMN `androidLogo` TEXT")
+    }
+}
 
 // When ever we do any change in local db need to write migration script here.
 @Database(
