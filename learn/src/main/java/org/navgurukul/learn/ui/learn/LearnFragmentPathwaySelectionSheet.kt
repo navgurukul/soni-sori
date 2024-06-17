@@ -1,12 +1,12 @@
 package org.navgurukul.learn.ui.learn
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.NonDisposableHandle.parent
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.SvgLoader

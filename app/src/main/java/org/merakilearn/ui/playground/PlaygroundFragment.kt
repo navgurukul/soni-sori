@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
@@ -228,22 +228,18 @@ class PlaygroundFragment : BaseFragment() {
                             .show()
                 }
                 R.id.shareSavedFile -> {
-                    try {
-                        val intent = Intent(Intent.ACTION_SEND)
-                        intent.type = "text/x-python"
-                        val uri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "org.merakilearn.fileprovider",
-                            file
-                        )
-                        intent.putExtra(Intent.EXTRA_STREAM, uri)
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
-                        intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
-                        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        startActivity(intent)  //Passing the intent Instead  create chooser for SecurityException
-                    }catch (e: Exception){
-                        Toast.makeText(requireContext(), "File sharing failed!", Toast.LENGTH_SHORT).show()
-                    }
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "text/x-python"
+                    val uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "org.merakilearn.fileprovider",
+                        file
+                    )
+                    intent.putExtra(Intent.EXTRA_STREAM, uri)
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Share File")
+                    intent.putExtra(Intent.EXTRA_TEXT, "Sharing File")
+                    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    startActivity(Intent.createChooser(intent, "Share File"))
                 }
                 R.id.exportSavedFile -> {
                     var mimeType =

@@ -159,7 +159,10 @@ class UserRepo(
             saralApi.getPartnerData(partnerId)
         } catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
-            null!!
+            throw PartnerDataException("Failed to get partner data for partnerId: $partnerId", ex)
         }
     }
+
+    class PartnerDataException(message: String, cause: Throwable) : Exception(message, cause)
+
 }
