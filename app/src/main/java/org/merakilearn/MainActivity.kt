@@ -16,13 +16,14 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
+import org.merakilearn.databinding.ActivityMainBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
@@ -41,6 +42,8 @@ data class MainActivityArgs(
 class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     private lateinit var firebaseAnalytics : FirebaseAnalytics
+    private lateinit var binding: ActivityMainBinding
+
     companion object {
         fun launch(context: Context, selectedPathwayId: Int? = null) {
             val intent = newIntent(context, selectedPathwayId = selectedPathwayId)
@@ -79,12 +82,16 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val userId = userRepo.getCurrentUser()?.email
+        FirebaseCrashlytics.getInstance().setUserId(userId!!)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        nav_view.setupWithNavController(navHostFragment.navController)
+        binding.navView.setupWithNavController(navHostFragment.navController)
 
         if (mainActivityArgs.selectedPathwayId != null) {
             navHostFragment.navController.navigate(R.id.navigation_learn)
@@ -94,7 +101,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
 
-        findViewById<ImageView>(R.id.headerIv).let {
+        binding.headerIv.let {
             userRepo.getCurrentUser()?.let { currentUser ->
                 setUserThumbnail(it, currentUser)
             } ?: run {
@@ -102,7 +109,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             }
         }
 
-        findViewById<ImageView>(R.id.headerLogOut).let {
+        binding.headerLogOut.let {
             setUserLogoutThumbnail(it)
         }
 
@@ -115,7 +122,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .centerCrop()
             .transform(CircleCrop())
 
-        val thumbnail = GlideApp.with(this)
+        val thumbnail = GlideApp.with(it)
             .load(R.drawable.ic_log_out)
             .apply(requestOptions)
 
@@ -125,7 +132,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .thumbnail(thumbnail)
             .transform(CircleCrop())
             .into(it)
-
     }
 
     private fun setUserThumbnail(
@@ -157,7 +163,6 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 //        }
     }
 
-
     override fun configure(toolbar: Toolbar) {
         throw RuntimeException("Custom Toolbar Not supported")
     }
@@ -174,52 +179,54 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         showPathwayIcon : Boolean,
         pathwayIcon: String?
     ) {
-        headerTitle.text = title
-        headerTitle.setTextColor(getThemedColor(colorRes))
+        binding.headerTitle.text = title
+        binding.headerTitle.setTextColor(getThemedColor(colorRes))
 
         subtitle?.let {
-            headerSubtitle.text = subtitle
-            headerSubtitle.isVisible = true
+            binding.headerSubtitle.text = subtitle
+            binding.headerSubtitle.isVisible = true
         } ?: run {
-            headerSubtitle.isVisible = false
+            binding.headerSubtitle.isVisible = false
         }
 
         action?.let {
-            headerAction.text = action
-            headerAction.isVisible = true
+            binding.headerAction.text = action
+            binding.headerAction.isVisible = true
             actionOnClickListener?.let { listener ->
-                headerActionClickArea.setOnClickListener {
+                binding.headerActionClickArea.setOnClickListener {
                     listener.onClick(it)
                 }
             }
         } ?: run {
-            headerAction.isVisible = false
+            binding.headerAction.isVisible = false
         }
 
-        headerIv.isVisible = showProfile
-        headerLogOut.isVisible = showLogout
-        headerIcon.isVisible = true
+        binding.headerIv.isVisible = showProfile
+        binding.headerLogOut.isVisible = showLogout
+        binding.headerIcon.isVisible = true
         //headerIcon.setImageResource(R.drawable.placeholder_course_icon)
 
-        headerIcon.isVisible = showPathwayIcon
+        binding.headerIcon.isVisible = showPathwayIcon
         pathwayIcon?.let {
             runOnUiThread {
                 if (it.endsWith(".svg")) {
-                    SvgLoader(this).loadSvgFromUrl(it, headerIcon)
+                    SvgLoader(this).loadSvgFromUrl(it, binding.headerIcon)
                 }
                 else {
-                    GlideApp.with(headerIcon)
+                    GlideApp.with(binding.headerIcon)
                         .load(it)
                         .transform(CircleCrop())
-                        .into(headerIcon)
+                        .into(binding.headerIcon)
                 }
             }
         }
 
         onClickListener?.let { listener ->
-            appToolbar.setOnClickListener {
+            binding.appToolbar.setOnClickListener {
                 listener.onClick(it)
             }
         }
+
+
     }
 }

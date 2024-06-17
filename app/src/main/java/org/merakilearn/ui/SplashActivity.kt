@@ -15,7 +15,7 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import org.merakilearn.R
-import org.merakilearn.databinding.ActivitySplashBinding
+import org.merakilearn.databinding.SplashActivityAppBinding
 import org.merakilearn.theme.isChristmas
 import org.merakilearn.theme.isNewYear
 import org.merakilearn.ui.onboarding.OnBoardingActivity
@@ -23,7 +23,7 @@ import org.merakilearn.ui.onboarding.OnBoardingActivity
 
 const val UPDATE_REQUEST_CODE = 524
 class SplashActivity : AppCompatActivity() {
-   private lateinit var binding : ActivitySplashBinding
+   private lateinit var binding : SplashActivityAppBinding
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_splash)
+        binding = DataBindingUtil.setContentView(this,R.layout.splash_activity_app)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         setUpTheme()
         Handler(Looper.getMainLooper()).postDelayed({
