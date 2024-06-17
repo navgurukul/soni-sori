@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.dialog_create.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -25,6 +26,7 @@ import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
 import org.merakilearn.databinding.FragmentPlaygroundBinding
+import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
 import org.merakilearn.util.Constants
 import org.merakilearn.util.webide.Prefs
@@ -179,7 +181,7 @@ class PlaygroundFragment : BaseFragment() {
                     name,
                     imageStream,
                     adapter,
-                    coordinatorLayout,
+                    binding.coordinatorLayout,
                     0
                 )
                 adapter.notifyDataSetChanged()
