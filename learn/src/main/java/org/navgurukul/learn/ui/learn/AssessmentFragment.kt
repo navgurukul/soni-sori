@@ -147,6 +147,7 @@ class AssessmentFragment : Fragment() {
 
     private fun setUpSubmitAnswer() {
         mBinding.btnSubmit.setOnClickListener {
+            refreshContent()
             CoroutineScope(Dispatchers.Main).launch {
                 mBinding.btnSubmit.visibility = View.GONE
                 selectedOptions?.let {
@@ -275,4 +276,10 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
         inCorrectAdapter.submitList(getNewReferencedList(list))
     }
+
+    private fun refreshContent() {
+        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.RequestContentRefresh)
+    }
+
+
 }

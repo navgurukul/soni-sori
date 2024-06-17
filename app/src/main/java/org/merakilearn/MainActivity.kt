@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
@@ -84,6 +85,9 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val userId = userRepo.getCurrentUser()?.email
+        FirebaseCrashlytics.getInstance().setUserId(userId!!)
+
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -118,7 +122,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
             .centerCrop()
             .transform(CircleCrop())
 
-        val thumbnail = GlideApp.with(this)
+        val thumbnail = GlideApp.with(it)
             .load(R.drawable.ic_log_out)
             .apply(requestOptions)
 
@@ -222,5 +226,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                 listener.onClick(it)
             }
         }
+
+
     }
 }
