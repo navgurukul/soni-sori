@@ -30,7 +30,7 @@ data class Data(
     val Credentials : Credentials,
 
     @Json(name = "project_id")
-    val project_id : String
+    val projectId : String
 )
 
 @JsonClass(generateAdapter = true)
