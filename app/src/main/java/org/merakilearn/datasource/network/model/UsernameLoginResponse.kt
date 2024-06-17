@@ -15,7 +15,10 @@ data class UsernameLoginResponse(
     @Json(name = "message")
     val message :String?,
     @Json(name = "code")
-    val code : Int?
+    val code : Int?,
+    @Json(name = "errorCode")
+    val errorCode : Int?,
+
 ){
     @JsonClass(generateAdapter = true)
     data class StudentInfo (

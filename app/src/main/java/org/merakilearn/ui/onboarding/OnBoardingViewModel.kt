@@ -128,17 +128,19 @@ class OnBoardingViewModel(
     fun loginWithUsername(username: String, password: String) {
         viewModelScope.launch {
             val loginResponse = userRepo.loginWithUserName(username, password)
-            loginResponse?.let {
+            loginResponse?.let { it ->
                 if (it.error) {
-                    when (it.message) {
-                        "Invalid username or password. Please try again." -> _viewEvents.setValue(OnBoardingViewEvents.ShowUseIdErrorMessage(it.message))
-                        "The password does not match the username. Please enter the correct password." -> _viewEvents.setValue(OnBoardingViewEvents.ShowUserPassError(it.message))
+                    when (it.errorCode) {
+                        2001 -> it.message?.let{_viewEvents.setValue(OnBoardingViewEvents.ShowUseIdErrorMessage(it))}
+                        2002 -> it.message?.let{_viewEvents.setValue(OnBoardingViewEvents.ShowUserPassError(it))}
                         else -> _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
                     }
                 } else if (it.student != null) {
                     _viewEvents.setValue(
                         OnBoardingViewEvents.ShowCourseSelectionScreen
                     )
+                } else {
+                    _viewEvents.setValue(OnBoardingViewEvents.ShowErrorMessage)
                 }
             } ?: run {
                 _viewEvents.setValue(OnBoardingViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_sign)))

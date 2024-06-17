@@ -85,5 +85,6 @@
     <string name="stay_enrolled">Stay Enrolled</string>
     <string name="login_with_username">Login with Username</string>
     <string name="forgot_password_don_t_have_login_details">Forgot password / Don’t have login details?</string>
+    <string name="user_name">User Name</string>
 
 </resources>
