@@ -24,9 +24,11 @@ data class Course(
     @ColumnInfo(name = "supportedLanguages", defaultValue = "[\"en\"]")
     var supportedLanguages: List<String> = listOf("en"),
     @Json(name = "completed_portion")
-    var completedPortion : Int? = null
+    var completedPortion : Int? = null,
+    @Json(name = "android_logo")
+    val androidLogo: String?,
 ){
     @Ignore
-    @Json(name = "exercises")
+    @Json(name = "course_content")
     var courseContents: List<CourseContents> = listOf()
 }

@@ -12,43 +12,33 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.item_enrolled_batch.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.databinding.FragmentProfileBinding
+import org.merakilearn.databinding.ItemEnrolledBatchBinding
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.Batches
 import org.merakilearn.datasource.network.model.PartnerDataResponse
-import org.merakilearn.ui.adapter.SavedFileAdapter
+import org.merakilearn.ui.adapter.EnrolledBatchAdapter
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.chat.core.glide.GlideApp
-import org.navgurukul.commonui.platform.GridSpacingDecorator
+import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.commonui.platform.ToolbarConfigurable
 import org.navgurukul.learn.ui.common.toast
-import org.merakilearn.ui.adapter.EnrolledBatchAdapter
-import org.merakilearn.ui.onboarding.OnBoardPagesAdapter
-import org.navgurukul.commonui.platform.SpaceItemDecoration
-import org.navgurukul.learn.ui.learn.ClassFragmentViewModel
-import org.navgurukul.learn.ui.learn.LearnFragmentViewActions
-import java.io.File
 
 class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModel()
@@ -57,6 +47,7 @@ class ProfileFragment : Fragment() {
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private lateinit var mBinding: FragmentProfileBinding
     private lateinit var mAdapter: EnrolledBatchAdapter
+    private lateinit var mItemBinding: ItemEnrolledBatchBinding
 
 
     override fun onCreateView(
@@ -64,8 +55,10 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        mBinding = FragmentProfileBinding.inflate(inflater, container, false)
         return mBinding.root
+        mItemBinding = ItemEnrolledBatchBinding.inflate(inflater, container, false)
+        return mItemBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,7 +68,7 @@ class ProfileFragment : Fragment() {
 
         initShowEnrolledBatches()
 
-        btnPrivacyPolicy.setOnClickListener {
+        mBinding.btnPrivacyPolicy.setOnClickListener {
             viewModel.handle(ProfileViewActions.PrivacyPolicyClicked)
         }
         viewModel.viewState.observe(viewLifecycleOwner) {
@@ -110,7 +103,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        explore_opportunity.setOnClickListener {
+        mBinding.exploreOpportunity.setOnClickListener {
             viewModel.handle(ProfileViewActions.ExploreOpportunityClicked)
         }
         mBinding.serverUrlValue.setOnClickListener {
@@ -132,7 +125,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun dropOut(batches: Batches) {
-        mBinding.rvEnrolledBatch.btnCross?.setOnClickListener {
+        mBinding.rvEnrolledBatch.setOnClickListener {
+            showDropOutDialog(batches)
+        }
+
+        mItemBinding.btnCross?.setOnClickListener {
             showDropOutDialog(batches)
         }
     }
@@ -211,7 +208,7 @@ class ProfileFragment : Fragment() {
             mBinding.tvEmail.setText(it)
         }
 
-        if (it.batches.isEmpty()) {
+        if (it.batches?.isEmpty() == true) {
             mBinding.tvEnrolledText.visibility = View.GONE
             mBinding.rvEnrolledBatch.visibility = View.GONE
         } else {
@@ -286,16 +283,16 @@ class ProfileFragment : Fragment() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         mBinding.rvEnrolledBatch.layoutManager = layoutManager
-        rvEnrolledBatch.adapter = mAdapter
+        mBinding.rvEnrolledBatch.adapter = mAdapter
 
-        rvEnrolledBatch.addItemDecoration(
+        mBinding.rvEnrolledBatch.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
                     org.navgurukul.learn.R.dimen.spacing_3x
                 ), 0
             )
         )
-        rvEnrolledBatch.addItemDecoration(
+        mBinding.rvEnrolledBatch.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL

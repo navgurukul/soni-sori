@@ -19,7 +19,7 @@ abstract class BaseDialogFragment: DialogFragment() {
         }
     }
 
-    final override fun onCreateView(
+    open override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?

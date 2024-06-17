@@ -1,6 +1,7 @@
 package org.navgurukul.learn.ui.learn
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.incorrect_output_layout.*
-import kotlinx.android.synthetic.main.incorrect_output_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,11 +19,15 @@ import org.merakilearn.core.extentions.fragmentArgs
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
-import org.navgurukul.learn.courses.db.models.*
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.OptionResponse
+import org.navgurukul.learn.courses.db.models.OptionsBaseCourseContent
 import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.AttemptStatus
 import org.navgurukul.learn.databinding.FragmentAssessmentBinding
 import org.navgurukul.learn.ui.common.toast
-import org.navgurukul.learn.ui.learn.adapter.*
+import org.navgurukul.learn.ui.learn.adapter.ExerciseContentAdapter
 import org.navgurukul.learn.ui.learn.viewholder.AssessmentFragmentViewModel
 
 
@@ -36,7 +39,7 @@ class AssessmentFragment : Fragment() {
     private var isContentRvClickable = true
     private lateinit var correctAdapter: ExerciseContentAdapter
     private lateinit var inCorrectAdapter: ExerciseContentAdapter
-    private var selectedOption: OptionResponse? = null
+    private var selectedOptions: List<OptionResponse>? = null
     private val fragmentViewModel: AssessmentFragmentViewModel by viewModel(parameters = {
         parametersOf(args)
     })
@@ -50,6 +53,7 @@ class AssessmentFragment : Fragment() {
             courseId: String,
             assessmentId: String,
             courseContentType: CourseContentType,
+            pathwayId : Int
         ): AssessmentFragment {
             return AssessmentFragment().apply {
                 arguments = CourseContentArgs(
@@ -58,7 +62,8 @@ class AssessmentFragment : Fragment() {
                     isCompleted,
                     courseId,
                     assessmentId,
-                    courseContentType
+                    courseContentType,
+                    pathwayId
                 ).toBundle()
             }
         }
@@ -80,7 +85,7 @@ class AssessmentFragment : Fragment() {
 
         mBinding.btnSubmit.visibility = View.GONE
         mBinding.correctOutputLayout.root.visibility = View.GONE
-        mBinding.incorrectOutputLayout.visibility = View.GONE
+        mBinding.incorrectOutputLayout.root.visibility = View.GONE
 
         activityViewModel =
             ViewModelProvider(requireActivity()).get(CourseContentActivityViewModel::class.java)
@@ -93,24 +98,32 @@ class AssessmentFragment : Fragment() {
                     isContentRvClickable = false
                     initCorrectRV(it.list)
                     mBinding.correctOutputLayout.root.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.visibility = View.GONE
+                    mBinding.incorrectOutputLayout.root.visibility = View.GONE
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowRetryOnce -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
+                    isContentRvClickable = false
                     setupIncorrectOutputLayout(it.list, it.attemptResponse)
                 }
                 is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowIncorrectOutput -> {
-                    mBinding.incorrectOutputLayout.visibility = View.VISIBLE
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
                     mBinding.correctOutputLayout.root.visibility = View.GONE
                     initIncorrectRV(it.list)
                     isContentRvClickable = false
 
                 }
+                is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyCorrectOutput, is AssessmentFragmentViewModel.AssessmentFragmentViewEvents.ShowPartiallyIncorrectOutput -> {
+                    mBinding.incorrectOutputLayout.root.visibility = View.VISIBLE
+                    mBinding.correctOutputLayout.root.visibility = View.GONE
+                    initIncorrectRV(it as List<BaseCourseContent>)
+                    isContentRvClickable = false
+                }
+
             }
         }
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.root.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
             showErrorScreen(it.isError)
 
@@ -136,7 +149,7 @@ class AssessmentFragment : Fragment() {
         mBinding.btnSubmit.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 mBinding.btnSubmit.visibility = View.GONE
-                selectedOption?.let {
+                selectedOptions?.let {
                     isContentRvClickable = false
                     fragmentViewModel.handle(
                         AssessmentFragmentViewModel.AssessmentFragmentViewActions.SubmitOptionClicked(
@@ -150,47 +163,6 @@ class AssessmentFragment : Fragment() {
         }
     }
 
-    private fun setupIncorrectOutputLayout(
-        list: List<BaseCourseContent>,
-        attemptResponse: AttemptResponse?
-    ) {
-        CoroutineScope(Dispatchers.Main).launch {
-            mBinding.incorrectOutputLayout.btnSeeExplanation.setOnClickListener {
-                selectedOption?.let {
-                    isContentRvClickable = false
-                    fragmentViewModel.handle(
-                        AssessmentFragmentViewModel.AssessmentFragmentViewActions.SeeExplanationClicked(
-                            it
-                        )
-                    )
-                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-                }
-                mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-                initIncorrectRV(list)
-                isContentRvClickable = false
-//            fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-
-            }
-            if (attemptResponse != null) {
-                if (attemptResponse.attemptCount < 2) {
-                    mBinding.incorrectOutputLayout.btnRetry.visibility = View.VISIBLE
-                    mBinding.incorrectOutputLayout.btnRetry.setOnClickListener {
-                        isContentRvClickable = true
-                        mBinding.incorrectOutputLayout.visibility = View.GONE
-                        fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowUpdatedOutput)
-                    }
-                } else {
-                    mBinding.incorrectOutputLayout.btnRetry.visibility = View.GONE
-                    mBinding.incorrectOutputLayout.incorrectRv.isVisible = true
-                    mBinding.incorrectOutputLayout.explanationRetryLayout.visibility = View.GONE
-                    fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.ShowCorrectOnIncorrect)
-                    initIncorrectRV(list)
-                    isContentRvClickable = false
-                }
-            }
-        }
-    }
 
     private fun getNewReferencedList(list: List<BaseCourseContent>?): List<BaseCourseContent>? {
         val newList = list?.toMutableList()?.map {
@@ -222,8 +194,10 @@ class AssessmentFragment : Fragment() {
         }, {
 
         }, {
+            Log.d(TAG, "initContentRvbefore: $isContentRvClickable")
             if (isContentRvClickable) {
-                selectedOption = it
+                Log.d(TAG, "initContentRv: $isContentRvClickable")
+                selectedOptions = it
                 fragmentViewModel.handle(
                     AssessmentFragmentViewModel.AssessmentFragmentViewActions.OptionSelected(
                         it
@@ -259,5 +233,4 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
         inCorrectAdapter.submitList(getNewReferencedList(list))
     }
-
 }

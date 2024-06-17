@@ -43,6 +43,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -123,5 +124,6 @@ dependencies {
 
     //firebase
     implementation(FirebaseDependencies.perfKtx)
+    implementation(FirebaseDependencies.crashlyticsKtx)
 
 }

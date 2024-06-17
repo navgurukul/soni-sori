@@ -4,7 +4,6 @@ import android.text.TextUtils
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.lifecycle.viewModelScope
-import com.chaquo.python.Python
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.navgurukul.commonui.platform.BaseViewModel
@@ -13,7 +12,6 @@ import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
 import org.navgurukul.playground.R
-import org.navgurukul.playground.editor.PythonEditorActivity.Companion.EMPTY_FILE
 import org.navgurukul.playground.repo.PythonRepository
 
 
@@ -81,11 +79,14 @@ class PythonEditorViewModel(
 
     private fun updateError(error: CharSequence) {
         val formattedError = buildSpannedString {
-            color(errorColor) {
-                append("At" + error.substring(
-                    error.indexOf(PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE)
-                            + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length
-                ).trimEnd())
+            val patternIndex = error.indexOf(PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE)
+            if (patternIndex != -1 && patternIndex + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length < error.length) {
+                color(errorColor) {
+                    val startIndex = patternIndex + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length
+                    append("At" + error.substring(startIndex).trimEnd())
+                }
+            } else {
+                append("Error: Pattern not found or index out of bounds")
             }
         }
         setState {

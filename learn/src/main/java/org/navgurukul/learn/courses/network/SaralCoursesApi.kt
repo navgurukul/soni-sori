@@ -4,19 +4,20 @@ import okhttp3.ResponseBody
 import org.navgurukul.learn.BuildConfig
 import org.navgurukul.learn.courses.db.models.CourseClassContent
 import org.navgurukul.learn.courses.network.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 
 interface SaralCoursesApi {
 
-    @GET("pathways")
+    @GET("pathways/dropdown")
     suspend fun getPathways(
         @Query("appVersion") appVersion: Int = BuildConfig.VERSION_CODE,
         @Query("courseType") coursetype: String = "json",
     ): PathwayContainer
 
     @GET("pathways/courses")
-    suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer
+    suspend fun getDefaultPathwayCoursesAsync(): PathwayCourseContainer   //Api not in use
 
     @GET("pathways/{pathway_id}/courses")
     suspend fun getCoursesForPathway(
@@ -24,72 +25,76 @@ interface SaralCoursesApi {
         @Query("courseType") coursetype: String = "json",
     ): PathwayCourseContainer
 
-    @GET("courses/{course_id}/exercises")
+    @GET("courses/{courseId}/content/slug")
     suspend fun getCourseContentAsync(
-        @Path("course_id") course_id: String,
+        @Path("courseId") courseId: String,
         @Query("lang") language: String
     ): CourseExerciseContainer
+
 
     @GET("classes/{classId}/revision")
     suspend fun getRevisionClasses(
         @Path("classId") classId: String
-    ):List<CourseClassContent>
+    ):Response<List<CourseClassContent>>
 
     @POST("classes/{classId}/register")
     suspend fun enrollToClassAsync(
         @Path(value = "classId") classId: Int,
         @Body hashMap: MutableMap<String, Any>,
         @Query("register-all") shouldRegisterAll: Boolean
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @DELETE("classes/{classId}/unregister")
     suspend fun logOutToClassAsync(
         @Path(value = "classId") classId: Int,
         @Query("unregister-all") shouldUnregisterAll: Boolean
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @GET("classes/studentEnrolment")
     suspend fun checkedStudentEnrolment(
         @Query("pathway_id") pathway_id: Int
-    ):EnrolResponse
+    ):Response<EnrolResponse>
 
     @GET("pathways/{pathwayId}/upcomingBatches")
     suspend fun getBatchesAsync(
         @Path(value = "pathwayId") pathwayId: Int
-    ): List<Batch>
+    ): Response<List<Batch>>
 
     @GET("pathways/{pathwayId}/upcomingEnrolledClasses")
     suspend fun getUpcomingClass(
         @Path(value = "pathwayId") pathwayId: Int
-    ):List<CourseClassContent>
+    ):Response<List<CourseClassContent>>
 
-    @POST("assessment/student/result")
+    @POST("assessment/slug/complete")
     suspend fun postStudentResult(
         @Body studentResult : StudentResult
-    ) : StudentResponse
+    ) : Response<StudentResponse>
 
-    @GET("assessment/{assessmentId}/student/result")
+    @GET("assessment/{slugId}/complete")
     suspend fun getStudentResult(
-        @Path(value = "assessmentId")  assessmentId : Int
-    ): AttemptResponse
+        @Path(value = "slugId")  slugId : Int
+    ): Response<AttemptResponse>
 
-    @GET("pathways/{pathwayId}/completePortion")
+    @GET("pathways/{pathwayId}/totalProgress")
     suspend fun getCompletedPortionData(
         @Path(value = "pathwayId") pathwayId: Int
-    ) : GetCompletedPortion
+    ) : Response<GetCompletedPortion>
 
-    @POST("progressTracking/learningTrackStatus")
-    suspend fun postLearningTrackStatus(
-        @Body learningTrackStatus : LearningTrackStatus
-    ) : ResponseBody
+    @POST("exercises/{slug_id}/markcomplete")
+    suspend fun postExerciseCompleteStatus(
+        @Path(value = "slug_id") slugId: Int,
+        @Query("lang") language: String
+    ): Response<ResponseBody>
 
-    @GET("progressTracking/{courseId}/completedCourseContentIds")
+
+    @GET("progressTracking/{courseId}/completedContent")
     suspend fun getCompletedContentsIds(
         @Path(value = "courseId") courseId: String
-    ): CompletedContentsIds
+    ): Response<CompletedContentsIds>
 
     @GET("certificate")
     suspend fun getCertificate(
         @Query(value = "pathway_code") pathway_code: String
-    ): CertificateResponse
+    ): Response<CertificateResponse>
+
 }

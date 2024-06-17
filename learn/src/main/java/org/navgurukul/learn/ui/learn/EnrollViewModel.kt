@@ -83,21 +83,27 @@ class EnrollViewModel(
     private fun dropOut(mClass: CourseClassContent, shouldRegisterUnregisterAll: Boolean = false){
         viewModelScope.launch {
             setState { copy(isLoading = true) }
-            val result = learnRepo.enrollToClass(mClass.id.toInt(), true, shouldRegisterUnregisterAll)
-            setState { copy(isLoading = true) }
-            if (result){
-                mClass.isEnrolled = false
-                setState {
-                    copy(
-                        isLoading = false,
-                        primaryAction = stringProvider.getString(R.string.enroll_to_class),
-                        menuId = null,
-                        primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
-                    )
+            try {
+                val result =
+                    learnRepo.enrollToClass(mClass.id.toInt(), true, shouldRegisterUnregisterAll)
+                setState { copy(isLoading = true) }
+                if (result) {
+                    mClass.isEnrolled = false
+                    setState {
+                        copy(
+                            isLoading = false,
+                            primaryAction = stringProvider.getString(R.string.enroll_to_class),
+                            menuId = null,
+                            primaryActionBackgroundColor = colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        )
+                    }
+                    _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
+                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
+                } else {
+                    setState { copy(isLoading = false) }
+                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
                 }
-                _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
-                _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.log_out_class)))
-            } else {
+            } catch (e: Exception) {
                 setState { copy(isLoading = false) }
                 _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
             }
@@ -125,34 +131,46 @@ class EnrollViewModel(
                 }
             } else {
                 setState { copy(isLoading = true) }
-                val result = learnRepo.enrollToClass(mClass.id.toInt(), false, shouldRegisterUnregisterAll)
-                if (result) {
-                    mClass.isEnrolled = true
+                try {
+                    val result = learnRepo.enrollToClass(
+                        mClass.id.toInt(),
+                        false,
+                        shouldRegisterUnregisterAll
+                    )
+                    if (result) {
+                        mClass.isEnrolled = true
 
-                    val durationToClassStart = (classes.startTime.time - Date().time)
-                    var primaryActionBackgroundColor =
-                        colorProvider.getColorFromAttribute(R.attr.colorPrimary)
-                    val primaryAction = if (classJoinEnabled(durationToClassStart)) {
-                        stringProvider.getString(R.string.join_type_class, mClass.sanitizedType())
+                        val durationToClassStart = (classes.startTime.time - Date().time)
+                        var primaryActionBackgroundColor =
+                            colorProvider.getColorFromAttribute(R.attr.colorPrimary)
+                        val primaryAction = if (classJoinEnabled(durationToClassStart)) {
+                            stringProvider.getString(
+                                R.string.join_type_class,
+                                mClass.sanitizedType()
+                            )
+                        } else {
+                            primaryActionBackgroundColor =
+                                colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
+                            stringProvider.getString(
+                                R.string.starts_in,
+                                durationToClassStart.toDisplayableInterval(stringProvider)
+                            )
+                        }
+
+                        setState {
+                            copy(
+                                isLoading = false,
+                                primaryAction = primaryAction,
+                                primaryActionBackgroundColor = primaryActionBackgroundColor
+                            )
+                        }
+                        _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
+                        _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enroll_to_class_msg)))
                     } else {
-                        primaryActionBackgroundColor =
-                            colorProvider.getColorFromAttribute(R.attr.colorBackgroundDisabled)
-                        stringProvider.getString(
-                            R.string.starts_in,
-                            durationToClassStart.toDisplayableInterval(stringProvider)
-                        )
+                        setState { copy(isLoading = false) }
+                        _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
                     }
-
-                    setState {
-                        copy(
-                            isLoading = false,
-                            primaryAction = primaryAction,
-                            primaryActionBackgroundColor = primaryActionBackgroundColor
-                        )
-                    }
-                    _viewEvents.setValue(EnrollViewEvents.RefreshContent(mClass))
-                    _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.enroll_to_class_msg)))
-                } else {
+                } catch (e: Exception) {
                     setState { copy(isLoading = false) }
                     _viewEvents.setValue(EnrollViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_enroll)))
                 }

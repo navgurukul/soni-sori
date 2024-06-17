@@ -7,7 +7,6 @@ import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.BaseCourseContent
 import org.navgurukul.learn.courses.db.models.QuestionCodeBaseCourseContent
 import org.navgurukul.learn.courses.network.model.ConstantString
-import androidx.core.text.HtmlCompat
 
 
 class QuestionCodeCourseViewHolder(itemview: View):

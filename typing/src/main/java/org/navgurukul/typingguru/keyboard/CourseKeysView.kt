@@ -3,7 +3,6 @@ package org.navgurukul.typingguru.keyboard
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.media.AudioManager
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.animation.AnimationUtils

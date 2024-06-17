@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.merakilearn.R
 import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.util.Constants
+import timber.log.Timber
 import java.io.File
 
 
@@ -74,9 +75,8 @@ class ScratchActivity : AppCompatActivity() {
         webView.settings.allowFileAccessFromFileURLs = true
         webView.settings.allowUniversalAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "Scratch")
-        webView.settings.domStorageEnabled = true;
-        webView.settings.setAppCacheEnabled(true);
-        webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
+        webView.settings.domStorageEnabled = true
+        webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
     }
 
     @JavascriptInterface
@@ -151,8 +151,8 @@ class ScratchActivity : AppCompatActivity() {
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
             if (consoleMessage != null) {
-                Log.d("Scratch", "${consoleMessage.message()} -- From line " +
-                        "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
+                Timber.tag("Scratch")
+                    .d(consoleMessage.message() + " -- From line " + consoleMessage.lineNumber() + " of " + consoleMessage.sourceId())
             }
             return true
         }
@@ -197,10 +197,14 @@ class ScratchActivity : AppCompatActivity() {
 
     private fun createFileChooserResultLauncher(): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                fileChooserValueCallback?.onReceiveValue(arrayOf(Uri.parse(it?.data?.dataString)));
-            } else {
-                fileChooserValueCallback?.onReceiveValue(null)
+            try {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    fileChooserValueCallback?.onReceiveValue(arrayOf(Uri.parse(it?.data?.dataString)));
+                } else {
+                    fileChooserValueCallback?.onReceiveValue(null)
+                }
+            } catch (e: Exception) {
+                    Toast.makeText(this, "Error retrieving file", Toast.LENGTH_LONG).show()
             }
         }
     }

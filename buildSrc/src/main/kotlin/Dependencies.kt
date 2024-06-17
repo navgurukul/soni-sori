@@ -188,11 +188,12 @@ object ArrowPreferences {
 object BuildConfigVersions {
     const val compileSdkVersion = 31
     const val minSdkVersion = 23
-    const val targetSdkVersion = 31
-    const val versionCode = 84
-    const val versionName = "1.5.54"
+    const val targetSdkVersion = 30
+    const val versionCode = 93
+    const val versionName = "1.5.63"
     const val applicationId = "org.merakilearn"
 }
+
 
 object Classpath {
     const val gradle = "com.android.tools.build:gradle:7.0.2"

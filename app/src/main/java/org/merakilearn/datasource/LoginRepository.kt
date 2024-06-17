@@ -23,18 +23,18 @@ class LoginRepository(
 ) {
     suspend fun loginWithAuthToken(authToken: String?): LoginResponse? {
         return try {
-            val isFakeLogin = userRepo.isFakeLogin()
-            val id = if (isFakeLogin) {
-                userRepo.getFakeLoginResponseId()
-            } else {
-                null
-            }
-            val loginRequest =
-                LoginRequest(authToken, id = id, language = corePreferences.selectedLanguage)
+//            val isFakeLogin = userRepo.isFakeLogin()
+//            val id = if (isFakeLogin) {
+//                userRepo.getFakeLoginResponseId()
+//            } else {
+//                null
+//            }
+//            val loginRequest = LoginRequest(authToken, id = id, language = corePreferences.selectedLanguage)
+            val loginRequest = LoginRequest(authToken,  language = corePreferences.selectedLanguage)
             val response = applicationApi.initLoginAsync(loginRequest)
-            if (isFakeLogin) {
-                userRepo.resetFakeLogin()
-            }
+//            if (isFakeLogin) {
+//                userRepo.resetFakeLogin()
+//            }
             userRepo.saveUserLoginResponse(response)
             response
         } catch (ex: Exception) {
@@ -43,18 +43,18 @@ class LoginRepository(
         }
     }
 
-    suspend fun performFakeSignUp(): LoginResponse? {
-        return try {
-            val loginRequest =
-                LoginRequest(null, language = corePreferences.selectedLanguage)
-            val response = applicationApi.initFakeSignUpAsync(loginRequest)
-            userRepo.saveFakeLoginResponse(response)
-            response
-        } catch (ex: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(ex)
-            null
-        }
-    }
+//    suspend fun performFakeSignUp(): LoginResponse? {
+//        return try {
+//            val loginRequest =
+//                LoginRequest(null, language = corePreferences.selectedLanguage)
+//            val response = applicationApi.initFakeSignUpAsync(loginRequest)
+//            userRepo.saveFakeLoginResponse(response)
+//            response
+//        } catch (ex: Exception) {
+//            FirebaseCrashlytics.getInstance().recordException(ex)
+//            null
+//        }
+//    }
 
     suspend fun getPathwayForResidentialProgram(): ResidentialProgramPathwayResponse? {
         return try {

@@ -1,6 +1,5 @@
 package org.merakilearn.ui.onboarding
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.merakilearn.InstallReferrerManager
@@ -10,7 +9,10 @@ import org.merakilearn.datasource.UserRepo
 import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.merakilearn.datasource.network.model.PartnerDataResponse
-import org.navgurukul.commonui.platform.*
+import org.navgurukul.commonui.platform.BaseViewModel
+import org.navgurukul.commonui.platform.ViewEvents
+import org.navgurukul.commonui.platform.ViewModelAction
+import org.navgurukul.commonui.platform.ViewState
 import java.net.URLDecoder
 
 class OnBoardingViewModel(
@@ -41,26 +43,26 @@ class OnBoardingViewModel(
     private fun checkPartner() {
         viewModelScope.launch {
             try {
-            val decodeReferrer =
-                URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
-            val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+                val decodeReferrer =
+                    URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+                val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
 
-            val partnerId = partnerIdPattern.find(decodeReferrer, 0)?.value
+                val partnerId = partnerIdPattern.find(decodeReferrer, 0)?.value
 
-            if (partnerId != null) {
-                val partnerData = userRepo.getPartnerData(partnerId.trim().toInt())
-                if (partnerData.name == null || partnerData.logo == null || partnerData.description == null) {
+                if (partnerId != null) {
+                    val partnerData = userRepo.getPartnerData(partnerId.trim().toInt())
+                    if (partnerData.name == null || partnerData.logo == null || partnerData.description == null) {
+                        _viewEvents.setValue(
+                            OnBoardingViewEvents.ShowCourseSelectionScreen
+                        )
+                    } else {
+                        _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
+                    }
+                } else {
                     _viewEvents.setValue(
                         OnBoardingViewEvents.ShowCourseSelectionScreen
                     )
-                } else {
-                    _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
                 }
-            } else {
-                _viewEvents.setValue(
-                    OnBoardingViewEvents.ShowCourseSelectionScreen
-                )
-            }
             }catch (e : Exception){
                 e.printStackTrace()
                 _viewEvents.setValue(

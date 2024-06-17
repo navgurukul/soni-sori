@@ -1,9 +1,6 @@
 package org.navgurukul.commonui.resources
 
-import android.app.Application
-import android.content.ComponentCallbacks
 import android.content.Context
-import android.content.res.Configuration
 import android.util.LruCache
 import androidx.annotation.*
 

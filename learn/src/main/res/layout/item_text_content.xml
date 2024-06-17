@@ -12,5 +12,6 @@
         android:focusable="true"
         android:textColorLink="@color/primaryColor"
         tools:text="@string/dialog_title_error"
+        android:lineSpacingExtra="10dp"
         tools:visibility="visible" />
 </layout>

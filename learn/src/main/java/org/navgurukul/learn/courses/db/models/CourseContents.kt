@@ -1,8 +1,5 @@
 package org.navgurukul.learn.courses.db.models
 
-import androidx.room.ColumnInfo
-import com.squareup.moshi.Json
-
 interface CourseContents {
     var courseId: String
 

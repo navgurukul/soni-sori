@@ -3,11 +3,11 @@ package org.navgurukul.commonui.platform
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.view_state.view.*
-import org.navgurukul.commonui.R
+import org.navgurukul.commonui.databinding.ViewStateBinding
 
 class StateView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle) {
@@ -26,7 +26,7 @@ class StateView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     var state: State = State.Empty()
         set(newState) {
-            if (newState != state) {
+            if (newState != field) {
                 update(newState)
             }
         }
@@ -35,31 +35,33 @@ class StateView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         fun onRetryClicked()
     }
 
+    private val binding: ViewStateBinding =
+        ViewStateBinding.inflate(LayoutInflater.from(context), this)
+
     init {
-        View.inflate(context, R.layout.view_state, this)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        errorRetryView.setOnClickListener {
+        binding.errorRetryView.setOnClickListener {
             eventCallback?.onRetryClicked()
         }
         state = State.Content
     }
 
     private fun update(newState: State) {
-        progressBar.isVisible = newState is State.Loading
-        errorView.isVisible = newState is State.Error
-        emptyView.isVisible = newState is State.Empty
+        binding.progressBar.isVisible = newState is State.Loading
+        binding.errorView.isVisible = newState is State.Error
+        binding.emptyView.isVisible = newState is State.Empty
         contentView?.isVisible = newState is State.Content
 
         when (newState) {
             is State.Content -> Unit
             is State.Loading -> Unit
             is State.Empty   -> {
-                emptyImageView.setImageDrawable(newState.image)
-                emptyMessageView.text = newState.message
-                emptyTitleView.text = newState.title
+                binding.emptyImageView.setImageDrawable(newState.image)
+                binding.emptyMessageView.text = newState.message
+                binding.emptyTitleView.text = newState.title
             }
             is State.Error   -> {
-                errorMessageView.text = newState.message
+                binding.errorMessageView.text = newState.message
             }
         }
     }

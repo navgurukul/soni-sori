@@ -1,7 +1,6 @@
 package org.navgurukul.commonui.platform
 
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 

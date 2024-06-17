@@ -31,6 +31,7 @@ import java.util.*
 
 
 
+
 class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
@@ -120,33 +121,6 @@ class PlaygroundViewModel(
             )
         }
 
-        // Fetch savedFiles3 from contents
-        val contents = File(context.ROOT_PATH()).list { dir, name ->
-            dir.isDirectory && name != ".git" && ProjectManager.isValid(
-                context,
-                name
-            )
-        }
-        val contentsList = if (contents != null) {
-            ArrayList(Arrays.asList(*contents))
-        } else {
-            ArrayList()
-        }
-
-        if (contentsList != null) {
-            for (filePath in contentsList) {
-                val file = File(filePath)
-                playgroundsList.add(
-                    PlaygroundItemModel(
-                        PlaygroundTypes.WEB_DEV_IDE_FILE,
-                        name = "",
-                        file = file, // Update this line
-                        iconResource = R.drawable.ic_web_file
-                    )
-                )
-            }
-        }
-
         updateState(playgroundsList)
     }
 
@@ -183,19 +157,16 @@ class PlaygroundViewModel(
             init()
         }
     }
+}
 
-    private fun shareAsUrl(file: File, context: Context) {
-        if(file.extension != "sb3"){
-            Toast.makeText(context,"Sorry!, currently we can only share scratch files", Toast.LENGTH_LONG).show()
-            return
-        }
-        viewModelScope.launch {
-            Toast.makeText(
-                context,
-                "Please wait while we upload your file to cloud.",
-                Toast.LENGTH_LONG
-            )
-                .show()
+private fun shareAsUrl(file: File, context: Context) {
+    if(file.extension != "sb3"){
+        Toast.makeText(context,"Sorry!, currently we can only share scratch files", Toast.LENGTH_LONG).show()
+        return
+    }
+    viewModelScope.launch {
+        try {
+            Toast.makeText(context, "Please wait while we upload your file to cloud.", Toast.LENGTH_LONG).show()
             val response = repository.getUploadCredentials()
             response?.data?.let {
                 val shareUrl = "https://scratch.merakilearn.org/project/" +
@@ -219,37 +190,41 @@ class PlaygroundViewModel(
                 )
                 context.startActivity(Intent.createChooser(i, "Share File"))
             }
+        } catch (e: Exception) {
+            Timber.e(e)
+            Toast.makeText(context, "Sorry!, something went wrong", Toast.LENGTH_LONG).show()
+        }
+    }
+}
+
+private fun uploadObjectToS3(
+    file: File, bucket: String,
+    accessKey: String,
+    secretAccessKey: String,
+    sessionToken: String,
+    key: String,
+    projectId: String,
+    shareUrl: String
+) {
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
+            val credentials = BasicSessionCredentials(accessKey, secretAccessKey, sessionToken)
+            val s3Client = AmazonS3Client(credentials)
+            s3Client.setRegion(region)
+            val metadata = ObjectMetadata()
+            metadata.contentType = "application/octet-stream"
+            metadata.contentLength = file.length()
+            val putObjectRequest = PutObjectRequest(bucket, key, file)
+            putObjectRequest.metadata = metadata
+            s3Client.putObject(putObjectRequest)
+            repository.updateSuccessS3Upload(projectId, ProjectNameAndUrl(file.name, shareUrl))
+        } catch (e: Exception) {
+            Timber.tag("S3 CLIENT ERROR").e(e, "UPLOAD EXCEPTION: ")
         }
     }
 
-    private fun uploadObjectToS3(
-        file: File, bucket: String,
-        accessKey: String,
-        secretAccessKey: String,
-        sessionToken: String,
-        key: String,
-        projectId: String,
-        shareUrl: String
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val region = com.amazonaws.regions.Region.getRegion(Regions.AP_SOUTH_1)
-                val credentials = BasicSessionCredentials(accessKey, secretAccessKey, sessionToken)
-                val s3Client = AmazonS3Client(credentials)
-                s3Client.setRegion(region)
-                val metadata = ObjectMetadata()
-                metadata.contentType = "application/octet-stream"
-                metadata.contentLength = file.length()
-                val putObjectRequest = PutObjectRequest(bucket, key, file)
-                putObjectRequest.metadata = metadata
-                s3Client.putObject(putObjectRequest)
-                repository.updateSuccessS3Upload(projectId, ProjectNameAndUrl(file.name, shareUrl))
-            } catch (e: Exception) {
-                Timber.tag("S3 CLIENT ERROR").e(e, "UPLOAD EXCEPTION: ")
-            }
-        }
-
-    }
+}
 
 }
 

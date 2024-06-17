@@ -3,12 +3,10 @@ package org.navgurukul.playground.custom
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Rect
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
 import org.navgurukul.commonui.themes.getThemedUnit
 import org.navgurukul.playground.R
-import java.lang.Integer.max
 
 
 /**

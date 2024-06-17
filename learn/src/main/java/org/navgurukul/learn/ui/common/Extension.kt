@@ -1,14 +1,9 @@
 package org.navgurukul.learn.ui.common
 
 import android.app.Activity
-import android.content.res.Resources
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import com.amulyakhare.textdrawable.TextDrawable
 import org.navgurukul.learn.R
 
 fun Activity.toast(text: String) {

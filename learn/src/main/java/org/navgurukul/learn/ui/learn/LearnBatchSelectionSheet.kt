@@ -8,12 +8,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.batch_selection_sheet.recycler_view
-import kotlinx.android.synthetic.main.batch_selection_sheet.tv_title
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
+import org.navgurukul.learn.databinding.BatchSelectionSheetBinding
 import org.navgurukul.learn.ui.learn.adapter.BatchSelectionAdapter
 
 class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
@@ -21,6 +19,7 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
+    private lateinit var binding: BatchSelectionSheetBinding
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var adapter: BatchSelectionAdapter
@@ -29,8 +28,9 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.batch_selection_sheet, container, false)
+    ): View {
+        binding = BatchSelectionSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,29 +41,28 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        tv_title.text = getString(R.string.more_batch)
+        binding.tvTitle.text = getString(R.string.more_batch)
 
         adapter = BatchSelectionAdapter {
             viewModel.selectBatch(it)
         }
 
-
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
+        binding.apply {recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
                     R.dimen.spacing_3x
                 ), 0
             )
         )
-        recycler_view.addItemDecoration(
+        recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             ).apply {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
-
+    }
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.batches.take(3))
         }
