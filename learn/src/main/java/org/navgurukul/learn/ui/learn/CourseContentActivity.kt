@@ -5,14 +5,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.course_exercise_navigation_sheet_content.view.navigateNext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -82,7 +85,15 @@ class CourseContentActivity : AppCompatActivity(){
             {
                 if(!isCurrentContentAssessment())
                     viewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
-                viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
+                // Disable the next button
+                mBinding.bottomNavigationExercise.navigateNext.isEnabled = false
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(1100)
+                    viewModel.handle(CourseContentActivityViewActions.NextNavigationClicked)
+                    // Re-enable the next button
+                    mBinding.bottomNavigationExercise.navigateNext.isEnabled = true
+                }
             }
         )
 
@@ -141,26 +152,9 @@ class CourseContentActivity : AppCompatActivity(){
         viewModel.viewState.observe(this) {
             mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
 
-
             if (!it.isCourseCompleted) {
                 mAdapter.submitList(it.courseContentList) {
-                    val smoothScroller = object : LinearSmoothScroller(this@CourseContentActivity) {
-                        override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                            // Adjust this value to control the scrolling speed (lower value = slower)
-                            return super.calculateSpeedPerPixel(displayMetrics) * 0.5f
-                        }
-
-                        override fun getVerticalSnapPreference(): Int {
-                            return SNAP_TO_START
-                        }
-
-                        override fun getHorizontalSnapPreference(): Int {
-                            return SNAP_TO_START
-                        }
-                    }
-
-                    smoothScroller.targetPosition = it.currentContentIndex
-                    mBinding.recyclerviewCourseExerciseList.layoutManager?.startSmoothScroll(smoothScroller)
+                    mBinding.recyclerviewCourseExerciseList.smoothScrollToPosition(it.currentContentIndex)
                 }
                 mBinding.tvCourseTitle.text = it.currentCourseTitle
 
