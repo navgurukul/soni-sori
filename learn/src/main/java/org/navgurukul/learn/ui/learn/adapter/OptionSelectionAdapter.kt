@@ -285,8 +285,8 @@ class OptionSelectionAdapter(
 
                         AssessmentType.single -> {
                             selectedOptions.clear()
-                            selectedOptions.remove(item)
-                            notifyItemChanged(currentList.indexOf(item))
+//                            selectedOptions.remove(item)
+//                            notifyItemChanged(currentList.indexOf(item))
                             selectedOptions.add(item)
                             callback?.invoke(selectedOptions)
                         }
