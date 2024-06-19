@@ -45,6 +45,7 @@ class ProfileViewModel(
     }
 
 
+    // user is used for userdata storing from googleLogin
     private val user: LoginResponse.User?
     private val userIdUser : UsernameLoginResponse.StudentInfo?
 
@@ -65,9 +66,11 @@ class ProfileViewModel(
                 userName = user?.name ?: userIdUser?.name,
                 userEmail = user?.email ?: userIdUser?.userName,
                 profilePic = user?.profilePicture ?: userIdUser?.name
+
             )
         }
 
+        showEditButton()
 
         if (partnerIdValue != null) {
             checkPartner(partnerIdValue)
@@ -198,6 +201,17 @@ class ProfileViewModel(
         }
     }
 
+    private fun showEditButton(){
+        if (user != null){
+            _viewEvents.postValue(ProfileViewEvents.ShowEditButton(true))
+        }else if (userIdUser != null ){
+            _viewEvents.postValue(ProfileViewEvents.ShowEditButton(false))
+        }else{
+            _viewEvents.postValue(ProfileViewEvents.ShowEditButton(true))
+
+        }
+    }
+
     private suspend fun updateFiles(expanded: Boolean = false) {
         var showAllButtonText: String? = null
         val savedFiles = pythonRepository.fetchSavedFiles().toMutableList().let {
@@ -217,19 +231,27 @@ class ProfileViewModel(
             copy(showProgressBar = true, userName = userName, userEmail = email)
         }
         viewModelScope.launch {
-            user?.name = userName
-            user?.email = email
-            val success = user?.let { userRepo.updateProfile(it) }
-            setState {
-                copy(
-                    showProgressBar = false,
-                    showEditProfileLayout = !success!!,
-                    showUpdateProfile = !success!!
-                )
+            try {
+                user.let {
+                    user?.name = userName
+                    user?.email = email
+                    val success = user?.let { userRepo.updateProfile(it) }
+                    setState {
+                        copy(
+                            showProgressBar = false,
+                            showEditProfileLayout = !success!!,
+                            showUpdateProfile = !success!!
+                        )
+                    }
+
+                    val toastText = stringProvider.getString(if (success == true) R.string.profile_updated_successfully else R.string.unable_to_update)
+                    success?.let { ProfileViewEvents.ShowToast(toastText, it) }?.let { _viewEvents.setValue(it) }
+                }
+            } catch (ex: Exception){
+                _viewEvents.setValue(ProfileViewEvents.ShowToast(stringProvider.getString(R.string.unable_to_drop)))
             }
 
-            val toastText = stringProvider.getString(if (success == true) R.string.profile_updated_successfully else R.string.unable_to_update)
-            success?.let { ProfileViewEvents.ShowToast(toastText, it) }?.let { _viewEvents.setValue(it) }
+
         }
 
     }
@@ -322,6 +344,7 @@ sealed class ProfileViewEvents: ViewEvents {
     data class ShowEnrolledBatches(val batches: List<Batches>): ProfileViewEvents()
     data class BatchSelectClicked(val batch: Batches): ProfileViewEvents()
     data class ShowPartnerData(val partnerData: PartnerDataResponse): ProfileViewEvents()
+    data class ShowEditButton(val showBtn : Boolean): ProfileViewEvents()
 }
 
 sealed class ProfileViewActions: ViewModelAction {

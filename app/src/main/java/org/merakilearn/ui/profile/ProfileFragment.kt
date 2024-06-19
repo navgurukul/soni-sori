@@ -101,6 +101,10 @@ class ProfileFragment : Fragment() {
                 is ProfileViewEvents.ShowPartnerData -> {
                     partnerData(it.partnerData)
                 }
+                is ProfileViewEvents.ShowEditButton ->{
+                    showEditButton(it.showBtn)
+                }
+
             }
         }
 
@@ -115,6 +119,14 @@ class ProfileFragment : Fragment() {
 
     }
 
+    private fun showEditButton(showBtn : Boolean){
+        if (showBtn){
+            mBinding.btnEdit.isEnabled = true
+        } else{
+            mBinding.btnEdit.visibility = View.GONE
+            mBinding.btnEdit.isEnabled = false
+        }
+    }
     private fun initSwipeRefresh() {
         screenRefreshListener = SwipeRefreshLayout.OnRefreshListener {
             viewModel.handle(ProfileViewActions.RefreshPage)
