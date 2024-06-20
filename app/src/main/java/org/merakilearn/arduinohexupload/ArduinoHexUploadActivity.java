@@ -133,7 +133,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             if (fab != null) fab.hide();
         } else if (state == UsbConnectState.CONNECT) {
             if (requestButton != null) requestButton.setVisibility(View.VISIBLE);
-
+            if (fab != null) fab.show();
         }
 
     }
@@ -203,7 +203,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   uploadHex();
+//                   uploadHex();
                 new Thread(new UploadRunnable()).start();
             }
         });
@@ -359,6 +359,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
            //  Log.d("ArduinoHex","Read Data from bundle intent ArrayList"+ parseHexDataString);
             if( parseHexDataString != null) {
                 uploadHex(parseHexDataString);
+                Log.d("ArduinoHex","In UploadRunnable function $parseHexDataString ");
             } else {
                 Log.d("ArduinoHex","failed to parsedata conversion");
             }

@@ -2,13 +2,25 @@ package org.merakilearn.ui
 
 import android.Manifest
 import android.app.Activity
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.webkit.*
+import android.webkit.ConsoleMessage
+import android.webkit.JavascriptInterface
+import android.webkit.JsResult
+import android.webkit.PermissionRequest
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -148,6 +160,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         webView.settings.domStorageEnabled = true
         webView.settings.setSupportZoom(true)
         webView.settings.allowFileAccess = true
+        //not allowed in production due to security reasons, so need to check if it works
+        webView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         webView.settings.allowFileAccessFromFileURLs = true
         webView.addJavascriptInterface(this, "AndroidBridge")
         webView.loadUrl("https://arduino.merd-bhanwaridevi.merakilearn.org/blockly-home")
@@ -230,6 +244,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
             editor.apply()
             val readHexDataPref = sharedPreferences.getString("HexDataFromSketch1", null)
             if (readHexDataPref.toString().isNotEmpty()) {
+                Log.d("HexDataFromSketch1", "value fo hexData ${readHexDataPref.toString()}")
+                Log.d("HexDataFromSketch1", "value fo HEXDATAFRom ${readHexDataPref.toString()}")
                 val intent =
                     Intent(this@ArduinoBlocklyActivity, ArduinoHexUploadActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -285,6 +301,9 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
+            Log.d("ARDUINO_WEB", "Got Error message! $error , request url: - ${request.url}, request: isForMain ${request.isForMainFrame}  printing request: $request")
+            Log.d("ARDUINO_WEB", "Got Error messagecode! ${error.errorCode} , description: ${error.description} ${view.url}")
+
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
@@ -308,6 +327,10 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
             /*Log.d("Scratch", "${consoleMessage.message()} -- From line " +
               "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")*/
+            if (consoleMessage != null) {
+                Log.d("ARDUINO_WEB", "${consoleMessage.message()} -- From line " +
+                        "${consoleMessage.lineNumber()} of ${consoleMessage.sourceId()}")
+            }
             return true
         }
 

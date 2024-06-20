@@ -66,6 +66,8 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
+        handleDeepLink(intent)
         mainActivityArgs.let { args ->
             appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
@@ -105,9 +107,21 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         findViewById<ImageView>(R.id.headerLogOut).let {
             setUserLogoutThumbnail(it)
         }
+        handleDeepLink(intent)
 
     }
 
+
+    private fun handleDeepLink(intent: Intent?) {
+        intent?.data?.let { uri ->
+            if (uri.host == "merakilearn.org" && uri.path == "/home") {
+                // Navigate to the appropriate fragment or activity
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                navHostFragment.navController.navigate(R.id.navigation_learn)
+            }
+        }
+    }
     private fun setUserLogoutThumbnail(
         it: ImageView
     ){
