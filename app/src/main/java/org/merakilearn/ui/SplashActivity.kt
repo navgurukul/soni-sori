@@ -19,6 +19,7 @@ import org.merakilearn.databinding.SplashActivityAppBinding
 import org.merakilearn.theme.isChristmas
 import org.merakilearn.theme.isNewYear
 import org.merakilearn.ui.onboarding.OnBoardingActivity
+import timber.log.Timber
 
 
 const val UPDATE_REQUEST_CODE = 524
@@ -59,9 +60,11 @@ class SplashActivity : AppCompatActivity() {
 
             } else {
                 //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
+                Timber.d("No Update Available")
             }
         }.addOnFailureListener {
-                Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+                Timber.d("Update Failed : $it")
             }
     }
 
