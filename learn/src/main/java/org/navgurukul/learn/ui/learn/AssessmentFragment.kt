@@ -44,6 +44,7 @@ class AssessmentFragment : Fragment() {
         parametersOf(args)
     })
     private lateinit var activityViewModel: CourseContentActivityViewModel
+    private var hasMarkedCompleted = false
 
     companion object {
         fun newInstance(
@@ -157,7 +158,7 @@ class AssessmentFragment : Fragment() {
                             it
                         )
                     )
-                    activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+                    //activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
                 }
             }
             initScreenRefresh()
@@ -266,6 +267,7 @@ class AssessmentFragment : Fragment() {
         mBinding.correctOutputLayout.outputLayout.layoutManager = layoutManager
         mBinding.correctOutputLayout.outputLayout.adapter = correctAdapter
         correctAdapter.submitList(getNewReferencedList(list))
+        markCompletedOnce()
     }
 
     private fun initIncorrectRV(list: List<BaseCourseContent>) {
@@ -275,11 +277,18 @@ class AssessmentFragment : Fragment() {
         mBinding.incorrectOutputLayout.incorrectRv.layoutManager = layoutManager
         mBinding.incorrectOutputLayout.incorrectRv.adapter = inCorrectAdapter
         inCorrectAdapter.submitList(getNewReferencedList(list))
+        markCompletedOnce()
     }
 
     private fun refreshContent() {
         fragmentViewModel.handle(AssessmentFragmentViewModel.AssessmentFragmentViewActions.RequestContentRefresh)
     }
 
+    private fun markCompletedOnce() {
+        if (!hasMarkedCompleted) {
+            activityViewModel.handle(CourseContentActivityViewActions.ContentMarkedCompleted)
+            hasMarkedCompleted = true
+        }
+    }
 
 }
