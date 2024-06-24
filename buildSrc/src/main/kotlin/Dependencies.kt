@@ -189,8 +189,8 @@ object BuildConfigVersions {
     const val compileSdkVersion = 33
     const val minSdkVersion = 23
     const val targetSdkVersion = 33
-    const val versionCode = 93
-    const val versionName = "1.5.63"
+    const val versionCode = 95
+    const val versionName = "1.5.65"
     const val applicationId = "org.merakilearn"
 }
 
