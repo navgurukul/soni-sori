@@ -47,12 +47,12 @@ class SplashActivity : AppCompatActivity() {
 
         appUpdateInfoTask.addOnSuccessListener {
             if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                && it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
                     it,
                     this,
-                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
                         .setAllowAssetPackDeletion(true).build(),
                     UPDATE_REQUEST_CODE
                 )
