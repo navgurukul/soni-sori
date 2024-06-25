@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
                     SvgLoader(this).loadSvgFromUrl(it, binding.headerIcon)
                 }
                 else {
-                    Glide.with(headerIcon)
+                    Glide.with(binding.headerIcon)
                         .load(it)
                         .transform(CircleCrop())
                         .into(binding.headerIcon)
