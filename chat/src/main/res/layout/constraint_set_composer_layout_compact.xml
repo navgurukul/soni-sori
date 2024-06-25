@@ -147,26 +147,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/attachmentButton" />
 
-    <org.navgurukul.chat.features.home.room.detail.composer.ComposerEditText
-        android:id="@+id/composerEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_rect_bordered_shape_8"
-        android:hint="@string/room_message_placeholder_not_encrypted"
-        android:inputType="textCapSentences|textMultiLine"
-        android:maxHeight="200dp"
-        android:minHeight="48dp"
-        android:layout_marginTop="@dimen/spacing_3x"
-        android:layout_marginBottom="@dimen/spacing_3x"
-        android:layout_marginStart="@dimen/spacing_3x"
-        android:nextFocusLeft="@id/composerEditText"
-        android:nextFocusUp="@id/composerEditText"
-        android:padding="@dimen/spacing_2x"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/attachmentButton"
-        app:layout_constraintStart_toEndOf="@+id/composer_avatar_view"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem/random" />
+<!--    <org.navgurukul.chat.features.home.room.detail.composer.ComposerEditText-->
+<!--        android:id="@+id/composerEditText"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/rounded_rect_bordered_shape_8"-->
+<!--        android:hint="@string/room_message_placeholder_not_encrypted"-->
+<!--        android:inputType="textCapSentences|textMultiLine"-->
+<!--        android:maxHeight="200dp"-->
+<!--        android:minHeight="48dp"-->
+<!--        android:layout_marginTop="@dimen/spacing_3x"-->
+<!--        android:layout_marginBottom="@dimen/spacing_3x"-->
+<!--        android:layout_marginStart="@dimen/spacing_3x"-->
+<!--        android:nextFocusLeft="@id/composerEditText"-->
+<!--        android:nextFocusUp="@id/composerEditText"-->
+<!--        android:padding="@dimen/spacing_2x"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/attachmentButton"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/composer_avatar_view"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:text="@tools:sample/lorem/random" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

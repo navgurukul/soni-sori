@@ -15,9 +15,9 @@
         tools:visibility="visible"
         android:background="@drawable/circle" />
 
-    <org.navgurukul.chat.features.reactions.EmojiDrawView
-        android:id="@+id/grid_item_emoji_text"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center" />
+<!--    <org.navgurukul.chat.features.reactions.EmojiDrawView-->
+<!--        android:id="@+id/grid_item_emoji_text"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_gravity="center" />-->
 </FrameLayout>

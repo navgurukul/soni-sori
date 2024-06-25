@@ -73,25 +73,25 @@
         app:layout_constraintTop_toTopOf="@+id/roomNameView"
         tools:visibility="visible" />
 
-    <org.navgurukul.chat.features.home.room.list.UnreadCounterBadgeView
-        android:id="@+id/roomUnreadCounterBadgeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_2x"
-        android:layout_marginEnd="@dimen/spacing_6x"
-        android:gravity="center"
-        android:minWidth="16dp"
-        android:minHeight="16dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roomLastEventTimeView"
-        tools:background="@drawable/bg_unread_highlight"
-        tools:text="4"
-        tools:visibility="visible" />
+<!--    <org.navgurukul.chat.features.home.room.list.UnreadCounterBadgeView-->
+<!--        android:id="@+id/roomUnreadCounterBadgeView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="@dimen/spacing_2x"-->
+<!--        android:layout_marginEnd="@dimen/spacing_6x"-->
+<!--        android:gravity="center"-->
+<!--        android:minWidth="16dp"-->
+<!--        android:minHeight="16dp"-->
+<!--        android:paddingLeft="4dp"-->
+<!--        android:paddingRight="4dp"-->
+<!--        android:textColor="@android:color/white"-->
+<!--        android:textSize="10sp"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/roomLastEventTimeView"-->
+<!--        tools:background="@drawable/bg_unread_highlight"-->
+<!--        tools:text="4"-->
+<!--        tools:visibility="visible" />-->
 
     <TextView
         android:id="@+id/roomLastEventTimeView"
@@ -116,10 +116,11 @@
         android:textAppearance="?textAppearanceBody2"
         android:textColor="?textSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"
         app:layout_constraintStart_toStartOf="@+id/roomNameView"
         app:layout_constraintTop_toBottomOf="@+id/roomNameView"
         tools:text="@sample/saral.json/data/message" />
+
+<!--    app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"-->
 
     <TextView
         android:id="@+id/roomTypingView"
@@ -132,10 +133,11 @@
         android:textColor="?colorSecondary"
         android:textAppearance="?textAppearanceEmphasized2"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"
         app:layout_constraintStart_toStartOf="@+id/roomNameView"
         app:layout_constraintTop_toBottomOf="@+id/roomNameView"
         tools:text="Alice is typing…" />
+<!--        app:layout_constraintEnd_toStartOf="@id/roomUnreadCounterBadgeView"-->
+
 
     <View
         android:layout_width="0dp"
