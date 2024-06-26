@@ -2,6 +2,8 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.asFlow
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,7 @@ import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
+import java.net.UnknownHostException
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -71,8 +74,11 @@ class LearnRepo(
                 pathwayDao.insertPathways(data.pathways)
 
             })
-        }
-        catch (e : Exception) {
+        } catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        } catch (e : Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
@@ -96,7 +102,11 @@ class LearnRepo(
                 courseDao.deleteAllCourses()
                 courseDao.insertCourses(data.courses)
             })
-        }catch (e: Exception){
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        } catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
@@ -236,7 +246,12 @@ class LearnRepo(
                     }
                 }
             )
-        }catch (ex: Exception) {
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        }
+        catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
             null!!
         }

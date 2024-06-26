@@ -2,7 +2,9 @@ package org.merakilearn.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -12,14 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.android.synthetic.main.on_board_pages_fragment.login_layout
-import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_google
-import kotlinx.android.synthetic.main.on_board_pages_fragment.login_with_username
-import kotlinx.android.synthetic.main.on_board_pages_fragment.nav_layout
-//import kotlinx.android.synthetic.main.on_board_pages_fragment.next
-//import kotlinx.android.synthetic.main.on_board_pages_fragment.skip
-import kotlinx.android.synthetic.main.on_board_pages_fragment.tab_layout
-import kotlinx.android.synthetic.main.on_board_pages_fragment.viewPager2
+import org.merakilearn.databinding.OnBoardPagesFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -29,6 +24,7 @@ import org.navgurukul.commonui.platform.BaseFragment
 import org.navgurukul.learn.ui.common.toast
 
 class OnBoardPagesFragment : BaseFragment() {
+    private lateinit var binding: OnBoardPagesFragmentBinding
 
     companion object {
         fun newInstance() = OnBoardPagesFragment()
@@ -36,6 +32,14 @@ class OnBoardPagesFragment : BaseFragment() {
         private const val RC_SIGN_IN = 9001
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding= OnBoardPagesFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     private val viewModel: OnBoardingPagesViewModel by viewModel()
     private val onBoardingViewModel: OnBoardingViewModel by sharedViewModel()
 
@@ -58,10 +62,10 @@ class OnBoardPagesFragment : BaseFragment() {
 //        skip_login.setOnClickListener {
 //            viewModel.handle(OnBoardingPagesAction.InitiateFakeSignUp)
 //        }
-        login_with_google.setOnClickListener {
+        binding.loginWithGoogle.setOnClickListener {
             signInWithGoogle()
         }
-        login_with_username.setOnClickListener {
+        binding.loginWithUsername.setOnClickListener {
             onBoardingViewModel.handle(
                 OnBoardingViewActions.NavigateToUsernameLoginScreen
             )
@@ -74,8 +78,8 @@ class OnBoardPagesFragment : BaseFragment() {
                 configurePages(it.onBoardingData, it.onBoardingTranslations)
             }
 
-            nav_layout.isVisible = it.isNavLayoutVisible
-            login_layout.isVisible = it.isLoginLayoutVisible
+            binding.navLayout.isVisible = it.isNavLayoutVisible
+            binding.loginLayout.isVisible = it.isLoginLayoutVisible
         }
 
         viewModel.viewEvents.observe(viewLifecycleOwner) {
@@ -87,7 +91,7 @@ class OnBoardPagesFragment : BaseFragment() {
                 is OnBoardingPagesEvents.OpenCourseSelection -> onBoardingViewModel.handle(
                     OnBoardingViewActions.NavigateNextFromOnBoardingScreen
                 )
-                is OnBoardingPagesEvents.NavigateToItem -> viewPager2.currentItem = it.item
+                is OnBoardingPagesEvents.NavigateToItem -> binding.viewPager2.currentItem = it.item
             }
         }
     }
@@ -96,12 +100,12 @@ class OnBoardPagesFragment : BaseFragment() {
         onBoardingData: OnBoardingData,
         onBoardingTranslations: OnBoardingTranslations
     ) {
-//        next.text = onBoardingTranslations.nextText
-//        skip.text = onBoardingTranslations.skipText
-        login_with_google.text = onBoardingTranslations.loginWithGoogleText
+//        binding.next.text = onBoardingTranslations.nextText
+//        binding.skip.text = onBoardingTranslations.skipText
+        binding.loginWithGoogle.text = onBoardingTranslations.loginWithGoogleText
 //        skip_login.text = onBoardingTranslations.skipLoginText
 
-        if (viewPager2.adapter == null) {
+        if (binding.viewPager2.adapter == null) {
             val onBoardPagesAdapter =
                 OnBoardPagesAdapter(
                     onBoardingData,
@@ -109,27 +113,27 @@ class OnBoardPagesFragment : BaseFragment() {
                     requireContext()
                 )
 
-            viewPager2.adapter = onBoardPagesAdapter
-            TabLayoutMediator(tab_layout, viewPager2) { _, _ -> }.attach()
-            (viewPager2.getChildAt(0) as RecyclerView).overScrollMode =
+            binding.viewPager2.adapter = onBoardPagesAdapter
+            TabLayoutMediator(binding.tabLayout, binding.viewPager2) { _, _ -> }.attach()
+            (binding.viewPager2.getChildAt(0) as RecyclerView).overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER
 
-            viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     viewModel.handle(OnBoardingPagesAction.PageSelected(position))
                 }
             })
 
             //This is needed to properly center items in viewpage2
-            viewPager2.currentItem = 1
-            viewPager2.currentItem = 0
+            binding.viewPager2.currentItem = 1
+            binding.viewPager2.currentItem = 0
 
-//            skip.setOnClickListener {
+//            binding.skip.setOnClickListener {
 //                viewModel.handle(OnBoardingPagesAction.Skip(onBoardPagesAdapter.itemCount))
 //            }
-
-//            next.setOnClickListener {
-//                viewModel.handle(OnBoardingPagesAction.Next(viewPager2.currentItem))
+//
+//            binding.next.setOnClickListener {
+//                viewModel.handle(OnBoardingPagesAction.Next(binding.viewPager2.currentItem))
 //            }
         }
 
