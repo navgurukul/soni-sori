@@ -84,9 +84,9 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val userId = userRepo.getCurrentUser()?.email
-        FirebaseCrashlytics.getInstance().setUserId(userId!!)
+//   need information for this codes
+//        val userId = userRepo.getCurrentUser()?.email
+//        FirebaseCrashlytics.getInstance().setUserId(userId!!)
 
         firebaseAnalytics= Firebase.analytics
         val navHostFragment =
