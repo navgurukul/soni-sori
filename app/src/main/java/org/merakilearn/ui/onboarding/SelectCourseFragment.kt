@@ -41,13 +41,12 @@ class SelectCourseFragment : BaseFragment() {
 
         viewModel.viewState.observe(viewLifecycleOwner, {
             if (it.onBoardingData != null && it.onBoardingTranslations != null) {
-                setCards(it.onBoardingData, it.onBoardingTranslations)
+                setCards(it.onBoardingData, it.onBoardingTranslations, it.courseImageUrls)
             }
         })
     }
 
-    private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations) {
-
+    private fun setCards(onBoardingData: OnBoardingData, translations: OnBoardingTranslations, imageUrls: List<String>) {
         binding.selectCourseHeading.text = translations.selectCourseHeader
 
         val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
@@ -62,11 +61,11 @@ class SelectCourseFragment : BaseFragment() {
                 translations.onBoardingPathwayListNames[index]
 
             val imageView = customView.findViewById<ImageView>(R.id.logo)
-            pathway.image.remote?.let {
+            if (index < imageUrls.size) {
                 GlideApp.with(requireContext())
-                    .load(it)
+                    .load(imageUrls[index])
                     .into(imageView)
-            } ?: run {
+            } else {
                 imageView.setImageResource(DefaultLogos.valueOf(pathway.image.local!!).id)
             }
 
