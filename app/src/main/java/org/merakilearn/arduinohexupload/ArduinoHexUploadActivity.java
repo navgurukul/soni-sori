@@ -129,11 +129,13 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
 
     public void usbConnectChange(UsbConnectState state) {
         if (state == UsbConnectState.DISCONNECTED) {
+            Log.d("Arduino", "UsbConnectState.DISCONNECTED state $state");
             if (requestButton != null) requestButton.setVisibility(View.INVISIBLE);
             if (fab != null) fab.hide();
         } else if (state == UsbConnectState.CONNECT) {
+            Log.d("Arduino", "UsbConnectState.CONNECTED state $state");
             if (requestButton != null) requestButton.setVisibility(View.VISIBLE);
-            if (fab != null) fab.show();
+
         }
 
     }
@@ -162,6 +164,8 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         usbSerialManager = new UsbSerialManager(this);
         setUsbFilter();
+//        setFilters();
+
         setContentView(R.layout.activity_arduino_hex_upload);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -203,7 +207,7 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                   uploadHex();
+                //   uploadHex();
                 new Thread(new UploadRunnable()).start();
             }
         });
@@ -359,7 +363,6 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
            //  Log.d("ArduinoHex","Read Data from bundle intent ArrayList"+ parseHexDataString);
             if( parseHexDataString != null) {
                 uploadHex(parseHexDataString);
-                Log.d("ArduinoHex","In UploadRunnable function $parseHexDataString ");
             } else {
                 Log.d("ArduinoHex","failed to parsedata conversion");
             }

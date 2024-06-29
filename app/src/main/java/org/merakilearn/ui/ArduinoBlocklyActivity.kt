@@ -280,7 +280,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
-        Toast.makeText(this, "Exiting Arduino", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Exiting Arduino", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
     }
@@ -300,9 +300,9 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         }
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-            Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
-            Log.d("ARDUINO_WEB", "Got Error message! $error , request url: - ${request.url}, request: isForMain ${request.isForMainFrame}  printing request: $request")
-            Log.d("ARDUINO_WEB", "Got Error messagecode! ${error.errorCode} , description: ${error.description} ${view.url}")
+//            Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
+            Timber.tag("ARDUINO_WEB")
+                .d("Got Error messagecode! " + error.errorCode + " , description: " + error.description + " " + view.url)
 
         }
 

@@ -64,7 +64,8 @@ public class UsbSerialManager {
 
     public void requestDevicePermissionForUsbDevice(String usbKey, UsbDevice usbDevice) {
         synchronized (UsbSerialManager.class) {
-            usbManager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, requestIntent, 0));
+            int flagsValue = PendingIntent.FLAG_MUTABLE;
+            usbManager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, requestIntent, flagsValue));
         }
     }
 
