@@ -2,6 +2,19 @@
 <defaultsMap xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
     <entry>
+        <key>course_image_urls</key>
+        <value>
+            [
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png"
+            ]
+        </value>
+    </entry>
+
+    <entry>
         <key>available_lang</key>
         <value>
             [{"code":"en","label":"English"},{"code":"hi-IN","label":"Hindi"}]

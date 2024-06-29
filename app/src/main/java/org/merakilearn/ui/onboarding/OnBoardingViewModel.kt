@@ -31,10 +31,12 @@ class OnBoardingViewModel(
                 config.getObjectifiedValue<OnBoardingData>(
                     Config.ON_BOARDING_DATA
                 )!!
+            val imageUrls = config.getCourseImageUrls()
             setState {
                 copy(
                     onBoardingData = data,
-                    onBoardingTranslations = data.onBoardingTranslations[selectedLanguage]
+                    onBoardingTranslations = data.onBoardingTranslations[selectedLanguage],
+                    courseImageUrls = imageUrls
                 )
             }
         }
@@ -139,5 +141,6 @@ sealed class OnBoardingViewActions : ViewModelAction {
 
 data class OnBoardingViewState(
     val onBoardingData: OnBoardingData? = null,
-    val onBoardingTranslations: OnBoardingTranslations? = null
+    val onBoardingTranslations: OnBoardingTranslations? = null,
+    val courseImageUrls: List<String> = emptyList()
 ) : ViewState

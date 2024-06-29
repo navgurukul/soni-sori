@@ -19,6 +19,7 @@ class Config {
         const val KEYBOARD_URL_KEY = "keyboard_purchase_url"
         const val OPPORTUNITY_URL="opportunity_url"
         const val PRIVACY_POLICY = "privacy_policy"
+        const val COURSE_IMAGE_URLS = "course_image_urls"
     }
 
     /**
@@ -39,7 +40,9 @@ class Config {
                 }
             }
     }
-
+    fun getCourseImageUrls(): List<String> {
+        return getValue<String>(COURSE_IMAGE_URLS).objectifyToList() ?: emptyList()
+    }
     inline fun <reified T> getObjectifiedValue(key: String): T? = getValue<String>(key).objectify()
 
     inline fun <reified T> getObjectifiedList(key: String): List<T>? = getValue<String>(key).objectifyToList()
