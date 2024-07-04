@@ -5,11 +5,13 @@
         <key>course_image_urls</key>
         <value>
             [
-            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
-            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
-            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
-            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png",
-            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/intro_to_python_XXXHDPI_0b8f90e071.png"
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/python_38800db42e.svg",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/language_7ca6001f6b.svg",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/typing_XXXHDPI_4eb1eccf17.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/js_a2157861fb.png",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/residential_22d04ce534.svg",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/scratch_fd758dbf59.svg",
+            "https://s3strapi-project.s3.ap-south-1.amazonaws.com/MC_Digital_Course_1_8d43b205d3.png"
             ]
         </value>
     </entry>

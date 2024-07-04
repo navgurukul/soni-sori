@@ -15,6 +15,7 @@ import org.merakilearn.datasource.network.model.OnBoardingData
 import org.merakilearn.datasource.network.model.OnBoardingTranslations
 import org.navgurukul.chat.core.glide.GlideApp
 import org.navgurukul.commonui.platform.BaseFragment
+import org.navgurukul.commonui.platform.SvgLoader
 
 class SelectCourseFragment : BaseFragment() {
     private lateinit var binding: SelectCourseFragmentBinding
@@ -62,9 +63,15 @@ class SelectCourseFragment : BaseFragment() {
 
             val imageView = customView.findViewById<ImageView>(R.id.logo)
             if (index < imageUrls.size) {
-                GlideApp.with(requireContext())
-                    .load(imageUrls[index])
-                    .into(imageView)
+                val imageUrl = imageUrls[index]
+                if (imageUrl.endsWith(".svg")) {
+                    SvgLoader(requireContext()).loadSvgFromUrl(imageUrl, imageView)
+                } else {
+                    GlideApp.with(requireContext())
+                        .load(imageUrl)
+                        .centerInside()
+                        .into(imageView)
+                }
             } else {
                 imageView.setImageResource(DefaultLogos.valueOf(pathway.image.local!!).id)
             }
