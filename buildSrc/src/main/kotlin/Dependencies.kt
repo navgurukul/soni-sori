@@ -8,7 +8,7 @@ object Versions {
     const val glide_version = "4.11.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
-    const val kotlin = "1.5.21"
+    const val kotlin = "2.0.0"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
     const val room = "2.4.0-alpha03"
@@ -185,23 +185,29 @@ object ArrowPreferences {
     const val arrow = "io.arrow-kt:arrow-core:${Versions.arrow_version}"
 }
 
-object BuildConfigVersions {
-    const val compileSdkVersion = 33
+object AndroidSdk {
     const val minSdkVersion = 23
-    const val targetSdkVersion = 33
+    const val compileSdkVersion = 34
+    const val targetSdkVersion = compileSdkVersion
     const val versionCode = 95
     const val versionName = "1.5.65"
     const val applicationId = "org.merakilearn"
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:7.0.2"
+    const val gradle = "com.android.tools.build:gradle:8.5.0"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-    const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
+    //const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
+    //const val kotlinParcelize = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+
+    //apply plugin: "org.jetbrains.kotlin.plugin.parcelize"
+
+    //const val kotlinParcelize = "org.jetbrains.kotlin.plugin.parcelize"
+
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:10.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
+    const val python = "com.chaquo.python:gradle:15.0.1"
+    //const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
@@ -209,18 +215,21 @@ object Classpath {
     const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"
 }
 
-object Plugins {
-    const val application = "com.android.application"
-    const val library = "com.android.library"
+object BuildPlugins {
+    //All the build plugins are added here
+    const val androidApplication = "com.android.application"
+    const val androidLibrary = "com.android.library"
     const val dynamicFeature = "com.android.dynamic-feature"
     const val kotlinAndroid = "kotlin-android"
-    const val kotlinExtensions = "kotlin-android-extensions"
+    //const val kotlinExtensions = "kotlin-android-extensions"
     const val kotlinKapt = "kotlin-kapt"
+    //const val KotlinParcelize = "kotlin-parcelize"
     const val gms = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
     const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
-    const val githubBenManes = "com.github.ben-manes.versions"
+    const val gradleVersionPlugin = "com.github.ben-manes.versions"
+    const val kotlinParcelizePlugin = "org.jetbrains.kotlin.plugin.parcelize"
 }

@@ -1,15 +1,15 @@
 plugins {
-    id(Plugins.library)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+    id(BuildPlugins.androidLibrary)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,6 +34,8 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
+    namespace = "org.navgurukul.commonui"
 }
 
 

@@ -50,6 +50,7 @@ class ShimmerViewHolder(inflater: LayoutInflater, parent: ViewGroup?, innerViewR
     RecyclerView.ViewHolder(inflater.inflate(R.layout.layout_shimmer, parent, false)) {
 
     init {
-        (itemView as ViewGroup).addView(inflater.inflate(innerViewResId, itemView, false))
+        (itemView as ViewGroup).addView(inflater.inflate(innerViewResId,
+            itemView as ViewGroup, false))
     }
 }

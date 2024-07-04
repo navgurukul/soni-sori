@@ -2,8 +2,13 @@
 package org.navgurukul.commonui.platform
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.PointF
+import android.graphics.Rect
+import android.graphics.RectF
 import android.text.TextPaint
 import android.util.AttributeSet
 import androidx.core.content.res.use

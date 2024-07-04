@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.navgurukul.chat">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name=".features.home.room.detail.RoomDetailActivity"
+        <!--<activity android:name=".features.home.room.detail.RoomDetailActivity"
             android:parentActivityName="org.merakilearn.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"/>-->
 
-        <activity
+<!--        <activity
             android:name=".features.media.MerakiAttachmentViewerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Transparent" />
+            android:theme="@style/AppTheme.Transparent" />-->
 
-        <activity
+<!--        <activity
             android:name=".features.reactions.EmojiReactionPickerActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_emoji_reaction_picker" />
+            android:label="@string/title_activity_emoji_reaction_picker" />-->
 
-        <activity android:name=".features.roomprofile.RoomProfileActivity"
+<!--        <activity android:name=".features.roomprofile.RoomProfileActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".features.media.BigImageViewerActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"/>-->
 
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -40,18 +39,18 @@
                 tools:node="remove" />
         </provider>
 
-        <service
+<!--        <service
         android:name=".core.services.SaralSyncService"
-        android:exported="false" />
+        android:exported="false" />-->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <!-- Exported false, should only be accessible from this app!! -->
-        <receiver
+<!--        <receiver
             android:name=".features.notifications.NotificationBroadcastReceiver"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false" />-->
 
     </application>
 

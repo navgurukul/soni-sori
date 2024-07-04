@@ -1,26 +1,25 @@
 plugins {
-    id(Plugins.dynamicFeature)
-    id(Plugins.kotlinJetbrainAndroid)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
-    id(Plugins.githubBenManes)
+    id(BuildPlugins.dynamicFeature)
+    id(BuildPlugins.kotlinJetbrainAndroid)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
+    id(BuildPlugins.gradleVersionPlugin)
 }
 android {
     namespace = "org.navgurukul.webide"
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-
     packagingOptions {
-        exclude("**/*.txt")
-        exclude("**/*.xml")
-        exclude( "**/*.properties")
+        resources {
+            excludes += setOf("**/*.txt", "**/*.xml", "**/*.properties")
+        }
     }
+
 
     buildFeatures {
         viewBinding = true

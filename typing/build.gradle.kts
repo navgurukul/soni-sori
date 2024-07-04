@@ -1,17 +1,17 @@
 
 plugins {
-    id(Plugins.dynamicFeature)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
-    id(Plugins.gms)
+    id(BuildPlugins.dynamicFeature)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
+    id(BuildPlugins.gms)
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,6 +27,8 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
+    namespace = "org.navgurukul.typingguru"
 }
 
 dependencies {

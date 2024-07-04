@@ -21,9 +21,9 @@
         <activity
             android:name=".keyboard.KeyboardActivity"
             android:screenOrientation="landscape">
-            <meta-data
+<!--            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />
+                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />-->
         </activity>
         <activity
             android:name=".score.ScoreActivity"

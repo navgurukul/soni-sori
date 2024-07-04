@@ -8,14 +8,15 @@ buildscript {
     dependencies {
         classpath(Classpath.gradle)
         classpath(Classpath.kotlin)
-        classpath(Classpath.kotlinExtensions)
+        //classpath(Classpath.kotlinExtensions)
+        //classpath(Classpath.kotlinParcelize)
         // Newer versions may be available: please check here:
         // https://chaquo.com/chaquopy/doc/current/changelog.html
         classpath(Classpath.python)
         classpath(Classpath.googleServices)
         classpath(Classpath.firebaseCrashlytics)
-        classpath(Classpath.realm)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        //classpath(Classpath.realm)
+        //classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
         classpath(Classpath.firebasePerf)
         classpath(Classpath.benManes)
 

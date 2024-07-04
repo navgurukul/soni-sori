@@ -26,18 +26,18 @@ class EmojiDrawView @JvmOverloads constructor(
 
     var emoji: String? = null
 
-    override fun onDraw(canvas: Canvas?) {
-        EmojiRecyclerAdapter.beginTraceSession("EmojiDrawView.onDraw")
-        super.onDraw(canvas)
-        canvas?.save()
-        val space = abs((width - emojiSize) / 2f)
-        if (mLayout != null) {
-            canvas?.translate(space, space)
-            mLayout!!.draw(canvas)
-        }
-        canvas?.restore()
-        EmojiRecyclerAdapter.endTraceSession()
-    }
+//    override fun onDraw(canvas: Canvas?) {
+//        EmojiRecyclerAdapter.beginTraceSession("EmojiDrawView.onDraw")
+//        super.onDraw(canvas)
+//        canvas?.save()
+//        val space = abs((width - emojiSize) / 2f)
+//        if (mLayout != null) {
+//            canvas?.translate(space, space)
+//            mLayout!!.draw(canvas)
+//        }
+//        canvas?.restore()
+//        EmojiRecyclerAdapter.endTraceSession()
+//    }
 
     companion object {
         val tPaint = TextPaint()

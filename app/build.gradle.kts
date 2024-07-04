@@ -1,27 +1,26 @@
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariantOutput
-import de.undercouch.gradle.tasks.download.Download
+//import de.undercouch.gradle.tasks.download.Download
 
 plugins {
-    id(Plugins.application)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
-    id(Plugins.gms)
-    id(Plugins.crashlytics)
-    id(Plugins.perf)
-    id("org.jetbrains.kotlin.android")
+    id(BuildPlugins.androidApplication)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
+    id(BuildPlugins.gms)
+    id(BuildPlugins.crashlytics)
+    id(BuildPlugins.perf)
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        applicationId = BuildConfigVersions.applicationId
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
-        versionCode = BuildConfigVersions.versionCode
-        versionName = BuildConfigVersions.versionName
+        applicationId = AndroidSdk.applicationId
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
+        versionCode = AndroidSdk.versionCode
+        versionName = AndroidSdk.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,33 +37,39 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         dataBinding = true
         viewBinding = true
     }
-
     packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
-        merge ("/META-INF/services/*")
+        resources {
+            merges += setOf("/META-INF/services/*")
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
     }
+
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
     dynamicFeatures += setOf(":webIDE")
+
+    namespace = "org.merakilearn"
 }
 
 dependencies {
@@ -175,10 +180,10 @@ dependencies {
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
-tasks.register<Download>("downloadBundleTools") {
-    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
-    dest(File(buildDir, "bundletool-all.jar"))
-}
+//tasks.register<Download>("downloadBundleTools") {
+//    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
+//    dest(File(buildDir, "bundletool-all.jar"))
+//}
 
 android.applicationVariants.all {
     outputs.forEach { output: BaseVariantOutput? ->

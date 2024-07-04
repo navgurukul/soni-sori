@@ -29,21 +29,23 @@ class EmptyStateView @JvmOverloads constructor(
                     binding.emptyStateTitle.text =
                         context.getString(R.string.empty_state_no_content_title)
                     binding.emptyStateImage.setImageResource(R.drawable.illus_no_content)
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = GONE
                 }
                 State.ERROR -> {
                     binding.emptyStateDescription.text =
                         context.getString(R.string.empty_state_error_description)
                     binding.emptyStateTitle.text = context.getString(R.string.empty_state_error_title)
                     binding.emptyStateImage.setImageResource(R.drawable.illus_no_internet)
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = GONE
                 }
                 State.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.emptyStateImage.visibility = View.GONE
-                    binding.emptyStateTitle.visibility = View.GONE
-                    binding.emptyStateDescription.visibility = View.GONE
+                    binding.progressBar.visibility = VISIBLE
+                    binding.emptyStateImage.visibility = GONE
+                    binding.emptyStateTitle.visibility = GONE
+                    binding.emptyStateDescription.visibility = GONE
                 }
+
+                State.OFFLINE -> TODO()
             }
         }
 

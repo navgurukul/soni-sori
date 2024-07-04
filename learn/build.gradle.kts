@@ -1,17 +1,17 @@
 plugins {
-    id(Plugins.library)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
+    id(BuildPlugins.androidLibrary)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -24,11 +24,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            buildConfigField("int", "VERSION_CODE", "${BuildConfigVersions.versionCode}")
+            buildConfigField("int", "VERSION_CODE", "${AndroidSdk.versionCode}")
         }
 
         getByName("debug") {
-            buildConfigField("int", "VERSION_CODE", "${BuildConfigVersions.versionCode}")
+            buildConfigField("int", "VERSION_CODE", "${AndroidSdk.versionCode}")
         }
     }
 
@@ -45,6 +45,8 @@ android {
         dataBinding = true
         viewBinding = true
     }
+
+    namespace = "org.navgurukul.learn"
 }
 
 dependencies {

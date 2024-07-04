@@ -1,16 +1,16 @@
 plugins {
-    id(Plugins.library)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.python)
+    id(BuildPlugins.androidLibrary)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.python)
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
 
         ndk {
             abiFilters.clear()
@@ -28,6 +28,8 @@ android {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
     }
+
+    namespace = "org.navgurukul.playground"
 }
 
 

@@ -1,9 +1,9 @@
 plugins {
-    id(Plugins.library)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
-    id(Plugins.realm)
+    id(BuildPlugins.androidLibrary)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
+    //id(Plugins.realm)
 }
 
 kapt {
@@ -11,11 +11,11 @@ kapt {
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,6 +31,8 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
+    namespace = "org.merakilearn"
 }
 
 dependencies {

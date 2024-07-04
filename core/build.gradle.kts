@@ -1,16 +1,18 @@
 plugins {
-    id(Plugins.library)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
-    id(Plugins.kotlinKapt)
+    id(BuildPlugins.androidLibrary)
+    id(BuildPlugins.kotlinAndroid)
+    //id(Plugins.kotlinExtensions)
+    id(BuildPlugins.kotlinKapt)
+    //id(Plugins.KotlinParcelize)
+    id(BuildPlugins.kotlinParcelizePlugin)
 }
 
 android {
-    compileSdk = BuildConfigVersions.compileSdkVersion
+    compileSdk = AndroidSdk.compileSdkVersion
 
     defaultConfig {
-        minSdk = BuildConfigVersions.minSdkVersion
-        targetSdk = BuildConfigVersions.targetSdkVersion
+        minSdk = AndroidSdk.minSdkVersion
+        targetSdk = AndroidSdk.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,6 +36,8 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
+    namespace = "org.merakilearn.core"
 }
 
 dependencies {
