@@ -13,7 +13,7 @@ package org.navgurukul.chat.features.roomprofile.members
 //import org.navgurukul.chat.core.epoxy.profiles.profileMatrixItem
 //import org.navgurukul.chat.core.extensions.join
 //import org.navgurukul.chat.core.resources.ColorProvider
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.commonui.resources.StringProvider
 //
 //class RoomMemberListController(

@@ -7,12 +7,12 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import org.matrix.android.sdk.internal.crypto.MXCRYPTO_ALGORITHM_MEGOLM
 //import org.matrix.android.sdk.internal.crypto.model.event.EncryptionEventContent
 //import org.navgurukul.chat.core.extensions.prevOrNull
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.ActiveSessionHolder
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.*
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //import timber.log.Timber
 //
 //class MergedHeaderItemFactory(

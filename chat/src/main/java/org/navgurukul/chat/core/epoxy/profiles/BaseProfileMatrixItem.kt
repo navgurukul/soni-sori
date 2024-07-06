@@ -7,7 +7,7 @@ package org.navgurukul.chat.core.epoxy.profiles
 //import org.matrix.android.sdk.api.util.MatrixItem
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 //import org.navgurukul.chat.core.extensions.setTextOrHide
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //
 //abstract class BaseProfileMatrixItem<T : ProfileMatrixItem.Holder> : MerakiEpoxyModel<T>() {
 //    @EpoxyAttribute lateinit var avatarRenderer: AvatarRenderer

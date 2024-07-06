@@ -10,7 +10,7 @@ package org.navgurukul.chat.features.media
 //import org.matrix.android.sdk.internal.crypto.attachments.ElementToDecrypt
 //import kotlinx.android.parcel.Parcelize
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.commonui.error.ErrorFormatter
 //import timber.log.Timber
 //import java.io.File

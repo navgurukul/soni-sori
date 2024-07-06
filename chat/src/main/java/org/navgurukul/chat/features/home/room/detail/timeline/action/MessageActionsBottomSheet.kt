@@ -22,7 +22,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.action
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.extensions.cleanup
 //import org.navgurukul.chat.core.extensions.configureWith
-//import org.navgurukul.chat.core.utils.DimensionConverter
+//import org.merakilearn.core.additional.DimensionConverter
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
 //
 //@Parcelize

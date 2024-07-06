@@ -14,7 +14,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.helper
 //import org.matrix.android.sdk.internal.session.room.VerificationState
 //import org.navgurukul.chat.core.date.SaralDateFormatter
 //import org.navgurukul.chat.core.extensions.localDateTime
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.*
 //
 ///**

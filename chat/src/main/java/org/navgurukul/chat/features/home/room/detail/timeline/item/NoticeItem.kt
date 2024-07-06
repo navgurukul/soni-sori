@@ -10,7 +10,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 //import org.navgurukul.chat.core.epoxy.ClickListener
 //import org.navgurukul.chat.core.epoxy.onClick
 //import org.navgurukul.chat.core.utils.DebouncedClickListener
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //
 //@EpoxyModelClass

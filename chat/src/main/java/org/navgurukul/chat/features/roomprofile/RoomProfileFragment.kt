@@ -22,7 +22,7 @@ package org.navgurukul.chat.features.roomprofile
 //import org.navgurukul.chat.core.animations.AppBarStateChangeListener
 //import org.navgurukul.chat.core.animations.MerakiItemAppBarStateChangeListener
 //import org.navgurukul.chat.core.extensions.*
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.list.actions.RoomListActionsArgs
 //import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsBottomSheet
 //import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsSharedAction

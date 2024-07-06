@@ -5,24 +5,33 @@ import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.MatrixConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import org.merakilearn.core.additional.ActiveSessionDataSource
+import org.merakilearn.core.additional.ActiveSessionHolder
+import org.merakilearn.core.additional.AuthenticationRepository
+import org.merakilearn.core.additional.BitmapLoader
+import org.merakilearn.core.additional.ColorProvider
+import org.merakilearn.core.additional.ImageManager
 import org.navgurukul.chat.R
-import org.navgurukul.chat.core.repo.*
-import org.navgurukul.chat.core.resources.*
-import org.navgurukul.chat.features.crypto.KeyRequestHandler
-import org.navgurukul.chat.features.home.AvatarRenderer
+import org.merakilearn.core.additional.KeyRequestHandler
+import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.*
 //import org.navgurukul.chat.features.home.room.detail.timeline.factory.*
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.*
-import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
-import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
-import org.navgurukul.chat.features.home.room.format.RoomHistoryVisibilityFormatter
+import org.merakilearn.core.additional.DisplayableEventFormatter
+import org.merakilearn.core.additional.NoticeEventFormatter
+import org.merakilearn.core.additional.RoomHistoryVisibilityFormatter
 //import org.navgurukul.chat.features.home.room.list.*
-import org.navgurukul.chat.features.media.ImageContentRenderer
-import org.navgurukul.chat.features.notifications.*
-import org.navgurukul.chat.features.popup.PopupAlertManager
+import org.merakilearn.core.additional.ImageContentRenderer
+import org.merakilearn.core.additional.PopupAlertManager
 //import org.navgurukul.chat.features.reactions.*
 //import org.navgurukul.chat.features.roomprofile.members.*
-import org.navgurukul.chat.features.settings.ChatPreferences
+import org.merakilearn.core.additional.ChatPreferences
+import org.merakilearn.core.additional.IconLoader
+import org.merakilearn.core.additional.NotifiableEventResolver
+import org.merakilearn.core.additional.NotificationDrawerManager
+import org.merakilearn.core.additional.NotificationUtils
+import org.merakilearn.core.additional.OutdatedEventDetector
+import org.merakilearn.core.additional.PushRuleTriggerListener
 
 val viewModelModules = module {
 //    viewModel { EmojiSearchResultViewModel(EmojiSearchResultViewState(), get()) }

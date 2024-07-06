@@ -1,6 +1,6 @@
 package org.navgurukul.chat.core.resources
 
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //
 //class UserPreferencesProvider(private val chatPreferences: ChatPreferences) {
 //

@@ -5,7 +5,7 @@ package org.navgurukul.chat.features.html
 //import android.text.style.ClickableSpan
 //import android.view.View
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.core.resources.ColorProvider
+//import org.merakilearn.core.additional.ColorProvider
 //
 //class SpoilerSpan(private val colorProvider: ColorProvider) : ClickableSpan() {
 //

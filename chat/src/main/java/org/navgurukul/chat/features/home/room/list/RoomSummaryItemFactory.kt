@@ -23,9 +23,9 @@ package org.navgurukul.chat.features.home.room.list
 //import org.navgurukul.chat.core.extensions.localDateTime
 //import org.navgurukul.chat.core.resources.DateProvider
 //import org.navgurukul.chat.core.utils.DebouncedClickListener
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.TypingHelper
-//import org.navgurukul.chat.features.home.room.format.DisplayableEventFormatter
+//import org.merakilearn.core.additional.DisplayableEventFormatter
 //
 //class RoomSummaryItemFactory(
 //    private val displayableEventFormatter: DisplayableEventFormatter,

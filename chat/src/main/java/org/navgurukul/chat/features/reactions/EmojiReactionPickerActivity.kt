@@ -21,7 +21,7 @@ package org.navgurukul.chat.features.reactions
 //import kotlinx.android.synthetic.main.activity_emoji_reaction_picker.*
 //import org.koin.android.ext.android.inject
 //import org.koin.androidx.viewmodel.ext.android.viewModel
-//import org.navgurukul.chat.ChatBaseActivity
+//import org.merakilearn.core.additional.ChatBaseActivity
 //import org.navgurukul.chat.EmojiCompatFontProvider
 //import org.navgurukul.chat.R
 //import timber.log.Timber

@@ -6,9 +6,9 @@ package org.navgurukul.chat.features.html
 //import io.noties.markwon.html.TagHandlerNoOp
 //import org.commonmark.node.Node
 //import org.navgurukul.chat.core.glide.GlideApp
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
-//import org.navgurukul.chat.core.resources.ColorProvider
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.ActiveSessionHolder
+//import org.merakilearn.core.additional.ColorProvider
+//import org.merakilearn.core.additional.AvatarRenderer
 //
 //class EventHtmlRenderer(
 //    context: Context,

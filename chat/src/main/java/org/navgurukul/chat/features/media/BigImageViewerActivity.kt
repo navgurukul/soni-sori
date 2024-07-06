@@ -6,10 +6,10 @@ package org.navgurukul.chat.features.media
 //import androidx.core.net.toUri
 //import kotlinx.android.synthetic.main.activity_big_image_viewer.*
 //import org.koin.android.ext.android.inject
-//import org.navgurukul.chat.ChatBaseActivity
+//import org.merakilearn.core.additional.ChatBaseActivity
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.glide.GlideApp
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //
 ///**
 // * Simple Activity to display an avatar in fullscreen

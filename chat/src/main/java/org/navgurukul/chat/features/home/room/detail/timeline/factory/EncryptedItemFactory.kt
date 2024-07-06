@@ -10,7 +10,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import me.gujun.android.span.span
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-//import org.navgurukul.chat.core.resources.ColorProvider
+//import org.merakilearn.core.additional.ColorProvider
 //import org.navgurukul.chat.core.resources.DrawableProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
@@ -18,7 +18,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageItemAttributesFactory
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageTextItem_
 //import org.navgurukul.chat.features.home.room.detail.timeline.tools.createLinkMovementMethod
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //import org.navgurukul.commonui.resources.StringProvider
 //
 //// This class handles timeline events who haven't been successfully decrypted

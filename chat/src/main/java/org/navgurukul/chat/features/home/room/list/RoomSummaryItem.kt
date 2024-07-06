@@ -14,7 +14,7 @@ package org.navgurukul.chat.features.home.room.list
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 //import org.navgurukul.chat.core.extensions.setTextOrHide
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //
 //@EpoxyModelClass
 //abstract class RoomSummaryItem : MerakiEpoxyModel<RoomSummaryItem.Holder>() {

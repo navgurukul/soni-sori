@@ -5,11 +5,11 @@ package org.navgurukul.chat.features.navigator
 //import android.content.Intent
 //import org.merakilearn.core.navigator.ChatModuleNavigator
 //import org.navgurukul.chat.core.error.fatalError
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.features.home.room.detail.RoomDetailActivity
 //import org.navgurukul.chat.features.home.room.detail.RoomDetailArgs
 //import org.navgurukul.chat.features.roomprofile.RoomProfileActivity
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //
 //class ChatNavigatorContract(
 //    private val sessionHolder: ActiveSessionHolder,

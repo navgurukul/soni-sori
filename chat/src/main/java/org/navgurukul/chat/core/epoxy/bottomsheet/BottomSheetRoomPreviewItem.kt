@@ -14,7 +14,7 @@ package org.navgurukul.chat.core.epoxy.bottomsheet
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 //import org.navgurukul.chat.core.epoxy.onClick
 //import org.navgurukul.chat.core.extensions.setTextOrHide
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.commonui.resources.StringProvider
 //import org.navgurukul.commonui.themes.ThemeUtils
 //

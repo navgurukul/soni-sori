@@ -13,7 +13,7 @@ package org.navgurukul.chat.features.home.room.detail
 //import org.koin.core.parameter.parametersOf
 //import org.koin.core.scope.KoinScopeComponent
 //import org.koin.core.scope.Scope
-//import org.navgurukul.chat.ChatBaseActivity
+//import org.merakilearn.core.additional.ChatBaseActivity
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.extensions.replaceFragment
 //import org.navgurukul.commonui.platform.ToolbarConfigurable

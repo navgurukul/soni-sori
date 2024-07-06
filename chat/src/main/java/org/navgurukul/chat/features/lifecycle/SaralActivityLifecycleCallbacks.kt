@@ -3,7 +3,7 @@ package org.navgurukul.chat.features.lifecycle
 //import android.app.Activity
 //import android.app.Application
 //import android.os.Bundle
-//import org.navgurukul.chat.features.popup.PopupAlertManager
+//import org.merakilearn.core.additional.PopupAlertManager
 //
 //class SaralActivityLifecycleCallbacks constructor(private val popupAlertManager: PopupAlertManager) : Application.ActivityLifecycleCallbacks {
 //    override fun onActivityPaused(activity: Activity) {

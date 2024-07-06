@@ -15,7 +15,7 @@ package org.navgurukul.chat.features.html
 //import org.matrix.android.sdk.api.util.MatrixItem
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.glide.GlideRequests
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import java.lang.ref.WeakReference
 //
 ///**

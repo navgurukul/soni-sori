@@ -60,11 +60,11 @@ package org.navgurukul.chat.features.home.room.detail
 //import org.navgurukul.chat.core.dialogs.withColoredButton
 //import org.navgurukul.chat.core.extensions.*
 //import org.navgurukul.chat.core.glide.GlideApp
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.core.utils.*
 //import org.navgurukul.chat.core.utils.createUIHandler
 //import org.navgurukul.chat.core.views.NotificationAreaView
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.action.EventSharedAction
@@ -78,9 +78,9 @@ package org.navgurukul.chat.features.home.room.detail
 //import org.navgurukul.chat.features.media.ImageContentRenderer
 //import org.navgurukul.chat.features.media.VideoContentRenderer
 //import org.navgurukul.chat.features.navigator.ChatInternalNavigator
-//import org.navgurukul.chat.features.notifications.NotificationDrawerManager
+//import org.merakilearn.core.additional.NotificationDrawerManager
 //import org.navgurukul.chat.features.reactions.EmojiReactionPickerActivity
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //import org.navgurukul.chat.features.share.SharedData
 //import org.navgurukul.commonui.platform.BaseFragment
 //import org.navgurukul.commonui.platform.SpaceItemDecoration

@@ -13,7 +13,7 @@ package org.navgurukul.chat.features.home.room.detail
 //import io.reactivex.Observable
 //import io.reactivex.schedulers.Schedulers
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.commonui.platform.BaseViewModel
 //import org.navgurukul.commonui.platform.EmptyViewState
 //import org.navgurukul.commonui.platform.ViewEvents

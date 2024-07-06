@@ -2,7 +2,7 @@ package org.navgurukul.chat.features.home.room.list.actions
 
 //import org.matrix.android.sdk.rx.rx
 //import org.matrix.android.sdk.rx.unwrap
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.commonui.platform.BaseViewModel
 //import org.navgurukul.commonui.platform.EmptyViewEvents
 //

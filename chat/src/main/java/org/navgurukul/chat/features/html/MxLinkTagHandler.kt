@@ -12,8 +12,8 @@ package org.navgurukul.chat.features.html
 //import io.noties.markwon.html.MarkwonHtmlRenderer
 //import io.noties.markwon.html.tag.LinkHandler
 //import org.navgurukul.chat.core.glide.GlideRequests
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.ActiveSessionHolder
+//import org.merakilearn.core.additional.AvatarRenderer
 //
 //class MxLinkTagHandler(
 //    private val glideRequests: GlideRequests,

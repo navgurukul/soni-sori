@@ -3,7 +3,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import android.view.View
 //import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInformationDataFactory

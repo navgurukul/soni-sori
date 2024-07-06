@@ -19,7 +19,7 @@ package org.navgurukul.chat.features.roomprofile.members
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.extensions.cleanup
 //import org.navgurukul.chat.core.extensions.configureWith
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.roomprofile.RoomProfileArgs
 //import org.navgurukul.commonui.platform.BaseFragment
 //

@@ -17,13 +17,13 @@ package org.navgurukul.chat.features.home.room.detail.timeline.action
 //import org.koin.java.KoinJavaComponent.inject
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.extensions.canReact
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
-//import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
+//import org.merakilearn.core.additional.ActiveSessionHolder
+//import org.merakilearn.core.additional.NoticeEventFormatter
 //import org.navgurukul.chat.features.html.EventHtmlRenderer
 //import org.navgurukul.chat.features.html.SaralHtmlCompressor
 //import org.navgurukul.chat.features.powerlevel.PowerLevelsObservableFactory
 //import org.navgurukul.chat.features.reactions.data.EmojiDataSource
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //import org.navgurukul.commonui.platform.BaseViewModel
 //import org.navgurukul.commonui.platform.EmptyViewEvents
 //import org.navgurukul.commonui.platform.SingleLiveEvent

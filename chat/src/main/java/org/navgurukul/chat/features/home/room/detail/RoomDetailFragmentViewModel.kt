@@ -34,7 +34,7 @@ package org.navgurukul.chat.features.home.room.detail
 //import org.commonmark.renderer.html.HtmlRenderer
 //import org.matrix.android.sdk.api.session.room.timeline.*
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.core.resources.UserPreferencesProvider
 //import org.navgurukul.chat.core.utils.isValidUrl
 //import org.navgurukul.chat.core.utils.subscribeLogError
@@ -44,7 +44,7 @@ package org.navgurukul.chat.features.home.room.detail
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.RoomSummaryHolder
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.TimelineDisplayableEvents
 //import org.navgurukul.chat.features.powerlevel.PowerLevelsObservableFactory
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //import org.navgurukul.commonui.model.Success
 //import org.navgurukul.commonui.platform.BaseViewModel
 //import org.navgurukul.commonui.resources.StringProvider

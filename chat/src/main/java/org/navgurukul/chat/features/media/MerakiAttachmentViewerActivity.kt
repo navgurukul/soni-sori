@@ -18,7 +18,7 @@ package org.navgurukul.chat.features.media
 //import org.koin.android.ext.android.inject
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.intent.getMimeTypeFromUri
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.core.utils.shareMedia
 //import org.navgurukul.chat.features.attachmentviewer.AttachmentCommands
 //import org.navgurukul.chat.features.attachmentviewer.AttachmentViewerActivity

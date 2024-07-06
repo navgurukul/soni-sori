@@ -18,10 +18,10 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import org.commonmark.node.Document
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
-//import org.navgurukul.chat.core.resources.ColorProvider
+//import org.merakilearn.core.additional.ActiveSessionHolder
+//import org.merakilearn.core.additional.ColorProvider
 //import org.navgurukul.chat.core.utils.DebouncedClickListener
-//import org.navgurukul.chat.core.utils.DimensionConverter
+//import org.merakilearn.core.additional.DimensionConverter
 //import org.navgurukul.chat.core.utils.containsOnlyEmojis
 //import org.navgurukul.chat.core.utils.isLocalFile
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

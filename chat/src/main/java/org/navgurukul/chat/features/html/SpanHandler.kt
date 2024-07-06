@@ -5,7 +5,7 @@ package org.navgurukul.chat.features.html
 //import io.noties.markwon.html.HtmlTag
 //import io.noties.markwon.html.MarkwonHtmlRenderer
 //import io.noties.markwon.html.TagHandler
-//import org.navgurukul.chat.core.resources.ColorProvider
+//import org.merakilearn.core.additional.ColorProvider
 //
 //class SpanHandler(private val colorProvider: ColorProvider) : TagHandler() {
 //

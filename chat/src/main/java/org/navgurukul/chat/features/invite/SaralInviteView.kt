@@ -11,7 +11,7 @@ package org.navgurukul.chat.features.invite
 //import kotlinx.android.synthetic.main.saral_invite_view.view.*
 //import org.koin.java.KoinJavaComponent.inject
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.commonui.platform.ButtonStateView
 //
 //class SaralInviteView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)

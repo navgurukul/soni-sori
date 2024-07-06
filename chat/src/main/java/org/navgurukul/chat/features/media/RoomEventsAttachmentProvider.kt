@@ -13,7 +13,7 @@ package org.navgurukul.chat.features.media
 //import org.matrix.android.sdk.internal.crypto.attachments.toElementToDecrypt
 //import org.navgurukul.chat.core.date.SaralDateFormatter
 //import org.navgurukul.chat.core.extensions.localDateTime
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.features.attachmentviewer.AttachmentInfo
 //import java.io.File
 //

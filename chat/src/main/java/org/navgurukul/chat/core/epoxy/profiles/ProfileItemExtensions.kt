@@ -5,7 +5,7 @@ package org.navgurukul.chat.core.epoxy.profiles
 //import org.matrix.android.sdk.api.util.MatrixItem
 //import org.navgurukul.chat.core.epoxy.ClickListener
 //import org.navgurukul.chat.core.epoxy.dividerItem
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //
 //fun EpoxyController.buildProfileSection(title: String) {
 //    profileSectionItem {

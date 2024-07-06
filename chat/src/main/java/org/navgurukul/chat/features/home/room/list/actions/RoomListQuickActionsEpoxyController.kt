@@ -7,7 +7,7 @@ package org.navgurukul.chat.features.home.room.list.actions
 //import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetActionItem
 //import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetRoomPreviewItem
 //import org.navgurukul.chat.core.epoxy.dividerItem
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.commonui.resources.StringProvider
 //
 ///**

@@ -11,7 +11,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 //import org.matrix.android.sdk.internal.session.room.VerificationState
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.core.resources.UserPreferencesProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController

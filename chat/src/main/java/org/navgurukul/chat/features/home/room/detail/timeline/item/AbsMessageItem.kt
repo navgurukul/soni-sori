@@ -9,7 +9,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 //import com.airbnb.epoxy.EpoxyAttribute
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.utils.DebouncedClickListener
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //

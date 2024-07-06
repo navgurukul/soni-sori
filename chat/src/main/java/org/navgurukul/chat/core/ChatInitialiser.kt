@@ -12,9 +12,9 @@ package org.navgurukul.chat.core
 //import org.navgurukul.chat.core.repo.ActiveSessionHolder
 //import org.navgurukul.chat.core.repo.AppStateHandler
 //import org.navgurukul.chat.features.lifecycle.SaralActivityLifecycleCallbacks
-//import org.navgurukul.chat.features.notifications.NotificationDrawerManager
-//import org.navgurukul.chat.features.notifications.NotificationUtils
-//import org.navgurukul.chat.features.popup.PopupAlertManager
+//import org.merakilearn.core.additional.NotificationDrawerManager
+//import org.merakilearn.core.additional.NotificationUtils
+//import org.merakilearn.core.additional.PopupAlertManager
 //import timber.log.Timber
 //import java.util.concurrent.atomic.AtomicBoolean
 //

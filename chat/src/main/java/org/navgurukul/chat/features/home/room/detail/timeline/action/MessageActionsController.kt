@@ -10,7 +10,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.action
 //import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetQuickReactionsItem
 //import org.navgurukul.chat.core.epoxy.bottomsheet.bottomSheetSendStateItem
 //import org.navgurukul.chat.core.epoxy.dividerItem
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.E2EDecoration
 //import org.navgurukul.chat.features.home.room.detail.timeline.tools.createLinkMovementMethod

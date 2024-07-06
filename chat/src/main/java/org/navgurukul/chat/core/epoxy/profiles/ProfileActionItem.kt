@@ -13,7 +13,7 @@ package org.navgurukul.chat.core.epoxy.profiles
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
 //import org.navgurukul.chat.core.extensions.setTextOrHide
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.commonui.themes.ThemeUtils
 //
 //@EpoxyModelClass

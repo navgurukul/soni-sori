@@ -2,13 +2,13 @@ package org.navgurukul.chat.features.home.room.detail.timeline.factory
 
 //import android.view.View
 //import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.AvatarSizeProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.helper.MessageInformationDataFactory
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.NoticeItem
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.NoticeItem_
-//import org.navgurukul.chat.features.home.room.format.NoticeEventFormatter
+//import org.merakilearn.core.additional.NoticeEventFormatter
 //
 //class NoticeItemFactory(
 //    private val eventFormatter: NoticeEventFormatter,

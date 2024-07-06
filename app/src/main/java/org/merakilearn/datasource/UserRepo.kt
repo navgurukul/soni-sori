@@ -11,10 +11,9 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.datasource.network.model.PartnerDataResponse
 import org.merakilearn.datasource.network.model.UserUpdate
-import org.navgurukul.chat.core.repo.AuthenticationRepository
+import org.merakilearn.core.additional.AuthenticationRepository
 import org.navgurukul.learn.courses.db.CoursesDatabase
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
-import org.navgurukul.learn.courses.network.wrapper.Resource
 
 class UserRepo(
     private val saralApi: SaralApi,

@@ -6,7 +6,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 //import androidx.annotation.IdRes
 //import org.matrix.android.sdk.api.util.MatrixItem
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.features.home.AvatarRenderer
+//import org.merakilearn.core.additional.AvatarRenderer
 //import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 //
 //abstract class BasedMergedItem<H : BasedMergedItem.Holder> : BaseEventItem<H>() {

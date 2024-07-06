@@ -10,7 +10,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 //import org.navgurukul.chat.R
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyHolder
 //import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
-//import org.navgurukul.chat.core.utils.DimensionConverter
+//import org.merakilearn.core.additional.DimensionConverter
 //import org.navgurukul.commonui.platform.CheckableView
 //
 ///**

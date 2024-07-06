@@ -3,9 +3,9 @@ package org.navgurukul.chat.core
 //import android.app.Activity
 //import org.merakilearn.core.appopen.AppOpenDelegate
 //import org.navgurukul.chat.core.pushers.PushersManager
-//import org.navgurukul.chat.features.notifications.NotificationDrawerManager
+//import org.merakilearn.core.additional.NotificationDrawerManager
 //import org.navgurukul.chat.features.push.FcmHelper
-//import org.navgurukul.chat.features.settings.ChatPreferences
+//import org.merakilearn.core.additional.ChatPreferences
 //
 //class ChatAppOpenDelegate(
 //    private val notificationDrawerManager: NotificationDrawerManager,

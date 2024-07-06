@@ -5,7 +5,7 @@ package org.navgurukul.chat.features.home.room.detail.timeline.helper
 //import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 //import org.matrix.android.sdk.api.session.file.ContentDownloadStateTracker
 //import org.navgurukul.chat.R
-//import org.navgurukul.chat.core.repo.ActiveSessionHolder
+//import org.merakilearn.core.additional.ActiveSessionHolder
 //import org.navgurukul.chat.features.home.room.detail.timeline.MessageColorProvider
 //import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageFileItem
 //import org.navgurukul.commonui.error.ErrorFormatter
