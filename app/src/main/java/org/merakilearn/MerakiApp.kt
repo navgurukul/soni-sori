@@ -53,7 +53,6 @@ class MerakiApp : Application() {
         val config: Config by inject()
         config.initialise()
 
-//        ChatInitializer.initialise(this)
         subscribeToDefaultTopic()
 
         val installReferrerManager: InstallReferrerManager by inject()

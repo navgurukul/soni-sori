@@ -69,7 +69,7 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(fileTree(mapOf("dir" to "../core/lib", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
 
     //modules
     implementation(project(":learn"))
@@ -95,8 +95,8 @@ dependencies {
     implementation(KoinDependencies.koinViewModel)
 
     // Matrix
-    implementation(files("../core/lib/matrix-sdk-android-release.aar"))
-    implementation(files("../core/lib/matrix-sdk-android-rx-release.aar"))
+    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
+    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
 
     //Navigation
     implementation(AndroidxDependencies.navigationFragment)
