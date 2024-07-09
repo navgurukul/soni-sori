@@ -112,7 +112,8 @@ dependencies {
 
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //test
     testImplementation(TestDependencies.jUnit)

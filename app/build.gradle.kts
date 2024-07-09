@@ -145,7 +145,10 @@ dependencies {
     implementation (GlideDependencies.glideSvg)
 
     //Google play
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
+    implementation(GooglePlayDependencies.playInAppUpdateLibrary)
+    implementation(GooglePlayDependencies.extensionsForInAppUpdateLibrary)
     implementation(GooglePlayDependencies.installReferrer)
 
     //for webide

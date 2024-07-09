@@ -39,7 +39,8 @@ dependencies {
     kapt ("com.google.auto.service:auto-service:1.0.1")
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     implementation(KotlinDependencies.kotlin)
     //androidx

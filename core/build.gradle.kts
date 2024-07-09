@@ -57,7 +57,8 @@ dependencies {
     kapt(RetrofitDependencies.moshiKapt)
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //firebase
     implementation(FirebaseDependencies.messaging)

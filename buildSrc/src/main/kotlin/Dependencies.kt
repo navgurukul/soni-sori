@@ -100,7 +100,10 @@ object OkReplayDependencies {
 }
 
 object GooglePlayDependencies {
-    const val playCore = "com.google.android.play:core:1.10.0"
+    const val playFeatureDeliveryLibrary = "com.google.android.play:feature-delivery:2.1.0"
+    const val extensionsForFeatureLibrary = "com.google.android.play:feature-delivery-ktx:2.1.0"
+    const val playInAppUpdateLibrary = "com.google.android.play:app-update:2.1.0"
+    const val extensionsForInAppUpdateLibrary = "com.google.android.play:app-update-ktx:2.1.0"
     const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
     const val playServicesLicenses =  "com.google.android.gms:play-services-oss-licenses:${Versions.playServicesLicensesPlugin}"
 }
