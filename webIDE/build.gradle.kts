@@ -2,7 +2,8 @@ plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinJetbrainAndroid)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinParcelize)
     id(Plugins.kotlinKapt)
     id(Plugins.githubBenManes)
 }

@@ -165,7 +165,7 @@ class LearnRepo(
                     Log.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
                 }
                 try {
-                    assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent?>)
+                    assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
                 }catch (ex: Exception){
                     Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
                 }
@@ -284,15 +284,15 @@ class LearnRepo(
 
         exerciseDao.markExerciseCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.exercises?.map { it.toString() }
+            contentList.data?.exercises?.map { it.toString() } ?: emptyList()
         )
         classesDao.markClassCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.classes?.map { it.toString() }
+            contentList.data?.classes?.map { it.toString() } ?: emptyList()
         )
         assessmentDao.markAssessmentCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.assessments?.map { it.toString() }
+            contentList.data?.assessments?.map { it.toString() } ?: emptyList()
         )
     }
 

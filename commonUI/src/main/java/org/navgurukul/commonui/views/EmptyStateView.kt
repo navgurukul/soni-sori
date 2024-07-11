@@ -44,6 +44,7 @@ class EmptyStateView @JvmOverloads constructor(
                     binding.emptyStateTitle.visibility = View.GONE
                     binding.emptyStateDescription.visibility = View.GONE
                 }
+                else -> {}
             }
         }
 

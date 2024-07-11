@@ -1,12 +1,13 @@
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariantOutput
-import de.undercouch.gradle.tasks.download.Download
+//import de.undercouch.gradle.tasks.download.Download
 
 plugins {
     id(Plugins.application)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id(Plugins.kotlinParcelize)
     id(Plugins.gms)
     id(Plugins.crashlytics)
     id(Plugins.perf)
@@ -178,10 +179,10 @@ dependencies {
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
-tasks.register<Download>("downloadBundleTools") {
-    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
-    dest(File(buildDir, "bundletool-all.jar"))
-}
+//tasks.register<Download>("downloadBundleTools") {
+//    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
+//    dest(File(buildDir, "bundletool-all.jar"))
+//}
 
 android.applicationVariants.all {
     outputs.forEach { output: BaseVariantOutput? ->

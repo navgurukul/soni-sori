@@ -30,7 +30,7 @@ interface CourseDao {
     fun insertCourses(course: List<Course>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCourse(course: Course?)
+    fun insertCourse(course: Course)
 
     @Query("select * from pathway_course where id= :id")
     fun course(id: String): Course?
@@ -52,10 +52,10 @@ interface CourseDao {
 @Dao
 interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExercise(course: List<CourseExerciseContent?>?)
+    fun insertExercise(course: List<CourseExerciseContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExerciseAsync(course: List<CourseExerciseContent?>?)
+    suspend fun insertExerciseAsync(course: List<CourseExerciseContent>)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
     suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<CourseExerciseContent>
@@ -71,7 +71,7 @@ interface ExerciseDao {
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 
     @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id in (:exerciseIdList) ")
-    suspend fun markExerciseCompleted(exerciseProgress: String,exerciseIdList : List<String>?)
+    suspend fun markExerciseCompleted(exerciseProgress: String, exerciseIdList : List<String>)
 }
 
 
@@ -90,10 +90,10 @@ interface ClassDao {
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertClass(course: List<CourseClassContent?>?)
+    fun insertClass(course: List<CourseClassContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertClassAsync(course: List<CourseClassContent?>?)
+    suspend fun insertClassAsync(course: List<CourseClassContent>)
 
     @Query("select * from course_class where id = :classId and lang = :lang")
     fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
@@ -105,7 +105,7 @@ interface ClassDao {
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
 
     @Query("Update course_class set courseContentProgress = :classProgress where id in (:classIdList) ")
-    suspend fun markClassCompleted(classProgress: String,classIdList : List<String>?)
+    suspend fun markClassCompleted(classProgress: String, classIdList : List<String>)
 
 }
 
@@ -115,10 +115,10 @@ interface AssessmentDao{
     suspend fun saveCourseAssessmentCurrent(course: CurrentStudy)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAssessment(course: List<CourseAssessmentContent?>?)
+    fun insertAssessment(course: List<CourseAssessmentContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent?>?)
+    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent>)
 
     @Query("select * from course_assessment where id = :assessmentId and lang= :lang")
     fun getAssessmentById(assessmentId: String, lang: String): LiveData<CourseAssessmentContent>
@@ -130,7 +130,7 @@ interface AssessmentDao{
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
-    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
+    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>)
 
 
 }
