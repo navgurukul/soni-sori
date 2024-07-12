@@ -8,7 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -16,7 +16,29 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_15_dp"
+                android:src="@drawable/ic_back_arrow"/>
+
+            <TextView
+                android:id="@+id/headerTitle"
+                style="?textAppearanceHeadline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Burn Code to Device"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginStart="@dimen/dimen_10_dp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/headerIcon"
+                app:layout_constraintEnd_toStartOf="@id/headerAction"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,15 +62,23 @@
             android:text="@string/serial_port"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/textView1"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="34dp"
-            android:background="#FFFFFF"
-            android:gravity="bottom"
-            android:scrollbars="vertical" />
+            android:layout_height="wrap_content"
+            android:background="#585858">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="34dp"
+                android:background="#585858"
+                android:gravity="bottom"
+                android:scrollbars="vertical" />
+
+        </androidx.cardview.widget.CardView>
+
 
         <Button
             android:id="@+id/buttonRequest"

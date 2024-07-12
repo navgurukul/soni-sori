@@ -232,7 +232,11 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
     @JavascriptInterface
     fun hexDataUploadToAndroidDevice(hexData: String) {
         val builder = AlertDialog.Builder(this)
+        Log.d("" +
+                "", "value fo hexData ${hexData}")
         if( hexData.isNotEmpty() ) {
+
+            Log.d("HexDataFromSketch1", "value fo hexData ${hexData} Clicked the fucntion")
 
             editor = sharedPreferences.edit()
             // If data coming as json string
@@ -243,6 +247,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
             editor.putString("HexDataFromSketch1", hexData)
             editor.apply()
             val readHexDataPref = sharedPreferences.getString("HexDataFromSketch1", null)
+            Log.d("HexDataFromSketch1", "value fo readHexDatPre ${readHexDataPref} outside the if fucntion fucntion")
             if (readHexDataPref.toString().isNotEmpty()) {
                 Log.d("HexDataFromSketch1", "value fo hexData ${readHexDataPref.toString()}")
                 Log.d("HexDataFromSketch1", "value fo HEXDATAFRom ${readHexDataPref.toString()}")
@@ -253,6 +258,9 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
                 bundle.putString("HexDataFromSketch1", readHexDataPref)
                 intent.putExtras(bundle)
                 startActivity(intent)
+            } else{
+                Log.d("HexDataFromSketch1", "value fo readHexDatPre ${readHexDataPref} outside the if fucntion fucntion")
+
             }
             // Set the dialog title and message
             builder.setTitle("Failed to Save data in InMemory")
@@ -266,6 +274,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
             }
         }
         else {
+            Log.d("HexDataFromSketch1", "value fo hexData in else block ${hexData}")
+
             // Set the dialog title and message if reading data from web to android fails
             builder.setTitle("Failed to Read Data From API")
                 .setMessage("Sketch Code to Hex file data is empty ")
@@ -280,6 +290,8 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onBack() {
+        Log.d("HexDataFromSketch1", "Back button clicked")
+
 //        Toast.makeText(this, "Exiting Arduino", Toast.LENGTH_SHORT).show()
         finish()
         onBackPressed()
