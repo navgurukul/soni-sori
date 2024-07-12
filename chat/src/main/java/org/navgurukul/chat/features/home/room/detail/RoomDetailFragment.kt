@@ -13,6 +13,7 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -43,10 +44,6 @@ import org.matrix.android.sdk.api.util.toMatrixItem
 import org.matrix.android.sdk.internal.crypto.model.event.EncryptedEventContent
 import org.matrix.android.sdk.internal.crypto.model.event.WithHeldCode
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.merge_composer_layout.view.composerEditText
-import kotlinx.android.synthetic.main.merge_composer_layout.view.sendButton
-//import kotlinx.android.synthetic.main.fragment_room_detail.*
-//import kotlinx.android.synthetic.main.merge_composer_layout.view.*
 import org.commonmark.parser.Parser
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.fragmentScope
@@ -71,6 +68,7 @@ import org.navgurukul.chat.core.views.NotificationAreaView
 import org.navgurukul.chat.databinding.FragmentRoomDetailBinding
 import org.navgurukul.chat.databinding.MergeComposerLayoutBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
+import org.navgurukul.chat.features.home.room.detail.composer.ComposerEditText
 import org.navgurukul.chat.features.home.room.detail.composer.TextComposerView
 import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 import org.navgurukul.chat.features.home.room.detail.timeline.action.EventSharedAction
@@ -148,6 +146,7 @@ class RoomDetailFragment : BaseFragment(),
     private val chatPreferences: ChatPreferences by inject()
 
     private val eventHtmlRenderer: EventHtmlRenderer by inject()
+    private val TextComposerView: TextComposerView by inject()
 
     private lateinit var scrollOnNewMessageCallback: ScrollOnNewMessageCallback
     private lateinit var scrollOnHighlightedEventCallback: ScrollOnHighlightedEventCallback
@@ -158,6 +157,8 @@ class RoomDetailFragment : BaseFragment(),
 
     private lateinit var binding: FragmentRoomDetailBinding
 
+    lateinit var sendButton:ImageButton
+    lateinit var composerEditText:ComposerEditText
     override fun getLayoutResId(): Int = R.layout.fragment_room_detail
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -177,6 +178,8 @@ class RoomDetailFragment : BaseFragment(),
         setupJumpToReadMarkerView()
         setupJumpToBottomView()
 
+        sendButton=view.findViewById(R.id.sendButton)
+        composerEditText=view.findViewById(R.id.composerEditText)
         binding.roomToolbarContentView.debouncedClicks {
             navigator.openRoomProfile(requireActivity(), roomDetailArgs.roomId)
         }
@@ -291,7 +294,7 @@ class RoomDetailFragment : BaseFragment(),
         binding.composerLayout.collapse()
 
         updateComposerText(text)
-        binding.composerLayout.sendButton.contentDescription = getString(R.string.send)
+        sendButton.contentDescription = getString(R.string.send)
     }
 
     private fun handleActions(action: EventSharedAction) {
@@ -433,7 +436,7 @@ class RoomDetailFragment : BaseFragment(),
         updateComposerText(defaultContent)
 
         binding.composerLayout.composerRelatedMessageActionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes))
-        binding.composerLayout.sendButton.contentDescription = getString(descriptionRes)
+        sendButton.contentDescription = getString(descriptionRes)
 
         avatarRenderer.render(event.senderInfo.toMatrixItem(), binding.composerLayout.composerRelatedMessageAvatar)
 
@@ -530,7 +533,7 @@ class RoomDetailFragment : BaseFragment(),
     }
 
     private fun observerUserTyping() {
-        binding.composerLayout.composerEditText.textChanges()
+        composerEditText.textChanges()
             .skipInitialValue()
             .debounce(300, TimeUnit.MILLISECONDS)
             .map { it.isNotEmpty() }
@@ -570,7 +573,7 @@ class RoomDetailFragment : BaseFragment(),
                 override fun performQuickReplyOnHolder(model: EpoxyModel<*>) {
                     (model as? AbsMessageItem)?.attributes?.informationData?.let {
                         val eventId = it.eventId
-                        viewModel.handle(RoomDetailAction.EnterReplyMode(eventId, binding.composerLayout.composerEditText.text.toString()))
+                        viewModel.handle(RoomDetailAction.EnterReplyMode(eventId,composerEditText.text.toString()))
                     }
                 }
 
@@ -779,7 +782,7 @@ class RoomDetailFragment : BaseFragment(),
      */
     @SuppressLint("SetTextI18n")
     private fun insertUserDisplayNameInTextEditor(userId: String) {
-        val startToCompose = binding.composerLayout.rootView.composerEditText.text.isNullOrBlank()
+        val startToCompose = composerEditText.text.isNullOrBlank()
 
 //        if (startToCompose
 //            && userId == session.myUserId) {
@@ -799,7 +802,7 @@ class RoomDetailFragment : BaseFragment(),
                                 requireContext(),
                                 MatrixItem.UserItem(userId, displayName, roomMember?.avatarUrl)
                             )
-                                .also { it.bind(binding.composerLayout.rootView.composerEditText) },
+                                .also { it.bind(composerEditText) },
                             0,
                             displayName.length,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -809,11 +812,11 @@ class RoomDetailFragment : BaseFragment(),
                         if (startToCompose) {
                             if (displayName.startsWith("/")) {
                                 // Ensure displayName will not be interpreted as a Slash command
-                                binding.composerLayout.rootView.composerEditText.append("\\")
+                                composerEditText.append("\\")
                             }
-                            binding.composerLayout.rootView.composerEditText.append(pill)
+                            composerEditText.append(pill)
                         } else {
-                            binding.composerLayout.rootView.composerEditText.text?.insert(binding.composerLayout.composerEditText.selectionStart, pill)
+                            composerEditText.text?.insert(composerEditText.selectionStart, pill)
                         }
                     }
                 }
@@ -823,7 +826,7 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun focusComposerAndShowKeyboard() {
         if (binding.composerLayout.isVisible) {
-            binding.composerLayout.composerEditText.showKeyboard(andRequestFocus = true)
+           composerEditText.showKeyboard(andRequestFocus = true)
         }
     }
 
@@ -890,10 +893,10 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun updateComposerText(text: String) {
         // Do not update if this is the same text to avoid the cursor to move
-        if (text != binding.composerLayout.rootView.composerEditText.text.toString()) {
+        if (text != composerEditText.text.toString()) {
             // Ignore update to avoid saving a draft
-            binding.composerLayout.composerEditText.setText(text)
-            binding.composerLayout.composerEditText.setSelection(binding.composerLayout.composerEditText.text?.length
+            composerEditText.setText(text)
+            composerEditText.setSelection(composerEditText.text?.length
                 ?: 0)
         }
     }
@@ -1051,7 +1054,7 @@ class RoomDetailFragment : BaseFragment(),
 
         notificationDrawerManager.setCurrentRoom(null)
 
-        viewModel.handle(RoomDetailAction.SaveDraft(binding.composerLayout.rootView.composerEditText.text.toString()))
+        viewModel.handle(RoomDetailAction.SaveDraft(composerEditText.text.toString()))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
