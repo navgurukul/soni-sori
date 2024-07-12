@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.dialog_create.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.R
@@ -25,6 +24,7 @@ import org.merakilearn.util.webide.Prefs.set
 import org.merakilearn.util.webide.Prefs.get
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.core.navigator.Mode
+import org.merakilearn.databinding.DialogCreateBinding
 import org.merakilearn.databinding.FragmentPlaygroundBinding
 import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.ui.ScratchActivity
@@ -61,7 +61,7 @@ class PlaygroundFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentPlaygroundBinding.inflate(inflater, container, false)
+        binding = FragmentPlaygroundBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun getLayoutResId() = R.layout.fragment_playground
@@ -149,14 +149,14 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun openDialogToCreateProject() {
         prefs = Prefs.defaultPrefs(requireContext())
-        val rootView = View.inflate(requireContext(), R.layout.dialog_create, null)
-        rootView.nameLayout.editText!!.setText("")
+        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext()))
+        dialogBinding.nameLayout.editText!!.setText("")
 
-        projectIcon = rootView.faviconImage
+        projectIcon = dialogBinding.faviconImage
 
         val createDialog = AlertDialog.Builder(requireContext())
             .setTitle("Create a new project")
-            .setView(rootView)
+            .setView(dialogBinding.root)
             .setPositiveButton("CREATE", null)
             .setNegativeButton("CANCEL", null)
             .create()
@@ -169,8 +169,8 @@ class PlaygroundFragment : BaseFragment() {
 
         createDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             viewModel.handle(PlaygroundActions.RefreshLayout)
-            if (DataValidator.validateCreate(requireContext(), rootView.nameLayout)) {
-                val name = rootView.nameLayout.editText!!.text.toString()
+            if (DataValidator.validateCreate(requireContext(), dialogBinding.nameLayout)) {
+                val name = dialogBinding.nameLayout.editText!!.text.toString()
 
                 prefs["name"] = name
                 prefs["type"] = 0
