@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.text.Editable
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,7 +14,7 @@ import androidx.core.text.toSpannable
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import kotlinx.android.synthetic.main.merge_composer_layout.view.*
+import org.navgurukul.chat.databinding.MergeComposerLayoutBinding
 import org.navgurukul.chat.R
 import org.navgurukul.commonui.themes.ThemeUtils
 
@@ -31,6 +32,8 @@ class TextComposerView @JvmOverloads constructor(
         fun onSendMessage(text: CharSequence)
         fun onAddAttachment()
     }
+    private val binding: MergeComposerLayoutBinding = MergeComposerLayoutBinding.inflate(
+        LayoutInflater.from(context), this)
 
     val composerRelatedMessageTitle: TextView by lazy {
         findViewById<TextView>(R.id.composer_related_message_sender)
@@ -54,30 +57,32 @@ class TextComposerView @JvmOverloads constructor(
 
     private val animationDuration = 100L
 
-    val composerAvatarImageView: ImageView
+    var composerAvatarImageView: ImageView
 
     val text: Editable?
-        get() = composerEditText.text
+        get() = binding.composerEditText.text
 
     init {
-        inflate(context, R.layout.merge_composer_layout, this)
+        composerAvatarImageView = binding.composerAvatarView
+        setBackgroundColor(ThemeUtils.getColor(context, R.attr.colorPrimaryVariant))
+
         collapse(false)
-        composerEditText.callback = object : ComposerEditText.Callback {
+        binding.composerEditText.callback = object : ComposerEditText.Callback {
             override fun onRichContentSelected(contentUri: Uri): Boolean {
                 return callback?.onRichContentSelected(contentUri) ?: false
             }
         }
-        composer_related_message_close.setOnClickListener {
+        binding.composerRelatedMessageClose.setOnClickListener {
             collapse()
             callback?.onCloseRelatedMessage()
         }
 
-        sendButton.setOnClickListener {
+        binding.sendButton.setOnClickListener {
             val textMessage = text?.toSpannable() ?: ""
             callback?.onSendMessage(textMessage)
         }
 
-        attachmentButton.setOnClickListener {
+        binding.attachmentButton.setOnClickListener {
             callback?.onAddAttachment()
         }
 

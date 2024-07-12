@@ -1,7 +1,9 @@
 package org.navgurukul.chat.features.roomprofile.members
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -10,7 +12,6 @@ import org.matrix.android.sdk.api.session.events.model.toModel
 import org.matrix.android.sdk.api.session.room.model.RoomMemberSummary
 import org.matrix.android.sdk.api.session.room.model.RoomThirdPartyInviteContent
 import org.matrix.android.sdk.api.util.toMatrixItem
-import kotlinx.android.synthetic.main.fragment_room_setting_generic.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -19,12 +20,14 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
+import org.navgurukul.chat.databinding.FragmentRoomSettingGenericBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.roomprofile.RoomProfileArgs
 import org.navgurukul.commonui.platform.BaseFragment
 
 class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback {
 
+    lateinit var binding:FragmentRoomSettingGenericBinding
     private val roomMemberListController: RoomMemberListController by inject()
     private val avatarRenderer: AvatarRenderer by inject()
 
@@ -34,14 +37,21 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     private val navigator: MerakiNavigator by inject()
 
     override fun getLayoutResId() = R.layout.fragment_room_member_list
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentRoomSettingGenericBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         roomMemberListController.callback = this
-        setupToolbar(roomSettingsToolbar)
+        setupToolbar(binding.roomSettingsToolbar)
         setupSearchView()
 //        setupInviteUsersButton()
-        recyclerView.configureWith(roomMemberListController, hasFixedSize = true)
+        binding.recyclerView.configureWith(roomMemberListController, hasFixedSize = true)
 
         viewModel.viewState.observe(viewLifecycleOwner, {
             setUpWithState(it)
@@ -85,8 +95,8 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
 //    }
 
     private fun setupSearchView() {
-        searchView.queryHint = getString(R.string.search_members_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.queryHint = getString(R.string.search_members_hint)
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
             }
@@ -99,7 +109,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
     }
 
     override fun onDestroyView() {
-        recyclerView.cleanup()
+        binding.recyclerView.cleanup()
         super.onDestroyView()
     }
 
@@ -108,7 +118,7 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
         renderRoomSummary(viewState)
 //        inviteUsersButton.isVisible = viewState.actionsPermissions.canInvite
         // Display filter only if there are more than 2 members in this room
-        searchViewAppBarLayout.isVisible = viewState.roomSummary()?.otherMemberIds.orEmpty().size > 1
+        binding.searchViewAppBarLayout.isVisible = viewState.roomSummary()?.otherMemberIds.orEmpty().size > 1
     }
 
     override fun onRoomMemberClicked(roomMember: RoomMemberSummary) {
@@ -133,8 +143,8 @@ class RoomMemberListFragment: BaseFragment(), RoomMemberListController.Callback 
 
     private fun renderRoomSummary(state: RoomMemberListViewState) {
         state.roomSummary()?.let {
-            roomSettingsToolbarTitleView.text = it.displayName
-            avatarRenderer.render(it.toMatrixItem(), roomSettingsToolbarAvatarImageView)
+            binding.roomSettingsToolbarTitleView.text = it.displayName
+            avatarRenderer.render(it.toMatrixItem(), binding.roomSettingsToolbarAvatarImageView)
         }
     }
 }

@@ -18,15 +18,14 @@ import com.google.android.material.tabs.TabLayout
 import com.jakewharton.rxbinding3.widget.queryTextChanges
 import org.navgurukul.chat.features.reactions.data.EmojiDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_emoji_reaction_picker.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.navgurukul.chat.ChatBaseActivity
 import org.navgurukul.chat.EmojiCompatFontProvider
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.ActivityEmojiReactionPickerBinding
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  *
@@ -36,10 +35,9 @@ import javax.inject.Inject
 class EmojiReactionPickerActivity : ChatBaseActivity(),
         EmojiCompatFontProvider.FontProviderListener {
 
-    val viewModel: EmojiChooserViewModel by viewModel()
+    private lateinit var binding: ActivityEmojiReactionPickerBinding // Adjust binding type
 
-    override fun getMenuRes() = R.menu.menu_emoji_reaction_picker
-
+    private val viewModel: EmojiChooserViewModel by viewModel()
     private val emojiCompatFontProvider: EmojiCompatFontProvider by inject()
     private val emojiDataSource: EmojiDataSource by inject()
 
@@ -59,7 +57,8 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_emoji_reaction_picker)
+        binding = ActivityEmojiReactionPickerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initUiAndData()
 
@@ -69,7 +68,8 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     }
 
     private fun initUiAndData() {
-        configureToolbar(emojiPickerToolbar)
+        setSupportActionBar(binding.emojiPickerToolbar)
+
         emojiCompatFontProvider.let {
             EmojiDrawView.configureTextPaint(this, it.typeface)
             it.addListener(this)
@@ -79,22 +79,22 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
 
         emojiDataSource.rawData.categories.forEach { category ->
             val s = category.emojis[0]
-            tabs.newTab()
+            binding.tabs.newTab()
                     .also { tab ->
                         tab.text = emojiDataSource.rawData.emojis[s]!!.emoji
                         tab.contentDescription = category.name
                     }
                     .also { tab ->
-                        tabs.addTab(tab)
+                        binding.tabs.addTab(tab)
                     }
         }
-        tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
+        binding.tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
 
         viewModel.currentSection.observe(this, Observer { section ->
             section?.let {
-                tabs.removeOnTabSelectedListener(tabLayoutSelectionListener)
-                tabs.getTabAt(it)?.select()
-                tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
+                binding.tabs.removeOnTabSelectedListener(tabLayoutSelectionListener)
+                binding.tabs.getTabAt(it)?.select()
+                binding.tabs.addOnTabSelectedListener(tabLayoutSelectionListener)
             }
         })
 
@@ -109,9 +109,9 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
             }
         })
 
-        emojiPickerWholeListFragmentContainer.isVisible = true
-        emojiPickerFilteredListFragmentContainer.isVisible = false
-        tabs.isVisible = true
+        binding.emojiPickerWholeListFragmentContainer.isVisible = true
+        binding.emojiPickerFilteredListFragmentContainer.isVisible = false
+        binding.tabs.isVisible = true
     }
 
     override fun compatibilityFontUpdate(typeface: Typeface?) {
@@ -134,13 +134,13 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
                     searchView.isIconified = false
                     searchView.requestFocusFromTouch()
                     // we want to force the tool bar as visible even if hidden with scroll flags
-                    emojiPickerToolbar.minimumHeight = getActionBarSize()
+                    binding.emojiPickerToolbar.minimumHeight = getActionBarSize()
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                     // when back, clear all search
-                    emojiPickerToolbar.minimumHeight = 0
+                    binding.emojiPickerToolbar.minimumHeight = 0
                     searchView.setQuery("", true)
                     return true
                 }
@@ -172,13 +172,13 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
 
     private fun onQueryText(query: String) {
         if (query.isEmpty()) {
-            tabs.isVisible = true
-            emojiPickerWholeListFragmentContainer.isVisible = true
-            emojiPickerFilteredListFragmentContainer.isVisible = false
+            binding.tabs.isVisible = true
+            binding.emojiPickerWholeListFragmentContainer.isVisible = true
+            binding.emojiPickerFilteredListFragmentContainer.isVisible = false
         } else {
-            tabs.isVisible = false
-            emojiPickerWholeListFragmentContainer.isVisible = false
-            emojiPickerFilteredListFragmentContainer.isVisible = true
+            binding.tabs.isVisible = false
+            binding.emojiPickerWholeListFragmentContainer.isVisible = false
+            binding.emojiPickerFilteredListFragmentContainer.isVisible = true
             searchResultViewModel.handle(EmojiSearchAction.UpdateQuery(query))
         }
     }

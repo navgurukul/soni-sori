@@ -1,15 +1,16 @@
 package org.merakilearn.util.webide.adapter
 
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_project.view.*
 import org.merakilearn.R
 import org.merakilearn.core.navigator.MerakiNavigator
+import org.merakilearn.databinding.ItemProjectBinding
 import org.merakilearn.extension.inflate
 import org.merakilearn.extension.snack
 import org.merakilearn.util.webide.project.ProjectManager
@@ -42,9 +43,8 @@ class ProjectAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
-        projects.sort()
-        val itemView = parent.inflate(R.layout.item_project)
-        return ProjectHolder(itemView)
+        val binding = ItemProjectBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ProjectHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) =
@@ -52,15 +52,14 @@ class ProjectAdapter(
 
     override fun getItemCount(): Int = projects.size
 
-    inner class ProjectHolder(var view: View) : RecyclerView.ViewHolder(view) {
+    inner class ProjectHolder(private val binding: ItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(project: String, position: Int) {
-            with(view) {
-                val properties = HtmlParser.getProperties(context, project)
-                title.text = properties[0]
-                favicon.setImageResource(R.drawable.ic_web_file)
+            val properties = HtmlParser.getProperties(itemView.context, project)
+            binding.title.text = properties[0]
+            binding.favicon.setImageResource(R.drawable.ic_web_file)
 
-                projectLayout.setOnClickListener {
+                binding.projectLayout.setOnClickListener {
                     var intent: Intent? = null
                     try {
                         navigator.launchWebIDEApp(mainContext, project)
@@ -69,12 +68,12 @@ class ProjectAdapter(
                     }
                 }
 
-                projectLayout.setOnLongClickListener {
-                    AlertDialog.Builder(view.context)
-                        .setTitle("${view.context.getString(R.string.delete)} $project?")
+                binding.projectLayout.setOnLongClickListener {
+                    AlertDialog.Builder(itemView.context)
+                        .setTitle("${itemView.context.getString(R.string.delete)} $project?")
                         .setMessage(R.string.change_undone)
                         .setPositiveButton(R.string.delete) { _, _ ->
-                            ProjectManager.deleteProject(context, project)
+                            ProjectManager.deleteProject(itemView.context, project)
                             remove(position)
                             layout.snack("Deleted $project.")
                         }
@@ -86,4 +85,3 @@ class ProjectAdapter(
             }
         }
     }
-}

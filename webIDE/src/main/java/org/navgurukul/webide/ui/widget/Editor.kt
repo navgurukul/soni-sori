@@ -11,6 +11,7 @@ import android.preference.PreferenceManager
 import android.text.*
 import android.util.AttributeSet
 import android.view.ActionMode
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,8 +19,8 @@ import android.widget.ArrayAdapter
 import android.widget.MultiAutoCompleteTextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
-import kotlinx.android.synthetic.main.dialog_refactor_2.view.*
 import org.navgurukul.webide.R
+import org.navgurukul.webide.databinding.DialogRefactor2Binding
 import org.navgurukul.webide.util.editor.Highlighter
 import org.navgurukul.webide.util.editor.ResourceHelper
 import java.util.*
@@ -395,27 +396,29 @@ class Editor constructor(context: Context, attrs: AttributeSet? = null) :
             when (item.itemId) {
                 1 -> {
                     val selected = selectedString
-                    val layout = View.inflate(context, R.layout.dialog_refactor_2, null)
+                    val inflater = LayoutInflater.from(context)
+                    val binding = DialogRefactor2Binding.inflate(inflater)
 
-                    layout.replaceFrom.setText(selected)
+
+                    binding.replaceFrom.setText(selected)
 
                     val dialog = AlertDialog.Builder(
                         context,
                         if (darkTheme) R.style.AppTheme_Dark else R.style.AppTheme
                     )
-                        .setView(layout)
+                        .setView(binding.root)
                         .setPositiveButton(R.string.replace, null)
                         .create()
 
                     dialog.show()
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                        val replaceFromStr = layout.replaceFrom.text.toString()
-                        val replaceToStr = layout.replaceTo.text.toString()
+                        val replaceFromStr = binding.replaceFrom.text.toString()
+                        val replaceToStr = binding.replaceTo.text.toString()
 
                         when {
-                            replaceFromStr.isEmpty() -> layout.replaceFrom.error =
+                            replaceFromStr.isEmpty() -> binding.replaceFrom.error =
                                 context.getString(R.string.empty_field_no_no)
-                            replaceToStr.isEmpty() -> layout.replaceTo.error =
+                            replaceToStr.isEmpty() -> binding.replaceTo.error =
                                 context.getString(R.string.empty_field_no_no)
                             else -> {
                                 setText(text.toString().replace(replaceFromStr, replaceToStr))

@@ -5,18 +5,19 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.italic
 import org.matrix.android.sdk.api.failure.MatrixError
 import org.matrix.android.sdk.api.session.events.model.Event
-import kotlinx.android.synthetic.main.view_notification_area.view.*
 import me.gujun.android.span.span
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.error.ResourceLimitErrorFormatter
 import org.navgurukul.commonui.themes.ThemeUtils
+import org.navgurukul.chat.databinding.ViewNotificationAreaBinding
 import timber.log.Timber
 
 /**
@@ -31,6 +32,11 @@ class NotificationAreaView @JvmOverloads constructor(
 
     var delegate: Delegate? = null
     private var state: State = State.Initial
+
+    private val binding: ViewNotificationAreaBinding = ViewNotificationAreaBinding.inflate(
+        LayoutInflater.from(context),
+        this
+    )
 
     init {
         setupView()
@@ -61,29 +67,28 @@ class NotificationAreaView @JvmOverloads constructor(
     // PRIVATE METHODS ****************************************************************************************************************************************
 
     private fun setupView() {
-        inflate(context, R.layout.view_notification_area, this)
         minimumHeight = resources.getDimensionPixelSize(R.dimen.notification_area_minimum_height)
     }
 
     private fun cleanUp() {
-        roomNotificationMessage.setOnClickListener(null)
-        roomNotificationIcon.setOnClickListener(null)
-        roomNotificationIcon.imageTintList = null
+        binding.roomNotificationMessage.setOnClickListener(null)
+        binding.roomNotificationIcon.setOnClickListener(null)
+        binding.roomNotificationIcon.imageTintList = null
         setBackgroundColor(Color.TRANSPARENT)
-        roomNotificationMessage.text = null
-        roomNotificationIcon.setImageResource(0)
+        binding.roomNotificationMessage.text = null
+        binding.roomNotificationIcon.setImageResource(0)
     }
 
     private fun renderNoPermissionToPost() {
         visibility = View.VISIBLE
-        roomNotificationIcon.setImageDrawable(null)
+        binding.roomNotificationIcon.setImageDrawable(null)
         val message = span {
             italic {
                 +resources.getString(R.string.room_do_not_have_permission_to_post)
             }
         }
-        roomNotificationMessage.text = message
-        roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, R.attr.textSecondary))
+        binding.roomNotificationMessage.text = message
+        binding.roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, R.attr.textSecondary))
     }
 
     private fun renderResourceLimitExceededError(state: State.ResourceLimitExceededError) {
@@ -99,17 +104,17 @@ class NotificationAreaView @JvmOverloads constructor(
             formatterMode = ResourceLimitErrorFormatter.Mode.Hard
         }
         val message = resourceLimitErrorFormatter.format(state.matrixError, formatterMode, clickable = true)
-        roomNotificationMessage.setTextColor(Color.WHITE)
-        roomNotificationMessage.text = message
-        roomNotificationMessage.movementMethod = LinkMovementMethod.getInstance()
-        roomNotificationMessage.setLinkTextColor(Color.WHITE)
+        binding.roomNotificationMessage.setTextColor(Color.WHITE)
+        binding.roomNotificationMessage.text = message
+        binding.roomNotificationMessage.movementMethod = LinkMovementMethod.getInstance()
+        binding.roomNotificationMessage.setLinkTextColor(Color.WHITE)
         setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
     }
 
     private fun renderTombstone(state: State.Tombstone) {
         visibility = View.VISIBLE
-        roomNotificationIcon.setImageResource(R.drawable.ic_warning)
-        roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, R.attr.colorError))
+        binding.roomNotificationIcon.setImageResource(R.drawable.ic_warning)
+        binding.roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, R.attr.colorError))
         val message = span {
             +resources.getString(R.string.room_tombstone_versioned_description)
             +"\n"
@@ -118,8 +123,8 @@ class NotificationAreaView @JvmOverloads constructor(
                 onClick = { delegate?.onTombstoneEventClicked(state.tombstoneEvent) }
             }
         }
-        roomNotificationMessage.movementMethod = BetterLinkMovementMethod.getInstance()
-        roomNotificationMessage.text = message
+        binding.roomNotificationMessage.movementMethod = BetterLinkMovementMethod.getInstance()
+        binding.roomNotificationMessage.text = message
     }
 
     private fun renderDefault() {
