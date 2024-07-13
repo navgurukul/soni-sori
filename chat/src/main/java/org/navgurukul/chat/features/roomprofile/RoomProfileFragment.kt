@@ -5,6 +5,8 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -13,9 +15,6 @@ import org.matrix.android.sdk.api.session.room.notification.RoomNotificationStat
 import org.matrix.android.sdk.api.util.MatrixItem
 import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.view_stub_room_profile_header.view.roomProfileAliasView
-import kotlinx.android.synthetic.main.view_stub_room_profile_header.view.roomProfileAvatarView
-import kotlinx.android.synthetic.main.view_stub_room_profile_header.view.roomProfileNameView
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,6 +53,9 @@ class RoomProfileFragment: BaseFragment(),
 
     private var appBarStateChangeListener: AppBarStateChangeListener? = null
 
+    lateinit var roomProfileNameView:TextView
+    lateinit var roomProfileAliasView:TextView
+    lateinit var roomProfileAvatarView:ImageView
     override fun getLayoutResId() = R.layout.fragment_room_profile
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +71,9 @@ class RoomProfileFragment: BaseFragment(),
             it.layoutResource = R.layout.view_stub_room_profile_header
             it.inflate()
         }
+        roomProfileAvatarView=headerView.findViewById(R.id.roomProfileAvatarView)
+        roomProfileNameView=headerView.findViewById(R.id.roomProfileNameView)
+        roomProfileAliasView=headerView.findViewById(R.id.roomProfileAliasView)
         setupToolbar(binding.profileToolbar)
         setupRecyclerView()
         appBarStateChangeListener = MerakiItemAppBarStateChangeListener(
@@ -94,8 +99,8 @@ class RoomProfileFragment: BaseFragment(),
     }
 
     private fun setupLongClicks() {
-        binding.root.roomProfileNameView.copyOnLongClick()
-        binding.root.roomProfileAliasView.copyOnLongClick()
+        roomProfileNameView.copyOnLongClick()
+        roomProfileAliasView.copyOnLongClick()
     }
 
     private fun setupRecyclerView() {
@@ -116,14 +121,14 @@ class RoomProfileFragment: BaseFragment(),
                 Timber.w("The room has been left")
                 activity?.finish()
             } else {
-                binding.root.roomProfileNameView.text = it.displayName
+                roomProfileNameView.text = it.displayName
                 binding.profileToolbarTitleView.text = it.displayName
-                binding.root.roomProfileAliasView.setTextOrHide(it.canonicalAlias)
+                roomProfileAliasView.setTextOrHide(it.canonicalAlias)
                 val matrixItem = it.toMatrixItem()
-                avatarRenderer.render(matrixItem, binding.root.roomProfileAvatarView)
+                avatarRenderer.render(matrixItem, roomProfileAvatarView)
                 avatarRenderer.render(matrixItem, binding.profileToolbarAvatarImageView)
 
-                binding.root.roomProfileAvatarView.setOnClickListener { view ->
+                roomProfileAvatarView.setOnClickListener { view ->
                     onAvatarClicked(view, matrixItem)
                 }
                 binding.profileToolbarAvatarImageView.setOnClickListener { view ->
