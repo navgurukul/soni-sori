@@ -99,6 +99,7 @@ class CourseContentActivityViewModel(
             is Resource.Error -> {
                 Log.d("CourseContentActivity", "Error in fetching completed content list")
             }
+          else -> { }
         }
 
     }
@@ -321,6 +322,7 @@ class CourseContentActivityViewModel(
                     CourseContentType.assessment -> learnRepo.markCourseAssessmentCompleted(it)
                     CourseContentType.class_topic -> learnRepo.markCourseClassCompleted(it)
                     CourseContentType.exercise -> learnRepo.markCourseExerciseCompleted(it)
+                    else -> { }
                 }
             }
         }

@@ -8,7 +8,7 @@ object Versions {
     const val glide_version = "4.16.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
-    const val kotlin = "1.9.22"
+    const val kotlin = "1.9.0"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
     const val room = "2.6.1"
@@ -189,9 +189,9 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 33
+    const val compileSdkVersion = 34
     const val minSdkVersion = 23
-    const val targetSdkVersion = 33
+    const val targetSdkVersion = 34
     const val versionCode = 95
     const val versionName = "1.5.65"
     const val applicationId = "org.merakilearn"

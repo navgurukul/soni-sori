@@ -209,6 +209,7 @@ class LearnFragmentViewModel(
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
+            else -> { }
         }
     }
 
@@ -229,12 +230,14 @@ class LearnFragmentViewModel(
                             getBatchesDataByPathway(pathwayId)
                             _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
                         }
+                        else -> { }
                     }
                 }
                 is Resource.Error -> {
                     setState { copy(loading= false) }
                     FirebaseCrashlytics.getInstance().recordException(Exception(status.message))
                 }
+                else -> { }
             }
         }
     }
@@ -270,6 +273,7 @@ class LearnFragmentViewModel(
                     is Resource.Error -> {
                         FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
                     }
+                    else -> { }
                 }
             } catch (e: Exception){
                 println(e.message)

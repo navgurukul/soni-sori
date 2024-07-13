@@ -133,6 +133,7 @@ class CourseContentActivity : AppCompatActivity(){
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
                 CourseContentActivityViewEvents.FinishActivity -> finish()
+                else -> { }
             }
         }
 

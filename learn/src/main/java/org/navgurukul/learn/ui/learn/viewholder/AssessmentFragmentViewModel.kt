@@ -265,6 +265,7 @@ class AssessmentFragmentViewModel (
                     updateListAttemptStatus(attemptResponse.data.selectedMultipleOption, assessmentId, OptionViewState.PARTIALLY_INCORRECT)
                     _viewEvents.postValue(AssessmentFragmentViewEvents.ShowRetryOnce(partiallyInCorrectOutputDataList,attemptResponse.data))
                 }
+                else -> { }
             }
 
         }

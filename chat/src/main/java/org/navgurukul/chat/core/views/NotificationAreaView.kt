@@ -61,6 +61,7 @@ class NotificationAreaView @JvmOverloads constructor(
             is State.NoPermissionToPost         -> renderNoPermissionToPost()
             is State.Tombstone                  -> renderTombstone(newState)
             is State.ResourceLimitExceededError -> renderResourceLimitExceededError(newState)
+            else -> { }
         }
     }
 

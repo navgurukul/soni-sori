@@ -224,6 +224,7 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.DisplayEnableIntegrationsWarning -> displayDisabledIntegrationDialog()
 //                is RoomDetailFragmentViewEvents.OpenIntegrationManager           -> openIntegrationManager()
                 is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
+                else -> { }
             }
         })
 
@@ -964,6 +965,7 @@ class RoomDetailFragment : BaseFragment(),
 //                    }
 //                }.show(parentFragmentManager, "REQ")
 //            }
+            else -> { }
         }
     }
 

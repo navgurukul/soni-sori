@@ -87,6 +87,7 @@ class OptionSelectionAdapter(
                             showTextOrImageAccordingToOptionType(binding, item)
 
                         }
+                        else -> { }
                     }
                 }
 
@@ -112,6 +113,7 @@ class OptionSelectionAdapter(
                                 ColorStateList.valueOf(Color.parseColor("#000000"))
                             showTextOrImageAccordingToOptionType(binding, item)
                         }
+                        else -> { }
                     }
 
                 }
@@ -139,6 +141,7 @@ class OptionSelectionAdapter(
                                 ColorStateList.valueOf(Color.parseColor("#D63447"))
                             showTextOrImageAccordingToOptionType(binding, item)
                         }
+                        else -> { }
                     }
                 }
 
@@ -165,6 +168,7 @@ class OptionSelectionAdapter(
                                 ColorStateList.valueOf(Color.parseColor("#48A145"))
                             showTextOrImageAccordingToOptionType(binding, item)
                         }
+                        else -> { }
                     }
                 }
 
@@ -212,6 +216,7 @@ class OptionSelectionAdapter(
                                 }
                             }
                         }
+                        else -> { }
                     }
                 }
 
@@ -259,6 +264,7 @@ class OptionSelectionAdapter(
                                 }
                             }
                         }
+                        else -> { }
                     }
                 }
             }
@@ -290,6 +296,7 @@ class OptionSelectionAdapter(
                             selectedOptions.add(item)
                             callback?.invoke(selectedOptions)
                         }
+                        else -> { }
                     }
 
                 }
