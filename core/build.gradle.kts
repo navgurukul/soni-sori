@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.core"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {

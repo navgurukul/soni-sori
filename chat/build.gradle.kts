@@ -12,6 +12,7 @@ kapt {
 }
 
 android {
+    namespace = "org.navgurukul.chat"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -31,9 +32,6 @@ android {
     }
     buildFeatures{
         viewBinding = true
-    }
-    viewBinding {
-        isEnabled = true
     }
 }
 

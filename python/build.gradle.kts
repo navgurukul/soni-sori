@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.playground"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {

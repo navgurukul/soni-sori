@@ -15,6 +15,7 @@ plugins {
 }
 
 android {
+    namespace = "org.merakilearn"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
