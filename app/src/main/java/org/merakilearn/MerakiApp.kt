@@ -12,6 +12,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.merakilearn.core.di.coreModules
 import org.merakilearn.core.datasource.Config
 import org.merakilearn.di.appModules
@@ -33,8 +34,8 @@ class MerakiApp : Application() {
         super.onCreate()
 
         startKoin {
+            androidLogger(Level.ERROR)
             androidContext(this@MerakiApp)
-            androidLogger()
             modules(appModules + chatModules + learnModules + playgroundModules + commonUIModules + coreModules)
         }
 
