@@ -60,7 +60,7 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
             recyclerView.addItemDecoration(
                 SpaceItemDecoration(
                     requireContext().resources.getDimensionPixelSize(
-                        R.dimen.spacing_3x
+                        org.navgurukul.commonui.R.dimen.spacing_3x
                     ), 0
                 )
             )
@@ -123,7 +123,7 @@ class PathwaySelectionAdapter( val context: Context,  val callback: (Pathway) ->
         }
         else {
             val thumbnail = Glide.with(holder.itemView)
-                .load(R.drawable.ic_typing_icon)
+                .load(org.navgurukul.commonui.R.drawable.ic_typing_icon)
             Glide.with(binding.ivPathwayIcon)
                 .load(item.logo)
                 .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))

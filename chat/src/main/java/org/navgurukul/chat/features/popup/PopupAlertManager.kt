@@ -212,7 +212,7 @@ class PopupAlertManager {
                     if (alert.colorInt != null) {
                         setBackgroundColorInt(alert.colorInt!!)
                     } else {
-                        setBackgroundColorRes(alert.colorRes ?: R.color.notification_accent_color)
+                        setBackgroundColorRes(alert.colorRes ?: org.navgurukul.commonui.R.color.notification_accent_color)
                     }
                 }
                 .show()

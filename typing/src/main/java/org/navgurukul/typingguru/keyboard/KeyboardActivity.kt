@@ -25,12 +25,12 @@ import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseActivity
-import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.databinding.ActivityKeyboardBinding
 import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.score.ScoreActivityArgs
 import org.navgurukul.typingguru.webview.WebViewActivity
 import org.merakilearn.core.extentions.setWidthPercent
+import org.navgurukul.typing.R
+import org.navgurukul.typing.databinding.ActivityKeyboardBinding
 
 @Parcelize
 data class KeyboardActivityArgs(

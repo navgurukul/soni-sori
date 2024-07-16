@@ -280,6 +280,9 @@ class ProfileViewModel(
                     is Resource.Error -> {
                         Timber.tag("ProfileViewModel").d("Error in getting enrolled batches")
                     }
+
+                    is Resource.Loading -> TODO()
+                    null -> TODO()
                 }
 
             }catch (e:Exception) {

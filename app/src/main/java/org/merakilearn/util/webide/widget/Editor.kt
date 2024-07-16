@@ -403,7 +403,7 @@ class Editor constructor(context: Context, attrs: AttributeSet? = null) :
 
                     val dialog = AlertDialog.Builder(
                         context,
-                        if (darkTheme) R.style.AppTheme_Dark else R.style.AppTheme
+                        if (darkTheme) R.style.AppTheme_Dark else org.navgurukul.commonui.R.style.AppTheme
                     )
                         .setView(binding.root)
                         .setPositiveButton(R.string.replace, null)

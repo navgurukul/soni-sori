@@ -64,7 +64,7 @@ class TextComposerView @JvmOverloads constructor(
 
     init {
         composerAvatarImageView = binding.composerAvatarView
-        setBackgroundColor(ThemeUtils.getColor(context, R.attr.colorPrimaryVariant))
+        setBackgroundColor(ThemeUtils.getColor(context, com.google.android.material.R.attr.colorPrimaryVariant))
 
         collapse(false)
         binding.composerEditText.callback = object : ComposerEditText.Callback {
@@ -87,7 +87,7 @@ class TextComposerView @JvmOverloads constructor(
         }
 
         composerAvatarImageView = findViewById(R.id.composer_avatar_view)
-        setBackgroundColor(ThemeUtils.getColor(context, R.attr.colorPrimaryVariant))
+        setBackgroundColor(ThemeUtils.getColor(context, com.google.android.material.R.attr.colorPrimaryVariant))
     }
 
     fun collapse(animate: Boolean = true, transitionComplete: (() -> Unit)? = null) {

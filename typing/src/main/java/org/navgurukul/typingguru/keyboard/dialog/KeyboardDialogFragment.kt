@@ -18,8 +18,8 @@ import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseDialogFragment
-import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.databinding.LayoutKeyboardDialogBinding
+import org.navgurukul.typing.R
+import org.navgurukul.typing.databinding.LayoutKeyboardDialogBinding
 import org.navgurukul.typingguru.keyboard.KeyboardActivity
 import org.navgurukul.typingguru.webview.WebViewActivity
 

@@ -160,19 +160,20 @@ class NoticeEventFormatter(
             if (from != to) {
                 val fromStr = sp.getString(from.res, from.value)
                 val toStr = sp.getString(to.res, to.value)
-                val diff = sp.getString(R.string.notice_power_level_diff, userId, fromStr, toStr)
-                diffs.add(diff)
+                //val diff = sp.getString(R.string.notice_power_level_diff, userId, fromStr, toStr)
+                //diffs.add(diff)
             }
         }
         if (diffs.isEmpty()) {
             return null
         }
         val diffStr = diffs.joinToString(separator = ", ")
-        return if (event.isSentByCurrentUser()) {
-            sp.getString(R.string.notice_power_level_changed_by_you, diffStr)
-        } else {
-            sp.getString(R.string.notice_power_level_changed, disambiguatedDisplayName, diffStr)
-        }
+//        return if (event.isSentByCurrentUser()) {
+//            //sp.getString(R.string.notice_power_level_changed_by_you, diffStr)
+//        } else {
+//            //sp.getString(R.string.notice_power_level_changed, disambiguatedDisplayName, diffStr)
+//        }
+        return null
     }
 
     private fun formatWidgetEvent(event: Event, disambiguatedDisplayName: String): CharSequence? {
@@ -182,27 +183,27 @@ class NoticeEventFormatter(
             val widgetName = widgetContent.getHumanName()
             if (previousWidgetContent?.isActive().orFalse()) {
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_widget_modified_by_you, widgetName)
+                    sp.getString(R.string.notice_crypto_unable_to_decrypt_friendly, widgetName)
                 } else {
                     sp.getString(
-                        R.string.notice_widget_modified,
+                        R.string.notice_member_no_changes,
                         disambiguatedDisplayName,
                         widgetName
                     )
                 }
             } else {
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_widget_added_by_you, widgetName)
+                    sp.getString(R.string.notification_unknown_new_event, widgetName)
                 } else {
-                    sp.getString(R.string.notice_widget_added, disambiguatedDisplayName, widgetName)
+                    sp.getString(R.string.notice_crypto_unable_to_decrypt_friendly_desc, disambiguatedDisplayName, widgetName)
                 }
             }
         } else {
             val widgetName = previousWidgetContent?.getHumanName()
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_widget_removed_by_you, widgetName)
+                sp.getString(R.string.not_implemented, widgetName)
             } else {
-                sp.getString(R.string.notice_widget_removed, disambiguatedDisplayName, widgetName)
+                sp.getString(R.string.not_implemented, disambiguatedDisplayName, widgetName)
             }
         }
     }
@@ -239,9 +240,9 @@ class NoticeEventFormatter(
             ?.takeIf { it.creator.isNullOrBlank().not() }
             ?.let {
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_room_created_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_room_created, it.creator)
+                    sp.getString(R.string.not_implemented, it.creator)
                 }
             }
     }
@@ -250,24 +251,24 @@ class NoticeEventFormatter(
         val content = event.getClearContent().toModel<RoomNameContent>() ?: return null
         return if (content.name.isNullOrBlank()) {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_name_removed_by_you)
+                sp.getString(R.string.not_implemented)
             } else {
-                sp.getString(R.string.notice_room_name_removed, senderName)
+                sp.getString(R.string.not_implemented, senderName)
             }
         } else {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_name_changed_by_you, content.name)
+                sp.getString(R.string.not_implemented, content.name)
             } else {
-                sp.getString(R.string.notice_room_name_changed, senderName, content.name)
+                sp.getString(R.string.not_implemented, senderName, content.name)
             }
         }
     }
 
     private fun formatRoomTombstoneEvent(event: Event, senderName: String?): CharSequence? {
         return if (event.isSentByCurrentUser()) {
-            sp.getString(R.string.notice_room_update_by_you)
+            sp.getString(R.string.not_implemented)
         } else {
-            sp.getString(R.string.notice_room_update, senderName)
+            sp.getString(R.string.not_implemented, senderName)
         }
     }
 
@@ -275,15 +276,15 @@ class NoticeEventFormatter(
         val content = event.getClearContent().toModel<RoomTopicContent>() ?: return null
         return if (content.topic.isNullOrEmpty()) {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_topic_removed_by_you)
+                sp.getString(R.string.not_implemented)
             } else {
-                sp.getString(R.string.notice_room_topic_removed, senderName)
+                sp.getString(R.string.not_implemented, senderName)
             }
         } else {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_topic_changed_by_you, content.topic)
+                sp.getString(R.string.not_implemented, content.topic)
             } else {
-                sp.getString(R.string.notice_room_topic_changed, senderName, content.topic)
+                sp.getString(R.string.not_implemented, senderName, content.topic)
             }
         }
     }
@@ -292,15 +293,15 @@ class NoticeEventFormatter(
         val content = event.getClearContent().toModel<RoomAvatarContent>() ?: return null
         return if (content.avatarUrl.isNullOrEmpty()) {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_avatar_removed_by_you)
+                sp.getString(R.string.not_implemented)
             } else {
-                sp.getString(R.string.notice_room_avatar_removed, senderName)
+                sp.getString(R.string.not_implemented, senderName)
             }
         } else {
             if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_avatar_changed_by_you)
+                sp.getString(R.string.not_implemented)
             } else {
-                sp.getString(R.string.notice_room_avatar_changed, senderName)
+                sp.getString(R.string.not_implemented, senderName)
             }
         }
     }
@@ -312,10 +313,10 @@ class NoticeEventFormatter(
 
         val formattedVisibility = roomHistoryVisibilityFormatter.format(historyVisibility)
         return if (event.isSentByCurrentUser()) {
-            sp.getString(R.string.notice_made_future_room_visibility_by_you, formattedVisibility)
+            sp.getString(R.string.not_implemented, formattedVisibility)
         } else {
             sp.getString(
-                R.string.notice_made_future_room_visibility,
+                R.string.not_implemented,
                 senderName,
                 formattedVisibility
             )
@@ -331,12 +332,12 @@ class NoticeEventFormatter(
                 // Revoke case
                 if (event.isSentByCurrentUser()) {
                     sp.getString(
-                        R.string.notice_room_third_party_revoked_invite_by_you,
+                        R.string.not_implemented,
                         prevContent.displayName
                     )
                 } else {
                     sp.getString(
-                        R.string.notice_room_third_party_revoked_invite,
+                        R.string.not_implemented,
                         senderName,
                         prevContent.displayName
                     )
@@ -346,12 +347,12 @@ class NoticeEventFormatter(
                 // Invitation case
                 if (event.isSentByCurrentUser()) {
                     sp.getString(
-                        R.string.notice_room_third_party_invite_by_you,
+                        R.string.not_implemented,
                         content.displayName
                     )
                 } else {
                     sp.getString(
-                        R.string.notice_room_third_party_invite,
+                        R.string.not_implemented,
                         senderName,
                         content.displayName
                     )
@@ -368,35 +369,35 @@ class NoticeEventFormatter(
                 val isVideoCall = content.isVideo()
                 return if (isVideoCall) {
                     if (event.isSentByCurrentUser()) {
-                        sp.getString(R.string.notice_placed_video_call_by_you)
+                        sp.getString(R.string.not_implemented)
                     } else {
-                        sp.getString(R.string.notice_placed_video_call, senderName)
+                        sp.getString(R.string.not_implemented, senderName)
                     }
                 } else {
                     if (event.isSentByCurrentUser()) {
-                        sp.getString(R.string.notice_placed_voice_call_by_you)
+                        sp.getString(R.string.not_implemented)
                     } else {
-                        sp.getString(R.string.notice_placed_voice_call, senderName)
+                        sp.getString(R.string.not_implemented, senderName)
                     }
                 }
             }
             EventType.CALL_ANSWER ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_answered_call_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_answered_call, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             EventType.CALL_HANGUP ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_ended_call_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_ended_call, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             EventType.CALL_CANDIDATES ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_call_candidates_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_call_candidates, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             else -> null
         }
@@ -424,13 +425,13 @@ class NoticeEventFormatter(
             addedAliases.isNotEmpty() && removedAliases.isNotEmpty() ->
                 if (event.isSentByCurrentUser()) {
                     sp.getString(
-                        R.string.notice_room_aliases_added_and_removed_by_you,
+                        R.string.not_implemented,
                         addedAliases.joinToString(),
                         removedAliases.joinToString()
                     )
                 } else {
                     sp.getString(
-                        R.string.notice_room_aliases_added_and_removed,
+                        R.string.not_implemented,
                         senderName,
                         addedAliases.joinToString(),
                         removedAliases.joinToString()
@@ -439,13 +440,13 @@ class NoticeEventFormatter(
             addedAliases.isNotEmpty() ->
                 if (event.isSentByCurrentUser()) {
                     sp.getQuantityString(
-                        R.plurals.notice_room_aliases_added_by_you,
+                        R.plurals.membership_changes,
                         addedAliases.size,
                         addedAliases.joinToString()
                     )
                 } else {
                     sp.getQuantityString(
-                        R.plurals.notice_room_aliases_added,
+                        R.plurals.membership_changes,
                         addedAliases.size,
                         senderName,
                         addedAliases.joinToString()
@@ -454,13 +455,13 @@ class NoticeEventFormatter(
             removedAliases.isNotEmpty() ->
                 if (event.isSentByCurrentUser()) {
                     sp.getQuantityString(
-                        R.plurals.notice_room_aliases_removed_by_you,
+                        R.plurals.membership_changes,
                         removedAliases.size,
                         removedAliases.joinToString()
                     )
                 } else {
                     sp.getQuantityString(
-                        R.plurals.notice_room_aliases_removed,
+                        R.plurals.membership_changes,
                         removedAliases.size,
                         senderName,
                         removedAliases.joinToString()
@@ -480,15 +481,15 @@ class NoticeEventFormatter(
             ?.takeIf { it.isNotBlank() }
             ?.let {
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_room_canonical_alias_set_by_you, it)
+                    sp.getString(R.string.not_implemented, it)
                 } else {
-                    sp.getString(R.string.notice_room_canonical_alias_set, senderName, it)
+                    sp.getString(R.string.not_implemented, senderName, it)
                 }
             }
             ?: if (event.isSentByCurrentUser()) {
-                sp.getString(R.string.notice_room_canonical_alias_unset_by_you)
+                sp.getString(R.string.not_implemented)
             } else {
-                sp.getString(R.string.notice_room_canonical_alias_unset, senderName)
+                sp.getString(R.string.not_implemented, senderName)
             }
     }
 
@@ -497,15 +498,15 @@ class NoticeEventFormatter(
         return when (eventContent?.guestAccess) {
             GuestAccess.CanJoin ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_room_guest_access_can_join_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_room_guest_access_can_join, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             GuestAccess.Forbidden ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_room_guest_access_forbidden_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_room_guest_access_forbidden, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             else -> null
         }
@@ -516,19 +517,19 @@ class NoticeEventFormatter(
         return when (content.algorithm) {
             MXCRYPTO_ALGORITHM_MEGOLM ->
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_end_to_end_ok_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_end_to_end_ok, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             else ->
                 if (event.isSentByCurrentUser()) {
                     sp.getString(
-                        R.string.notice_end_to_end_unknown_algorithm_by_you,
+                        R.string.not_implemented,
                         content.algorithm
                     )
                 } else {
                     sp.getString(
-                        R.string.notice_end_to_end_unknown_algorithm,
+                        R.string.not_implemented,
                         senderName,
                         content.algorithm
                     )
@@ -549,12 +550,12 @@ class NoticeEventFormatter(
                 prevEventContent?.displayName.isNullOrEmpty() ->
                     if (event.isSentByCurrentUser()) {
                         sp.getString(
-                            R.string.notice_display_name_set_by_you,
+                            R.string.not_implemented,
                             eventContent?.displayName
                         )
                     } else {
                         sp.getString(
-                            R.string.notice_display_name_set,
+                            R.string.not_implemented,
                             event.senderId,
                             eventContent?.displayName
                         )
@@ -562,12 +563,12 @@ class NoticeEventFormatter(
                 eventContent?.displayName.isNullOrEmpty() ->
                     if (event.isSentByCurrentUser()) {
                         sp.getString(
-                            R.string.notice_display_name_removed_by_you,
+                            R.string.not_implemented,
                             prevEventContent?.displayName
                         )
                     } else {
                         sp.getString(
-                            R.string.notice_display_name_removed,
+                            R.string.not_implemented,
                             event.senderId,
                             prevEventContent?.displayName
                         )
@@ -575,13 +576,13 @@ class NoticeEventFormatter(
                 else ->
                     if (event.isSentByCurrentUser()) {
                         sp.getString(
-                            R.string.notice_display_name_changed_from_by_you,
+                            R.string.not_implemented,
                             prevEventContent?.displayName,
                             eventContent?.displayName
                         )
                     } else {
                         sp.getString(
-                            R.string.notice_display_name_changed_from,
+                            R.string.not_implemented,
                             event.senderId,
                             prevEventContent?.displayName,
                             eventContent?.displayName
@@ -594,12 +595,12 @@ class NoticeEventFormatter(
         if (eventContent?.avatarUrl != prevEventContent?.avatarUrl) {
             val displayAvatarText = if (displayText.isNotEmpty()) {
                 displayText.append(" ")
-                sp.getString(R.string.notice_avatar_changed_too)
+                sp.getString(R.string.not_implemented)
             } else {
                 if (event.isSentByCurrentUser()) {
-                    sp.getString(R.string.notice_avatar_url_changed_by_you)
+                    sp.getString(R.string.not_implemented)
                 } else {
-                    sp.getString(R.string.notice_avatar_url_changed, senderName)
+                    sp.getString(R.string.not_implemented, senderName)
                 }
             }
             displayText.append(displayAvatarText)
@@ -635,13 +636,13 @@ class NoticeEventFormatter(
                         eventContent.safeReason?.let { reason ->
                             if (event.isSentByCurrentUser()) {
                                 sp.getString(
-                                    R.string.notice_room_third_party_registered_invite_with_reason_by_you,
+                                    R.string.not_implemented,
                                     threePidDisplayName,
                                     reason
                                 )
                             } else {
                                 sp.getString(
-                                    R.string.notice_room_third_party_registered_invite_with_reason,
+                                    R.string.not_implemented,
                                     userWhoHasAccepted,
                                     threePidDisplayName,
                                     reason
@@ -649,12 +650,12 @@ class NoticeEventFormatter(
                             }
                         } ?: if (event.isSentByCurrentUser()) {
                             sp.getString(
-                                R.string.notice_room_third_party_registered_invite_by_you,
+                                R.string.not_implemented,
                                 threePidDisplayName
                             )
                         } else {
                             sp.getString(
-                                R.string.notice_room_third_party_registered_invite,
+                                R.string.not_implemented,
                                 userWhoHasAccepted,
                                 threePidDisplayName
                             )
@@ -663,28 +664,28 @@ class NoticeEventFormatter(
                     event.stateKey == currentUserId ->
                         eventContent.safeReason?.let { reason ->
                             sp.getString(
-                                R.string.notice_room_invite_you_with_reason,
+                                R.string.not_implemented,
                                 senderDisplayName,
                                 reason
                             )
-                        } ?: sp.getString(R.string.notice_room_invite_you, senderDisplayName)
+                        } ?: sp.getString(R.string.not_implemented, senderDisplayName)
                     event.stateKey.isNullOrEmpty() ->
                         if (event.isSentByCurrentUser()) {
                             eventContent.safeReason?.let { reason ->
                                 sp.getString(
-                                    R.string.notice_room_invite_no_invitee_with_reason_by_you,
+                                    R.string.not_implemented,
                                     reason
                                 )
-                            } ?: sp.getString(R.string.notice_room_invite_no_invitee_by_you)
+                            } ?: sp.getString(R.string.not_implemented)
                         } else {
                             eventContent.safeReason?.let { reason ->
                                 sp.getString(
-                                    R.string.notice_room_invite_no_invitee_with_reason,
+                                    R.string.not_implemented,
                                     senderDisplayName,
                                     reason
                                 )
                             } ?: sp.getString(
-                                R.string.notice_room_invite_no_invitee,
+                                R.string.not_implemented,
                                 senderDisplayName
                             )
                         }
@@ -692,21 +693,21 @@ class NoticeEventFormatter(
                         if (event.isSentByCurrentUser()) {
                             eventContent.safeReason?.let { reason ->
                                 sp.getString(
-                                    R.string.notice_room_invite_with_reason_by_you,
+                                    R.string.not_implemented,
                                     targetDisplayName,
                                     reason
                                 )
-                            } ?: sp.getString(R.string.notice_room_invite_by_you, targetDisplayName)
+                            } ?: sp.getString(R.string.not_implemented, targetDisplayName)
                         } else {
                             eventContent.safeReason?.let { reason ->
                                 sp.getString(
-                                    R.string.notice_room_invite_with_reason,
+                                    R.string.not_implemented,
                                     senderDisplayName,
                                     targetDisplayName,
                                     reason
                                 )
                             } ?: sp.getString(
-                                R.string.notice_room_invite,
+                                R.string.not_implemented,
                                 senderDisplayName,
                                 targetDisplayName
                             )
@@ -716,16 +717,16 @@ class NoticeEventFormatter(
             Membership.JOIN ->
                 if (event.isSentByCurrentUser()) {
                     eventContent.safeReason?.let { reason ->
-                        sp.getString(R.string.notice_room_join_with_reason_by_you, reason)
-                    } ?: sp.getString(R.string.notice_room_join_by_you)
+                        sp.getString(R.string.not_implemented, reason)
+                    } ?: sp.getString(R.string.not_implemented)
                 } else {
                     eventContent.safeReason?.let { reason ->
                         sp.getString(
-                            R.string.notice_room_join_with_reason,
+                            R.string.not_implemented,
                             senderDisplayName,
                             reason
                         )
-                    } ?: sp.getString(R.string.notice_room_join, senderDisplayName)
+                    } ?: sp.getString(R.string.not_implemented, senderDisplayName)
                 }
             Membership.LEAVE ->
                 // 2 cases here: this member may have left voluntarily or they may have been "left" by someone else ie. kicked
@@ -735,35 +736,35 @@ class NoticeEventFormatter(
                             if (event.isSentByCurrentUser()) {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_reject_with_reason_by_you,
+                                        R.string.not_implemented,
                                         reason
                                     )
-                                } ?: sp.getString(R.string.notice_room_reject_by_you)
+                                } ?: sp.getString(R.string.not_implemented)
                             } else {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_reject_with_reason,
+                                        R.string.not_implemented,
                                         senderDisplayName,
                                         reason
                                     )
-                                } ?: sp.getString(R.string.notice_room_reject, senderDisplayName)
+                                } ?: sp.getString(R.string.not_implemented, senderDisplayName)
                             }
                         else ->
                             if (event.isSentByCurrentUser()) {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_leave_with_reason_by_you,
+                                        R.string.not_implemented,
                                         reason
                                     )
-                                } ?: sp.getString(R.string.notice_room_leave_by_you)
+                                } ?: sp.getString(R.string.not_implemented)
                             } else {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_leave_with_reason,
+                                        R.string.not_implemented,
                                         senderDisplayName,
                                         reason
                                     )
-                                } ?: sp.getString(R.string.notice_room_leave, senderDisplayName)
+                                } ?: sp.getString(R.string.not_implemented, senderDisplayName)
                             }
                     }
                 } else {
@@ -772,24 +773,24 @@ class NoticeEventFormatter(
                             if (event.isSentByCurrentUser()) {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_withdraw_with_reason_by_you,
+                                        R.string.not_implemented,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_withdraw_by_you,
+                                    R.string.not_implemented,
                                     targetDisplayName
                                 )
                             } else {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_withdraw_with_reason,
+                                        R.string.not_implemented,
                                         senderDisplayName,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_withdraw,
+                                    R.string.not_implemented,
                                     senderDisplayName,
                                     targetDisplayName
                                 )
@@ -798,24 +799,24 @@ class NoticeEventFormatter(
                             if (event.isSentByCurrentUser()) {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_kick_with_reason_by_you,
+                                        R.string.not_implemented,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_kick_by_you,
+                                    R.string.not_implemented,
                                     targetDisplayName
                                 )
                             } else {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_kick_with_reason,
+                                        R.string.not_implemented,
                                         senderDisplayName,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_kick,
+                                    R.string.not_implemented,
                                     senderDisplayName,
                                     targetDisplayName
                                 )
@@ -824,24 +825,24 @@ class NoticeEventFormatter(
                             if (event.isSentByCurrentUser()) {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_unban_with_reason_by_you,
+                                        R.string.not_implemented,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_unban_by_you,
+                                    R.string.not_implemented,
                                     targetDisplayName
                                 )
                             } else {
                                 eventContent.safeReason?.let { reason ->
                                     sp.getString(
-                                        R.string.notice_room_unban_with_reason,
+                                        R.string.not_implemented,
                                         senderDisplayName,
                                         targetDisplayName,
                                         reason
                                     )
                                 } ?: sp.getString(
-                                    R.string.notice_room_unban,
+                                    R.string.not_implemented,
                                     senderDisplayName,
                                     targetDisplayName
                                 )
@@ -853,21 +854,21 @@ class NoticeEventFormatter(
                 if (event.isSentByCurrentUser()) {
                     eventContent.safeReason?.let {
                         sp.getString(
-                            R.string.notice_room_ban_with_reason_by_you,
+                            R.string.not_implemented,
                             targetDisplayName,
                             it
                         )
-                    } ?: sp.getString(R.string.notice_room_ban_by_you, targetDisplayName)
+                    } ?: sp.getString(R.string.not_implemented, targetDisplayName)
                 } else {
                     eventContent.safeReason?.let {
                         sp.getString(
-                            R.string.notice_room_ban_with_reason,
+                            R.string.not_implemented,
                             senderDisplayName,
                             targetDisplayName,
                             it
                         )
                     } ?: sp.getString(
-                        R.string.notice_room_ban,
+                        R.string.not_implemented,
                         senderDisplayName,
                         targetDisplayName
                     )
@@ -876,21 +877,21 @@ class NoticeEventFormatter(
                 if (event.isSentByCurrentUser()) {
                     eventContent.safeReason?.let { reason ->
                         sp.getString(
-                            R.string.notice_room_kick_with_reason_by_you,
+                            R.string.not_implemented,
                             targetDisplayName,
                             reason
                         )
-                    } ?: sp.getString(R.string.notice_room_kick_by_you, targetDisplayName)
+                    } ?: sp.getString(R.string.not_implemented, targetDisplayName)
                 } else {
                     eventContent.safeReason?.let { reason ->
                         sp.getString(
-                            R.string.notice_room_kick_with_reason,
+                            R.string.not_implemented,
                             senderDisplayName,
                             targetDisplayName,
                             reason
                         )
                     } ?: sp.getString(
-                        R.string.notice_room_kick,
+                        R.string.not_implemented,
                         senderDisplayName,
                         targetDisplayName
                     )

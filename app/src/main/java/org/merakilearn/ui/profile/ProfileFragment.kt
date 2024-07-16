@@ -186,7 +186,7 @@ class ProfileFragment : Fragment() {
             }
             .create()
         alert.setOnShowListener {
-            val margin = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+            val margin = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
             inputText.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 marginEnd = margin
                 marginStart = margin
@@ -254,7 +254,7 @@ class ProfileFragment : Fragment() {
                 .transform(CircleCrop())
 
             val thumbnail = GlideApp.with(this)
-                .load(R.drawable.illus_default_avatar)
+                .load(org.navgurukul.commonui.R.drawable.illus_default_avatar)
                 .apply(requestOptions)
 
             GlideApp.with(mBinding.ivProfile)
@@ -288,7 +288,7 @@ class ProfileFragment : Fragment() {
         mBinding.rvEnrolledBatch.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    org.navgurukul.learn.R.dimen.spacing_3x
+                    org.navgurukul.learn.R.dimen.dimen_20_dp
                 ), 0
             )
         )
@@ -309,7 +309,7 @@ class ProfileFragment : Fragment() {
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
             getString(R.string.profile),
-            R.attr.textPrimary,
+            org.navgurukul.commonui.R.attr.textPrimary,
             false,
             null,
             null,

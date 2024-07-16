@@ -17,8 +17,8 @@ class DotItemDecoration(val context: Context) : RecyclerView.ItemDecoration() {
     }
 
     private val dotRadius = context.resources.getDimensionPixelSize(R.dimen.dot_radius)
-    private val dotPadding = context.resources.getDimensionPixelSize(R.dimen.spacing_2x)
-    private val verticalPadding = context.resources.getDimensionPixelSize(R.dimen.spacing_4x)
+    private val dotPadding = context.resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_2x)
+    private val verticalPadding = context.resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
     private val color = ContextCompat.getColor(context, R.color.courseBackground)
     private val paint =  Paint().apply {
         color = this@DotItemDecoration.color

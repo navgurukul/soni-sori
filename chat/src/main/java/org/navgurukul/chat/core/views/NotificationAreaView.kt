@@ -89,7 +89,7 @@ class NotificationAreaView @JvmOverloads constructor(
             }
         }
         binding.roomNotificationMessage.text = message
-        binding.roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, R.attr.textSecondary))
+        binding.roomNotificationMessage.setTextColor(ThemeUtils.getColor(context, org.navgurukul.commonui.R.attr.textSecondary))
     }
 
     private fun renderResourceLimitExceededError(state: State.ResourceLimitExceededError) {
@@ -98,10 +98,10 @@ class NotificationAreaView @JvmOverloads constructor(
         val formatterMode: ResourceLimitErrorFormatter.Mode
         val backgroundColor: Int
         if (state.isSoft) {
-            backgroundColor = R.color.primaryColor
+            backgroundColor = org.navgurukul.commonui.R.color.primaryColor
             formatterMode = ResourceLimitErrorFormatter.Mode.Soft
         } else {
-            backgroundColor = R.color.errorColor
+            backgroundColor = org.navgurukul.commonui.R.color.errorColor
             formatterMode = ResourceLimitErrorFormatter.Mode.Hard
         }
         val message = resourceLimitErrorFormatter.format(state.matrixError, formatterMode, clickable = true)
@@ -115,7 +115,7 @@ class NotificationAreaView @JvmOverloads constructor(
     private fun renderTombstone(state: State.Tombstone) {
         visibility = View.VISIBLE
         binding.roomNotificationIcon.setImageResource(R.drawable.ic_warning)
-        binding.roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, R.attr.colorError))
+        binding.roomNotificationIcon.imageTintList = ColorStateList.valueOf(ThemeUtils.getColor(context, io.noties.markwon.R.attr.colorError))
         val message = span {
             +resources.getString(R.string.room_tombstone_versioned_description)
             +"\n"

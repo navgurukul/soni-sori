@@ -6,7 +6,7 @@ import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import org.navgurukul.typingguru.utils.SystemUtils
 import org.navgurukul.typingguru.utils.TypingGuruPreferenceManager
 

@@ -46,8 +46,8 @@ object ResourceHelper {
         image.clearColorFilter()
         val fileName = file.name
         if (file.isDirectory) setWithFilter(image, R.drawable.ic_folder, filter)
-        else if (ProjectManager.isImageFile(file)) setWithFilter(image, R.drawable.ic_image, filter)
-        else if (ProjectManager.isBinaryFile(file)) setWithFilter(image, R.drawable.ic_binary, filter)
+        else if (org.merakilearn.util.webide.project.ProjectManager.isImageFile(file)) setWithFilter(image, org.navgurukul.chat.R.drawable.ic_image, filter)
+        else if (org.merakilearn.util.webide.project.ProjectManager.isBinaryFile(file)) setWithFilter(image, R.drawable.ic_binary, filter)
         else if (fileName.endsWith(".html")) image.setImageResource(R.drawable.ic_html)
         else if (fileName.endsWith(".css")) image.setImageResource(R.drawable.ic_css)
         else if (fileName.endsWith(".js")) image.setImageResource(R.drawable.ic_js)

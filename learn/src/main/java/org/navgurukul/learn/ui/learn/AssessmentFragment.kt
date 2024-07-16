@@ -255,7 +255,7 @@ class AssessmentFragment : Fragment() {
         mBinding.recyclerViewAsses.layoutManager = layoutManager
         mBinding.recyclerViewAsses.adapter = contentAdapter
         mBinding.recyclerViewAsses.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_1x), 0)
+            SpaceItemDecoration(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_1x), 0)
         )
         setUpSubmitAnswer()
     }

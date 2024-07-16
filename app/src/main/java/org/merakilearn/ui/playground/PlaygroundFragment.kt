@@ -72,7 +72,7 @@ class PlaygroundFragment : BaseFragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 4)
         initSearchListener()
 
-        val spacings = resources.getDimensionPixelSize(R.dimen.spacing_3x)
+        val spacings = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_3x)
         binding.recyclerView.addItemDecoration(GridSpacingDecorator(spacings, spacings, 4))
 
         adapter =
@@ -133,8 +133,8 @@ class PlaygroundFragment : BaseFragment() {
         }
 
         (activity as? ToolbarConfigurable)?.configure(
-            getString(R.string.title_playground),
-            R.attr.textPrimary
+            getString(org.navgurukul.playground.R.string.title_playground),
+            org.navgurukul.commonui.R.attr.textPrimary
         )
 
     }
@@ -214,7 +214,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun showUpPopMenu(file: File, view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.popup_menu_file_saved, popup.menu)
+        popup.menuInflater.inflate(R.menu.popup_menu_saved_file, popup.menu)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.delete -> {
@@ -227,7 +227,7 @@ class PlaygroundFragment : BaseFragment() {
                             .setNegativeButton("Cancel", null)
                             .show()
                 }
-                R.id.shareSavedFile -> {
+                org.navgurukul.playground.R.id.shareSavedFile -> {
                     try {
                         val intent = Intent(Intent.ACTION_SEND)
                         intent.type = "text/x-python"
@@ -245,7 +245,7 @@ class PlaygroundFragment : BaseFragment() {
                         Toast.makeText(requireContext(), "File sharing failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
-                R.id.exportSavedFile -> {
+                org.navgurukul.playground.R.id.exportSavedFile -> {
                     var mimeType =
                         MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
                     if (mimeType.isNullOrEmpty())
@@ -258,7 +258,7 @@ class PlaygroundFragment : BaseFragment() {
                     }
                     startActivityForResult(intent, 100)
                 }
-                R.id.shareAsUrl -> viewModel.handle(
+                org.navgurukul.playground.R.id.shareAsUrl -> viewModel.handle(
                     PlaygroundActions.ShareAsUrl(
                         file,
                         requireContext()

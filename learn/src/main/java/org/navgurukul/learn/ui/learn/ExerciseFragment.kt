@@ -183,7 +183,7 @@ class ExerciseFragment : Fragment() {
             recyclerViewSlug.layoutManager = layoutManager
             recyclerViewSlug.adapter = contentAdapter
             recyclerViewSlug.addItemDecoration(
-                SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_8x), 0)
+                SpaceItemDecoration(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_8x), 0)
             )
         }
     }

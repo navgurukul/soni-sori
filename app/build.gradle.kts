@@ -24,6 +24,7 @@ android {
         targetSdk = BuildConfigVersions.targetSdkVersion
         versionCode = BuildConfigVersions.versionCode
         versionName = BuildConfigVersions.versionName
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,11 +41,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -53,17 +54,22 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
-        merge ("/META-INF/services/*")
+        resources {
+            merges += setOf("/META-INF/services/*")
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
     }
+
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
     dynamicFeatures += setOf(":webIDE")
@@ -82,6 +88,7 @@ dependencies {
 
     implementation ("com.google.auto.service:auto-service:1.0.1")
     kapt ("com.google.auto.service:auto-service:1.0.1")
+
 
     //AndroidX
     implementation(AndroidxDependencies.appcompat)
@@ -158,6 +165,7 @@ dependencies {
     implementation (MiscellaneousDependencies.nanohttpd)
     implementation (MiscellaneousDependencies.jsoup)
 
+    implementation(AndroidxDependencies.multidex)
 
     //test
     testImplementation(TestDependencies.jUnit)
@@ -238,5 +246,12 @@ android.applicationVariants.all {
                 dependsOn("buildApks${this.name.capitalize()}")
             }
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force(AndroidxDependencies.lifecycleViewModelKtx)
+        force(AndroidxDependencies.lifecycleViewModel)
     }
 }

@@ -22,10 +22,19 @@ android {
         exclude("**/*.xml")
         exclude( "**/*.properties")
     }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
+    }
 
     buildFeatures {
         viewBinding = true
     }
+    
 }
 
 dependencies {
@@ -38,6 +47,9 @@ dependencies {
 
     implementation ("com.google.auto.service:auto-service:1.0.1")
     kapt ("com.google.auto.service:auto-service:1.0.1")
+
+//    val multidexVersion = "2.0.1"
+//    implementation("androidx.multidex:multidex:$multidexVersion")
 
     //to get dynamic feature module
     implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)

@@ -102,7 +102,7 @@ val repositoryModule = module {
 }
 
 val factoryModule = module{
-    single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
+    single { ColorProvider(ContextThemeWrapper(androidContext(), org.navgurukul.commonui.R.style.AppTheme)) }
 }
 
 val learnModules = arrayListOf(

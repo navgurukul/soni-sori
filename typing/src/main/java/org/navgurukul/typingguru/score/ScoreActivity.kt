@@ -13,8 +13,7 @@ import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
-import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.databinding.ActivityScoreBinding
+import org.navgurukul.typing.databinding.ActivityScoreBinding
 import org.navgurukul.typingguru.keyboard.KeyboardActivity
 
 @Parcelize

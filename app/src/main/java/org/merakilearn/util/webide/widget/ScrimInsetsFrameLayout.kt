@@ -34,10 +34,10 @@ class ScrimInsetsFrameLayout : FrameLayout {
     private fun init(context: Context, attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(
             attrs,
-            R.styleable.ScrimInsetsFrameLayout, defStyle, 0
+            androidx.navigation.ui.R.styleable.ScrimInsetsFrameLayout, defStyle, 0
         )
         mInsetForeground = a.getDrawable(
-            R.styleable.ScrimInsetsFrameLayout_insetForeground
+            androidx.navigation.ui.R.styleable.ScrimInsetsFrameLayout_insetForeground
         )
         a.recycle()
         setWillNotDraw(true)

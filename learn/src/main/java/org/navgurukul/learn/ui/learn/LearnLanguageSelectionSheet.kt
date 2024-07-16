@@ -55,7 +55,7 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
         recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )

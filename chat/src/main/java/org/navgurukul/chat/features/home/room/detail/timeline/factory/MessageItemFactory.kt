@@ -476,7 +476,7 @@ class MessageItemFactory(
         spannable.append(linkifiedBody)
         val editedSuffix = stringProvider.getString(R.string.edited_suffix)
         spannable.append(" ").append(editedSuffix)
-        val color = colorProvider.getColorFromAttribute(R.attr.textSecondary)
+        val color = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
         val editStart = spannable.lastIndexOf(editedSuffix)
         val editEnd = editStart + editedSuffix.length
         spannable.setSpan(
@@ -521,7 +521,7 @@ class MessageItemFactory(
     ): MessageTextItem? {
         val formattedBody = span {
             text = messageContent.getHtmlBody()
-            textColor = colorProvider.getColorFromAttribute(R.attr.textSecondary)
+            textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
             textStyle = "italic"
         }
 

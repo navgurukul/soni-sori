@@ -14,7 +14,7 @@ buildscript {
         classpath(Classpath.python)
         classpath(Classpath.googleServices)
         classpath(Classpath.firebaseCrashlytics)
-        classpath(Classpath.realm)
+        //classpath(Classpath.realm)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
         classpath(Classpath.firebasePerf)
         classpath(Classpath.benManes)

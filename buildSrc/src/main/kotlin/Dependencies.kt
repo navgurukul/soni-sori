@@ -64,19 +64,19 @@ object AndroidxDependencies {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     const val lifecycleLiveData =
-        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata:2.2.0"
     const val lifecycleViewModelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     const val lifecycleExtensions =
-        "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
-    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_extensions}"
-    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
+    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
     const val lifecycleRx =
-        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-reactivestreams:2.2.0"
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
     const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:2.3.0"
     const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
@@ -143,7 +143,7 @@ object MiscellaneousDependencies {
     const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
     const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
     const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
-    const val eventBus = "org.greenrobot:eventbus:3.1.1"
+    const val eventBus = "org.greenrobot:eventbus:3.3.1"
     const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
     const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
     const val span = "me.gujun.android:span:1.7"

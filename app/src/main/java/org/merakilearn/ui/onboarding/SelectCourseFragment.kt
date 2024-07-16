@@ -50,7 +50,7 @@ class SelectCourseFragment : BaseFragment() {
 
         binding.selectCourseHeading.text = translations.selectCourseHeader
 
-        val padding = resources.getDimensionPixelSize(R.dimen.spacing_4x)
+        val padding = resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_4x)
         val width = (resources.displayMetrics.widthPixels - (padding * 2) - padding) / 2
         onBoardingData.onBoardingPathwayList.forEachIndexed { index, pathway ->
 
@@ -89,7 +89,7 @@ class SelectCourseFragment : BaseFragment() {
         ENGLISH(R.drawable.ic_icon_language),
         JAVASCRIPT(R.drawable.ic_javascript_logo),
         RESIDENTIAL(R.drawable.residential_icon),
-        SCRATCH(R.drawable.ic_scratch_cat)
+        SCRATCH(org.navgurukul.commonui.R.drawable.ic_scratch_cat)
     }
 
 }

@@ -463,8 +463,8 @@ class LearnFragment : Fragment() {
     }
     private fun initToolBar() {
         (activity as? ToolbarConfigurable)?.configure(
-            getString(R.string.app_name),
-            R.attr.textPrimary,
+            getString(org.navgurukul.commonui.R.string.app_name),
+            org.navgurukul.commonui.R.attr.textPrimary,
             false,
             null,
             null,
@@ -484,7 +484,7 @@ class LearnFragment : Fragment() {
             if (subtitle != null) {
                 it.configure(
                     subtitle,
-                    R.attr.textPrimary,
+                    org.navgurukul.commonui.R.attr.textPrimary,
                     subtitle = "",
                     onClickListener = if (attachClickListener) {
                         {

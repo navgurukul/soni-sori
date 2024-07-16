@@ -41,7 +41,7 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        binding.tvTitle.text = getString(R.string.more_batch)
+        binding.tvTitle.text = getString(org.navgurukul.commonui.R.string.more_batch)
 
         adapter = BatchSelectionAdapter {
             viewModel.selectBatch(it)
@@ -51,7 +51,7 @@ class LearnBatchSelectionSheet: BottomSheetDialogFragment() {
         recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )

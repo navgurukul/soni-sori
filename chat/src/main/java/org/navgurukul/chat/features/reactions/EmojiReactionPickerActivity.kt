@@ -162,7 +162,7 @@ class EmojiReactionPickerActivity : ChatBaseActivity(),
     private fun getActionBarSize(): Int {
         return try {
             val typedValue = TypedValue()
-            theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)
+            theme.resolveAttribute(io.noties.markwon.R.attr.actionBarSize, typedValue, true)
             TypedValue.complexToDimensionPixelSize(typedValue.data, resources.displayMetrics)
         } catch (e: Exception) {
             // Timber.e(e, "Unable to get color")

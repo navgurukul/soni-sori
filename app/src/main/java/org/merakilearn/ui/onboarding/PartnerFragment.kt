@@ -43,6 +43,12 @@ class PartnerFragment : Fragment() {
 
                 }
 
+                OnBoardingViewEvents.ShowCourseSelectionScreen -> TODO()
+                OnBoardingViewEvents.ShowLoginScreen -> TODO()
+                is OnBoardingViewEvents.ShowMainScreen -> TODO()
+                OnBoardingViewEvents.ShowOnBoardingPages -> TODO()
+                OnBoardingViewEvents.ShowPartnerScreen -> TODO()
+                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
             }
         }
     }

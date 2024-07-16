@@ -106,6 +106,9 @@ class OnBoardingActivity : AppCompatActivity() {
                     PartnerFragment.newInstance(),
                     PartnerFragment.TAG
                 )
+
+                is OnBoardingViewEvents.ShowPartnerData -> TODO()
+                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
             }
         }
 

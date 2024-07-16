@@ -567,7 +567,8 @@ class RoomDetailFragment : BaseFragment(),
         }
         timelineEventController.addModelBuildListener(modelBuildListener)
         binding.recyclerView.adapter = timelineEventController.adapter
-        binding.recyclerView.addItemDecoration(SpaceItemDecoration(binding.recyclerView.context.resources.getDimensionPixelSize(R.dimen.spacing_2x), 0))
+        binding.recyclerView.addItemDecoration(SpaceItemDecoration(binding.recyclerView.context.resources.getDimensionPixelSize(
+            org.navgurukul.commonui.R.dimen.spacing_2x), 0))
 
         if (chatPreferences.swipeToReplyIsEnabled()) {
             val quickReplyHandler = object : RoomMessageTouchHelperCallback.QuickReplayHandler {
@@ -910,7 +911,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_as_spam_title)
                             .setMessage(R.string.content_reported_as_spam_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -921,7 +922,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_as_inappropriate_title)
                             .setMessage(R.string.content_reported_as_inappropriate_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -932,7 +933,7 @@ class RoomDetailFragment : BaseFragment(),
                         AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.content_reported_title)
                             .setMessage(R.string.content_reported_content)
-                            .setPositiveButton(R.string.ok, null)
+                            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
                             .setNegativeButton(R.string.block_user) { _, _ ->
                                 viewModel.handle(RoomDetailAction.IgnoreUser(data.senderId))
                             }
@@ -988,9 +989,9 @@ class RoomDetailFragment : BaseFragment(),
 
     private fun displayRoomDetailActionFailure(result: RoomDetailFragmentViewEvents.ActionFailure) {
         AlertDialog.Builder(requireActivity())
-            .setTitle(R.string.dialog_title_error)
+            .setTitle(org.navgurukul.commonui.R.string.dialog_title_error)
             .setMessage(errorFormatter.toHumanReadable(result.throwable))
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 
@@ -1028,7 +1029,7 @@ class RoomDetailFragment : BaseFragment(),
         AlertDialog.Builder(requireActivity())
             .setTitle(R.string.command_error)
             .setMessage(message)
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 
@@ -1042,7 +1043,7 @@ class RoomDetailFragment : BaseFragment(),
         }
         AlertDialog.Builder(requireActivity())
             .setMessage(msgId)
-            .setPositiveButton(R.string.ok, null)
+            .setPositiveButton(org.navgurukul.commonui.R.string.ok, null)
             .show()
     }
 

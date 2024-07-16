@@ -10,8 +10,7 @@ import androidx.databinding.DataBindingUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityMainBinding
 import org.navgurukul.commonui.platform.BaseActivity
-import org.navgurukul.typingguru.R
-import org.navgurukul.typingguru.databinding.ActivityWebViewBinding
+import org.navgurukul.typing.databinding.ActivityWebViewBinding
 
 class WebViewActivity : BaseActivity() {
 
