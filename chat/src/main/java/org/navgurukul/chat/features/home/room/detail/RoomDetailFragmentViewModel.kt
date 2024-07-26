@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail
 
-import androidx.lifecycle.Transformations
+//import androidx.lifecycle.Transformations
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import org.matrix.android.sdk.api.MatrixCallback
@@ -395,17 +395,17 @@ class RoomDetailFragmentViewModel(
     }
 
     private fun observeSummaryState() {
-        Transformations.map(viewState) {
-            it.asyncRoomSummary
-        }.asObservable().filter {
-            it is Success
-        }.map {
-            it.invoke()!!
-        }.subscribe { summary ->
-            roomSummaryHolder.set(summary)
-            val typingMessage = typingHelper.getTypingMessage(summary.typingUsers)
-            setState { copy(typingMessage = typingMessage) }
-        }.disposeOnClear()
+//        Transformations.map(viewState) {
+//            it.asyncRoomSummary
+//        }.asObservable().filter {
+//            it is Success
+//        }.map {
+//            it.invoke()!!
+//        }.subscribe { summary ->
+//            roomSummaryHolder.set(summary)
+//            val typingMessage = typingHelper.getTypingMessage(summary.typingUsers)
+//            setState { copy(typingMessage = typingMessage) }
+//        }.disposeOnClear()
     }
 
 

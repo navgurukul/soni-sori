@@ -18,8 +18,11 @@ abstract class MerakiEpoxyModel<H : MerakiEpoxyHolder> : EpoxyModelWithHolder<H>
 
     protected val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle() = lifecycleRegistry
+    override val lifecycle: Lifecycle get() = lifecycleRegistry
+//    override fun getLifecycle(): Lifecycle {
+//        return lifecycleRegistry
+//    }
+//    override fun getLifecycle() = lifecycleRegistry
 
     private var onModelVisibilityStateChangedListener: OnVisibilityStateChangedListener? = null
 

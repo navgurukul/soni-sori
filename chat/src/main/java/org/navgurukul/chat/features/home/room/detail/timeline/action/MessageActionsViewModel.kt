@@ -1,6 +1,6 @@
 package org.navgurukul.chat.features.home.room.detail.timeline.action
 
-import androidx.lifecycle.Transformations
+//import androidx.lifecycle.Transformations
 import org.matrix.android.sdk.api.session.crypto.keysbackup.KeysBackupState
 import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.isTextMessage
@@ -136,19 +136,19 @@ class MessageActionsViewModel(
     }
 
     private fun observeTimelineEventState() {
-        Transformations.map(viewState) {
-            it.timelineEvent to it.actionPermissions
-        }.asObservable()
-            .distinctUntilChanged()
-            .subscribe { (timelineEvent, permissions) ->
-                val nonNullTimelineEvent = timelineEvent() ?: return@subscribe
-                setState {
-                    copy(
-                        messageBody = computeMessageBody(nonNullTimelineEvent),
-                        actions = actionsForEvent(nonNullTimelineEvent, permissions)
-                    )
-                }
-            }.disposeOnClear()
+//        Transformations.map(viewState) {
+//            it.timelineEvent to it.actionPermissions
+//        }.asObservable()
+//            .distinctUntilChanged()
+//            .subscribe { (timelineEvent, permissions) ->
+//                val nonNullTimelineEvent = timelineEvent() ?: return@subscribe
+//                setState {
+//                    copy(
+//                        messageBody = computeMessageBody(nonNullTimelineEvent),
+//                        actions = actionsForEvent(nonNullTimelineEvent, permissions)
+//                    )
+//                }
+//            }.disposeOnClear()
     }
 
     private fun computeMessageBody(timelineEvent: TimelineEvent): CharSequence {
