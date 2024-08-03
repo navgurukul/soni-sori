@@ -123,11 +123,11 @@ dependencies {
     implementation(MiscellaneousDependencies.eventBus)
 
     // olm lib is now hosted by jitpack: https://jitpack.io/#org.matrix.gitlab.matrix-org/olm
-    implementation(MiscellaneousDependencies.olm)
+//    implementation(MiscellaneousDependencies.olm)
 
     // Database
-    implementation(MiscellaneousDependencies.realm)
-    kapt(MiscellaneousDependencies.realmFieldNamesHelper)
+//    implementation(MiscellaneousDependencies.realm)
+//    kapt(MiscellaneousDependencies.realmFieldNamesHelper)
 
     //Epoxy
     implementation(MiscellaneousDependencies.epoxy)

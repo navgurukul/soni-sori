@@ -140,11 +140,11 @@ object MiscellaneousDependencies {
     const val markdownCore = "io.noties.markwon:core:${Versions.markdown}"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:${Versions.epoxy_version}"
     const val epoxy = "com.airbnb.android:epoxy:${Versions.epoxy_version}"
-    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
-    const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
+//    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
+//    const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
     const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
     const val eventBus = "org.greenrobot:eventbus:3.3.1"
-    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
+//    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
     const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
     const val span = "me.gujun.android:span:1.7"
     const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:1.0.3"
@@ -204,7 +204,7 @@ object Classpath {
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
     const val python = "com.chaquo.python:gradle:15.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
+//    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.14"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
@@ -222,7 +222,7 @@ object Plugins {
     const val kotlinParcelize = "kotlin-parcelize"
     const val gms = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
-    const val realm = "realm-android"
+//    const val realm = "realm-android"
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
     const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"

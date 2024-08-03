@@ -3,7 +3,7 @@ include (":core")
 include (":commonUI")
 include (":python")
 include (":learn")
-include (":chat")
+//include (":chat")
 include (":app")
 rootProject.name = "Saral"
 include(":webIDE")

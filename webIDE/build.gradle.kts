@@ -62,7 +62,11 @@ dependencies {
     implementation(MaterialDesignDependencies.materialDesign)
     implementation(AndroidxDependencies.constraintLayout)
 
+    //lifecycle
     implementation(AndroidxDependencies.lifecycleExtensions)
+    implementation(AndroidxDependencies.lifecycleViewModelKtx)
+    implementation(AndroidxDependencies.lifecycleLiveDataKtx)
+
     implementation(AndroidxDependencies.lifecyclerRuntime)
     kapt(AndroidxDependencies.lifecyclerCompiler)
 

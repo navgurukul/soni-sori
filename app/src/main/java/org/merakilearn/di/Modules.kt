@@ -204,7 +204,7 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
+    single { LoginRepository(get(), androidApplication(), get(), get(), get()) }
     single { Config() }
     single { ClassesRepo(get(),get()) }
     single { SettingsRepo(get()) }
@@ -214,7 +214,7 @@ val repositoryModule = module {
             get(),
             PreferenceManager.getDefaultSharedPreferences(androidApplication()),
             get(),
-            get(),
+//            get(),
         )
     }
 

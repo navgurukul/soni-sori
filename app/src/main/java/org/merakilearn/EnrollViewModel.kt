@@ -10,12 +10,12 @@ import org.merakilearn.util.toDate
 import org.merakilearn.util.toDay
 import org.merakilearn.util.toDisplayableInterval
 import org.merakilearn.util.toTime
-import org.navgurukul.chat.core.resources.ColorProvider
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
+import org.navgurukul.learn.util.ColorProvider
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -37,7 +37,7 @@ class EnrollViewModel(
 
                 val durationToClassStart = (it.startTime.time - Date().time)
                 var primaryActionBackgroundColor =
-                    colorProvider.getColorFromAttribute(org.matrix.android.sdk.R.attr.colorPrimary)
+                    colorProvider.getColorFromAttribute(android.R.attr.colorPrimary)
                 val primaryAction = if (isEnrolled) {
                     if (classJoinEnabled(durationToClassStart)) {
                         stringProvider.getString(R.string.join_class)
