@@ -26,7 +26,7 @@ import timber.log.Timber
 
 class MerakiMessagingService : FirebaseMessagingService() {
 
-    private val fcmServiceDelegate: FCMServiceDelegate by inject(FCMServiceDelegate::class.java)
+//    private val fcmServiceDelegate: FCMServiceDelegate by inject(FCMServiceDelegate::class.java)
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -39,14 +39,14 @@ class MerakiMessagingService : FirebaseMessagingService() {
             sendNotification(it?.title, it?.body, it?.imageUrl)
         }
 
-        fcmServiceDelegate.onMessageReceived(remoteMessage)
+        //fcmServiceDelegate.onMessageReceived(remoteMessage)
     }
 
 
     override fun onNewToken(token: String) {
         Timber.d("Refreshed token: $token")
         sendRegistrationToServer(token)
-        fcmServiceDelegate.onNewToken(token)
+        //fcmServiceDelegate.onNewToken(token)
     }
 
 
