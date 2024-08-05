@@ -64,13 +64,13 @@ object AndroidxDependencies {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+        "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
     const val lifecycleLiveData =
         "androidx.lifecycle:lifecycle-livedata:2.2.0"
     const val lifecycleViewModelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
     const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+        "androidx.lifecycle:lifecycle-viewmodel:2.3.0"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:2.2.0"
     const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
@@ -82,7 +82,7 @@ object AndroidxDependencies {
     const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
     const val navigationFragment = "androidx.navigation:navigation-fragment:2.3.0"
     const val coreKtx = "androidx.core:core-ktx:1.3.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.3.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
     const val browser = "androidx.browser:browser:1.3.0"
