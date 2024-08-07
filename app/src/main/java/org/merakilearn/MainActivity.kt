@@ -21,7 +21,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.parcel.Parcelize
 import org.koin.android.ext.android.inject
-//import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.databinding.ActivityMainBinding
@@ -70,12 +70,12 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         mainActivityArgs.let { args ->
-            //appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
     }
 
 
-    //private val appOpenDelegate: AppOpenDelegate by inject()
+    private val appOpenDelegate: AppOpenDelegate by inject()
     private val mainActivityArgs: MainActivityArgs by activityArgs()
     private val userRepo: UserRepo by inject()
     private val learnRepo: LearnRepo by inject()
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         }
 
         mainActivityArgs.let { args ->
-            //appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
+            appOpenDelegate.onHomeScreenOpened(this, args.clearNotification)
         }
 
         binding.headerIv.let {

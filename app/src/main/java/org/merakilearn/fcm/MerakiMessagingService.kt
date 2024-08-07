@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.koin.core.error.NoBeanDefFoundException
 import org.koin.java.KoinJavaComponent.inject
 import org.merakilearn.MainActivity
 import org.merakilearn.R
@@ -26,7 +27,7 @@ import timber.log.Timber
 
 class MerakiMessagingService : FirebaseMessagingService() {
 
-//    private val fcmServiceDelegate: FCMServiceDelegate by inject(FCMServiceDelegate::class.java)
+   private val fcmServiceDelegate: FCMServiceDelegate by inject(FCMServiceDelegate::class.java)
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -39,14 +40,18 @@ class MerakiMessagingService : FirebaseMessagingService() {
             sendNotification(it?.title, it?.body, it?.imageUrl)
         }
 
-        //fcmServiceDelegate.onMessageReceived(remoteMessage)
+        fcmServiceDelegate.onMessageReceived(remoteMessage)
     }
 
 
     override fun onNewToken(token: String) {
         Timber.d("Refreshed token: $token")
         sendRegistrationToServer(token)
-        //fcmServiceDelegate.onNewToken(token)
+        try{
+            fcmServiceDelegate.onNewToken(token)
+        }catch (e : NoBeanDefFoundException){
+            Timber.e(e)
+        }
     }
 
 

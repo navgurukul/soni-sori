@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.MainActivity
 import org.merakilearn.R
-//import org.merakilearn.core.appopen.AppOpenDelegate
+import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.databinding.ActivityOnBoardingBinding
@@ -37,7 +37,7 @@ data class OnBoardingActivityArgs(
 class OnBoardingActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityOnBoardingBinding
 
-    //private val appOpenDelegate: AppOpenDelegate by inject()
+    private val appOpenDelegate: AppOpenDelegate by inject()
 
     private val args: OnBoardingActivityArgs? by lazy {
         intent.extras?.getParcelable(KEY_ARG)
@@ -113,7 +113,7 @@ class OnBoardingActivity : AppCompatActivity() {
         }
 
         args?.let { args ->
-            //appOpenDelegate.onAppOpened(this, args.clearNotification)
+            appOpenDelegate.onAppOpened(this, args.clearNotification)
         }
     }
 
