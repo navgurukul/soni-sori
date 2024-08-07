@@ -35,8 +35,11 @@ dependencies {
     implementation(project(":app"))
     implementation(project(":core"))
 
-    kapt(MiscellaneousDependencies.AutoService)
-    implementation(MiscellaneousDependencies.AutoService)
+//    kapt(MiscellaneousDependencies.AutoService)
+//    implementation(MiscellaneousDependencies.AutoService)
+
+    implementation ("com.google.auto.service:auto-service:1.0.1")
+    kapt ("com.google.auto.service:auto-service:1.0.1")
 
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)

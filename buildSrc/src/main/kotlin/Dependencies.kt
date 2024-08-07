@@ -134,7 +134,7 @@ object TestDependencies {
 
 object MiscellaneousDependencies {
     const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
-    const val AutoService = "com.google.auto.service:auto-service:1.0-rc7"
+    //const val AutoService = "com.google.auto.service:auto-service:1.0-rc7"
     const val htmlCompressor = "com.googlecode.htmlcompressor:htmlcompressor:1.4"
     const val markdownHtml = "io.noties.markwon:html:${Versions.markdown}"
     const val markdownCore = "io.noties.markwon:core:${Versions.markdown}"
