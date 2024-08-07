@@ -15,20 +15,20 @@
 
     <application>
         <activity
-            android:name=".keyboard.dialog.KeyboardDialogActivity"
+            android:name="org.navgurukul.typingguru.keyboard.dialog.KeyboardDialogActivity"
             android:screenOrientation="behind"
             android:theme="@style/AppTheme.Transparent" />
         <activity
-            android:name=".keyboard.KeyboardActivity"
+            android:name="org.navgurukul.typingguru.keyboard.KeyboardActivity"
             android:screenOrientation="landscape">
 <!--            <meta-data-->
 <!--                android:name="android.support.PARENT_ACTIVITY"-->
 <!--                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />-->
         </activity>
         <activity
-            android:name=".score.ScoreActivity"
+            android:name="org.navgurukul.typingguru.score.ScoreActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".webview.WebViewActivity" />
+        <activity android:name="org.navgurukul.typingguru.webview.WebViewActivity" />
     </application>
 
 </manifest>
