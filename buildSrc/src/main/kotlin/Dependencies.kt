@@ -110,7 +110,7 @@ object GooglePlayDependencies {
 
 object GMSDependencies {
     const val base = "com.google.android.gms:play-services-base:18.1.0"
-    const val auth = "com.google.android.gms:play-services-auth:18.1.0"
+    const val auth = "com.google.android.gms:play-services-auth:19.0.0"
 }
 
 object KoinDependencies {

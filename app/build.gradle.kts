@@ -178,7 +178,7 @@ dependencies {
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
 
-    implementation ("com.google.android.gms:play-services-auth:19.0.0")
+    //implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
     //lottie
     implementation ("com.airbnb.android:lottie:4.2.0")
