@@ -67,8 +67,8 @@ interface SaralCoursesApi {
 
     @POST("assessment/slug/complete")
     suspend fun postStudentResult(
-        @Body studentResult : StudentResult
-    ) : Response<StudentResponse>
+        @Body studentResult: List<StudentResult>
+    ) : Response<List<StudentResponse>>
 
     @GET("assessment/{slugId}/complete")
     suspend fun getStudentResult(

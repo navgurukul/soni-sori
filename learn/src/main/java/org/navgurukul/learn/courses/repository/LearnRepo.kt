@@ -3,7 +3,6 @@ package org.navgurukul.learn.courses.repository
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.asFlow
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
@@ -430,7 +429,7 @@ class LearnRepo(
     ){
         try {
             val studentResult = StudentResult(slugId, courseId, status,selectedOption, selectedLang)
-            safeApiCall { courseApi.postStudentResult(studentResult) }
+            safeApiCall { courseApi.postStudentResult(listOf( studentResult)) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
