@@ -5,6 +5,10 @@ buildscript {
         maven(url = uri("https://plugins.gradle.org/m2/"))
         maven(url = uri("https://chaquo.com/maven"))
     }
+//    plugins {
+//        id(Plugins.gms) version("4.2.2") apply(false)
+//        id(Plugins.perf) version("1.4.2") apply(false)
+//    }
     dependencies {
         classpath(Classpath.gradle)
         classpath(Classpath.kotlin)

@@ -8,7 +8,7 @@ object Versions {
     const val glide_version = "4.16.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
-    const val kotlin = "1.9.0"
+    const val kotlin = "1.9.22"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
     const val room = "2.6.1"
@@ -163,14 +163,15 @@ object MiscellaneousDependencies {
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
-    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
-    const val messaging = "com.google.firebase:firebase-messaging:23.0.0"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging"
+    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links"
+    const val messaging = "com.google.firebase:firebase-messaging"
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
-    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
-    const val perfKtx = "com.google.firebase:firebase-perf-ktx:20.0.6"
+    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics"
+    const val analyticsKtx = "com.google.firebase:firebase-analytics"
+    const val perfKtx = "com.google.firebase:firebase-perf"
+    const val firebaseBom = "com.google.firebase:firebase-bom:33.1.2"
 }
 
 object RetrofitDependencies {
@@ -224,7 +225,7 @@ object Plugins {
     const val crashlytics = "com.google.firebase.crashlytics"
 //    const val realm = "realm-android"
     const val python = "com.chaquo.python"
-    const val perf = "com.google.firebase.firebase-perf"
+    const val perf = "com.google.firebase:perf-plugin"
     const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
     const val githubBenManes = "com.github.ben-manes.versions"
 }

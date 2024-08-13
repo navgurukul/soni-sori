@@ -10,7 +10,6 @@ plugins {
     id(Plugins.kotlinParcelize)
     id(Plugins.gms)
     id(Plugins.crashlytics)
-    id(Plugins.perf)
     id("org.jetbrains.kotlin.android")
 }
 
@@ -141,6 +140,7 @@ dependencies {
     implementation(RetrofitDependencies.logging)
 
     //firebase
+    implementation(FirebaseDependencies.firebaseBom)
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
     implementation(FirebaseDependencies.messaging)
