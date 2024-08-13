@@ -9,7 +9,6 @@ plugins {
 }
 
 android {
-    namespace = "org.navgurukul.typing"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -28,6 +27,7 @@ android {
     buildFeatures{
         viewBinding = true
     }
+    namespace = "org.navgurukul.typing"
 }
 
 dependencies {

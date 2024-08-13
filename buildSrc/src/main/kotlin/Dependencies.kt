@@ -163,15 +163,18 @@ object MiscellaneousDependencies {
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging"
-    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links"
+    //Added the bom for firebase
+    const val firebaseBom = "com.google.firebase:firebase-bom:33.1.2"
+
+    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
+    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx"
     const val messaging = "com.google.firebase:firebase-messaging"
+    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx"
+    const val perfKtx = "com.google.firebase:firebase-perf-ktx"
+
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
-    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics"
-    const val perfKtx = "com.google.firebase:firebase-perf"
-    const val firebaseBom = "com.google.firebase:firebase-bom:33.1.2"
 }
 
 object RetrofitDependencies {

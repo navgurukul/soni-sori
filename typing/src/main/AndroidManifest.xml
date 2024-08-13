@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="org.navgurukul.typing"
     >
 
     <dist:module
@@ -17,17 +18,20 @@
         <activity
             android:name="org.navgurukul.typingguru.keyboard.dialog.KeyboardDialogActivity"
             android:screenOrientation="behind"
+            android:exported="false"
             android:theme="@style/AppTheme.Transparent" />
         <activity
             android:name="org.navgurukul.typingguru.keyboard.KeyboardActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:exported="false">
 <!--            <meta-data-->
 <!--                android:name="android.support.PARENT_ACTIVITY"-->
 <!--                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />-->
         </activity>
         <activity
             android:name="org.navgurukul.typingguru.score.ScoreActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false"/>
         <activity android:name="org.navgurukul.typingguru.webview.WebViewActivity" />
     </application>
 

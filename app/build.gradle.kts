@@ -14,7 +14,7 @@ plugins {
 }
 
 android {
-    namespace = "org.merakilearn"
+
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -72,6 +72,8 @@ android {
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
     dynamicFeatures += setOf(":webIDE")
+
+    namespace = "org.merakilearn"
 }
 
 dependencies {
@@ -140,7 +142,7 @@ dependencies {
     implementation(RetrofitDependencies.logging)
 
     //firebase
-    implementation(FirebaseDependencies.firebaseBom)
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
     implementation(FirebaseDependencies.messaging)

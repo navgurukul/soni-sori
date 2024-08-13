@@ -53,7 +53,9 @@ dependencies {
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
+    //firebase
     implementation(FirebaseDependencies.crashlyticsKtx)
+    implementation(platform(FirebaseDependencies.firebaseBom))
 
     //kotlin
     implementation(KotlinDependencies.kotlin)

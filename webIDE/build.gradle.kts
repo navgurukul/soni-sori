@@ -8,7 +8,6 @@ plugins {
     id(Plugins.githubBenManes)
 }
 android {
-    namespace = "org.navgurukul.webide"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -34,7 +33,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
+    namespace = "org.navgurukul.webide"
 }
 
 dependencies {

@@ -126,6 +126,7 @@ dependencies {
     androidTestImplementation(TestDependencies.annotation)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.perfKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
 

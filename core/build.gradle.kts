@@ -66,6 +66,7 @@ dependencies {
     implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.messaging)
     implementation(FirebaseDependencies.configKtx)
     implementation(FirebaseDependencies.commonKtx)

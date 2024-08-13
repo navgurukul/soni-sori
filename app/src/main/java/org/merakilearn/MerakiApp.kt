@@ -65,7 +65,7 @@ class MerakiApp : Application() {
     }
 
     private fun subscribeToDefaultTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic(BuildConfig.APPLICATION_ID)
+        FirebaseMessaging.getInstance().subscribeToTopic(applicationContext.packageName)
             .addOnCompleteListener { task ->
                 Timber.d("subscribeToDefaultTopic: ")
             }
