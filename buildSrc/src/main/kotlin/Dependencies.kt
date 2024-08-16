@@ -5,7 +5,7 @@ object Versions {
     const val daggerVersion = "2.25.4"
     const val moshi_version = "1.15.1"
     const val okReplay = "1.5.0"
-    const val glide_version = "4.16.0"
+    const val glide_version = "4.11.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
     const val kotlin = "1.9.22"

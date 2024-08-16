@@ -186,8 +186,8 @@ dependencies {
     implementation ("com.airbnb.android:lottie:4.2.0")
 
     //chucker
-    debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
-    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+    debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 }
 
 //tasks.register<Download>("downloadBundleTools") {
