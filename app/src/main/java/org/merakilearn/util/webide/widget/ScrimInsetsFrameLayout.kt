@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
-import org.merakilearn.R
 
 class ScrimInsetsFrameLayout : FrameLayout {
 
@@ -34,10 +33,10 @@ class ScrimInsetsFrameLayout : FrameLayout {
     private fun init(context: Context, attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(
             attrs,
-            androidx.navigation.ui.R.styleable.ScrimInsetsFrameLayout, defStyle, 0
+            com.google.android.material.R.styleable.ScrimInsetsFrameLayout, defStyle, 0
         )
         mInsetForeground = a.getDrawable(
-            androidx.navigation.ui.R.styleable.ScrimInsetsFrameLayout_insetForeground
+            com.google.android.material.R.styleable.ScrimInsetsFrameLayout_insetForeground
         )
         a.recycle()
         setWillNotDraw(true)

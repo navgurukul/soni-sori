@@ -37,7 +37,7 @@ class CourseKeysView @JvmOverloads constructor(
             invalidate()
         }
 
-    private val selectedKeyIndicatorHeight = context.getThemedUnit(androidx.navigation.ui.R.attr.borderWidth)
+    private val selectedKeyIndicatorHeight = context.getThemedUnit(com.google.android.material.R.attr.borderWidth)
 
     private val paint = Paint().apply {
         color = ContextCompat.getColor(context, R.color.current_text)

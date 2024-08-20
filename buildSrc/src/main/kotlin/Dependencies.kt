@@ -10,6 +10,8 @@ object Versions {
     const val markdown = "4.5.1"
     const val kotlin = "1.9.22"
     const val lifecycle_extensions = "2.2.0"
+    const val lifecycle_version = "2.7.0"
+    const val navigation_version = "2.5.3"
     const val koin = "2.2.3"
     const val room = "2.6.1"
     const val retrofit = "2.11.0"
@@ -64,28 +66,30 @@ object AndroidxDependencies {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_version}"
     const val lifecycleLiveData =
-        "androidx.lifecycle:lifecycle-livedata:2.2.0"
+        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_version}"
     const val lifecycleViewModelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_version}"
     const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:2.3.0"
+        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_version}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
-    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
+    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_version}"
+    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_version}"
     const val lifecycleRx =
-        "androidx.lifecycle:lifecycle-reactivestreams:2.2.0"
-    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:2.3.0"
-    const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
-    const val navigationFragment = "androidx.navigation:navigation-fragment:2.3.0"
+        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_version}"
+
+    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation_version}"
+    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation_version}"
+    const val navigationUI = "androidx.navigation:navigation-ui:${Versions.navigation_version}"
+    const val navigationFragment = "androidx.navigation:navigation-fragment:${Versions.navigation_version}"
+
     const val coreKtx = "androidx.core:core-ktx:1.3.0"
     const val appcompat = "androidx.appcompat:appcompat:1.5.1"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.3"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
-    const val browser = "androidx.browser:browser:1.3.0"
+    const val browser = "androidx.browser:browser:1.8.0"
     const val multidex = "androidx.multidex:multidex:${Versions.multidex}"
 }
 
@@ -127,9 +131,9 @@ object GlideDependencies {
 
 object TestDependencies {
     const val annotation = "androidx.annotation:annotation:1.1.0"
-    const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
-    const val androidxJUnit = "androidx.test.ext:junit:1.1.2"
-    const val jUnit = "junit:junit:4.13"
+    const val espresso = "androidx.test.espresso:espresso-core:3.5.1"
+    const val androidxJUnit = "androidx.test.ext:junit:1.1.5"
+    const val jUnit = "junit:junit:4.13.2"
 }
 
 object MiscellaneousDependencies {
