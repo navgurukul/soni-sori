@@ -87,8 +87,8 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":commonUI"))
 
-    implementation ("com.google.auto.service:auto-service:1.0.1")
-    kapt ("com.google.auto.service:auto-service:1.0.1")
+    implementation ("com.google.auto.service:auto-service:1.1.1")
+    kapt ("com.google.auto.service:auto-service:1.1.1")
 
 
     //AndroidX
@@ -186,8 +186,8 @@ dependencies {
     implementation ("com.airbnb.android:lottie:4.2.0")
 
     //chucker
-    debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")
-    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+    debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
 //tasks.register<Download>("downloadBundleTools") {

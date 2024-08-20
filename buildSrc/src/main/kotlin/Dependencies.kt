@@ -5,7 +5,7 @@ object Versions {
     const val daggerVersion = "2.25.4"
     const val moshi_version = "1.15.1"
     const val okReplay = "1.5.0"
-    const val glide_version = "4.11.0"
+    const val glide_version = "4.16.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
     const val kotlin = "1.9.22"
@@ -82,7 +82,7 @@ object AndroidxDependencies {
     const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
     const val navigationFragment = "androidx.navigation:navigation-fragment:2.3.0"
     const val coreKtx = "androidx.core:core-ktx:1.3.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.3.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.5.1"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.3"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
     const val browser = "androidx.browser:browser:1.3.0"
@@ -90,7 +90,7 @@ object AndroidxDependencies {
 }
 
 object MaterialDesignDependencies {
-    const val materialDesign = "com.google.android.material:material:1.4.0"
+    const val materialDesign = "com.google.android.material:material:1.11.0"
 }
 
 object OkReplayDependencies {
@@ -202,7 +202,7 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:8.0.1"
+    const val gradle = "com.android.tools.build:gradle:8.3.1"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
     // Newer versions may be available: please check here:
