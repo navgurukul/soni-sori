@@ -216,6 +216,15 @@ class OptionSelectionAdapter(
                                 }
                             }
                         }
+                        AssessmentType.single -> {
+                            tvCardOption.setCardBackgroundColor(Color.parseColor("#E9F5E9"))
+                            tvCardOption.strokeColor = Color.parseColor("#48A145")
+                            tvRadioButtonOption.isChecked = true
+                            tvRadioButtonOption.setButtonDrawable(drawable.check_circle_correctoption)
+                            tvRadioButtonOption.buttonTintList =
+                                ColorStateList.valueOf(Color.parseColor("#48A145"))
+                            showTextOrImageAccordingToOptionType(binding, item)
+                        }
                         else -> { }
                     }
                 }
@@ -264,6 +273,14 @@ class OptionSelectionAdapter(
                                 }
                             }
                         }
+                        AssessmentType.single -> {
+                            tvCardOption.setCardBackgroundColor(Color.parseColor("#FFE5E3"))
+                            tvCardOption.strokeColor = Color.parseColor("#F44336")
+                            tvRadioButtonOption.isChecked = true
+                            tvRadioButtonOption.setButtonDrawable(drawable.cancel_circle_optionincorrect)
+                            tvRadioButtonOption.buttonTintList = ColorStateList.valueOf(Color.parseColor("#D63447"))
+                            showTextOrImageAccordingToOptionType(binding, item)
+                        }
                         else -> { }
                     }
                 }
@@ -291,8 +308,6 @@ class OptionSelectionAdapter(
 
                         AssessmentType.single -> {
                             selectedOptions.clear()
-                            selectedOptions.remove(item)
-                            notifyItemChanged(currentList.indexOf(item))
                             selectedOptions.add(item)
                             callback?.invoke(selectedOptions)
                         }
