@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -331,6 +332,7 @@ class ProfileFragment : Fragment() {
                 getString(R.string.okay)
             ) { dialog, _ ->
                 viewModel.handle(ProfileViewActions.LogOut)
+                Toast.makeText(requireContext(), "Logged out",Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }.setNegativeButton(
                 getString(R.string.cancel)
