@@ -19,6 +19,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -272,37 +274,63 @@ class LearnFragment : Fragment() {
         }
         mBinding.certificate.root.setOnClickListener {
             if (completedPortion == 100) {
-                imageView.setImageResource(R.drawable.ic_certificate)
-                textView.isVisible = false
-                val dialog = BottomSheetDialog(requireContext())
-                binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
-                pdfView = binding.idPDFView
-                binding.apply {
-                    txtCertificate.text = getString(R.string.text_certificate, pathwayName)
-                    txt.text = getString(R.string.certificate_information, pathwayName)
-                    tvDownload.setOnClickListener {
-                        generatePDF(pdfUrl)
-                    }
-                    tvShare.setOnClickListener {
-                        showShareIntent(pdfUrl)
-                    }
+                // Show the name confirmation dialog
+                val nameDialog = AlertDialog.Builder(requireContext()).create()
+                val dialogView = layoutInflater.inflate(R.layout.dialog_name_confirmation, null)
+
+                val etName = dialogView.findViewById<TextView>(R.id.etName)
+                val cbConfirmNameCorrect = dialogView.findViewById<CheckBox>(R.id.cbConfirmNameCorrect)
+                val btnGetCertificate = dialogView.findViewById<Button>(R.id.btnGetCertificate)
+
+                cbConfirmNameCorrect.setOnCheckedChangeListener { _, isChecked ->
+                    btnGetCertificate.isEnabled = isChecked
+                    btnGetCertificate.setBackgroundColor(
+                        if (isChecked) ContextCompat.getColor(requireContext(), R.color.green_progress_color)
+                        else ContextCompat.getColor(requireContext(), android.R.color.darker_gray)
+                    )
                 }
-                CoroutineScope(Dispatchers.IO).launch {
-                    download(pdfUrl, pdfView)
+
+                btnGetCertificate.setOnClickListener {
+                    // Close the name dialog and open the bottom sheet dialog
+                    nameDialog.dismiss()
+
+                    // Proceed with showing the bottom sheet dialog
+                    imageView.setImageResource(R.drawable.ic_certificate)
+                    textView.isVisible = false
+                    val dialog = BottomSheetDialog(requireContext())
+                    binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
+                    pdfView = binding.idPDFView
+                    binding.apply {
+                        txtCertificate.text = getString(R.string.text_certificate, pathwayName)
+                        txt.text = getString(R.string.certificate_information, pathwayName)
+                        tvDownload.setOnClickListener {
+                            generatePDF(pdfUrl)
+                        }
+                        tvShare.setOnClickListener {
+                            showShareIntent(pdfUrl)
+                        }
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        download(pdfUrl, pdfView)
+                    }
+                    println("required completed portion in fragment $completedPortion")
+                    dialog.setCancelable(true)
+                    dialog.setContentView(binding.root)
+                    dialog.show()
                 }
-                //   RetrievePDFFromURL(pdfView).execute(pdfUrl)
-                println("required completed portion in fragment $completedPortion")
-                dialog.setCancelable(true)
-                dialog.setContentView(binding.root)
-                dialog.show()
+
+                nameDialog.setView(dialogView)
+                nameDialog.setCancelable(false)
+                nameDialog.show()
+
             } else {
                 textView.isVisible = true
                 imageView.setImageResource(R.drawable.grey_icon_certificate)
                 println("required completed portion in fragment $completedPortion")
                 Toast.makeText(requireContext(), getString(R.string.complete_course, pathwayName), Toast.LENGTH_LONG).show()
             }
-
         }
+
     }
 
     private fun generatePDF(pdfUrl: String) {

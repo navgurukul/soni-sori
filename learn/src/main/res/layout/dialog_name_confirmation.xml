@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="26dp"
+    android:layout_margin="12dp"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/dimen_3_dp"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvPathwayNameCertificate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Python Certificate"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvYourName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvPathwayNameCertificate"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Your name on the certificate as per our records"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/etName"
+        app:layout_constraintTop_toBottomOf="@id/tvYourName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aayushi"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tvEnsureNameCorrect"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ensure_name_correct"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp" />
+
+    <CheckBox
+        android:id="@+id/cbConfirmNameCorrect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEnsureNameCorrect"
+        android:text="I confirmed that my name displayed above is correct"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnGetCertificate"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_certificate"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/cbConfirmNameCorrect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:padding="@dimen/dimen_3_dp"
+        android:layout_margin="18dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

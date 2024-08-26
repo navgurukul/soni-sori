@@ -165,6 +165,7 @@
     <string name="text_certificate">%1$s Certificate</string>
     <string name="error_text">Something went wrong</string>
     <string name="missed_the_bull_eye">😟 Missed the bull\'s eye</string>
+    <string name="ensure_name_correct">Please ensure that your name is correct. In case, there is a mistake, please change your name in the \"profile\" section.</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
