@@ -1,27 +1,30 @@
 package org.merakilearn.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import org.merakilearn.R
+import org.merakilearn.databinding.SplashActivityAppBinding
 import org.merakilearn.theme.isChristmas
 import org.merakilearn.theme.isNewYear
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import timber.log.Timber
 
 
-@SuppressLint("CustomSplashScreen")
+const val UPDATE_REQUEST_CODE = 524
 class SplashActivity : AppCompatActivity() {
+    private lateinit var binding : SplashActivityAppBinding
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
@@ -33,7 +36,8 @@ class SplashActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_activity_app)
+        binding = DataBindingUtil.setContentView(this,R.layout.splash_activity_app)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         setUpTheme()
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, OnBoardingActivity::class.java)
@@ -41,10 +45,9 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }, 3000)
 
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener {
-            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
                     it,
@@ -54,55 +57,68 @@ class SplashActivity : AppCompatActivity() {
                     UPDATE_REQUEST_CODE
                 )
                 resultLauncher.launch(intent)
+
             } else {
+                //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
                 Timber.d("No Update Available")
             }
         }.addOnFailureListener {
-            Timber.d("Update Failed: $it")
+            //Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+            Timber.d("Update Failed : $it")
         }
     }
 
-    private fun setUpTheme() {
+    private fun setUpTheme(){
         when {
-            isChristmas() -> setChristmasTheme()
-            isNewYear() -> setNewYearTheme()
-            else -> setNormalTheme()
+            isChristmas() -> {
+                setChristmasTheme()
+            }
+            isNewYear() -> {
+                setNewYearTheme()
+            }
+            else -> {
+                setNormalTheme()
+            }
         }
     }
 
-    private fun setChristmasTheme() {
-        findViewById<View>(R.id.headerImageViewForChristmas).visibility = View.VISIBLE
-        findViewById<View>(R.id.headerImageViewForNewYear).visibility = View.GONE
-        findViewById<View>(R.id.snowAnimationView).visibility = View.VISIBLE
-        findViewById<View>(R.id.logoImageViewForChristmas).visibility = View.VISIBLE
-        findViewById<View>(R.id.logoImageView).visibility = View.GONE
-        findViewById<View>(R.id.quoteTextView).visibility = View.VISIBLE
-        findViewById<View>(R.id.navgurukulTextImageView).visibility = View.VISIBLE
+    private fun setChristmasTheme(){
+        binding.apply{
+            headerImageViewForChristmas.visibility = View.VISIBLE
+            headerImageViewForNewYear.visibility = View.GONE
+            snowAnimationView.visibility = View.VISIBLE
+            logoImageViewForChristmas.visibility = View.VISIBLE
+            logoImageView.visibility = View.GONE
+            quoteTextView.visibility = View.VISIBLE
+            navgurukulTextImageView.visibility = View.VISIBLE
+        }
     }
 
-    private fun setNewYearTheme() {
-        findViewById<View>(R.id.headerImageViewForChristmas).visibility = View.GONE
-        findViewById<View>(R.id.headerImageViewForNewYear).visibility = View.VISIBLE
-        findViewById<View>(R.id.snowAnimationView).visibility = View.GONE
-        findViewById<View>(R.id.newYearAnimation).visibility = View.VISIBLE
-        findViewById<View>(R.id.logoImageViewForChristmas).visibility = View.GONE
-        findViewById<View>(R.id.logoImageView).visibility = View.VISIBLE
-        findViewById<View>(R.id.quoteTextView).visibility = View.VISIBLE
-        findViewById<View>(R.id.navgurukulTextImageView).visibility = View.VISIBLE
-        findViewById<View>(R.id.splashLayout)
-            .setBackgroundColor(resources.getColor(R.color.white))
+    private fun setNewYearTheme(){
+        binding.apply{
+            headerImageViewForChristmas.visibility = View.GONE
+            headerImageViewForNewYear.visibility = View.VISIBLE
+            snowAnimationView.visibility = View.GONE
+            newYearAnimation.visibility = View.VISIBLE
+            logoImageViewForChristmas.visibility = View.GONE
+            logoImageView.visibility = View.VISIBLE
+            quoteTextView.visibility = View.VISIBLE
+            navgurukulTextImageView.visibility = View.VISIBLE
+            splashLayout.setBackgroundColor(resources.getColor(R.color.white))
+        }
     }
 
-    private fun setNormalTheme() {
-        findViewById<View>(R.id.headerImageViewForChristmas).visibility = View.GONE
-        findViewById<View>(R.id.headerImageViewForNewYear).visibility = View.GONE
-        findViewById<View>(R.id.snowAnimationView).visibility = View.GONE
-        findViewById<View>(R.id.logoImageViewForChristmas).visibility = View.GONE
-        findViewById<View>(R.id.logoImageView).visibility = View.VISIBLE
-        findViewById<View>(R.id.quoteTextView).visibility = View.GONE
-        findViewById<View>(R.id.navgurukulTextImageView).visibility = View.GONE
-        findViewById<View>(R.id.splashLayout)
-            .setBackgroundColor(resources.getColor(R.color.white))
+    private fun setNormalTheme(){
+        binding.apply{
+            headerImageViewForChristmas.visibility = View.GONE
+            headerImageViewForNewYear.visibility = View.GONE
+            snowAnimationView.visibility = View.GONE
+            logoImageViewForChristmas.visibility = View.GONE
+            logoImageView.visibility = View.VISIBLE
+            quoteTextView.visibility = View.GONE
+            navgurukulTextImageView.visibility = View.GONE
+            splashLayout.setBackgroundColor(resources.getColor(R.color.white))
+        }
     }
+
 }
-const val UPDATE_REQUEST_CODE = 524
