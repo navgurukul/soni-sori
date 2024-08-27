@@ -200,13 +200,13 @@ object BuildConfigVersions {
     const val compileSdkVersion = 34
     const val minSdkVersion = 23
     const val targetSdkVersion = 34
-    const val versionCode = 95
-    const val versionName = "1.5.65"
+    const val versionCode = 96
+    const val versionName = "1.5.66"
     const val applicationId = "org.merakilearn"
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:8.3.1"
+    const val gradle = "com.android.tools.build:gradle:8.2.1"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
     // Newer versions may be available: please check here:
