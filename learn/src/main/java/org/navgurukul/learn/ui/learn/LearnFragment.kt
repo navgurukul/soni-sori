@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -288,8 +289,11 @@ class LearnFragment : Fragment() {
                 val dialogView = layoutInflater.inflate(R.layout.dialog_name_confirmation, null)
 
                 val etName = dialogView.findViewById<TextView>(R.id.etName)
+                val tvPathwayNameCertificate = dialogView.findViewById<TextView>(R.id.tvPathwayNameCertificate)
+                tvPathwayNameCertificate.text = pathwayName
                 val cbConfirmNameCorrect = dialogView.findViewById<CheckBox>(R.id.cbConfirmNameCorrect)
-                val btnGetCertificate = dialogView.findViewById<Button>(R.id.btnGetCertificate)
+                val btnGetCertificate = dialogView.findViewById<MaterialButton>(R.id.btnGetCertificate)
+                val cancel = dialogView.findViewById<MaterialButton>(R.id.btnGetCertificatecancel)
 
                 cbConfirmNameCorrect.setOnCheckedChangeListener { _, isChecked ->
                     btnGetCertificate.isEnabled = isChecked
@@ -331,6 +335,10 @@ class LearnFragment : Fragment() {
                 nameDialog.setView(dialogView)
                 nameDialog.setCancelable(false)
                 nameDialog.show()
+
+                cancel.setOnClickListener {
+                    nameDialog.dismiss()
+                }
 
             } else {
                 textView.isVisible = true

@@ -18,6 +18,8 @@
         android:id="@+id/tvPathwayNameCertificate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/n_italic"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Python Certificate"
@@ -27,6 +29,7 @@
         android:id="@+id/tvYourName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/n_semi_bold"
         app:layout_constraintTop_toBottomOf="@id/tvPathwayNameCertificate"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Your name on the certificate as per our records"
@@ -37,9 +40,11 @@
         android:id="@+id/etName"
         app:layout_constraintTop_toBottomOf="@id/tvYourName"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Aayushi"
+        android:textSize="18sp"
+        android:fontFamily="@font/n_extra_bold"
         android:layout_marginTop="8dp" />
 
     <TextView
@@ -50,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ensure_name_correct"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/nunito_bold"
         android:textSize="14sp" />
 
     <CheckBox
@@ -60,22 +66,35 @@
         app:layout_constraintTop_toBottomOf="@id/tvEnsureNameCorrect"
         android:text="I confirmed that my name displayed above is correct"
         android:layout_marginTop="8dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGetCertificate"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/colorGrey"
+            android:layout_margin="12dp"
+            app:cornerRadius="@dimen/dimen_16_dp"
+            android:text="Preview"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cbConfirmNameCorrect">
 
-    <Button
-        android:id="@+id/btnGetCertificate"
-        android:textAllCaps="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_certificate"
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/cbConfirmNameCorrect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="16dp"
-        android:enabled="false"
-        android:padding="@dimen/dimen_3_dp"
-        android:layout_margin="18dp"/>
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGetCertificatecancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/colorGrey"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            app:cornerRadius="@dimen/dimen_16_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnGetCertificate"
+            app:layout_constraintTop_toBottomOf="@id/cbConfirmNameCorrect">
+
+        </com.google.android.material.button.MaterialButton>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
