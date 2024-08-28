@@ -72,6 +72,7 @@ class LearnFragment : Fragment() {
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
     lateinit var pdfView: ImageView
+    private var completedPortion1: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -150,7 +151,8 @@ class LearnFragment : Fragment() {
                 "PRGPYT" -> {
                     mBinding.apply {
                         certificate.root.visibility = View.VISIBLE
-                        dotAdding.root.visibility = View.VISIBLE    //this wil show the dot
+                        dotAdding.root.visibility = View.VISIBLE //this wil show the dot
+                        showcertificateupdated()
                         certificate.txtCertificate.text = "Python Certificate"
                     }
                 }
@@ -158,6 +160,7 @@ class LearnFragment : Fragment() {
                     mBinding.apply {
                         certificate.root.visibility = View.VISIBLE
                         dotAdding.root.visibility = View.VISIBLE
+                        showcertificateupdated()
                         certificate.txtCertificate.text = "Scratch Certificate"
                     }
                 }
@@ -218,7 +221,12 @@ class LearnFragment : Fragment() {
                     }
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
-                    getCertificate(it.pdfUrl, it.getCompletedPortion, it.pathwayName)
+                    val it1 = it.pdfUrl
+                    val it2 = it.getCompletedPortion
+                    val it3 = it.pathwayName
+                    mBinding.certificate.root.setOnClickListener {
+                        getCertificate(it1, it2, it3)
+                    }
                 }
                 is LearnFragmentViewEvents.ShowToast -> toast(it.toastText)
                 is LearnFragmentViewEvents.OpenUrl -> {
@@ -264,6 +272,7 @@ class LearnFragment : Fragment() {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
         val textView : TextView = mBinding.certificate.lockedStatus
         var binding: GeneratedCertificateBinding
+        completedPortion1 = completedPortion
 
         if (completedPortion == 100){
             imageView.setImageResource(R.drawable.ic_certificate)
@@ -588,6 +597,18 @@ class LearnFragment : Fragment() {
             recyclerviewCourse.addItemDecoration(
                 DotItemDecoration(requireContext())
             )
+        }
+    }
+
+    private fun showcertificateupdated(){
+        val imageView: ImageView = mBinding.certificate.ivCertificateLogo
+        val textView : TextView = mBinding.certificate.lockedStatus
+        if (completedPortion1==100){
+            imageView.setImageResource(R.drawable.ic_certificate)
+            textView.isVisible = false
+        }else{
+            imageView.setImageResource(R.drawable.grey_icon_certificate)
+            textView.isVisible = true
         }
     }
 
