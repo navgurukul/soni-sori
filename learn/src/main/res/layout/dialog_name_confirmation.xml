@@ -25,32 +25,11 @@
         android:text="Python Certificate"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvYourName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/n_semi_bold"
-        app:layout_constraintTop_toBottomOf="@id/tvPathwayNameCertificate"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Your name on the certificate as per our records"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/etName"
-        app:layout_constraintTop_toBottomOf="@id/tvYourName"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Aayushi"
-        android:textSize="18sp"
-        android:fontFamily="@font/n_extra_bold"
-        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/tvEnsureNameCorrect"
         android:layout_width="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintTop_toBottomOf="@id/tvPathwayNameCertificate"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_height="wrap_content"
         android:text="@string/ensure_name_correct"
@@ -64,7 +43,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEnsureNameCorrect"
-        android:text="I confirmed that my name displayed above is correct"
+        android:text="I confirmed that my name is correct."
         android:layout_marginTop="8dp" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGetCertificate"
@@ -72,7 +51,7 @@
             android:backgroundTint="@color/colorGrey"
             android:layout_margin="12dp"
             app:cornerRadius="@dimen/dimen_16_dp"
-            android:text="Preview"
+            android:text="Generate Certificate"
             android:textAllCaps="false"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
