@@ -288,7 +288,7 @@ class LearnFragment : Fragment() {
                 val nameDialog = AlertDialog.Builder(requireContext()).create()
                 val dialogView = layoutInflater.inflate(R.layout.dialog_name_confirmation, null)
 
-                val etName = dialogView.findViewById<TextView>(R.id.etName)
+                //val etName = dialogView.findViewById<TextView>(R.id.etName)
                 val tvPathwayNameCertificate = dialogView.findViewById<TextView>(R.id.tvPathwayNameCertificate)
                 tvPathwayNameCertificate.text = pathwayName
                 val cbConfirmNameCorrect = dialogView.findViewById<CheckBox>(R.id.cbConfirmNameCorrect)
