@@ -107,8 +107,12 @@ class OnBoardingActivity : AppCompatActivity() {
                     PartnerFragment.TAG
                 )
 
-                is OnBoardingViewEvents.ShowPartnerData -> TODO()
-                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
+                else -> {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+
+//                is OnBoardingViewEvents.ShowPartnerData -> TODO()
+//                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
             }
         }
 

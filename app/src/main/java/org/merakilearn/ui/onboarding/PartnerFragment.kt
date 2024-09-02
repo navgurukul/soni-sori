@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -43,12 +44,16 @@ class PartnerFragment : Fragment() {
 
                 }
 
-                OnBoardingViewEvents.ShowCourseSelectionScreen -> TODO()
-                OnBoardingViewEvents.ShowLoginScreen -> TODO()
-                is OnBoardingViewEvents.ShowMainScreen -> TODO()
-                OnBoardingViewEvents.ShowOnBoardingPages -> TODO()
-                OnBoardingViewEvents.ShowPartnerScreen -> TODO()
-                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
+                else -> {
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+
+               // OnBoardingViewEvents.ShowCourseSelectionScreen -> TODO()
+//                OnBoardingViewEvents.ShowLoginScreen -> TODO()
+//                is OnBoardingViewEvents.ShowMainScreen -> TODO()
+//                OnBoardingViewEvents.ShowOnBoardingPages -> TODO()
+//                OnBoardingViewEvents.ShowPartnerScreen -> TODO()
+//                OnBoardingViewEvents.ShowSelectLanguageFragment -> TODO()
             }
         }
     }

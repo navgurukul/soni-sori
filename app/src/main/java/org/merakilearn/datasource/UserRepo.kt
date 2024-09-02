@@ -139,13 +139,10 @@ class UserRepo(
     suspend fun logOut(): Boolean {
         return try {
             withContext(Dispatchers.IO) {
-//                val result = authenticationRepository.logout()
-                if (true) {
+                run {
                     courseDb.clearAllTables()
                     preferences.edit { clear() }
                     true
-                } else {
-                    false
                 }
             }
         } catch (ex: Exception) {
