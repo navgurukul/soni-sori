@@ -7,3 +7,4 @@ include (":learn")
 include (":app")
 rootProject.name = "Saral"
 include(":webIDE")
+include(":scratchJr")
