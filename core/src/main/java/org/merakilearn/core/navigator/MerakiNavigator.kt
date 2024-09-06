@@ -161,7 +161,7 @@ class MerakiNavigator(
     }
 
     fun launchScratchJrApp(activity: FragmentActivity, projectName: String) {
-        if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
+        if (dynamicFeatureModuleManager.isInstalled(SCRATCH_JR_MODULE_NAME)) {
             scratchJrAppModuleNavigator?.launchScratchJrApp(activity, projectName)
         } else {
             val progress = ProgressDialog(activity).apply {
@@ -170,7 +170,7 @@ class MerakiNavigator(
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 show()
             }
-            dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
+            dynamicFeatureModuleManager.installModule(SCRATCH_JR_MODULE_NAME, {
                 progress.dismiss()
                 scratchJrAppModuleNavigator?.launchScratchJrApp(activity, projectName)
             }, {
