@@ -173,6 +173,9 @@ class PlaygroundViewModel(
                     playgroundItemModel.file
                 )
             )
+
+            PlaygroundTypes.SCRATCH_JR -> TODO()
+            PlaygroundTypes.SCRATCH_JR_FILES -> TODO()
         }
     }
 
