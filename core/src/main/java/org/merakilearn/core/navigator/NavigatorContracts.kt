@@ -39,3 +39,7 @@ interface TypingAppModuleNavigator {
 interface WebIDEAppModuleNavigator {
     fun launchWebIDEApp(activity: FragmentActivity, projectName: String)
 }
+
+interface ScratchJrAppModuleNavigator {
+    fun launchScratchJrApp(activity: FragmentActivity, projectName: String)
+}

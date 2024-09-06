@@ -49,6 +49,18 @@ class MerakiNavigator(
         }
     }
 
+    private val scratchJrAppModuleNavigator: ScratchJrAppModuleNavigator? by lazy {
+        val serviceIterator = ServiceLoader.load(
+            ScratchJrAppModuleNavigator::class.java,
+            ScratchJrAppModuleNavigator::class.java.classLoader
+        ).iterator()
+        if (serviceIterator.hasNext()) {
+            serviceIterator.next()
+        } else {
+            null
+        }
+    }
+
     fun homeLauncherIntent(context: Context, clearNotification: Boolean): Intent =
         appModuleNavigator.launchIntentForHomeActivity(context, clearNotification)
 
@@ -148,6 +160,26 @@ class MerakiNavigator(
 
     }
 
+    fun launchScratchJrApp(activity: FragmentActivity, projectName: String) {
+        if (dynamicFeatureModuleManager.isInstalled(WEB_DEV_MODULE_NAME)) {
+            scratchJrAppModuleNavigator?.launchScratchJrApp(activity, projectName)
+        } else {
+            val progress = ProgressDialog(activity).apply {
+                setCancelable(false)
+                setMessage(activity.getString(R.string.installing_module_message))
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                show()
+            }
+            dynamicFeatureModuleManager.installModule(WEB_DEV_MODULE_NAME, {
+                progress.dismiss()
+                scratchJrAppModuleNavigator?.launchScratchJrApp(activity, projectName)
+            }, {
+                progress.dismiss()
+            })
+        }
+
+    }
+
     private fun startActivity(
         context: Context,
         intent: Intent,
@@ -211,6 +243,7 @@ class MerakiNavigator(
         const val CLASS_DEEPLINK = "/class"
         const val TYPING_MODULE_NAME = "typing"
         const val WEB_DEV_MODULE_NAME = "webIDE"
+        const val SCRATCH_JR_MODULE_NAME = "scratchJr"
 
         private fun isMerakiUrl(url: String): Boolean {
             return try {
