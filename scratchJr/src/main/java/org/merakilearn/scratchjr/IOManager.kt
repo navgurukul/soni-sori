@@ -67,17 +67,17 @@ class IOManager(private val _application: ScratchJrActivity) {
             if (filename.endsWith(suffix)) {
                 try {
                     var statement = "SELECT ID FROM PROJECTS WHERE JSON LIKE ?"
-                    var values = arrayOf("%$filename%")
+                    var values = arrayOf("%$filename%").map { it as String? }.toTypedArray() // Cast to Array<String?>
                     var rows: JSONArray = _databaseManager?.query(statement, values) ?: JSONArray()
                     if (rows.length() > 0) continue
 
                     statement = "SELECT ID FROM USERSHAPES WHERE MD5 = ?"
-                    values = arrayOf(filename)
+                    values = arrayOf(filename).map { it as String? }.toTypedArray() // Cast to Array<String?>
                     rows = _databaseManager?.query(statement, values) ?: JSONArray()
                     if (rows.length() > 0) continue
 
                     statement = "SELECT ID FROM USERBKGS WHERE MD5 = ?"
-                    rows = _databaseManager?.query(statement, values)?: JSONArray()
+                    rows = _databaseManager?.query(statement, arrayOf(filename).map { it as String? }.toTypedArray()) ?: JSONArray()
                     if (rows.length() > 0) continue
 
                     Log.i(
@@ -95,6 +95,7 @@ class IOManager(private val _application: ScratchJrActivity) {
             }
         }
     }
+
 
     /** Sets the file with the given name to the given contents  */
     @Throws(IOException::class)
@@ -252,7 +253,7 @@ class IOManager(private val _application: ScratchJrActivity) {
     @Throws(JSONException::class, IOException::class, DatabaseException::class)
     fun receiveProject(activity: ScratchJrActivity, uri: Uri?) {
         // open database first
-        if (!_databaseManager.isOpen()) {
+        if (_databaseManager?.isOpen == false) {
             _databaseManager.open()
         }
         val tempDir =
@@ -280,7 +281,7 @@ class IOManager(private val _application: ScratchJrActivity) {
         projectJson.put("thumbnail", thumbnail.toString())
         projectJson.put("version", "iOSv01")
         projectJson.put("name", json.optString("name"))
-        _databaseManager.insert("projects", projectJson)
+        _databaseManager?.insert("projects", projectJson)
 
         val spriteMap = HashMap<String, JSONObject>()
         val pages = projectData.optJSONArray("pages")
@@ -313,7 +314,7 @@ class IOManager(private val _application: ScratchJrActivity) {
             }
             val table = if ("characters" == folderName) "usershapes" else "userbkgs"
             val statement = String.format("SELECT id FROM %s WHERE md5 = ?", table)
-            val rows: JSONArray = _databaseManager.query(statement, arrayOf(fileName))
+            val rows: JSONArray = _databaseManager?.query(statement, arrayOf(fileName)) ?: JSONArray()
             if (rows.length() > 0) {
                 Log.e(LOG_TAG, "asset for $fileName exists")
                 continue

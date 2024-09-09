@@ -117,11 +117,11 @@ class JavaScriptDirectInterface
             val valuesJSONArray = obj.getJSONArray("values")
             val values = jsonArrayToStringArray(valuesJSONArray)
             val databaseManager: DatabaseManager? = _activity.databaseManager
-            result = databaseManager.query(stmt, values).toString()
+            result = databaseManager?.query(stmt, values).toString()
         } catch (e: JSONException) {
             result = "JSON error: " + e.message
         } catch (e: DatabaseException) {
-            result = "SQL error: " + e.getMessage()
+            result = "SQL error: " + e.message
         }
         return result
     }
@@ -133,26 +133,30 @@ class JavaScriptDirectInterface
             val obj = JSONObject(json)
             val stmt = obj.getString("stmt")
             val valuesJSONArray = obj.getJSONArray("values")
-            val values = jsonArrayToStringArray(valuesJSONArray)
+            val values = jsonArrayToStringArray(valuesJSONArray).filterNotNull().toTypedArray() // Filter out null values and convert to Array<String>
             val databaseManager: DatabaseManager? = _activity.databaseManager
-            result = databaseManager.stmt(stmt, values).toString()
+            result = databaseManager?.stmt(stmt, values)?.toString() ?: "No result"
         } catch (e: JSONException) {
             result = "JSON error: " + e.message
         } catch (e: DatabaseException) {
-            result = "SQL error: " + e.getMessage()
+            result = "SQL error: " + e.message
         }
         return result
     }
+
 
     //////////////////////////////////////////////////////////////////////
     // io_*
     @JavascriptInterface
     fun io_getmd5(str: String?): String {
         val ioManager: IOManager? = _activity.iOManager
-        if (ioManager != null) {
-            return str?.let { ioManager.md5(it) }
+        return if (ioManager != null) {
+            str?.let { ioManager.md5(it) } ?: "default_md5_value"
+        } else {
+            "IO Manager not available"
         }
     }
+
 
     @JavascriptInterface
     fun io_getsettings(): String {
@@ -184,7 +188,7 @@ class JavaScriptDirectInterface
         var result: String
         val ioManager: IOManager? = _activity.iOManager
         try {
-            result = ioManager.setFile(filename, base64ContentStr)
+            result = ioManager!!.setFile(filename, base64ContentStr)
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -200,7 +204,7 @@ class JavaScriptDirectInterface
         var result: String
         val ioManager: IOManager? = _activity.iOManager
         try {
-            result = ioManager.getFile(filename)
+            result = ioManager!!.getFile(filename)
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -213,26 +217,26 @@ class JavaScriptDirectInterface
 
     @JavascriptInterface
     fun io_setmedia(base64ContentStr: String?, extension: String): String {
-        var result: String
         val ioManager: IOManager? = _activity.iOManager
-        try {
-            result = ioManager.setMedia(base64ContentStr, extension)
+        return try {
+            if (ioManager != null) {
+                base64ContentStr?.let { ioManager.setMedia(it, extension) }?.toString() ?: "-1"
+            } else {
+                "-1"
+            }
         } catch (e: IOException) {
-            Log.e(
-                LOG_TAG,
-                "Could not set media of type '$extension'", e
-            )
-            result = "-1"
+            Log.e(LOG_TAG, "Could not set media of type '$extension'", e)
+            "-1"
         }
-        return result
     }
+
 
     @JavascriptInterface
     fun io_setmedianame(contents: String?, key: String, ext: String): String {
         var result: String
         val ioManager: IOManager? = _activity.iOManager
         try {
-            result = ioManager.setMediaName(contents, key, ext)
+            result = ioManager!!.setMediaName(contents, key, ext)
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -248,7 +252,7 @@ class JavaScriptDirectInterface
         var result: String
         val ioManager: IOManager? = _activity.iOManager
         try {
-            result = ioManager.getMedia(filename)
+            result = ioManager!!.getMedia(filename)
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -262,19 +266,16 @@ class JavaScriptDirectInterface
     @JavascriptInterface
     fun io_getmediadata(filename: String?, offset: Int, length: Int): String {
         val ioManager: IOManager? = _activity.iOManager
-        if (ioManager != null) {
-            return ioManager.getMediaData(filename, offset, length)
-        }
+        return filename?.let { ioManager?.getMediaData(it, offset, length) } ?: "IO Manager not available" // Handle case where ioManager is null
     }
+
 
     @JavascriptInterface
     fun io_getmedialen(file: String, key: String): Int {
         var result: Int
         val ioManager: IOManager? = _activity.iOManager
         try {
-            if (ioManager != null) {
-                result = ioManager.getMediaLen(file, key)
-            }
+                result = ioManager!!.getMediaLen(file, key)
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -288,7 +289,9 @@ class JavaScriptDirectInterface
     @JavascriptInterface
     fun io_getmediadone(filename: String?): String {
         val ioManager: IOManager? = _activity.iOManager
-        ioManager.getMediaDone(filename)
+        if (ioManager != null) {
+            ioManager.getMediaDone(filename!!)
+        }
         return "1"
     }
 
@@ -303,7 +306,7 @@ class JavaScriptDirectInterface
         )
 
         try {
-            result = if (ioManager.remove(filename)) "1" else "-1"
+            result = if (ioManager!!.remove(filename)) "1" else "-1"
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
@@ -433,7 +436,7 @@ class JavaScriptDirectInterface
     fun scratchjr_choosecamera(facing: String): String {
         var result = "-1"
         if (_cameraView != null) {
-            result = if (_cameraView.setCameraFacing(facing == "front")) {
+            result = if (_cameraView!!.setCameraFacing(facing == "front")) {
                 "1"
             } else {
                 "-1"
@@ -444,7 +447,7 @@ class JavaScriptDirectInterface
 
     @JavascriptInterface
     fun scratchjr_captureimage(onCameraCaptureComplete: String) {
-        _cameraView.captureStillImage(
+        _cameraView?.captureStillImage(
             PictureCallback { jpegData, camera ->
                 sendBase64Image(
                     onCameraCaptureComplete,
@@ -508,7 +511,7 @@ class JavaScriptDirectInterface
             LOG_TAG,
             "Picture rotation: $exifRotation"
         )
-        val translatedJpegData: ByteArray = _cameraView.getTransformedImage(bitmap, exifRotation)
+        val translatedJpegData: ByteArray = _cameraView!!.getTransformedImage(bitmap, exifRotation)
         val base64Data = Base64.encodeToString(translatedJpegData, Base64.NO_WRAP)
         closeFeed()
         _activity.runJavaScript("$onCameraCaptureComplete('$base64Data');")
@@ -542,8 +545,8 @@ class JavaScriptDirectInterface
                     rect.height().toInt()
                 )
             )
-            _cameraView.setX(rect.left)
-            _cameraView.setY(rect.top)
+            _cameraView?.setX(rect.left)
+            _cameraView?.setY(rect.top)
 
             _cameraMask = ImageView(_activity)
             val bitmap = BitmapFactory.decodeByteArray(maskImageData, 0, maskImageData.size)
@@ -626,7 +629,7 @@ class JavaScriptDirectInterface
     @JavascriptInterface
     fun createZipForProject(projectData: String, metadataJson: String?, name: String): String {
         // clean up old zip files
-        _activity.iOManager.cleanZips()
+        _activity.iOManager?.cleanZips()
         // create a temp folder
         val tempFolder =
             File(_activity.cacheDir.toString() + File.separator + UUID.randomUUID().toString())

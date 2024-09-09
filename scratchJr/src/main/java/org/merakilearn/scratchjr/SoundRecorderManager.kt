@@ -1,11 +1,14 @@
 package org.merakilearn.scratchjr
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Build
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
@@ -132,10 +135,9 @@ class SoundRecorderManager(application: ScratchJrActivity) {
             CHANNEL_CONFIG, AUDIO_FORMAT, _minBufferSize * 16
         )
 
-
         // Mimic filename from iOS: time in seconds since 1970 as a double. Name is the md5 of the time.
         val now = String.format(Locale.US, "%f", System.currentTimeMillis() / 1000.0)
-        val filename = java.lang.String.format("SND%s.wav", _application.iOManager.md5(now))
+        val filename = java.lang.String.format("SND%s.wav", _application.iOManager?.md5(now) ?: "")
         _soundFile = File(_application.filesDir, filename)
         val parentDir = _soundFile!!.parentFile
         if (!parentDir.exists()) {
@@ -175,11 +177,9 @@ class SoundRecorderManager(application: ScratchJrActivity) {
                             break
                         }
 
-
                         // Write to file
                         buffer.rewind().limit(len)
                         c!!.write(buffer)
-
 
                         // Get current volume level (max of all samples taken this period)
                         shortBuffer.rewind()
@@ -198,10 +198,7 @@ class SoundRecorderManager(application: ScratchJrActivity) {
                     updateWAVHeader(raf, _soundFileChannel, totalBytesWritten)
                     c!!.close()
                 } catch (e: IOException) {
-                    Log.e(
-                        LOG_TAG,
-                        "Error writing wav file '$filename'", e
-                    )
+                    Log.e(LOG_TAG, "Error writing wav file '$filename'", e)
                 }
             }, null)
             result = filename
@@ -307,12 +304,13 @@ class SoundRecorderManager(application: ScratchJrActivity) {
         val soundManager: SoundManager? = _application.soundManager
         if (soundManager != null) {
             _soundPlayingId = soundManager.playSound(_soundFile!!.path)
-        }
-        Log.i(LOG_TAG, "Sound id: $_soundPlayingId")
-        if (soundManager != null) {
+            Log.i(LOG_TAG, "Sound id: $_soundPlayingId")
             return _soundPlayingId?.let { soundManager.soundDuration(it) }?.div(1000.0) ?: 0.0
         }
+        // Return a default value if soundManager is null
+        return 0.0
     }
+
 
     @Synchronized
     fun stopPlay() {

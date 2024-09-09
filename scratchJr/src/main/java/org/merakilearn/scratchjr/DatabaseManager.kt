@@ -35,13 +35,15 @@ class DatabaseManager(private val _applicationContext: Context) {
     @Throws(SQLException::class)
     fun open() {
         _databaseHelper = DatabaseHelper(_applicationContext, DB_NAME, null, DB_VERSION)
-        _database = _databaseHelper!!.writableDatabase
+        _database = _databaseHelper?.writableDatabase
 
         // Migrations
-        try {
-            _database.execSQL(_applicationContext.getString(R.string.sql_add_gift))
-        } catch (e: SQLException) {
-            // isgift field already exists
+        _database?.let { db ->
+            try {
+                db.execSQL(_applicationContext.getString(R.string.sql_add_gift))
+            } catch (e: SQLException) {
+                // isgift field already exists
+            }
         }
 
         isOpen = true
