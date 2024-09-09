@@ -1,5 +1,6 @@
 package org.merakilearn.scratchjr
-import android.R
+
+import org.merakilearn.scratchjr.R
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
@@ -104,7 +105,7 @@ class DatabaseManager(private val _applicationContext: Context) {
                 LOG_TAG,
                 "Error while executing statement '$stmt'", e
             )
-            result = e.message
+            result = e.message.toString()
         }
         return result
     }
