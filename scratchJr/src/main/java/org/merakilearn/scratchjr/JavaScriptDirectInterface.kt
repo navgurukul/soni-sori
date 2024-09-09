@@ -149,7 +149,9 @@ class JavaScriptDirectInterface
     @JavascriptInterface
     fun io_getmd5(str: String?): String {
         val ioManager: IOManager? = _activity.iOManager
-        return ioManager.md5(str)
+        if (ioManager != null) {
+            return str?.let { ioManager.md5(it) }
+        }
     }
 
     @JavascriptInterface
@@ -167,7 +169,11 @@ class JavaScriptDirectInterface
     fun io_cleanassets(fileType: String?) {
         val ioManager: IOManager? = _activity.iOManager
         try {
-            ioManager.cleanAssets(fileType)
+            if (ioManager != null) {
+                if (fileType != null) {
+                    ioManager.cleanAssets(fileType)
+                }
+            }
         } catch (e: IOException) {
             Log.e(LOG_TAG, "Could not clean assets", e)
         }

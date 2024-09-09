@@ -30,7 +30,18 @@ android {
 dependencies {
     implementation(project(":app"))
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation("com.google.android.gms:play-services-analytics:18.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
+    //to get dynamic feature module
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
+
+    //Firebase
+    implementation(FirebaseDependencies.analyticsKtx)
+    implementation(FirebaseDependencies.crashlyticsKtx)
+
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }

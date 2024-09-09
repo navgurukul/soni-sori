@@ -1,7 +1,7 @@
 package org.merakilearn.scratchjr
 
 import android.Manifest
-import org.merakilearn.R
+import org.merakilearn.scratchjr.R
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -30,6 +30,7 @@ import android.webkit.WebViewClient
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.Arrays
 import java.util.Vector
 
@@ -105,10 +106,10 @@ class ScratchJrActivity
         _ioManager = IOManager(this)
         _soundManager = SoundManager(this)
         _soundRecorderManager = SoundRecorderManager(this)
-        setContentView(R.layout.activity_scratch_jr)
+        setContentView(org.merakilearn.scratchjr.R.layout.activity_scratch_jr)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         container = findViewById<View>(R.id.container) as RelativeLayout
-        _webView = findViewById<View>(R.id.webview) as WebView
+        _webView = findViewById<View>(org.merakilearn.scratchjr.R.id.webview) as WebView
         _webView!!.setBackgroundColor(0x00000000)
         _webView!!.clearCache(true)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -251,9 +252,9 @@ class ScratchJrActivity
 
     override fun onResume() {
         super.onResume()
-        _databaseManager.open()
-        _soundManager.open()
-        _soundRecorderManager.open()
+        _databaseManager?.open()
+        _soundManager?.open()
+        _soundRecorderManager?.open()
         runOnUiThread {
             _webView!!.onResume()
             CookieSyncManager.getInstance().startSync()
@@ -268,9 +269,9 @@ class ScratchJrActivity
             _webView!!.onPause()
             CookieSyncManager.getInstance().stopSync()
         }
-        _databaseManager.close()
-        _soundManager.close()
-        _soundRecorderManager.close()
+        _databaseManager?.close()
+        _soundManager?.close()
+        _soundRecorderManager?.close()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -309,7 +310,7 @@ class ScratchJrActivity
         }
         runOnUiThread {
             try {
-                _ioManager.receiveProject(this@ScratchJrActivity, projectUri)
+                _ioManager?.receiveProject(this@ScratchJrActivity, projectUri)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -405,7 +406,7 @@ class ScratchJrActivity
                 val page =
                     parts[parts.size - 1].split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
                         .toTypedArray()[0]
-                _FirebaseAnalytics.setCurrentScreen(view.context as Activity, page, null)
+                _FirebaseAnalytics?.setCurrentScreen(view.context as Activity, page, null)
             }
         }
         _webView!!.requestFocus(View.FOCUS_DOWN)
@@ -466,7 +467,9 @@ class ScratchJrActivity
         val params = Bundle()
         params.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, category)
         params.putString(FirebaseAnalytics.Param.ITEM_NAME, label)
-        _FirebaseAnalytics.logEvent(action, params)
+        if (action != null) {
+            _FirebaseAnalytics?.logEvent(action, params)
+        }
     }
 
     /**
@@ -474,7 +477,7 @@ class ScratchJrActivity
      * @param place
      */
     fun setAnalyticsPlacePref(place: String?) {
-        _FirebaseAnalytics.setUserProperty("place_preference", place)
+        _FirebaseAnalytics?.setUserProperty("place_preference", place)
     }
 
     /**
@@ -483,7 +486,9 @@ class ScratchJrActivity
      * @param value like "Central High"
      */
     fun setAnalyticsPref(key: String?, value: String?) {
-        _FirebaseAnalytics.setUserProperty(key, value)
+        if (key != null) {
+            _FirebaseAnalytics?.setUserProperty(key, value)
+        }
     }
 
     fun translateAndScaleRectToContainerCoords(rect: RectF, devicePixelRatio: Float) {

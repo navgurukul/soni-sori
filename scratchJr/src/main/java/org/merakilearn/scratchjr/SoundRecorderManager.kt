@@ -154,8 +154,8 @@ class SoundRecorderManager(application: ScratchJrActivity) {
                 val filename = _soundFile!!.path
                 var totalBytesWritten: Long = 0
                 try {
-                    val ar: AudioRecord = _audioRecorder
-                    val raf: RandomAccessFile = _soundRandomAccessFile
+                    val ar: AudioRecord = _audioRecorder as AudioRecord
+                    val raf: RandomAccessFile = _soundRandomAccessFile as RandomAccessFile
                     val buffer = _audioBuffer
                     val shortBuffer = _audioBufferShort // Little-endian buffer
                     val c = _soundFileChannel
@@ -305,9 +305,13 @@ class SoundRecorderManager(application: ScratchJrActivity) {
         requireNotNull(_soundFile) { "No sound available." }
         stopPlayingSound()
         val soundManager: SoundManager? = _application.soundManager
-        _soundPlayingId = soundManager.playSound(_soundFile!!.path)
+        if (soundManager != null) {
+            _soundPlayingId = soundManager.playSound(_soundFile!!.path)
+        }
         Log.i(LOG_TAG, "Sound id: $_soundPlayingId")
-        return soundManager.soundDuration(_soundPlayingId) / 1000.0
+        if (soundManager != null) {
+            return _soundPlayingId?.let { soundManager.soundDuration(it) }?.div(1000.0) ?: 0.0
+        }
     }
 
     @Synchronized
@@ -343,9 +347,8 @@ class SoundRecorderManager(application: ScratchJrActivity) {
     }
 
     private fun stopPlayingSound() {
-        val soundManager: SoundManager? = _application.soundManager
         if (_soundPlayingId != null) {
-            soundManager.stopSound(_soundPlayingId)
+            _application.soundManager?.stopSound(_soundPlayingId!!)
             _soundPlayingId = null
         }
     }

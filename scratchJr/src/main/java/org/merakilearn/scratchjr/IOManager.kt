@@ -68,16 +68,16 @@ class IOManager(private val _application: ScratchJrActivity) {
                 try {
                     var statement = "SELECT ID FROM PROJECTS WHERE JSON LIKE ?"
                     var values = arrayOf("%$filename%")
-                    var rows: JSONArray = _databaseManager.query(statement, values)
+                    var rows: JSONArray = _databaseManager?.query(statement, values) ?: JSONArray()
                     if (rows.length() > 0) continue
 
                     statement = "SELECT ID FROM USERSHAPES WHERE MD5 = ?"
                     values = arrayOf(filename)
-                    rows = _databaseManager.query(statement, values)
+                    rows = _databaseManager?.query(statement, values) ?: JSONArray()
                     if (rows.length() > 0) continue
 
                     statement = "SELECT ID FROM USERBKGS WHERE MD5 = ?"
-                    rows = _databaseManager.query(statement, values)
+                    rows = _databaseManager?.query(statement, values)?: JSONArray()
                     if (rows.length() > 0) continue
 
                     Log.i(
@@ -347,7 +347,7 @@ class IOManager(private val _application: ScratchJrActivity) {
                 Log.d(LOG_TAG, js)
                 activity.runJavaScript(js)
             }
-            _databaseManager.insert(table, asset)
+            _databaseManager?.insert(table, asset)
         }
         // clean up
         removeFile(tempDir)
