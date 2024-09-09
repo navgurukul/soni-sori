@@ -256,7 +256,9 @@ class JavaScriptDirectInterface
     @JavascriptInterface
     fun io_getmediadata(filename: String?, offset: Int, length: Int): String {
         val ioManager: IOManager? = _activity.iOManager
-        return ioManager.getMediaData(filename, offset, length)
+        if (ioManager != null) {
+            return ioManager.getMediaData(filename, offset, length)
+        }
     }
 
     @JavascriptInterface
@@ -264,7 +266,9 @@ class JavaScriptDirectInterface
         var result: Int
         val ioManager: IOManager? = _activity.iOManager
         try {
-            result = ioManager.getMediaLen(file, key)
+            if (ioManager != null) {
+                result = ioManager.getMediaLen(file, key)
+            }
         } catch (e: IOException) {
             Log.e(
                 LOG_TAG,
