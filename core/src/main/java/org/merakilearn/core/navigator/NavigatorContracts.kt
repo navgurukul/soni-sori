@@ -41,5 +41,5 @@ interface WebIDEAppModuleNavigator {
 }
 
 interface ScratchJrAppModuleNavigator {
-    fun launchScratchJrApp(activity: FragmentActivity, projectName: String)
+    fun launchScratchJrApp(activity: FragmentActivity)
 }

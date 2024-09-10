@@ -1,6 +1,7 @@
 plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinJetbrainAndroid)
+    id(Plugins.kotlinKapt)
     id(Plugins.kotlinAndroid)
 }
 android {
@@ -29,6 +30,12 @@ android {
 
 dependencies {
     implementation(project(":app"))
+    implementation(project(":core"))
+    implementation(project(mapOf("path" to ":commonUI")))
+
+    implementation ("com.google.auto.service:auto-service:1.0.1")
+    kapt ("com.google.auto.service:auto-service:1.0.1")
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("com.google.android.gms:play-services-analytics:18.1.0")
     testImplementation("junit:junit:4.13.2")

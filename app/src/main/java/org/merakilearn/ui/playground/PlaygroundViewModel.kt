@@ -174,7 +174,9 @@ class PlaygroundViewModel(
                 )
             )
 
-            PlaygroundTypes.SCRATCH_JR -> TODO()
+            PlaygroundTypes.SCRATCH_JR -> {
+                _viewEvents.postValue(PlaygroundViewEvents.OpenScratchJr)
+            }
             PlaygroundTypes.SCRATCH_JR_FILES -> TODO()
         }
     }
@@ -270,6 +272,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     class OpenWebIDE(val project : String) : PlaygroundViewEvents()
     object OpenDialogToCreateWebProject : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
+    object OpenScratchJr : PlaygroundViewEvents()
 
 }
 

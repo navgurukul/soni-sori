@@ -129,6 +129,12 @@ class PlaygroundFragment : BaseFragment() {
                     intent.putExtra(Constants.INTENT_EXTRA_KEY_FILE, it.file)
                     startActivity(intent)
                 }
+
+                PlaygroundViewEvents.OpenScratchJr -> {
+                    navigator.launchScratchJrApp(
+                        requireActivity(),
+                    )
+                }
             }
         }
 
