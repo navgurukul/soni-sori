@@ -18,6 +18,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.Window
 import android.view.WindowManager
@@ -504,15 +505,10 @@ class ScratchJrActivity
     }
 
     private val statusBarHeight: Int
-        /**
-         * Height of the status bar at the top of the screen
-         */
         get() {
             val rectangle = Rect()
-            val window = window
             window.decorView.getWindowVisibleDisplayFrame(rectangle)
-            val result = rectangle.top
-            return result
+            return rectangle.top
         }
 
     /**
@@ -523,26 +519,23 @@ class ScratchJrActivity
      * android-how-to-adjust-layout-in-full-screen-mode-when-softkeyboard-is-visible
      */
     private fun registerSoftKeyboardPanner() {
-        container!!.viewTreeObserver.addOnGlobalLayoutListener(
-            object : OnGlobalLayoutListener {
+        container?.viewTreeObserver?.addOnGlobalLayoutListener(
+            object : ViewTreeObserver.OnGlobalLayoutListener {
                 private var _priorVisibleHeight = 0
                 private var _currentAnimator: ObjectAnimator? = null
 
                 override fun onGlobalLayout() {
                     val r = Rect()
-                    container!!.getWindowVisibleDisplayFrame(r)
+                    container?.getWindowVisibleDisplayFrame(r)
                     val currentVisibleHeight = r.bottom - r.top
 
                     // Determine if visible height changed
                     if (currentVisibleHeight != _priorVisibleHeight) {
-                        // Determine if keyboard visibility changed
-                        val screenHeight = container!!.rootView.height
+                        val screenHeight = container?.rootView?.height ?: 0
                         val coveredHeight = screenHeight - currentVisibleHeight
-                        if ((currentVisibleHeight < _priorVisibleHeight) && (coveredHeight > (screenHeight / 4))) {
-                            // Keyboard probably just became visible
 
-                            // Get the current focus elements top & bottom using a ratio to convert the values
-                            // to the native scale.
+                        if (currentVisibleHeight < _priorVisibleHeight && coveredHeight > screenHeight / 4) {
+                            // Keyboard probably just became visible
 
                             val elTop = _softKeyboardScrollPosY0
                             val elBottom = _softKeyboardScrollPosY1
@@ -552,52 +545,44 @@ class ScratchJrActivity
 
                             // If any amount is covered
                             if (elPixelsCovered > 0) {
-                                // Pan by the amount of coverage
                                 var panUpPixels = elPixelsCovered
 
                                 // Prevent panning so much the top of the element becomes hidden
                                 panUpPixels = if (panUpPixels > elTop) elTop else panUpPixels
 
                                 // Prevent panning more than the keyboard height (which produces an empty gap in the screen)
-                                val statusBarHeight: Int = this.statusBarHeight
-                                panUpPixels =
-                                    if (panUpPixels > (coveredHeight - statusBarHeight)) (coveredHeight - statusBarHeight) else panUpPixels
+                                panUpPixels = if (panUpPixels > (coveredHeight - statusBarHeight)) {
+                                    coveredHeight - statusBarHeight
+                                } else panUpPixels
 
                                 // Pan up
                                 cancelAnimator()
-                                val animator = ObjectAnimator.ofFloat(
-                                    this.container,
-                                    "y",
-                                    container!!.y,
-                                    -panUpPixels.toFloat()
-                                ).setDuration
-                                SOFT_KEYBOARD_PAN_MS.toLong()
-                                animator.start()
-                                _currentAnimator = animator
+                                _currentAnimator = ObjectAnimator.ofFloat(
+                                    container, "y", container?.y ?: 0f, -panUpPixels.toFloat()
+                                ).apply {
+                                    duration = SOFT_KEYBOARD_PAN_MS.toLong()
+                                    start()
+                                }
                             } else {
                                 cancelAnimator()
-                                val animator = ObjectAnimator.ofFloat(
-                                    this.container, "y", container!!.y,
-                                    this.statusBarHeight.toFloat()
-                                ).setDuration(SOFT_KEYBOARD_PAN_MS.toLong())
-                                animator.start()
-                                _currentAnimator = animator
+                                _currentAnimator = ObjectAnimator.ofFloat(
+                                    container, "y", container?.y ?: 0f, statusBarHeight.toFloat()
+                                ).apply {
+                                    duration = SOFT_KEYBOARD_PAN_MS.toLong()
+                                    start()
+                                }
                             }
                         } else if (currentVisibleHeight > _priorVisibleHeight) {
                             // Keyboard probably just became hidden
 
                             // Reset pan
-
                             cancelAnimator()
-                            val animator = ObjectAnimator.ofFloat(
-                                this.container,
-                                "y",
-                                container!!.y,
-                                0f
-                            ).setDuration
-                            SOFT_KEYBOARD_PAN_MS.toLong()
-                            animator.start()
-                            _currentAnimator = animator
+                            _currentAnimator = ObjectAnimator.ofFloat(
+                                container, "y", container?.y ?: 0f, 0f
+                            ).apply {
+                                duration = SOFT_KEYBOARD_PAN_MS.toLong()
+                                start()
+                            }
                             setImmersiveMode()
                             runJavaScript("if (typeof(ScratchJr) !== 'undefined') ScratchJr.editDone();")
                         }
@@ -608,8 +593,7 @@ class ScratchJrActivity
                 }
 
                 private fun cancelAnimator() {
-                    val animator = _currentAnimator
-                    if (animator != null) {
+                    _currentAnimator?.let { animator ->
                         if (animator.isStarted) {
                             animator.cancel()
                         }
