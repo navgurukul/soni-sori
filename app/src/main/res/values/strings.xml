@@ -120,4 +120,7 @@
     <string name="about_project">About</string>
     <string name="enter_project_name">Enter Project Name</string>
     <string name="title_scratchjr">ScratchJr</string>
+
+    <string name="share_extension_filter">.*\\.sjr</string>
+    <string name="share_mimetype">application/x-scratchjr-project</string>
 </resources>

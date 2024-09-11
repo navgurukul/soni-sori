@@ -8,5 +8,10 @@
         <item name="android:layout_margin">@dimen/dimen_5_dp</item>
     </style>
 
-
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+<!--        <item name="metaButtonBarStyle">@style/ButtonBar</item>-->
+<!--        <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>-->
+    </style>
 </resources>

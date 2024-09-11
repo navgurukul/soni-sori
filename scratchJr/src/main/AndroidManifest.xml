@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="org.merakilearn.scratchjr">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -36,11 +37,10 @@
 
         <activity
             android:name=".ScratchJrActivity"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="keyboard|keyboardHidden"
             android:theme="@style/FullscreenTheme"
-            android:launchMode="singleTask" >
+            android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
