@@ -70,6 +70,7 @@ class LearnFragment : Fragment() {
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
     lateinit var pdfView: ImageView
+    private var completedPortion: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -262,6 +263,7 @@ class LearnFragment : Fragment() {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
         val textView : TextView = mBinding.certificate.lockedStatus
         var binding: GeneratedCertificateBinding
+        this.completedPortion = completedPortion
 
         if (completedPortion == 100){
             imageView.setImageResource(R.drawable.ic_certificate)
@@ -508,6 +510,7 @@ class LearnFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         screenRefreshListener?.onRefresh()
+        viewModel.viewState.value?.let { updateCertificateImage(completedPortion) }
     }
 
     private fun initSwipeRefresh() {
@@ -562,5 +565,19 @@ class LearnFragment : Fragment() {
             )
         }
     }
+
+    private fun updateCertificateImage(completedPortion: Int) {
+        val imageView: ImageView = mBinding.certificate.ivCertificateLogo
+        val textView: TextView = mBinding.certificate.lockedStatus
+
+        if (completedPortion == 100) {
+            imageView.setImageResource(R.drawable.ic_certificate)
+            textView.isVisible = false
+        } else {
+            imageView.setImageResource(R.drawable.grey_icon_certificate)
+            textView.isVisible = true
+        }
+    }
+
 
 }
