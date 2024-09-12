@@ -579,5 +579,8 @@ class LearnFragment : Fragment() {
         }
     }
 
-
+    override fun onStart() {
+        super.onStart()
+        viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
+    }
 }
