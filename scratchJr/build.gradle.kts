@@ -43,6 +43,7 @@ dependencies {
     implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //Firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
 
