@@ -2,17 +2,19 @@ package org.navgurukul.chat.features.invite
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
 import org.matrix.android.sdk.api.session.user.model.User
 import org.matrix.android.sdk.api.util.toMatrixItem
-import kotlinx.android.synthetic.main.saral_invite_view.view.*
-import org.koin.java.KoinJavaComponent.inject
+//import org.koin.java.KoinJavaComponent.inject
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.SaralInviteViewBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.commonui.platform.ButtonStateView
+import org.koin.java.KoinJavaComponent.inject
 
 class SaralInviteView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : ConstraintLayout(context, attrs, defStyle) {
@@ -30,9 +32,15 @@ class SaralInviteView @JvmOverloads constructor(context: Context, attrs: Attribu
     private val avatarRenderer: AvatarRenderer by inject(AvatarRenderer::class.java)
     var callback: Callback? = null
 
+    private lateinit var binding: SaralInviteViewBinding
+
     init {
-        View.inflate(context, R.layout.saral_invite_view, this)
-        inviteAcceptView.callback = object : ButtonStateView.Callback {
+        initView()
+    }
+
+    private fun initView() {
+        binding = SaralInviteViewBinding.inflate(LayoutInflater.from(context), this)
+        binding.inviteAcceptView.callback = object : ButtonStateView.Callback {
             override fun onButtonClicked() {
                 callback?.onAcceptInvite()
             }
@@ -42,7 +50,7 @@ class SaralInviteView @JvmOverloads constructor(context: Context, attrs: Attribu
             }
         }
 
-        inviteRejectView.callback = object : ButtonStateView.Callback {
+        binding.inviteRejectView.callback = object : ButtonStateView.Callback {
             override fun onButtonClicked() {
                 callback?.onRejectInvite()
             }
@@ -56,17 +64,17 @@ class SaralInviteView @JvmOverloads constructor(context: Context, attrs: Attribu
     fun render(sender: User, mode: Mode = Mode.LARGE, changeMembershipState: ChangeMembershipState) {
         if (mode == Mode.LARGE) {
             updateLayoutParams { height = LayoutParams.MATCH_CONSTRAINT }
-            avatarRenderer.render(sender.toMatrixItem(), inviteAvatarView)
-            inviteIdentifierView.text = sender.userId
-            inviteNameView.text = sender.displayName
-            inviteLabelView.text = context.getString(R.string.send_you_invite)
+            avatarRenderer.render(sender.toMatrixItem(), binding.inviteAvatarView)
+            binding.inviteIdentifierView.text = sender.userId
+            binding.inviteNameView.text = sender.displayName
+            binding.inviteLabelView.text = context.getString(R.string.send_you_invite)
         } else {
             updateLayoutParams { height = LayoutParams.WRAP_CONTENT }
-            inviteAvatarView.visibility = View.GONE
-            inviteIdentifierView.visibility = View.GONE
-            inviteNameView.visibility = View.GONE
-            inviteLabelView.text = context.getString(R.string.invited_by, sender.userId)
+            binding.inviteAvatarView.visibility = View.GONE
+            binding.inviteIdentifierView.visibility = View.GONE
+            binding.inviteNameView.visibility = View.GONE
+            binding.inviteLabelView.text = context.getString(R.string.invited_by, sender.userId)
         }
-        InviteButtonStateBinder.bind(inviteAcceptView, inviteRejectView, changeMembershipState)
+        InviteButtonStateBinder.bind(binding.inviteAcceptView, binding.inviteRejectView, changeMembershipState)
     }
 }

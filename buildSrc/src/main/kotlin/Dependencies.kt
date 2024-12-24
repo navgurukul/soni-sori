@@ -1,21 +1,30 @@
 object Versions {
-    const val okHttp = "4.5.0"
+    const val okHttp = "5.0.0-alpha.12"
     const val arrow_version = "0.8.2"
     const val daggerAssistedInject = "0.5.0"
     const val daggerVersion = "2.25.4"
-    const val moshi_version = "1.12.0"
+    const val moshi_version = "1.15.1"
     const val okReplay = "1.5.0"
-    const val glide_version = "4.11.0"
+    const val glide_version = "4.16.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.9.22"
     const val lifecycle_extensions = "2.2.0"
+    const val lifecycle_version = "2.7.0"
+    const val navigation_version = "2.5.3"
     const val koin = "2.2.3"
-    const val room = "2.4.0-alpha03"
-    const val retrofit = "2.8.1"
+    const val room = "2.6.1"
+    const val retrofit = "2.11.0"
     const val rxBinding = "3.0.0"
-    const val coroutines = "1.4.3"
+    const val coroutines = "1.6.4"
     const val epoxy_version = "3.11.0"
+    const val multidex = "2.0.1"
+    const val nanohttpd = "2.3.1"
+    const val jsoup = "1.15.3"
+    const val uaUtils = "1.21"
+    const val jgit = "6.4.0.202211300538-r" // no-update
+    const val playServicesLicensesPlugin = "17.0.0"
+    const val  mpchart = "3.0.3"
 }
 
 object RxJavaDependencies {
@@ -57,30 +66,35 @@ object AndroidxDependencies {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_version}"
     const val lifecycleLiveData =
-        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_version}"
     const val lifecycleViewModelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_version}"
     const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_version}"
     const val lifecycleExtensions =
-        "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    const val lifecyclerRuntime = "androidx.lifecycle:lifecycle-runtime:${Versions.lifecycle_version}"
+    const val lifecyclerCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle_version}"
     const val lifecycleRx =
-        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
-    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:2.3.0"
-    const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
-    const val navigationFragment = "androidx.navigation:navigation-fragment:2.3.0"
+        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_version}"
+
+    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation_version}"
+    const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation_version}"
+    const val navigationUI = "androidx.navigation:navigation-ui:${Versions.navigation_version}"
+    const val navigationFragment = "androidx.navigation:navigation-fragment:${Versions.navigation_version}"
+
     const val coreKtx = "androidx.core:core-ktx:1.3.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.2.0"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
+    const val appcompat = "androidx.appcompat:appcompat:1.5.1"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.3"
     const val legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
-    const val browser = "androidx.browser:browser:1.3.0"
+    const val browser = "androidx.browser:browser:1.8.0"
+    const val multidex = "androidx.multidex:multidex:${Versions.multidex}"
 }
 
 object MaterialDesignDependencies {
-    const val materialDesign = "com.google.android.material:material:1.4.0"
+    const val materialDesign = "com.google.android.material:material:1.11.0"
 }
 
 object OkReplayDependencies {
@@ -90,13 +104,17 @@ object OkReplayDependencies {
 }
 
 object GooglePlayDependencies {
-    const val playCore = "com.google.android.play:core:1.10.0"
+    const val playFeatureDeliveryLibrary = "com.google.android.play:feature-delivery:2.1.0"
+    const val extensionsForFeatureLibrary = "com.google.android.play:feature-delivery-ktx:2.1.0"
+    const val playInAppUpdateLibrary = "com.google.android.play:app-update:2.1.0"
+    const val extensionsForInAppUpdateLibrary = "com.google.android.play:app-update-ktx:2.1.0"
     const val installReferrer = "com.android.installreferrer:installreferrer:2.2"
+    const val playServicesLicenses =  "com.google.android.gms:play-services-oss-licenses:${Versions.playServicesLicensesPlugin}"
 }
 
 object GMSDependencies {
     const val base = "com.google.android.gms:play-services-base:18.1.0"
-    const val auth = "com.google.android.gms:play-services-auth:18.1.0"
+    const val auth = "com.google.android.gms:play-services-auth:19.0.0"
 }
 
 object KoinDependencies {
@@ -113,24 +131,24 @@ object GlideDependencies {
 
 object TestDependencies {
     const val annotation = "androidx.annotation:annotation:1.1.0"
-    const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
-    const val androidxJUnit = "androidx.test.ext:junit:1.1.2"
-    const val jUnit = "junit:junit:4.13"
+    const val espresso = "androidx.test.espresso:espresso-core:3.5.1"
+    const val androidxJUnit = "androidx.test.ext:junit:1.1.5"
+    const val jUnit = "junit:junit:4.13.2"
 }
 
 object MiscellaneousDependencies {
     const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
-    const val AutoService = "com.google.auto.service:auto-service:1.0-rc7"
+    //const val AutoService = "com.google.auto.service:auto-service:1.0-rc7"
     const val htmlCompressor = "com.googlecode.htmlcompressor:htmlcompressor:1.4"
     const val markdownHtml = "io.noties.markwon:html:${Versions.markdown}"
     const val markdownCore = "io.noties.markwon:core:${Versions.markdown}"
     const val epoxyProcessor = "com.airbnb.android:epoxy-processor:${Versions.epoxy_version}"
     const val epoxy = "com.airbnb.android:epoxy:${Versions.epoxy_version}"
-    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
-    const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
+//    const val realmFieldNamesHelper = "dk.ilios:realmfieldnameshelper:1.1.1"
+//    const val realm = "com.github.Zhuinden:realm-monarchy:0.5.1"
     const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
-    const val eventBus = "org.greenrobot:eventbus:3.1.1"
-    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
+    const val eventBus = "org.greenrobot:eventbus:3.3.1"
+//    const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
     const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
     const val span = "me.gujun.android:span:1.7"
     const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:1.0.3"
@@ -141,17 +159,26 @@ object MiscellaneousDependencies {
     const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
+    const val nanohttpd = "org.nanohttpd:nanohttpd-webserver:${Versions.nanohttpd}"
+    const val jgit = "org.eclipse.jgit:org.eclipse.jgit:${Versions.jgit}"
+    const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
+    const val uaUtils  = "eu.bitwalker:UserAgentUtils:${Versions.uaUtils}"
+    const val mpchart = "com.github.PhilJay:MPAndroidChart:${Versions.mpchart}"
 }
 
 object FirebaseDependencies {
-    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx:20.1.1"
-    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
-    const val messaging = "com.google.firebase:firebase-messaging:23.0.0"
+    //Added the bom for firebase
+    const val firebaseBom = "com.google.firebase:firebase-bom:33.1.2"
+
+    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
+    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx"
+    const val messaging = "com.google.firebase:firebase-messaging"
+    const val dynamicLinksKtx = "com.google.firebase:firebase-dynamic-links-ktx"
+    const val inAppMessagingKtx = "com.google.firebase:firebase-inappmessaging-display-ktx"
+    const val perfKtx = "com.google.firebase:firebase-perf-ktx"
+
     const val configKtx = "com.google.firebase:firebase-config-ktx:19.2.0"
     const val commonKtx = "com.google.firebase:firebase-common-ktx:19.3.1"
-    const val crashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
-    const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:20.0.0"
-    const val perfKtx = "com.google.firebase:firebase-perf-ktx:20.0.6"
 }
 
 object RetrofitDependencies {
@@ -170,11 +197,11 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 33
+    const val compileSdkVersion = 34
     const val minSdkVersion = 23
-    const val targetSdkVersion = 33
-    const val versionCode = 89
-    const val versionName = "1.5.59"
+    const val targetSdkVersion = 34
+    const val versionCode = 96
+    const val versionName = "1.5.66"
     const val applicationId = "org.merakilearn"
 
     const val  usbSerialVersion = "6.1.0"
@@ -206,17 +233,18 @@ object BuildConfigVersions {
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:7.0.2"
+    const val gradle = "com.android.tools.build:gradle:8.2.1"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-
+    const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:10.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
-    const val googleServices = "com.google.gms:google-services:4.3.4"
+    const val python = "com.chaquo.python:gradle:15.0.1"
+//    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
+    const val googleServices = "com.google.gms:google-services:4.3.14"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
         "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
+    const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"
 }
 
 object Plugins {
@@ -226,9 +254,12 @@ object Plugins {
     const val kotlinAndroid = "kotlin-android"
     const val kotlinExtensions = "kotlin-android-extensions"
     const val kotlinKapt = "kotlin-kapt"
+    const val kotlinParcelize = "kotlin-parcelize"
     const val gms = "com.google.gms.google-services"
     const val crashlytics = "com.google.firebase.crashlytics"
-    const val realm = "realm-android"
+//    const val realm = "realm-android"
     const val python = "com.chaquo.python"
-    const val perf = "com.google.firebase.firebase-perf"
+    const val perf = "com.google.firebase:perf-plugin"
+    const val kotlinJetbrainAndroid = "org.jetbrains.kotlin.android"
+    const val githubBenManes = "com.github.ben-manes.versions"
 }

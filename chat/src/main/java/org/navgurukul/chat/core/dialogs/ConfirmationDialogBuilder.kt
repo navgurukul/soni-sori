@@ -4,42 +4,46 @@ import android.app.Activity
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.dialog_confirmation_with_reason.view.*
 import org.navgurukul.chat.R
+import org.navgurukul.chat.databinding.DialogConfirmationWithReasonBinding
 
 object ConfirmationDialogBuilder {
 
-    fun show(activity: Activity,
-             askForReason: Boolean,
-             @StringRes titleRes: Int,
-             @StringRes confirmationRes: Int,
-             @StringRes positiveRes: Int,
-             @StringRes reasonHintRes: Int,
-             confirmation: (String?) -> Unit) {
-        val layout = activity.layoutInflater.inflate(R.layout.dialog_confirmation_with_reason, null)
-        layout.dialogConfirmationText.setText(confirmationRes)
+    fun show(
+        activity: Activity,
+        askForReason: Boolean,
+        @StringRes titleRes: Int,
+        @StringRes confirmationRes: Int,
+        @StringRes positiveRes: Int,
+        @StringRes reasonHintRes: Int,
+        confirmation: (String?) -> Unit
+    ) {
+        val inflater = activity.layoutInflater
+        val binding = DialogConfirmationWithReasonBinding.inflate(inflater)
 
-        layout.dialogReasonCheck.isVisible = askForReason
-        layout.dialogReasonTextInputLayout.isVisible = askForReason
+        binding.dialogConfirmationText.setText(confirmationRes)
 
-        layout.dialogReasonCheck.setOnCheckedChangeListener { _, isChecked ->
-            layout.dialogReasonTextInputLayout.isEnabled = isChecked
+        binding.dialogReasonCheck.isVisible = askForReason
+        binding.dialogReasonTextInputLayout.isVisible = askForReason
+
+        binding.dialogReasonCheck.setOnCheckedChangeListener { _, isChecked ->
+            binding.dialogReasonTextInputLayout.isEnabled = isChecked
         }
         if (askForReason && reasonHintRes != 0) {
-            layout.dialogReasonInput.setHint(reasonHintRes)
+            binding.dialogReasonInput.setHint(reasonHintRes)
         }
 
         AlertDialog.Builder(activity)
-                .setTitle(titleRes)
-                .setView(layout)
-                .setPositiveButton(positiveRes) { _, _ ->
-                    val reason = layout.dialogReasonInput.text.toString()
-                            .takeIf { askForReason }
-                            ?.takeIf { layout.dialogReasonCheck.isChecked }
-                            ?.takeIf { it.isNotBlank() }
-                    confirmation(reason)
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+            .setTitle(titleRes)
+            .setView(binding.root)
+            .setPositiveButton(positiveRes) { _, _ ->
+                val reason = binding.dialogReasonInput.text.toString()
+                    .takeIf { askForReason }
+                    ?.takeIf { binding.dialogReasonCheck.isChecked }
+                    ?.takeIf { it.isNotBlank() }
+                confirmation(reason)
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 }

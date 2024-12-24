@@ -43,26 +43,26 @@ class OnBoardingViewModel(
     private fun checkPartner() {
         viewModelScope.launch {
             try {
-            val decodeReferrer =
-                URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
-            val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
+                val decodeReferrer =
+                    URLDecoder.decode(installReferrerManager.userRepo.installReferrer ?: "", "UTF-8")
+                val partnerIdPattern = Regex("[^${OnBoardingPagesViewModel.PARTNER_ID}:]\\d+")
 
-            val partnerId = partnerIdPattern.find(decodeReferrer, 0)?.value
+                val partnerId = partnerIdPattern.find(decodeReferrer, 0)?.value
 
-            if (partnerId != null) {
-                val partnerData = userRepo.getPartnerData(partnerId.trim().toInt())
-                if (partnerData.name == null || partnerData.logo == null || partnerData.description == null) {
+                if (partnerId != null) {
+                    val partnerData = userRepo.getPartnerData(partnerId.trim().toInt())
+                    if (partnerData.name == null || partnerData.logo == null || partnerData.description == null) {
+                        _viewEvents.setValue(
+                            OnBoardingViewEvents.ShowCourseSelectionScreen
+                        )
+                    } else {
+                        _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
+                    }
+                } else {
                     _viewEvents.setValue(
                         OnBoardingViewEvents.ShowCourseSelectionScreen
                     )
-                } else {
-                    _viewEvents.postValue(OnBoardingViewEvents.ShowPartnerData(partnerData))
                 }
-            } else {
-                _viewEvents.setValue(
-                    OnBoardingViewEvents.ShowCourseSelectionScreen
-                )
-            }
             }catch (e : Exception){
                 e.printStackTrace()
                 _viewEvents.setValue(

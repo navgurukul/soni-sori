@@ -2,6 +2,8 @@ package org.navgurukul.typingguru.keyboard
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.AudioManager
 import android.os.Bundle
 import android.os.Parcelable
@@ -9,28 +11,26 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.widget.Toast
-import android.graphics.drawable.ColorDrawable
-import android.graphics.Color
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_keyboard.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
-
-import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 import org.navgurukul.commonui.platform.BaseActivity
-import org.navgurukul.typingguru.R
 import org.navgurukul.typingguru.score.ScoreActivity
 import org.navgurukul.typingguru.score.ScoreActivityArgs
 import org.navgurukul.typingguru.webview.WebViewActivity
 import org.merakilearn.core.extentions.setWidthPercent
+import org.navgurukul.typing.R
+import org.navgurukul.typing.databinding.ActivityKeyboardBinding
 
 @Parcelize
 data class KeyboardActivityArgs(
@@ -60,33 +60,39 @@ class KeyboardActivity : BaseActivity() {
 
     private val audioManager: AudioManager? by lazy { getSystemService(Context.AUDIO_SERVICE) as? AudioManager }
 
+    private lateinit var binding: ActivityKeyboardBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_keyboard)
+        binding = ActivityKeyboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         hideSystemUI()
 
         viewModel.viewState.observe(this, { state ->
-            course_keys_view.setKeys(state.courseKeys)
-            course_keys_view.currentKeyIndex = state.activeKeyIndex
-            keyboard_view.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
-            progressBar.max = state.maxProgress
-            progressBar.progress = state.currentProgress
-            txt_timer.text = state.timerText
+            binding.apply {
+                courseKeysView.setKeys(state.courseKeys)
+                courseKeysView.currentKeyIndex = state.activeKeyIndex
+                keyboardView.activeKey = state.activeKeyIndex?.let { state.courseKeys[it].label }
+                progressBar.max = state.maxProgress
+                progressBar.progress = state.currentProgress
+                txtTimer.text = state.timerText
+            }
         })
 
         viewModel.viewEvents.observe(this, {
             when (it) {
                 is KeyboardViewEvent.ShakeKey -> {
-                    course_keys_view.shakeCurrentKey()
+                    binding.courseKeysView.shakeCurrentKey()
                     audioManager?.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID)
-                    keyboard_view.incorrectKey = it.key
+                    binding.keyboardView.incorrectKey = it.key
                     incorrectKeyJob?.cancel()
                     incorrectKeyJob = lifecycleScope.launch {
                         delay(500)
-                        keyboard_view.incorrectKey = null
+                        binding.keyboardView.incorrectKey = null
                     }
                 }
+
                 is KeyboardViewEvent.OpenScoreActivity -> {
                     Toast.makeText(this, "Lesson completed", Toast.LENGTH_SHORT).show()
                     intent = ScoreActivity.newInstance(
@@ -103,14 +109,15 @@ class KeyboardActivity : BaseActivity() {
                 }
             }
         })
-
-        btn_back.setOnClickListener {
+        binding.apply {
+        btnBack.setOnClickListener {
             finish()
         }
 
-        btn_settings.setOnClickListener {
-            startActivity(WebViewActivity.newIntent(this))
+        btnSettings.setOnClickListener {
+            startActivity(WebViewActivity.newIntent(this@KeyboardActivity))
         }
+    }
         if (!keyboardActivityArgs.retake) {
             showInfoDialog()
         }
@@ -130,7 +137,7 @@ class KeyboardActivity : BaseActivity() {
     }
 
     private fun showInfoDialog() {
-        val alertLayout: View = getLayoutInflater().inflate(R.layout.layout_info_dialog, null)
+        val alertLayout: View = layoutInflater.inflate(R.layout.layout_info_dialog, null)
         val btnAccept: View = alertLayout.findViewById(R.id.btn_ok)
         val btnClose: View = alertLayout.findViewById(R.id.btn_close)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)

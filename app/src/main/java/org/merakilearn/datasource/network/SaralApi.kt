@@ -50,5 +50,5 @@ interface SaralApi {
     suspend fun updateSuccessS3Upload(
         @Path("projectId") projectId: String,
         @Body projectNameAndUrl: ProjectNameAndUrl
-    ): UpdateSuccessS3UploadResponse
+    ): Response<UpdateSuccessS3UploadResponse>
 }

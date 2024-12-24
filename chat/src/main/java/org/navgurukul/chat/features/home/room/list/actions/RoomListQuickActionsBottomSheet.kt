@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.bottom_sheet_generic_list.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,6 +17,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
+import org.navgurukul.chat.databinding.BottomSheetGenericListBinding
 
 @Parcelize
 data class RoomListActionsArgs(
@@ -37,6 +37,9 @@ data class RoomListActionsArgs(
 class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
     RoomListQuickActionsEpoxyController.Listener {
 
+    private lateinit var binding: BottomSheetGenericListBinding
+
+
     private val sharedActionViewModel: RoomListQuickActionsSharedActionViewModel by sharedViewModel()
     private val roomListActionsEpoxyController: RoomListQuickActionsEpoxyController by inject()
 
@@ -52,12 +55,14 @@ class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_sheet_generic_list, container, false)
+        binding = BottomSheetGenericListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bottomSheetRecyclerView.configureWith(
+
+        binding.bottomSheetRecyclerView.configureWith(
             roomListActionsEpoxyController,
             hasFixedSize = false,
             disableItemAnimation = true
@@ -70,7 +75,7 @@ class RoomListQuickActionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     override fun onDestroyView() {
-        bottomSheetRecyclerView.cleanup()
+        binding.bottomSheetRecyclerView.cleanup()
         super.onDestroyView()
     }
 

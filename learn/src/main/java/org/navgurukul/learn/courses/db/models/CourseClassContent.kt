@@ -1,5 +1,6 @@
 package org.navgurukul.learn.courses.db.models
 
+import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,13 +11,14 @@ import kotlinx.android.parcel.Parcelize
 import org.merakilearn.core.extentions.capitalizeWords
 import org.navgurukul.learn.util.toDate
 import org.navgurukul.learn.util.toTime
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @Parcelize
 @Entity(tableName = "course_class", primaryKeys = ["id", "lang"])
 @JsonClass(generateAdapter = true)
 data class CourseClassContent(
-    @Json(name = "id")
+    @Json(name = "slug_id")
     @ColumnInfo(name = "id")
     override val id: String = "",
 

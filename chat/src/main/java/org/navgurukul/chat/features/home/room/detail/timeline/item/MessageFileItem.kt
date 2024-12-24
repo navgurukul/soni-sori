@@ -59,7 +59,7 @@ abstract class MessageFileItem : AbsMessageItem<MessageFileItem.Holder>() {
                 holder.progressLayout
             )
         } else {
-            holder.fileImageView.setImageResource(R.drawable.ic_close)
+            holder.fileImageView.setImageResource(org.navgurukul.commonui.R.drawable.ic_close)
             holder.progressLayout.isVisible = false
         }
         holder.filenameView.text = filename

@@ -23,14 +23,14 @@ class ActiveSessionHolder(
         keyRequestHandler.start(session)
         imageManager.onSessionStarted(session)
         pushRuleTriggerListener.startWithSession(session)
-        sessionObservableStore.post(Option.just(session))
+        sessionObservableStore.postValue(Option.just(session))
     }
 
     fun clearActiveSession() {
         // Do some cleanup first
         activeSession.set(null)
         keyRequestHandler.stop()
-        sessionObservableStore.post(Option.empty())
+        sessionObservableStore.postValue(Option.empty())
         pushRuleTriggerListener.stop()
     }
 

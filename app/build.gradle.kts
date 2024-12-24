@@ -1,19 +1,20 @@
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariantOutput
-import de.undercouch.gradle.tasks.download.Download
+//import de.undercouch.gradle.tasks.download.Download
 
 plugins {
     id(Plugins.application)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id(Plugins.kotlinParcelize)
     id(Plugins.gms)
     id(Plugins.crashlytics)
-    id(Plugins.perf)
     id("org.jetbrains.kotlin.android")
 }
 
 android {
+
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -22,6 +23,7 @@ android {
         targetSdk = BuildConfigVersions.targetSdkVersion
         versionCode = BuildConfigVersions.versionCode
         versionName = BuildConfigVersions.versionName
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,42 +40,56 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 
     packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
+        resources {
+            merges += setOf("/META-INF/services/*")
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
     }
+
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
+    dynamicFeatures += setOf(":webIDE")
+
+    namespace = "org.merakilearn"
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar","*.aar"))))
-    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+//    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
 
     //modules
     implementation(project(":learn"))
-    implementation(project(":chat"))
+//    implementation(project(":chat"))
     implementation(project(":python"))
     implementation(project(":core"))
     implementation(project(":commonUI"))
+
+    implementation ("com.google.auto.service:auto-service:1.1.1")
+    kapt ("com.google.auto.service:auto-service:1.1.1")
+
 
     //AndroidX
     implementation(AndroidxDependencies.appcompat)
@@ -89,8 +105,8 @@ dependencies {
     implementation(KoinDependencies.koinViewModel)
 
     // Matrix
-    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
-    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
+//    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
+//    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
 
     //Navigation
     implementation(AndroidxDependencies.navigationFragment)
@@ -126,6 +142,7 @@ dependencies {
     implementation(RetrofitDependencies.logging)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
     implementation(FirebaseDependencies.messaging)
@@ -139,8 +156,12 @@ dependencies {
     implementation (GlideDependencies.glideSvg)
 
     //Google play
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
+    implementation(GooglePlayDependencies.playInAppUpdateLibrary)
+    implementation(GooglePlayDependencies.extensionsForInAppUpdateLibrary)
     implementation(GooglePlayDependencies.installReferrer)
+
 
     //test
     testImplementation(TestDependencies.jUnit)
@@ -154,12 +175,20 @@ dependencies {
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
     implementation("com.github.felHR85:UsbSerial:6.1.0")
 
+    //implementation ("com.google.android.gms:play-services-auth:19.0.0")
+
+    //lottie
+    implementation ("com.airbnb.android:lottie:4.2.0")
+
+    //chucker
+    debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
-tasks.register<Download>("downloadBundleTools") {
-    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
-    dest(File(buildDir, "bundletool-all.jar"))
-}
+//tasks.register<Download>("downloadBundleTools") {
+//    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
+//    dest(File(buildDir, "bundletool-all.jar"))
+//}
 
 android.applicationVariants.all {
     outputs.forEach { output: BaseVariantOutput? ->
@@ -214,5 +243,12 @@ android.applicationVariants.all {
                 dependsOn("buildApks${this.name.capitalize()}")
             }
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force(AndroidxDependencies.lifecycleViewModelKtx)
+        force(AndroidxDependencies.lifecycleViewModel)
     }
 }

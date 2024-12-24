@@ -23,11 +23,15 @@ open class BehaviorDataSource<T>(private val defaultValue: T? = null) : MutableD
     val currentValue: T?
         get() = behaviorRelay.value
 
+    override fun post(value: T) {
+//        post(value)
+    }
+
     override fun observe(): Observable<T> {
         return behaviorRelay.hide().observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun post(value: T) {
+    fun postValue(value: T & Any) {
         behaviorRelay.accept(value)
     }
 
@@ -46,12 +50,15 @@ open class BehaviorDataSource<T>(private val defaultValue: T? = null) : MutableD
 open class PublishDataSource<T> : MutableDataSource<T> {
 
     private val publishRelay = PublishRelay.create<T>()
+    override fun post(value: T) {
+//        publishRelay.accept(value)
+    }
 
     override fun observe(): Observable<T> {
         return publishRelay.hide().observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun post(value: T) {
+    fun postValue(value: T & Any) {
         publishRelay.accept(value)
     }
 }

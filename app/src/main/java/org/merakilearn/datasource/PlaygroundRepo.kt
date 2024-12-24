@@ -1,6 +1,7 @@
 package org.merakilearn.datasource
 
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.merakilearn.R
 import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
@@ -8,11 +9,13 @@ import org.merakilearn.datasource.network.SaralApi
 import org.merakilearn.datasource.network.model.ProjectNameAndUrl
 import org.merakilearn.datasource.network.model.UpdateSuccessS3UploadResponse
 import org.merakilearn.datasource.network.model.UploadCredentials
+import org.navgurukul.learn.courses.network.wrapper.BaseRepo
+import org.navgurukul.learn.courses.network.wrapper.Resource
 import timber.log.Timber
 
 class PlaygroundRepo(
     private val api: SaralApi,
-) {
+): BaseRepo() {
 
     fun getAllPlaygrounds(): List<PlaygroundItemModel> {
         return arrayListOf(
@@ -29,14 +32,20 @@ class PlaygroundRepo(
             PlaygroundItemModel(
                 PlaygroundTypes.SCRATCH,
                 name = "Scratch",
-                iconResource = R.drawable.ic_scratch_cat,
+                iconResource = org.navgurukul.commonui.R.drawable.ic_scratch_cat,
+            ),
+            PlaygroundItemModel(
+                PlaygroundTypes.WEB_DEV_IDE,
+                name="HTML/CSS/JS",
+                iconResource = R.drawable.ic_web_icon,
             ),
             PlaygroundItemModel(
                 PlaygroundTypes.ARDUINO,
                 name="Arduino",
                 iconResource = R.drawable.arduino_logo,
             ),
-            )
+        )
+        )
     }
 
     suspend fun getUploadCredentials(): UploadCredentials? {
@@ -44,16 +53,17 @@ class PlaygroundRepo(
             val response = api.getUploadCredentials()
             response
         } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
             Timber.tag("PLAYGROUND_REPO").e(ex, "getUploadCredentials: ")
             null
         }
     }
 
-    suspend fun updateSuccessS3Upload(projectId: String, projectNameAndUrl: ProjectNameAndUrl): UpdateSuccessS3UploadResponse? {
+    suspend fun updateSuccessS3Upload(projectId: String, projectNameAndUrl: ProjectNameAndUrl): Resource<UpdateSuccessS3UploadResponse>? {
         return try {
-            val response = api.updateSuccessS3Upload(projectId, projectNameAndUrl)
-            response
+            safeApiCall { api.updateSuccessS3Upload(projectId, projectNameAndUrl) }
         } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
             Timber.tag("PLAYGROUND_REPO").e(ex,"updateSuccessS3UploadResponse")
             null
         }

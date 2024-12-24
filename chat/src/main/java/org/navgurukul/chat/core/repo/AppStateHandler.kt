@@ -87,7 +87,7 @@ class AppStateHandler constructor(
                         }
                 )
                 .subscribe {
-                    homeRoomListDataSource.post(it)
+                    homeRoomListDataSource.postValue(it)
                 }
                 .addTo(compositeDisposable)
     }

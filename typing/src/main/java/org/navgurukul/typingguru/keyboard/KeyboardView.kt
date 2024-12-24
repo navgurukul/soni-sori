@@ -14,7 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.commonui.themes.getThemedUnit
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import kotlin.math.floor
 import kotlin.math.roundToInt
 import org.navgurukul.commonui.R as commonR
@@ -62,7 +62,7 @@ class KeyboardView @JvmOverloads constructor(
         context.resources.getDimensionPixelSize(commonR.dimen.spacing_3x)
     private val verticalSpacing = context.resources.getDimensionPixelSize(commonR.dimen.spacing_2x)
     private val keyTextSpacing = context.resources.getDimensionPixelSize(commonR.dimen.spacing_2x)
-    private val borderWidth = context.getThemedUnit(commonR.attr.borderWidth)
+    private val borderWidth = context.getThemedUnit(com.google.android.material.R.attr.borderWidth)
     private val ridgeHeight = context.resources.getDimensionPixelSize(R.dimen.ridge_height)
     private val ridgeWidth = context.resources.getDimensionPixelSize(R.dimen.ridge_width)
     private val ridgeBottomMargin =
@@ -73,7 +73,7 @@ class KeyboardView @JvmOverloads constructor(
 
     private val ridgeColor = ContextCompat.getColor(context, R.color.accuracy_color)
     private val keyBackgroundColorNeutral = ContextCompat.getColor(context, R.color.key_background)
-    private val keyBackgroundColorIncorrect = context.getThemedColor(commonR.attr.colorError)
+    private val keyBackgroundColorIncorrect = context.getThemedColor(com.airbnb.lottie.R.attr.colorError)
     private val keyBackgroundColorActive = ContextCompat.getColor(context, R.color.current_text)
 
     private val leftHandRestingDrawable =
@@ -217,7 +217,7 @@ class KeyboardView @JvmOverloads constructor(
             invalidate()
         }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (canvas == null) {

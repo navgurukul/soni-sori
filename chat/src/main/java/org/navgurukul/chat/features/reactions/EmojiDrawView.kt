@@ -26,7 +26,7 @@ class EmojiDrawView @JvmOverloads constructor(
 
     var emoji: String? = null
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         EmojiRecyclerAdapter.beginTraceSession("EmojiDrawView.onDraw")
         super.onDraw(canvas)
         canvas?.save()

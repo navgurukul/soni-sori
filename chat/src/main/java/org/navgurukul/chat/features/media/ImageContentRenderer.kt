@@ -116,16 +116,16 @@ class ImageContentRenderer(
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(e: GlideException?,
                                           model: Any?,
-                                          target: Target<Drawable>?,
+                                          target: Target<Drawable>,
                                           isFirstResource: Boolean): Boolean {
                     callback?.invoke(false)
                     return false
                 }
 
-                override fun onResourceReady(resource: Drawable?,
-                                             model: Any?,
-                                             target: Target<Drawable>?,
-                                             dataSource: DataSource?,
+                override fun onResourceReady(resource: Drawable,
+                                             model: Any,
+                                             target: Target<Drawable>,
+                                             dataSource: DataSource,
                                              isFirstResource: Boolean): Boolean {
                     callback?.invoke(true)
                     return false
@@ -158,16 +158,16 @@ class ImageContentRenderer(
         req.listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(e: GlideException?,
                                       model: Any?,
-                                      target: Target<Drawable>?,
+                                      target: Target<Drawable>,
                                       isFirstResource: Boolean): Boolean {
                 callback?.invoke(false)
                 return false
             }
 
-            override fun onResourceReady(resource: Drawable?,
-                                         model: Any?,
-                                         target: Target<Drawable>?,
-                                         dataSource: DataSource?,
+            override fun onResourceReady(resource: Drawable,
+                                         model: Any,
+                                         target: Target<Drawable>,
+                                         dataSource: DataSource,
                                          isFirstResource: Boolean): Boolean {
                 callback?.invoke(true)
                 return false

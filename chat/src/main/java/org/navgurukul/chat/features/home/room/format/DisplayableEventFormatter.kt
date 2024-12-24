@@ -24,7 +24,7 @@ class DisplayableEventFormatter(
 
         if (timelineEvent.root.isEncrypted()
                 && timelineEvent.root.mxDecryptionResult == null) {
-            return stringProvider.getString(R.string.encrypted_message)
+            return stringProvider.getString(R.string.encryption_enabled)
         }
 
         val senderName = timelineEvent.senderInfo.disambiguatedDisplayName
@@ -82,7 +82,7 @@ class DisplayableEventFormatter(
         return if (appendAuthor) {
             span {
                 text = senderName
-                textColor = colorProvider.getColorFromAttribute(R.attr.textPrimary)
+                textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textPrimary)
             }
                     .append(": ")
                     .append(body)

@@ -26,10 +26,10 @@ class RoomHistoryVisibilityFormatter(
 
     fun format(roomHistoryVisibility: RoomHistoryVisibility): String {
         return when (roomHistoryVisibility) {
-            RoomHistoryVisibility.SHARED         -> stringProvider.getString(R.string.notice_room_visibility_shared)
-            RoomHistoryVisibility.INVITED        -> stringProvider.getString(R.string.notice_room_visibility_invited)
-            RoomHistoryVisibility.JOINED         -> stringProvider.getString(R.string.notice_room_visibility_joined)
-            RoomHistoryVisibility.WORLD_READABLE -> stringProvider.getString(R.string.notice_room_visibility_world_readable)
+            RoomHistoryVisibility.SHARED         -> stringProvider.getString(R.string.not_implemented)
+            RoomHistoryVisibility.INVITED        -> stringProvider.getString(R.string.not_implemented)
+            RoomHistoryVisibility.JOINED         -> stringProvider.getString(R.string.not_implemented)
+            RoomHistoryVisibility.WORLD_READABLE -> stringProvider.getString(R.string.not_implemented)
         }
     }
 }

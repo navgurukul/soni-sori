@@ -68,6 +68,7 @@ class ClassActivity: AppCompatActivity(){
                         Uri.parse(it.link)
                     )
                 )
+                else -> { }
             }
         }
 
@@ -91,7 +92,7 @@ class ClassActivity: AppCompatActivity(){
         supportActionBar?.let {
             it.setDisplayShowTitleEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
+            it.setHomeAsUpIndicator(org.navgurukul.commonui.R.drawable.ic_arrow_left)
         }
     }
 
