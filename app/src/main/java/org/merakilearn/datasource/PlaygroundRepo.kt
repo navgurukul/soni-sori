@@ -45,7 +45,7 @@ class PlaygroundRepo(
                 iconResource = R.drawable.arduino_logo,
             ),
         )
-        )
+
     }
 
     suspend fun getUploadCredentials(): UploadCredentials? {

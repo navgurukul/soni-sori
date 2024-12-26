@@ -18,11 +18,11 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen_15_dp"
-                android:src="@drawable/ic_back_arrow"/>
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/dimen_15_dp"-->
+<!--                android:src="@drawable/ic_back_arrow"/>-->
 
             <TextView
                 android:id="@+id/headerTitle"

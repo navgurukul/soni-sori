@@ -173,7 +173,7 @@ dependencies {
 
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
-    implementation("com.github.felHR85:UsbSerial:6.1.0")
+    implementation("com.github.felHR85:UsbSerial:6.0.6")
 
     //implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
