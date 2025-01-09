@@ -1,6 +1,7 @@
 package org.merakilearn.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,6 +11,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -123,7 +125,9 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_REQUEST)
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED)
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED)
-        registerReceiver(mUsbHardwareReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mUsbHardwareReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        }
     }
 
     fun usbConnectChange(state: UsbConnectState) {
@@ -176,7 +180,9 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
         filter.addAction(UsbSerialManager.ACTION_USB_CONNECT)
         filter.addAction(UsbSerialManager.ACTION_USB_NOT_SUPPORTED)
         filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED)
-        registerReceiver(mUsbNotifyReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mUsbNotifyReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        }
     }
 
     /* public UsbSerialDevice getUsbSerialDevice(String key) {

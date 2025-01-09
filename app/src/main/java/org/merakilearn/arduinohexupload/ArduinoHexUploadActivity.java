@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -116,7 +117,9 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_REQUEST);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        registerReceiver(mUsbHardwareReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mUsbHardwareReceiver, filter,Context.RECEIVER_NOT_EXPORTED);
+        }
     }
 
 
@@ -232,7 +235,9 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         filter.addAction(UsbSerialManager.ACTION_USB_CONNECT);
         filter.addAction(UsbSerialManager.ACTION_USB_NOT_SUPPORTED);
         filter.addAction(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED);
-        registerReceiver(mUsbNotifyReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mUsbNotifyReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        }
     }
 
     public void requestDevicePermission(String key) {
