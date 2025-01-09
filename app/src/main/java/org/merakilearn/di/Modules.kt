@@ -1,7 +1,10 @@
 package org.merakilearn.di
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -9,6 +12,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
@@ -40,7 +44,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
-    viewModel { PlaygroundViewModel( get(),get(), get()) }
+    viewModel { PlaygroundViewModel( get(),get(), get(),androidContext()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,
@@ -76,8 +80,16 @@ val networkModule = module {
         return logging
     }
 
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(context: Context): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
+            .addInterceptor(
+                ChuckerInterceptor.Builder(context)
+                    .collector(ChuckerCollector(context))
+                    .maxContentLength(250000L)
+                    .redactHeaders(emptySet())
+                    .alwaysReadResponseBody(false)
+                    .build()
+            )
         okHttpClientBuilder.addInterceptor(provideLogInterceptor())
         okHttpClientBuilder.addInterceptor { chain ->
             val chainBuilder = chain.request().newBuilder()
@@ -176,7 +188,7 @@ val networkModule = module {
     fun provideRetrofit(
         factory: Moshi,
         client: OkHttpClient,
-        settingsRepo: SettingsRepo
+        settingsRepo: SettingsRepo,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(settingsRepo.serverBaseUrl)
@@ -185,14 +197,14 @@ val networkModule = module {
             .build()
     }
 
-    single { provideHttpClient() }
+    single { provideHttpClient(androidContext()) }
     single { provideMoshi() }
     single { provideRetrofit(get(), get(), get()) }
 
 }
 
 val repositoryModule = module {
-    single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
+    single { LoginRepository(get(), androidApplication(), get(), get(), get()) }
     single { Config() }
     single { ClassesRepo(get(),get()) }
     single { SettingsRepo(get()) }
@@ -202,7 +214,7 @@ val repositoryModule = module {
             get(),
             PreferenceManager.getDefaultSharedPreferences(androidApplication()),
             get(),
-            get(),
+//            get(),
         )
     }
 

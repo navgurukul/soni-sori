@@ -16,19 +16,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSeeExplanation"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/see_explanation"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="#2E2E2E"
-            android:textAllCaps="false"
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/btnSeeExplanation"-->
+        <!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/see_explanation"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textSize="14sp"-->
+        <!--            android:textColor="#2E2E2E"-->
+        <!--            android:textAllCaps="false"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/btnRetry"/>-->
+
+        <TextView
+            android:id="@+id/missText"
+            android:text="@string/missed_the_bull_eye"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnRetry"/>
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dimen_5_dp"
+            android:layout_marginStart="@dimen/dimen_20_dp"
+            android:layout_marginEnd="@dimen/dimen_20_dp"
+            android:textColor="@color/colorRed"
+            android:layout_height="wrap_content">
+
+        </TextView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRetry"
@@ -37,13 +52,17 @@
             android:text="@string/re_try"
             android:textSize="13sp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="@color/primaryColor"
-            app:strokeWidth="@dimen/dimen_2_dp"
-            android:textColor="@color/green_progress_color"
+            app:strokeColor="#2e2e2e"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            android:padding="16dp"
+            android:layout_margin="20dp"
+            android:textColor="#2E2E2E"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/spacing_2x"
             android:textAllCaps="false"
-            app:layout_constraintStart_toEndOf="@id/btnSeeExplanation"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/missText"
+            android:layout_marginBottom="@dimen/dimen_20_dp"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

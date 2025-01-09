@@ -75,6 +75,12 @@
     <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
         <item name="elevationOverlayEnabled">false</item>
     </style>
+    
+    <style name="roundImageview" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+        <item name="color">@color/colorWhite</item>
+    </style>
 
     <style name="button_rounded">
         <item name="android:layout_width">wrap_content</item>

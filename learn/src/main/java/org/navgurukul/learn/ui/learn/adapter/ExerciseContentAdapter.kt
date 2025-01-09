@@ -17,7 +17,7 @@ class ExerciseContentAdapter(
     context: Context,
     callback: (BaseCourseContent) -> Unit,
     urlCallback: (BannerAction?) -> Unit,
-    optionCallback: ((OptionResponse) -> Unit) ?= null,
+    optionCallback: ((List<OptionResponse>) -> Unit) ?= null,
 
 ) :
     ListAdapter<BaseCourseContent, BaseCourseViewHolder>(

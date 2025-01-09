@@ -51,9 +51,9 @@ abstract class BottomSheetActionItem : MerakiEpoxyModel<BottomSheetActionItem.Ho
         }
         holder.startSpace.isVisible = subMenuItem
         val tintColor = if (destructive) {
-            ThemeUtils.getColor(holder.view.context, R.attr.colorError)
+            ThemeUtils.getColor(holder.view.context, io.noties.markwon.R.attr.colorError)
         } else {
-            ThemeUtils.getColor(holder.view.context, R.attr.textSecondary)
+            ThemeUtils.getColor(holder.view.context, org.navgurukul.commonui.R.attr.textSecondary)
         }
         holder.icon.setImageResource(iconRes)
         ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(tintColor))

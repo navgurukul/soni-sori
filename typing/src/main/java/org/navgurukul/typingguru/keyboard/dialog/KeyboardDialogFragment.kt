@@ -6,10 +6,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.layout_keyboard_dialog.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.merakilearn.core.extentions.fragmentArgs
@@ -17,7 +18,8 @@ import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseDialogFragment
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
+import org.navgurukul.typing.databinding.LayoutKeyboardDialogBinding
 import org.navgurukul.typingguru.keyboard.KeyboardActivity
 import org.navgurukul.typingguru.webview.WebViewActivity
 
@@ -29,7 +31,18 @@ data class KeyboardDialogArgs(
 class KeyboardDialogFragment : BaseDialogFragment() {
 
     private val keyboardDialogArgs: KeyboardDialogArgs by fragmentArgs()
-    private val viewModel : KeyboardDialogViewModel by viewModel(parameters = { parametersOf(keyboardDialogArgs) })
+    private val viewModel: KeyboardDialogViewModel by viewModel(parameters = { parametersOf(keyboardDialogArgs) })
+
+    private lateinit var binding: LayoutKeyboardDialogBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding= LayoutKeyboardDialogBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     companion object {
         fun newInstance(mode: Mode): KeyboardDialogFragment {
@@ -59,7 +72,7 @@ class KeyboardDialogFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.viewState.observe(viewLifecycleOwner, {
-            tv_info.text = it.infoText
+            binding.tvInfo.text = it.infoText
         })
 
         viewModel.viewEvents.observe(viewLifecycleOwner, {
@@ -79,11 +92,13 @@ class KeyboardDialogFragment : BaseDialogFragment() {
             }
         })
 
-        view.findViewById<View>(R.id.btn_own).setOnClickListener {
-            viewModel.handle(KeyboardDialogViewActions.OwnButtonClicked)
-        }
-        view.findViewById<View>(R.id.btn_purchase).setOnClickListener {
-            viewModel.handle(KeyboardDialogViewActions.BuyButtonClicked)
+        binding.apply {
+            btnOwn.setOnClickListener {
+                viewModel.handle(KeyboardDialogViewActions.OwnButtonClicked)
+            }
+            btnPurchase.setOnClickListener {
+                viewModel.handle(KeyboardDialogViewActions.BuyButtonClicked)
+            }
         }
     }
 

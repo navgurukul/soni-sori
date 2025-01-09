@@ -124,7 +124,7 @@ val factoryModule = module {
     single { RoomHistoryVisibilityFormatter(get()) }
     single { NotificationUtils(androidContext(), get(), get(), get()) }
     single { ChatPreferences(androidContext()) }
-    single { ColorProvider(ContextThemeWrapper(androidContext(), R.style.AppTheme)) }
+    single { ColorProvider(ContextThemeWrapper(androidContext(), org.navgurukul.commonui.R.style.AppTheme)) }
     single { DimensionConverter(androidContext().resources) }
     single { LocaleProvider(androidContext().resources) }
     single<ChatModuleNavigator> { ChatNavigatorContract(get(), get()) }

@@ -4,7 +4,7 @@ import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.EmptyViewEvents
 import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.commonui.resources.StringProvider
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit

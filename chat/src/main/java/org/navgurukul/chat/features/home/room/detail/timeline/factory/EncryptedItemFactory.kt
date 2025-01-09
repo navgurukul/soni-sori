@@ -38,73 +38,74 @@ class EncryptedItemFactory(
                callback: TimelineEventController.Callback?): MerakiEpoxyModel<*>? {
         event.root.eventId ?: return null
 
-        return when {
-            EventType.ENCRYPTED == event.root.getClearType() -> {
-                val cryptoError = event.root.mCryptoError
-
-                val spannableStr = if (chatPreferences.developerMode()) {
-                    val errorDescription =
-                            if (cryptoError == MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID) {
-                                stringProvider.getString(R.string.notice_crypto_error_unkwown_inbound_session_id)
-                            } else {
-                                // TODO i18n
-                                cryptoError?.name
-                            }
-
-                    val message = stringProvider.getString(R.string.encrypted_message).takeIf { cryptoError == null }
-                            ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
-                    span(message) {
-                        textStyle = "italic"
-                        textColor = colorProvider.getColorFromAttribute(R.attr.textSecondary)
-                    }
-                } else {
-                    val colorFromAttribute = colorProvider.getColorFromAttribute(R.attr.textSecondary)
-                    if (cryptoError == null) {
-                        span(stringProvider.getString(R.string.encrypted_message)) {
-                            textStyle = "italic"
-                            textColor = colorFromAttribute
-                        }
-                    } else {
-                        when (cryptoError) {
-                            MXCryptoError.ErrorType.KEYS_WITHHELD -> {
-                                span {
-                                    apply {
-                                        drawableProvider.getDrawable(R.drawable.ic_forbidden, colorFromAttribute)?.let {
-                                            image(it, "baseline")
-                                        }
-                                    }
-                                    span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_final)) {
-                                        textStyle = "italic"
-                                        textColor = colorFromAttribute
-                                    }
-                                }
-                            }
-                            else                                  -> {
-                                span {
-                                    apply {
-                                        drawableProvider.getDrawable(R.drawable.ic_clock, colorFromAttribute)?.let {
-                                            image(it, "baseline")
-                                        }
-                                    }
-                                    span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_friendly)) {
-                                        textStyle = "italic"
-                                        textColor = colorFromAttribute
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                val informationData = messageInformationDataFactory.create(event, nextEvent)
-                val attributes = attributesFactory.create(event.root.content.toModel<EncryptedEventContent>(), informationData, callback)
-                return MessageTextItem_()
-                        .highlighted(highlight)
-                        .attributes(attributes)
-                        .message(spannableStr)
-                        .movementMethod(createLinkMovementMethod(callback))
-            }
-            else                                             -> null
-        }
+        //return when {
+//            EventType.ENCRYPTED == event.root.getClearType() -> {
+//                val cryptoError = event.root.mCryptoError
+//
+//                val spannableStr = if (chatPreferences.developerMode()) {
+//                    val errorDescription =
+//                            if (cryptoError == MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID) {
+//                                //stringProvider.getString(R.string.notice_crypto_error_unkwown_inbound_session_id)
+//                            } else {
+//                                // TODO i18n
+//                                cryptoError?.name
+//                            }
+//
+////                    val message = stringProvider.getString(R.string.encrypted_message).takeIf { cryptoError == null }
+////                            ?: stringProvider.getString(R.string.notice_crypto_unable_to_decrypt, errorDescription)
+////                    span(message) {
+////                        textStyle = "italic"
+////                        textColor = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
+////                    }
+//                } else {
+//                    val colorFromAttribute = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textSecondary)
+//                    if (cryptoError == null) {
+////                        span(stringProvider.getString(R.string.encrypted_message)) {
+////                            textStyle = "italic"
+////                            textColor = colorFromAttribute
+////                        }
+//                    } else {
+//                        when (cryptoError) {
+//                            MXCryptoError.ErrorType.KEYS_WITHHELD -> {
+//                                span {
+//                                    apply {
+//                                        drawableProvider.getDrawable(R.drawable.ic_forbidden, colorFromAttribute)?.let {
+//                                            image(it, "baseline")
+//                                        }
+//                                    }
+//                                    span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_final)) {
+//                                        textStyle = "italic"
+//                                        textColor = colorFromAttribute
+//                                    }
+//                                }
+//                            }
+//                            else                                  -> {
+//                                span {
+//                                    apply {
+//                                        drawableProvider.getDrawable(R.drawable.ic_clock, colorFromAttribute)?.let {
+//                                            image(it, "baseline")
+//                                        }
+//                                    }
+//                                    span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_friendly)) {
+//                                        textStyle = "italic"
+//                                        textColor = colorFromAttribute
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+////                val informationData = messageInformationDataFactory.create(event, nextEvent)
+////                val attributes = attributesFactory.create(event.root.content.toModel<EncryptedEventContent>(), informationData, callback)
+////                return MessageTextItem_()
+////                        .highlighted(highlight)
+////                        .attributes(attributes)
+////                        .message(spannableStr)
+////                        .movementMethod(createLinkMovementMethod(callback))
+//            }
+//            else                                             -> null
+//        }
+        return null
     }
 }

@@ -2,7 +2,8 @@
 plugins {
     id(Plugins.dynamicFeature)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinParcelize)
     id(Plugins.kotlinKapt)
     id(Plugins.gms)
 }
@@ -12,18 +13,21 @@ android {
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
+    buildFeatures{
+        viewBinding = true
+    }
+    namespace = "org.navgurukul.typing"
 }
 
 dependencies {
@@ -31,15 +35,19 @@ dependencies {
     implementation(project(":app"))
     implementation(project(":core"))
 
-    kapt(MiscellaneousDependencies.AutoService)
-    implementation(MiscellaneousDependencies.AutoService)
+//    kapt(MiscellaneousDependencies.AutoService)
+//    implementation(MiscellaneousDependencies.AutoService)
+
+    implementation ("com.google.auto.service:auto-service:1.0.1")
+    kapt ("com.google.auto.service:auto-service:1.0.1")
 
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)
     implementation(KoinDependencies.koinViewModel)
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     implementation(KotlinDependencies.kotlin)
 

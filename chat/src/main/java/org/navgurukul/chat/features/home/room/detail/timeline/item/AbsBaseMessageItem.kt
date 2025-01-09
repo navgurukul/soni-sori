@@ -73,8 +73,8 @@ abstract class AbsBaseMessageItem<H : AbsBaseMessageItem.Holder> : BaseEventItem
 
                 setWrapMode(Flow.WRAP_ALIGNED)
                 setHorizontalStyle(CHAIN_PACKED)
-                setVerticalGap(resources.getDimensionPixelSize(R.dimen.spacing_1x))
-                setHorizontalGap(resources.getDimensionPixelSize(R.dimen.spacing_2x))
+                setVerticalGap(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_1x))
+                setHorizontalGap(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_2x))
             }
             val buttonIds = IntArray(min(reactions.size, 7))
             reactions.take(7).forEachIndexed { index, reaction ->

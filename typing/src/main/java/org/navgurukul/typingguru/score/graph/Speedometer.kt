@@ -5,7 +5,7 @@ import android.graphics.*
 import android.text.Layout
 import android.text.StaticLayout
 import android.util.AttributeSet
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max

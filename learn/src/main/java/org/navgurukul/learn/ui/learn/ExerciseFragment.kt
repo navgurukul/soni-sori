@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -43,6 +44,7 @@ data class CourseContentArgs(
     val courseId: String,
     val contentId: String,
     val courseContentType: CourseContentType,
+    val pathwayId: Int
 ) : Parcelable
 
 class ExerciseFragment : Fragment() {
@@ -62,7 +64,8 @@ class ExerciseFragment : Fragment() {
             isCompleted: Boolean,
             courseId: String,
             exerciseId: String,
-            courseContentType: CourseContentType
+            courseContentType: CourseContentType,
+            pathwayId: Int
         ): ExerciseFragment {
             return ExerciseFragment().apply {
                 arguments = CourseContentArgs(
@@ -71,7 +74,8 @@ class ExerciseFragment : Fragment() {
                     isCompleted,
                     courseId,
                     exerciseId,
-                    courseContentType
+                    courseContentType,
+                    pathwayId
                 ).toBundle()
             }
         }
@@ -98,7 +102,7 @@ class ExerciseFragment : Fragment() {
         })
 
         fragmentViewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
+            mBinding.progressBar.root.visibility = if (it.isLoading) View.VISIBLE else View.GONE
             showErrorScreen(it.isError)
 
             if (!it.isError)
@@ -112,11 +116,13 @@ class ExerciseFragment : Fragment() {
 
     private fun showErrorScreen(isError: Boolean) {
         if (isError) {
-            mBinding.errorLayout.root.visibility = View.VISIBLE
-            mBinding.contentLayout.visibility = View.GONE
+            mBinding.apply { errorLayout.root.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE}
         } else {
-            mBinding.errorLayout.root.visibility = View.GONE
-            mBinding.contentLayout.visibility = View.VISIBLE
+            mBinding.apply {
+                errorLayout.root.visibility = View.GONE
+                contentLayout.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -162,6 +168,7 @@ class ExerciseFragment : Fragment() {
                                 }
                             } catch (err: JSONException) {
                                 Log.d("Error", err.toString())
+                                FirebaseCrashlytics.getInstance().recordException(Exception(err.message))
                             }
                         }
                     } else
@@ -172,12 +179,13 @@ class ExerciseFragment : Fragment() {
 
         val layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
-        mBinding.recyclerViewSlug.layoutManager = layoutManager
-        mBinding.recyclerViewSlug.adapter = contentAdapter
-        mBinding.recyclerViewSlug.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_4x), 0)
-        )
-
+        mBinding.apply {
+            recyclerViewSlug.layoutManager = layoutManager
+            recyclerViewSlug.adapter = contentAdapter
+            recyclerViewSlug.addItemDecoration(
+                SpaceItemDecoration(resources.getDimensionPixelSize(org.navgurukul.commonui.R.dimen.spacing_8x), 0)
+            )
+        }
     }
 
 }

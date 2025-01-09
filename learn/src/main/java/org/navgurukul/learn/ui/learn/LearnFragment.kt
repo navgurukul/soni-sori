@@ -31,11 +31,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.batch_card.*
-import kotlinx.android.synthetic.main.generated_certificate.view.*
-import kotlinx.android.synthetic.main.item_certificate.view.*
-import kotlinx.android.synthetic.main.layout_classinfo_dialog.view.*
-import kotlinx.android.synthetic.main.upcoming_class_selection_sheet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +39,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.extentions.setWidthPercent
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ToolbarConfigurable
-import org.navgurukul.commonui.views.EmptyStateView
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.ClassType
 import org.navgurukul.learn.courses.db.models.CourseClassContent
@@ -54,6 +48,7 @@ import org.navgurukul.learn.courses.network.model.dateRange
 import org.navgurukul.learn.courses.network.model.sanitizedType
 import org.navgurukul.learn.databinding.FragmentLearnBinding
 import org.navgurukul.learn.databinding.GeneratedCertificateBinding
+import org.navgurukul.learn.databinding.LayoutClassinfoDialogBinding
 import org.navgurukul.learn.ui.common.toast
 import org.navgurukul.learn.ui.learn.adapter.CourseAdapter
 import org.navgurukul.learn.ui.learn.adapter.DotItemDecoration
@@ -70,7 +65,7 @@ class LearnFragment : Fragment() {
 
     private val viewModel: LearnFragmentViewModel by sharedViewModel()
     private lateinit var mCourseAdapter: CourseAdapter
-    private lateinit var mBinding: FragmentLearnBinding
+    lateinit var mBinding: FragmentLearnBinding
     private lateinit var mClassAdapter: UpcomingEnrolAdapater
     private var screenRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     private val merakiNavigator: MerakiNavigator by inject()
@@ -81,22 +76,19 @@ class LearnFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_learn, container, false)
+        mBinding = FragmentLearnBinding.inflate(inflater, container, false)
         return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+
 
         mBinding.progressBarButton.visibility = View.VISIBLE
-        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
-
-//        mBinding.batchCard.root.visibility = View.GONE
-//        mBinding.upcoming.root.visibility = View.GONE
-
+//        mBinding.emptyStateView.state = EmptyStateView.State.LOADING
+        initRecyclerView()
         initSwipeRefresh()
-
+        initToolBar()
         configureToolbar()
 
         val builder = StrictMode.VmPolicy.Builder();
@@ -116,9 +108,11 @@ class LearnFragment : Fragment() {
 
         viewModel.handle(LearnFragmentViewActions.RequestPageLoad)
         viewModel.viewState.observe(viewLifecycleOwner) {
-            mBinding.swipeContainer.isRefreshing = false
-            mBinding.progressBarButton.isVisible = it.loading
-            mCourseAdapter.submitList(it.courses, it.logo)
+            mBinding.apply {
+                swipeContainer.isRefreshing = false
+                progressBarButton.isVisible = it.loading
+            }
+            mCourseAdapter.submitList(it.courses, it.logo, it.pathwayData)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),
@@ -126,22 +120,25 @@ class LearnFragment : Fragment() {
                 it.languages.isNotEmpty(),
                 it.logo
             )
-            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
-            mBinding.layoutTakeTest.isVisible = it.showTakeTestButton
+//            mBinding.emptyStateView.isVisible = !it.loading && it.courses.isEmpty()
+            mBinding.apply {
+                layoutTakeTest.isVisible = it.showTakeTestButton
+
 
             if (!it.classes.isEmpty()) {
-                mBinding.upcoming.root.isVisible = true
+                upcoming.root.isVisible = true
                 initUpcomingRecyclerView(it.classes)
-                mBinding.enrolledButFinished.root.isVisible = false
+                enrolledButFinished.root.isVisible = false
             } else {
-                mBinding.upcoming.root.isVisible = false
+                upcoming.root.isVisible = false
             }
             if (!it.batches.isEmpty()) {
-                mBinding.batchCard.root.isVisible = true
+                batchCard.root.isVisible = true
                 setUpUpcomingData(it.batches.first())
             } else {
-                mBinding.batchCard.root.isVisible = false
+                batchCard.root.isVisible = false
             }
+        }
 
             if (it.showTakeTestButton && it.currentPathwayIndex > -1 && it.currentPathwayIndex < it.pathways.size)
                 showTestButton(it.pathways[it.currentPathwayIndex].cta!!)
@@ -149,18 +146,24 @@ class LearnFragment : Fragment() {
 
             when(it.code) {
                 "PRGPYT" -> {
-                    mBinding.certificate.root.visibility = View.VISIBLE
-                    mBinding.dotAdding.visibility = View.VISIBLE    //this wil show the dot
-                    mBinding.certificate.txtCertificate.text = "Python Certificate"
+                    mBinding.apply {
+                        certificate.root.visibility = View.VISIBLE
+                        dotAdding.root.visibility = View.VISIBLE    //this wil show the dot
+                        certificate.txtCertificate.text = "Python Certificate"
+                    }
                 }
                 "SCRTHB" -> {
-                    mBinding.certificate.root.visibility = View.VISIBLE
-                    mBinding.dotAdding.visibility = View.VISIBLE
-                    mBinding.certificate.txtCertificate.text = "Scratch Certificate"
+                    mBinding.apply {
+                        certificate.root.visibility = View.VISIBLE
+                        dotAdding.root.visibility = View.VISIBLE
+                        certificate.txtCertificate.text = "Scratch Certificate"
+                    }
                 }
                 else -> {
-                    mBinding.certificate.root.visibility = View.GONE
-                    mBinding.dotAdding.visibility = View.GONE
+                    mBinding.apply {
+                        certificate.root.visibility = View.GONE
+                        dotAdding.root.visibility = View.GONE
+                    }
                 }
             }
 
@@ -199,14 +202,18 @@ class LearnFragment : Fragment() {
                 }
                 is LearnFragmentViewEvents.ShowUpcomingClasses -> {
                     initUpcomingRecyclerView(it.classes)
-                    mBinding.upcoming.root.visibility = View.VISIBLE
-                    mBinding.batchCard.root.visibility = View.GONE
-                    mBinding.enrolledButFinished.root.visibility = View.GONE
+                    mBinding.apply {
+                        root.visibility = View.VISIBLE
+                        batchCard.root.visibility = View.GONE
+                        enrolledButFinished.root.visibility = View.GONE
+                    }
 
                 }
                 is LearnFragmentViewEvents.ShowCompletedStatus -> {
-                    mBinding.enrolledButFinished.root.visibility = View.VISIBLE
-                    mBinding.upcoming.root.visibility = View.GONE
+                    mBinding.apply {
+                        enrolledButFinished.root.visibility = View.VISIBLE
+                        upcoming.root.visibility = View.GONE
+                    }
                 }
                 is LearnFragmentViewEvents.GetCertificate -> {
                     getCertificate(it.pdfUrl, it.getCompletedPortion, it.pathwayName)
@@ -227,6 +234,9 @@ class LearnFragment : Fragment() {
                             )
                     }
                 }
+                is LearnFragmentViewEvents.ShowNetworkErrorScreen ->{
+                    showErrorScreen(true)
+                }
                 else -> {
                 }
 
@@ -234,9 +244,23 @@ class LearnFragment : Fragment() {
         }
     }
 
+    private fun showErrorScreen(isError: Boolean) {
+        if (isError) {
+            mBinding.apply {
+                progressBarButton.visibility = View.GONE
+                emptyStateView.root.isVisible = true
+                courseContainer.visibility = View.GONE
+            }
+        } else {
+            mBinding.apply {
+                emptyStateView.root.isVisible = false
+                courseContainer.visibility = View.VISIBLE
+            }
+        }
+    }
     private fun getCertificate(pdfUrl: String, completedPortion: Int, pathwayName : String) {
         val imageView: ImageView = mBinding.certificate.ivCertificateLogo
-        val textView : TextView = mBinding.certificate.root.locked_status
+        val textView : TextView = mBinding.certificate.lockedStatus
         var binding: GeneratedCertificateBinding
 
         if (completedPortion == 100){
@@ -253,13 +277,15 @@ class LearnFragment : Fragment() {
                 val dialog = BottomSheetDialog(requireContext())
                 binding = DataBindingUtil.inflate(layoutInflater, R.layout.generated_certificate, null, false)
                 pdfView = binding.idPDFView
-                binding.txtCertificate.text = getString(R.string.text_certificate, pathwayName)
-                binding.txt.text = getString(R.string.certificate_information, pathwayName)
-                binding.tvDownload.setOnClickListener {
-                    generatePDF(pdfUrl)
-                }
-                binding.tvShare.setOnClickListener {
-                    showShareIntent(pdfUrl)
+                binding.apply {
+                    txtCertificate.text = getString(R.string.text_certificate, pathwayName)
+                    txt.text = getString(R.string.certificate_information, pathwayName)
+                    tvDownload.setOnClickListener {
+                        generatePDF(pdfUrl)
+                    }
+                    tvShare.setOnClickListener {
+                        showShareIntent(pdfUrl)
+                    }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
                     download(pdfUrl, pdfView)
@@ -273,7 +299,7 @@ class LearnFragment : Fragment() {
                 textView.isVisible = true
                 imageView.setImageResource(R.drawable.grey_icon_certificate)
                 println("required completed portion in fragment $completedPortion")
-                Toast.makeText(requireContext(), R.string.complete_course, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.complete_course, pathwayName), Toast.LENGTH_LONG).show()
             }
 
         }
@@ -377,39 +403,52 @@ class LearnFragment : Fragment() {
 
 
     private fun setUpUpcomingData(batch: Batch) {
-        tvType.text = batch.sanitizedType() + " :"
-        tvTitleBatch.text = batch.title
-        tvBatchDate.text = batch.dateRange()
-        tvText.text = "Can't start on ${batch.startTime?.toDate()}"
-        tvBtnEnroll.setOnClickListener {
-            showEnrolDialog(batch)
-        }
-        more_classe.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+        mBinding.apply {
+            batchCard.tvType.text = batch.sanitizedType() + " :"
+            batchCard.tvTitleBatch.text = batch.title
+            batchCard.tvBatchDate.text = batch.dateRange()
+            batchCard.tvText.text = "Can't start on ${batch.startTime?.toDate()}"
+            batchCard.tvBtnEnroll.setOnClickListener {
+                showEnrolDialog(batch)
+            }
+            batchCard.moreClasse.setOnClickListener {
+                viewModel.handle(LearnFragmentViewActions.BtnMoreBatchClicked)
+            }
         }
     }
 
     private fun showTestButton(cta: PathwayCTA) {
-        mBinding.buttonTakeTest.text = cta.value
-        mBinding.buttonTakeTest.setOnClickListener {
-            viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
+        mBinding.apply {
+            buttonTakeTest.text = cta.value
+            buttonTakeTest.setOnClickListener {
+                viewModel.handle(LearnFragmentViewActions.PathwayCtaClicked)
+            }
         }
     }
 
     private fun showEnrolDialog(batch: Batch) {
+        val binding: LayoutClassinfoDialogBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(requireContext()),
+            R.layout.layout_classinfo_dialog,
+            null,
+            false
+        )
         val alertLayout: View = getLayoutInflater().inflate(R.layout.layout_classinfo_dialog, null)
         val btnAccept: View = alertLayout.findViewById(R.id.btnEnroll)
         val btnBack: View = alertLayout.findViewById(R.id.btnback)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this.requireContext())
-        builder.setView(alertLayout)
+        builder.setView(binding.root)
         builder.setCancelable(true)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val btAlertDialog: AlertDialog? = builder.create()
         btAlertDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         btAlertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val tvClassTitle = alertLayout.tvClassTitle
+        val tvClassTitle =binding.tvClassTitle
         tvClassTitle.text = batch.title
-        val tvBatchDate = alertLayout.tv_Batch_Date
+        val tvBatchDate = binding.tvBatchDate
         tvBatchDate.text = batch.dateRange()
 
         btnAccept.setOnClickListener {
@@ -422,7 +461,18 @@ class LearnFragment : Fragment() {
         btAlertDialog?.show()
         btAlertDialog?.setWidthPercent(45);
     }
+    private fun initToolBar() {
+        (activity as? ToolbarConfigurable)?.configure(
+            getString(org.navgurukul.commonui.R.string.app_name),
+            org.navgurukul.commonui.R.attr.textPrimary,
+            false,
+            null,
+            null,
+            null, null,
+            false,
+        )
 
+    }
     private fun configureToolbar(
         subtitle: String? = null,
         attachClickListener: Boolean = false,
@@ -434,7 +484,7 @@ class LearnFragment : Fragment() {
             if (subtitle != null) {
                 it.configure(
                     subtitle,
-                    R.attr.textPrimary,
+                    org.navgurukul.commonui.R.attr.textPrimary,
                     subtitle = "",
                     onClickListener = if (attachClickListener) {
                         {
@@ -489,23 +539,28 @@ class LearnFragment : Fragment() {
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewUpcoming.layoutManager = layoutManager
-        recyclerViewUpcoming.adapter = mClassAdapter
+        mBinding.apply {
+            upcoming.recyclerViewUpcoming.layoutManager = layoutManager
+            mBinding.upcoming.recyclerViewUpcoming.adapter = mClassAdapter
 
-        mClassAdapter.submitList(upcomingClassList)
+            mClassAdapter.submitList(upcomingClassList)
+        }
     }
 
     private fun initRecyclerView() {
         mCourseAdapter = CourseAdapter(requireContext()) {
             viewModel.selectCourse(it)
+            //mCourseAdapter.notifyDataSetChanged()
         }
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        mBinding.recyclerviewCourse.layoutManager = layoutManager
-        mBinding.recyclerviewCourse.adapter = mCourseAdapter
-        mBinding.recyclerviewCourse.addItemDecoration(
-            DotItemDecoration(requireContext())
-        )
+        mBinding.apply {
+            recyclerviewCourse.layoutManager = layoutManager
+            recyclerviewCourse.adapter = mCourseAdapter
+            recyclerviewCourse.addItemDecoration(
+                DotItemDecoration(requireContext())
+            )
+        }
     }
 
 }

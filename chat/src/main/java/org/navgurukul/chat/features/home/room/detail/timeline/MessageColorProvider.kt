@@ -22,11 +22,11 @@ class MessageColorProvider(
             SendState.UNKNOWN,
             SendState.UNSENT,
             SendState.ENCRYPTING,
-            SendState.SENDING -> colorProvider.getColorFromAttribute(R.attr.textPrimary)
+            SendState.SENDING -> colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textPrimary)
             SendState.SENT,
-            SendState.SYNCED -> colorProvider.getColorFromAttribute(R.attr.textPrimary)
+            SendState.SYNCED -> colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textPrimary)
             SendState.UNDELIVERED,
-            SendState.FAILED_UNKNOWN_DEVICES -> colorProvider.getColorFromAttribute(R.attr.textPrimary)
+            SendState.FAILED_UNKNOWN_DEVICES -> colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textPrimary)
         }
     }
 }

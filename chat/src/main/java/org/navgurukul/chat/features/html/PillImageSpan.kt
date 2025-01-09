@@ -78,14 +78,14 @@ class PillImageSpan(private val glideRequests: GlideRequests,
     // Private methods *****************************************************************************
 
     private fun createChipDrawable(): ChipDrawable {
-        val textPadding = context.resources.getDimension(R.dimen.spacing_1x)
+        val textPadding = context.resources.getDimension(org.navgurukul.commonui.R.dimen.spacing_1x)
         val icon = try {
             avatarRenderer.getCachedDrawable(glideRequests, matrixItem)
         } catch (exception: Exception) {
             avatarRenderer.getPlaceholderDrawable(context, matrixItem)
         }
 
-        return ChipDrawable.createFromResource(ContextThemeWrapper(context, R.style.AppTheme), R.xml.pill_view).apply {
+        return ChipDrawable.createFromResource(ContextThemeWrapper(context, org.navgurukul.commonui.R.style.AppTheme), R.xml.pill_view).apply {
             text = matrixItem.getBestName()
             textEndPadding = textPadding
             textStartPadding = textPadding
