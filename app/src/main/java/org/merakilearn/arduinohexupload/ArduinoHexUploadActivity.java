@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -126,7 +127,9 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
     private TextView display;
     private TextView portSelect;
     private String deviceKeyName;
-    private FloatingActionButton fab;
+//    private FloatingActionButton fab;
+private Button burnCodeButton;
+private ImageView arrowBack;
     private Button requestButton;
     private Collection<String> parseHexDataString;
 
@@ -134,7 +137,8 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         if (state == UsbConnectState.DISCONNECTED) {
             Log.d("Arduino", "UsbConnectState.DISCONNECTED state $state");
             if (requestButton != null) requestButton.setVisibility(View.INVISIBLE);
-            if (fab != null) fab.hide();
+//            if (fab != null) fab.hide();
+            if (burnCodeButton != null) burnCodeButton.setVisibility(View.VISIBLE);
         } else if (state == UsbConnectState.CONNECT) {
             Log.d("Arduino", "UsbConnectState.CONNECTED state $state");
             if (requestButton != null) requestButton.setVisibility(View.VISIBLE);
@@ -148,7 +152,8 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         Toast.makeText(this, "UsbPermissionGranted:" + usbKey, Toast.LENGTH_SHORT).show();
         portSelect.setText(usbKey);
         deviceKeyName = usbKey;
-        if (fab != null) fab.show();
+//        if (fab != null) fab.show();
+        if (burnCodeButton != null) burnCodeButton.setVisibility(View.VISIBLE);
     }
 
 
@@ -171,10 +176,15 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_arduino_hex_upload);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView headerTitle = toolbar.findViewById(R.id.headerTitle);
+        headerTitle.setText("Burn Code to Device");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         portSelect = (TextView) findViewById(R.id.textViewTitle);
         display = (TextView) findViewById(R.id.textView1);
-        fab = findViewById(R.id.fab);
+//        fab = findViewById(R.id.fab);
+        burnCodeButton = findViewById(R.id.burnCodeButton);
+        arrowBack = findViewById(R.id.arrowback);
         requestButton = (Button) findViewById(R.id.buttonRequest);
         requestButton.setOnClickListener(view -> {
             Map.Entry<String, UsbDevice> entry = usbSerialManager.getUsbDeviceList().entrySet().iterator().next();
@@ -183,12 +193,19 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             if (hasPem) {
                 portSelect.setText(keySelect);
                 deviceKeyName = keySelect;
-                if (fab != null) fab.show();
+//                if (fab != null) fab.show();
+                if (burnCodeButton != null) burnCodeButton.setVisibility(View.VISIBLE);
             } else {
                 requestDevicePermission(keySelect);
             }
         });
 
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         // Retrieve the data from the Bundle
         String hexDataFromSketch = bundle.getString("HexDataFromSketch1", null);
 
@@ -207,15 +224,21 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
             Log.d("Arduino","Getting array buffer directly"+ parseHexDataString);
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //   uploadHex();
+//                new Thread(new UploadRunnable()).start();
+//            }
+//        });
+//    }
+        burnCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   uploadHex();
                 new Thread(new UploadRunnable()).start();
             }
         });
     }
-    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -374,26 +397,26 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
 }

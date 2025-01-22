@@ -18,26 +18,24 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="@dimen/dimen_15_dp"-->
-<!--                android:src="@drawable/ic_back_arrow"/>-->
+            <ImageView
+                android:id="@+id/arrowback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_15_dp"
+                android:src="@drawable/baseline_arrow_back_24"/>
 
             <TextView
                 android:id="@+id/headerTitle"
-                style="?textAppearanceHeadline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="Burn Code to Device"
-                android:ellipsize="end"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:layout_marginStart="@dimen/dimen_10_dp"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/headerIcon"
-                app:layout_constraintEnd_toStartOf="@id/headerAction"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                android:ellipsize="end" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -59,7 +57,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            android:text="@string/serial_port"
+            android:text="Your Arduino Device"
+            android:drawableLeft="@drawable/group"
+            android:drawablePadding="8dp"
+            style="?textAppearanceHeadline6"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <androidx.cardview.widget.CardView
@@ -73,8 +74,9 @@
                 android:layout_height="250dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="34dp"
-                android:background="#585858"
+                android:background="@drawable/background"
                 android:gravity="bottom"
+                android:textColor="@color/green"
                 android:scrollbars="vertical" />
 
         </androidx.cardview.widget.CardView>
@@ -99,5 +101,17 @@
         android:layout_margin="@dimen/fab_margin"
         android:visibility="gone"
         app:srcCompat="@android:drawable/ic_media_play" />
+    <Button
+        android:id="@+id/burnCodeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Burn Code"
+        android:textAllCaps="false"
+        android:background="@drawable/background"
+        android:drawableLeft="@drawable/baseline_play_circle_24"
+        android:drawablePadding="8dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
