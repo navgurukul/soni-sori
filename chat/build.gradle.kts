@@ -139,7 +139,7 @@ dependencies {
     implementation(RxJavaDependencies.rxBindingMaterial)
 
     //textDrawable
-    implementation(MiscellaneousDependencies.textDrawable)
+//    implementation(MiscellaneousDependencies.textDrawable)
 
     implementation(MiscellaneousDependencies.span)
 

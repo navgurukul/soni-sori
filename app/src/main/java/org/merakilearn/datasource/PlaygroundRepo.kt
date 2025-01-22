@@ -38,7 +38,12 @@ class PlaygroundRepo(
                 PlaygroundTypes.WEB_DEV_IDE,
                 name="HTML/CSS/JS",
                 iconResource = R.drawable.ic_web_icon,
-            )
+            ),
+            PlaygroundItemModel(
+                PlaygroundTypes.ARDUINO,
+                name="Arduino",
+                iconResource = R.drawable.arduino_logo,
+            ),
         )
     }
 

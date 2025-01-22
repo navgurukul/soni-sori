@@ -173,6 +173,7 @@ class PlaygroundViewModel(
                     playgroundItemModel.file
                 )
             )
+            PlaygroundTypes.ARDUINO -> _viewEvents.postValue(PlaygroundViewEvents.OpenArduinoBlockly)
         }
     }
 
@@ -267,7 +268,7 @@ sealed class PlaygroundViewEvents : ViewEvents {
     class OpenWebIDE(val project : String) : PlaygroundViewEvents()
     object OpenDialogToCreateWebProject : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
-
+    object OpenArduinoBlockly : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions : ViewModelAction {

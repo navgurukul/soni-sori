@@ -79,6 +79,7 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 //    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar","*.aar"))))
 
     //modules
     implementation(project(":learn"))
@@ -175,10 +176,11 @@ dependencies {
     //androidTest
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
-    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+//    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
+    implementation("com.github.felHR85:UsbSerial:6.0.6")
 
     //implementation ("com.google.android.gms:play-services-auth:19.0.0")
 

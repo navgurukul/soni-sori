@@ -10,6 +10,9 @@
     <color name="green">#21CC23</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
     <color name="code_line_shadow">#10000000</color>
     <color name="code_number">#a0a0a0</color>
     <color name="code_bg">#f8f8f8</color>

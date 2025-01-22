@@ -3,6 +3,7 @@ include (":core")
 include (":commonUI")
 include (":python")
 include (":learn")
+include (":IntelHexFormatReader")
 //include (":chat")
 include (":app")
 rootProject.name = "Saral"
