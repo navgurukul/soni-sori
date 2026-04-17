@@ -14,6 +14,7 @@ plugins {
 }
 
 android {
+    namespace = "org.merakilearn"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -47,9 +48,13 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
         exclude("META-INF/DEPENDENCIES")
         exclude("META-INF/LICENSE")
         exclude("META-INF/LICENSE.txt")

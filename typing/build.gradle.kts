@@ -8,6 +8,7 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.typingguru"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {

@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace = "org.merakilearn.core"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -68,4 +69,10 @@ dependencies {
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
 
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

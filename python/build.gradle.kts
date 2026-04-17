@@ -6,7 +6,9 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.playground"
     compileSdk = BuildConfigVersions.compileSdkVersion
+    ndkVersion = BuildConfigVersions.ndkVersion
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion

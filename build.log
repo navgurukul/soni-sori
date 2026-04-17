@@ -1,0 +1,99 @@
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources NO-SOURCE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+
+> Configure project :app
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :chat
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :commonUI
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :core
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :learn
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :python
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :typing
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+Warning: Please apply google-services plugin at the bottom of the build file.
+Disabling ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM option because this is a dynamic-feature module. Dynamic-feature module is not supported by ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM yet.
+Configuration 'debugRuntimeClasspath' was resolved during configuration time.
+This is a build performance and scalability issue.
+See https://github.com/gradle/gradle/issues/2298
+Run with --info for a stacktrace.
+Configuration 'releaseRuntimeClasspath' was resolved during configuration time.
+This is a build performance and scalability issue.
+See https://github.com/gradle/gradle/issues/2298
+Run with --info for a stacktrace.
+
+> Task :chat:preBuild UP-TO-DATE
+> Task :chat:preReleaseBuild UP-TO-DATE
+> Task :commonUI:preBuild UP-TO-DATE
+> Task :commonUI:preReleaseBuild UP-TO-DATE
+> Task :commonUI:compileReleaseAidl NO-SOURCE
+> Task :core:preBuild UP-TO-DATE
+> Task :core:preReleaseBuild UP-TO-DATE
+> Task :core:compileReleaseAidl NO-SOURCE
+> Task :chat:compileReleaseAidl NO-SOURCE
+> Task :commonUI:packageReleaseRenderscript NO-SOURCE
+> Task :core:packageReleaseRenderscript NO-SOURCE
+> Task :chat:compileReleaseRenderscript NO-SOURCE
+> Task :chat:generateReleaseBuildConfig UP-TO-DATE
+> Task :chat:generateReleaseResValues UP-TO-DATE
+> Task :chat:generateReleaseResources UP-TO-DATE
+> Task :chat:packageReleaseResources UP-TO-DATE
+> Task :chat:parseReleaseLocalResources UP-TO-DATE
+> Task :chat:processReleaseManifest UP-TO-DATE
+> Task :commonUI:compileReleaseRenderscript NO-SOURCE
+> Task :commonUI:generateReleaseResValues UP-TO-DATE
+> Task :commonUI:generateReleaseResources UP-TO-DATE
+> Task :commonUI:packageReleaseResources UP-TO-DATE
+> Task :commonUI:parseReleaseLocalResources UP-TO-DATE
+> Task :commonUI:processReleaseManifest UP-TO-DATE
+> Task :commonUI:generateReleaseRFile UP-TO-DATE
+> Task :core:compileReleaseRenderscript NO-SOURCE
+> Task :core:generateReleaseResValues UP-TO-DATE
+> Task :core:generateReleaseResources UP-TO-DATE
+> Task :core:packageReleaseResources UP-TO-DATE
+> Task :core:parseReleaseLocalResources UP-TO-DATE
+> Task :core:processReleaseManifest UP-TO-DATE
+> Task :core:generateReleaseRFile UP-TO-DATE
+> Task :chat:generateReleaseRFile UP-TO-DATE
+> Task :commonUI:generateReleaseBuildConfig UP-TO-DATE
+> Task :commonUI:compileReleaseKotlin UP-TO-DATE
+> Task :commonUI:javaPreCompileRelease UP-TO-DATE
+> Task :commonUI:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :commonUI:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :core:generateReleaseBuildConfig UP-TO-DATE
+> Task :core:kaptGenerateStubsReleaseKotlin UP-TO-DATE
+> Task :core:kaptReleaseKotlin UP-TO-DATE
+> Task :core:compileReleaseKotlin UP-TO-DATE
+> Task :core:javaPreCompileRelease UP-TO-DATE
+> Task :core:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :core:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :chat:kaptGenerateStubsReleaseKotlin UP-TO-DATE
+> Task :chat:kaptReleaseKotlin UP-TO-DATE
+> Task :chat:compileReleaseKotlin UP-TO-DATE
+
+[Incubating] Problems report is available at: file:///C:/Users/Navgurukul/AndroidStudioProjects/soni-sori/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 3s
+34 actionable tasks: 34 up-to-date

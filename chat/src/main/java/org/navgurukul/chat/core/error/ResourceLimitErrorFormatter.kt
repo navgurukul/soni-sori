@@ -35,11 +35,11 @@ class ResourceLimitErrorFormatter(private val context: Context) {
             val contactSubString = context.getString(R.string.resource_limit_contact_admin)
             context.getString(mode.contactRes, contactSubString)
         }
-        return span {
-            text = error
-        }
-                .append(separator)
-                .append(contact)
+        val spannable = android.text.SpannableStringBuilder()
+        spannable.append(error)
+        spannable.append(separator)
+        spannable.append(contact)
+        return spannable
     }
 
     /**

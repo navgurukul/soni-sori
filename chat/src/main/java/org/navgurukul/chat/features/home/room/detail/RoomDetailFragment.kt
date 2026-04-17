@@ -207,6 +207,8 @@ class RoomDetailFragment : BaseFragment(),
 //                is RoomDetailFragmentViewEvents.DisplayEnableIntegrationsWarning -> displayDisabledIntegrationDialog()
 //                is RoomDetailFragmentViewEvents.OpenIntegrationManager           -> openIntegrationManager()
                 is RoomDetailFragmentViewEvents.OpenFile                         -> startOpenFileIntent(it)
+//                is RoomDetailFragmentViewEvents.DownloadFileState                -> handleDownloadFileState(it)
+                else -> {}
             }
         })
 
@@ -947,6 +949,7 @@ class RoomDetailFragment : BaseFragment(),
 //                    }
 //                }.show(parentFragmentManager, "REQ")
 //            }
+            else -> {}
         }
     }
 

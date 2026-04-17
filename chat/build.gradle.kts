@@ -11,6 +11,7 @@ kapt {
 }
 
 android {
+    namespace = "org.navgurukul.chat"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -136,9 +137,7 @@ dependencies {
     //textDrawable
     implementation(MiscellaneousDependencies.textDrawable)
 
-    implementation(MiscellaneousDependencies.span)
-
-    implementation(MiscellaneousDependencies.threeTenABP)
+    //Alerter
 
     implementation(MiscellaneousDependencies.linkMovement)
 
@@ -149,6 +148,7 @@ dependencies {
 
     //Alerter
     implementation(MiscellaneousDependencies.alerter)
+    implementation(MiscellaneousDependencies.threeTenABP)
 
     //test
     testImplementation(TestDependencies.jUnit)

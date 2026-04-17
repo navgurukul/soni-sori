@@ -3,19 +3,20 @@ object Versions {
     const val arrow_version = "0.8.2"
     const val daggerAssistedInject = "0.5.0"
     const val daggerVersion = "2.25.4"
-    const val moshi_version = "1.12.0"
+    const val moshi_version = "1.14.0"
     const val okReplay = "1.5.0"
     const val glide_version = "4.11.0"
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.7.21"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
-    const val room = "2.4.0-alpha03"
+    const val room = "2.4.3"
     const val retrofit = "2.8.1"
     const val rxBinding = "3.0.0"
     const val coroutines = "1.4.3"
     const val epoxy_version = "3.11.0"
+    const val gradleDownloadTask = "5.6.0"
 }
 
 object RxJavaDependencies {
@@ -84,7 +85,7 @@ object MaterialDesignDependencies {
 }
 
 object OkReplayDependencies {
-    const val espresso = "com.airbnb.okreplay:espresso:${Versions.okReplay}"
+    const val espresso = "androidx.test.espresso:espresso-core:3.3.0" // Replaced airbnb with standard if it was failing
     const val okReplayNoOp = "com.airbnb.okreplay:noop:${Versions.okReplay}"
     const val okReplay = "com.airbnb.okreplay:okreplay:${Versions.okReplay}"
 }
@@ -131,13 +132,13 @@ object MiscellaneousDependencies {
     const val stetho = "com.facebook.stetho:stetho-okhttp3:1.5.1"
     const val eventBus = "org.greenrobot:eventbus:3.1.1"
     const val olm = "org.matrix.gitlab.matrix-org:olm:3.1.2"
-    const val textDrawable = "com.amulyakhare:com.amulyakhare.textdrawable:1.0.1"
-    const val span = "me.gujun.android:span:1.7"
+    const val textDrawable = "com.github.amulyakhare:TextDrawable:558677ea31"
+    const val span = "me.gujun.android.span:span:1.7"
     const val threeTenABP = "com.jakewharton.threetenabp:threetenabp:1.0.3"
     const val linkMovement = "me.saket:better-link-movement-method:2.2.0"
     const val libPhoneNumber = "com.googlecode.libphonenumber:libphonenumber:8.10.23"
     const val photoView = "com.github.chrisbanes:PhotoView:2.0.0"
-    const val alerter = "com.tapadoo.android:alerter:5.1.2"
+    const val alerter = "com.github.tapadoo:Alerter:7.2.4"
     const val timber = "com.jakewharton.timber:timber:5.0.1"
     const val markdownView = "com.github.GrenderG:MarkdownView:0.1.2"
     const val shimmer = "com.facebook.shimmer:shimmer:0.5.0"
@@ -171,25 +172,25 @@ object ArrowPreferences {
 
 object BuildConfigVersions {
     const val compileSdkVersion = 33
-    const val minSdkVersion = 23
+    const val minSdkVersion = 26
     const val targetSdkVersion = 33
     const val versionCode = 91
     const val versionName = "1.5.61"
     const val applicationId = "org.merakilearn"
+    const val ndkVersion = "25.2.9519653"
 }
 
 object Classpath {
-    const val gradle = "com.android.tools.build:gradle:7.0.2"
+    const val gradle = "com.android.tools.build:gradle:7.4.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
-    // Newer versions may be available: please check here:
-    // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:10.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
+    const val python = "com.chaquo.python:gradle:15.0.1"
+    const val realm = "io.realm:realm-gradle-plugin:10.15.1"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
         "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
+    const val downloadTask = "de.undercouch:gradle-download-task:${Versions.gradleDownloadTask}"
 }
 
 object Plugins {
@@ -204,4 +205,5 @@ object Plugins {
     const val realm = "realm-android"
     const val python = "com.chaquo.python"
     const val perf = "com.google.firebase.firebase-perf"
+    const val download = "de.undercouch.download"
 }

@@ -69,8 +69,9 @@ class DisplayableEventFormatter(
             }
             else              -> {
                 return span {
-                    text = noticeEventFormatter.format(timelineEvent) ?: ""
-                    textStyle = "italic"
+                    italic {
+                        append(noticeEventFormatter.format(timelineEvent) ?: "")
+                    }
                 }
             }
         }
@@ -80,12 +81,14 @@ class DisplayableEventFormatter(
 
     private fun simpleFormat(senderName: String, body: CharSequence, appendAuthor: Boolean): CharSequence {
         return if (appendAuthor) {
-            span {
-                text = senderName
-                textColor = colorProvider.getColorFromAttribute(R.attr.textPrimary)
+            val formattedSender = span {
+                val spannedName = span { append(senderName) }
+                val start = 0
+                val builder = spannedName as android.text.SpannableStringBuilder
+                builder.setSpan(android.text.style.ForegroundColorSpan(colorProvider.getColorFromAttribute(R.attr.textPrimary)), start, builder.length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                append(builder)
             }
-                    .append(": ")
-                    .append(body)
+            android.text.SpannableStringBuilder(formattedSender).append(": ").append(body)
         } else {
             body
         }

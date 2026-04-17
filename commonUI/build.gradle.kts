@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.commonui"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {

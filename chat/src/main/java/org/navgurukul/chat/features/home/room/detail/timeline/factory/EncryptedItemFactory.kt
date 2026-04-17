@@ -6,7 +6,6 @@ import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.toModel
 import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
 import org.matrix.android.sdk.internal.crypto.model.event.EncryptedEventContent
-import me.gujun.android.span.image
 import me.gujun.android.span.span
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.MerakiEpoxyModel
@@ -70,7 +69,7 @@ class EncryptedItemFactory(
                                 span {
                                     apply {
                                         drawableProvider.getDrawable(R.drawable.ic_forbidden, colorFromAttribute)?.let {
-                                            image(it, "baseline")
+                                            image(it, android.text.style.DynamicDrawableSpan.ALIGN_BASELINE)
                                         }
                                     }
                                     span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_final)) {
@@ -83,7 +82,7 @@ class EncryptedItemFactory(
                                 span {
                                     apply {
                                         drawableProvider.getDrawable(R.drawable.ic_clock, colorFromAttribute)?.let {
-                                            image(it, "baseline")
+                                            image(it, android.text.style.DynamicDrawableSpan.ALIGN_BASELINE)
                                         }
                                     }
                                     span(stringProvider.getString(R.string.notice_crypto_unable_to_decrypt_friendly)) {

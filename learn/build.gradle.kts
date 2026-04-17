@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    namespace = "org.navgurukul.learn"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -43,6 +44,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 }
 
