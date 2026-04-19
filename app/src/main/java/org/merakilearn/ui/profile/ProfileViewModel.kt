@@ -280,6 +280,14 @@ class ProfileViewModel(
                     is Resource.Error -> {
                         Timber.tag("ProfileViewModel").d("Error in getting enrolled batches")
                     }
+
+                    is Resource.Loading -> {
+                        // No-op; isLoading state is already set before request.
+                    }
+
+                    null -> {
+                        Timber.tag("ProfileViewModel").d("No batch response received")
+                    }
                 }
 
             }catch (e:Exception) {

@@ -188,6 +188,7 @@ class ClassFragment: Fragment() {
                 is LearnFragmentViewEvents.EnrolledSuccessfully ->{
                     screenRefreshListener?.onRefresh()
                 }
+                else -> {}
             }
         }
     }

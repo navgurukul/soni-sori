@@ -9,6 +9,7 @@ object Versions {
     const val glide_svg = "1.4"
     const val markdown = "4.5.1"
     const val kotlin = "1.7.21"
+    const val lifecycle = "2.4.0"
     const val lifecycle_extensions = "2.2.0"
     const val koin = "2.2.3"
     const val room = "2.4.3"
@@ -58,17 +59,17 @@ object AndroidxDependencies {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val lifecycleLiveDataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleLiveData =
-        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle}"
     const val lifecycleViewModelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-viewmodel:${Versions.lifecycle}"
     const val lifecycleExtensions =
         "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_extensions}"
     const val lifecycleRx =
-        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle_extensions}"
+        "androidx.lifecycle:lifecycle-reactivestreams:${Versions.lifecycle}"
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.3.0"
     const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:2.3.0"
     const val navigationUI = "androidx.navigation:navigation-ui:2.3.0"
@@ -184,8 +185,8 @@ object Classpath {
     const val gradle = "com.android.tools.build:gradle:7.4.2"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
-    const val python = "com.chaquo.python:gradle:15.0.1"
-    const val realm = "io.realm:realm-gradle-plugin:10.15.1"
+    const val python = "com.chaquo.python:gradle:16.1.0"
+    const val realm = "io.realm:realm-gradle-plugin:10.19.0"
     const val googleServices = "com.google.gms:google-services:4.3.4"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =

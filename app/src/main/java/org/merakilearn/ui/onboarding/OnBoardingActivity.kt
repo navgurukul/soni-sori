@@ -106,6 +106,14 @@ class OnBoardingActivity : AppCompatActivity() {
                     PartnerFragment.newInstance(),
                     PartnerFragment.TAG
                 )
+
+                OnBoardingViewEvents.ShowSelectLanguageFragment -> {
+                    // No dedicated language screen flow in this activity yet.
+                }
+
+                is OnBoardingViewEvents.ShowPartnerData -> {
+                    // Partner data events are consumed by PartnerFragment.
+                }
             }
         }
 

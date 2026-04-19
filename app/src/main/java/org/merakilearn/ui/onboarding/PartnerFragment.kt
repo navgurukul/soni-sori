@@ -43,6 +43,15 @@ class PartnerFragment : Fragment() {
 
                 }
 
+                OnBoardingViewEvents.ShowCourseSelectionScreen,
+                OnBoardingViewEvents.ShowLoginScreen,
+                is OnBoardingViewEvents.ShowMainScreen,
+                OnBoardingViewEvents.ShowOnBoardingPages,
+                OnBoardingViewEvents.ShowPartnerScreen,
+                OnBoardingViewEvents.ShowSelectLanguageFragment -> {
+                    // Other onboarding navigation events are handled by the activity.
+                }
+
             }
         }
     }

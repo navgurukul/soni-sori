@@ -68,6 +68,7 @@ class ClassActivity: AppCompatActivity(){
                         Uri.parse(it.link)
                     )
                 )
+                is EnrollViewEvents.RefreshContent -> showClassDetails(ClassActivityArgs(it.mClass))
             }
         }
 

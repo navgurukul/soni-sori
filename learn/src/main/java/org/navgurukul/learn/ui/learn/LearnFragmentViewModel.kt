@@ -178,6 +178,13 @@ class LearnFragmentViewModel(
                 val currentState = viewState.value!!
                 _viewEvents.postValue(LearnFragmentViewEvents.OpenUrl(currentState.pathways[currentState.currentPathwayIndex].cta))
             }
+
+            is LearnFragmentViewActions.ClassPrimaryCtaClicked -> {
+                val classId = actions.classId.toIntOrNull()
+                if (classId != null) {
+                    primaryAction(classId, actions.isEnrolled)
+                }
+            }
         }
     }
 
@@ -198,12 +205,17 @@ class LearnFragmentViewModel(
                             getBatchesDataByPathway(pathwayId)
                             _viewEvents.postValue(LearnFragmentViewEvents.ShowCompletedStatus)
                         }
+                        null -> {
+                            setState { copy(loading= false) }
+                        }
                     }
                 }
                 is Resource.Error -> {
                     setState { copy(loading= false) }
                     FirebaseCrashlytics.getInstance().recordException(Exception(status.message))
                 }
+                is Resource.Loading -> Unit
+                null -> setState { copy(loading= false) }
             }
         }
     }
@@ -239,6 +251,8 @@ class LearnFragmentViewModel(
                     is Resource.Error -> {
                         FirebaseCrashlytics.getInstance().recordException(Exception(batches.message))
                     }
+                    is Resource.Loading -> Unit
+                    null -> setState { copy(loading= false) }
                 }
             } catch (e: Exception){
                 println(e.message)
@@ -266,9 +280,7 @@ class LearnFragmentViewModel(
                 is Resource.Error -> {
                     FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
                 }
-                else -> {
-                    FirebaseCrashlytics.getInstance().recordException(Exception(classes.message))
-                }
+                is Resource.Loading -> Unit
             }
         }
     }

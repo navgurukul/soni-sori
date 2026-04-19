@@ -42,6 +42,17 @@ allprojects {
         @Suppress("DEPRECATION")
         jcenter()
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force(
+                "androidx.lifecycle:lifecycle-viewmodel:2.4.0",
+                "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0",
+                "androidx.lifecycle:lifecycle-livedata:2.4.0",
+                "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+            )
+        }
+    }
 }
 
 tasks.register("clean", Delete::class) {

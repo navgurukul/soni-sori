@@ -263,6 +263,7 @@ class AssessmentFragmentViewModel (
                             _viewEvents.postValue(AssessmentFragmentViewEvents.ShowToast(it))
                         }
                     }
+                    is Resource.Loading -> Unit
                 }
 
             } catch (e: Exception){

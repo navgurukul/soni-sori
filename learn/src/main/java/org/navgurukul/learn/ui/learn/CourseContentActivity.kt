@@ -132,7 +132,11 @@ class CourseContentActivity : AppCompatActivity(){
 
                     mBinding.bottomNavigationExercise.updateNavButtons(it.isFirst)
                 }
+                CourseContentActivityViewEvents.ShowErrorScreen -> {
+                    toast(getString(R.string.error_loading_data))
+                }
                 CourseContentActivityViewEvents.FinishActivity -> finish()
+                else -> {}
             }
         }
 
