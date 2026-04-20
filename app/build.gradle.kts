@@ -24,6 +24,11 @@ android {
         versionCode = BuildConfigVersions.versionCode
         versionName = BuildConfigVersions.versionName
 
+        ndk {
+            abiFilters.clear()
+            abiFilters.add("arm64-v8a")
+        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -53,7 +58,7 @@ android {
 
     packagingOptions {
         jniLibs {
-            useLegacyPackaging = false
+            useLegacyPackaging = true
         }
         exclude("META-INF/DEPENDENCIES")
         exclude("META-INF/LICENSE")
@@ -67,6 +72,12 @@ android {
     }
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
+
+    bundle {
+        abi {
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
@@ -168,32 +179,29 @@ dependencies {
 }
 
 tasks.register<Download>("downloadBundleTools") {
-    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
-    dest(File(buildDir, "bundletool-all.jar"))
+    src("https://github.com/google/bundletool/releases/download/1.17.2/bundletool-all-1.17.2.jar")
+    dest(File(buildDir, "bundletool-all-1.17.2.jar"))
 }
 
 android.applicationVariants.all {
     outputs.forEach { output: BaseVariantOutput? ->
         (output as? ApkVariantOutput)?.let { apkOutput: ApkVariantOutput ->
-            val bundleToolJar = File(buildDir, "bundletool-all.jar")
-            var filePath = apkOutput.outputFile.absolutePath
-            filePath = filePath.replaceAfterLast(".", "aab")
-            filePath = filePath.replace("build/outputs/apk/", "build/outputs/bundle/")
-            var outputPath = filePath.replace("build/outputs/bundle/", "build/outputs/apks/")
-            outputPath = outputPath.replaceAfterLast(".", "apks")
+            val variantName = this.name.substring(0, 1).toUpperCase() + this.name.substring(1)
+            val bundleToolJar = File(buildDir, "bundletool-all-1.17.2.jar")
+            val bundleFile = File(buildDir, "outputs/bundle/${this.name}/app-${this.name}.aab")
+            val outputFile = File(buildDir, "outputs/apks/${this.name}/app-${this.name}.apks")
 
             val signingInfo = android.signingConfigs.find { it.name == this.name }
 
-            tasks.register<JavaExec>("buildApks${this.name.capitalize()}") {
+            tasks.register<JavaExec>("buildApks$variantName") {
                 classpath = files(bundleToolJar)
                 val argsList = arrayListOf(
                     "build-apks",
                     "--overwrite",
-                    "--local-testing",
                     "--bundle",
-                    filePath,
+                    bundleFile.absolutePath,
                     "--output",
-                    outputPath
+                    outputFile.absolutePath
                 ).apply {
                     if (signingInfo != null) {
                         addAll(
@@ -216,13 +224,13 @@ android.applicationVariants.all {
                 if (!bundleToolJar.exists()) {
                     dependsOn("downloadBundleTools")
                 }
-                dependsOn("bundle${this.name.capitalize()}")
+                dependsOn("bundle$variantName")
             }
 
-            tasks.register<JavaExec>("installApkSplitsForTest${this.name.capitalize()}") {
+            tasks.register<JavaExec>("installApkSplitsForTest$variantName") {
                 classpath = files(bundleToolJar)
-                args = listOf("install-apks", "--apks", outputPath)
-                dependsOn("buildApks${this.name.capitalize()}")
+                args = listOf("install-apks", "--apks", outputFile.absolutePath)
+                dependsOn("buildApks$variantName")
             }
         }
     }
