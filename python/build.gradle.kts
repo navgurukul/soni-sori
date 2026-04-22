@@ -32,6 +32,12 @@ android {
     }
 }
 
+chaquopy {
+    defaultConfig {
+        version = "3.13"
+    }
+}
+
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
