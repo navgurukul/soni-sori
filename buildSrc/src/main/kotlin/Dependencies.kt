@@ -197,9 +197,9 @@ object ArrowPreferences {
 }
 
 object BuildConfigVersions {
-    const val compileSdkVersion = 34
-    const val minSdkVersion = 23
-    const val targetSdkVersion = 34
+    const val compileSdkVersion = 35
+    const val minSdkVersion = 26
+    const val targetSdkVersion = 35
     const val versionCode = 96
     const val versionName = "1.5.66"
     const val applicationId = "org.merakilearn"
@@ -238,7 +238,7 @@ object Classpath {
     const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"
     // Newer versions may be available: please check here:
     // https://chaquo.com/chaquopy/doc/current/changelog.html
-    const val python = "com.chaquo.python:gradle:15.0.1"
+    const val python = "com.chaquo.python:gradle:16.1.0"
 //    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.3.14"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
