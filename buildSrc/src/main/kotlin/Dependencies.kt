@@ -114,7 +114,7 @@ object GooglePlayDependencies {
 
 object GMSDependencies {
     const val base = "com.google.android.gms:play-services-base:18.1.0"
-    const val auth = "com.google.android.gms:play-services-auth:19.0.0"
+    const val auth = "com.google.android.gms:play-services-auth:21.2.0"
 }
 
 object KoinDependencies {
@@ -240,7 +240,7 @@ object Classpath {
     // https://chaquo.com/chaquopy/doc/current/changelog.html
     const val python = "com.chaquo.python:gradle:17.0.0"
 //    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
-    const val googleServices = "com.google.gms:google-services:4.3.14"
+    const val googleServices = "com.google.gms:google-services:4.4.2"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
     const val firebasePerf =
         "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"

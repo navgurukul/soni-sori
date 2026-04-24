@@ -15,83 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "449891326531-1en4hhk1fsl4vboam97027i578koedgc.apps.googleusercontent.com",
+          "client_id": "449891326531-4ujn9cbu9127tdr6a3i15vtcfinnu44i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.merakilearn",
-            "certificate_hash": "f8282aa2e387d81e95655d5d95f5e0c6103048cb"
+            "certificate_hash": "e6b1ef8af5a65f3f54482bd775c2f0d272252038"
           }
         },
         {
-          "client_id": "449891326531-3d72h2mt9oba8sqnjicsff1ldgggt2dv.apps.googleusercontent.com",
+          "client_id": "449891326531-qbifn7mc1vurp6er202o2ig09ejt2ep6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.merakilearn",
-            "certificate_hash": "22c35fc49227eef2b814c6224d30f76b2464e7cd"
-          }
-        },
-        {
-          "client_id": "449891326531-4crb45h4lp1qvdjgg7k7ht1nlkufh553.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "e31deab450d87d4c341273adea38f01ba2a70b92"
-          }
-        },
-        {
-          "client_id": "449891326531-4s775hocm463g5t10jg1kjcehd31sjnt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "07fc95e6b91c33bf3a8e37ce9498e95d6d534553"
-          }
-        },
-        {
-          "client_id": "449891326531-ak4s6koah2e3ftim6141hrfo4r69e0hj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "c06d5af940abcc4ac8d0fdf584ff2e592b2776ad"
-          }
-        },
-        {
-          "client_id": "449891326531-flg421hbs4sn8v0n5d5h1eggvhnp986c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "4ad5aee315d8eb8ceae3fd6527f31c463293f947"
-          }
-        },
-        {
-          "client_id": "449891326531-jpjqbldroh4k3khkar2tk88bh14s4eer.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "bf88f72d9693d87e3ca02b75be44608898f14fd6"
-          }
-        },
-        {
-          "client_id": "449891326531-k5588pnj4m0l60atg5ppbk15mm4v7bbv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "0fbd752cf7c409f6a4dae6866a8398a360a1552e"
-          }
-        },
-        {
-          "client_id": "449891326531-m5rtjcdu4pc4emlhrb37c3vfj1uk35ab.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "3470fb278aac2381be22adae8171a4b68ffcefeb"
-          }
-        },
-        {
-          "client_id": "449891326531-ogjlv532mpv2i90nt40k0e4cl5k81inl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.merakilearn",
-            "certificate_hash": "1c3fa9310cb0ffcdedb2c436b87937861b360702"
+            "certificate_hash": "3b4c031de6f31f6fee165672239c89bdb44eb867"
           }
         },
         {
