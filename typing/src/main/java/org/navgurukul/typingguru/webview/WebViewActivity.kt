@@ -11,6 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.merakilearn.databinding.ActivityMainBinding
 import org.navgurukul.commonui.platform.BaseActivity
 import org.navgurukul.typing.databinding.ActivityWebViewBinding
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 class WebViewActivity : BaseActivity() {
 
@@ -26,6 +27,7 @@ class WebViewActivity : BaseActivity() {
         binding = ActivityWebViewBinding.inflate(layoutInflater)
         setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
+        setupEdgeToEdge()
 
         binding.webview.webViewClient = MyBrowser {
             viewModel.handle(WebViewActivityViewEvents.OnNavigate(it))

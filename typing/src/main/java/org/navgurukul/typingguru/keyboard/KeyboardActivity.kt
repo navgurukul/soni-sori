@@ -31,6 +31,7 @@ import org.navgurukul.typingguru.webview.WebViewActivity
 import org.merakilearn.core.extentions.setWidthPercent
 import org.navgurukul.typing.R
 import org.navgurukul.typing.databinding.ActivityKeyboardBinding
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 @Parcelize
 data class KeyboardActivityArgs(
@@ -66,6 +67,7 @@ class KeyboardActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityKeyboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupEdgeToEdge()
 
         hideSystemUI()
 

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "449891326531",
+    "firebase_url": "https://meraki-c6769.firebaseio.com",
+    "project_id": "meraki-c6769",
+    "storage_bucket": "meraki-c6769.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449891326531:android:fee3688544a641dd2412f6",
+        "android_client_info": {
+          "package_name": "org.merakilearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449891326531-4ujn9cbu9127tdr6a3i15vtcfinnu44i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.merakilearn",
+            "certificate_hash": "e6b1ef8af5a65f3f54482bd775c2f0d272252038"
+          }
+        },
+        {
+          "client_id": "449891326531-qbifn7mc1vurp6er202o2ig09ejt2ep6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.merakilearn",
+            "certificate_hash": "3b4c031de6f31f6fee165672239c89bdb44eb867"
+          }
+        },
+        {
+          "client_id": "449891326531-jv9ulof4hfsuth41buj5buiv5cmf17re.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZCxedfsE8RAhAP7q1HNWz9VEJmIizKdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449891326531-jv9ulof4hfsuth41buj5buiv5cmf17re.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

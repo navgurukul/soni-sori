@@ -51,6 +51,7 @@ class ClassActivity: AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_class)
+        setupEdgeToEdge()
         setupToolbar()
 
         viewModel.viewState.observe(this) {

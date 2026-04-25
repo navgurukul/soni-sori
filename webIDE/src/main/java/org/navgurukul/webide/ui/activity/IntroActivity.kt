@@ -18,6 +18,7 @@ import org.navgurukul.webide.ui.adapter.IntroAdapter
 import org.navgurukul.webide.util.Prefs.defaultPrefs
 import org.navgurukul.webide.util.Prefs.set
 import org.navgurukul.webide.util.net.HtmlCompat
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 class IntroActivity : AppCompatActivity() {
 
@@ -32,6 +33,8 @@ class IntroActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 21) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
+
+        setupEdgeToEdge()
 
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)

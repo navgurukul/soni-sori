@@ -31,6 +31,7 @@ import org.navgurukul.webide.util.Prefs.set
 import org.navgurukul.webide.util.editor.ResourceHelper
 import org.navgurukul.webide.util.project.DataValidator
 import org.navgurukul.webide.util.project.ProjectManager
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import timber.log.Timber
 import java.io.File
 import java.io.InputStream
@@ -59,6 +60,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener,
         super.onCreate(savedInstanceState)
         binding = ActivityWebIdeHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupEdgeToEdge()
         setSupportActionBar(binding.include.toolbar)
 
         prefs = defaultPrefs(this)

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import org.navgurukul.commonui.platform.BaseFragment
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import org.navgurukul.commonui.themes.ThemeUtils
 import timber.log.Timber
 
@@ -22,6 +23,11 @@ open class ChatBaseActivity: AppCompatActivity() {
 
     @MenuRes
     open fun getMenuRes() = -1
+
+    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupEdgeToEdge()
+    }
 
     /**
      * Configure the Toolbar, with default back button.

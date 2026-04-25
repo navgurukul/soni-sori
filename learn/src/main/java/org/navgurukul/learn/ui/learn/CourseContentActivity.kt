@@ -18,6 +18,7 @@ import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.MerakiNavigator
 import org.navgurukul.commonui.platform.ListSpacingDecoration
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import org.navgurukul.learn.R
 import org.navgurukul.learn.courses.db.models.CourseContentType
 import org.navgurukul.learn.databinding.ActivityExerciseBinding

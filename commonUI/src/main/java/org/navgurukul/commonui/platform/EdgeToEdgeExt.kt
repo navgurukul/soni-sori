@@ -9,22 +9,22 @@ import androidx.core.view.WindowInsetsCompat
 
 /**
  * Setup edge-to-edge display for Android 15+ devices
- * This function handles bottom and top insets to prevent UI cutoff
+ * This function handles top, bottom, start, and end insets to prevent UI cutoff
  */
 fun AppCompatActivity.setupEdgeToEdge() {
     WindowCompat.setDecorFitsSystemWindows(window, false)
 
     val rootView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
 
-    // Apply window insets listener to handle bottom and top padding
+    // Apply window insets listener to handle all insets (top, bottom, start, end)
     ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-        // Apply padding for top and bottom only
+        // Apply padding for top, bottom, start (left), and end (right)
         view.setPadding(
-            view.paddingLeft,
+            insets.left,
             insets.top,
-            view.paddingRight,
+            insets.right,
             insets.bottom
         )
 
@@ -35,18 +35,18 @@ fun AppCompatActivity.setupEdgeToEdge() {
 
 /**
  * Setup edge-to-edge display for a specific view/fragment container
- * Handles bottom and top insets to prevent UI cutoff
+ * Handles top, bottom, start, and end insets to prevent UI cutoff
  */
 fun View.setupEdgeToEdgeForView() {
-    // Apply window insets listener to handle bottom and top padding
+    // Apply window insets listener to handle all insets
     ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-        // Apply padding for top and bottom only (not start/end)
+        // Apply padding for top, bottom, start (left), and end (right)
         view.setPadding(
-            view.paddingLeft,
+            insets.left,
             insets.top,
-            view.paddingRight,
+            insets.right,
             insets.bottom
         )
 

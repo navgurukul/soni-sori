@@ -15,6 +15,7 @@ import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.typing.databinding.ActivityScoreBinding
 import org.navgurukul.typingguru.keyboard.KeyboardActivity
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 @Parcelize
 data class ScoreActivityArgs(
@@ -42,6 +43,7 @@ class ScoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScoreBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupEdgeToEdge()
 
         setSupportActionBar(binding.toolbar)
 
