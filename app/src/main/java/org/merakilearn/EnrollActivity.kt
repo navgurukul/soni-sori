@@ -19,6 +19,7 @@ import org.koin.core.parameter.parametersOf
 import org.merakilearn.datasource.UserRepo
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.learn.ui.common.toast
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 @Parcelize
 data class EnrollActivityArgs(
@@ -59,6 +60,7 @@ class EnrollActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDiscoverEnrollBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupEdgeToEdge()
 
         if (userRepo.isUserLoggedIn()) {
             if (intent.hasExtra(ENROLL_ACTIVITY_ARGS)) {

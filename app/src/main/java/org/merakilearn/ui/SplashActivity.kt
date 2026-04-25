@@ -20,6 +20,7 @@ import org.merakilearn.theme.isChristmas
 import org.merakilearn.theme.isNewYear
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import timber.log.Timber
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 
 const val UPDATE_REQUEST_CODE = 524
@@ -37,6 +38,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.splash_activity_app)
+        setupEdgeToEdge()
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         setUpTheme()
         Handler(Looper.getMainLooper()).postDelayed({

@@ -27,6 +27,7 @@ import org.merakilearn.core.appopen.AppOpenDelegate
 import org.merakilearn.core.extentions.KEY_ARG
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.databinding.ActivityOnBoardingBinding
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 @Parcelize
 data class OnBoardingActivityArgs(
@@ -80,6 +81,7 @@ class OnBoardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
+        setupEdgeToEdge()
 
         viewModel.viewEvents.observe(this) {
             when (it) {

@@ -30,6 +30,7 @@ import org.merakilearn.datasource.network.model.LoginResponse
 import org.merakilearn.ui.onboarding.OnBoardingActivity
 import org.navgurukul.commonui.platform.SvgLoader
 import org.navgurukul.commonui.platform.ToolbarConfigurable
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.learn.courses.repository.LearnRepo
 
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupEdgeToEdge()
 
         val userId = userRepo.getCurrentUser()?.email
         FirebaseCrashlytics.getInstance().setUserId(userId!!)

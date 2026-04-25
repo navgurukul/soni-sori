@@ -33,6 +33,7 @@ import org.merakilearn.R
 import org.merakilearn.arduinohexupload.ArduinoHexUploadActivity
 import org.merakilearn.arduinohexupload.UsbSerialManager
 import timber.log.Timber
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 
 class ArduinoBlocklyActivity : AppCompatActivity() {
@@ -150,6 +151,7 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_arduinoblockly)
+        setupEdgeToEdge()
 
         progressBar = findViewById(R.id.progressBar2)
         progressBar.visibility = View.VISIBLE
