@@ -12,17 +12,15 @@ import androidx.core.view.WindowInsetsCompat
  * This function handles bottom and top insets to prevent UI cutoff
  */
 fun AppCompatActivity.setupEdgeToEdge() {
-    // Enable drawing behind system bars
     WindowCompat.setDecorFitsSystemWindows(window, false)
 
-    // Get the root view of the activity
     val rootView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
 
     // Apply window insets listener to handle bottom and top padding
     ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-        // Apply padding for top and bottom only (not start/end)
+        // Apply padding for top and bottom only
         view.setPadding(
             view.paddingLeft,
             insets.top,
