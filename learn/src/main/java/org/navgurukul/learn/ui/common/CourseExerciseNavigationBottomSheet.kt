@@ -6,6 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import org.navgurukul.learn.R
+import org.navgurukul.commonui.platform.setupEdgeToEdgeForView
 
 class CourseExerciseNavigationBottomSheet
 @JvmOverloads constructor(
@@ -20,6 +21,7 @@ class CourseExerciseNavigationBottomSheet
 
     init {
         inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
+        setupEdgeToEdgeForView()
 
         btnNext = findViewById(R.id.navigateNext)
         btnPrev = findViewById(R.id.navigatePrev)

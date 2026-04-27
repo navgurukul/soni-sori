@@ -66,6 +66,7 @@ class CourseContentActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         mBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_exercise)
+        setupEdgeToEdge()
         // Instantiate an instance of SplitInstallManager for the dynamic feature module
         if (!LearnUtils.isUserLoggedIn(this)) {
             merakiNavigator.restartApp(this, true)
