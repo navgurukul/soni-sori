@@ -25,6 +25,7 @@ import org.navgurukul.learn.courses.db.models.sanitizedType
 import org.navgurukul.learn.courses.db.models.timeDateRange
 import org.navgurukul.learn.databinding.ActivityClassBinding
 import org.navgurukul.learn.ui.common.toast
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 @Parcelize
 data class ClassActivityArgs(val classContent: CourseClassContent): Parcelable
@@ -51,6 +52,7 @@ class ClassActivity: AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_class)
+        setupEdgeToEdge()
         setupToolbar()
 
         viewModel.viewState.observe(this) {

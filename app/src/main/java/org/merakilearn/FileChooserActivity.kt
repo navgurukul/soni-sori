@@ -23,6 +23,7 @@ import org.merakilearn.core.navigator.MerakiNavigator
 import org.merakilearn.ui.ScratchActivity
 import java.io.BufferedOutputStream
 import java.io.File
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 
@@ -34,6 +35,7 @@ class FileChooserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_file_chooser)
+        setupEdgeToEdge()
         checkAndRequestPermissions()
 
         val progressBar: ProgressBar = findViewById(R.id.progressBar3)

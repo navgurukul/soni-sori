@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.parcel.Parcelize
 import org.merakilearn.core.extentions.toBundle
 import org.navgurukul.playground.R
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import java.io.File
 
 class PythonEditorActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class PythonEditorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_playground)
         setSupportActionBar(findViewById(R.id.toolBar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupEdgeToEdge()
 
         if (savedInstanceState == null) {
             supportFragmentManager

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitcompat.SplitCompat
 import org.navgurukul.webide.util.ui.Styles
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 abstract class ThemedActivity : AppCompatActivity() {
 
@@ -20,5 +21,6 @@ abstract class ThemedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(Styles.getThemeInt(this))
         super.onCreate(savedInstanceState)
+        setupEdgeToEdge()
     }
 }

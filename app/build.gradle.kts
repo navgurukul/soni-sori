@@ -36,7 +36,7 @@ android {
         }
 
         getByName("debug") {
-            buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
         }
     }
     compileOptions {

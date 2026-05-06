@@ -5,11 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
@@ -86,6 +92,7 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyEdgeToEdgeInsets()
 
         val userId = userRepo.getCurrentUser()?.email
         FirebaseCrashlytics.getInstance().setUserId(userId!!)
@@ -118,6 +125,44 @@ class MainActivity : AppCompatActivity(), ToolbarConfigurable {
 
     }
 
+    private fun applyEdgeToEdgeInsets() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val initialContainerLeft = binding.container.paddingLeft
+        val initialContainerTop = binding.container.paddingTop
+        val initialContainerRight = binding.container.paddingRight
+        val initialContainerBottom = binding.container.paddingBottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.container) { view, insets ->
+            val statusInsets = insets.getInsets(
+                WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            view.setPadding(
+                initialContainerLeft + statusInsets.left,
+                initialContainerTop + statusInsets.top,
+                initialContainerRight + statusInsets.right,
+                initialContainerBottom
+            )
+            insets
+        }
+
+        val initialNavLeft = binding.navView.paddingLeft
+        val initialNavRight = binding.navView.paddingRight
+        val initialNavBottomMargin =
+            (binding.navView.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
+        ViewCompat.setOnApplyWindowInsetsListener(binding.navView) { view, insets ->
+            val navInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.updatePadding(
+                left = initialNavLeft + navInsets.left,
+                right = initialNavRight + navInsets.right
+            )
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = initialNavBottomMargin + navInsets.bottom
+            }
+            insets
+        }
+
+        ViewCompat.requestApplyInsets(binding.container)
+    }
 
     private fun handleDeepLink(intent: Intent?) {
         intent?.data?.let { uri ->

@@ -9,6 +9,7 @@ import org.merakilearn.core.extentions.activityArgs
 import org.merakilearn.core.extentions.toBundle
 import org.merakilearn.core.navigator.Mode
 import org.navgurukul.commonui.platform.BaseActivity
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 class KeyboardDialogActivity : BaseActivity() {
 
@@ -35,6 +36,7 @@ class KeyboardDialogActivity : BaseActivity() {
             exitTransition = Fade()
         }
 
+        setupEdgeToEdge()
 
         val fragment = KeyboardDialogFragment.newInstance(keyboardDialogArgs.mode)
         fragment.show(supportFragmentManager, "TypingKeyboardDialogFragment")

@@ -27,6 +27,7 @@ import org.navgurukul.webide.util.Prefs.get
 import org.navgurukul.webide.util.net.HyperServer
 import org.navgurukul.webide.util.net.NetworkUtils
 import org.navgurukul.webide.util.project.ProjectManager
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -55,6 +56,7 @@ class WebActivity : ThemedActivity() {
         }
         binding = ActivityWebBinding.inflate(LayoutInflater.from(this@WebActivity))
         setContentView(binding.root)
+        setupEdgeToEdge()
         val indexFile = ProjectManager.getIndexFile(this, project)
         val indexPath = ProjectManager.getRelativePath(this, indexFile!!, project)
 

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import org.navgurukul.commonui.platform.BaseActivity
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import org.navgurukul.webide.R
 import org.navgurukul.webide.databinding.*
 import org.navgurukul.webide.extensions.*
@@ -73,6 +74,7 @@ class ProjectActivity : BaseActivity() {
             setTheme(Styles.getThemeInt(this))
             binding = ActivityProjectBinding.inflate(layoutInflater)
             setContentView(binding.root)
+            setupEdgeToEdge()
 
             prefs = defaultPrefs(this)
             props = HtmlParser.getProperties(this, projectName)

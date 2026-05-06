@@ -18,6 +18,7 @@ import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import org.navgurukul.chat.R
 import org.navgurukul.chat.databinding.ActivityAttachmentViewerBinding
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 
@@ -70,6 +71,7 @@ abstract class AttachmentViewerActivity : AppCompatActivity(), AttachmentEventLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupEdgeToEdge()
 
         // This is important for the dispatchTouchEvent, if not we must correct
         // the touch coordinates
