@@ -132,8 +132,8 @@ class PlaygroundFragment : BaseFragment() {
                     startActivity(intent)
                 }
                 is PlaygroundViewEvents.OpenArduinoBlockly -> {
-                    val intent = Intent(requireContext(), ArduinoBlocklyActivity::class.java)
-                    startActivity(intent)
+//                    val intent = Intent(requireContext(), ArduinoBlocklyActivity::class.java)
+//                    startActivity(intent)
                 }
             }
         }
