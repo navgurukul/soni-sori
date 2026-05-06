@@ -25,6 +25,17 @@
 }
 -keep,allowobfuscation @interface com.google.gson.annotations.SerializedName
 
+# Moshi - keep all model classes annotated with @JsonClass and their fields
+-keep @com.squareup.moshi.JsonClass class * { *; }
+-keepclassmembers class * {
+  @com.squareup.moshi.Json <fields>;
+}
+-keep,allowobfuscation @interface com.squareup.moshi.Json
+-keep,allowobfuscation @interface com.squareup.moshi.JsonClass
+# Keep Moshi generated adapters
+-keep class **JsonAdapter { *; }
+-keepnames class * { @com.squareup.moshi.JsonClass *; }
+
 -keep class com.chaquo.python.*.* {*;}
 -keepclassmembers class com.chaquo.python.*.* {*;}
 -keep class com.chaquo.python.android.*.* {*;}

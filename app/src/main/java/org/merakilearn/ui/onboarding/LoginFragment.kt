@@ -128,8 +128,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun logOutSelectedAccount(account: GoogleSignInAccount) {
+        val idToken = account.idToken  // capture before signOut invalidates it
         mGoogleSignInClient?.signOut()?.addOnSuccessListener {
-            getBackendServerToken(account.idToken)
+            getBackendServerToken(idToken)
         }
     }
 
