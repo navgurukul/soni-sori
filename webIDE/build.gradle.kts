@@ -15,11 +15,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-
     packagingOptions {
-        exclude("**/*.txt")
-        exclude("**/*.xml")
-        exclude( "**/*.properties")
+        resources.excludes.add("**/*.txt")
+        resources.excludes.add("**/*.xml")
+        resources.excludes.add("**/*.properties")
     }
     kotlinOptions {
         jvmTarget = "17"

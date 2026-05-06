@@ -1,5 +1,6 @@
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariantOutput
+import java.util.Properties
 //import de.undercouch.gradle.tasks.download.Download
 
 plugins {
@@ -28,9 +29,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val props = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+            storeFile = file(props["STORE_FILE"] as String)
+            storePassword = props["STORE_PASSWORD"] as String
+            keyAlias = props["KEY_ALIAS"] as String
+            keyPassword = props["KEY_PASSWORD"] as String
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
         }
@@ -50,6 +64,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        buildConfig = true
     }
 
     packagingOptions {
@@ -196,6 +211,26 @@ dependencies {
 //    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
 //    dest(File(buildDir, "bundletool-all.jar"))
 //}
+
+// Auto-extract Scratch assets from zip before build
+tasks.register<Copy>("extractScratchAssets") {
+    val zipFile = rootProject.file("scratch-assets/build-wo-remix.zip")
+    if (zipFile.exists()) {
+        from(zipTree(zipFile))
+        into(layout.projectDirectory.dir("src/main/assets"))
+        eachFile {
+            // strip the top-level folder name from zip
+            relativePath = RelativePath(true, *relativePath.segments.drop(1).toTypedArray())
+        }
+        includeEmptyDirs = false
+    }
+}
+
+tasks.whenTaskAdded {
+    if (name == "mergeDebugAssets" || name == "mergeReleaseAssets") {
+        dependsOn("extractScratchAssets")
+    }
+}
 
 android.applicationVariants.all {
     outputs.forEach { output: BaseVariantOutput? ->

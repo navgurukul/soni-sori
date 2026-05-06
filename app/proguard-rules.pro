@@ -49,3 +49,10 @@
 -dontwarn org.ietf.jgss.GSSName
 -dontwarn org.ietf.jgss.Oid
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Fix R8 crash on jgit classes in webIDE module
+-keep class org.eclipse.jgit.** { *; }
+-dontwarn org.eclipse.jgit.**
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exceptions

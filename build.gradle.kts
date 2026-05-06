@@ -31,7 +31,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        mavenCentral()
         // For olm library. This has to be declared first, to ensure that Olm library is not downloaded from another repo
         maven(url = uri("https://jitpack.io"))
         maven(url = uri("https://dl.bintray.com/amulyakhare/maven"))
@@ -40,5 +40,5 @@ allprojects {
 }
 
 tasks.register("clean",Delete::class){
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }

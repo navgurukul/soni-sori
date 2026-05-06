@@ -22,7 +22,7 @@ object Versions {
     const val nanohttpd = "2.3.1"
     const val jsoup = "1.15.3"
     const val uaUtils = "1.21"
-    const val jgit = "6.4.0.202211300538-r" // no-update
+    const val jgit = "5.13.3.202401111512-r" // no-update
     const val playServicesLicensesPlugin = "17.0.0"
     const val  mpchart = "3.0.3"
 }
@@ -200,8 +200,8 @@ object BuildConfigVersions {
     const val compileSdkVersion = 34
     const val minSdkVersion = 24
     const val targetSdkVersion = 34
-    const val versionCode = 96
-    const val versionName = "1.5.66"
+    const val versionCode = 97
+    const val versionName = "1.5.67"
     const val applicationId = "org.merakilearn"
 
     const val  usbSerialVersion = "6.1.0"
