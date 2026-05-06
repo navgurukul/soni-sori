@@ -241,7 +241,7 @@ object Classpath {
     const val python = "com.chaquo.python:gradle:17.0.0"
 //    const val realm = "io.realm:realm-gradle-plugin:6.1.0"
     const val googleServices = "com.google.gms:google-services:4.4.2"
-    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.4.1"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:3.0.2"
     const val firebasePerf =
         "com.google.firebase.firebase-perf:com.google.firebase.firebase-perf.gradle.plugin:1.4.1"
     const val benManes = "com.github.ben-manes:gradle-versions-plugin:0.20.0"

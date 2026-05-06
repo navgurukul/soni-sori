@@ -173,7 +173,10 @@
             </intent-filter>
         </service>
 
-        <!-- FirebaseInitProvider handles auto-initialization via google-services.json -->
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="${applicationId}.firebaseinitprovider"
+            tools:node="remove" />
 
         <meta-data
             android:name="firebase_performance_logcat_enabled"

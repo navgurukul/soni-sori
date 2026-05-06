@@ -3,6 +3,9 @@ package org.merakilearn
 import android.app.Application
 import android.content.Context
 import com.google.android.play.core.splitcompat.SplitCompat
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.crashlytics.BuildConfig
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.android.inject
@@ -36,11 +39,17 @@ class MerakiApp : Application() {
             modules(appModules + learnModules + playgroundModules + commonUIModules + coreModules)
         }
 
-        // Use google-services.json for standard Firebase init (required for Crashlytics build ID)
-        if (org.merakilearn.BuildConfig.DEBUG) {
+        val builder: FirebaseOptions.Builder = FirebaseOptions.Builder()
+            .setApplicationId("1:449891326531:android:fee3688544a641dd2412f6")
+            .setApiKey("AIzaSyCZCxedfsE8RAhAP7q1HNWz9VEJmIizKdw")
+            .setDatabaseUrl("https://meraki-c6769.firebaseio.com")
+            .setProjectId("meraki-c6769")
+            .setStorageBucket("meraki-c6769.appspot.com")
+        FirebaseApp.initializeApp(this, builder.build())
+        if(BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
-        } else {
+        }else { // release or any other variant
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
         }
 

@@ -231,7 +231,9 @@ tasks.register<Copy>("extractScratchAssets") {
 }
 
 tasks.whenTaskAdded {
-    if (name == "mergeDebugAssets" || name == "mergeReleaseAssets") {
+    if (name == "mergeDebugAssets" || name == "mergeReleaseAssets"
+        || name == "generateReleaseLintModel" || name == "generateDebugLintModel"
+        || name == "lintVitalAnalyzeRelease" || name == "generateReleaseLintVitalReportModel") {
         dependsOn("extractScratchAssets")
     }
 }
