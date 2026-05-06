@@ -249,7 +249,7 @@ class WebIdeHomeActivity : ThemedActivity(), SearchView.OnQueryTextListener,
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_webide_main, menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
