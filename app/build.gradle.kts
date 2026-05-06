@@ -51,6 +51,10 @@ android {
 
         getByName("debug") {
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
+            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+                nativeSymbolUploadEnabled = false
+            }
         }
     }
     compileOptions {
