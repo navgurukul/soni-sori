@@ -40,8 +40,8 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         )
     }
 
-    fun submitList(list: List<Course>, logo: String?, pathwayData : List<PathwayData>) {
-        submitList(list.map { CourseContainer(it, logo, pathwayData) })
+    fun submitList(list: List<Course>, pathwayName: String?, pathwayLogo: String?, pathwayData : List<PathwayData>) {
+        submitList(list.map { CourseContainer(it, pathwayName, pathwayLogo, pathwayData) })
         notifyDataSetChanged()
     }
 
@@ -56,15 +56,31 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
         val binding = holder.binding
         binding.course = item.course
 
-        val courseLogo = item.course.androidLogo ?: item.logo
+        val courseLogo = item.course.androidLogo ?: item.pathwayLogo
+        val localLogo = CourseDefaultLogos.resolveDrawable(item.pathwayName, item.course.name)
 
-        if (courseLogo?.endsWith(".svg") == true) {
+        // Set local logo as initial/fallback drawable
+        binding.ivLogo.setImageResource(localLogo)
+
+        if (courseLogo.isNullOrBlank()) {
+            // No remote logo, use local fallback only
+            binding.progressBar.progress = item.pathwayData.firstOrNull { it.courseId.toString() == item.course.id }?.completedPortion ?: 0
+            binding.tvName.text = item.course.name
+            binding.root.setOnClickListener {
+                callback.invoke(item.course)
+            }
+            return
+        }
+
+        if (courseLogo.endsWith(".svg", ignoreCase = true)) {
             SvgLoader(context).loadSvgFromUrl(courseLogo, binding.ivLogo)
         } else {
             val thumbnail = Glide.with(holder.itemView)
-                .load(R.drawable.ic_lock)
+                .load(localLogo)
             Glide.with(binding.ivLogo)
                 .load(courseLogo)
+                .placeholder(localLogo)
+                .error(localLogo)
                 .thumbnail(thumbnail)
                 .into(binding.ivLogo)
         }
@@ -79,4 +95,4 @@ class CourseAdapter(private val context: Context, val callback: (Course) -> Unit
     }
 }
 
-data class CourseContainer(val course: Course, val logo: String?, val pathwayData: List<PathwayData>)
+data class CourseContainer(val course: Course, val pathwayName: String?, val pathwayLogo: String?, val pathwayData: List<PathwayData>)

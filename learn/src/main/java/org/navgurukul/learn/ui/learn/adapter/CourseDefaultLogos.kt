@@ -8,13 +8,13 @@ import java.util.Locale
 
 enum class CourseDefaultLogos(@DrawableRes val id: Int) {
 
-    PYTHON(R.drawable.python_logo),
+    INTRODUCTIONTOPYTHON(R.drawable.python_logo),
     TYPING(R.drawable.ic_icon_typing),
-    ENGLISH(R.drawable.ic_icon_language),
+    spOKENENGLISH(R.drawable.ic_icon_language),
     JAVASCRIPT(R.drawable.ic_javascript_logo),
-    RESIDENTIAL(R.drawable.residential_icon),
-    SCRATCH(org.navgurukul.commonui.R.drawable.ic_scratch_cat),
-    MCDIGITAL(R.drawable.ic_icon_language),
+    RESIDENTIALPROGRAMMES(R.drawable.residential_icon),
+    INTRODUCTIONTOSCRATCH(org.navgurukul.commonui.R.drawable.ic_scratch_cat),
+    MCDIGITALCOURSE_2_0(R.drawable.mc_digital_logo),
     DEFAULT(org.navgurukul.commonui.R.drawable.ic_typing_icon),
 
     ;
