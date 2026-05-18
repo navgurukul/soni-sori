@@ -22,6 +22,7 @@ import org.navgurukul.learn.courses.db.models.Pathway
 import org.navgurukul.learn.databinding.ItemPathwayBinding
 import org.navgurukul.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
+import org.navgurukul.learn.ui.learn.adapter.CourseDefaultLogos
 
 class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
 
@@ -38,14 +39,13 @@ class LearnFragmentPathwaySelectionSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = LearnSelectionSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding ?: return
 
         val offsetFromTop = resources.getDimensionPixelSize(R.dimen.sheet_top_offset)
         (dialog as? BottomSheetDialog)?.behavior?.apply {
@@ -110,23 +110,32 @@ class PathwaySelectionAdapter( val context: Context,  val callback: (Pathway) ->
 
     override fun bind(holder: DataBoundViewHolder<ItemPathwayBinding>, item: Pathway) {
         val binding = holder.binding
+        val localLogo = CourseDefaultLogos.resolveDrawable(item.name, item.code)
         binding.apply {
             pathway = item
+
+            ivPathwayIcon.setImageResource(localLogo)
 
             root.setOnClickListener {
                 callback.invoke(item)
             }
         }
 
-        if (item.logo?.endsWith(".svg") == true) {
+        if (item.logo.isNullOrBlank()) {
+            return
+        }
+
+        if (item.logo.endsWith(".svg", ignoreCase = true)) {
             SvgLoader(context).loadSvgFromUrl(item.logo, binding.ivPathwayIcon)
         }
         else {
             val thumbnail = Glide.with(holder.itemView)
-                .load(org.navgurukul.commonui.R.drawable.ic_typing_icon)
+                .load(localLogo)
             Glide.with(binding.ivPathwayIcon)
                 .load(item.logo)
                 .apply(RequestOptions().override(binding.ivPathwayIcon.resources.getDimensionPixelSize(R.dimen.pathway_select_icon_size)))
+                .placeholder(localLogo)
+                .error(localLogo)
                 .thumbnail(thumbnail)
                 .into(binding.ivPathwayIcon)
         }

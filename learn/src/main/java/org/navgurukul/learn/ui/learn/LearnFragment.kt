@@ -112,7 +112,7 @@ class LearnFragment : Fragment() {
                 swipeContainer.isRefreshing = false
                 progressBarButton.isVisible = it.loading
             }
-            mCourseAdapter.submitList(it.courses, it.logo, it.pathwayData)
+            mCourseAdapter.submitList(it.courses, it.subtitle, it.logo, it.pathwayData)
             configureToolbar(
                 it.subtitle,
                 it.pathways.isNotEmpty(),

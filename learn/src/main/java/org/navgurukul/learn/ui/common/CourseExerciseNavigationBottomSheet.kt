@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import org.navgurukul.learn.R
-import org.navgurukul.commonui.platform.setupEdgeToEdgeForView
 
 class CourseExerciseNavigationBottomSheet
 @JvmOverloads constructor(
@@ -21,7 +23,11 @@ class CourseExerciseNavigationBottomSheet
 
     init {
         inflate(context, R.layout.course_exercise_navigation_sheet_content, this)
-        setupEdgeToEdgeForView()
+        ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, 0)
+            windowInsets
+        }
 
         btnNext = findViewById(R.id.navigateNext)
         btnPrev = findViewById(R.id.navigatePrev)
