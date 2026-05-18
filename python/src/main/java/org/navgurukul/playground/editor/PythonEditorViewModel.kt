@@ -79,11 +79,14 @@ class PythonEditorViewModel(
 
     private fun updateError(error: CharSequence) {
         val formattedError = buildSpannedString {
-            color(errorColor) {
-                append("At" + error.substring(
-                    error.indexOf(PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE)
-                            + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length
-                ).trimEnd())
+            val patternIndex = error.indexOf(PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE)
+            if (patternIndex != -1 && patternIndex + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length < error.length) {
+                color(errorColor) {
+                    val startIndex = patternIndex + PATTERN_TO_BE_SEARCHED_IN_PYTHON_STACKTRACE.length
+                    append("At" + error.substring(startIndex).trimEnd())
+                }
+            } else {
+                append("Error: Pattern not found or index out of bounds")
             }
         }
         setState {

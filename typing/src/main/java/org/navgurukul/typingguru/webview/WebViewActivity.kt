@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import kotlinx.android.synthetic.main.activity_web_view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.merakilearn.databinding.ActivityMainBinding
 import org.navgurukul.commonui.platform.BaseActivity
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.databinding.ActivityWebViewBinding
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 class WebViewActivity : BaseActivity() {
 
@@ -17,27 +20,31 @@ class WebViewActivity : BaseActivity() {
     }
 
     private val viewModel: WebViewActivityViewModel by viewModel()
+    private lateinit var binding: ActivityWebViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
+        binding = ActivityWebViewBinding.inflate(layoutInflater)
+        setSupportActionBar(binding.toolbar)
+        setContentView(binding.root)
+        setupEdgeToEdge()
 
-        webview.webViewClient = MyBrowser {
+        binding.webview.webViewClient = MyBrowser {
             viewModel.handle(WebViewActivityViewEvents.OnNavigate(it))
         }
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        toolbar.setNavigationOnClickListener {
-            if (webview.canGoBack()) {
-                webview.goBack()
+        binding.toolbar.setNavigationOnClickListener {
+            if (binding.webview.canGoBack()) {
+                binding.webview.goBack()
             } else {
                 finish()
             }
         }
 
         viewModel.viewState.observe(this, {
-            it?.url?.let { url -> webview.loadUrl(url) }
+            it?.url?.let { url -> binding.webview.loadUrl(url) }
         })
     }
 

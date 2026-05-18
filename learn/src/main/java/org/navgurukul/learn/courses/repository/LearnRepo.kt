@@ -2,22 +2,39 @@ package org.navgurukul.learn.courses.repository
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.asFlow
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.navgurukul.learn.courses.db.CoursesDatabase
-import org.navgurukul.learn.courses.db.models.*
-import org.navgurukul.learn.courses.network.*
+import org.navgurukul.learn.courses.db.models.BaseCourseContent
+import org.navgurukul.learn.courses.db.models.Course
+import org.navgurukul.learn.courses.db.models.CourseAssessmentContent
+import org.navgurukul.learn.courses.db.models.CourseClassContent
+import org.navgurukul.learn.courses.db.models.CourseContentProgress
+import org.navgurukul.learn.courses.db.models.CourseContentType
+import org.navgurukul.learn.courses.db.models.CourseContents
+import org.navgurukul.learn.courses.db.models.CourseExerciseContent
+import org.navgurukul.learn.courses.db.models.CurrentStudy
+import org.navgurukul.learn.courses.db.models.Pathway
+import org.navgurukul.learn.courses.network.AttemptResponse
+import org.navgurukul.learn.courses.network.CertificateResponse
+import org.navgurukul.learn.courses.network.EnrolResponse
+import org.navgurukul.learn.courses.network.GetCompletedPortion
+import org.navgurukul.learn.courses.network.SaralCoursesApi
+import org.navgurukul.learn.courses.network.Status
+import org.navgurukul.learn.courses.network.StudentResult
 import org.navgurukul.learn.courses.network.model.Batch
 import org.navgurukul.learn.courses.network.model.CompletedContentsIds
+import org.navgurukul.learn.courses.network.networkBoundResourceFlow
 import org.navgurukul.learn.courses.network.wrapper.BaseRepo
 import org.navgurukul.learn.courses.network.wrapper.Resource
 import org.navgurukul.learn.util.LearnUtils
 import java.net.UnknownHostException
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class LearnRepo(
     private val courseApi: SaralCoursesApi,
@@ -29,6 +46,7 @@ class LearnRepo(
     var lastUpdatedBatches: List<Batch>? = null
     var statusEnrolled: Resource<EnrolResponse>? = null
     lateinit var pathwayId : String
+    private lateinit var selectedLang : String
 
     class OfflineException(message: String) : Exception(message)
 
@@ -55,8 +73,11 @@ class LearnRepo(
                 pathwayDao.insertPathways(data.pathways)
 
             })
-        }
-        catch (e : Exception) {
+        } catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        } catch (e : Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
@@ -80,7 +101,11 @@ class LearnRepo(
                 courseDao.deleteAllCourses()
                 courseDao.insertCourses(data.courses)
             })
-        }catch (e: Exception){
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        } catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
             null!!
         }
@@ -98,12 +123,12 @@ class LearnRepo(
         val classDao = database.classDao()
         val assessmentDao = database.assessmentDao()
         val course = withContext(Dispatchers.IO) { courseDao.course(courseId) }
-        val lang: String = course?.let {
+        selectedLang = course?.let {
             if (language in course.supportedLanguages) language else course.supportedLanguages[0]
         } ?: language
         if (forceUpdate && LearnUtils.isOnline(application)) {
             try {
-                val result = courseApi.getCourseContentAsync(courseId, lang)
+                val result = courseApi.getCourseContentAsync(courseId, selectedLang)
                 val mappedData = result.course.courseContents.map {
                     it.courseId = courseId
                     it.courseName = result.course.name
@@ -139,7 +164,7 @@ class LearnRepo(
                     Log.d("LearnRepo", "class dao insert exception = ${ex.printStackTrace()}")
                 }
                 try {
-                    assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent?>)
+                    assessmentDao.insertAssessmentAsync(mappedData.filter { it.courseContentType == CourseContentType.assessment } as List<CourseAssessmentContent>)
                 }catch (ex: Exception){
                     Log.d("LearnRepo", "assessment dao insert exception = ${ex.printStackTrace()}")
                 }
@@ -150,10 +175,10 @@ class LearnRepo(
         }
 
         return when(courseContentType){
-            CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, lang).asFlow()
-            CourseContentType.class_topic -> classDao.getClassById(contentId, lang).asFlow()
-            CourseContentType.assessment -> assessmentDao.getAssessmentById(contentId, lang).asFlow()
-            else -> exerciseDao.getExerciseById(contentId, lang).asFlow()
+            CourseContentType.exercise -> exerciseDao.getExerciseById(contentId, selectedLang).asFlow()
+            CourseContentType.class_topic -> classDao.getClassById(contentId, selectedLang).asFlow()
+            CourseContentType.assessment -> assessmentDao.getAssessmentById(contentId, selectedLang).asFlow()
+            else -> exerciseDao.getExerciseById(contentId, selectedLang).asFlow()
         }
     }
 
@@ -168,7 +193,6 @@ class LearnRepo(
             networkBoundResourceFlow(
                 loadFromDb = {
                     val course = courseDao.getCourseById(courseId)
-
                     val exercises = exerciseDao.getAllExercisesForCourse(courseId, language)
                     val classes = classDao.getAllClassesForCourse(courseId, language)
                     val assessments = assessmentDao.getAllAssessmentForCourse(courseId, language)
@@ -221,7 +245,12 @@ class LearnRepo(
                     }
                 }
             )
-        }catch (ex: Exception) {
+        }catch (e : UnknownHostException){
+            Log.e("ERROR", "UnknownHostException occurred: ${e.message}")
+            Toast.makeText(application, "No network connection", Toast.LENGTH_SHORT).show()
+            null!!
+        }
+        catch (ex: Exception) {
             FirebaseCrashlytics.getInstance().recordException(ex)
             null!!
         }
@@ -254,15 +283,15 @@ class LearnRepo(
 
         exerciseDao.markExerciseCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.exercises?.map { it.toString() }
+            contentList.data?.exercises?.map { it.toString() } ?: emptyList()
         )
         classesDao.markClassCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.classes?.map { it.toString() }
+            contentList.data?.classes?.map { it.toString() } ?: emptyList()
         )
         assessmentDao.markAssessmentCompleted(
             CourseContentProgress.COMPLETED.name,
-            contentList.data?.assessments?.map { it.toString() }
+            contentList.data?.assessments?.map { it.toString() } ?: emptyList()
         )
     }
 
@@ -393,13 +422,14 @@ class LearnRepo(
     }
 
     suspend fun postStudentResult(
-        assessmentId: Int,
+        slugId: Int,
+        courseId: Int,
         status: Status,
-        selectedOption: Int?
+        selectedOption: List<Int>,
     ){
         try {
-            val studentResult = StudentResult(assessmentId, status,selectedOption)
-            safeApiCall { courseApi.postStudentResult(studentResult) }
+            val studentResult = StudentResult(slugId, courseId, status,selectedOption, selectedLang)
+            safeApiCall { courseApi.postStudentResult(listOf( studentResult)) }
         } catch (e: OfflineException) {
             throw OfflineException("No network connection")
         }
@@ -412,19 +442,19 @@ class LearnRepo(
     suspend fun updateAssessmentListInLocalDb(currentStateList: List<BaseCourseContent>) {
         try {
             val assessmentDao = database.assessmentDao()
-            assessmentDao.insertAssessmentAsync(
-                currentStateList as List<CourseAssessmentContent?>
-            )
+            val assessmentContentList = currentStateList.filterIsInstance<CourseAssessmentContent>()
+            assessmentDao.insertAssessmentAsync(assessmentContentList)
         }catch (e: Exception){
             e.printStackTrace()
         }
     }
 
     suspend fun postExerciseCompleteStatus(
-        exerciseId: Int
+        slugId: Int,
+
     ){
         try {
-             safeApiCall {courseApi.postExerciseCompleteStatus(exerciseId) }
+             safeApiCall {courseApi.postExerciseCompleteStatus(slugId, selectedLang) }
         }catch (e: OfflineException) {
             FirebaseCrashlytics.getInstance().recordException(e)
             throw OfflineException("No network connection")

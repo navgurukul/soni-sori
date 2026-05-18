@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.navgurukul.learn.courses.db.models.*
 import org.navgurukul.learn.courses.db.typeadapters.Converters
 
-const val DB_VERSION = 13
+const val DB_VERSION = 16
 
 @Dao
 interface PathwayDao {
@@ -30,7 +30,7 @@ interface CourseDao {
     fun insertCourses(course: List<Course>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCourse(course: Course?)
+    fun insertCourse(course: Course)
 
     @Query("select * from pathway_course where id= :id")
     fun course(id: String): Course?
@@ -52,10 +52,10 @@ interface CourseDao {
 @Dao
 interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertExercise(course: List<CourseExerciseContent?>?)
+    fun insertExercise(course: List<CourseExerciseContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExerciseAsync(course: List<CourseExerciseContent?>?)
+    suspend fun insertExerciseAsync(course: List<CourseExerciseContent>)
 
     @Query("select * from course_exercise where courseId = :courseId and lang = :lang")
     suspend fun getAllExercisesForCourse(courseId: String, lang: String): List<CourseExerciseContent>
@@ -71,7 +71,7 @@ interface ExerciseDao {
     suspend fun markCourseExerciseCompleted(exerciseProgress: String, exerciseId: String)
 
     @Query("Update course_exercise set courseContentProgress = :exerciseProgress where id in (:exerciseIdList) ")
-    suspend fun markExerciseCompleted(exerciseProgress: String,exerciseIdList : List<String>?)
+    suspend fun markExerciseCompleted(exerciseProgress: String, exerciseIdList : List<String>)
 }
 
 
@@ -90,10 +90,10 @@ interface ClassDao {
     suspend fun saveCourseExerciseCurrent(course: CurrentStudy)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertClass(course: List<CourseClassContent?>?)
+    fun insertClass(course: List<CourseClassContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertClassAsync(course: List<CourseClassContent?>?)
+    suspend fun insertClassAsync(course: List<CourseClassContent>)
 
     @Query("select * from course_class where id = :classId and lang = :lang")
     fun getClassById(classId: String, lang: String): LiveData<CourseClassContent>
@@ -105,7 +105,7 @@ interface ClassDao {
     suspend fun markCourseClassCompleted(contentProgress: String, classId: String)
 
     @Query("Update course_class set courseContentProgress = :classProgress where id in (:classIdList) ")
-    suspend fun markClassCompleted(classProgress: String,classIdList : List<String>?)
+    suspend fun markClassCompleted(classProgress: String, classIdList : List<String>)
 
 }
 
@@ -115,10 +115,10 @@ interface AssessmentDao{
     suspend fun saveCourseAssessmentCurrent(course: CurrentStudy)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAssessment(course: List<CourseAssessmentContent?>?)
+    fun insertAssessment(course: List<CourseAssessmentContent>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent?>?)
+    suspend fun insertAssessmentAsync(course: List<CourseAssessmentContent>)
 
     @Query("select * from course_assessment where id = :assessmentId and lang= :lang")
     fun getAssessmentById(assessmentId: String, lang: String): LiveData<CourseAssessmentContent>
@@ -130,7 +130,7 @@ interface AssessmentDao{
     suspend fun markCourseAssessmentCompleted(assessmentProgress: String, assessmentId: String)
 
     @Query("Update course_assessment set courseContentProgress = :assessmentProgress where id in (:assessmentIdList)" )
-    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>?)
+    suspend fun markAssessmentCompleted(assessmentProgress: String, assessmentIdList : List<String>)
 
 
 }
@@ -369,6 +369,44 @@ val MIGRATION_12_13 = object : Migration(12, 13){
 
     }
 
+}
+
+val MIGRATION_13_14 = object : Migration(13, 14){
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("DROP TABLE IF EXISTS pathway")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `pathway` (`code` TEXT NOT NULL, `createdAt` TEXT, `description` TEXT, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `logo` TEXT, `supportedLanguages` TEXT NOT NULL DEFAULT '[{\"code\": \"en\", \"label\": \"English\"}]' ,'cta' TEXT, `platform` TEXT NOT NULL, PRIMARY KEY(`id`)) ")
+
+    }
+}
+
+val MIGRATION_14_15 = object : Migration(14, 15) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Create a temporary table
+        database.execSQL(
+            "CREATE TABLE `course_assessment_temp`(" +
+                    " `content` TEXT NOT NULL," +
+                    " `courseId` TEXT NOT NULL," +
+                    " `id` TEXT NOT NULL," +
+                    " `lang` TEXT NOT NULL," +
+                    " `courseName` TEXT," +
+                    " `courseContentProgress` TEXT," +
+                    " `sequenceNumber` INTEGER," +
+                    " `courseContentType` TEXT NOT NULL," +
+                    " `assess_selectedOption` TEXT," +
+                    " `assess_attemptCount` INTEGER," +
+                    " PRIMARY KEY(`id`, `lang`) )"
+        )
+        database.execSQL("INSERT INTO `course_assessment_temp` SELECT * FROM `course_assessment`")
+        database.execSQL("DROP TABLE `course_assessment`")
+        database.execSQL("ALTER TABLE `course_assessment_temp` RENAME TO `course_assessment`")
+    }
+}
+
+val MIGRATION_15_16 = object : Migration(15, 16) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE `pathway_course` ADD COLUMN `androidLogo` TEXT")
+    }
 }
 
 // When ever we do any change in local db need to write migration script here.

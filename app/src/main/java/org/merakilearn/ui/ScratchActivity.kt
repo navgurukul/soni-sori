@@ -29,6 +29,7 @@ import org.merakilearn.repo.ScratchRepositoryImpl
 import org.merakilearn.util.Constants
 import timber.log.Timber
 import java.io.File
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 
 class ScratchActivity : AppCompatActivity() {
@@ -52,6 +53,7 @@ class ScratchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_scratch)
+        setupEdgeToEdge()
 
         progressBar = findViewById(R.id.progressBar2)
         progressBar.visibility = View.VISIBLE

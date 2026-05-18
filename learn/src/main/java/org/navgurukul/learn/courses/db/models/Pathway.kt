@@ -30,8 +30,8 @@ data class Pathway @JvmOverloads constructor(
     val name: String,
     @Json(name = "logo")
     val logo: String?,
-    @Json(name = "shouldShowCertificate")
-    val shouldShowCertificate : Boolean,
+//    @Json(name = "shouldShowCertificate")
+//    val shouldShowCertificate : Boolean,
     @Json(name = "lang_available")
     @ColumnInfo(
         name = "supportedLanguages",

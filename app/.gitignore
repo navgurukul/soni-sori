@@ -1,1 +1,13 @@
 /build
+meraki.jks
+
+# Scratch assets - auto-extracted from scratch-assets/build-wo-remix.zip by gradle
+/src/main/assets/static/
+/src/main/assets/chunks/
+/src/main/assets/lib.min.js
+/src/main/assets/mobile-connect.js
+/src/main/assets/extension-worker.js
+/src/main/assets/index.html
+/src/main/assets/blocks-only.html
+/src/main/assets/compatibility-testing.html
+/src/main/assets/player.html

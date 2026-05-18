@@ -18,6 +18,8 @@ import org.merakilearn.datasource.model.PlaygroundItemModel
 import org.merakilearn.datasource.model.PlaygroundTypes
 import org.merakilearn.datasource.network.model.ProjectNameAndUrl
 import org.merakilearn.repo.ScratchRepository
+import org.merakilearn.util.webide.ROOT_PATH
+import org.merakilearn.util.webide.project.ProjectManager
 import org.navgurukul.commonui.platform.BaseViewModel
 import org.navgurukul.commonui.platform.ViewEvents
 import org.navgurukul.commonui.platform.ViewModelAction
@@ -25,12 +27,15 @@ import org.navgurukul.commonui.platform.ViewState
 import org.navgurukul.playground.repo.PythonRepository
 import timber.log.Timber
 import java.io.File
+import java.util.*
+
 
 
 class PlaygroundViewModel(
     private val repository: PlaygroundRepo,
     private val pythonRepository: PythonRepository,
     private val scratchRepository: ScratchRepository,
+    private val context: Context
 ) :
     BaseViewModel<PlaygroundViewEvents, PlaygroundViewState>(PlaygroundViewState()) {
 
@@ -45,6 +50,7 @@ class PlaygroundViewModel(
             }
             is PlaygroundActions.RefreshLayout -> init()
             is PlaygroundActions.DeleteFile -> deleteFile(action.file)
+            is PlaygroundActions.DeleteWebFile -> deleteWebFile(action.project)
             is PlaygroundActions.ShareAsUrl -> shareAsUrl(action.file, action.context)
         }
     }
@@ -115,8 +121,38 @@ class PlaygroundViewModel(
             )
         }
 
+        // Fetch savedFiles3 from contents
+        val contents = File(context.ROOT_PATH()).list { dir, name ->
+            dir.isDirectory && name != ".git" && ProjectManager.isValid(
+                context,
+                name
+            )
+        }
+        val contentsList = if (contents != null) {
+            ArrayList(Arrays.asList(*contents))
+        } else {
+            ArrayList()
+        }
+
+        if (contentsList != null) {
+            for (filePath in contentsList) {
+                val file = File(filePath)
+                playgroundsList.add(
+                    PlaygroundItemModel(
+                        PlaygroundTypes.WEB_IDE_FILES,
+                        name = "",
+                        file = file, // Update this line
+                        iconResource = R.drawable.ic_web_file,
+                        webFile = filePath
+                    )
+                )
+            }
+        }
+
         updateState(playgroundsList)
     }
+
+
 
     fun selectPlayground(playgroundItemModel: PlaygroundItemModel) {
         when (playgroundItemModel.type) {
@@ -128,11 +164,16 @@ class PlaygroundViewModel(
                 )
             )
             PlaygroundTypes.SCRATCH -> _viewEvents.postValue(PlaygroundViewEvents.OpenScratch)
+            PlaygroundTypes.WEB_DEV_IDE -> _viewEvents.postValue(PlaygroundViewEvents.OpenDialogToCreateWebProject)
+            PlaygroundTypes.WEB_IDE_FILES -> playgroundItemModel.webFile?.let { webFile ->
+                _viewEvents.postValue(PlaygroundViewEvents.OpenWebIDE(webFile))
+            }
             PlaygroundTypes.SCRATCH_FILE -> _viewEvents.postValue(
                 PlaygroundViewEvents.OpenScratchWithFile(
                     playgroundItemModel.file
                 )
             )
+            PlaygroundTypes.ARDUINO -> _viewEvents.postValue(PlaygroundViewEvents.OpenArduinoBlockly)
         }
     }
 
@@ -143,6 +184,12 @@ class PlaygroundViewModel(
             init()
         }
     }
+    private fun deleteWebFile(project: String){
+        viewModelScope.launch {
+            ProjectManager.deleteProject(context, project)
+            init()
+        }
+    }
 
     private fun shareAsUrl(file: File, context: Context) {
         if(file.extension != "sb3"){
@@ -150,34 +197,34 @@ class PlaygroundViewModel(
             return
         }
         viewModelScope.launch {
-            try {
-                Toast.makeText(context, "Please wait while we upload your file to cloud.", Toast.LENGTH_LONG).show()
-                val response = repository.getUploadCredentials()
-                response?.data?.let {
-                    val shareUrl = "https://scratch.merakilearn.org/project/" +
-                            "${it.Key.removeSuffix(".sb3").removePrefix("scratch/")}"
-                    val shareUrl2 = "https://${it.Bucket}.s3.ap-south-1.amazonaws.com/${it.Key}"
-                    uploadObjectToS3(
-                        file,
-                        it.Bucket,
-                        it.Credentials.AccessKeyId,
-                        it.Credentials.SecretAccessKey,
-                        it.Credentials.SessionToken,
-                        it.Key,
-                        it.projectId,
-                        shareUrl2
-                    )
-                    val i = Intent(Intent.ACTION_SEND)
-                    i.type = "text/plain"
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
-                    i.putExtra(Intent.EXTRA_TEXT,
-                        "Hi, I've made a scratch project using MerakiLearn. You can view it here or remix it to create your own.\n\n$shareUrl"
-                    )
-                    context.startActivity(Intent.createChooser(i, "Share File"))
-                }
-            } catch (e: Exception) {
-                Timber.e(e)
-                Toast.makeText(context, "Sorry!, something went wrong", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                context,
+                "Please wait while we upload your file to cloud.",
+                Toast.LENGTH_LONG
+            )
+                .show()
+            val response = repository.getUploadCredentials()
+            response?.data?.let {
+                val shareUrl = "https://scratch.merakilearn.org/project/" +
+                        "${it.Key.removeSuffix(".sb3").removePrefix("scratch/")}"
+                val shareUrl2 = "https://${it.Bucket}.s3.ap-south-1.amazonaws.com/${it.Key}"
+                uploadObjectToS3(
+                    file,
+                    it.Bucket,
+                    it.Credentials.AccessKeyId,
+                    it.Credentials.SecretAccessKey,
+                    it.Credentials.SessionToken,
+                    it.Key,
+                    it.projectId,
+                    shareUrl2
+                )
+                val i = Intent(Intent.ACTION_SEND)
+                i.type = "text/plain"
+                i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
+                i.putExtra(Intent.EXTRA_TEXT,
+                    "Hi, I've made a scratch project using MerakiLearn. You can view it here or remix it to create your own.\n\n$shareUrl"
+                )
+                context.startActivity(Intent.createChooser(i, "Share File"))
             }
         }
     }
@@ -218,14 +265,17 @@ sealed class PlaygroundViewEvents : ViewEvents {
     object OpenPythonPlayground : PlaygroundViewEvents()
     class OpenPythonPlaygroundWithFile(val file: File) : PlaygroundViewEvents()
     object OpenScratch : PlaygroundViewEvents()
+    class OpenWebIDE(val project : String) : PlaygroundViewEvents()
+    object OpenDialogToCreateWebProject : PlaygroundViewEvents()
     class OpenScratchWithFile(val file: File) : PlaygroundViewEvents()
-
+    object OpenArduinoBlockly : PlaygroundViewEvents()
 }
 
 sealed class PlaygroundActions : ViewModelAction {
     data class Query(val query: String?) : PlaygroundActions()
     object RefreshLayout : PlaygroundActions()
     class DeleteFile(val file: File) : PlaygroundActions()
+    class DeleteWebFile(val project: String) : PlaygroundActions()
 
     class ShareAsUrl(val file: File, val context: Context) : PlaygroundActions()
 }

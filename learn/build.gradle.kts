@@ -1,12 +1,14 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinParcelize)
     id(Plugins.kotlinKapt)
     id("org.jetbrains.kotlin.android")
 }
 
 android {
+    namespace = "org.navgurukul.learn"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -16,11 +18,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        getByName("debug") {
-            storeFile = file("debug.keystore")
-        }
-    }
+//    signingConfigs {
+//        getByName("debug") {
+//            storeFile = file("debug.keystore")
+//        }
+//    }
 
     buildTypes {
         getByName("release") {
@@ -33,16 +35,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -79,14 +83,14 @@ dependencies {
     // Room DB
     implementation(AndroidxDependencies.roomRuntime)
     implementation(AndroidxDependencies.roomKtx)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+    implementation(AndroidxDependencies.legacyV4)
+//    implementation("androidx.appcompat:appcompat:1.3.0")
+//    implementation("com.google.android.material:material:1.4.0")
+//    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+//    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
     kapt(AndroidxDependencies.roomCompiler)
 
-    implementation(MiscellaneousDependencies.textDrawable)
+//    implementation(MiscellaneousDependencies.textDrawable)
     implementation(MiscellaneousDependencies.markdownView)
 
     // Coroutines
@@ -111,7 +115,8 @@ dependencies {
 
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //test
     testImplementation(TestDependencies.jUnit)
@@ -122,6 +127,7 @@ dependencies {
     androidTestImplementation(TestDependencies.annotation)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.perfKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
 

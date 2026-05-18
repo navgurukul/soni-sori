@@ -1,5 +1,6 @@
 package org.navgurukul.learn.ui.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -63,6 +64,18 @@ class ExerciseFragmentViewModel(
                     val list = it as CourseExerciseContent
 
                     setState { copy(isLoading = false) }
+
+                    try {
+                        Log.d("ExerciseVM", "Received exercise content list size=${list.content?.size}")
+                        list.content?.forEachIndexed { idx, content ->
+                            Log.d("ExerciseVM", "content[$idx] component=${content.component} value=${when (content) {
+                                is org.navgurukul.learn.courses.db.models.YoutubeBaseCourseContent -> content.value
+                                else -> "-"
+                            }}")
+                        }
+                    } catch (e: Exception) {
+                        Log.w("ExerciseVM", "Error logging content list: ${e.message}")
+                    }
 
                     if (list != null && list.content.isNotEmpty() == true) {
                         setState { copy(isError = false) }

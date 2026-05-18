@@ -22,7 +22,7 @@ class SpoilerSpan(private val colorProvider: ColorProvider) : ClickableSpan() {
             tp.color = Color.TRANSPARENT
         } else {
             tp.bgColor = colorProvider.getColor(R.color.block_background_color)
-            tp.color = colorProvider.getColorFromAttribute(R.attr.textPrimary)
+            tp.color = colorProvider.getColorFromAttribute(org.navgurukul.commonui.R.attr.textPrimary)
         }
     }
 }

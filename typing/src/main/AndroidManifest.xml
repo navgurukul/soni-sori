@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="org.navgurukul.typingguru">
+    package="org.navgurukul.typing"
+    >
 
     <dist:module
         dist:instant="false"
@@ -15,20 +16,23 @@
 
     <application>
         <activity
-            android:name=".keyboard.dialog.KeyboardDialogActivity"
+            android:name="org.navgurukul.typingguru.keyboard.dialog.KeyboardDialogActivity"
             android:screenOrientation="behind"
+            android:exported="false"
             android:theme="@style/AppTheme.Transparent" />
         <activity
-            android:name=".keyboard.KeyboardActivity"
-            android:screenOrientation="landscape">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />
+            android:name="org.navgurukul.typingguru.keyboard.KeyboardActivity"
+            android:screenOrientation="landscape"
+            android:exported="false">
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value="org.navgurukul.learn.ui.learn.CourseSlugDetailActivity" />-->
         </activity>
         <activity
-            android:name=".score.ScoreActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".webview.WebViewActivity" />
+            android:name="org.navgurukul.typingguru.score.ScoreActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
+        <activity android:name="org.navgurukul.typingguru.webview.WebViewActivity" />
     </application>
 
 </manifest>

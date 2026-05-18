@@ -10,7 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max

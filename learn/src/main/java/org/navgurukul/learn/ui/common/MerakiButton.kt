@@ -24,17 +24,17 @@ class MerakiButton @JvmOverloads constructor(
 
     init {
         merakiButton = this
-        merakiButton.setTextAppearance(context, R.style.buttonTextAppearanceStyle)
+        merakiButton.setTextAppearance(context, org.navgurukul.commonui.R.style.buttonTextAppearanceStyle)
     }
 
     fun setVariantDesign(){
         if(variant == MerakiButtonType.secondary){
             merakiButton.background = null
-            merakiButton.setIconTintResource(R.color.primaryColor)
-            merakiButton.setTextColor(ContextCompat.getColor(context, R.color.primaryColor))
+            merakiButton.setIconTintResource(org.navgurukul.commonui.R.color.primaryColor)
+            merakiButton.setTextColor(ContextCompat.getColor(context, org.navgurukul.commonui.R.color.primaryColor))
             merakiButton.cornerRadius = 0
         }else{
-            merakiButton.setBackgroundColor(ContextCompat.getColor(context, R.color.primaryColor))
+            merakiButton.setBackgroundColor(ContextCompat.getColor(context, org.navgurukul.commonui.R.color.primaryColor))
             merakiButton.setIconTintResource(R.color.colorWhite)
             merakiButton.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
             merakiButton.cornerRadius = 8

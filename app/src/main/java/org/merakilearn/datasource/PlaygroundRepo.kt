@@ -32,10 +32,19 @@ class PlaygroundRepo(
             PlaygroundItemModel(
                 PlaygroundTypes.SCRATCH,
                 name = "Scratch",
-                iconResource = R.drawable.ic_scratch_cat,
+                iconResource = org.navgurukul.commonui.R.drawable.ic_scratch_cat,
             ),
-
-            )
+            PlaygroundItemModel(
+                PlaygroundTypes.WEB_DEV_IDE,
+                name="HTML/CSS/JS",
+                iconResource = R.drawable.ic_web_icon,
+            ),
+            // PlaygroundItemModel(
+            //     PlaygroundTypes.ARDUINO,
+            //     name="Arduino",
+            //     iconResource = R.drawable.arduino_logo,
+            // ),
+        )
     }
 
     suspend fun getUploadCredentials(): UploadCredentials? {

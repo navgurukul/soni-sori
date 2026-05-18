@@ -12,7 +12,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.bottom_sheet_generic_list.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -23,6 +22,7 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.extensions.cleanup
 import org.navgurukul.chat.core.extensions.configureWith
 import org.navgurukul.chat.core.utils.DimensionConverter
+import org.navgurukul.chat.databinding.BottomSheetGenericListBinding
 import org.navgurukul.chat.features.home.room.detail.timeline.item.MessageInformationData
 
 @Parcelize
@@ -37,6 +37,7 @@ data class TimelineEventFragmentArgs(
  */
 class MessageActionsBottomSheet : BottomSheetDialogFragment(),
     MessageActionsController.MessageActionsControllerListener {
+        private lateinit var binding: BottomSheetGenericListBinding
 
     private val timelineEventFragmentArgs: TimelineEventFragmentArgs by fragmentArgs()
 
@@ -57,13 +58,14 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_sheet_generic_list, container, false)
+        binding = BottomSheetGenericListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bottomSheetRecyclerView.configureWith(
+        binding.bottomSheetRecyclerView.configureWith(
             messageActionsController,
             hasFixedSize = false,
             disableItemAnimation = true
@@ -85,7 +87,7 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
     }
 
     override fun onDestroyView() {
-        bottomSheetRecyclerView.cleanup()
+        binding.bottomSheetRecyclerView.cleanup()
         super.onDestroyView()
     }
 
@@ -105,8 +107,8 @@ class MessageActionsBottomSheet : BottomSheetDialogFragment(),
         if (eventAction is EventSharedAction.ReportContent) {
             // Toggle report menu
             // Enable item animation
-            if (bottomSheetRecyclerView.itemAnimator == null) {
-                bottomSheetRecyclerView.itemAnimator = DefaultItemAnimator().apply {
+            if (binding.bottomSheetRecyclerView.itemAnimator == null) {
+                binding.bottomSheetRecyclerView.itemAnimator = DefaultItemAnimator().apply {
                     addDuration = 300L
                     removeDuration = 0
                     moveDuration = 0

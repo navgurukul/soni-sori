@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.learn_selection_sheet.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.merakilearn.core.datasource.model.Language
 import org.navgurukul.commonui.platform.SpaceItemDecoration
 import org.navgurukul.learn.R
 import org.navgurukul.learn.databinding.ItemLanguageBinding
+import org.navgurukul.learn.databinding.LearnSelectionSheetBinding
 import org.navgurukul.learn.ui.common.DataBoundListAdapter
 
 class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
-
+    private lateinit var binding: LearnSelectionSheetBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
@@ -33,7 +33,8 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.learn_selection_sheet, container, false)
+        binding= LearnSelectionSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,27 +45,28 @@ class LearnLanguageSelectionSheet : BottomSheetDialogFragment() {
             setExpandedOffset(offsetFromTop)
         }
 
-        tv_title.text = getString(R.string.select_language)
+        binding.tvTitle.text = getString(R.string.select_language)
 
         adapter = LanguageSelectionAdapter {
             viewModel.selectLanguage(it)
         }
-        recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(
+        binding.apply {
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(
             SpaceItemDecoration(
                 requireContext().resources.getDimensionPixelSize(
-                    R.dimen.spacing_3x
+                    org.navgurukul.commonui.R.dimen.spacing_3x
                 ), 0
             )
         )
-        recycler_view.addItemDecoration(
+        recyclerView.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             ).apply {
                 setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
             })
-
+    }
         viewModel.viewState.observe(viewLifecycleOwner) {
             adapter.submitList(it.languages)
         }
@@ -96,9 +98,11 @@ class LanguageSelectionAdapter(val callback: (Language) -> Unit) :
 
     override fun bind(holder: DataBoundViewHolder<ItemLanguageBinding>, item: Language) {
         val binding = holder.binding
-        binding.language = item
-        binding.root.setOnClickListener {
-            callback.invoke(item)
+        binding.apply {
+            language = item
+            root.setOnClickListener {
+                callback.invoke(item)
+            }
         }
     }
 

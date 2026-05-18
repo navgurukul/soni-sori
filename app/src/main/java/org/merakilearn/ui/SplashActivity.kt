@@ -15,15 +15,17 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import org.merakilearn.R
-import org.merakilearn.databinding.ActivitySplashBinding
+import org.merakilearn.databinding.SplashActivityAppBinding
 import org.merakilearn.theme.isChristmas
 import org.merakilearn.theme.isNewYear
 import org.merakilearn.ui.onboarding.OnBoardingActivity
+import timber.log.Timber
+import org.navgurukul.commonui.platform.setupEdgeToEdge
 
 
 const val UPDATE_REQUEST_CODE = 524
 class SplashActivity : AppCompatActivity() {
-   private lateinit var binding : ActivitySplashBinding
+    private lateinit var binding : SplashActivityAppBinding
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
@@ -35,7 +37,8 @@ class SplashActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_splash)
+        binding = DataBindingUtil.setContentView(this,R.layout.splash_activity_app)
+        setupEdgeToEdge()
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         setUpTheme()
         Handler(Looper.getMainLooper()).postDelayed({
@@ -46,12 +49,12 @@ class SplashActivity : AppCompatActivity() {
 
         appUpdateInfoTask.addOnSuccessListener {
             if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                && it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
                     it,
                     this,
-                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
                         .setAllowAssetPackDeletion(true).build(),
                     UPDATE_REQUEST_CODE
                 )
@@ -59,10 +62,12 @@ class SplashActivity : AppCompatActivity() {
 
             } else {
                 //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
+                Timber.d("No Update Available")
             }
         }.addOnFailureListener {
-                Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
-            }
+            //Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
+            Timber.d("Update Failed : $it")
+        }
     }
 
     private fun setUpTheme(){

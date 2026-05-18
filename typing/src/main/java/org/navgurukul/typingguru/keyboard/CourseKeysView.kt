@@ -16,7 +16,7 @@ import androidx.core.widget.TextViewCompat
 import org.navgurukul.commonui.themes.getThemedColor
 import org.navgurukul.commonui.themes.getThemedFontStyle
 import org.navgurukul.commonui.themes.getThemedUnit
-import org.navgurukul.typingguru.R
+import org.navgurukul.typing.R
 import org.navgurukul.commonui.R as commonR
 
 class CourseKeysView @JvmOverloads constructor(
@@ -37,7 +37,7 @@ class CourseKeysView @JvmOverloads constructor(
             invalidate()
         }
 
-    private val selectedKeyIndicatorHeight = context.getThemedUnit(commonR.attr.borderWidth)
+    private val selectedKeyIndicatorHeight = context.getThemedUnit(com.google.android.material.R.attr.borderWidth)
 
     private val paint = Paint().apply {
         color = ContextCompat.getColor(context, R.color.current_text)
@@ -58,7 +58,7 @@ class CourseKeysView @JvmOverloads constructor(
         setWillNotDraw(false)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val currentKeyIndex = currentKeyIndex ?: return

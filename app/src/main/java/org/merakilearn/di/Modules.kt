@@ -44,7 +44,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OnBoardingPagesViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: OnBoardingActivityArgs?) -> OnBoardingViewModel(args, get(), get(), get(),get()) }
-    viewModel { PlaygroundViewModel( get(),get(), get()) }
+    viewModel { PlaygroundViewModel( get(),get(), get(),androidContext()) }
     viewModel { (classId: Int, isEnrolled: Boolean) ->
         EnrollViewModel(
             classId = classId,
@@ -204,7 +204,7 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single { LoginRepository(get(), androidApplication(), get(), get(), get(), get()) }
+    single { LoginRepository(get(), androidApplication(), get(), get(), get()) }
     single { Config() }
     single { ClassesRepo(get(),get()) }
     single { SettingsRepo(get()) }
@@ -214,7 +214,7 @@ val repositoryModule = module {
             get(),
             PreferenceManager.getDefaultSharedPreferences(androidApplication()),
             get(),
-            get(),
+//            get(),
         )
     }
 

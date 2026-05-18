@@ -14,3 +14,18 @@ app/release
 /captures
 .externalNativeBuild
 .cxx
+
+# Google Services (contains API keys - do not commit)
+google-services.json
+**/google-services.json
+
+# Scratch assets - auto-extracted by gradle from scratch-assets/build-wo-remix.zip
+app/src/main/assets/static/
+app/src/main/assets/chunks/
+app/src/main/assets/lib.min.js
+app/src/main/assets/mobile-connect.js
+app/src/main/assets/extension-worker.js
+app/src/main/assets/index.html
+
+# Scratch assets source zip (large binary, auto-downloaded)
+scratch-assets/build-wo-remix.zip

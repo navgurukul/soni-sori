@@ -8,5 +8,4 @@
         <item name="android:layout_margin">@dimen/dimen_5_dp</item>
     </style>
 
-
 </resources>

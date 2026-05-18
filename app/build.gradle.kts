@@ -1,19 +1,21 @@
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariantOutput
-import de.undercouch.gradle.tasks.download.Download
+import java.util.Properties
+//import de.undercouch.gradle.tasks.download.Download
 
 plugins {
     id(Plugins.application)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
     id(Plugins.kotlinKapt)
+    id(Plugins.kotlinParcelize)
     id(Plugins.gms)
     id(Plugins.crashlytics)
-    id(Plugins.perf)
     id("org.jetbrains.kotlin.android")
 }
 
 android {
+
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -22,58 +24,92 @@ android {
         targetSdk = BuildConfigVersions.targetSdkVersion
         versionCode = BuildConfigVersions.versionCode
         versionName = BuildConfigVersions.versionName
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            val props = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+            storeFile = file(props["STORE_FILE"] as String)
+            storePassword = props["STORE_PASSWORD"] as String
+            keyAlias = props["KEY_ALIAS"] as String
+            keyPassword = props["KEY_PASSWORD"] as String
+        }
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
         }
 
         getByName("debug") {
-            buildConfigField("String", "SERVER_URL", "\"https://merd-api.merakilearn.org/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://api.merakilearn.org/\"")
+            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+                nativeSymbolUploadEnabled = false
+            }
         }
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
+        buildConfig = true
     }
 
     packagingOptions {
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/notice.txt")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
+        resources {
+            merges += setOf("/META-INF/services/*")
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
     }
+
     // This specifies the dynamic features.
     dynamicFeatures.add(":typing")
+    dynamicFeatures += setOf(":webIDE")
+
+    namespace = "org.merakilearn"
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
+//    implementation(fileTree(mapOf("dir" to "../chat/lib", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar","*.aar"))))
 
     //modules
     implementation(project(":learn"))
-    implementation(project(":chat"))
+//    implementation(project(":chat"))
     implementation(project(":python"))
     implementation(project(":core"))
     implementation(project(":commonUI"))
+
+    implementation ("com.google.auto.service:auto-service:1.1.1")
+    kapt ("com.google.auto.service:auto-service:1.1.1")
+
 
     //AndroidX
     implementation(AndroidxDependencies.appcompat)
@@ -89,8 +125,8 @@ dependencies {
     implementation(KoinDependencies.koinViewModel)
 
     // Matrix
-    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
-    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
+//    implementation(files("../chat/lib/matrix-sdk-android-release.aar"))
+//    implementation(files("../chat/lib/matrix-sdk-android-rx-release.aar"))
 
     //Navigation
     implementation(AndroidxDependencies.navigationFragment)
@@ -126,6 +162,7 @@ dependencies {
     implementation(RetrofitDependencies.logging)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.analyticsKtx)
     implementation(FirebaseDependencies.crashlyticsKtx)
     implementation(FirebaseDependencies.messaging)
@@ -139,9 +176,18 @@ dependencies {
     implementation (GlideDependencies.glideSvg)
 
     //Google play
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
+    implementation(GooglePlayDependencies.playInAppUpdateLibrary)
+    implementation(GooglePlayDependencies.extensionsForInAppUpdateLibrary)
     implementation(GooglePlayDependencies.installReferrer)
 
+    //for webide
+    implementation (MiscellaneousDependencies.uaUtils)
+    implementation (MiscellaneousDependencies.nanohttpd)
+    implementation (MiscellaneousDependencies.jsoup)
+
+    implementation(AndroidxDependencies.multidex)
 
     //test
     testImplementation(TestDependencies.jUnit)
@@ -149,12 +195,13 @@ dependencies {
     //androidTest
     androidTestImplementation(TestDependencies.androidxJUnit)
     androidTestImplementation(TestDependencies.espresso)
-    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+//    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
     implementation ("com.amazonaws:aws-android-sdk-s3:2.22.+")
     implementation ("com.amazonaws:aws-android-sdk-mobile-client:2.22.+")
+    implementation("com.github.felHR85:UsbSerial:6.0.6")
 
-    implementation ("com.google.android.gms:play-services-auth:19.0.0")
+    //implementation ("com.google.android.gms:play-services-auth:19.0.0")
 
     //lottie
     implementation ("com.airbnb.android:lottie:4.2.0")
@@ -164,9 +211,31 @@ dependencies {
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
-tasks.register<Download>("downloadBundleTools") {
-    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
-    dest(File(buildDir, "bundletool-all.jar"))
+//tasks.register<Download>("downloadBundleTools") {
+//    src("https://github.com/google/bundletool/releases/download/1.5.0/bundletool-all-1.5.0.jar")
+//    dest(File(buildDir, "bundletool-all.jar"))
+//}
+
+// Auto-extract Scratch assets from zip before build
+tasks.register<Copy>("extractScratchAssets") {
+    val zipFile = rootProject.file("scratch-assets/build-wo-remix.zip")
+    if (zipFile.exists()) {
+        from(zipTree(zipFile))
+        into(layout.projectDirectory.dir("src/main/assets"))
+        eachFile {
+            // strip the top-level folder name from zip
+            relativePath = RelativePath(true, *relativePath.segments.drop(1).toTypedArray())
+        }
+        includeEmptyDirs = false
+    }
+}
+
+tasks.whenTaskAdded {
+    if (name == "mergeDebugAssets" || name == "mergeReleaseAssets"
+        || name == "generateReleaseLintModel" || name == "generateDebugLintModel"
+        || name == "lintVitalAnalyzeRelease" || name == "generateReleaseLintVitalReportModel") {
+        dependsOn("extractScratchAssets")
+    }
 }
 
 android.applicationVariants.all {
@@ -222,5 +291,12 @@ android.applicationVariants.all {
                 dependsOn("buildApks${this.name.capitalize()}")
             }
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force(AndroidxDependencies.lifecycleViewModelKtx)
+        force(AndroidxDependencies.lifecycleViewModel)
     }
 }

@@ -2,7 +2,11 @@ package org.navgurukul.chat.features.roomprofile
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -11,8 +15,6 @@ import org.matrix.android.sdk.api.session.room.notification.RoomNotificationStat
 import org.matrix.android.sdk.api.util.MatrixItem
 import org.matrix.android.sdk.api.util.toMatrixItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_room_profile.*
-import kotlinx.android.synthetic.main.view_stub_room_profile_header.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +24,7 @@ import org.navgurukul.chat.R
 import org.navgurukul.chat.core.animations.AppBarStateChangeListener
 import org.navgurukul.chat.core.animations.MerakiItemAppBarStateChangeListener
 import org.navgurukul.chat.core.extensions.*
+import org.navgurukul.chat.databinding.FragmentRoomProfileBinding
 import org.navgurukul.chat.features.home.AvatarRenderer
 import org.navgurukul.chat.features.home.room.list.actions.RoomListActionsArgs
 import org.navgurukul.chat.features.home.room.list.actions.RoomListQuickActionsBottomSheet
@@ -39,6 +42,7 @@ data class RoomProfileArgs(
 class RoomProfileFragment: BaseFragment(),
         RoomProfileController.Callback {
 
+    private lateinit var binding: FragmentRoomProfileBinding
     private val roomProfileController: RoomProfileController by inject()
     private val avatarRenderer: AvatarRenderer by inject()
 
@@ -49,21 +53,34 @@ class RoomProfileFragment: BaseFragment(),
 
     private var appBarStateChangeListener: AppBarStateChangeListener? = null
 
+    lateinit var roomProfileNameView:TextView
+    lateinit var roomProfileAliasView:TextView
+    lateinit var roomProfileAvatarView:ImageView
     override fun getLayoutResId() = R.layout.fragment_room_profile
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentRoomProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val headerView = profileHeaderView.let {
+        val headerView = binding.profileHeaderView.let {
             it.layoutResource = R.layout.view_stub_room_profile_header
             it.inflate()
         }
-        setupToolbar(profileToolbar)
+        roomProfileAvatarView=headerView.findViewById(R.id.roomProfileAvatarView)
+        roomProfileNameView=headerView.findViewById(R.id.roomProfileNameView)
+        roomProfileAliasView=headerView.findViewById(R.id.roomProfileAliasView)
+        setupToolbar(binding.profileToolbar)
         setupRecyclerView()
         appBarStateChangeListener = MerakiItemAppBarStateChangeListener(
-            listOf(profileToolbarAvatarImageView,
-                    profileToolbarTitleView)
+            listOf(binding.profileToolbarAvatarImageView,
+                    binding.profileToolbarTitleView)
         )
-        profileAppBarLayout.addOnOffsetChangedListener(appBarStateChangeListener)
+        binding.profileAppBarLayout.addOnOffsetChangedListener(appBarStateChangeListener)
         roomProfileViewModel.viewEvents.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is RoomProfileViewEvents.Loading          -> showLoading(it.message)
@@ -88,13 +105,13 @@ class RoomProfileFragment: BaseFragment(),
 
     private fun setupRecyclerView() {
         roomProfileController.callback = this
-        profileRecyclerView.configureWith(roomProfileController, hasFixedSize = true, disableItemAnimation = true)
+        binding.profileRecyclerView.configureWith(roomProfileController, hasFixedSize = true, disableItemAnimation = true)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        profileAppBarLayout.removeOnOffsetChangedListener(appBarStateChangeListener)
-        profileRecyclerView.cleanup()
+        binding.profileAppBarLayout.removeOnOffsetChangedListener(appBarStateChangeListener)
+        binding.profileRecyclerView.cleanup()
         appBarStateChangeListener = null
     }
 
@@ -105,16 +122,16 @@ class RoomProfileFragment: BaseFragment(),
                 activity?.finish()
             } else {
                 roomProfileNameView.text = it.displayName
-                profileToolbarTitleView.text = it.displayName
+                binding.profileToolbarTitleView.text = it.displayName
                 roomProfileAliasView.setTextOrHide(it.canonicalAlias)
                 val matrixItem = it.toMatrixItem()
                 avatarRenderer.render(matrixItem, roomProfileAvatarView)
-                avatarRenderer.render(matrixItem, profileToolbarAvatarImageView)
+                avatarRenderer.render(matrixItem, binding.profileToolbarAvatarImageView)
 
                 roomProfileAvatarView.setOnClickListener { view ->
                     onAvatarClicked(view, matrixItem)
                 }
-                profileToolbarAvatarImageView.setOnClickListener { view ->
+                binding.profileToolbarAvatarImageView.setOnClickListener { view ->
                     onAvatarClicked(view, matrixItem)
                 }
             }

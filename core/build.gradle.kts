@@ -1,11 +1,13 @@
 plugins {
     id(Plugins.library)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinExtensions)
+//    id(Plugins.kotlinExtensions)
+    id(Plugins.kotlinParcelize)
     id(Plugins.kotlinKapt)
 }
 
 android {
+    namespace = "org.navgurukul.core"
     compileSdk = BuildConfigVersions.compileSdkVersion
 
     defaultConfig {
@@ -24,13 +26,17 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
+    buildFeatures{
+        viewBinding = true
+    }
+    namespace = "org.merakilearn.core"
 }
 
 dependencies {
@@ -41,6 +47,8 @@ dependencies {
     implementation(AndroidxDependencies.coreKtx)
     implementation(AndroidxDependencies.appcompat)
     implementation(AndroidxDependencies.browser)
+
+    implementation(AndroidxDependencies.multidex)
 
     // Koin for Kotlin
     implementation(KoinDependencies.koinAndroid)
@@ -54,9 +62,11 @@ dependencies {
     kapt(RetrofitDependencies.moshiKapt)
 
     //to get dynamic feature module
-    implementation(GooglePlayDependencies.playCore)
+    implementation(GooglePlayDependencies.playFeatureDeliveryLibrary)
+    implementation(GooglePlayDependencies.extensionsForFeatureLibrary)
 
     //firebase
+    implementation(platform(FirebaseDependencies.firebaseBom))
     implementation(FirebaseDependencies.messaging)
     implementation(FirebaseDependencies.configKtx)
     implementation(FirebaseDependencies.commonKtx)

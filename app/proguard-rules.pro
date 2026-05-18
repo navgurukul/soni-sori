@@ -25,9 +25,45 @@
 }
 -keep,allowobfuscation @interface com.google.gson.annotations.SerializedName
 
+# Moshi - keep all model classes annotated with @JsonClass and their fields
+-keep @com.squareup.moshi.JsonClass class * { *; }
+-keepclassmembers class * {
+  @com.squareup.moshi.Json <fields>;
+}
+-keep,allowobfuscation @interface com.squareup.moshi.Json
+-keep,allowobfuscation @interface com.squareup.moshi.JsonClass
+# Keep Moshi generated adapters
+-keep class **JsonAdapter { *; }
+-keepnames class * { @com.squareup.moshi.JsonClass *; }
+
 -keep class com.chaquo.python.*.* {*;}
 -keepclassmembers class com.chaquo.python.*.* {*;}
 -keep class com.chaquo.python.android.*.* {*;}
 -keepclassmembers class com.chaquo.python.android.*.* {*;}
 
 -keepclassmembers class org.navgurukul.playground.repo.PythonRepositoryImpl {*;}
+# Suppress warnings for missing classes
+-dontwarn java.lang.management.ManagementFactory
+-dontwarn javax.management.InstanceAlreadyExistsException
+-dontwarn javax.management.InstanceNotFoundException
+-dontwarn javax.management.JMException
+-dontwarn javax.management.MBeanRegistrationException
+-dontwarn javax.management.MBeanServer
+-dontwarn javax.management.MalformedObjectNameException
+-dontwarn javax.management.NotCompliantMBeanException
+-dontwarn javax.management.ObjectInstance
+-dontwarn javax.management.ObjectName
+-dontwarn org.ietf.jgss.GSSContext
+-dontwarn org.ietf.jgss.GSSCredential
+-dontwarn org.ietf.jgss.GSSException
+-dontwarn org.ietf.jgss.GSSManager
+-dontwarn org.ietf.jgss.GSSName
+-dontwarn org.ietf.jgss.Oid
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Fix R8 crash on jgit classes in webIDE module
+-keep class org.eclipse.jgit.** { *; }
+-dontwarn org.eclipse.jgit.**
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exceptions
