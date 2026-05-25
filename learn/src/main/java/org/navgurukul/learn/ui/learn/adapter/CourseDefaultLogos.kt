@@ -1,7 +1,7 @@
 package org.navgurukul.learn.ui.learn.adapter
 
 import androidx.annotation.DrawableRes
-import org.navgurukul.learn.R
+import org.navgurukul.commonui.R
 import java.util.Locale
 
 @Suppress("unused")
@@ -13,9 +13,9 @@ enum class CourseDefaultLogos(@DrawableRes val id: Int) {
     spOKENENGLISH(R.drawable.ic_icon_language),
     JAVASCRIPT(R.drawable.ic_javascript_logo),
     RESIDENTIALPROGRAMMES(R.drawable.residential_icon),
-    INTRODUCTIONTOSCRATCH(org.navgurukul.commonui.R.drawable.ic_scratch_cat),
+    INTRODUCTIONTOSCRATCH(R.drawable.ic_scratch_cat),
     MCDIGITALCOURSE_2_0(R.drawable.mc_digital_logo),
-    DEFAULT(org.navgurukul.commonui.R.drawable.ic_typing_icon),
+    DEFAULT(R.drawable.ic_typing_icon),
 
     ;
 

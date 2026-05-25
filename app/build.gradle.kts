@@ -31,13 +31,18 @@ android {
 
     signingConfigs {
         create("release") {
-            val props = Properties().apply {
-                load(rootProject.file("local.properties").inputStream())
+            val propsFile = rootProject.file("local.properties")
+            if (propsFile.exists()) {
+                val props = Properties().apply {
+                    propsFile.inputStream().use { load(it) }
+                }
+                if (props.containsKey("STORE_FILE")) {
+                    storeFile = file(props["STORE_FILE"] as String)
+                    storePassword = props["STORE_PASSWORD"] as String
+                    keyAlias = props["KEY_ALIAS"] as String
+                    keyPassword = props["KEY_PASSWORD"] as String
+                }
             }
-            storeFile = file(props["STORE_FILE"] as String)
-            storePassword = props["STORE_PASSWORD"] as String
-            keyAlias = props["KEY_ALIAS"] as String
-            keyPassword = props["KEY_PASSWORD"] as String
         }
     }
 
@@ -261,7 +266,7 @@ android.applicationVariants.all {
                     "--output",
                     outputPath
                 ).apply {
-                    if (signingInfo != null) {
+                    if (signingInfo != null && signingInfo.storeFile != null && signingInfo.storePassword != null && signingInfo.keyAlias != null && signingInfo.keyPassword != null) {
                         addAll(
                             arrayListOf(
                                 "--ks",
