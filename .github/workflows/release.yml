@@ -18,6 +18,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -47,9 +50,16 @@ jobs:
       - name: 🧪 Run tests
         run: ./gradlew app:test
 
-      - name: 🎁 Releasing using Hub
-        uses: ShaunLWM/action-release-debugapk@master
+      - name: 🏷️ Extract Version Name
+        run: |
+          VERSION_NAME=$(python3 -c "import re; print(re.search(r'const val versionName = \"([^\"]+)\"', open('buildSrc/src/main/kotlin/Dependencies.kt').read()).group(1))")
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+
+      - name: 🎁 Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION_NAME }}
+          name: Meraki App Release v${{ env.VERSION_NAME }}
+          files: app/build/outputs/apk/debug/*-debug.apk
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          APP_FOLDER: app
-          RELEASE_TITLE: Meraki App Release 
+          GITHUB_TOKEN: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
