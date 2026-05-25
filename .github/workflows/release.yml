@@ -41,37 +41,45 @@ jobs:
           echo "⚙️ Creating a new local.properties file"
           echo "sdk.dir=ANDROID_SDK_ROOT" > ./local.properties
 
-      - name: Create google-services.json placeholders
+      - name: Create google-services.json
         shell: bash
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          echo "⚙️ Creating dummy google-services.json files"
-          DUMMY_JSON='{
-            "project_info": {
-              "project_number": "123456789",
-              "project_id": "dummy-id",
-              "storage_bucket": "dummy-id.appspot.com"
-            },
-            "client": [
-              {
-                "client_info": {
-                  "mobilesdk_app_id": "1:123456789:android:123456789abc",
-                  "android_client_info": {
-                    "package_name": "org.merakilearn"
-                  }
-                },
-                "oauth_client": [],
-                "api_key": [
-                  {
-                    "current_key": "dummy_key"
-                  }
-                ],
-                "services": {}
-              }
-            ],
-            "configuration_version": "1"
-          }'
-          echo "$DUMMY_JSON" > ./app/google-services.json
-          echo "$DUMMY_JSON" > ./typing/google-services.json
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            echo "⚙️ Creating google-services.json from secret"
+            echo "$GOOGLE_SERVICES_JSON" | base64 --decode > ./app/google-services.json
+            echo "$GOOGLE_SERVICES_JSON" | base64 --decode > ./typing/google-services.json
+          else
+            echo "⚙️ Creating dummy google-services.json (secret not set)"
+            DUMMY_JSON='{
+              "project_info": {
+                "project_number": "123456789",
+                "project_id": "dummy-id",
+                "storage_bucket": "dummy-id.appspot.com"
+              },
+              "client": [
+                {
+                  "client_info": {
+                    "mobilesdk_app_id": "1:123456789:android:123456789abc",
+                    "android_client_info": {
+                      "package_name": "org.merakilearn"
+                    }
+                  },
+                  "oauth_client": [],
+                  "api_key": [
+                    {
+                      "current_key": "dummy_key"
+                    }
+                  ],
+                  "services": {}
+                }
+              ],
+              "configuration_version": "1"
+            }'
+            echo "$DUMMY_JSON" > ./app/google-services.json
+            echo "$DUMMY_JSON" > ./typing/google-services.json
+          fi
 
       - name: 📦 Build the app
         run: ./gradlew app:assembleDebug
