@@ -41,6 +41,38 @@ jobs:
           echo "⚙️ Creating a new local.properties file"
           echo "sdk.dir=ANDROID_SDK_ROOT" > ./local.properties
 
+      - name: Create google-services.json placeholders
+        shell: bash
+        run: |
+          echo "⚙️ Creating dummy google-services.json files"
+          DUMMY_JSON='{
+            "project_info": {
+              "project_number": "123456789",
+              "project_id": "dummy-id",
+              "storage_bucket": "dummy-id.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789:android:123456789abc",
+                  "android_client_info": {
+                    "package_name": "org.merakilearn"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "dummy_key"
+                  }
+                ],
+                "services": {}
+              }
+            ],
+            "configuration_version": "1"
+          }'
+          echo "$DUMMY_JSON" > ./app/google-services.json
+          echo "$DUMMY_JSON" > ./typing/google-services.json
+
       - name: 📦 Build the app
         run: ./gradlew app:assembleDebug
         
