@@ -93,20 +93,24 @@ public class ArduinoHexUploadActivity extends AppCompatActivity {
                     UsbDevice grantedDevice = intent.getExtras().getParcelable(UsbManager.EXTRA_DEVICE);
                     usbPermissionGranted(grantedDevice.getDeviceName());
                     Intent it = new Intent(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED);
+                    it.setPackage(context.getPackageName());
                     context.sendBroadcast(it);
 
                 } else // User not accepted our USB connection. Send an Intent to the Main Activity
                 {
                     Intent it = new Intent(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED);
+                    it.setPackage(context.getPackageName());
                     context.sendBroadcast(it);
                 }
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
                 Intent it = new Intent(UsbSerialManager.ACTION_USB_CONNECT);
+                it.setPackage(context.getPackageName());
                 context.sendBroadcast(it);
 
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 // Usb device was disconnected. send an intent to the Main Activity
                 Intent it = new Intent(UsbSerialManager.ACTION_USB_DISCONNECTED);
+                it.setPackage(context.getPackageName());
                 context.sendBroadcast(it);
 
             }

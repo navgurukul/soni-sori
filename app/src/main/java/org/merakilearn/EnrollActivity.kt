@@ -200,6 +200,7 @@ class EnrollActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @Suppress("MissingSuperCall")
     override fun onBackPressed() {
         navigateUp()
     }

@@ -103,19 +103,27 @@ class ArduinoBlocklyActivity : AppCompatActivity() {
                     val grantedDevice =
                         intent.extras!!.getParcelable<UsbDevice>(UsbManager.EXTRA_DEVICE)
                     usbPermissionGranted(grantedDevice!!.deviceName)
-                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED)
+                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_GRANTED).apply {
+                        setPackage(context.packageName)
+                    }
                     context.sendBroadcast(it)
                 } else  // User not accepted our USB connection. Send an Intent to the Main Activity
                 {
-                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED)
+                    val it = Intent(UsbSerialManager.ACTION_USB_PERMISSION_NOT_GRANTED).apply {
+                        setPackage(context.packageName)
+                    }
                     context.sendBroadcast(it)
                 }
             } else if (intent.action == UsbManager.ACTION_USB_DEVICE_ATTACHED) {
-                val it = Intent(UsbSerialManager.ACTION_USB_CONNECT)
+                val it = Intent(UsbSerialManager.ACTION_USB_CONNECT).apply {
+                    setPackage(context.packageName)
+                }
                 context.sendBroadcast(it)
             } else if (intent.action == UsbManager.ACTION_USB_DEVICE_DETACHED) {
                 // Usb device was disconnected. send an intent to the Main Activity
-                val it = Intent(UsbSerialManager.ACTION_USB_DISCONNECTED)
+                val it = Intent(UsbSerialManager.ACTION_USB_DISCONNECTED).apply {
+                    setPackage(context.packageName)
+                }
                 context.sendBroadcast(it)
             }
         }

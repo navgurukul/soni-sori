@@ -59,7 +59,7 @@ public class UsbSerialManager {
     public UsbSerialManager(Context context) {
         this.context = context.getApplicationContext();
         this.usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
-
+        this.requestIntent.setPackage(this.context.getPackageName());
     }
 
     public void requestDevicePermissionForUsbDevice(String usbKey, UsbDevice usbDevice) {
@@ -115,12 +115,14 @@ public class UsbSerialManager {
                 UsbDevice usbDevice = usbDeviceList.get(key);
                 if (!deviceIsUsbSerial(usbDevice)) {
                     Intent intent = new Intent(ACTION_USB_NOT_SUPPORTED);
+                    intent.setPackage(context.getPackageName());
                     context.sendBroadcast(intent);
                     return null;
                 }
                 Log.i(TAG, "tryGetDevice: Serial device found");
                 if (!usbManager.hasPermission(usbDevice)) {
                     Intent intent = new Intent(ACTION_USB_PERMISSION_NOT_GRANTED);
+                    intent.setPackage(context.getPackageName());
                     context.sendBroadcast(intent);
                     return null;
                 }
@@ -140,6 +142,7 @@ public class UsbSerialManager {
                             if (ctsCallback != null) device.getCTS(ctsCallback);
                             if (dsrCallback != null) device.getDSR(dsrCallback);
                             Intent intent = new Intent(ACTION_USB_READY);
+                            intent.setPackage(context.getPackageName());
                             context.sendBroadcast(intent);
                             Log.i(TAG, "tryGetDevice: ACTION_USB_READY ");
                             device.close();//close before work
@@ -148,11 +151,13 @@ public class UsbSerialManager {
                             // Send an Intent to Main Activity
                             if (device instanceof CDCSerialDevice) {
                                 Intent intent = new Intent(ACTION_CDC_DRIVER_NOT_WORKING);
+                                intent.setPackage(context.getPackageName());
                                 context.sendBroadcast(intent);
                                 Log.i(TAG, "tryGetDevice: ACTION_CDC_DRIVER_NOT_WORKING ");
                             } else {
                                 Log.i(TAG, "tryGetDevice: ACTION_USB_DEVICE_NOT_WORKING ");
                                 Intent intent = new Intent(ACTION_USB_DEVICE_NOT_WORKING);
+                                intent.setPackage(context.getPackageName());
                                 context.sendBroadcast(intent);
                             }
                         }
@@ -161,6 +166,7 @@ public class UsbSerialManager {
                         // No driver for given device, even generic CDC driver could not be loaded
                         Log.i(TAG, "tryGetDevice: ACTION_USB_NOT_SUPPORTED ");
                         Intent intent = new Intent(ACTION_USB_NOT_SUPPORTED);
+                        intent.setPackage(context.getPackageName());
                         context.sendBroadcast(intent);
                         return null;
                     }

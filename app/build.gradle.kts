@@ -18,9 +18,7 @@ android {
 
     compileSdk = BuildConfigVersions.compileSdkVersion
 
-    lint {
-        abortOnError = false
-    }
+
 
     defaultConfig {
         applicationId = BuildConfigVersions.applicationId
