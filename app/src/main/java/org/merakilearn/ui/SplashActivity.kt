@@ -27,6 +27,9 @@ const val UPDATE_REQUEST_CODE = 524
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding : SplashActivityAppBinding
 
+    private val navigationHandler = Handler(Looper.getMainLooper())
+    private val navigationRunnable = Runnable { navigateToNextScreen() }
+
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultLauncher ->
             if (resultLauncher.resultCode == RESULT_OK) {
@@ -35,30 +38,38 @@ class SplashActivity : AppCompatActivity() {
     private val appUpdateManager: AppUpdateManager by lazy {
         AppUpdateManagerFactory.create(applicationContext)
     }
+
+    private fun navigateToNextScreen() {
+        val intent = Intent(this, OnBoardingActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.splash_activity_app)
         setupEdgeToEdge()
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         setUpTheme()
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, OnBoardingActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 3000)
+        navigationHandler.postDelayed(navigationRunnable, 3000)
 
         appUpdateInfoTask.addOnSuccessListener {
             if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    it,
-                    this,
-                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
-                        .setAllowAssetPackDeletion(true).build(),
-                    UPDATE_REQUEST_CODE
-                )
-                resultLauncher.launch(intent)
+                navigationHandler.removeCallbacks(navigationRunnable)
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        it,
+                        this,
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
+                            .setAllowAssetPackDeletion(true).build(),
+                        UPDATE_REQUEST_CODE
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to start update flow")
+                    navigateToNextScreen()
+                }
 
             } else {
                 //Toast.makeText(this, "No Update Available", Toast.LENGTH_SHORT).show()
@@ -67,6 +78,18 @@ class SplashActivity : AppCompatActivity() {
         }.addOnFailureListener {
             //Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show()
             Timber.d("Update Failed : $it")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Timber.d("Update flow failed or cancelled by user, code: $resultCode")
+            } else {
+                Timber.d("Update flow completed/accepted by user")
+            }
+            navigateToNextScreen()
         }
     }
 
