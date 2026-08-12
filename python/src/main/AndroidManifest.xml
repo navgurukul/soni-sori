@@ -16,6 +16,7 @@
     <application>
         <activity android:name=".editor.PythonEditorActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/title_playground"/>
     </application>
