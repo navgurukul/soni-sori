@@ -9,6 +9,7 @@ plugins {
 android {
     namespace = "org.navgurukul.playground"
     compileSdk = BuildConfigVersions.compileSdkVersion
+    ndkVersion = "28.2.13676358" // Required for 16KB page alignment (Android 15+)
 
     defaultConfig {
         minSdk = BuildConfigVersions.minSdkVersion

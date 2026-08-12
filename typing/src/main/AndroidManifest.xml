@@ -32,7 +32,8 @@
             android:name="org.navgurukul.typingguru.score.ScoreActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
-        <activity android:name="org.navgurukul.typingguru.webview.WebViewActivity" />
+        <activity android:name="org.navgurukul.typingguru.webview.WebViewActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
