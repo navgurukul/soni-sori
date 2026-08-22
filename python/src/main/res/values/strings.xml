@@ -36,6 +36,9 @@
     <string name="share_code">Share Code</string>
     <string name="python">Python</string>
     <string name="typing">Typing Guru</string>
+    <string name="installing_module_message">Preparing the app for you</string>
+    <string name="take_mentor_help"><u>Take Mentor Help</u></string>
+    <string name="error_fix_tip">FIX: How to fix this type of error will be given here in short.</string>
     <string name="scratch">Scratch</string>
     <string name="executing_code">Executing Code</string>
     <string name="filename_error">Project name already exists!</string>

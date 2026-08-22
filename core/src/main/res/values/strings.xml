@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="error_no_external_application_found">Sorry, no external application has been found to complete this action.</string>
+    <string name="notification_initial_sync">Initial Sync…</string>
     <string name="installing_module_message">Preparing the app for you</string>
 </resources>

@@ -3,15 +3,12 @@ package org.navgurukul.chat.features.home.room.detail.timeline.item
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import org.navgurukul.chat.R
 import org.navgurukul.chat.core.epoxy.ClickListener
 import org.navgurukul.chat.core.epoxy.onClick
-import org.navgurukul.chat.core.utils.DebouncedClickListener
 import org.navgurukul.chat.features.home.AvatarRenderer
-import org.navgurukul.chat.features.home.room.detail.timeline.TimelineEventController
 
 @EpoxyModelClass
 abstract class NoticeItem : BaseEventItem<NoticeItem.Holder>() {
